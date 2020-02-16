@@ -33,15 +33,15 @@ Es posible que para que el programa funcione correctamente tenga que realizar al
 
  -En src/app/app.service.ts: 
  		Mantenga la variable ipRemota con el siguiente valor: 
- 		public ipRemota: string= "http://www.carloscabreracriado.com";
+ 			public ipRemota: string= "http://www.carloscabreracriado.com";
 
  -En src/app/app.module.ts:
  		Mantenga la variable config con el siguiente valor:
- 		const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
+ 			const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
 
  -En main.js:
  		Mantenga la variable DEBUG con el siguiente valor: 
- 		const DEBUG = true;
+ 			const DEBUG = true;
 
 
 
