@@ -20,11 +20,28 @@ Para realizar tareas de desarrollo, es importante que tenga en cuenta los siguie
  	-Instalar las dependencias: (Solo es necesario hacerlo la primera vez)
  		npm install
 
- 	-Iniciar el Servidor Angular:
+ 	-Iniciar el Servidor Angular: (Ejecutar este comando en una ventana independiente)
  		npm start
 
- 	-Iniciar la aplicación con electron:
+ 	-Iniciar la aplicación con electron: (Ejecutar este comando en una ventana independiente)
  		npm run electron
+
+
+## Configuración:
+
+Es posible que para que el programa funcione correctamente tenga que realizar algunas configuraciones en los siguientes archivos:
+
+ -En src/app/app.service.ts: 
+ 		Mantenga la variable ipRemota con el siguiente valor: 
+ 		public ipRemota: string= "http://www.carloscabreracriado.com";
+
+ -En src/app/app.module.ts:
+ 		Mantenga la variable config con el siguiente valor:
+ 		const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
+
+ -En main.js:
+ 		Mantenga la variable DEBUG con el siguiente valor: 
+ 		const DEBUG = true;
 
 
 
