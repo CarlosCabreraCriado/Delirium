@@ -1,27 +1,32 @@
-# DeliriumAngular
+# Delirium Oficial 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.4.
+Bienvenido al desarrollo de Delirium, un juego de mesa de estilo RPG y role-play, que combina el estilo de juego tradicional con mecánicas innovadoras gracias al soporte digital.
 
-## Development server
+## Setup basico de desarrollador:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Para poder contribuir al desarrollo de la aplicación de Delirium se debe utilizar el repositorio git oficial de Delirium. Para ello bebe de pertenecer al grupo de colaboradores mediante una invitación.
 
-## Code scaffolding
+-Una vez disponga de permisos de colaborador, abra el repositorio en una carpeta de su equipo. Puede iniciar un repositorio desde la aplicación Git Kraken especificando la siguiente dirección:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+https://github.com/CarlosCabreraCriado/Delirium.git
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Comandos importantes:
 
-## Running unit tests
+Para realizar tareas de desarrollo, es importante que tenga en cuenta los siguientes comandos disponibles:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+ *Para introducir los comandos asegurese de que la dirección del CMD o Terminal esta apuntando a la carpeta donde ha inicializado el repositorio.
 
-## Running end-to-end tests
+ 	-Instalar las dependencias: (Solo es necesario hacerlo la primera vez)
+ 		npm install
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+ 	-Iniciar el Servidor Angular:
+ 		npm start
 
-## Further help
+ 	-Iniciar la aplicación con electron:
+ 		npm run electron
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+
+
