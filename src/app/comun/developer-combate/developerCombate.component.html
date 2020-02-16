@@ -1,0 +1,289 @@
+<!--________________________________________________________
+    Archivo HTML -  Pantalla Mazmorra SNACK
+    ________________________________________________________
+    Proyecto:       Delirium
+    Versión:        0.2
+    Titulo:         Mazmorra Delirium
+    Creado por:     Carlos Cabrera Criado
+    Fecha:          16/08/17
+    Descripción:    Archivo HTML de Mazmorra principal
+
+    -->
+
+    <!--   ******************* -->
+        <!--     DISEÑO DE FONDO   -->
+        <!--   ******************* -->
+        <!-- Diseño Fondo -->
+        <div class="fondo" id="fondo">
+            <img alt="Fondo-papiro" class="Fondo-papiro" src="./assets/papiro.jpg"/>
+                <!-- Video Fondo -->
+                <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/papiro.jpg">
+                    <source src="./assets/videos/particulas.mp4" type="video/mp4"/>
+                </video>
+            
+            <img alt="Fondo Heroes" class="Fondo-Heroes" src="./assets/Mazmorras/Fondo-Heroes.png"/>
+        </div>
+
+        <!--   ******************* -->
+        <!--     LOOGER            -->
+        <!--   ******************* -->
+       
+<appLogger [renderMazmorra]="renderMazmorra"></appLogger>
+        
+        <!--   ******************* -->
+        <!--     INTERFAZ PANEL         -->
+        <!--   ******************* -->
+
+<app-interfaz [renderMazmorra]="renderMazmorra"></app-interfaz>
+
+        <!--   ******************* -->
+        <!--     RNG PANEL         -->
+        <!--   ******************* -->
+
+<app-rng></app-rng>
+
+        <!--   ******************* -->
+        <!--     EVENTOS PANEL     -->
+        <!--   ******************* -->
+
+<app-eventos></app-eventos>
+
+        <!--   ******************* -->
+        <!--   CONTENIDO PRINCIPAL -->
+        <!--   ******************* -->
+<img *ngIf="developerCombateService.cargaCompleta" class="iconoAjustes" src="./assets/General/gear.png" (click)="developerCombateService.togglePause();">
+<div *ngIf="developerCombateService.cargaCompleta" class="Titulo Texto1">{{renderMazmorra.nombreSala}}</div>
+<div *ngIf="developerCombateService.cargaCompleta" id="usuario" class="Texto2">{{appService.validacion.nombre}}-{{appService.validacion.miembro}}</div>
+
+<!-- *************************************************
+            Panel Enemigos
+     ************************************************* -->
+<div *ngIf="developerCombateService.cargaCompleta" class="Panel-Enemigos">
+    <div [ngClass]="'nEnemigos'+renderMazmorra.enemigos.length">
+        <div *ngFor="let enemigo of renderMazmorra.enemigos; let i = index" class="Panel Enemigo" [ngClass]="renderizarMarcoEnemigo(i)">
+            <div class="hitBoxEnemigo"  (click)="developerCombateService.seleccionEnemigo(i)"></div>
+            <div class="contenedorMarcoEnemigo">
+                <div class="contenedorAgro Texto2">
+                    <div class="indiceAgro">{{renderizarIndiceAgroEnemigo(i)}}</div>
+                    <div class="barraAgro" [style.height]="renderizarAgroEnemigo(i)"></div>
+                </div>
+                <img src="./assets/Mazmorras/Marco-Enemigo.png" class="Marco-Enemigo">
+                <img src="./assets/Enemigos/{{renderMazmorra.enemigos[i].nombre}}.png" class="Imagen-Enemigo"/>
+                <appAnimacionEfecto #animacionEfecto [enemigo]="enemigo" [enemigoAnimacion]="enemigo.animacion"></appAnimacionEfecto>
+                <appAnimacionNumero #animacionNumero [enemigo]="enemigo" [enemigoVida]="enemigo.vida" [enemigoIndex]="i"></appAnimacionNumero>
+            </div>
+               
+            <div class="Nombre-Enemigo Texto2">{{renderMazmorra.enemigos[i].nombre}}</div>
+            <div class="Barras-Vida-Mana-Enemigo">
+                <div class="Container-Vida-Enemigo">
+                    <div class="Vida-Enemigo Texto3" [style.width]="renderMazmorra.enemigos[i].vida+'%'">{{renderMazmorra.enemigos[i].vida}}%</div>
+                     <div class="Escudo" [style.width]="renderMazmorra.enemigos[i].escudo+'%'" [style.marginLeft]="-renderMazmorra.enemigos[i].escudo/2+'%'" [style.left]="renderizarEscudoEnemigo(i)"></div>
+                </div>
+                <div class="Container-Mana-Enemigo">
+                    <div class="Mana-Enemigo Texto3">100%</div>
+                </div>
+            </div>
+            <div class="Buffos-DeBuffos-Enemigo">
+                <div *ngFor="let buff of renderMazmorra.enemigos[i].buff; let j = index" [ngClass]="renderizarBuffosEnemigos(i,j)">{{renderMazmorra.enemigos[i].buff[j].duracion}}</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- *************************************************
+            Panel Acción
+     ************************************************* -->
+<div *ngIf="developerCombateService.cargaCompleta" class="Panel Barra-Accion" [ngClass]="renderIndividual()">
+    <div *ngIf="renderMazmorra.render.barraAccion.mostrar" id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':renderMazmorra.render.barraAccion.mostrar}">
+        {{renderMazmorra.render.barraAccion.mensajeAccion}}
+    </div>
+
+    <div class="Accion-Turno-Heroe">
+        <div class="Stats">
+            <img src="./assets/{{renderMazmorra.render.barraAccion.claseTurno.split(' ').join('_')}}.png" class="Imagen-Accion" />
+            <div class="Texto-Nombre Texto2">{{renderMazmorra.render.barraAccion.nombreTurno}}</div>
+            <div class="Barras-Vida-Mana-Heroe-Accion">
+                <div class="Container-Vida-Heroe">
+                    <div class="Vida-Heroe Texto3">100%</div>
+                </div>
+                <div class="Container-Mana-Heroe">
+                    <div class="Mana-Heroe Texto3">100%</div>
+                </div>
+                <div class="Buffos-DeBuffos-Heroe">
+                <!--
+                    <div class="Buffo-Heroe Buffo1">3</div>
+                    <div class="Buffo-Heroe Buffo2">2</div>
+                    <div class="Buffo-Heroe Buffo3">3</div>
+                    <div class="Buffo-Heroe Buffo4">4</div>
+                    <div class="Buffo-Heroe Buffo5">5</div>
+                    <div class="DeBuffo-Heroe DeBuffo5">5</div>
+                    <div class="DeBuffo-Heroe DeBuffo6">6</div>
+                -->
+                </div>
+            </div>
+        </div>
+
+        <div class="Hechizos">
+            <div class="Texto-Hechizos"></div>
+            <div class="Hechizos-Accion-Heroe">
+            <!--
+                <div class="Hechizo-Heroe Hechizo1">3</div>
+                <div class="Hechizo-Heroe Hechizo2">2</div>
+                <div class="Hechizo-Heroe Hechizo3">3</div>
+                <div class="Hechizo-Heroe Hechizo4">4</div>
+                <div class="Hechizo-Heroe Hechizo5">5</div>
+                <div class="Hechizo-Heroe Hechizo6">5</div>
+                <div class="Hechizo-Heroe Hechizo7">6</div>
+                <div class="Hechizo-Heroe Hechizo8">3</div>
+                <div class="Hechizo-Heroe Hechizo9">2</div>
+                <div class="Hechizo-Heroe Hechizo10">3</div>
+                <div class="Hechizo-Heroe Hechizo11">4</div>
+                <div class="Hechizo-Heroe Hechizo12">5</div>
+                <div class="Hechizo-Heroe Hechizo13">5</div>
+                <div class="Hechizo-Heroe Hechizo14">6</div>
+                <div class="Hechizo-Heroe Hechizo15">3</div>
+                <div class="Hechizo-Heroe Hechizo16">2</div>
+                <div class="Hechizo-Heroe Hechizo17">3</div>
+                <div class="Hechizo-Heroe Hechizo18">4</div>
+                <div class="Hechizo-Heroe Hechizo19">5</div>
+                <div class="Hechizo-Heroe Hechizo20">5</div>
+                <div class="Hechizo-Heroe Hechizo21">6</div>
+                <div class="Hechizo-Heroe Hechizo22">3</div>
+                <div class="Hechizo-Heroe Hechizo23">2</div>
+                <div class="Hechizo-Heroe Hechizo24">3</div>
+            -->
+            </div>
+        </div>
+        <div class="Tiempo">
+            <div class="Texto-Tiempo"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- *************************************************
+            HEROES
+     ************************************************* -->
+<div  *ngIf="developerCombateService.cargaCompleta" class="Panel Barra-Heroes">
+
+    <!-- *************************************************
+            HEROES TABLET Y DESKTOP
+     ************************************************* -->
+    <div *ngIf="appService.dispositivo!='Movil'" [ngClass]="'nHeroes'+renderMazmorra.heroes.length">
+        <div *ngFor="let heroes of renderMazmorra.heroes; let i = index" class="Panel Heroe" [ngClass]="renderizarMarcoHeroe(i)" >
+
+            <img src="./assets/Mazmorras/Marco-Heroe.png" class="Marco-Heroe">
+            <div class="Nombre-Heroe Texto2">{{renderMazmorra.heroes[i].nombre}}</div>
+            <div class="contenedorMarcoHeroe">
+                <img *ngIf="!sala.jugadores[i].online" src="./assets/General/disconected.svg" class="desconectado">
+                <img src="./assets/Clases/{{renderMazmorra.heroes[i].clase.split(' ').join('_')}}.png" class="Imagen-Heroe">
+                <appAnimacionEfecto #animacionEfecto [heroe]="heroes" [heroeAnimacion]="heroes.animacion"></appAnimacionEfecto>
+                <appAnimacionNumero #animacionNumero [heroe]="heroes" [heroeVida]="heroes.vida" [heroeIndex]="i"></appAnimacionNumero>
+                <appMarcoClase #marcoClase [heroe]="heroes" [heroeIndex]="i"></appMarcoClase>
+            </div>
+            <div class="Barras-Vida-Mana-Heroe">
+                <div class="Container-Vida-Heroe">
+                    <div class="Vida-Heroe Texto3" [style.width]="renderMazmorra.heroes[i].vida+'%'">{{renderMazmorra.heroes[i].vida}}%</div>
+                    <div class="Escudo" [style.width]="renderMazmorra.heroes[i].escudo+'%'" [style.marginLeft]="-renderMazmorra.heroes[i].escudo/2+'%'" [style.left]="renderizarEscudoHeroe(i)"></div>
+                </div>
+                <div class="Container-Mana-Heroe">
+                    <div class="Mana-Heroe Texto3" [style.width]="renderMazmorra.heroes[i].recurso+'%'">{{renderMazmorra.heroes[i].recurso}}%</div>
+                </div>
+                <div class="Buffos-DeBuffos-Heroe">
+                
+                    <div *ngFor="let buff of renderMazmorra.heroes[i].buff; let j = index" [ngClass]="renderizarBuffosHeroe(i,j)">{{renderMazmorra.heroes[i].buff[j].duracion}}</div>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *************************************************
+            HEROES MOVIL
+     ************************************************* -->
+
+    <div *ngIf="appService.dispositivo=='Movil'" [ngClass]="'nHeroes1'">
+        <div *ngIf="renderMazmorra.heroes[renderMazmorra.personajeIndex] as heroes" class="Panel Heroe" [ngClass]="renderizarMarcoHeroe(renderMazmorra.personajeIndex)" >
+           
+            <div class="Nombre-Heroe Texto2">{{renderMazmorra.heroes[renderMazmorra.personajeIndex].nombre}}</div>
+            
+            <div class="contenedorMarcoHeroe Individual">
+
+                <img src="./assets/Clases/{{renderMazmorra.heroes[renderMazmorra.personajeIndex].clase}}.png" class="Imagen-Heroe Individual">
+
+                <appAnimacionEfecto #animacionEfecto [heroe]="heroes" [heroeAnimacion]="renderMazmorra.heroes[renderMazmorra.personajeIndex].animacion"></appAnimacionEfecto>
+                <appAnimacionNumero #animacionNumero [heroe]="heroes" [heroeVida]="heroes.vida" [heroeIndex]="renderMazmorra.personajeIndex"></appAnimacionNumero>
+                <appMarcoClase #marcoClase [heroe]="heroes" [heroeIndex]="renderMazmorra.personajeIndex"></appMarcoClase>
+            </div>
+            <div class="Barras-Vida-Mana-Heroe">
+                <div class="Container-Vida-Heroe">
+                    <div class="Vida-Heroe Texto3" [style.width]="renderMazmorra.heroes[renderMazmorra.personajeIndex].vida+'%'">{{renderMazmorra.heroes[renderMazmorra.personajeIndex].vida}}%</div>
+                    <div class="Escudo" [style.width]="renderMazmorra.heroes[renderMazmorra.personajeIndex].escudo+'%'" [style.marginLeft]="-renderMazmorra.heroes[renderMazmorra.personajeIndex].escudo/2+'%'" [style.left]="renderizarEscudoHeroe(renderMazmorra.personajeIndex)"></div>
+                </div>
+                <div class="Container-Mana-Heroe">
+                    <div class="Mana-Heroe Texto3" [style.width]="renderMazmorra.heroes[renderMazmorra.personajeIndex].recurso+'%'">{{renderMazmorra.heroes[renderMazmorra.personajeIndex].recurso}}%</div>
+                </div>
+                <div class="Buffos-DeBuffos-Heroe">
+                
+                    <div *ngFor="let buff of renderMazmorra.heroes[renderMazmorra.personajeIndex].buff; let j = index" [ngClass]="renderizarBuffosHeroe(renderMazmorra.personajeIndex,j)">{{renderMazmorra.heroes[renderMazmorra.personajeIndex].buff[j].duracion}}</div>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- *************************************************
+            CONTROLES MOVIL
+     ************************************************* -->
+
+    <div *ngIf="appService.dispositivo=='Movil'" id="contenedorControlesMovil">
+        <div class="botonHechizo Texto2" (click)="developerCombateService.routerInterfaz('elegirHechizo')">Hechizo</div>
+        <div class="botonMovimiento Texto2">Movimiento</div>
+        <div (click)="appService.teclaPulsada('p')" class="botonOtros Texto2">Pasar Turno</div>
+    </div>
+
+</div>
+        
+        <!--   ******************* -->
+        <!--   PANTALLAS DE PAUSE  -->
+        <!--   ******************* -->
+        <div class="pause" id="pause">
+            <!-- Pantalla pause video -->
+            <div *ngIf="developerCombateService.mostrarPausa" id="generalPauseContainer">
+                <!-- Pantalla pause video -->
+                <div class="pauseContainer visible blanco" id="pauseVideoContainer">
+                    <img alt="Pause Frame" class="pauseFrame" src="./assets/Pause-Frame-Delirium-Blanco.png"/>
+                    <div class="pauseText Texto2">
+                        <ul>
+                            <li (click)="developerCombateService.togglePause();">Continuar</li>
+                            <li>Configuración</li>
+                            <li (click)="abandonarPartida()">Salir</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Pantalla pause normal -->
+                <div class="pauseContainer oculto blanco" id="pauseNormalContainer">
+                    <img alt="Pause Frame" class="pauseFrame" src="./assets/Pause-Frame-Delirium-Blanco.png"/>
+                    <div class="pauseText Texto2">
+                        <ul>
+                            <li>Continuar</li>
+                            <li>Salir</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Pantalla seguro -->
+            <div class="pauseConfirmar oculto blanco" id="pauseConfirmar">
+                <img alt="Pause Frame" class="confirmarFrame" id="confirmarFrame" src="./assets/Confirmar-Frame.png"/>
+                <div class="confirmarText Texto2">
+
+                    <div id="confirmarTitulo Texto1">Confirmar:</div>
+                    <ul>
+                        <li>No</li>
+                        <li>Si</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        

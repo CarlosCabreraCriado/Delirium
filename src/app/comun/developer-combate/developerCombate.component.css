@@ -1,0 +1,882 @@
+/*________________________________________________________
+ * Archivo CSS - Sass Estilos Pause
+ * --------------------------------------------------------
+ * Proyecto:    Delirium
+ * Versión:   0.1
+ * Titulo:    Sass Estilos Pause
+ * Creado por:    Carlos Cabrera Criado
+ * Fecha:       16/08/17
+ * Descripción:   Estilos de las pantallas de pausa
+ *
+ */
+#pause {
+  color: white; }
+  #pause #generalPauseContainer .pauseContainer {
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100; }
+  #pause #generalPauseContainer .pauseFrame {
+    position: fixed;
+    left: 50%;
+    margin-left: -20%;
+    width: 40%;
+    top: 60px;
+    max-height: 100%; }
+  #pause #generalPauseContainer .pauseText {
+    position: fixed;
+    top: 300px;
+    left: 50%;
+    margin-left: -20%;
+    width: 40%; }
+    #pause #generalPauseContainer .pauseText ul {
+      position: relative;
+      font-size: 100px;
+      text-align: center;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none; }
+      #pause #generalPauseContainer .pauseText ul li {
+        position: relative;
+        font-size: 50px;
+        text-align: center;
+        width: 100%;
+        margin: 10px 0 0 0; }
+  #pause .pauseConfirmar {
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
+    z-index: 101;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); }
+  #pause .confirmarFrame {
+    position: fixed;
+    left: 50%;
+    margin-left: -35%;
+    width: 70%;
+    top: 200px;
+    max-height: 100%; }
+  #pause .confirmarText {
+    position: fixed;
+    left: 50%;
+    margin-left: -35%;
+    width: 70%;
+    top: 280px;
+    font-size: 100px;
+    margin-bottom: 0; }
+    #pause .confirmarText ul {
+      position: relative;
+      font-size: 100px;
+      text-align: center;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none; }
+      #pause .confirmarText ul li {
+        position: relative;
+        font-size: 50px;
+        text-align: center;
+        width: 100%;
+        margin: 10px 0 0 0; }
+  #pause .confirmarText ul {
+    margin-top: 0; }
+
+.oculto {
+  display: none; }
+
+.visible {
+  display: inline; }
+
+.flecha {
+  position: fixed;
+  width: 100px;
+  left: 37%; }
+
+#fondo .Fondo-papiro {
+  position: fixed;
+  width: 100%;
+  min-height: 100%;
+  z-index: 2;
+  opacity: 0.7; }
+#fondo .videoParticulas {
+  position: fixed;
+  min-height: 100%;
+  min-width: 100%;
+  z-index: 1; }
+#fondo .Fondo-Heroes {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  opacity: 0.3;
+  z-index: 3;
+  height: 40vh;
+  margin-bottom: 2vh; }
+
+#usuario{
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  font-size: 50px;
+  z-index: 6;
+}
+
+.Titulo {
+  position: absolute;
+  z-index: 5;
+  width: 100vw;
+  height: 10vh;
+  text-align: center;
+  line-height: 10vh;
+  font-size: 70px; }
+
+.Panel {
+  position: absolute;
+  z-index: 5;
+  font-size: 50px; }
+
+.Panel-Enemigos {
+  position: absolute;
+  top: 10vh;
+  z-index: 5;
+  height: 50vh;
+  width: 100vw; }
+
+.nEnemigos0 .Enemigo {
+  width: 60vw;
+  height: 40vh; }
+
+.nEnemigos1 .Enemigo {
+  width: 60vw;
+  height: 40vh; }
+  .nEnemigos1 .Enemigo-1 {
+    top: 50%;
+    margin-top: -20vh;
+    left: 50%;
+    margin-left: -30vw; }
+
+.nEnemigos2 .Enemigo {
+  width: 30vw;
+  height: 20vh; }
+  .nEnemigos2 .Enemigo-1 {
+    top: 50%;
+    margin-top: -10vh;
+    left: 15vw; }
+  .nEnemigos2 .Enemigo-2 {
+    top: 50%;
+    margin-top: -10vh;
+    left: 55vw; }
+
+.nEnemigos3 .Enemigo {
+  width: 35vw;
+  height: 20vh; }
+  .nEnemigos3 .Enemigo-1 {
+    top: 3vh;
+    left: 10vw; }
+  .nEnemigos3 .Enemigo-2 {
+    top: 3vh;
+    left: 55vw; }
+  .nEnemigos3 .Enemigo-3 {
+    top: 26vh;
+    left: 50vw;
+    margin-left: -17.5vw; }
+
+.nEnemigos4 .Enemigo {
+  width: 35vw;
+  height: 20vh; }
+  .nEnemigos4 .Enemigo-1 {
+    top: 3vh;
+    left: 10vw; }
+  .nEnemigos4 .Enemigo-2 {
+    top: 3vh;
+    left: 55vw; }
+  .nEnemigos4 .Enemigo-3 {
+    top: 26vh;
+    left: 10vw; }
+  .nEnemigos4 .Enemigo-4 {
+    top: 26vh;
+    left: 55vw; }
+
+.nEnemigos5 .Enemigo {
+  width: 30vw;
+  height: 20vh; }
+  .nEnemigos5 .Enemigo-1 {
+    top: 3vh;
+    left: 2.5vw; }
+  .nEnemigos5 .Enemigo-2 {
+    top: 3vh;
+    left: 35vw; }
+  .nEnemigos5 .Enemigo-3 {
+    top: 3vh;
+    left: 67.5vw; }
+  .nEnemigos5 .Enemigo-4 {
+    bottom: 3vh;
+    left: 15vw; }
+  .nEnemigos5 .Enemigo-5 {
+    bottom: 3vh;
+    left: 55vw; }
+
+.nEnemigos6 .Enemigo {
+  width: 30vw;
+  height: 20vh; }
+  .nEnemigos6 .Enemigo-1 {
+    top: 3vh;
+    left: 2.5vw; }
+  .nEnemigos6 .Enemigo-2 {
+    top: 3vh;
+    left: 35vw; }
+  .nEnemigos6 .Enemigo-3 {
+    top: 3vh;
+    left: 67.5vw; }
+  .nEnemigos6 .Enemigo-4 {
+    bottom: 3vh;
+    left: 2.5vw; }
+  .nEnemigos6 .Enemigo-5 {
+    bottom: 3vh;
+    left: 35vw; }
+  .nEnemigos6 .Enemigo-6 {
+    bottom: 3vh;
+    left: 67.5vw; }
+
+.Marco-Enemigo {
+  position: absolute;
+  height: 100%;
+  width: 100%; }
+
+.Imagen-Enemigo {
+  position: absolute;
+  height: 80%;
+  width: 80%;
+  margin: 10%;
+  top: 0;
+  left: 0; }
+
+.Nombre-Enemigo {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 25%;
+  width: 60%; }
+
+.Barras-Vida-Mana-Enemigo {
+  background-image: url("../../assets/Mazmorras/Barras-Vida-Mana-Enemigo.png");
+  position: absolute;
+  background-size: 100% 100%;
+  top: 25%;
+  right: 0px;
+  font-size: 30px;
+  width: 60%;
+  height: 35%;
+  z-index: 5; }
+
+.Container-Mana-Enemigo {
+  position: absolute;
+  height: 20%;
+  left: 3%;
+  top: 67%;
+  width: 94%;
+  padding: 0px; }
+
+.Mana-Enemigo {
+  background-image: url("../../assets/Mazmorras/Mana-Enemigo.png");
+  position: relative;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  color: white;
+  text-align: center;
+  line-height: 0.3; }
+
+.Container-Vida-Enemigo {
+  position: absolute;
+  height: 20%;
+  left: 3%;
+  top: 13%;
+  width: 94%; }
+
+.Vida-Enemigo {
+  background-image: url("../../assets/Mazmorras/Vida-Enemigo.png");
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  color: white;
+  text-align: center;
+  line-height: 0.3;
+  transition-property: width;
+  transition-duration: 1s; }
+
+.Escudo {
+  background-color: white;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  z-index: 5;
+  color: black;
+  text-align: center;
+  line-height: 0.3;
+  opacity: 0.8;
+  transition-property: width left;
+  transition-duration: 1s; }
+
+.Buffos-DeBuffos-Enemigo {
+  position: absolute;
+  right: 0;
+  bottom: 20%;
+  height: 32px;
+  width: 60%;
+  min-height: 32px; }
+
+  .Buffos-DeBuffos-Enemigo .Buffo-Enemigo {
+    position: relative;
+    float: left;
+    vertical-align: top;
+    width: 32px;
+    heigth: 32px;
+    line-height: 32px;
+    color: white;
+    text-align: center;
+    margin: 1px;
+    border: 2px solid green;
+    padding: 0px;
+    background-image: url(../../assets/Buffos/Buff.png);
+    background-size: 1000%;
+    overflow: hidden; }
+  .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo {
+    position: relative;
+    float: left;
+    vertical-align: top;
+    height: 100%;
+    width: 12%;
+    line-height: 0.5;
+    color: white;
+    background-size: 100% 100%;
+    text-align: center;
+    margin: 1px;
+    border: 2px solid red;
+    padding: 0px; }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo1 {
+      background-image: url(../../assets/DeBuffos/DeBuffo1.jpg); }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo2 {
+      background-image: url(../../assets/DeBuffos/DeBuffo2.jpg); }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo3 {
+      background-image: url(../../assets/DeBuffos/DeBuffo3.jpg); }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo4 {
+      background-image: url(../../assets/DeBuffos/DeBuffo1.jpg); }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo5 {
+      background-image: url(../../assets/DeBuffos/DeBuffo2.jpg); }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo6 {
+      background-image: url(../../assets/DeBuffos/DeBuffo3.jpg); }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo7 {
+      background-image: url(../../assets/DeBuffos/DeBuffo1.jpg); }
+    .Buffos-DeBuffos-Enemigo .DeBuffo-Enemigo.DeBuffo8 {
+      background-image: url(../../assets/DeBuffos/DeBuffo2.jpg); }
+
+.Barra-Heroes {
+  width: 100vw;
+  height: 20vh;
+  top: 80vh; }
+  .Barra-Heroes .Heroe {
+    width: 30vw;
+    height: 18vh;
+    top: 1vh; }
+    .Barra-Heroes .Heroe-1 {
+      left: 2.5vw; }
+    .Barra-Heroes .Heroe-2 {
+      left: 35vw; }
+    .Barra-Heroes .Heroe-3 {
+      left: 67.5vw; }
+
+.nHeroes4 .Heroe {
+  width: 25vw;
+  height: 18vh;
+  top: 1vh; }
+  .nHeroes4 .Heroe-1 {
+    left: 0; }
+  .nHeroes4 .Heroe-2 {
+    left: 25vw; }
+  .nHeroes4 .Heroe-3 {
+    left: 50vw; }
+  .nHeroes4 .Heroe-4 {
+    left: 75vw; }
+
+.nHeroes5 .Heroe {
+  width: 20vw;
+  height: 18vh;
+  top: 1vh; }
+  .nHeroes5 .Heroe-1 {
+    left: 0; }
+  .nHeroes5 .Heroe-2 {
+    left: 20vw; }
+  .nHeroes5 .Heroe-3 {
+    left: 40vw; }
+  .nHeroes5 .Heroe-4 {
+    left: 60vw; }
+  .nHeroes5 .Heroe-5 {
+    left: 80vw; }
+
+.nHeroes6 .Heroe {
+  width: 16.6vw;
+  height: 18vh;
+  top: 1vh; }
+  .nHeroes6 .Heroe-1 {
+    left: 0.2vw; }
+  .nHeroes6 .Heroe-2 {
+    left: 16.8vw; }
+  .nHeroes6 .Heroe-3 {
+    left: 33.4vw; }
+  .nHeroes6 .Heroe-4 {
+    left: 50vw; }
+  .nHeroes6 .Heroe-5 {
+    left: 66.6vw; }
+  .nHeroes6 .Heroe-6 {
+    left: 83.2vw; }
+
+.nHeroes7 .Heroe {
+  width: 14.2vw;
+  height: 18vh;
+  top: 1vh; }
+  .nHeroes7 .Heroe-1 {
+    left: 0.3vw; }
+  .nHeroes7 .Heroe-2 {
+    left: 14.5vw; }
+  .nHeroes7 .Heroe-3 {
+    left: 28.7vw; }
+  .nHeroes7 .Heroe-4 {
+    left: 42.9vw; }
+  .nHeroes7 .Heroe-5 {
+    left: 57.1vw; }
+  .nHeroes7 .Heroe-6 {
+    left: 71.3vw; }
+  .nHeroes7 .Heroe-7 {
+    left: 85.5vw; }
+
+.Marco-Heroe {
+  position: absolute;
+  width: 100%;
+  height: 100%; }
+
+.Imagen-Heroe {
+
+  position: absolute;
+  height: 80%;
+  width: 80%;
+  margin: 10%;
+  top: 0;
+  left: 0; }
+
+.Nombre-Heroe {
+  position: absolute;
+  display: inline-block;
+  vertical-align: top;
+  line-height: 1.5;
+  font-size: 40px;
+  width: 50%;
+  left: 40%;
+  text-align: center; }
+
+.Barras-Vida-Mana-Heroe {
+  background-image: url("../../assets/Mazmorras/Barras-Vida-Mana-Heroes.png");
+  position: absolute;
+  background-size: 100% 100%;
+  top: 25%;
+  right: 3%;
+  font-size: 30px;
+  width: 60%;
+  height: 35%;
+  z-index: 5; }
+
+.Container-Mana-Heroe {
+  position: absolute;
+  height: 20%;
+  left: 3%;
+  top: 67%;
+  width: 94%;
+  padding: 0px; }
+
+.Mana-Heroe {
+  background-image: url("../../assets/Mazmorras/Mana-Heroe.png");
+  position: relative;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  color: white;
+  text-align: center;
+  line-height: 0.3; }
+
+.Container-Vida-Heroe {
+  position: absolute;
+  height: 20%;
+  left: 3%;
+  top: 13%;
+  width: 94%; }
+
+.Vida-Heroe {
+  background-image: url("../../assets/Mazmorras/Vida-Heroe.png");
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  color: white;
+  text-align: center;
+  line-height: 0.3;
+  transition-property: width;
+  transition-duration: 1s; }
+
+.Buffos-DeBuffos-Heroe {
+  position: absolute;
+  right: left;
+  top: 100%;
+  height: 30%;
+  width: 100%; }
+  .Buffos-DeBuffos-Heroe .Buffo-Heroe {
+    position: relative;
+    float: left;
+    vertical-align: top;
+    height: 100%;
+    width: 12%;
+    line-height: 0.5;
+    color: white;
+    background-size: 100% 100%;
+    text-align: center;
+    margin: 1px;
+    border: 2px solid green;
+    padding: 0px;
+    background-image: url(../../assets/Buffos/Buff.png); }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo1 {
+      background-position: 100px; }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo2 {
+      background-position: 200px; }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo3 {
+      background-image: url(../../assets/Buffos/Buffo3.jpg); }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo4 {
+      background-image: url(../../assets/Buffos/Buffo1.jpg); }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo5 {
+      background-image: url(../../assets/Buffos/Buffo2.jpg); }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo6 {
+      background-image: url(../../assets/Buffos/Buffo3.jpg); }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo7 {
+      background-image: url(../../assets/Buffos/Buffo1.jpg); }
+    .Buffos-DeBuffos-Heroe .Buffo-Heroe.Buffo8 {
+      background-image: url(../../assets/Buffos/Buffo2.jpg); }
+  .Buffos-DeBuffos-Heroe .DeBuffo-Heroe {
+    position: relative;
+    float: left;
+    vertical-align: top;
+    height: 100%;
+    width: 12%;
+    line-height: 0.5;
+    color: white;
+    background-size: 100% 100%;
+    text-align: center;
+    margin: 1px;
+    border: 2px solid red;
+    padding: 0px; }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo1 {
+      background-image: url(../../assets/DeBuffos/DeBuffo1.jpg); }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo2 {
+      background-image: url(../../assets/DeBuffos/DeBuffo2.jpg); }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo3 {
+      background-image: url(../../assets/DeBuffos/DeBuffo3.jpg); }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo4 {
+      background-image: url(../../assets/DeBuffos/DeBuffo1.jpg); }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo5 {
+      background-image: url(../../assets/DeBuffos/DeBuffo2.jpg); }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo6 {
+      background-image: url(../../assets/DeBuffos/DeBuffo3.jpg); }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo7 {
+      background-image: url(../../assets/DeBuffos/DeBuffo1.jpg); }
+    .Buffos-DeBuffos-Heroe .DeBuffo-Heroe.DeBuffo8 {
+      background-image: url(../../assets/DeBuffos/DeBuffo2.jpg); }
+
+#Barra-Mensajes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 100px;
+  color: white;
+  line-height: 150px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 1s }
+
+#Barra-Mensajes.activo {
+  animation: aparecerBarraMensajes;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+  animation-duration: 1s; }
+
+@keyframes aparecerBarraMensajes {
+  0% {
+    opacity: 0; }
+  25% {
+    opacity: 1; }
+  100% {
+    opacity: 1; } }
+.Barra-Accion {
+  width: 100vw;
+  height: 20vh;
+  top: 60vh; }
+  .Barra-Accion .Accion-Turno-Heroe {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    left: 10%; }
+    .Barra-Accion .Accion-Turno-Heroe .Stats {
+      position: absolute;
+      height: 100%;
+      width: 40%; }
+      .Barra-Accion .Accion-Turno-Heroe .Stats .Imagen-Accion {
+        position: absolute;
+        height: 100%;
+        width: 15vw; }
+      .Barra-Accion .Accion-Turno-Heroe .Stats .Texto-Nombre {
+        position: absolute;
+        width: 30vw;
+        left: 15vw;
+        height: 3vh;
+        font-size: 60px; }
+      .Barra-Accion .Accion-Turno-Heroe .Stats .Barras-Vida-Mana-Heroe-Accion {
+        background-image: url("../../assets/Mazmorras/Barras-Vida-Mana-Heroes.png");
+        position: absolute;
+        background-size: 100% 100%;
+        top: 6vh;
+        left: 15vw;
+        font-size: 30px;
+        width: 50%;
+        height: 40%;
+        z-index: 5; }
+    .Barra-Accion .Accion-Turno-Heroe .Hechizos {
+      position: absolute;
+      height: 100%;
+      width: 40%;
+      left: 40%; }
+      .Barra-Accion .Accion-Turno-Heroe .Hechizos .Texto-Hechizos {
+        position: absolute;
+        font-size: 60px;
+        width: 100%;
+        text-align: center; }
+      .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe {
+        position: absolute;
+        top: 60px;
+        height: 20%;
+        width: 100%; }
+        .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe {
+          position: relative;
+          float: left;
+          vertical-align: top;
+          height: 100%;
+          width: 7%;
+          line-height: 0.5;
+          color: white;
+          background-size: 100% 100%;
+          text-align: center;
+          margin: 3px;
+          padding: 0px; }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo1 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo2 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo3 {
+            background-image: url(../../assets/Buffos/Buffo3.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo4 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo5 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo6 {
+            background-image: url(../../assets/Buffos/Buffo3.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo7 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo8 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo9 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo10 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo11 {
+            background-image: url(../../assets/Buffos/Buffo3.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo12 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo13 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo14 {
+            background-image: url(../../assets/Buffos/Buffo3.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo15 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo16 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo17 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo18 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo19 {
+            background-image: url(../../assets/Buffos/Buffo3.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo20 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo21 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo22 {
+            background-image: url(../../assets/Buffos/Buffo3.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo23 {
+            background-image: url(../../assets/Buffos/Buffo1.jpg); }
+          .Barra-Accion .Accion-Turno-Heroe .Hechizos .Hechizos-Accion-Heroe .Hechizo-Heroe.Hechizo24 {
+            background-image: url(../../assets/Buffos/Buffo2.jpg); }
+    .Barra-Accion .Accion-Turno-Heroe .Tiempo {
+      position: absolute;
+      height: 100%;
+      left: 80%;
+      width: 20%; }
+      .Barra-Accion .Accion-Turno-Heroe .Tiempo .Texto-Tiempo {
+        position: absolute;
+        font-size: 60px;
+        width: 100%;
+        text-align: center; }
+
+.Turno {
+  background: lightgray;
+  animation: highlightTurno;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+.Offline {
+  background-color: gold;
+   }
+
+@keyframes highlightTurno {
+  0% {
+    background: lightgray; }
+  100% {
+    background: rgba(211, 211, 211, 0); } }
+
+.ObjetivoEnemigo {
+  border-color: red;
+  border-style: ridge;
+  animation: highlightObjetivoEnemigo;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+.ObjetivoAuxiliarEnemigo {
+  border-color: orange;
+  border-style: dashed;
+  animation: highlightObjetivoEnemigoAuxiliar;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+.ObjetivoAuxiliarEnemigo.ObjetivoEnemigo {
+  border-color: orange red;
+  border-style: dashed ridge;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+.ObjetivoAliado {
+  border-color: green;
+  border-style: ridge;
+  animation: highlightObjetivoAliado;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+.ObjetivoAuxiliarAliado {
+  border-color: green;
+  border-style: dashed;
+  animation: highlightObjetivoAliado;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+.ObjetivoAuxiliarAliado.ObjetivoAliado {
+  border-color: lightblue green;
+  border-style: dashed ridge;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+
+
+@keyframes highlightObjetivoEnemigo {
+  0% {
+    border-color: red; }
+  100% {
+    border-color: rgba(255, 0, 0, 0.2); } }
+
+@keyframes highlightObjetivoAliado {
+  0% {
+    border-color: green; }
+  100% {
+    border-color: rgba(0, 255, 0, 0.2); } }
+    
+
+.animacionNumero {
+  position: absolute;
+  font-size: 100px;
+  background-size: 100%;
+  top: -50%;
+  left: 40%;
+  width: 100%;
+  padding-top: 37.62%;
+  z-index: 10;
+  opacity: 0; }
+
+.animacionNumero.activo {
+  animation: animacionNumero;
+  animation-duration: 1.5s;
+  animation-fill-mode: none;
+  opacity: 0; }
+
+@keyframes animacionNumero {
+  0% {
+    opacity: 1; }
+  50% {
+    top: -110%;
+    opacity: 1; }
+  100% {
+    top: -110%;
+    opacity: 0; } }
+
+.mostrar{
+  opacity: 1 !important;
+}
+
+.ocultar{
+  opacity: 0 !important;
+}
+
+.contenedorMarcoEnemigo{
+  width: 40%;
+  padding-bottom: 40%;
+  margin: 0;
+  position: relative;
+}
+
+.contenedorMarcoHeroe{
+  width: 40%;
+  top: 7%;
+  padding-bottom: 40%;
+  margin: 0;
+  position: relative;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

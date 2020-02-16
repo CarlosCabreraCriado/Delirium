@@ -1,0 +1,95 @@
+{
+  "name": "Delirium",
+  "main": "main.js",
+  "version": "0.2.2",
+  "description": "Juego de rol de mesa",
+  "author": "Carlos Cabrera",
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "electron": "electron .",
+    "dist": "electron-builder",
+    "dist-mac": "electron-packager . --platform=darwin",
+    "electron-build": "ng build --prod && electron .",
+    "electron-test": "ng serve && electron ."
+  },
+  "dependencies": {
+    "@angular/animations": "~8.1.2",
+    "@angular/common": "~8.1.2",
+    "@angular/compiler": "~8.1.2",
+    "@angular/core": "~8.1.2",
+    "@angular/forms": "~8.1.2",
+    "@angular/platform-browser": "~8.1.2",
+    "@angular/platform-browser-dynamic": "~8.1.2",
+    "@angular/router": "~8.1.2",
+    "@types/electron": "^1.6.10",
+    "@types/nedb": "^1.8.9",
+    "@types/socket.io-client": "^1.4.32",
+    "core-js": "^2.6.9",
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.7.1",
+    "nedb": "^1.8.0",
+    "ngx-electron": "^1.0.4",
+    "ngx-socket-io": "~3.0.1",
+    "node-sass": "^4.13.1",
+    "path": "^0.12.7",
+    "rxjs": "~6.5.1",
+    "socket.io-client": "^2.3.0",
+    "zone.js": "~0.9.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "@angular-devkit/architect": "~0.801.2",
+    "@angular-devkit/build-angular": "^0.803.23",
+    "@angular-devkit/core": "~8.1.2",
+    "@angular-devkit/schematics": "~8.1.2",
+    "@angular/cli": "~8.1.2",
+    "@angular/compiler-cli": "~8.1.2",
+    "@angular/language-service": "~7.0.0",
+    "@types/jasmine": "~2.8.8",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^8.10.54",
+    "codelyzer": "^5.0.0",
+    "electron": "^3.1.13",
+    "electron-builder": "^20.44.4",
+    "electron-packager": "^12.2.0",
+    "jasmine-core": "~2.99.1",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~3.0.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "^2.0.6",
+    "karma-jasmine": "~1.1.2",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "protractor": "~5.4.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~5.11.0",
+    "typescript": "~3.4.3"
+  },
+  "build": {
+    "appId": "Delirium",
+    "mac": {
+      "category": "Juego.RPG",
+      "publish": {
+        "provider": "s3",
+        "bucket": "carloscabreracriado"
+      }
+    },
+    "directories": {
+      "app": "./"
+    }
+  },
+  "files": [
+    "*.js",
+    "delirium",
+    "build",
+    "node_modules"
+  ],
+  "postinstall": "electron-builder install-app-deps"
+}

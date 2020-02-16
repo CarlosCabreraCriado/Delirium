@@ -1,0 +1,51 @@
+
+
+<!--   ******************* -->
+<!--     DISEÑO DE FONDO   -->
+<!--   ******************* -->
+
+<!-- Diseño Fondo -->
+
+<div class="fondo" id="fondo">
+    <img alt="Fondo-papiro" class="Fondo-papiro" src="./assets/papiro.jpg"/>
+
+    <!-- Video Fondo -->
+    <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/papiro.jpg">
+        <source src="./assets/videos/particulas.mp4" type="video/mp4"/>
+    </video>
+    
+</div>
+
+<img src="assets/papiro.jpg" class="Fondo-papiro" alt="Fondo-papiro">
+
+<!--   ******************* -->
+<!--     DISEÑO DE FONDO   -->
+<!--   ******************* -->
+
+<!-- Pantalla de Cargar Partida --> 
+<div id="ContenedorContenido" class="ContenedorContenido visible">
+
+  <div class="Titulo Texto1">Selecciona a tu heroe</div>
+  <img id="flechaRetroceso" class="flechaRetroceso" alt="flecha" src="assets/Flecha.svg" (click)="retroceder()">
+  <div id="usuario" class="Texto2">{{validacion.nombre}}</div>
+
+  <div *ngIf="pantalla=='seleccionHeroe'" class="contenedorHeroes">
+    <div *ngFor="let heroe of appService.perfil.heroes; let i = index" class="PanelHeroes" (click)="seleccionarHeroe(i)">
+      <div class="panelHeroeNombre Texto2">{{heroe.nombre}}</div>
+      <div class="panelHeroeDescripcion">
+        <div class="panelHeroeClase Texto3">{{heroe.clase}}</div>
+        <div class="panelHeroeEspecializacion Texto3">{{heroe.especializacion}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="pantalla=='buscarPartida'" class="contenedorPartidas">
+    <div *ngFor="let sala of salas; let i = index" class="PanelPartidas" (click)="seleccionarSala(i)">
+      <div class="panelPartidaNombre Texto2">{{sala.nombre}}</div>
+      <div class="panelPartidaDescripcion Texto2">{{sala.clase}}</div>
+    </div>
+  </div>
+
+
+</div>
+ 

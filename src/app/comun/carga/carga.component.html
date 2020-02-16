@@ -1,0 +1,10 @@
+
+
+<div *ngIf="mostrarPantallaCarga" id="PantallaCarga" [style.opacity]="opacidad">
+	<div class="tituloCarga Texto1">Cargando...</div>
+	<div class="subtituloCarga Texto2">{{subtituloCarga}}</div>
+	<div class="contenedorBarraCarga">
+		<div class="barraCarga" [style.width]="progreso" ></div>
+	</div>
+	
+</div>

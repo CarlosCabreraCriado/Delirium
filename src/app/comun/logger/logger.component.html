@@ -1,0 +1,12 @@
+
+
+<div *ngIf="loggerService.mostrarLogger"  class="contenedorLogger">
+	<div #contenedorMensajes *ngIf="loggerService.mostrarLogger" class="contenedorMensajes">
+		<ul *ngFor="let mensaje of loggerService.logger; let i = index" class="mensajeLogger" [style.color]="loggerService.loggerColor[i]">{{mensaje}}</ul>
+	</div>
+
+	<div *ngIf="loggerService.mostrarLogger" class="contenedorComandos">
+ 	{{loggerService.comando}}<div style="display: inline-block;">_</div>
+	</div>
+
+</div>

@@ -1,0 +1,77 @@
+
+<div class="contenedorMarcoClase" [ngClass]="renderIndividual()">
+	<div class="recursoEspecial Texto2" [ngClass]="renderIndividual()">
+
+		<!-- *************************************************
+            			Marco de GUERRERO
+     		************************************************* -->
+		<div *ngIf="heroeClase=='GUERRERO'">
+			
+		</div>
+
+		<!-- *************************************************
+            			Marco de CRUZADO
+     		************************************************* -->
+		<div *ngIf="heroeClase=='CRUZADO'">
+			<div class="contenedorEnergiaCaballero">
+				<div class="energiaCaballero" [style.width]="heroe.recursoEspecial+'%'">{{heroe.recursoEspecial+'%'}}</div>
+			</div>
+		</div>
+
+		<!-- *************************************************
+            			Marco de INGENIERO
+     		************************************************* -->
+		<div *ngIf="heroeClase=='INGENIERO'">
+			Ingeniero
+		</div>
+
+		<!-- *************************************************
+            			Marco de CAZADOR
+     		************************************************* -->
+		<div *ngIf="heroeClase=='CAZADOR'">
+			Cazador
+		</div>
+
+		<!-- *************************************************
+            			Marco de HECHICERO
+     		************************************************* -->
+		<div  *ngIf="heroeClase=='HECHICERO'">
+			<img *ngIf="heroe.recursoEspecial > 0" class="sobrecargaLlena" src="./assets/General/sobrecarga.png">
+			<img *ngIf="heroe.recursoEspecial > 1" class="sobrecargaLlena" src="./assets/General/sobrecarga.png">
+			<img *ngIf="heroe.recursoEspecial > 2"class="sobrecargaLlena" src="./assets/General/sobrecarga.png">
+		</div>
+
+		<!-- *************************************************
+            			Marco de MAGO_DE_SANGRE
+     		************************************************* -->
+		<div *ngIf="heroeClase=='MAGO_DE_SANGRE'" class="centrado">
+			
+			<img class="vorticeDolor" src="./assets/Efectos/Vortice-Brujo.gif">
+			<div class="contadorEsenciaDolor">{{heroe.recursoEspecial}}</div>
+
+		</div>
+
+		<!-- *************************************************
+            			Marco de ILUMINADO
+     		************************************************* -->
+		<div *ngIf="heroeClase=='ILUMINADO'">
+			Iluminado
+		</div>
+
+		<!-- *************************************************
+            			Marco de CHRONOMANTE
+     		************************************************* -->
+		<div *ngIf="heroeClase=='CHRONOMANTE'">
+			Chronomante
+		</div>
+
+	</div>
+</div>
+
+
+
+
+
+
+
+

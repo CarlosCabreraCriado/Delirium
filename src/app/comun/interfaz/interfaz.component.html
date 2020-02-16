@@ -1,0 +1,46 @@
+
+
+
+<div *ngIf="interfazService.mostrarInterfaz" id="contenedorInterfaz">
+
+	<!-- *************************************************
+				Interfaz HECHIZOS
+		 ************************************************* -->
+
+	<div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
+		<div class="tituloInterfaz Texto1">Seleccione un hechizo:  </div>
+		<div class="contenedorHechizos">
+			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(1)">1</div>
+			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(2)">2</div>
+			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(3)">3</div>
+			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(4)">4</div>
+			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(5)">U</div>
+		</div>
+		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
+
+	</div>
+
+	<!-- *************************************************
+				Interfaz Objetivo Enemigo
+		 ************************************************* -->
+
+	<div  id="contenedorInterfazObjetivoEnemigo" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo'">
+		<div class="tituloInterfaz Texto1">Seleccone el objetivo:  </div>
+		
+		<div class="botonLanzar Texto2" (click)="interfazService.lanzarHechizo()">Lanzar</div>
+		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
+	</div>
+
+	<!-- *************************************************
+				Interfaz Objetivo Aliado
+		 ************************************************* -->
+
+	<div  id="contenedorInterfazObjetivoAliado" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
+		<div class="tituloInterfaz Texto1">Seleccone el objetivo:  </div>
+		
+		<div class="botonCancelar Texto2" (click)="interfazService.lanzarHechizo()">Lanzar</div>
+		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
+	</div>
+
+</div>
+ 

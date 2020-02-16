@@ -1,0 +1,19 @@
+
+
+<div *ngIf="eventosService.mostrarEvento"  class="contenedorEventos">
+
+	<!--***********************************
+			Evento Tipo - Dialogo
+		*********************************** -->
+
+	<div *ngIf="eventosService.codigo==1" class="contenedorEventoDialogo">
+		<img class="imagenDialogo1" src="./assets/Personajes/{{eventosService.personaje1}}.png">
+		<img class="imagenDialogo2" src="./assets/Personajes/{{eventosService.personaje2}}.png">
+
+		<div class="contenedorDialogo" *ngFor="let dialogo of eventosService.dialogo; let i = index">
+			<ul class="nombreInterlocutor">{{dialogo.nombreInterlocutor}}</ul>
+			<ul class="dialogoInterlocutor">{{dialogo.dialogoInterlocutor}}</ul>
+		</div>
+	</div>
+
+</div>

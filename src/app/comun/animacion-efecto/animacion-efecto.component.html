@@ -1,0 +1,3 @@
+
+
+<div  [@animacionEfecto]="{value: mostrarAnimacion, params: {tiempoEfectoParam: tiempoEfecto, stepsParam: stepsEfecto}}"  (@animacionEfecto.done)="resetAnimacionNumero();" class="animacionEfecto activo oculto" [ngClass]="renderIndividual()" [ngStyle]="{'background-image':'url(./assets/Efectos/' + nombreEfecto + '.png)'}"></div>

@@ -1,0 +1,238 @@
+
+
+.video-fondo
+  position: fixed
+  min-height: 100%
+  min-width: 100%
+  z-index: 1
+  
+.Fondo-papiro
+  position: fixed
+  width: 100%
+  min-height: 100%
+  z-index: 2
+  opacity: 0.7
+  
+
+.ContenedorInicio
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  min-height: 100%
+  z-index: 3
+
+
+  
+.ContenedorCarga
+  position: absolute
+  width: 100%
+  min-height: 100%
+  z-index: 4
+  animation-delay: 2s
+  transition: linear 2s
+
+.usuario
+  position: absolute
+  right: 5%
+  top: 5%
+  z-index: 6
+
+#error
+  color: red
+
+#contenedorIconos
+  position: absolute
+  bottom: 3%
+  right: 3%
+  height: 5vh
+  .icono
+    position: relative
+    height: 100%
+    margin: 10px
+
+
+#contenedorLogo
+  position: relative
+  top: 15%
+  margin-top: 10%
+  width: 100%
+  height: 40%
+  @media only screen and (min-width: 768px) //Pantallas mas de 600px
+    margin-top: 15%
+
+.Logo
+  position: relative
+  margin-left: auto
+  margin-right: auto
+  display: block
+  max-width: 60%
+  max-height: 100%
+  animation-delay: 0.5s
+
+.Delirium
+  position: fixed
+  width: 50%
+  top: 10%
+  left: 50%
+  margin-left: -25%
+  animation-delay: 0.5s
+  @media only screen and (min-width: 768px) //Pantallas mas de 600px
+    //font-size: 150px
+  
+  
+.Text-container
+  position: relative
+  top: 40%
+  width: 70%
+  left: 50%
+  margin-left: -35%
+  padding: 0
+  z-index: 3
+
+ul
+  position: relative
+  top: 10%
+  text-align: center
+  width: 100% 
+  margin: 20px 0 0 0
+  padding: 0
+  list-style: none
+  @media only screen and (min-width: 768px) //Pantallas mas de 600px
+    margin: 70px 0 0 0
+
+  
+li
+  position: relative
+  text-align: center
+  left: 25%
+  margin-left: -50%
+  width: 50%
+  margin: 5px 0 0 0
+  @media only screen and (min-width: 768px) //Pantallas mas de 600px
+    margin: 10px 0 0 0
+
+
+#formularioClave
+  position: absolute
+  text-align: center
+  width: 100%
+  left: 50%
+  margin-left: -50%
+  top: 0
+
+
+.inputClave
+  position: relative
+  width: 30%
+  background: none
+  border-style: none
+  border-width: 2px
+  border-bottom: solid 1px
+
+
+#botonSubmit
+  position: relative
+  width: 150px
+  height: 45px
+  line-height: 45px
+  left: 50%
+  text-align: center
+  margin-left: -75px
+  margin-top: 5px
+  font-family: inherit
+  display: block
+  background: none
+  border: none
+  //border: solid 2px black
+
+#botonAcceso
+  
+  width: 350px
+  margin-left: -100px
+  top: -25px
+  position: relative
+
+#flechaRetroceso
+  position: absolute
+  top: 5%
+  width: 10%
+  left: 5%
+  transform: rotate(180deg) 
+  z-index: 6
+
+#contenedorVerificacion
+  position: relative
+  width: 100%
+  margin-top: 0%
+  top: 30%
+  @media only screen and (min-width: 768px) //Pantallas mas de 600px
+    margin-top: 5%
+    top: 45%
+
+.enviarFormulario
+  position: relative
+  width: 30%
+  text-shadow: none
+
+
+#clave
+  position: relative
+  width: 125px
+  background-color: rgba(255,255,255,0.1)
+
+  
+.flecha
+  display: inline-block
+  position: relative
+  bottom: -10px
+  height: 50px
+
+
+
+.lds-dual-ring 
+  position: relative
+  display: inline-block
+  width: 64px
+  height: 64px
+  left: 50%
+  margin-left: -23px
+  top: 50%
+  margin-top: -23px
+
+.lds-dual-ring:after 
+  content: " "
+  position: absolute
+  display: block
+  width: 46px
+  height: 46px
+  margin: 1px
+  border-radius: 50%
+  border: 5px solid #000
+  border-color: #000 transparent #000 transparent
+  animation: lds-dual-ring 1.2s linear infinite
+
+@keyframes lds-dual-ring 
+  0% 
+    transform: rotate(0deg)
+  
+  100% 
+    transform: rotate(360deg)
+
+
+.oculto
+  display: none
+
+.visible
+  display: block
+
+
+
+
+
+
+
+  
+
+  
+  

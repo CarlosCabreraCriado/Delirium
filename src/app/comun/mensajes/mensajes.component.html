@@ -1,0 +1,8 @@
+
+
+<div *ngIf="mostrarMensaje" id="PantallaMensaje" [style.opacity]="opacidad">
+	<div class="contenedorMensaje">
+		<div class="mensajeTexto Texto2">{{mensaje}}</div>
+		<div class="mensajeOpcion Texto2" (click)="cerrarMensaje()">OK</div>	
+	</div>
+</div>
