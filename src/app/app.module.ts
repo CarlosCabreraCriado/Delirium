@@ -34,8 +34,8 @@ import { BugLogComponent } from './comun/bug-log/bug-log.component';
 import { AjustesComponent } from './comun/ajustes/ajustes.component';
 import { DeveloperToolComponent } from './comun/developer-tool/developer-tool.component';
 
-const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
-//const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
+//const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
+const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
 
 //Declaración del módulo:
 @NgModule({
