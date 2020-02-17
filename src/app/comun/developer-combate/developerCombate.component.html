@@ -7,7 +7,6 @@
     Creado por:     Carlos Cabrera Criado
     Fecha:          16/08/17
     Descripción:    Archivo HTML de Mazmorra principal
-
     -->
 
     <!--   ******************* -->
@@ -15,9 +14,9 @@
         <!--   ******************* -->
         <!-- Diseño Fondo -->
         <div class="fondo" id="fondo">
-            <img alt="Fondo-papiro" class="Fondo-papiro" src="./assets/papiro.jpg"/>
+            <img alt="Fondo-papiro" class="Fondo-papiro" src="./assets/General/papiro.jpg"/>
                 <!-- Video Fondo -->
-                <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/papiro.jpg">
+                <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/General/papiro.jpg">
                     <source src="./assets/videos/particulas.mp4" type="video/mp4"/>
                 </video>
             
@@ -101,7 +100,7 @@
 
     <div class="Accion-Turno-Heroe">
         <div class="Stats">
-            <img src="./assets/{{renderMazmorra.render.barraAccion.claseTurno.split(' ').join('_')}}.png" class="Imagen-Accion" />
+            <img src="./assets/Clases/{{renderMazmorra.render.barraAccion.claseTurno.split(' ').join('_')}}.png" class="Imagen-Accion" />
             <div class="Texto-Nombre Texto2">{{renderMazmorra.render.barraAccion.nombreTurno}}</div>
             <div class="Barras-Vida-Mana-Heroe-Accion">
                 <div class="Container-Vida-Heroe">
@@ -253,7 +252,7 @@
             <div *ngIf="developerCombateService.mostrarPausa" id="generalPauseContainer">
                 <!-- Pantalla pause video -->
                 <div class="pauseContainer visible blanco" id="pauseVideoContainer">
-                    <img alt="Pause Frame" class="pauseFrame" src="./assets/Pause-Frame-Delirium-Blanco.png"/>
+                    <img alt="Pause Frame" class="pauseFrame" src="./assets/General/Pause-Frame-Delirium-Blanco.png"/>
                     <div class="pauseText Texto2">
                         <ul>
                             <li (click)="developerCombateService.togglePause();">Continuar</li>
@@ -264,7 +263,7 @@
                 </div>
                 <!-- Pantalla pause normal -->
                 <div class="pauseContainer oculto blanco" id="pauseNormalContainer">
-                    <img alt="Pause Frame" class="pauseFrame" src="./assets/Pause-Frame-Delirium-Blanco.png"/>
+                    <img alt="Pause Frame" class="pauseFrame" src="./assets/General/Pause-Frame-Delirium-Blanco.png"/>
                     <div class="pauseText Texto2">
                         <ul>
                             <li>Continuar</li>
@@ -275,7 +274,7 @@
             </div>
             <!-- Pantalla seguro -->
             <div class="pauseConfirmar oculto blanco" id="pauseConfirmar">
-                <img alt="Pause Frame" class="confirmarFrame" id="confirmarFrame" src="./assets/Confirmar-Frame.png"/>
+                <img alt="Pause Frame" class="confirmarFrame" id="confirmarFrame" src="./assets/General/Confirmar-Frame.png"/>
                 <div class="confirmarText Texto2">
 
                     <div id="confirmarTitulo Texto1">Confirmar:</div>

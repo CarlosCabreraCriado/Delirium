@@ -7,16 +7,16 @@
 <!-- Diseño Fondo -->
 
 <div class="fondo" id="fondo">
-    <img alt="Fondo-papiro" class="Fondo-papiro" src="./assets/papiro.jpg"/>
+    <img alt="Fondo-papiro" class="Fondo-papiro" src="./assets/General/papiro.jpg"/>
 
     <!-- Video Fondo -->
-    <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/papiro.jpg">
+    <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/General/papiro.jpg">
         <source src="./assets/videos/particulas.mp4" type="video/mp4"/>
     </video>
     
 </div>
 
-<img src="assets/papiro.jpg" class="Fondo-papiro" alt="Fondo-papiro">
+<img src="assets/General/papiro.jpg" class="Fondo-papiro" alt="Fondo-papiro">
 
 <!--   ******************* -->
 <!--     DISEÑO DE FONDO   -->
@@ -26,7 +26,7 @@
 <div id="ContenedorContenido" class="ContenedorContenido visible">
 
   <div class="Titulo Texto1">Sala: {{sala.nombre}}</div>
-  <img id="flechaRetroceso" class="flechaRetroceso" alt="flecha" src="assets/Flecha.svg" (click)="retroceder()">
+  <img id="flechaRetroceso" class="flechaRetroceso" alt="flecha" src="assets/General/Flecha.svg" (click)="retroceder()">
   <div id="usuario" class="Texto2">{{appService.validacion.nombre}}</div>
 
   <div *ngIf="pantalla=='elegirTipoJugador'" class="panelAddJugador">
