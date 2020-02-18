@@ -24,6 +24,8 @@ export class HeroesComponent implements OnInit{
 	private validacion: any;
 	public usuario: string = "Sesión no iniciada.";
 	private perfil: any;
+	private pantalla = "seleccionHeroe"
+	private heroeSeleccionado: any;
 
 	public partidasCargadas: any=[
 	{
@@ -107,7 +109,12 @@ export class HeroesComponent implements OnInit{
 
 	seleccionarHeroe(index):void{
 		console.log("Heroe seleccionado: ");
-		console.log(this.appService.perfil.heroes[index]);
+		this.pantalla = "infoHeroe";
+
+		//Formateo Mayusculas y espacios:
+		this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.replace(/_/g," ");
+		this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.charAt(0).toUpperCase() + this.heroeSeleccionado.clase.slice(1).toLowerCase();
+		console.log(this.heroeSeleccionado.nombre - this.heroeSeleccionado.clase);
 	}
 
 

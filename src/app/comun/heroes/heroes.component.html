@@ -30,13 +30,22 @@
   <img id="flechaRetroceso" class="flechaRetroceso" alt="flecha" src="assets/General/Flecha.svg" (click)="retroceder()">
   <div id="usuario" class="Texto2">{{validacion.nombre}}</div>
 
-  <div class="contenedorPartidas">
+  <div *ngIf="pantalla=='seleccionHeroe'" class="contenedorHeroes">
     <div *ngFor="let heroe of appService.perfil.heroes; let i = index" class="PanelHeroes" (click)="seleccionarHeroe(i)">
-      <div class="panelPartidaNombre Texto2">{{heroe.nombre}}</div>
-      <div class="panelPartidaDescripcion">
-        <div class="panelPartidaClase Texto3">{{heroe.clase}}</div>
-        <div class="panelPartidaEspecializacion Texto3">{{heroe.especializacion}}</div>
+      <div class="panelPartidaImagen Texto2">
+        <img src="./assets/Clases/{{heroe.clase.charAt(0)+ heroe.clase.toLowerCase().slice(1)}}.png" class= "ImagenPersonaje" alt="Imagen-Personaje"/>
       </div>
+      <div class="panelPartidaDescripcion">
+        <div class="panelPartidaNombre Texto2">{{heroe.nombre}}</div>
+        <div class="panelPartidaPersonaje Texto3">{{heroe.clase}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="pantalla=='infoHeroe'" class="contenedorInfoHeroe">
+    <div class="panelPartidaDescripcion"> 
+      <div class="panelPartidaNombre Texto2"> Hola </div>
+      <div class="panelPartidaPersonaje Texto3"> Guapeton </div>
     </div>
   </div>
 

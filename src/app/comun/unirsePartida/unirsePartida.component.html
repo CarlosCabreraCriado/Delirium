@@ -30,11 +30,13 @@
   <div id="usuario" class="Texto2">{{validacion.nombre}}</div>
 
   <div *ngIf="pantalla=='seleccionHeroe'" class="contenedorHeroes">
-    <div *ngFor="let heroe of appService.perfil.heroes; let i = index" class="PanelHeroes" (click)="seleccionarHeroe(i)">
-      <div class="panelHeroeNombre Texto2">{{heroe.nombre}}</div>
-      <div class="panelHeroeDescripcion">
-        <div class="panelHeroeClase Texto3">{{heroe.clase}}</div>
-        <div class="panelHeroeEspecializacion Texto3">{{heroe.especializacion}}</div>
+    <<div *ngFor="let heroe of appService.perfil.heroes; let i = index" class="PanelHeroes" (click)="seleccionarHeroe(i)">
+      <div class="panelPartidaImagen Texto2">
+        <img src="./assets/Clases/{{heroe.clase.charAt(0)+ heroe.clase.toLowerCase().slice(1)}}.png" class= "ImagenPersonaje" alt="Imagen-Personaje"/>
+      </div>
+      <div class="panelPartidaDescripcion">
+        <div class="panelPartidaNombre Texto2">{{heroe.nombre}}</div>
+        <div class="panelPartidaPersonaje Texto3">{{heroe.clase}}</div>
       </div>
     </div>
   </div>
