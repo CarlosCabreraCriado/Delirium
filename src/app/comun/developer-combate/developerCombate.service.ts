@@ -70,10 +70,11 @@ export class DeveloperCombateService implements OnInit{
 	public comandoSocketActivo:boolean= false;
 
 	//OPCIONESE DE DEBUG:
-	private restringirAcciones = false;
+	private restringirAcciones = true;
 	private restringirRecurso = false;
 	private restringirRNG= false;
 	private restringirTurno= false;
+	private forzarGeneradoRender= false;
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription
@@ -82,7 +83,7 @@ export class DeveloperCombateService implements OnInit{
   		
   		this.musicaMazmorra.src = "./assets/musica/musica-mazmorra.mp3";
   		this.musicaMazmorra.load();
-  		this.musicaMazmorra.volume= 0.5;
+  		this.musicaMazmorra.volume= 0.2;
   		this.musicaMazmorra.play();
 	}
 
@@ -256,7 +257,7 @@ export class DeveloperCombateService implements OnInit{
  			this.lanzarBuffos();
 			break;
 
-			case "1":
+			case "0":
 				//Restringir accion por turno incorrecto.
 				if(!this.comandoSocketActivo){
 					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){break;}
@@ -271,7 +272,7 @@ export class DeveloperCombateService implements OnInit{
 			}
 			break;
 
-			case "2":
+			case "1":
 				//Restringir accion por turno incorrecto.
 				if(!this.comandoSocketActivo){
 					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){break;}
@@ -285,7 +286,7 @@ export class DeveloperCombateService implements OnInit{
 			}
 			break;
 
-			case "3":
+			case "2":
 				//Restringir accion por turno incorrecto.
 				if(!this.comandoSocketActivo){
 					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){break;}
@@ -299,7 +300,7 @@ export class DeveloperCombateService implements OnInit{
 			}
 			break;
 
-			case "4":
+			case "3":
 				//Restringir accion por turno incorrecto.
 				if(!this.comandoSocketActivo){
 					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){break;}
@@ -313,7 +314,7 @@ export class DeveloperCombateService implements OnInit{
 			}
 			break;
 
-			case "5":
+			case "4":
 				//Restringir accion por turno incorrecto.
 				if(!this.comandoSocketActivo){
 					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){break;}
@@ -327,7 +328,7 @@ export class DeveloperCombateService implements OnInit{
 			}
 			break;
 
-			case "6":
+			case "5":
 				//Restringir accion por turno incorrecto.
 				if(!this.comandoSocketActivo){
 					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){break;}
@@ -346,11 +347,8 @@ export class DeveloperCombateService implements OnInit{
 			************************************************* */
 
 			case "+":
-			console.log("Añadiendo sala...");
-			this.cambiarSala(this.renderMazmorra.salaActual+1);
-			this.renderMazmorra.salaActual++;
-			this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
-			this.mensajeAccion("Cambiando Sala...",2000);
+			this.renderMazmorra.estadoControl.estado="seleccionSala";
+			this.mensajeAccion("Selecciona una sala...",1000);
 			break;
 
 			case "f":
@@ -372,6 +370,30 @@ export class DeveloperCombateService implements OnInit{
 			this.cargarAutoGuardado.emit(this.renderMazmorra);
 			this.mensajeAccion("Realizando rewind...",5000);
 			break;
+		}
+
+		if(this.renderMazmorra.estadoControl.estado=="seleccionSala"){
+
+			switch(tecla){
+				case "0":
+				case "1":
+				case "2":
+				case "3":
+				case "4":
+				case "5":
+				case "6":
+				this.cambiarSala(parseInt(tecla));
+				this.cambiarSala(parseInt(tecla));
+				this.renderMazmorra.salaActual=parseInt(tecla);
+				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
+				this.mensajeAccion("Cambiando Sala...",2000);
+				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+				break;
+				case "Backspace":
+				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+				break;
+			}
+
 		}
 
 		if(this.renderMazmorra.estadoControl.estado=="rng"){
@@ -402,6 +424,7 @@ export class DeveloperCombateService implements OnInit{
 				break;
 			}
 		}
+
 		if(this.renderMazmorra.turno){}
 	}
 
@@ -654,7 +677,7 @@ export class DeveloperCombateService implements OnInit{
  				escudo: 0,
  				recurso: 100,
  				acciones: 2,
- 				recursoEspecial: {},
+ 				recursoEspecial: 0,
  				estadisticas: {
  					armadura: 0,
 					vitalidad: 0,
@@ -681,42 +704,28 @@ export class DeveloperCombateService implements OnInit{
  		//Inicializa el recurso especial de cada clase: 
  		for (var i = 0; i < this.guardado.heroes.length; i++) {
  			switch (this.renderMazmorra.heroes[i].clase) {
- 				case "GUERRERO":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
+ 				
+ 				case "MINOTAURO":
+ 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
  				this.renderMazmorra.heroes[i].recurso=0;
  				break;
 
- 				case "CRUZADO":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
- 				break;
-
- 				case "INGENIERO":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
- 				break;
-
- 				case "CAZADOR":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
- 				break;
-
- 				case "CHRONOMANTE":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
+ 				case "CLERIGO":
+ 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
  				break;
 
  				case "HECHICERO":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
+ 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
  				break;
 
- 				case "ILUMINADO":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
- 				break;
-
- 				case "MAGO_DE_SANGRE":
- 				this.renderMazmorra.heroes[i].recursoEspecial=0;
- 				break;
+ 				case "CHRONOMANTE":
+ 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
+ 				break;3
  			}
  		}
 
  		this.renderMazmorra.heroes[0].turno= true;
+
  		//Inicialización de la primera sala:
  		this.renderMazmorra.salaActual = 1;
  		this.renderMazmorra.numEnemigos = this.mazmorra.salas.find(j => j.num_sala === this.renderMazmorra.salaActual).num_enemigos;
@@ -816,7 +825,7 @@ export class DeveloperCombateService implements OnInit{
  			this.loggerService.log(this.renderMazmorra.heroes[i].nombre+" ---> "+this.renderMazmorra.heroes[i].clase,"orange");
  		}
  		
- 		if(Object.keys(this.sala.render).length === 0){
+ 		if(Object.keys(this.sala.render).length === 0 || this.forzarGeneradoRender){
 			console.log("Render generado");
 			console.log(JSON.stringify(this.renderMazmorra));
 			this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
@@ -895,7 +904,6 @@ export class DeveloperCombateService implements OnInit{
 
  	//Funcion principal de paso de turno:
  	pasarTurno(): void{
-
 
  		//Elimina a los enemigos Muertos:
  		this.enemigoMuerto(-1);
@@ -1039,6 +1047,59 @@ export class DeveloperCombateService implements OnInit{
  				this.renderMazmorra.render.barraAccion.mostrar = false;
       			this.appService.setControl("desbloqueoMensaje");
  		}, tiempoMensaje);	
+ 	}
+
+ 	//Gestiona el cambio de sala:
+ 	addEnemigo(idEnemigo:number):void{
+ 		//Añade los enemigos de la nueva sala a la instancia:
+ 		var enemigoAdd= this.enemigos.enemigos_stats.find(j => j.id == idEnemigo);
+ 		console.log(enemigoAdd);
+ 		this.loggerService.log("--------------Añadiendo Enemigo-----------------");
+ 		this.loggerService.log("Añadiendo: "+enemigoAdd.nombre);
+
+ 		
+ 		if(enemigoAdd.nombre=="0"){
+ 			enemigoAdd.nombre = this.enemigos.enemigos_stats.find(j => j.id == idEnemigo);
+ 		}
+
+ 			this.renderMazmorra.enemigos.push({
+ 				nombre: enemigoAdd.nombre,
+ 				enemigo_id: enemigoAdd.enemigo_id,
+ 				turno: false,
+ 				vida: 100,
+ 				escudo: 0,
+ 				agro: [],
+ 				buff:[],
+ 				estadisticas: {
+ 					armadura: enemigoAdd.armadura,
+					vitalidad: enemigoAdd.vitalidad,
+					fuerza: enemigoAdd.fuerza,
+					intelecto: enemigoAdd.intelecto,
+					precision: enemigoAdd.precision,
+					ferocidad: enemigoAdd.ferocidad,
+					general: 0
+ 				},
+ 				objetivo: false,
+ 				acciones: 2,
+ 				objetivoAuxiliar: false,
+ 				hechizos: enemigoAdd.hechizos_id,
+ 				animacion: 0
+ 			});
+
+ 			//Inicializacion de Agro:
+ 			for(var j= 0; j<this.renderMazmorra.numHeroes;j++){
+ 				this.renderMazmorra.enemigos[this.renderMazmorra.enemigos.length-1].agro.push(0);
+ 			}
+
+ 			this.loggerService.log("Agregando enemigo: "+this.renderMazmorra.enemigos[this.renderMazmorra.enemigos.length-1].nombre);
+ 		
+
+ 		//Calcular estadisticas Enemigos:
+ 		
+ 		//this.calcularEstadisticas(false,this.renderMazmorra.enemigos[this.renderMazmorra.enemigos.length-1]);
+
+ 		console.log(this.renderMazmorra.enemigos);
+ 		this.loggerService.log("----------------------------------------------");
  	}
 
  	//Gestiona el cambio de sala:
@@ -1234,8 +1295,8 @@ export class DeveloperCombateService implements OnInit{
  			if(this.renderMazmorra.enemigos[i].turno){
  				//Turno del enemigo[i]:
  				clase= this.renderMazmorra.enemigos[i].nombre;
- 				//var hechizosEnemigos = this.enemigos.enemigos_hechizos.find(j => j.id==this.renderMazmorra.enemigos[i].hechizos);
- 				this.renderMazmorra.estadoControl.tipoObjetivo = this.enemigos.enemigos_hechizos.find(j => j.id==numHechizo).objetivo;
+ 				//var hechizosEnemigos = this.enemigos.enemigos_hech.find(j => j.id==this.renderMazmorra.enemigos[i].hechizos);
+ 				this.renderMazmorra.estadoControl.tipoObjetivo = this.enemigos.enemigos_hech.find(j => j.id==numHechizo).objetivo;
 
  				//Si el caster es enemigo y el objetivo es AL:
  				if(this.renderMazmorra.estadoControl.tipoObjetivo=="AL"){
@@ -1432,7 +1493,7 @@ export class DeveloperCombateService implements OnInit{
  		}
 
  		if(esEnemigo){
- 			if(this.renderMazmorra.enemigos[indiceCaster].acciones< this.enemigos.enemigos_hechizos.find(i => i.id==this.renderMazmorra.enemigos[indiceCaster].hechizos).acciones){
+ 			if(this.renderMazmorra.enemigos[indiceCaster].acciones< this.enemigos.enemigos_hech.find(i => i.id==this.renderMazmorra.enemigos[indiceCaster].hechizos).acciones){
  				if(this.restringirAcciones){
  					this.mensajeAccion("Acciones Insuficientes", 1000);
  					resultado = false;
@@ -1472,9 +1533,7 @@ export class DeveloperCombateService implements OnInit{
  				break;
  			}
  		}
- 		console.log("Caster:");
  		console.log(caster);
- 		console.log(this.heroeHech[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1]);
  		//------------------------------------
  		//Declara las propiedades del hechizo:
  		//------------------------------------
@@ -1522,20 +1581,20 @@ export class DeveloperCombateService implements OnInit{
  		//Si el caster es enemigo:
  		}else if(esEnemigo){
  			hechizo={
- 				id: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).id,
- 				nombre: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).nombre,
- 				tipo: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).tipo,
- 				recurso:this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).recurso,
- 				poder: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).poder,
- 				acciones: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).acciones,
- 				dano_dir: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).dano_dir,
- 				heal_dir: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).heal_dir,
- 				escudo_dir: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).escudo_dir,
-				buff_id: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).buff_id,
-				funcion: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).funcion,
-				objetivo: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).objetivo,
-				animacion: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).animacion_id,
-				hechizo_encadenado_id: this.enemigos.enemigos_hechizos.find(i => i.id==caster.hechizos).hechizo_encadanado_id
+ 				id: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).id,
+ 				nombre: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).nombre,
+ 				tipo: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).tipo,
+ 				recurso:this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).recurso,
+ 				poder: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).poder,
+ 				acciones: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).acciones,
+ 				dano_dir: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).daño_dir,
+ 				heal_dir: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).heal_dir,
+ 				escudo_dir: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).escudo_dir,
+				buff_id: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).buff_id,
+				funcion: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).funcion,
+				objetivo: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).objetivo,
+				animacion: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).animacion_id,
+				hechizo_encadenado_id: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).hechizo_encadenado_id
  			}
  			
  		console.log("Lanzando hechizo:");
@@ -1651,6 +1710,7 @@ export class DeveloperCombateService implements OnInit{
  		var esEnemigo = false;
  		var caster;
  		var casterIndice;
+ 		var parametroSeleccionado;
 
  		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
@@ -1710,7 +1770,7 @@ export class DeveloperCombateService implements OnInit{
 					tipo: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo,
 					tipo2: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo2,
 					stat_inc: this.buff.buff.find(i => i.id==hechizo.buff_id).stat_inc,
-					dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).dano_t,
+					dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
 					heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
 					escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
 					rng: this.renderMazmorra.estadoControl.rng,
@@ -1733,7 +1793,7 @@ export class DeveloperCombateService implements OnInit{
 
  				//Coloca efecto de stat increase:
  				var ultimoBuff = this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff[this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1];
- 			
+
  				if(ultimoBuff.stat_inc!=0){
  					var vectorInstrucciones = ultimoBuff.stat_inc.split("+");
  					var primerTipoStat;
@@ -1744,78 +1804,125 @@ export class DeveloperCombateService implements OnInit{
  					for(var i=0; i<vectorInstrucciones.length;i++){
  						console.log("Analizando la primera Instrucción: ");
  						console.log(vectorInstrucciones[i]);
+
  						primerTipoStat= vectorInstrucciones[i].slice(0,2);
- 						if(vectorInstrucciones[i].slice(-1)=="/"||vectorInstrucciones[i].slice(-1)=="%"){
- 							operador=vectorInstrucciones[i].slice(-1);
+ 						operador=null;
+ 						segundoTipoStat=null;
+ 						valorStat= vectorInstrucciones[i].slice(2);
+
+ 						if(vectorInstrucciones[i].slice(-1)=="%"){
+ 							operador="%";
+ 							valorStat= vectorInstrucciones[i].slice(2,-1);
+ 						}
+
+ 						if(vectorInstrucciones[i].slice(-1)=="/"){
+ 							operador="/";
  							segundoTipoStat= vectorInstrucciones[i].slice(-3,-1);
  							valorStat= vectorInstrucciones[i].slice(2,-3);
- 						}else{
- 							operador=null;
- 							segundoTipoStat=null;
- 							valorStat= vectorInstrucciones[i].slice(2);
  						}
- 						primerTipoStat= vectorInstrucciones[i].slice(0,2);
- 						console.log("Primer Parametro: ");
- 						console.log(primerTipoStat);
- 						console.log("Segundo Parametro: ");
- 						console.log(segundoTipoStat);
- 						console.log("Operador: ");
- 						console.log(operador);
- 						console.log("Valor: ");
- 						console.log(valorStat);
- 					}
- 					var parametroSeleccionado;
- 					for(var j=0; j<2;j++){
- 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
- 						switch(parametroSeleccionado){
-	 						case "VT":
-	 							if(j==0){primerTipoStat= "vitalidad"}else{segundoTipoStat= "vitalidad"};
-	 						break;
-	 						case "FU":
-	 							if(j==0){primerTipoStat= "fuerza"}else{segundoTipoStat= "vitalidad"};
-	 						break;
-	 						case "IN":
-	 							if(j==0){primerTipoStat= "intelecto"}else{segundoTipoStat= "intelecto"};
-	 						break;
-	 						case "PR":
-	 							if(j==0){primerTipoStat= "precision"}else{segundoTipoStat= "precision"};
-	 						break;
-	 						case "FE":
-	 							if(j==0){primerTipoStat= "ferocidad"}else{segundoTipoStat= "ferocidad"};
-	 						break;
-	 						case "AR":
-	 							if(j==0){primerTipoStat= "armadura"}else{segundoTipoStat= "armadura"};
-	 						break;
-	 						case "MN":
-	 						break;
-	 						case "DF":
-	 						break;
-	 						case "DM":
-	 						break;
-	 						case "AG":
-	 						break;
-	 						case "PO":
-	 						break;
-	 						case "GE":
-	 						break;
+
+ 						var estadisticasEnemigo= {
+	 						vidaTotal: (this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib),
+	 						vida: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida,
+	 						puntosVida: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida * (this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100,
+	 						vidaFaltante: (this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)-( this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida * (this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100),
+	 						vitalidad: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["vitalidad"],
+	 						fuerza: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["fuerza"],
+	 						intelecto: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["intelecto"],
+	 						agilidad: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["agilidad"],
+	 						precision: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["precision"],
+	 						ferocidad: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["ferocidad"],
+	 						armadura: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["armadura"],
+	 						general: this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["general"],
+	 						agro: 0,
 	 					}
- 					}
- 					
- 					//Operador Nulo
- 					if(operador==null){
- 						this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas[primerTipoStat] += parseInt(valorStat);
- 					}
+	 					
 
- 					//Operador %
- 					if(operador=="%"){
- 						this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas[primerTipoStat] += this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas[segundoTipoStat]*parseInt(valorStat)/100;
- 					}
+	 					for(var j=0; j<2;j++){
+	 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
+	 						switch(parametroSeleccionado){
+		 						case "VT":
+		 							if(j==0){primerTipoStat= "vitalidad"}else{segundoTipoStat= "vitalidad"};
+		 						break;
+		 						case "FU":
+		 							if(j==0){primerTipoStat= "fuerza"}else{segundoTipoStat= "fuerza"};
+		 						break;
+		 						case "IN":
+		 							if(j==0){primerTipoStat= "intelecto"}else{segundoTipoStat= "fuerza"};
+		 						break;
+		 						case "GI":
+		 							if(j==0){primerTipoStat= "agilidad"}else{segundoTipoStat= "agilidad"};
+		 						break;
+		 						case "PR":
+		 							if(j==0){primerTipoStat= "precision"}else{segundoTipoStat= "precision"};
+		 						break;
+		 						case "FE":
+		 							if(j==0){primerTipoStat= "ferocidad"}else{segundoTipoStat= "ferocidad"};
+		 						break;
+		 						case "AR":
+		 							if(j==0){primerTipoStat= "armadura"}else{segundoTipoStat= "armadura"};
+		 						break;
+		 						case "VI":
+		 							if(j==0){primerTipoStat= "puntosVida"}else{segundoTipoStat= "puntosVida"};
+		 						break;
+		 						case "MN":
+		 							if(j==0){primerTipoStat= "recurso"}else{segundoTipoStat= "recurso"};
+		 						break;
+		 						case "AG":
+		 							if(j==0){primerTipoStat= "agro"}else{segundoTipoStat= "agro"};
+		 						break;
+		 						case "PO":
+		 							if(j==0){primerTipoStat= "poder"}else{segundoTipoStat= "poder"};
+		 						break;
+		 						case "GE":
+		 							if(j==0){primerTipoStat= "general"}else{segundoTipoStat= "general"};
+		 						break;
+		 						case "VF":
+		 							if(j==0){primerTipoStat= "vidaFaltante"}else{segundoTipoStat= "vidaFaltante"};
+		 						break;
+		 						case "MF":
+		 							if(j==0){primerTipoStat= "manaFaltante"}else{segundoTipoStat= "manaFaltante"};
+		 						break;
+		 						case "TH":
+		 							if(j==0){primerTipoStat= "vidaTotal"}else{segundoTipoStat= "vidaTotal"};
+		 						break;
+		 						case "TM":
+		 							if(j==0){primerTipoStat= "manaTotal"}else{segundoTipoStat= "manaTotal"};
+		 						break;
+		 					}
+	 					}
 
- 					//Operador /
- 					if(operador=="/"){
- 						this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas[primerTipoStat] += this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas[segundoTipoStat]*parseInt(valorStat);
- 					}
+	 					//Modificar valores:
 
+	 					//Operador Nulo
+	 					if(operador==null){
+	 						estadisticasEnemigo[primerTipoStat] += parseFloat(valorStat);
+	 					}
+	
+	 					//Operador %
+	 					if(operador=="%"){
+	 						estadisticasEnemigo[primerTipoStat] += estadisticasEnemigo[primerTipoStat]*parseFloat(valorStat);
+	 					}
+	
+	 					//Operador /
+	 					if(operador=="/"){
+	 						estadisticasEnemigo[primerTipoStat] += estadisticasEnemigo[segundoTipoStat]*parseFloat(valorStat);
+	 					}
+
+	 					//Devolver los valores modificados:
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["vitalidad"] = estadisticasEnemigo.vitalidad;
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["fuerza"] = estadisticasEnemigo.fuerza;
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["intelecto"] = estadisticasEnemigo.intelecto;
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["agilidad"] = estadisticasEnemigo.agilidad;
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["precision"] = estadisticasEnemigo.precision;
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["ferocidad"] = estadisticasEnemigo.ferocidad;
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["armadura"] = estadisticasEnemigo.armadura;
+	 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["general"] = estadisticasEnemigo.general;
+	 					if(primerTipoStat=="puntosVida"){
+	 						this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida = estadisticasEnemigo.puntosVida/estadisticasEnemigo.vidaTotal*100;
+	 					}
+	 					
+	 				}
  				}
 
  				//Aplica modificador de ENTRADA del buffo sobre el ENEMIGO:
@@ -1863,7 +1970,7 @@ export class DeveloperCombateService implements OnInit{
 					tipo: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo,
 					tipo2: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo2,
 					stat_inc: this.buff.buff.find(i => i.id==hechizo.buff_id).stat_inc,
-					dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).dano_t,
+					dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
 					heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
 					escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
 					origen: "0",
@@ -1912,23 +2019,14 @@ export class DeveloperCombateService implements OnInit{
  							segundoTipoStat= vectorInstrucciones[i].slice(-3,-1);
  							valorStat= vectorInstrucciones[i].slice(2,-3);
  						}
- 						
- 						console.log("Primer Parametro: ");
- 						console.log(primerTipoStat);
- 						console.log("Segundo Parametro: ");
- 						console.log(segundoTipoStat);
- 						console.log("Operador: ");
- 						console.log(operador);
- 						console.log("Valor: ");
- 						console.log(valorStat);
 
- 						var parametroSeleccionado;
-
- 						var estadisticas= {
+ 						var estadisticasHeroe= {
 	 						vidaTotal: (this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib),
 	 						manaTotal: 100,
-	 						vida: this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida * (this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100,
+	 						vida: this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida,
+	 						puntosVida: this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida * (this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100,
 	 						mana: this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso,
+	 						puntosMana: this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso,
 	 						vidaFaltante: (this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)-( this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida * (this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100),
 	 						manaFaltante: 100 - this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso,
 	 						vitalidad: this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["vitalidad"],
@@ -1968,7 +2066,7 @@ export class DeveloperCombateService implements OnInit{
 		 							if(j==0){primerTipoStat= "armadura"}else{segundoTipoStat= "armadura"};
 		 						break;
 		 						case "VI":
-		 							if(j==0){primerTipoStat= "vida"}else{segundoTipoStat= "vida"};
+		 							if(j==0){primerTipoStat= "puntosVida"}else{segundoTipoStat= "puntosVida"};
 		 						break;
 		 						case "MN":
 		 							if(j==0){primerTipoStat= "recurso"}else{segundoTipoStat= "recurso"};
@@ -2001,33 +2099,35 @@ export class DeveloperCombateService implements OnInit{
 
 	 					//Operador Nulo
 	 					if(operador==null){
-	 						estadisticas[primerTipoStat] += parseFloat(valorStat);
+	 						estadisticasHeroe[primerTipoStat] += parseFloat(valorStat);
 	 					}
 	
 	 					//Operador %
 	 					if(operador=="%"){
-	 						estadisticas[primerTipoStat] += estadisticas[primerTipoStat]*parseFloat(valorStat);
+	 						estadisticasHeroe[primerTipoStat] += estadisticasHeroe[primerTipoStat]*parseFloat(valorStat);
 	 					}
 	
 	 					//Operador /
 	 					if(operador=="/"){
-	 						estadisticas[primerTipoStat] += estadisticas[segundoTipoStat]*parseFloat(valorStat);
+	 						estadisticasHeroe[primerTipoStat] += estadisticasHeroe[segundoTipoStat]*parseFloat(valorStat);
 	 					}
 
 	 					//Devolver los valores modificados:
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["vitalidad"] = estadisticas.vitalidad;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["fuerza"] = estadisticas.fuerza;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["intelecto"] = estadisticas.intelecto;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["agilidad"] = estadisticas.agilidad;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["precision"] = estadisticas.precision;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["ferocidad"] = estadisticas.ferocidad;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["armadura"] = estadisticas.armadura;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["general"] = estadisticas.general;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida = estadisticas.vida;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso = estadisticas.mana;
-	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].recursoEspecial = estadisticas.poder;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["vitalidad"] = estadisticasHeroe.vitalidad;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["fuerza"] = estadisticasHeroe.fuerza;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["intelecto"] = estadisticasHeroe.intelecto;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["agilidad"] = estadisticasHeroe.agilidad;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["precision"] = estadisticasHeroe.precision;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["ferocidad"] = estadisticasHeroe.ferocidad;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["armadura"] = estadisticasHeroe.armadura;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["general"] = estadisticasHeroe.general;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso = estadisticasHeroe.mana;
+	 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].recursoEspecial = estadisticasHeroe.poder;
+	 					if(primerTipoStat=="puntosVida"){
+	 						this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida = estadisticasHeroe.puntosVida/estadisticasHeroe.vidaTotal*100;
+	 					}
+	 					
 	 				}
-
  				}
  		
  				//Aplica modificador de ENTRADA del buffo sobre el HEROE:
@@ -2119,23 +2219,23 @@ export class DeveloperCombateService implements OnInit{
  		console.log(hechizo);
  		//Si es tipo FISICO:
  		if(hechizo.tipo=="F"){
- 			hechizo.dano_dir = hechizo.dano_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
- 			hechizo.heal_dir = hechizo.heal_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
- 			hechizo.escudo_dir = hechizo.escudo_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
+ 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
+ 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
+ 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
  		}
 
  		//Si es tipo MAGICO:
 		if(hechizo.tipo=="M"){
- 			hechizo.dano_dir = hechizo.dano_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
- 			hechizo.heal_dir = hechizo.heal_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
- 			hechizo.escudo_dir = hechizo.escudo_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
+ 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
+ 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
+ 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
  		}
 
  		//Si es tipo DISTANCIA:
  		if(hechizo.tipo=="D"){
- 			hechizo.dano_dir = hechizo.dano_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
- 			hechizo.heal_dir = hechizo.heal_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
- 			hechizo.escudo_dir = hechizo.escudo_dir*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
+ 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
+ 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
+ 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
  		}
 
  		//Logger:
@@ -2158,7 +2258,6 @@ export class DeveloperCombateService implements OnInit{
 
  		//Aplicacion de armadura:
  		hechizo.dano_dir= hechizo.dano_dir * (1-this.renderMazmorra.heroes[indiceHeroe].estadisticas.armadura/100);
-
  		return hechizo;
  	}
 
@@ -2211,6 +2310,9 @@ export class DeveloperCombateService implements OnInit{
  		if(this.renderMazmorra.heroes[indiceHeroe].recurso>100){
  			this.renderMazmorra.heroes[indiceHeroe].recurso= 100;
  		}
+
+ 		//Reset critico:
+ 		this.renderMazmorra.estadoControl.critico=false;
 
  		//Logger:
  		this.loggerService.log("------ ENTRADA------- ","teal");
@@ -2267,6 +2369,9 @@ export class DeveloperCombateService implements OnInit{
  		if(this.renderMazmorra.enemigos[indiceEnemigo].vida>100){
  			this.renderMazmorra.enemigos[indiceEnemigo].vida= 100;
  		}
+
+ 		//Reset critico:
+ 		this.renderMazmorra.estadoControl.critico=false;
 
  		//Comprueba si tiene dadiva:
  		if(caster.buff.find(i => i.id==17)){
@@ -2376,6 +2481,13 @@ export class DeveloperCombateService implements OnInit{
 
  			case "CargaFrio":
  				
+ 			break;
+
+ 			case "Carga_Critico":
+ 				if(this.renderMazmorra.estadoControl.critico){
+ 					console.log("AÑADIENDO CARGA");
+ 					caster.recursoEspecial++;
+ 				}
  			break;
 
  			case "ResetPoder":
@@ -2556,23 +2668,23 @@ export class DeveloperCombateService implements OnInit{
  	modificacionBuffSalidaHeroeHeroe(casterHeroe,indiceHeroeObjetivo,indiceBuff):void{
  		//Si es tipo FISICO:
  		if(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
  		}
 
  		//Si es tipo MAGICO:
 		if(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
  		}
 
  		//Si es tipo DISTANCIA:
  		if(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="D"){
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].escalar_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].escalar_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].escalar_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
  		}
  	}
 
@@ -2581,16 +2693,16 @@ export class DeveloperCombateService implements OnInit{
  		
  		//Si es tipo FISICO:
  		if(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza);  //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza);  //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
  		}
 
  		//Si es tipo MAGICO:
 		if(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
  		}
 
  		//Si es tipo DISTANCIA:
@@ -2607,23 +2719,23 @@ export class DeveloperCombateService implements OnInit{
  	modificacionBuffSalidaEnemigoHeroe(casterEnemigo,indiceHeroeObjetivo,indiceBuff):void{
  		//Si es tipo FISICO:
  		if(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
  		}
 
  		//Si es tipo MAGICO:
 		if(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
  		}
 
  		//Si es tipo DISTANCIA:
  		if(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="D"){
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.renderMazmorra.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
  		}
  	}
 
@@ -2631,23 +2743,23 @@ export class DeveloperCombateService implements OnInit{
  	modificacionBuffSalidaEnemigoEnemigo(casterEnemigo,indiceEnemigoObjetivo,indiceBuff):void{
  		//Si es tipo FISICO:
  		if(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
  		}
 
  		//Si es tipo MAGICO:
 		if(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
  		}
 
  		//Si es tipo DISTANCIA:
  		if(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="D"){
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].esc_vida*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
+ 			this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.renderMazmorra.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.renderMazmorra.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
  		}
  	}
 
@@ -2842,32 +2954,145 @@ export class DeveloperCombateService implements OnInit{
  			var ultimoBuff = this.renderMazmorra.heroes[indiceHeroe].buff[indiceBuff];
  	
  			if(ultimoBuff.stat_inc!=0){
- 				var tipoStat= ultimoBuff.stat_inc.slice(0,2);
- 				var valorStat= parseInt(ultimoBuff.stat_inc.slice(2));
- 				switch(tipoStat){
- 					case "GE":
- 						this.renderMazmorra.heroes[indiceHeroe].estadisticas.general -= valorStat;
- 					break;
- 					case "AR":
- 						this.renderMazmorra.heroes[indiceHeroe].estadisticas.armadura -= valorStat;
- 					break;
- 					case "VT":
- 						this.renderMazmorra.heroes[indiceHeroe].estadisticas.vitalidad -= valorStat;
- 					break;
- 					case "FU":
- 						this.renderMazmorra.heroes[indiceHeroe].estadisticas.fuerza -= valorStat;
- 					break;
- 					case "IN":
- 						this.renderMazmorra.heroes[indiceHeroe].estadisticas.intelecto -= valorStat;
- 					break;
- 					case "PR":
- 						this.renderMazmorra.heroes[indiceHeroe].estadisticas.precision -= valorStat;
- 					break;
- 					case "FE":
- 						this.renderMazmorra.heroes[indiceHeroe].estadisticas.ferocidad -= valorStat;
- 					break;
+ 					var vectorInstrucciones = ultimoBuff.stat_inc.split("+");
+ 					var primerTipoStat;
+ 					var segundoTipoStat;
+ 					var operador;
+ 					var valorStat;
+
+ 					for(var i=0; i<vectorInstrucciones.length;i++){
+ 						console.log("Analizando la primera Instrucción: ");
+ 						console.log(vectorInstrucciones[i]);
+
+ 						primerTipoStat= vectorInstrucciones[i].slice(0,2);
+ 						operador=null;
+ 						segundoTipoStat=null;
+ 						valorStat= vectorInstrucciones[i].slice(2);
+
+ 						if(vectorInstrucciones[i].slice(-1)=="%"){
+ 							operador="%";
+ 							valorStat= vectorInstrucciones[i].slice(2,-1);
+ 						}
+
+ 						if(vectorInstrucciones[i].slice(-1)=="/"){
+ 							operador="/";
+ 							segundoTipoStat= vectorInstrucciones[i].slice(-3,-1);
+ 							valorStat= vectorInstrucciones[i].slice(2,-3);
+ 						}
+
+ 						var parametroSeleccionado;
+
+ 						var estadisticas= {
+	 						vidaTotal: (this.renderMazmorra.heroes[indiceHeroe].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib),
+	 						manaTotal: 100,
+	 						vida: this.renderMazmorra.heroes[indiceHeroe].vida,
+	 						puntosVida: this.renderMazmorra.heroes[indiceHeroe].vida * (this.renderMazmorra.heroes[indiceHeroe].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100,
+	 						mana: this.renderMazmorra.heroes[indiceHeroe].recurso,
+	 						puntosMana: this.renderMazmorra.heroes[indiceHeroe].recurso,
+	 						vidaFaltante: (this.renderMazmorra.heroes[indiceHeroe].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)-( this.renderMazmorra.heroes[indiceHeroe].vida * (this.renderMazmorra.heroes[indiceHeroe].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100),
+	 						manaFaltante: 100 - this.renderMazmorra.heroes[indiceHeroe].recurso,
+	 						vitalidad: this.renderMazmorra.heroes[indiceHeroe].estadisticas["vitalidad"],
+	 						fuerza: this.renderMazmorra.heroes[indiceHeroe].estadisticas["fuerza"],
+	 						intelecto: this.renderMazmorra.heroes[indiceHeroe].estadisticas["intelecto"],
+	 						agilidad: this.renderMazmorra.heroes[indiceHeroe].estadisticas["agilidad"],
+	 						precision: this.renderMazmorra.heroes[indiceHeroe].estadisticas["precision"],
+	 						ferocidad: this.renderMazmorra.heroes[indiceHeroe].estadisticas["ferocidad"],
+	 						armadura: this.renderMazmorra.heroes[indiceHeroe].estadisticas["armadura"],
+	 						general: this.renderMazmorra.heroes[indiceHeroe].estadisticas["general"],
+	 						poder: this.renderMazmorra.heroes[indiceHeroe].recursoEspecial,
+	 						agro: 0,
+	 					}
+	 					
+	 					for(var j=0; j<2;j++){
+	 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
+	 						switch(parametroSeleccionado){
+		 						case "VT":
+		 							if(j==0){primerTipoStat= "vitalidad"}else{segundoTipoStat= "vitalidad"};
+		 						break;
+		 						case "FU":
+		 							if(j==0){primerTipoStat= "fuerza"}else{segundoTipoStat= "fuerza"};
+		 						break;
+		 						case "IN":
+		 							if(j==0){primerTipoStat= "intelecto"}else{segundoTipoStat= "fuerza"};
+		 						break;
+		 						case "GI":
+		 							if(j==0){primerTipoStat= "agilidad"}else{segundoTipoStat= "agilidad"};
+		 						break;
+		 						case "PR":
+		 							if(j==0){primerTipoStat= "precision"}else{segundoTipoStat= "precision"};
+		 						break;
+		 						case "FE":
+		 							if(j==0){primerTipoStat= "ferocidad"}else{segundoTipoStat= "ferocidad"};
+		 						break;
+		 						case "AR":
+		 							if(j==0){primerTipoStat= "armadura"}else{segundoTipoStat= "armadura"};
+		 						break;
+		 						case "VI":
+		 							if(j==0){primerTipoStat= "puntosVida"}else{segundoTipoStat= "puntosVida"};
+		 						break;
+		 						case "MN":
+		 							if(j==0){primerTipoStat= "recurso"}else{segundoTipoStat= "recurso"};
+		 						break;
+		 						case "AG":
+		 							if(j==0){primerTipoStat= "agro"}else{segundoTipoStat= "agro"};
+		 						break;
+		 						case "PO":
+		 							if(j==0){primerTipoStat= "poder"}else{segundoTipoStat= "poder"};
+		 						break;
+		 						case "GE":
+		 							if(j==0){primerTipoStat= "general"}else{segundoTipoStat= "general"};
+		 						break;
+		 						case "VF":
+		 							if(j==0){primerTipoStat= "vidaFaltante"}else{segundoTipoStat= "vidaFaltante"};
+		 						break;
+		 						case "MF":
+		 							if(j==0){primerTipoStat= "manaFaltante"}else{segundoTipoStat= "manaFaltante"};
+		 						break;
+		 						case "TH":
+		 							if(j==0){primerTipoStat= "vidaTotal"}else{segundoTipoStat= "vidaTotal"};
+		 						break;
+		 						case "TM":
+		 							if(j==0){primerTipoStat= "manaTotal"}else{segundoTipoStat= "manaTotal"};
+		 						break;
+		 					}
+	 					}
+
+	 					//Modificar valores:
+
+	 					//Operador Nulo
+	 					if(operador==null){
+	 						estadisticas[primerTipoStat] -= parseFloat(valorStat);
+	 					}
+	
+	 					//Operador %
+	 					if(operador=="%"){
+	 						estadisticas[primerTipoStat] -= estadisticas[primerTipoStat]*parseFloat(valorStat);
+	 					}
+	
+	 					//Operador /
+	 					if(operador=="/"){
+	 						estadisticas[primerTipoStat] -= estadisticas[segundoTipoStat]*parseFloat(valorStat);
+	 					}
+
+	 					//Devolver los valores modificados:
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["vitalidad"] = estadisticas.vitalidad;
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["fuerza"] = estadisticas.fuerza;
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["intelecto"] = estadisticas.intelecto;
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["agilidad"] = estadisticas.agilidad;
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["precision"] = estadisticas.precision;
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["ferocidad"] = estadisticas.ferocidad;
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["armadura"] = estadisticas.armadura;
+	 					this.renderMazmorra.heroes[indiceHeroe].estadisticas["general"] = estadisticas.general;
+	 					this.renderMazmorra.heroes[indiceHeroe].recurso = estadisticas.mana;
+	 					this.renderMazmorra.heroes[indiceHeroe].recursoEspecial = estadisticas.poder;
+	 					if(primerTipoStat=="puntosVida"){
+	 						this.renderMazmorra.heroes[indiceHeroe].vida = estadisticas.puntosVida/estadisticas.vidaTotal*100;
+	 					}
+	
+	 				}
  				}
- 			}
+
+
  			this.renderMazmorra.heroes[indiceHeroe].buff.splice(indiceBuff,1);
  		}
  		return;
@@ -2972,6 +3197,24 @@ export class DeveloperCombateService implements OnInit{
  				this.eventosService.activarEvento(comando.valor);
  			break;
 
+ 			case "cambiar sala":
+ 				this.cambiarSala(comando.valor);
+ 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
+ 				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+ 			break;
+
+ 			case "add enemigo":
+ 				this.addEnemigo(comando.valor);
+ 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
+ 				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+ 			break;
+
+ 			case "eliminar enemigo":
+ 				this.enemigoMuerto(comando.valor);
+ 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
+ 				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+ 			break;
+
  			case "reset":
  				this.socketService.enviarSocket("resetMazmorra",{peticion: "resetMazmorra", comando: "resetMazmorra", contenido: this.sala.nombre});
  			break;
@@ -3006,8 +3249,7 @@ export class DeveloperCombateService implements OnInit{
  		return;
  	}
 
- 	comprobarConectado():void{
- 		
+ 	comprobarConectado():void{	
  	}
 
  	/* 	----------------------------------------------

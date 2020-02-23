@@ -40,6 +40,8 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
 
 	//Declara Suscripcion para Logger:
 	private loggerSuscripcion: Subscription;
+	private retrasoLoggerObs= 1000;
+	private bloquearLogger= false;
 
 	//Declara Suscripcion para Eventos:
 	private eventosSuscripcion: Subscription;
@@ -219,7 +221,12 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
 		//suscripcion Logger:
         this.loggerSuscripcion = this.loggerService.observarLogger$.subscribe(
         (val) => {
-          this.developerCombateService.loggerObs(val);
+        	if(!this.bloquearLogger){
+        		this.developerCombateService.loggerObs(val);
+        	}
+        	setTimeout(()=>{    
+      			this.bloquearLogger=false;
+ 			}, this.retrasoLoggerObs); 
         });
 
         //suscripcion Eventos:

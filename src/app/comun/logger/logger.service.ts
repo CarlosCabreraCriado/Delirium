@@ -121,7 +121,7 @@ export class LoggerService {
  				var healNow=[];
  					for(var i=0; i<renderMazmorra.heroes.length; i++){
  						healNow[i]= renderMazmorra.estadisticas[i].heal[renderMazmorra.estadisticas[i].heal.length-1];
- 						this.log(renderMazmorra.heroes[i].nombre+" ==> "+healNow[i]);
+ 						this.log(renderMazmorra.heroes[i].nombre+" ==> "+healNow[i]);//CARLOS PRINGAO
  					}
  				break;
 
@@ -170,7 +170,7 @@ export class LoggerService {
 
  				case "heal total":
  				var healTotal=[];
- 					for(var i=0; i<renderMazmorra.heroes.length; i++){
+ 					for(var i=0; i<renderMazmorra.heroes.length; i++){//AUTOR: PABLO LOZANO GIL
  						healTotal[i]= 0;
  						for(var j=0; j<renderMazmorra.estadisticas[i].heal.length; j++){
  							healTotal[i]+= renderMazmorra.estadisticas[i].heal[j];
@@ -229,7 +229,7 @@ export class LoggerService {
  				//****************************************
 
  				case "heal medio pt":
- 				var healMedioPt=[];
+ 				var healMedioPt=[];//HOLA PENE
  					for(var i=0; i<renderMazmorra.heroes.length; i++){
  						healMedioPt[i]= 0;
  						for(var j=0; j<renderMazmorra.estadisticas[i].heal.length; j++){
@@ -297,7 +297,7 @@ export class LoggerService {
  						this.log("Fuerza : "+renderMazmorra.heroes[i].estadisticas.fuerza);
  						this.log("Intelecto : "+renderMazmorra.heroes[i].estadisticas.intelecto);
  						this.log("Precision : "+renderMazmorra.heroes[i].estadisticas.precision);
- 						this.log("Ferocidad : "+renderMazmorra.heroes[i].estadisticas.ferocidad);
+ 						this.log("Ferocidad : "+renderMazmorra.heroes[i].estadisticas.ferocidad);//PENE
  						this.log("*");
  					}
  				break;
@@ -318,10 +318,10 @@ export class LoggerService {
  				//       COMANDO STATS ENEMIGOS ALL
  				//****************************************
  				case "stats enemigos all":
- 					for(var i=0; i<renderMazmorra.enemigos.length; i++){
+ 					for(var i=0; i<renderMazmorra.enemigos.length; i++){//ROKKA NO YUUSHA ES BUEN ANIME
  						this.log("---------- "+renderMazmorra.enemigos[i].nombre+" -------");
  						this.log("Vida : "+renderMazmorra.enemigos[i].vida);
- 						this.log("Armadura : "+renderMazmorra.enemigos[i].estadisticas.armadura);
+ 						this.log("Armadura : "+renderMazmorra.enemigos[i].estadisticas.armadura);//Victor, aprende a buscar esqueletos arqueros
  						this.log("Vitalidad : "+renderMazmorra.enemigos[i].estadisticas.vitalidad);
  						this.log("Fuerza : "+renderMazmorra.enemigos[i].estadisticas.fuerza);
  						this.log("Intelecto : "+renderMazmorra.enemigos[i].estadisticas.intelecto);
@@ -339,6 +339,38 @@ export class LoggerService {
  					this.estadoLogger= "evento";
  				break;
 
+ 				//****************************************
+ 				//       Eliminar Enemigo
+ 				//****************************************
+
+ 				case "eliminar enemigo":
+ 					this.log("** Seleccione ID Enemigo: ", "orange");
+ 					for(var i=0; i<renderMazmorra.enemigos.length; i++){
+ 						this.log((i+1)+": "+renderMazmorra.enemigos[i].nombre,"orange");
+ 					}
+ 					this.estadoLogger="eliminar enemigo";
+ 				break;
+
+ 				//****************************************
+ 				//       Eliminar Enemigo
+ 				//****************************************
+
+ 				case "add enemigo":
+ 					this.log("** Seleccione ID Enemigo: ", "orange");
+ 					this.estadoLogger="add enemigo";
+ 				break;//PENE
+
+
+ 				//****************************************
+ 				//       Eliminar Enemigo
+ 				//****************************************
+
+ 				case "add sala":
+ 					this.log("** Introduzca ID Sala: ", "orange");
+ 					this.estadoLogger="add sala";
+ 				break;
+
+ 				
  				//****************************************
  				//       COMANDO NO ENCONTRADO
  				//****************************************
@@ -389,6 +421,28 @@ export class LoggerService {
  			this.estadoLogger="default";
  		}
 
+ 		//Estado Logger ADD ENEMIGO:
+ 		if(this.estadoLogger=="add enemigo"){
+ 			this.observarLogger.next({comando: "add enemigo",valor: this.comando});
+ 			this.estadoLogger="default";
+ 			this.toggleLogger();
+ 		}
+
+ 		//Estado Logger Eliminar ENEMIGO:
+ 		if(this.estadoLogger=="eliminar enemigo"){
+ 			this.observarLogger.next({comando: "eliminar enemigo",valor: this.comando});
+ 			this.estadoLogger="default";
+ 			this.toggleLogger();
+ 		}
+
+ 		//Estado Logger ADD SALA:
+ 		if(this.estadoLogger=="add sala"){
+ 			this.observarLogger.next({comando: "cambiar sala",valor: this.comando});
+ 			this.estadoLogger="default";
+ 			this.toggleLogger();
+ 		}
+
+ 		//Estado Logger ACTIVAR EVENTO:
  		if(this.estadoLogger=="evento"){
  			this.observarLogger.next({comando: "activar evento",valor: this.comando});
  			this.estadoLogger="default";

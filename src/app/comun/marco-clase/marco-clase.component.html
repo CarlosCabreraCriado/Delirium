@@ -12,7 +12,7 @@
 		<!-- *************************************************
             			Marco de CRUZADO
      		************************************************* -->
-		<div *ngIf="heroeClase=='CRUZADO'">
+		<div *ngIf="heroeClase=='Clerigo'">
 			<div class="contenedorEnergiaCaballero">
 				<div class="energiaCaballero" [style.width]="heroe.recursoEspecial+'%'">{{heroe.recursoEspecial+'%'}}</div>
 			</div>
@@ -35,7 +35,7 @@
 		<!-- *************************************************
             			Marco de HECHICERO
      		************************************************* -->
-		<div  *ngIf="heroeClase=='HECHICERO'">
+		<div  *ngIf="heroeClase=='Hechicero'">
 			<img *ngIf="heroe.recursoEspecial > 0" class="sobrecargaLlena" src="./assets/General/sobrecarga.png">
 			<img *ngIf="heroe.recursoEspecial > 1" class="sobrecargaLlena" src="./assets/General/sobrecarga.png">
 			<img *ngIf="heroe.recursoEspecial > 2"class="sobrecargaLlena" src="./assets/General/sobrecarga.png">
@@ -61,8 +61,9 @@
 		<!-- *************************************************
             			Marco de CHRONOMANTE
      		************************************************* -->
-		<div *ngIf="heroeClase=='CHRONOMANTE'">
-			Chronomante
+		<div *ngIf="heroeClase=='Chronomante'">
+			<img class="vorticeDolor" src="./assets/Efectos/Vortice-Brujo.gif">
+			<div class="contadorEsenciaDolor">{{heroe.recursoEspecial}}</div>
 		</div>
 
 	</div>
