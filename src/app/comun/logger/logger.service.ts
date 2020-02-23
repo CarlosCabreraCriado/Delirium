@@ -62,6 +62,36 @@ export class LoggerService {
  					this.log("Comando vacio","white");
  				break;
 
+ 				case "help":
+ 					this.log("clear: limpia el logger");
+ 					this.log("render: devuelve el objeto de render actual (Estado de la partida)");
+ 					this.log("reset: resetea la mazmorra (Reset a valor definido por server)");
+ 					this.log("registro analisis: Muestra el registro de estadisticas de la partida");
+ 					this.log("---------------------------------------------------------------------------------------------------");
+ 					this.log("stats heroes: Muestra las stats de un heroe (insertar ID despues de ejecutar instrucción)");
+ 					this.log("stats heroes all: Muestra las stats de todos los heroes");
+ 					this.log("stats enemigos: Muestra las stats de un enemigo (insertar ID despues de ejecutar instrucción)");
+ 					this.log("stats enemigos all: Muestra las stats de todos los enemigos");
+ 					this.log("---------------------------------------------------------------------------------------------------");
+ 					this.log("add enemigo: Añade un enemigo (insertar ID despues de ejecutar instrucción)");
+ 					this.log("eliminar enemigo: Elimina un enemigo (insertar ID despues de ejecutar instrucción)");
+ 					this.log("add sala: Abre una sala (insertar ID despues de ejecutar instrucción) WARNING: NO EXCEDER 6 ENEMIGOS");
+ 					this.log("---------------------------------------------------------------------------------------------------");
+ 					this.log("daño now: Muestra el daño total realizado en ese turno");
+ 					this.log("heal now: Muestra el daño total realizado en ese turno");
+ 					this.log("escudo now: Muestra el daño total realizado en ese turno");
+ 					this.log("---------------------------------------------------------------------------------------------------");
+ 					this.log("daño total: Muestra el daño total realizado en ese partida");
+ 					this.log("heal total: Muestra el daño total realizado en ese partida");
+ 					this.log("escudo total: Muestra el daño total realizado en la partida");
+ 					this.log("---------------------------------------------------------------------------------------------------");
+ 					this.log("restriccion accion true: activa las restricciones de acciones");
+ 					this.log("restriccion accion false: desactiva las restricciones de acciones");
+ 					this.log("---------------------------------------------------------------------------------------------------");
+ 					
+ 				break;
+
+
  				case "clear":
  					this.logger= [];
  					this.loggerColor=[];
@@ -368,6 +398,26 @@ export class LoggerService {
  				case "add sala":
  					this.log("** Introduzca ID Sala: ", "orange");
  					this.estadoLogger="add sala";
+ 				break;
+
+ 				//****************************************
+ 				//       Activar Restringir Accion
+ 				//****************************************
+
+ 				case "restringir accion true":
+ 					this.log("RESTRICCION DE ACCION: ACTIVADO", "orange");
+ 					this.observarLogger.next({comando: "restringir accion true",valor: this.comando});
+ 					this.estadoLogger="default";
+ 				break;
+
+ 				//****************************************
+ 				//       Desactivar Restringir Accion
+ 				//****************************************
+
+ 				case "restringir accion false":
+ 					this.log("RESTRICCION DE ACCION: DESACTIVANDO ", "orange");
+ 					this.observarLogger.next({comando: "restringir accion false",valor: this.comando});
+ 					this.estadoLogger="default";
  				break;
 
  				

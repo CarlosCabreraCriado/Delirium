@@ -1764,18 +1764,34 @@ export class DeveloperCombateService implements OnInit{
 
  			//Aplicacion de Buffos:
  			if(hechizo.buff_id!=0){
- 				this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.push({
- 					id: hechizo.buff_id,
-					duracion: this.buff.buff.find(i => i.id==hechizo.buff_id).duracion,
-					tipo: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo,
-					tipo2: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo2,
-					stat_inc: this.buff.buff.find(i => i.id==hechizo.buff_id).stat_inc,
-					dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
-					heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
-					escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
-					rng: this.renderMazmorra.estadoControl.rng,
-					origen: "0"
- 				});
+ 				if(esHeroe){
+ 					this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.push({
+ 						id: hechizo.buff_id,
+						duracion: this.buff.buff.find(i => i.id==hechizo.buff_id).duracion,
+						tipo: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo,
+						tipo2: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo2,
+						stat_inc: this.buff.buff.find(i => i.id==hechizo.buff_id).stat_inc,
+						dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
+						heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
+						escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
+						rng: this.renderMazmorra.estadoControl.rng,
+						origen: "0"
+	 				});
+	 			}else{
+	 				this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.push({
+ 						id: hechizo.buff_id,
+						duracion: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).duracion,
+						tipo: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo,
+						tipo2: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo2,
+						stat_inc: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).stat_inc,
+						dano_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).daño_t,
+						heal_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).heal_t,
+						escudo_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).escudo_t,
+						rng: this.renderMazmorra.estadoControl.rng,
+						origen: "0"
+	 				});
+	 			}
+ 				
 
  				//Asocia el origen del buffo:
  				if(esHeroe){
@@ -1964,18 +1980,36 @@ export class DeveloperCombateService implements OnInit{
 
  			//Aplicacion de Buffos:
  			if(hechizo.buff_id!=0){
- 				this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.push({
- 					id: hechizo.buff_id,
-					duracion: this.buff.buff.find(i => i.id==hechizo.buff_id).duracion,
-					tipo: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo,
-					tipo2: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo2,
-					stat_inc: this.buff.buff.find(i => i.id==hechizo.buff_id).stat_inc,
-					dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
-					heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
-					escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
-					origen: "0",
-					rng: this.renderMazmorra.estadoControl.rng
- 				});
+
+ 				if(esHeroe){
+ 					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.push({
+ 						id: hechizo.buff_id,
+						duracion: this.buff.buff.find(i => i.id==hechizo.buff_id).duracion,
+						tipo: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo,
+						tipo2: this.buff.buff.find(i => i.id==hechizo.buff_id).tipo2,
+						stat_inc: this.buff.buff.find(i => i.id==hechizo.buff_id).stat_inc,
+						dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
+						heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
+						escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
+						rng: this.renderMazmorra.estadoControl.rng,
+						origen: "0"
+	 				});
+	 			}else{
+	 				this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.push({
+ 						id: hechizo.buff_id,
+						duracion: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).duracion,
+						tipo: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo,
+						tipo2: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo2,
+						stat_inc: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).stat_inc,
+						dano_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).daño_t,
+						heal_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).heal_t,
+						escudo_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).escudo_t,
+						rng: this.renderMazmorra.estadoControl.rng,
+						origen: "0"
+	 				});
+	 			}
+
+
  				//Asocia el origen del buffo:
  				if(esHeroe){
  					this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff[this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1].origen = "H"+casterIndice;
@@ -3213,6 +3247,20 @@ export class DeveloperCombateService implements OnInit{
  				this.enemigoMuerto(comando.valor);
  				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
  				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+ 			break;
+
+ 			case "eliminar enemigo":
+ 				this.enemigoMuerto(comando.valor);
+ 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
+ 				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+ 			break;
+
+ 			case "restringir accion false":
+ 				this.restringirAcciones= false;
+ 			break;
+
+ 			case "restringir accion true":
+ 				this.restringirAcciones= true;
  			break;
 
  			case "reset":
