@@ -2476,7 +2476,7 @@ export class DeveloperCombateService implements OnInit{
  						hechizo.hechizo_encadenado_id=9;
  				}
 
- 				if(objetivoEnemigos.length>1){
+ 				if(objetivoEnemigos.length>1){//Falta comentar todo mejor, jolín
  					caster.recursoEspecial++;
  				}
  				
@@ -3258,7 +3258,7 @@ export class DeveloperCombateService implements OnInit{
  			break;
 
  			case "eliminar enemigo":
- 				this.enemigoMuerto(comando.valor);
+ 				this.enemigoMuerto(comando.valor-1);
  				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.renderMazmorra});
  				this.renderMazmorra.estadoControl.estado="seleccionAccion";
  			break;
