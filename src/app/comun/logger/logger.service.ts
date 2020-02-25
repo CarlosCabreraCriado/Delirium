@@ -2,6 +2,7 @@
 import { Injectable, Input, Output, EventEmitter} from '@angular/core';
 import { Subject } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +15,8 @@ export class LoggerService {
 	public mostrarLogger: boolean= false;
 	private comando= "";
 
+	private parametros: any;
+
 	// Observable string sources
     private observarLogger = new Subject<any>();
 
@@ -25,6 +28,9 @@ export class LoggerService {
   constructor() { 
 
   }
+  	setParametros(parametros){
+  		this.parametros=parametros;
+  	}
 
   	toggleLogger():void{
  		this.mostrarLogger = !this.mostrarLogger;
@@ -107,6 +113,24 @@ export class LoggerService {
  					this.observarLogger.next({comando: "reset",valor: {}});
  					this.estadoLogger="default";
  					this.toggleLogger();
+ 				break;
+
+ 				case "console enemigos":
+ 					this.log("Mostrando objeto enemigos en consola...");
+ 					this.observarLogger.next({comando: "console enemigos",valor: {}});
+ 					this.estadoLogger="default";
+ 				break;
+
+ 				case "console buff":
+ 					this.log("Mostrando objeto buff en consola...");
+ 					this.observarLogger.next({comando: "console buff",valor: {}});
+ 					this.estadoLogger="default";
+ 				break;
+
+ 				case "console heroes hech":
+ 					this.log("Mostrando objeto hereoes hech en consola...");
+ 					this.observarLogger.next({comando: "console heroes hech",valor: {}});
+ 					this.estadoLogger="default";
  				break;
 
 
@@ -318,8 +342,10 @@ export class LoggerService {
  					for(var i=0; i<renderMazmorra.heroes.length; i++){
  						this.log("---------- "+renderMazmorra.heroes[i].nombre+" -------");
  						this.log("Clase : "+renderMazmorra.heroes[i].clase);
- 						this.log("Vida : "+renderMazmorra.heroes[i].vida);
- 						this.log("Recurso : "+renderMazmorra.heroes[i].recurso);
+ 						this.log("Vida Máxima : "+(renderMazmorra.heroes[i].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib));
+ 						this.log("Vida (%): "+renderMazmorra.heroes[i].vida);
+ 						this.log("Vida (Pts): "+renderMazmorra.heroes[i].vida * (renderMazmorra.heroes[i].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100);
+ 						this.log("Recurso (%): "+renderMazmorra.heroes[i].recurso);
  						this.log("Recurso Especial : "+renderMazmorra.heroes[i].recursoEspecial);
  						this.log("General : "+renderMazmorra.heroes[i].estadisticas.general);
  						this.log("Armadura : "+renderMazmorra.heroes[i].estadisticas.armadura);
@@ -327,7 +353,7 @@ export class LoggerService {
  						this.log("Fuerza : "+renderMazmorra.heroes[i].estadisticas.fuerza);
  						this.log("Intelecto : "+renderMazmorra.heroes[i].estadisticas.intelecto);
  						this.log("Precision : "+renderMazmorra.heroes[i].estadisticas.precision);
- 						this.log("Ferocidad : "+renderMazmorra.heroes[i].estadisticas.ferocidad);//PENE
+ 						this.log("Ferocidad : "+renderMazmorra.heroes[i].estadisticas.ferocidad);
  						this.log("*");
  					}
  				break;
@@ -348,10 +374,12 @@ export class LoggerService {
  				//       COMANDO STATS ENEMIGOS ALL
  				//****************************************
  				case "stats enemigos all":
- 					for(var i=0; i<renderMazmorra.enemigos.length; i++){//ROKKA NO YUUSHA ES BUEN ANIME
+ 					for(var i=0; i<renderMazmorra.enemigos.length; i++){
  						this.log("---------- "+renderMazmorra.enemigos[i].nombre+" -------");
- 						this.log("Vida : "+renderMazmorra.enemigos[i].vida);
- 						this.log("Armadura : "+renderMazmorra.enemigos[i].estadisticas.armadura);//Victor, aprende a buscar esqueletos arqueros
+ 						this.log("Vida Máxima : "+(renderMazmorra.enemigos[i].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib));
+ 						this.log("Vida (%): "+renderMazmorra.enemigos[i].vida);
+ 						this.log("Vida (Pts): "+renderMazmorra.enemigos[i].vida * (renderMazmorra.enemigos[i].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100);
+ 						this.log("Armadura : "+renderMazmorra.enemigos[i].estadisticas.armadura);
  						this.log("Vitalidad : "+renderMazmorra.enemigos[i].estadisticas.vitalidad);
  						this.log("Fuerza : "+renderMazmorra.enemigos[i].estadisticas.fuerza);
  						this.log("Intelecto : "+renderMazmorra.enemigos[i].estadisticas.intelecto);
@@ -438,7 +466,9 @@ export class LoggerService {
  			if(+this.comando<=renderMazmorra.heroes.length){
  				this.log("---------- "+renderMazmorra.heroes[+this.comando-1].nombre+" -------");
  				this.log("Clase : "+renderMazmorra.heroes[+this.comando-1].clase);
- 				this.log("Vida : "+renderMazmorra.heroes[+this.comando-1].vida);
+ 				this.log("Vida Máxima : "+(renderMazmorra.heroes[+this.comando-1].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib));
+ 				this.log("Vida (%): "+renderMazmorra.heroes[+this.comando-1].vida);
+ 				this.log("Vida (Pts): "+renderMazmorra.heroes[+this.comando-1].vida * (renderMazmorra.heroes[+this.comando-1].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100);
  				this.log("Recurso : "+renderMazmorra.heroes[+this.comando-1].recurso);
  				this.log("Recurso Especial : "+renderMazmorra.heroes[+this.comando-1].recursoEspecial);
  				this.log("General : "+renderMazmorra.heroes[+this.comando-1].estadisticas.general);
@@ -458,7 +488,9 @@ export class LoggerService {
  		if(this.estadoLogger=="stats enemigos"){
  			if(+this.comando<=renderMazmorra.enemigos.length){
  				this.log("---------- "+renderMazmorra.enemigos[+this.comando-1].nombre+" -------");
- 				this.log("Vida : "+renderMazmorra.enemigos[+this.comando-1].vida);
+ 				this.log("Vida Máxima : "+(renderMazmorra.enemigos[+this.comando-1].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib));
+ 				this.log("Vida (%): "+renderMazmorra.enemigos[+this.comando-1].vida);
+ 				this.log("Vida (Pts): "+renderMazmorra.enemigos[+this.comando-1].vida * (renderMazmorra.enemigos[+this.comando-1].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100);
  				this.log("Armadura : "+renderMazmorra.enemigos[+this.comando-1].estadisticas.armadura);
  				this.log("Vitalidad : "+renderMazmorra.enemigos[+this.comando-1].estadisticas.vitalidad);
  				this.log("Fuerza : "+renderMazmorra.enemigos[+this.comando-1].estadisticas.fuerza);

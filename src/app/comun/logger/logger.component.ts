@@ -1,6 +1,7 @@
 
 import { Component,Input, ViewChild, ElementRef, AfterViewChecked} from '@angular/core';
 import {LoggerService} from './logger.service';
+import {DeveloperCombateService} from '../developer-combate/developerCombate.service';
 
 @Component({
   selector: 'appLogger',
@@ -11,8 +12,16 @@ export class LoggerComponent {
 
 	@Input() renderMazmorra: any;
 	@ViewChild('contenedorMensajes',{static: false}) private contenedorMensajes: ElementRef;
-	
-  constructor(public loggerService: LoggerService) {}
+
+  public heroeHech: any;
+  public heroeStat: any;
+  public enemigos: any;
+  public buff: any;
+  public objetos: any;
+  public animaciones: any;
+  public parametros: any;
+
+  constructor(public loggerService: LoggerService,private developerCombateService: DeveloperCombateService) {}
 
    scrollToBottom(): void {
         try {
@@ -21,11 +30,19 @@ export class LoggerComponent {
     }
 
   ngAfterViewChecked() {        
-        this.scrollToBottom();        
+        this.scrollToBottom();      
+        this.loggerService.setParametros(this.getParametros());  
     } 
 
   getRenderMazmorra():any{
   	return this.renderMazmorra;
   }
+
+  getParametros():any{
+    this.parametros= this.developerCombateService.parametros;
+    return this.parametros;
+  }
+
+
 
 }

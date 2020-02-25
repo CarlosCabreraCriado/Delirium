@@ -1064,7 +1064,7 @@ export class DeveloperCombateService implements OnInit{
 
  			this.renderMazmorra.enemigos.push({
  				nombre: enemigoAdd.nombre,
- 				enemigo_id: enemigoAdd.enemigo_id,
+ 				enemigo_id: enemigoAdd.id,
  				turno: false,
  				vida: 100,
  				escudo: 0,
@@ -1756,12 +1756,6 @@ export class DeveloperCombateService implements OnInit{
  			//Modificación de los atributos
  			hechizo = this.modificacionHechizoEntradaEnemigo(objetivoEnemigos[objetivoEnemigos.length-1],hechizo);
 
- 			//Ejecutar funciones de hechizo:
- 			this.ejecutarFuncionHechizo(hechizo.funcion,hechizo,objetivoEnemigos,objetivoHeroes);
-
- 			//Aplicar hechizo final al objetivo:
- 			this.aplicarHechizosFinalEnemigo(objetivoEnemigos[objetivoEnemigos.length-1],hechizo,caster);
-
  			//Aplicacion de Buffos:
  			if(hechizo.buff_id!=0){
  				if(esHeroe){
@@ -1945,6 +1939,12 @@ export class DeveloperCombateService implements OnInit{
  				this.modificacionBuffEntradaEnemigo(objetivoEnemigos[objetivoEnemigos.length-1],this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1);
  			}
 
+ 			//Ejecutar funciones de hechizo:
+ 			this.ejecutarFuncionHechizo(hechizo.funcion,hechizo,objetivoEnemigos,objetivoHeroes);
+
+ 			//Aplicar hechizo final al objetivo:
+ 			this.aplicarHechizosFinalEnemigo(objetivoEnemigos[objetivoEnemigos.length-1],hechizo,caster);
+
  			//Eliminar objetivo del array:
  			objetivoEnemigos.splice(objetivoEnemigos.length-1, 1);
 
@@ -1971,12 +1971,6 @@ export class DeveloperCombateService implements OnInit{
 
  			//Modificación de potencia del hechizo de Entrada:
  			hechizo= this.modificacionHechizoEntradaHeroe(objetivoHeroes[objetivoHeroes.length-1],hechizo);
-
- 			//Ejecutar funciones de hechizo:
- 			this.ejecutarFuncionHechizo(hechizo.funcion,hechizo,objetivoEnemigos,objetivoHeroes);
-
- 			//Aplicar hechizo final al objetivo:
- 			this.aplicarHechizosFinalHeroe(objetivoHeroes[objetivoHeroes.length-1],hechizo);
 
  			//Aplicacion de Buffos:
  			if(hechizo.buff_id!=0){
@@ -2168,7 +2162,11 @@ export class DeveloperCombateService implements OnInit{
  				this.modificacionBuffEntradaHeroe(objetivoHeroes[objetivoHeroes.length-1],this.renderMazmorra.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1);
  			}
 
- 			//Aplicacion de funciones:
+ 			//Ejecutar funciones de hechizo:
+ 			this.ejecutarFuncionHechizo(hechizo.funcion,hechizo,objetivoEnemigos,objetivoHeroes);
+
+ 			//Aplicar hechizo final al objetivo:
+ 			this.aplicarHechizosFinalHeroe(objetivoHeroes[objetivoHeroes.length-1],hechizo);
 
  			//Eliminar objetivo del array:
  			objetivoHeroes.splice(objetivoHeroes.length-1, 1);
@@ -3229,6 +3227,22 @@ export class DeveloperCombateService implements OnInit{
  		switch(comando.comando){
  			case "activar evento":
  				this.eventosService.activarEvento(comando.valor);
+ 				this.loggerService.log("-------------- Pasando Turno ------------------");
+ 			break;
+
+ 			case "console enemigos":
+ 				console.log("ENEMIGOS: ");
+ 				console.log(this.enemigos);
+ 			break;
+
+ 			case "console buff":
+ 				console.log("BUFF: ");
+ 				console.log(this.buff);
+ 			break;
+
+ 			case "console heroes hech":
+ 				console.log("HEROES HECH: ");
+ 				console.log(this.heroeHech);	
  			break;
 
  			case "cambiar sala":
