@@ -157,6 +157,15 @@
         <div class="Tiempo">
             <div class="Texto-Tiempo"></div>
         </div>
+        
+        <div class="contenedorBotonesAccion">
+            <img *ngIf="developerCombateService.renderMazmorra.estadoControl.estado=='seleccionAccion'" src="./assets/Mazmorras/BotonAtacar.png" class="boton botonAtacar" />
+            <img *ngIf="developerCombateService.renderMazmorra.estadoControl.estado=='seleccionAccion'" src="./assets/Mazmorras/BotonMover.png" class="boton botonMover" />
+            <img *ngIf="developerCombateService.renderMazmorra.estadoControl.estado!='seleccionAccion'" src="./assets/Mazmorras/BotonVolver.png" class="boton botonVolver" (click)="developerCombateService.routerMazmorra('Backspace')"/>
+            <img src="./assets/Mazmorras/BotonPasarTurno.png" class="boton botonPasarTurno" (click)="developerCombateService.routerMazmorra('p')"/>
+            <img src="./assets/Mazmorras/BotonPersonaje.png" class="boton botonPersonaje"/>
+            <img src="./assets/Mazmorras/BotonVacio.png" class="boton botonVacio"/>
+        </div>
     </div>
 
 </div>

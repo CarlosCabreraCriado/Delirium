@@ -750,7 +750,6 @@
   height: 20vh
   top: 60vh 
   z-index: 15
-  pointer-events: none
 
   &.Individual
     height: 40vh
@@ -758,7 +757,7 @@
   .Accion-Turno-Heroe 
     position: absolute
     display: none
-    width: 80%
+    width: 90%
     height: 100%
     left: 10% 
     @media only screen and (min-width: 992px) //Para Laptops y iPads
@@ -876,6 +875,53 @@
         position: absolute
         width: 100%
         text-align: center 
+
+    .contenedorBotonesAccion
+      position: absolute
+      height: 100%
+      right: 0
+      width: 30%
+
+      .boton
+        position: absolute
+        z-index: 5
+
+      .botonPasarTurno
+        height: 66%
+        width: 50%
+        top: 0
+        right: 0
+
+      .botonVolver
+        height: 33%
+        width: 50%
+        top: 0
+        left: 0
+      
+      .botonAtacar
+        height: 33%
+        width: 50%
+        top: 0
+        left: 0
+
+      .botonMover
+        height: 33%
+        width: 50%
+        top: 33%
+        left: 0
+
+      .botonVacio
+        height: 33%
+        width: 50%
+        top: 66%
+        left: 0
+
+      .botonPersonaje
+        height: 33%
+        width: 50%
+        top: 66%
+        right: 0
+
 //------------------------------------------------------------------
 //--------------------- Controles Movil ----------------------------
 //------------------------------------------------------------------

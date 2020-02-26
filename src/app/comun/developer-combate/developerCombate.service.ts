@@ -660,7 +660,8 @@ export class DeveloperCombateService implements OnInit{
  			tipoObjetivo: "EU",
  			rng: 0,
  			rngEncadenado: false,
- 			critico: false
+ 			critico: false,
+ 			detenerHechizo: false
  		};
 
  		//Inicializacion de turnos:
@@ -2171,6 +2172,8 @@ export class DeveloperCombateService implements OnInit{
  			//Eliminar objetivo del array:
  			objetivoHeroes.splice(objetivoHeroes.length-1, 1);
  		}
+ 		console.log("HECHIZOO");
+ 		console.log(hechizo);
 
  		//Verifica si quedan objetivos por efectuar y relanza el hechizo:
  		if(objetivoEnemigos.length>0){
@@ -2183,7 +2186,7 @@ export class DeveloperCombateService implements OnInit{
  			}, this.velocidadHechizo);
  		}else{
  			setTimeout(()=>{
- 				if(hechizo.hechizo_encadenado_id != 0){ //Si hay hechizo encadenado
+ 				if(hechizo.hechizo_encadenado_id != 0 && !this.renderMazmorra.estadoControl.detenerHechizo){ //Si hay hechizo encadenado
  					this.appService.setControl("desbloqueoHechizo");
  					this.renderMazmorra.estadoControl.estado = "hechizoEncadenado";
  					this.renderMazmorra.estadoControl.hechizo = hechizo.hechizo_encadenado_id;
@@ -2199,6 +2202,7 @@ export class DeveloperCombateService implements OnInit{
  				this.renderMazmorra.estadoControl.rngEncadenado= false;
  				this.renderMazmorra.render.barraAccion.mostrar = false;
  				this.cuentaLanzamientoHechizo=1;
+ 				this.renderMazmorra.estadoControl.detenerHechizo=false;
  				this.renderMazmorra.render.objetivoPredefinido.enemigos= [];
  				this.renderMazmorra.render.objetivoPredefinido.heroes= [];
  				}
@@ -2464,6 +2468,7 @@ export class DeveloperCombateService implements OnInit{
 
  		//Ejecuto acciones en función de la función:
  		switch(funcion){
+
  			case "GenerarEsencia":
  				caster.recursoEspecial++;
  			break
@@ -2473,13 +2478,17 @@ export class DeveloperCombateService implements OnInit{
  				if((this.cuentaAplicacionHechizo == 1) && (caster.recursoEspecial+objetivoEnemigos.length-1>=3)){
  						this.renderMazmorra.render.objetivoPredefinido.enemigos = objetivoEnemigos.slice();
  						this.renderMazmorra.render.objetivoPredefinido.heroes = objetivoHeroes.slice();
- 						hechizo.hechizo_encadenado_id=9;
+ 						console.log("CARGA ARCANA");
+ 						hechizo.hechizo_encadenado_id= this.heroeHech.hechicero.find(i=> i.nombre =="Sobrecarga arcana").id;
  				}
 
- 				if(objetivoEnemigos.length>1){//Falta comentar todo mejor, jolín
+ 				if(objetivoEnemigos.length>1){
  					caster.recursoEspecial++;
  				}
- 				
+
+ 				if(caster.recursoEspecial==3 && (this.cuentaAplicacionHechizo == this.renderMazmorra.render.objetivoPredefinido.enemigos.length)){
+ 					hechizo.hechizo_encadenado_id= this.heroeHech.hechicero.find(i=> i.nombre =="Sobrecarga arcana").id;
+ 				}
  			break
 
  			case "CargaFuego":
@@ -2487,15 +2496,28 @@ export class DeveloperCombateService implements OnInit{
  					caster.recursoEspecial++;
  				}
  				if(caster.recursoEspecial==3){
- 					hechizo.hechizo_encadenado_id=10;
+ 					hechizo.hechizo_encadenado_id=12;
  				}
  			break;
 
- 			case "CargaProyectil":
+ 			case "CargaFrio":
+ 				if(this.renderMazmorra.enemigos[objetivoEnemigos[0]].buff.find(i=> i.id==3)){
+ 					this.renderMazmorra.render.objetivoPredefinido.enemigos = objetivoEnemigos.slice();
+ 					this.renderMazmorra.render.objetivoPredefinido.heroes = objetivoHeroes.slice();
+ 					caster.recursoEspecial++;
+ 				}
+
+ 				if(caster.recursoEspecial==3){
+ 					this.renderMazmorra.estadoControl.rngEncadenado=true;
+ 					hechizo.hechizo_encadenado_id=13;
+ 				}	
+ 			break;
+
+ 			case "Proyectil":
  				if(this.renderMazmorra.estadoControl.rng >= 4){
  					this.renderMazmorra.estadoControl.rngEncadenado=false;
  					this.renderMazmorra.render.objetivoPredefinido.enemigos= Object.assign([],objetivoEnemigos);
- 					hechizo.hechizo_encadenado_id=4;
+ 					hechizo.hechizo_encadenado_id=15;
  				}else{
  					hechizo.hechizo_encadenado_id=0;
  				}
@@ -2506,18 +2528,18 @@ export class DeveloperCombateService implements OnInit{
 
  				if(caster.recursoEspecial==3){
  					this.renderMazmorra.estadoControl.rngEncadenado=true;
- 					hechizo.hechizo_encadenado_id=4;
- 					caster.recursoEspecial = 0;
+ 					this.renderMazmorra.render.objetivoPredefinido.enemigos= Object.assign([],objetivoEnemigos);
+ 					hechizo.hechizo_encadenado_id=14;
  				}
- 			break;
 
- 			case "CargaFrio":
- 				
+ 				if(hechizo.id==14){
+ 					console.log("Lanzando Misil Resonante");
+ 					caster.recursoEspecial=0;
+ 				}
  			break;
 
  			case "Carga_Critico":
  				if(this.renderMazmorra.estadoControl.critico){
- 					console.log("AÑADIENDO CARGA");
  					caster.recursoEspecial++;
  				}
  			break;
@@ -3152,6 +3174,21 @@ export class DeveloperCombateService implements OnInit{
 
  		//Eliminar instancia de enemigos muertos:
  		for (var i = this.renderMazmorra.render.enemigoMuerto.length -1; i >= 0; i--){
+
+ 			//Eliminar Objetivo Predefinido si el enemigo ha muerto:
+ 			for(var j=0; j<this.renderMazmorra.render.objetivoPredefinido.enemigos.length;j++){
+ 				if(this.renderMazmorra.render.objetivoPredefinido.enemigos[j]==this.renderMazmorra.render.enemigoMuerto[i]){
+ 					this.renderMazmorra.render.objetivoPredefinido.enemigos.splice(j,1);
+ 					
+ 					if(this.renderMazmorra.render.objetivoPredefinido.enemigos.length==0){
+ 						this.renderMazmorra.estadoControl.detenerHechizo= true;
+ 					}else{
+ 						//WARNING MEJORA: RESTARLE 1 AL RESTO DE OBJETIVOS PREDEFINIDOS POR ENCIMA DEL QUE SE QUITA.
+ 					}
+
+ 				}
+ 			}
+
  			//Verfica si el enemigo a eliminar tiene el turno:
  			if(this.renderMazmorra.enemigos[this.renderMazmorra.render.enemigoMuerto[i]].turno){
 

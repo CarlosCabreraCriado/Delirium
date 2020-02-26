@@ -14,6 +14,7 @@ export interface RenderMazmorra {
 			rng: number,
 			rngEncadenado: boolean,
 			critico: boolean,
+			detenerHechizo: boolean
 		}
 		objetivo: {
 			enemigos: [],
