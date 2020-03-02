@@ -195,8 +195,7 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
 
 
 		//Suscripcion AppService:
-		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
-        (val) => {
+		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe((val) => {
         	switch(val){
         		case "Iniciar":
         			this.developerCombateService.validacion=this.appService.getValidacion();
@@ -211,16 +210,14 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
         });
 
 		//Suscripcion Tecla Pulsada:
-		this.teclaSuscripcion = this.appService.observarTeclaPulsada$.subscribe(
-        (val) => {
-          this.tecla= val;
-          this.developerCombateService.emisor=true;
-          this.developerCombateService.routerMazmorra(val);
+		this.teclaSuscripcion = this.appService.observarTeclaPulsada$.subscribe((val) => {
+        	this.tecla= val;
+        	this.developerCombateService.emisor=true;
+        	this.developerCombateService.routerMazmorra(val);
         });
 
 		//suscripcion Logger:
-        this.loggerSuscripcion = this.loggerService.observarLogger$.subscribe(
-        (val) => {
+        this.loggerSuscripcion = this.loggerService.observarLogger$.subscribe((val) => {
         	if(!this.bloquearLogger){
         		this.developerCombateService.loggerObs(val);
         	}
@@ -230,15 +227,13 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
         });
 
         //suscripcion Eventos:
-        this.eventosSuscripcion = this.eventosService.observarEventos$.subscribe(
-        (val) => {
-          this.developerCombateService.eventosObs(val);
-        });
+        this.eventosSuscripcion = this.eventosService.observarEventos$.subscribe((val) => {
+        	this.developerCombateService.eventosObs(val);
+   		});
 
         //suscripcion Interfaz:
-        this.interfazSuscripcion = this.interfazService.observarInterfaz$.subscribe(
-        (val) => {
-          this.developerCombateService.interfazObs(val);
+        this.interfazSuscripcion = this.interfazService.observarInterfaz$.subscribe((val) => {
+        	this.developerCombateService.interfazObs(val);
         });
 
       	//Inicio suscripcion evento progreso Carga
@@ -259,7 +254,15 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
     	}
     	
     	this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.developerCombateService.validacion.nombre});
+	}
 
+	ngOnDestroy(){
+		this.loggerSuscripcion.unsubscribe();
+ 		this.socketSubscripcion.unsubscribe();
+ 		this.eventosSuscripcion.unsubscribe();
+ 		this.interfazSuscripcion.unsubscribe();
+ 		this.appServiceSuscripcion.unsubscribe();
+ 		this.teclaSuscripcion.unsubscribe();
 	}
 
 /* 	----------------------------------------------
@@ -381,7 +384,7 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
 		return left+"%";
 	}
 
-	renderizarBuffosHeroe(i:number,j:number): string{
+	renderizarClaseBuffosHeroe(i:number,j:number): string{
 		var clases;
 
 		//Renderiza buffo o debuffo:
@@ -394,6 +397,18 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
 			clases = "Buffo-Heroe";
 		}
 		return clases;
+	}
+
+	renderizarEstiloBuffosHeroe(i:number,j:number,buff:any):any{
+		var estilo={}
+		console.log(buff)
+		var  indexVertical= Math.floor(buff.icon_id/10);
+        var  indexHorizontal= buff.icon_id-indexVertical*10;
+		estilo={
+			'background':'url(./assets/Buffos/Buff.png) '+0.5+11*indexHorizontal+'% '+0.5+9.9*indexVertical+'%',
+			'background-size': '1000% 1100%'
+		}
+		return estilo;
 	}
 
 	renderizarMarcoEnemigo(i:number): string{
@@ -502,7 +517,7 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
 		return clase;
 	}
 
-	renderizarBuffosEnemigos(i:number,j:number): string{
+	renderizarClaseBuffosEnemigos(i:number,j:number): string{
 		var clases;
 
 		//Renderiza buffo o debuffo:
@@ -515,6 +530,19 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
 			clases = "Buffo-Enemigo";
 		}
 		return clases;
+	}
+
+	renderizarEstiloBuffosEnemigos(buff:any):any{
+		
+		var estilo={}
+		var  indexVertical= Math.floor(buff.icon_id/10);
+        var  indexHorizontal= buff.icon_id-indexVertical*10;
+
+		estilo={
+			'background':'url(./assets/Buffos/Buff.png) '+(0.5+11*indexHorizontal)+'% '+(0.5+9.9*indexVertical)+'%',
+			'background-size': '1000% 1100%'
+		}
+		return estilo;
 	}
 
 	/* 	----------------------------------------------
@@ -541,7 +569,6 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
  		this.developerCombateService.musicaMazmorra.volume= 0;
   		this.developerCombateService.musicaMazmorra.remove();
 		this.appService.cambiarUrl("index");	
-
  	}
 	/* 	----------------------------------------------
 		FUNCIONES VARIAS

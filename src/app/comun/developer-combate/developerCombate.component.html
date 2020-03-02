@@ -66,7 +66,7 @@
                     <div class="indiceAgro">{{renderizarIndiceAgroEnemigo(i)}}</div>
                     <div class="barraAgro" [style.height]="renderizarAgroEnemigo(i)"></div>
                 </div>
-                <img src="./assets/Mazmorras/Marco-Enemigo.png" class="Marco-Enemigo">
+                <img src="./assets/Mazmorras/Marco2.png" class="Marco-Enemigo">
                 <img src="./assets/Enemigos/{{renderMazmorra.enemigos[i].nombre}}.png" class="Imagen-Enemigo"/>
                 <appAnimacionEfecto #animacionEfecto [enemigo]="enemigo" [enemigoAnimacion]="enemigo.animacion"></appAnimacionEfecto>
                 <appAnimacionNumero #animacionNumero [enemigo]="enemigo" [enemigoVida]="enemigo.vida" [enemigoIndex]="i"></appAnimacionNumero>
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <div class="Buffos-DeBuffos-Enemigo">
-                <div *ngFor="let buff of renderMazmorra.enemigos[i].buff; let j = index" [ngClass]="renderizarBuffosEnemigos(i,j)">{{renderMazmorra.enemigos[i].buff[j].duracion}}</div>
+                <div *ngFor="let buff of renderMazmorra.enemigos[i].buff; let j = index" [ngClass]="renderizarClaseBuffosEnemigos(i,j)" [ngStyle]="renderizarEstiloBuffosEnemigos(renderMazmorra.enemigos[i].buff[j])">{{renderMazmorra.enemigos[i].buff[j].duracion}}</div>
 
             </div>
         </div>
@@ -159,7 +159,7 @@
         </div>
         
         <div class="contenedorBotonesAccion">
-            <img *ngIf="developerCombateService.renderMazmorra.estadoControl.estado=='seleccionAccion'" src="./assets/Mazmorras/BotonAtacar.png" class="boton botonAtacar" />
+            <img *ngIf="developerCombateService.renderMazmorra.estadoControl.estado=='seleccionAccion'" src="./assets/Mazmorras/BotonAtacar.png" class="boton botonAtacar" (click)="developerCombateService.routerInterfaz('elegirHechizo')" />
             <img *ngIf="developerCombateService.renderMazmorra.estadoControl.estado=='seleccionAccion'" src="./assets/Mazmorras/BotonMover.png" class="boton botonMover" />
             <img *ngIf="developerCombateService.renderMazmorra.estadoControl.estado!='seleccionAccion'" src="./assets/Mazmorras/BotonVolver.png" class="boton botonVolver" (click)="developerCombateService.routerMazmorra('Backspace')"/>
             <img src="./assets/Mazmorras/BotonPasarTurno.png" class="boton botonPasarTurno" (click)="developerCombateService.routerMazmorra('p')"/>
@@ -200,7 +200,7 @@
                 </div>
                 <div class="Buffos-DeBuffos-Heroe">
                 
-                    <div *ngFor="let buff of renderMazmorra.heroes[i].buff; let j = index" [ngClass]="renderizarBuffosHeroe(i,j)">{{renderMazmorra.heroes[i].buff[j].duracion}}</div>
+                    <div *ngFor="let buff of renderMazmorra.heroes[i].buff; let j = index" [ngClass]="renderizarClaseBuffosHeroe(i,j)">{{renderMazmorra.heroes[i].buff[j].duracion}}</div>
             
                 </div>
             </div>

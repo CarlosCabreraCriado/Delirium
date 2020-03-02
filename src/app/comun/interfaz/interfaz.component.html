@@ -10,11 +10,11 @@
 	<div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
 		<div class="tituloInterfaz Texto1">Seleccione un hechizo:  </div>
 		<div class="contenedorHechizos">
-			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(1)">1</div>
-			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(2)">2</div>
-			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(3)">3</div>
-			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(4)">4</div>
-			<div class="hechizo Texto1" (click)="interfazService.selecionarHechizo(5)">U</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[0]+'% '+interfazService.imagenHechVertical[0]+'%','background-size': '1800%'}">1</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[1]+'% '+interfazService.imagenHechVertical[1]+'%','background-size': '1800%'}">2</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[2]+'% '+interfazService.imagenHechVertical[2]+'%','background-size': '1800%'}">3</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[3]+'% '+interfazService.imagenHechVertical[3]+'%','background-size': '1800%'}">4</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(6)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[4]+'% '+interfazService.imagenHechVertical[4]+'%','background-size': '1800%'}">5</div>
 		</div>
 		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
 
@@ -39,7 +39,7 @@
 		<div class="tituloInterfaz Texto1">Seleccone el objetivo:  </div>
 		
 		<div class="botonCancelar Texto2" (click)="interfazService.lanzarHechizo()">Lanzar</div>
-		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
+		<div class="botonCancelar Texto2" (click)="interfazService.cancelarHechizo()">Cancelar</div>
 	</div>
 
 </div>

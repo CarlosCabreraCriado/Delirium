@@ -91,8 +91,8 @@ export class LoggerService {
  					this.log("heal total: Muestra el daño total realizado en ese partida");
  					this.log("escudo total: Muestra el daño total realizado en la partida");
  					this.log("---------------------------------------------------------------------------------------------------");
- 					this.log("restriccion accion true: activa las restricciones de acciones");
- 					this.log("restriccion accion false: desactiva las restricciones de acciones");
+ 					this.log("restringir accion true: activa las restricciones de acciones");
+ 					this.log("restringir accion false: desactiva las restricciones de acciones");
  					this.log("---------------------------------------------------------------------------------------------------");
  					
  				break;

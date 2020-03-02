@@ -1769,6 +1769,7 @@ export class DeveloperCombateService implements OnInit{
 						dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
 						heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
 						escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
+						icon_id: this.buff.buff.find(i => i.id==hechizo.buff_id).icon_id,
 						rng: this.renderMazmorra.estadoControl.rng,
 						origen: "0"
 	 				});
@@ -1782,6 +1783,7 @@ export class DeveloperCombateService implements OnInit{
 						dano_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).daño_t,
 						heal_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).heal_t,
 						escudo_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).escudo_t,
+						icon_id: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).icon_id,
 						rng: this.renderMazmorra.estadoControl.rng,
 						origen: "0"
 	 				});
@@ -1986,6 +1988,7 @@ export class DeveloperCombateService implements OnInit{
 						dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
 						heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
 						escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
+						icon_id: this.buff.buff.find(i => i.id==hechizo.buff_id).icon_id,
 						rng: this.renderMazmorra.estadoControl.rng,
 						origen: "0"
 	 				});
@@ -1999,6 +2002,7 @@ export class DeveloperCombateService implements OnInit{
 						dano_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).daño_t,
 						heal_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).heal_t,
 						escudo_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).escudo_t,
+						icon_id: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).icon_id,
 						rng: this.renderMazmorra.estadoControl.rng,
 						origen: "0"
 	 				});
@@ -2486,7 +2490,7 @@ export class DeveloperCombateService implements OnInit{
  					caster.recursoEspecial++;
  				}
 
- 				if(caster.recursoEspecial==3 && (this.cuentaAplicacionHechizo == this.renderMazmorra.render.objetivoPredefinido.enemigos.length)){
+ 				if(caster.recursoEspecial>=3 && (this.cuentaAplicacionHechizo == this.renderMazmorra.render.objetivoPredefinido.enemigos.length)){
  					hechizo.hechizo_encadenado_id= this.heroeHech.hechicero.find(i=> i.nombre =="Sobrecarga arcana").id;
  				}
  			break
@@ -2495,7 +2499,7 @@ export class DeveloperCombateService implements OnInit{
  				if(this.renderMazmorra.estadoControl.critico){
  					caster.recursoEspecial++;
  				}
- 				if(caster.recursoEspecial==3){
+ 				if(caster.recursoEspecial>=3){
  					hechizo.hechizo_encadenado_id=12;
  				}
  			break;
@@ -2507,7 +2511,7 @@ export class DeveloperCombateService implements OnInit{
  					caster.recursoEspecial++;
  				}
 
- 				if(caster.recursoEspecial==3){
+ 				if(caster.recursoEspecial>=3){
  					this.renderMazmorra.estadoControl.rngEncadenado=true;
  					hechizo.hechizo_encadenado_id=13;
  				}	
@@ -2526,7 +2530,7 @@ export class DeveloperCombateService implements OnInit{
  					caster.recursoEspecial++;
  				}
 
- 				if(caster.recursoEspecial==3){
+ 				if(caster.recursoEspecial>=3){
  					this.renderMazmorra.estadoControl.rngEncadenado=true;
  					this.renderMazmorra.render.objetivoPredefinido.enemigos= Object.assign([],objetivoEnemigos);
  					hechizo.hechizo_encadenado_id=14;
@@ -3230,6 +3234,7 @@ export class DeveloperCombateService implements OnInit{
  	activarRNG(){
  		if(this.renderMazmorra.estadoControl.rngEncadenado){
  			//this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: this.renderMazmorra, emisor: this.renderMazmorra.personaje});
+ 			console.log("RNG ENCADENADO");
  			this.lanzarHechizo();
  			return;}
  		this.renderMazmorra.estadoControl.estado="rng";
@@ -3368,7 +3373,8 @@ export class DeveloperCombateService implements OnInit{
 
  		switch(comando.comando){
  			case "cancelar":
- 				//this.renderMazmorra.estadoControl.estado="seleccionAccion";
+ 				this.renderMazmorra.estadoControl.estado="seleccionAccion";
+ 				this.cancelarObjetivo();
  			break;
  			case "selecionarHechizo":
  				console.log("Lanzando Hechizo: "+comando.valor);
@@ -3416,6 +3422,9 @@ export class DeveloperCombateService implements OnInit{
  		switch(pantalla){
  			case "elegirHechizo":
  				//this.renderMazmorra.estadoControl.estado="eligiendoHechizo";
+ 				this.interfazService.setHeroesHech(this.heroeHech);
+ 				this.interfazService.setEnemigos(this.enemigos);
+ 				this.interfazService.setRender(this.renderMazmorra);
  				this.interfazService.activarInterfaz();
  				console.log(pantalla)
  			break;

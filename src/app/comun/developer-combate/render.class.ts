@@ -60,6 +60,7 @@ export interface RenderMazmorra {
 				dano_t: number,
 				heal_t: number,
 				escudo_t: number,
+				icon_id: number,
 				rng: number
 			}[],
 			oro: number,
@@ -107,6 +108,7 @@ export interface RenderMazmorra {
 				dano_t: number,
 				heal_t: number,
 				escudo_t: number,
+				icon_id: number,
 				rng: number
 			}[]
 			hechizos: [],
