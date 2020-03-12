@@ -3,6 +3,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from '../../app.service';
 import { Subscription } from "rxjs";
+import { HeroesInfoComponent} from '../heroesInfo/heroesInfo.component'
+import { HeroesInfoService} from '../heroesInfo/heroesInfo.service'
 //import { ElectronService } from 'ngx-electron';
 
 @Component({
@@ -13,7 +15,7 @@ import { Subscription } from "rxjs";
 
 export class HeroesComponent implements OnInit{
 
-	constructor(public appService: AppService/*, public electronService: ElectronService*/) { }
+	constructor(public appService: AppService, public heroesInfoService: HeroesInfoService/*, public electronService: ElectronService*/) { }
 
 	private cursorSuscripcion: Subscription = null;
 	
@@ -109,12 +111,11 @@ export class HeroesComponent implements OnInit{
 
 	seleccionarHeroe(index):void{
 		console.log("Heroe seleccionado: ");
-		this.pantalla = "infoHeroe";
-
+		this.heroesInfoService.mostrarHeroesInfo=true;
 		//Formateo Mayusculas y espacios:
-		this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.replace(/_/g," ");
-		this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.charAt(0).toUpperCase() + this.heroeSeleccionado.clase.slice(1).toLowerCase();
-		console.log(this.heroeSeleccionado.nombre - this.heroeSeleccionado.clase);
+		//this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.replace(/_/g," ");
+		//this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.charAt(0).toUpperCase() + this.heroeSeleccionado.clase.slice(1).toLowerCase();
+		//console.log(this.heroeSeleccionado.nombre - this.heroeSeleccionado.clase);
 	}
 
 

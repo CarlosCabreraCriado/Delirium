@@ -1,0 +1,344 @@
+
+
+  
+#contenedorHeroesInfo
+  position: absolute
+  width: 90%
+  height: 90%
+  left: 5%
+  top: 5%
+  z-index: 10
+
+  .fondoPanel
+    position: absolute
+    width: 100%
+    height: 100%
+
+  .bordeSuperior
+    position: absolute
+    top: 0px
+    width: 100%
+
+  .bordeInferior
+    position: absolute
+    bottom: 0px
+    width: 100%
+
+  .botonCerrar
+    position: absolute
+    top: 0
+    right: 0
+    width: 5%
+    z-index: 20
+
+  .contenedorPanelIzquierdo
+    position: absolute
+    width: 35%
+    top: 5%
+    left: 2%
+    height: 90%
+    z-index: 12
+
+    .fondoIzquierdo
+      position: absolute
+      width: 100%
+      height: 100%
+      z-index: 11
+
+    .iconoClase
+      position: absolute
+      width: 20%
+      top: 5%
+      left: 10%
+      z-index: inherit
+
+    .nombreClase
+      position: relative
+      z-index: inherit
+      width: 100%
+      margin-top: 10%
+      text-align: center
+
+    .nombreJugador
+      position: relative
+      z-index: inherit
+      width: 100%
+      margin-bottom: 10%
+      text-align: center
+
+    .opcion
+      position: relative
+      z-index: inherit
+      width: 100%
+      margin-top: 5%
+      text-align: center
+
+    .contenedorImagenPersonaje
+      position: absolute
+      z-index: inherit
+      width: 70%
+      height: 50%
+      bottom: 0  
+      overflow: hidden
+      margin-left: 15%
+      margin-right: 15%
+      margin-bottom: 8%
+
+      .imagenPersonaje
+        position: absolute
+        z-index: inherit
+        max-width: 100%
+        top: 0  
+
+  .contenedorPanelDerecho
+    position: absolute
+    width: 60%
+    right: 0
+    height: 100%
+
+    .panelPersonaje
+      position: absolute
+      width: 100%
+      height: 90%
+      top: 5%
+
+      .papiroSuperior
+        position: absolute
+        height: 70%
+        top: 0
+        width: 100%
+        .fondoPapiro
+          position: absolute
+          width: 100%
+          height: 100%
+        .separador
+          position: absolute
+          width: 90%
+          top: 45%
+          margin-left: 5%
+          margin-right: 5%
+        .seccionSuperior
+          overflow: hidden
+          height: 50%
+          div
+            position: relative
+            width: 90%
+            margin-left: 5%
+            margin-right: 5%
+
+        .seccionInferior
+          overflow: hidden
+          height: 50%
+          div
+            position: relative
+            width: 90%
+            margin-left: 5%
+            margin-right: 5%
+
+      .papiroInferior
+        position: absolute
+        display: block
+        height: 30%
+        bottom: 0
+        width: 100%
+
+        .fondoPapiro
+          position: absolute
+          width: 100%
+          height: 100%
+
+        .contenedorIconoClaseMarca
+          position: absolute
+          display: block
+          width: 100%
+          height: 100%
+
+          .iconoClaseMarca
+            display: block
+            margin-left: auto
+            margin-right: auto
+            max-width: 100%
+            height: 100%
+            opacity: 0.5
+
+    //PANEL HABILIDADES:
+
+    .panelHabilidades
+      position: absolute
+      width: 100%
+      height: 90%
+      top: 5%
+      .fondoPapiro
+        position: absolute
+        width: 100%
+        height: 100%
+      .titulo
+        position: relative
+        width: 90%
+        margin-left: 5%
+        margin-right: 5%
+
+      .contenedorHechizo
+        position: relative
+        width: 90%
+        height: 10%
+        overflow: hidden
+        margin-left: 5%
+        margin-right: 5%
+        margin-top: 2.5%
+        margin-bottom: 2.5%
+        .contenedorImagenHechizo
+          position: relative
+          display: block
+          width: 10%
+          padding-top: 100%
+          .imagenHechizo
+            position: absolute
+            width: 100%
+            height: 100%
+            top: 0
+            border: solid black 2px
+            box-sizing: border-box
+        .textoHechizo
+          position: relative
+          display: inline-block
+          vertical-align: top
+          height: 100%
+          width: 78%
+          margin-left: 2%
+    
+    //PANEL EQUIPO:
+    .panelEquipo
+      position: absolute
+      width: 100%
+      height: 90%
+      top: 5%
+
+      .papiroSuperior
+        position: absolute
+        height: 70%
+        top: 0
+        width: 100%
+        .fondoPapiro
+          position: absolute
+          width: 100%
+          height: 100%
+
+        .titulo
+          position: relative
+          width: 90%
+          margin-right: 5%
+          margin-left: 5%
+          margin-top: 5%
+
+        .seccionEquipo
+          position: relative
+          display: inline-block
+          left: 5%
+          width: 55%
+          height: 80%
+
+          .imagenDummy
+            position: absolute
+            width: 70%
+            left: 50%
+            margin-left: -35%
+            max-height: 100%
+            mix-blend-mode: multiply
+            top: 0
+
+          .filaObjetosDerecha
+            position: absolute
+            width: 20%
+            height: 70%
+            top: 0
+            left: 0
+          
+            .objeto
+              position: relative
+              width: 100%
+              padding-top: 100%
+              background-color: rgba(0,255,0,0.5)
+              margin: 15% 0
+              .bordeObjeto
+                position: absolute
+                width: 100%
+                height: 100%
+                top: 0
+                left: 0
+              .imagenObjeto
+                position: absolute
+          .filaObjetosIzquierda
+            position: absolute
+            width: 20%
+            height: 70%
+            top: 0
+            right: 0
+            .objeto
+              position: relative
+              width: 100%
+              padding-top: 100%
+              background-color: rgba(0,255,0,0.5)
+              margin: 15% 0
+              .bordeObjeto
+                position: absolute
+                width: 100%
+                height: 100%
+                top: 0
+                left: 0
+              .imagenObjeto
+                position: absolute
+          .armaDerecha
+              position: absolute
+              width: 25%
+              height: 30%
+              background-color: rgba(0,255,0,0.5)
+              bottom: 5%
+              right: 0
+              .bordeObjeto
+                position: absolute
+                width: 100%
+                height: 100%
+                top: 0
+                left: 0
+              .imagenObjeto
+                position: absolute
+          .armaIzquierda
+              position: absolute
+              width: 25%
+              height: 30%
+              background-color: rgba(0,255,0,0.5)
+              bottom: 5%
+              left: 0
+              .bordeObjeto
+                position: absolute
+                width: 100%
+                height: 100%
+                top: 0
+                left: 0
+              .imagenObjeto
+                position: absolute
+        .seccionEstadisticas
+          position: relative
+          display: inline-block
+          vertical-align: top
+          margin-left: 2.5%
+          left: 5%
+
+          .tituloEstadisticas
+            position: relative
+            margin-bottom: 5%
+            margin-top: 5%
+
+        
+      .papiroInferior
+        position: absolute
+        display: block
+        height: 30%
+        bottom: 0
+        width: 100%
+
+        .fondoContenedorObjetos
+          position: absolute
+          width: 95%
+          height: 100%

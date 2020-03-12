@@ -1,5 +1,4 @@
 
-
 //Módulo principal de la aplicación:
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -33,9 +32,10 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { BugLogComponent } from './comun/bug-log/bug-log.component';
 import { AjustesComponent } from './comun/ajustes/ajustes.component';
 import { DeveloperToolComponent } from './comun/developer-tool/developer-tool.component';
+import { HeroesInfoComponent } from './comun/heroesInfo/heroesInfo.component';
 
-//const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
-const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
+const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
+//const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
 
 //Declaración del módulo:
 @NgModule({
@@ -60,7 +60,8 @@ const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', opti
     UnirsePartidaComponent,
     BugLogComponent,
     AjustesComponent,
-    DeveloperToolComponent
+    DeveloperToolComponent,
+    HeroesInfoComponent
   ],
   imports: [
     BrowserModule,

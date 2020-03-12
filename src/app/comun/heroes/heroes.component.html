@@ -8,12 +8,6 @@
 
 <div class="fondo" id="fondo">
     <img alt="Fondo-papiro" class="Fondo-papiro" src="./assets/General/papiro.jpg"/>
-
-    <!-- Video Fondo -->
-    <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/General/papiro.jpg">
-        <source src="./assets/videos/particulas.mp4" type="video/mp4"/>
-    </video>
-    
 </div>
 
 <img src="assets/General/papiro.jpg" class="Fondo-papiro" alt="Fondo-papiro">
@@ -42,12 +36,7 @@
     </div>
   </div>
 
-  <div *ngIf="pantalla=='infoHeroe'" class="contenedorInfoHeroe">
-    <div class="panelPartidaDescripcion"> 
-      <div class="panelPartidaNombre Texto2"> Hola </div>
-      <div class="panelPartidaPersonaje Texto3"> Guapeton </div>
-    </div>
-  </div>
+  <appHeroesInfo></appHeroesInfo>
 
 </div>
  

@@ -1,5 +1,5 @@
 
-const DEBUG = false;
+const DEBUG = true;
 const MOVIL = false;
 
 //Static Server
