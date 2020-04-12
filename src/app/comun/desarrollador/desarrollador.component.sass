@@ -1,0 +1,390 @@
+
+
+#contenedorDesarrollador
+  position: absolute
+  width: 100vw
+  height: 100vh
+  background-color: grey
+
+// *************************************************
+//     BARRA INICIO
+// *************************************************
+
+#barraInicio
+  position: absolute
+  width: 100%
+  height: 10%
+  top: 0
+  background-color: rgba(0,0,0,0.7)
+  box-shadow: 0px 5px 5px black
+
+  #contenedorLogo
+    position: relative
+    display: inline-block
+    height: 100%
+    width: 25%
+
+    .logo
+      position: absolute
+      max-width: 100%
+      max-height: 100%
+      width: auto
+      height: auto
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      margin: auto
+
+  .botonContainer
+    position: relative
+    display: inline-flex
+    width: 15%
+    height: 100%
+    color: white
+    text-align: center
+    vertical-align: top
+    align-items: center
+    box-sizing: border-box
+    border-left: solid 2px
+
+    .boton
+      position: relative
+      width: 100%
+
+  .botonContainer:hover
+    color: black
+    background-color: white
+
+    #botonInmap
+    #botonMazmorra
+    #botonDatos
+    #botonAssets
+
+  .contenedorUsuario
+    position: relative
+    display: inline-flex
+    width: 15%
+    height: 100%
+    color: white
+    vertical-align: top
+    text-align: center
+    align-items: center
+
+    .usuario
+      width: 100%
+    .version
+      width: 100%
+
+// *************************************************
+//     SECCION WORKSPACE
+// *************************************************
+
+#workspace
+  position: absolute
+  width: 100%
+  height: 70%
+  top: 10%
+
+  .iconoSave
+    position: absolute
+    width: 3%
+    top: 3%
+    left: 3%
+  .iconoSave:hover
+    filter: invert(100%)
+
+  .iconoBug
+    position: absolute
+    width: 3%
+    top: 3%
+    left: 7%
+  .iconoBug:hover
+    filter: invert(100%)
+
+// *************************************************
+//     SECCION INMAP BUILDER
+// *************************************************
+
+#panelInmap
+  .mapaGeneral
+    position: absolute
+    max-height: 100%
+    max-width: 100%
+    margin: auto
+    height: auto
+    width: auto
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+  .zona1
+    top: 80%
+    left: 72%
+  .zona2
+    top: 67%
+    left: 64%
+  .zona3
+    top: 57%
+    left: 65%
+  .zona4
+    top: 55%
+    left: 74%
+  .zona5
+    top: 47%
+    left: 66%
+  .zona6
+    top: 50%
+    left: 50%
+  .zona7
+    top: 34%
+    left: 72%
+  .zona8
+    top: 22%
+    left: 71%
+  .zona9
+    top: 22%
+    left: 62%
+  .zona10
+    top: 29%
+    left: 55%
+  .zona11
+    top: 84%
+    left: 61%
+  .zona12
+    top: 87%
+    left: 48%
+  .zona13
+    top: 74%
+    left: 45%
+  .zona14
+    top: 88%
+    left: 34%
+  .zona15
+    top: 88%
+    left: 23%
+  .zona16
+    top: 71%
+    left: 27%
+  .zona17
+    top: 60%
+    left: 23%
+  .zona18
+    top: 42%
+    left: 20%
+  .zona19
+    top: 18%
+    left: 25%
+  .zona20
+    top: 29%
+    left: 39%
+  .pulsacion
+    position: absolute
+    transform: translateX(-50%) translateY(-50%)
+    width: 20px
+    height: 20px
+    &:before 
+      content: ''
+      position: relative
+      display: block
+      width: 300%
+      height: 300%
+      box-sizing: border-box
+      margin-left: -100%
+      margin-top: -100%
+      border-radius: 45px
+      background-color: #01a4e9
+      animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite
+    &:after 
+      content: ''
+      position: absolute
+      left: 0
+      top: 0
+      display: block
+      width: 100%
+      height: 100%
+      background-color: #01a4e9
+      border-radius: 10px
+      box-shadow: 0 0 8px rgba(0,0,0,.3)
+      animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite
+    &:hover:after
+      background-color: white
+
+// *************************************************
+//     PANEL DATOS
+// *************************************************
+
+#panelDatos
+  .contenedorBarraAccion
+    position: absolute
+    top: 5%
+    left: 25%
+    height: 10%
+    width: 50%
+    color: white
+    .botonAccion
+      position: relative
+      display: inline-flex
+      height: 100%
+      width: 33.33%
+      align-items: center
+      justify-content: center
+      background-color: rgba(0,0,0,1)
+    .botonAccion:hover
+      color: black
+      background-color: white
+  .contenedorArchivos
+    position: absolute
+    top: 20%
+    left: 3%
+    height: 60%
+    width: 20%
+    color: white
+    
+    .tituloArchivo
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 100%
+      text-align: center
+      background-color: rgba(0,0,0,1)
+      height: 15%
+    .archivo
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 100%
+      text-align: center
+      background-color: rgba(0,0,0,0.5)
+      height: 10.624%
+    .archivo:hover
+      color: black
+      background-color: white
+
+
+  .contenedorOpcion
+    position: absolute
+    top: 20%
+    left: 25%
+    width: 50%
+    height: 60%
+    background-color: white
+    &.ver
+      width: 70%
+      height: 70%
+      overflow: scroll
+    &.modificar
+      width: 70%
+      height: 70%
+      overflow: scroll
+    &.subir
+      .botonCambiarEstadisticas
+        position: relative
+        border: solid black 2px
+      
+// *************************************************
+//     PANEL ASSETS
+// *************************************************
+
+#panelAssets
+  .contenedorTipoAssets
+    position: absolute
+    top: 20%
+    left: 3%
+    height: 60%
+    width: 20%
+    color: white
+    
+    .tituloArchivo
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 100%
+      text-align: center
+      background-color: rgba(0,0,0,1)
+      height: 15%
+    .archivo
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 100%
+      text-align: center
+      background-color: rgba(0,0,0,0.5)
+      height: 10.624%
+    .archivo:hover
+      color: black
+      background-color: white
+
+  .contenedorVisualizador
+    position: absolute
+    top: 20%
+    left: 30%
+    width: 40%
+    height: 60%
+    background-color: rgba(0,0,0,0.5)
+
+
+// *************************************************
+//     SECCION CONSOLA
+// *************************************************
+
+#consola
+  position: absolute
+  font-family: monospace
+  color: white
+  width: 100%
+  height: 20%
+  bottom: 0
+  background-color: black
+
+  .tituloConsola
+    position: absolute
+    top: -15%
+    width: 15%
+    height: 15%
+    text-align: center
+    background-color: black
+    line-height: 200%
+  
+  .contenidoConsola
+    position: absolute
+    width: 96%
+    height: 85%
+    left: 2%
+    top: 10%
+
+
+//ANIMACIONE:
+
+@keyframes pulse-ring 
+  0% 
+    transform: scale(.33)
+  80%, 100% 
+    opacity: 0
+  
+@keyframes pulse-dot 
+  0% 
+    transform: scale(.8)
+  50% 
+    transform: scale(1)
+  100% 
+    transform: scale(.8)
+
+ngx-json-viewer 
+  overflow: scroll !important
+  ::ng-deep 
+    overflow: scroll !important
+
+  
+
+  
+
+
+  
+
+  
+  

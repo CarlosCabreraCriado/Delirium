@@ -69,7 +69,11 @@ export class AppService {
     //public ipRemota: string= "http://www.carloscabreracriado.com";
     public ipRemota: string= "http://127.0.0.1:8000";
 
+    //Variables de configuración:
+    public activarDatosOficiales= true;
+
     //Variables de datos:
+    public datosJuego: any;
     public perfil:any;
 
     //Definicion estadisticas generales:
@@ -173,7 +177,16 @@ export class AppService {
   		this.observarTeclaPulsada.next(tecla);
   	}
 
-    setInicio(data: any){
+    setInicio(datosJuego: any){
+
+      var data= [];
+
+      if(this.activarDatosOficiales){
+        data= datosJuego.datosOficial;
+      }else{
+        data= datosJuego.datosDesarrollador;
+      }
+
       for(var i=0; i<data.length; i++){
         switch(data[i].nombreId){
           case "Perfil":
@@ -205,12 +218,12 @@ export class AppService {
           break;
         }
       }
+
       console.log("Sesion Iniciada: ");
       console.log(this.validacion);
       console.log("Datos de Juego: ");
       console.log(data);
-      this.electronService.ipcRenderer.sendSync('setDatos',data);
-
+      this.electronService.ipcRenderer.sendSync('setDatos',datosJuego);
 
       return;
     }
@@ -243,6 +256,7 @@ export class AppService {
 
     mostrarDeveloperTool(val:string):void{
       this.developerTool.emit(val);
+      this.electronService.ipcRenderer.sendSync('desarrollador');
     }
 
     mostrarAjustes(val:string):void{
@@ -280,38 +294,91 @@ export class AppService {
     }
 
     getHeroesStats(){
-       return this.heroeStat;
+      if(this.heroeStat===undefined){
+        if(this.activarDatosOficiales){
+          this.heroeStat= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Heroes_Stats");
+        }else{
+          this.heroeStat= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Heroes_Stats");
+        }
+      }
+      return this.heroeStat;
     }
 
     getHeroesHech(){
-       return this.heroeHech;
+      if(this.heroeHech===undefined){
+        if(this.activarDatosOficiales){
+          this.heroeHech= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Heroes_Hech");
+        }else{
+          this.heroeHech= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Heroes_Hech");
+        }
+      }
+      return this.heroeHech;
     }
 
     getBuff(){
+      if(this.buff===undefined){
+         if(this.activarDatosOficiales){
+          this.buff= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Buff");
+        }else{
+          this.buff= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Buff");
+        }
+       }
        return this.buff;
     }
 
     getEnemigos(){
-       return this.enemigos;
+      if(this.enemigos===undefined){
+        if(this.activarDatosOficiales){
+          this.enemigos= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Enemigos");
+        }else{
+          this.enemigos= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Enemigos");
+        }
+      }
+      return this.enemigos;
     }
 
     getAnimaciones(){
-       return this.animaciones;
+      if(this.animaciones===undefined){
+        if(this.activarDatosOficiales){
+          this.animaciones= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Animaciones");
+        }else{
+          this.animaciones= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Animaciones");
+        }
+      }
+      return this.animaciones;
     }
 
     getParametros(){
-       return this.parametros;
+      if(this.parametros===undefined){
+        if(this.activarDatosOficiales){
+          this.parametros= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Parametros");
+        }else{
+          this.parametros= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Parametros");
+        }
+      }
+      return this.parametros;
     }
 
     getObjetos(){
-       return this.objetos;
+      if(this.objetos==undefined){
+        if(this.activarDatosOficiales){
+          this.objetos= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Objetos");
+        }else{
+          this.objetos= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Objetos");
+        }
+      }
+      return this.objetos;
     }
 
     getPerfil(){
        if(this.perfil===undefined){
-         this.perfil= this.electronService.ipcRenderer.sendSync('getDatos').find(i=> i.nombreId=="Perfil");
-       }
-       return this.perfil;
+          if(this.activarDatosOficiales){
+            this.perfil= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Perfil");
+          }else{
+            this.perfil= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Perfil");
+          }
+        }
+        return this.perfil;
     }
 
     getDispositivo(){
@@ -322,5 +389,12 @@ export class AppService {
        this.dispositivo= dispositivo;
        return;
     }
+
+    openDesarrollador(){
+       this.electronService.ipcRenderer.sendSync('desarrollador');
+       return;
+    }
+
+
 }
 

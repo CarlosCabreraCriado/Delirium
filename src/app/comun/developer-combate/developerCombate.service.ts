@@ -83,7 +83,7 @@ export class DeveloperCombateService implements OnInit{
   		
   		this.musicaMazmorra.src = "./assets/musica/musica-mazmorra.mp3";
   		this.musicaMazmorra.load();
-  		this.musicaMazmorra.volume= 0.2;
+  		this.musicaMazmorra.volume= 0;
   		this.musicaMazmorra.play();
 	}
 
@@ -772,7 +772,7 @@ export class DeveloperCombateService implements OnInit{
  				mensajeAccion: "Partida Iniciada",
  				mostrar: false,
  				nombreTurno: this.renderMazmorra.heroes[0].nombre,
- 				claseTurno: "/Clases/"+this.renderMazmorra.heroes[0].clase
+ 				claseTurno: "/Clases/"+this.renderMazmorra.heroes[0].clase.toLowerCase()
  			},
  			objetivoPredefinido: {
  				enemigos: [],
@@ -929,7 +929,7 @@ export class DeveloperCombateService implements OnInit{
  				this.mensajeAccion("Turno de "+this.renderMazmorra.heroes[0].nombre,2000);
  				this.loggerService.log("-------------- Turno de "+this.renderMazmorra.heroes[0].nombre+" ------------------");
  				this.renderMazmorra.render.barraAccion.nombreTurno=this.renderMazmorra.heroes[0].nombre;
- 				this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[0].clase;
+ 				this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[0].clase.toLowerCase();
 
  				this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  				this.autoGuardado2 = cloneDeep(this.autoGuardado);
@@ -944,7 +944,7 @@ export class DeveloperCombateService implements OnInit{
  					this.loggerService.log("-------------- Turno de "+this.renderMazmorra.enemigos[i].nombre+" ------------------");
  					this.mensajeAccion("Turno de "+this.renderMazmorra.enemigos[i].nombre,2000);
  					this.renderMazmorra.render.barraAccion.nombreTurno=this.renderMazmorra.enemigos[i].nombre;
- 					this.renderMazmorra.render.barraAccion.claseTurno="/Enemigos/"+this.renderMazmorra.enemigos[i].nombre;
+ 					this.renderMazmorra.render.barraAccion.claseTurno="/Enemigos/"+this.renderMazmorra.enemigos[i].nombre.toLowerCase();
 					
 					this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  					this.autoGuardado2 = cloneDeep(this.autoGuardado);
@@ -965,7 +965,7 @@ export class DeveloperCombateService implements OnInit{
  				this.loggerService.log("-------------- Turno de "+this.renderMazmorra.heroes[i+1].nombre+" ------------------");
  				this.mensajeAccion("Turno de "+this.renderMazmorra.heroes[i+1].nombre,2000);
  				this.renderMazmorra.render.barraAccion.nombreTurno=this.renderMazmorra.heroes[i+1].nombre;
- 				this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[i+1].clase;
+ 				this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[i+1].clase.toLowerCase();
  				
  				this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  				this.autoGuardado2 = cloneDeep(this.autoGuardado);
@@ -983,7 +983,7 @@ export class DeveloperCombateService implements OnInit{
  				this.loggerService.log("-------------- Turno de "+this.renderMazmorra.enemigos[i+1].nombre+" ------------------");
  				this.mensajeAccion("Turno de "+this.renderMazmorra.enemigos[i+1].nombre,2000);
  				this.renderMazmorra.render.barraAccion.nombreTurno=this.renderMazmorra.enemigos[i+1].nombre;
- 				this.renderMazmorra.render.barraAccion.claseTurno="/Enemigos/"+this.renderMazmorra.enemigos[i+1].nombre;
+ 				this.renderMazmorra.render.barraAccion.claseTurno="/Enemigos/"+this.renderMazmorra.enemigos[i+1].nombre.toLowerCase();
 
  				this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  				this.autoGuardado2 = cloneDeep(this.autoGuardado);
@@ -1002,7 +1002,7 @@ export class DeveloperCombateService implements OnInit{
  				this.loggerService.log("-------------- Turno de "+this.renderMazmorra.enemigos[0].nombre+" ------------------");
  				this.mensajeAccion("Turno de "+this.renderMazmorra.enemigos[0].nombre,2000);
  				this.renderMazmorra.render.barraAccion.nombreTurno=this.renderMazmorra.enemigos[0].nombre;
- 				this.renderMazmorra.render.barraAccion.claseTurno="/Enemigos/"+this.renderMazmorra.enemigos[0].nombre;
+ 				this.renderMazmorra.render.barraAccion.claseTurno="/Enemigos/"+this.renderMazmorra.enemigos[0].nombre.toLowerCase();
  			}else{
  				this.renderMazmorra.heroes[0].turno = true;
  				this.renderMazmorra.registroTurno.push(0);
@@ -1011,7 +1011,7 @@ export class DeveloperCombateService implements OnInit{
  				this.loggerService.log("-------------- Turno de "+this.renderMazmorra.heroes[0].nombre+" ------------------");
  				this.mensajeAccion("Turno de "+this.renderMazmorra.heroes[0].nombre,2000);
  				this.renderMazmorra.render.barraAccion.nombreTurno=this.renderMazmorra.heroes[0].nombre;
- 				this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[0].clase;
+ 				this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[0].clase.toLowerCase();
  			}
 
  			this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
@@ -1030,7 +1030,7 @@ export class DeveloperCombateService implements OnInit{
  			this.loggerService.log("-------------- Turno de "+this.renderMazmorra.heroes[0].nombre+" ------------------");
  			this.mensajeAccion("Turno de "+this.renderMazmorra.heroes[0].nombre,2000);
  			this.renderMazmorra.render.barraAccion.nombreTurno=this.renderMazmorra.heroes[0].nombre;
- 			this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[0].clase;
+ 			this.renderMazmorra.render.barraAccion.claseTurno="/Clases/"+this.renderMazmorra.heroes[0].clase.toLowerCase();
 			
 			this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  			this.autoGuardado2 = cloneDeep(this.autoGuardado);

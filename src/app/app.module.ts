@@ -4,6 +4,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgxElectronModule } from 'ngx-electron';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ import { BugLogComponent } from './comun/bug-log/bug-log.component';
 import { AjustesComponent } from './comun/ajustes/ajustes.component';
 import { DeveloperToolComponent } from './comun/developer-tool/developer-tool.component';
 import { HeroesInfoComponent } from './comun/heroesInfo/heroesInfo.component';
+import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
 
 const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
 //const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
@@ -61,7 +63,8 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     BugLogComponent,
     AjustesComponent,
     DeveloperToolComponent,
-    HeroesInfoComponent
+    HeroesInfoComponent,
+    DesarrolladorComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     NgxElectronModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    NgJsonEditorModule,
     SocketIoModule.forRoot(config)
   ],
   providers: [],

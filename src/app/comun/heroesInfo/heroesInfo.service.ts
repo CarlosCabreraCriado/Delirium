@@ -23,7 +23,9 @@ export class HeroesInfoService {
     private parametros: any;
 
     //Render HeroesInfo:
-    public renderInfoHeroes: any;
+    public renderInfoHeroes: any= {};
+    public imagenHechHorizontal: any= [0,0,0,0,0,0];
+    public imagenHechVertical: any= [0,0,0,0,0,0];
 
   	constructor(public appService: AppService) { }
 
@@ -42,9 +44,62 @@ export class HeroesInfoService {
   		this.parametros= this.appService.getParametros();
   	}
 
-  	setPersonaje(nombrePersonaje:string){
-  		console.log("Set Personaje: "+nombrePersonaje);
-  		
+    
+
+  	setPersonaje(indexPersonaje:number){
+      this.actualizarDatos();
+  		console.log("Set Personaje: "+this.perfil.heroes[indexPersonaje].nombre);
+
+      //Inicialización de Render Info Heroes
+
+      this.renderInfoHeroes.nombre= this.perfil.heroes[indexPersonaje].nombre;
+      this.renderInfoHeroes.clase= this.perfil.heroes[indexPersonaje].clase;
+
+      //Inicialización de equipo: 
+      this.renderInfoHeroes.equipo = [];
+      for (var i = this.perfil.objetos.length - 1; i >= 0; i--) {
+        if(this.perfil.objetos[i].portador_nombre===this.renderInfoHeroes.nombre){
+          this.renderInfoHeroes.equipo.push(this.perfil.objetos[i]);
+        }
+      }
+
+      //Inicialización de Hechizos: 
+      this.renderInfoHeroes.hechizos = this.heroeHech[this.renderInfoHeroes.clase.toLowerCase()];
+      this.renderImagenHech();
+
+      console.log(this.perfil)
+  		console.log(this.heroeHech)
+      console.log(this.renderInfoHeroes)
   	}
 
+    renderImagenHech(){
+
+      //Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
+      var indexHorizontal=0;
+      var indexVertical= 0;
+
+        for(var i=0; i< 6; i++){
+          indexVertical= Math.floor(this.heroeHech[this.renderInfoHeroes.clase.toLowerCase()][i].imagen_id/18);
+          indexHorizontal= this.heroeHech[this.renderInfoHeroes.clase.toLowerCase()][i].imagen_id-indexVertical*18;
+
+          console.log(indexHorizontal+","+indexVertical);
+          
+          this.imagenHechHorizontal[i]= 0.4+5.84*indexHorizontal;
+          this.imagenHechVertical[i]= 19.8*indexVertical;
+        }
+
+      return;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+

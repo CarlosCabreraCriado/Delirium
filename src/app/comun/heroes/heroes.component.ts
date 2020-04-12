@@ -111,7 +111,9 @@ export class HeroesComponent implements OnInit{
 
 	seleccionarHeroe(index):void{
 		console.log("Heroe seleccionado: ");
+		this.heroesInfoService.setPersonaje(index);
 		this.heroesInfoService.mostrarHeroesInfo=true;
+
 		//Formateo Mayusculas y espacios:
 		//this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.replace(/_/g," ");
 		//this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.charAt(0).toUpperCase() + this.heroeSeleccionado.clase.slice(1).toLowerCase();

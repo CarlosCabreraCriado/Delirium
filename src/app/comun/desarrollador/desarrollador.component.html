@@ -1,0 +1,155 @@
+
+
+<!-- Diseño Fondo --> 
+
+<!-- Pantalla de Inicio --> 
+<div id="contenedorDesarrollador">
+
+  <!-- *************************************************
+        BARRA INICIO
+     ************************************************* -->
+
+  <div id="barraInicio">
+    <div id="contenedorLogo"> 
+      <img class="logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo"> 
+    </div>
+
+    <div class="botonContainer" (click)="desarrolladorService.setPanel('inmap')">
+      <div id="botonInmap" class="boton">InMap Builder</div>
+    </div>
+
+    <div class="botonContainer" (click)="desarrolladorService.setPanel('mazmorra')">
+      <div id="botonMazmorra" class="boton">Dungeon Builder</div>
+    </div>
+
+    <div class="botonContainer" (click)="desarrolladorService.setPanel('datos')">
+      <div id="botonDatos" class="boton">Gestor Datos</div>
+    </div>
+
+    <div class="botonContainer" style="border-right: solid 2px" (click)="desarrolladorService.setPanel('assets')">
+      <div id="botonAssets" class="boton">Gestor Assets</div>
+    </div>
+
+    <div class="contenedorUsuario">
+      <div class="usuario">Carlos</div>
+      <div class="version">v0.2.3</div>
+    </div>
+    
+  </div> <!-- Fin Barra Inicio -->
+  
+  <!-- *************************************************
+        WORKSPACE
+     ************************************************* -->
+  <div id="workspace">
+
+    <img src="assets/General/tool.png" class="iconoSave" alt="Icono Save">
+    <img src="assets/General/bug.png" class="iconoBug" alt="Icono Bug">
+
+    <!-- Panel INMAP -->
+    <div *ngIf="desarrolladorService.panel=='inmap'" id="panelInmap">
+
+      <img class="mapaGeneral" src="assets/InMap/mapa.jpg">
+
+      <div class="contenedorMarcadoresZonas">
+        <div class="zona zona1 pulsacion" (click)="desarrolladorService.seleccionarZona(1);"></div>
+        <div class="zona zona2 pulsacion" (click)="desarrolladorService.seleccionarZona(2);"></div>
+        <div class="zona zona3 pulsacion" (click)="desarrolladorService.seleccionarZona(3);"></div>
+        <div class="zona zona4 pulsacion" (click)="desarrolladorService.seleccionarZona(4);"></div>
+        <div class="zona zona5 pulsacion" (click)="desarrolladorService.seleccionarZona(5);"></div>
+        <div class="zona zona6 pulsacion" (click)="desarrolladorService.seleccionarZona(6);"></div>
+        <div class="zona zona7 pulsacion" (click)="desarrolladorService.seleccionarZona(7);"></div>
+        <div class="zona zona8 pulsacion" (click)="desarrolladorService.seleccionarZona(8);"></div>
+        <div class="zona zona9 pulsacion" (click)="desarrolladorService.seleccionarZona(9);"></div>
+        <div class="zona zona10 pulsacion" (click)="desarrolladorService.seleccionarZona(10);"></div>
+        <div class="zona zona11 pulsacion" (click)="desarrolladorService.seleccionarZona(11);"></div>
+        <div class="zona zona12 pulsacion" (click)="desarrolladorService.seleccionarZona(12);"></div>
+        <div class="zona zona13 pulsacion" (click)="desarrolladorService.seleccionarZona(13);"></div>
+        <div class="zona zona14 pulsacion" (click)="desarrolladorService.seleccionarZona(14);"></div>
+        <div class="zona zona15 pulsacion" (click)="desarrolladorService.seleccionarZona(15);"></div>
+        <div class="zona zona16 pulsacion" (click)="desarrolladorService.seleccionarZona(16);"></div>
+        <div class="zona zona17 pulsacion" (click)="desarrolladorService.seleccionarZona(17);"></div>
+        <div class="zona zona18 pulsacion" (click)="desarrolladorService.seleccionarZona(18);"></div>
+        <div class="zona zona19 pulsacion" (click)="desarrolladorService.seleccionarZona(19);"></div>
+        <div class="zona zona20 pulsacion" (click)="desarrolladorService.seleccionarZona(20);"></div>
+      </div>
+    </div> <!-- Final INMAP -->
+
+    <!-- Panel Mazmorra -->
+    <div *ngIf="desarrolladorService.panel=='mazmorra'" id="panelMazmorra">
+    </div>
+
+    <!-- Panel Datos -->
+    <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
+      <div class="contenedorBarraAccion">
+        <div class="botonAccion" (click)="desarrolladorService.seleccionarAccionDato('ver');">VER</div>
+        <div class="botonAccion" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
+        <div class="botonAccion" (click)="desarrolladorService.seleccionarAccionDato('modificar');">MODIFICAR</div>
+      </div>
+      <div class="contenedorArchivos">
+        <div class="tituloArchivo">ARCHIVOS: </div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Hech');">HEROES HECH</div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Enemigos');">ENEMIGOS</div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Buff');">BUFF</div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Objetos');">OBJETOS</div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Animaciones');">ANIMACIONES</div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Parametros');">PARAMETROS</div>
+        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Perfil');">PERFIL</div>
+      </div>
+
+      <div *ngIf="desarrolladorService.estadoDatos=='ver'" class="contenedorOpcion ver">
+        <json-editor [options]="editorVerOptions" [data]="desarrolladorService.archivoDato"></json-editor>
+      </div>
+  
+      <div *ngIf="desarrolladorService.estadoDatos=='subir'" class="contenedorOpcion subir">
+         <input id="botonSubirExcel" type="file" name="file" (change)="subirArchivo($event)" accept=".xlsx"/>
+         <label for="botonSubirExcel">Seleccione un archivo</label>
+
+         <div class="botonCambiarEstadisticas" (click)="this.desarrolladorService.cambiarEstadisticas(path)">Cambiar Estadisticas</div>
+      </div>
+  
+      <div *ngIf="desarrolladorService.estadoDatos=='modificar'" class="contenedorOpcion modificar">
+         <json-editor [options]="editorModificarOptions" [data]="desarrolladorService.archivoDato" (change)="desarrolladorService.modificarDatos($event)"></json-editor>
+      </div>
+
+    </div>
+
+    <!-- Panel Assets -->
+    <div *ngIf="desarrolladorService.panel=='assets'" id="panelAssets">
+
+      <div class="contenedorTipoAssets">
+        <div class="tituloArchivo">TIPO ASSET: </div>
+        <div class="archivo">PERSONAJES</div>
+        <div class="archivo">BUFF</div>
+        <div class="archivo">ENEMIGOS</div>
+        <div class="archivo">HECHIZOS</div>
+        <div class="archivo">OBJETOS</div>
+        <div class="archivo">ANIMACIONES</div>
+      </div>
+
+      <div class="contenedorVisualizador">
+        <div class="visualizador"></div>
+      </div>
+
+    </div>
+
+  </div> <!-- Fin Workspace -->
+  
+  <!-- *************************************************
+        CONSOLA
+     ************************************************* -->
+  <div id="consola">
+    <div class="tituloConsola">
+      Consola
+    </div> 
+    <div class="contenidoConsola">
+      Esto es un texto de prueba para la consola. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis preti.
+    </div>
+  </div> <!-- Fin Consola -->
+    
+
+</div>
+ 
+ 
+
+

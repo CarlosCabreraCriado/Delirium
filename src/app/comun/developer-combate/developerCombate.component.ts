@@ -12,6 +12,7 @@ import { EventosService} from '../eventos/eventos.service'
 import { RngComponent} from '../rng/rng.component'
 import { InterfazService} from '../interfaz/interfaz.service'
 import { SocketService} from '../socket/socket.service'
+import { HeroesInfoService} from '../heroesInfo/heroesInfo.service'
 
 @Directive({selector: 'AppAnimacionNumero'})
 class AppAnimacionNumero {
@@ -27,7 +28,7 @@ class AppAnimacionNumero {
 })
 
 export class DeveloperCombateComponent implements OnInit,AfterViewInit{
-	constructor(private developerCombateService: DeveloperCombateService, private appService: AppService, private loggerService:LoggerService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService){}
+	constructor(private developerCombateService: DeveloperCombateService, private appService: AppService, private loggerService:LoggerService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
 	
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
 
@@ -580,6 +581,13 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
   		this.developerCombateService.musicaMazmorra.remove();
 		this.appService.cambiarUrl("index");
 	}
+
+	seleccionarHeroe(index):void{
+		console.log("Heroe seleccionado: ");
+		this.heroesInfoService.setPersonaje(index);
+		this.heroesInfoService.mostrarHeroesInfo=true;
+	}
+
 }
 
 

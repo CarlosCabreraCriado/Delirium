@@ -16,17 +16,19 @@
 
   <div class="contenedorPanelIzquierdo">
     <img class="fondoIzquierdo" src="assets/heroesInfo/FondoIzquierdo.png">
-    <img class="iconoClase" src="assets/Clases/Hechicero.png">
-    <div class="nombreClase Texto2">Hechicero</div>
-    <div class="nombreJugador Texto3">Doomcrash</div>
+    <!--<img class="iconoClase" src="assets/Clases/{{heroesInfoService.renderInfoHeroes.clase.toLowerCase()}}.png">-->
+    <div class="nombreClase Texto2">{{heroesInfoService.renderInfoHeroes.clase}}</div>
+    <div class="nombreJugador Texto2">{{heroesInfoService.renderInfoHeroes.nombre}}</div>
 
     <div class="opcion opcionPersonaje Texto3" (click)="seleccionarPanel('personaje')">Personaje</div>
     <div class="opcion opcionHabilidades Texto3"  (click)="seleccionarPanel('habilidades')">Habilidades</div>
     <div class="opcion opcionEquipo Texto3" (click)="seleccionarPanel('equipo')">Equipo</div>
     <div class="opcion opcionMisiones Texto3" (click)="seleccionarPanel('misiones')">Misiones</div>
+    
     <div class="contenedorImagenPersonaje">
-      <img class="imagenPersonaje" src="assets/Personajes/hechicero.png">
+      <img class="imagenPersonaje" src="assets/Personajes/{{heroesInfoService.renderInfoHeroes.clase.toLowerCase()}}.png">
     </div>
+
   </div>
 
   <!-- Panel Derecho -->
@@ -53,7 +55,7 @@
       <div class="papiroInferior">
         <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
         <div class="contenedorIconoClaseMarca">
-          <img src="assets/Clases/Hechicero.png" class="iconoClaseMarca">
+          <img src="assets/Clases/{{heroesInfoService.renderInfoHeroes.clase.toLowerCase()}}.png" class="iconoClaseMarca">
         </div>
         
       </div>
@@ -69,46 +71,58 @@
 
       <div class="contenedorHechizo">
         <div class="contenedorImagenHechizo">
-          <img class="imagenHechizo">
+          <div class="contenedorImagenHechizoPadding" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+heroesInfoService.imagenHechHorizontal[0]+'% '+heroesInfoService.imagenHechVertical[0]+'%','background-size': '1800%'}">
+            <img class="imagenHechizo">
+          </div>
         </div>
-        <div class="textoHechizo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim.</div>
+        <div class="textoHechizo"> <div class="nombreHechizo"> {{heroesInfoService.renderInfoHeroes.hechizos[0].nombre}}: </div> {{heroesInfoService.renderInfoHeroes.hechizos[0].descripcion}} </div>
       </div>
 
       <div class="titulo Texto2">Habilidades</div>
 
       <div class="contenedorHechizo">
         <div class="contenedorImagenHechizo">
-          <img class="imagenHechizo">
+          <div class="contenedorImagenHechizoPadding" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+heroesInfoService.imagenHechHorizontal[1]+'% '+heroesInfoService.imagenHechVertical[1]+'%','background-size': '1800%'}">
+            <img class="imagenHechizo">
+          </div>
         </div>
-        <div class="textoHechizo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim.</div>
+        <div class="textoHechizo"> <div class="nombreHechizo"> {{heroesInfoService.renderInfoHeroes.hechizos[1].nombre}}: </div> {{heroesInfoService.renderInfoHeroes.hechizos[1].descripcion}} </div>
       </div>
 
       <div class="contenedorHechizo">
         <div class="contenedorImagenHechizo">
-          <img class="imagenHechizo">
+          <div class="contenedorImagenHechizoPadding" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+heroesInfoService.imagenHechHorizontal[2]+'% '+heroesInfoService.imagenHechVertical[2]+'%','background-size': '1800%'}">
+            <img class="imagenHechizo">
+          </div>
         </div>
-        <div class="textoHechizo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim.</div>
+       <div class="textoHechizo"> <div class="nombreHechizo"> {{heroesInfoService.renderInfoHeroes.hechizos[2].nombre}}: </div> {{heroesInfoService.renderInfoHeroes.hechizos[2].descripcion}} </div>
       </div>
 
       <div class="contenedorHechizo">
         <div class="contenedorImagenHechizo">
-          <img class="imagenHechizo">
+          <div class="contenedorImagenHechizoPadding" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+heroesInfoService.imagenHechHorizontal[3]+'% '+heroesInfoService.imagenHechVertical[3]+'%','background-size': '1800%'}">
+            <img class="imagenHechizo">
+          </div>
         </div>
-        <div class="textoHechizo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim.</div>
+        <div class="textoHechizo"> <div class="nombreHechizo"> {{heroesInfoService.renderInfoHeroes.hechizos[3].nombre}}: </div> {{heroesInfoService.renderInfoHeroes.hechizos[3].descripcion}} </div>
       </div>
 
       <div class="contenedorHechizo">
         <div class="contenedorImagenHechizo">
-          <img class="imagenHechizo">
+          <div class="contenedorImagenHechizoPadding" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+heroesInfoService.imagenHechHorizontal[4]+'% '+heroesInfoService.imagenHechVertical[4]+'%','background-size': '1800%'}">
+            <img class="imagenHechizo">
+          </div>
         </div>
-        <div class="textoHechizo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim.</div>
+        <div class="textoHechizo"> <div class="nombreHechizo"> {{heroesInfoService.renderInfoHeroes.hechizos[4].nombre}}: </div> {{heroesInfoService.renderInfoHeroes.hechizos[4].descripcion}} </div>
       </div>
 
       <div class="contenedorHechizo">
         <div class="contenedorImagenHechizo">
-          <img class="imagenHechizo">
+          <div class="contenedorImagenHechizoPadding" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+heroesInfoService.imagenHechHorizontal[5]+'% '+heroesInfoService.imagenHechVertical[5]+'%','background-size': '1800%'}">
+            <img class="imagenHechizo">
+          </div>
         </div>
-        <div class="textoHechizo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim.</div>
+        <div class="textoHechizo"> <div class="nombreHechizo"> {{heroesInfoService.renderInfoHeroes.hechizos[5].nombre}}: </div> {{heroesInfoService.renderInfoHeroes.hechizos[5].descripcion}} </div>
       </div>
     </div>
 

@@ -1,0 +1,79 @@
+
+<!doctype html>
+<html>
+<head>
+
+<!-- Declaración de metadatos -->
+<title>Opciones de desarrollador</title>
+<meta charset="UTF-8">
+
+<!-- Links --> 
+<link type="text/css" rel="stylesheet" href="css/index/main.css">
+<link type="text/javascript" href="js/index/main.js">
+<link href="https://fonts.googleapis.com/css?family=Tangerine" rel="stylesheet">
+
+<script>
+    window.$ = window.JQuerry = require("./js/jquerry/Jquerry.js");
+</script>
+
+<script type="application/javascript" src="js/jquerry/Jquerry.js"></script>
+
+</head>
+<body>
+
+<!-- Diseño Fondo --> 
+<img src="imagenes/papiro.jpg" class="Fondo-papiro" alt="Fondo-papiro">
+
+<!-- Pantalla de Inicio --> 
+<div id="contenedorLauncher" class="contenedorLauncher visible" style="text-align: center;">
+    <p style="position: relative;">Cambiar Estadisticas:</p>
+	
+
+    <div id="botonCambiarEstadisticas" class="oculto" onclick="cambiarEstadisticas(direccionExcel);">
+        Cambiar estadisticas
+    </div>
+
+<div id="contenedorSubirExcel">
+    Heroes Stats: ______
+    <input id="subirHeroesStats" type="file" accept=".xlsx"></br>
+    Heroes Hech: _____
+    <input id="subirHeroesHech" type="file" accept=".xlsx"></br>
+    Enemigos: __________
+    <input id="subirEnemigos" type="file" accept=".xlsx"></br>
+    Buff: ____________
+    <input id="subirBuff" type="file" accept=".xlsx"></br>
+    Objetos: ___________
+    <input id="subirObjeto" type="file" accept=".xlsx"></br>
+    Mazmorra Snack: __
+    <input id="subirMazmorraSnack" type="file" accept=".xlsx"></br>
+    Guardado Snack: ____
+    <input id="subirGuardadoSnack" type="file" accept=".xlsx"></br>
+    Mazmorra Dummy: _
+    <input id="subirMazmorraDummy" type="file" accept=".xlsx"></br>
+    Guardado Dummy: __
+    <input id="subirGuardadoDummy" type="file" accept=".xlsx"></br>
+    Animaciones: ______
+    <input id="subirAnimaciones" type="file" accept=".xlsx"></br>
+    Parametros: _______
+    <input id="subirParametros" type="file" accept=".xlsx"></br>
+    Perfil: _______
+    <input id="subirPerfil" type="file" accept=".xlsx"></br>
+</div>
+
+
+
+<div id="progresoActualizacionDatos" class="oculto">
+        Actualizando Base de datos:
+        <div id="contenedorBarraCarga">
+            <div id="barraCargaDatos" class="barraCarga" style="width:0%;"></div>
+        </div>
+    </div>
+
+
+</div>
+ 
+ <!-- Pantalla de Carga --> 
+
+</body>
+<script type="application/javascript" src="js/desarrollador.js"></script>
+</html>

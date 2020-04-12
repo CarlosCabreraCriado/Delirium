@@ -30,24 +30,28 @@
     "@types/electron": "^1.6.10",
     "@types/nedb": "^1.8.9",
     "@types/socket.io-client": "^1.4.32",
+    "ang-jsoneditor": "^1.9.1",
     "core-js": "^2.6.9",
     "file-system": "^2.2.2",
     "fs": "0.0.1-security",
+    "jsoneditor": "^8.6.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.7.5",
     "nedb": "^1.8.0",
     "ngx-electron": "^1.0.4",
+    "ngx-json-viewer": "^2.4.0",
     "ngx-socket-io": "~3.0.1",
     "node-sass": "^4.13.1",
     "path": "^0.12.7",
     "rxjs": "~6.5.1",
     "socket.io-client": "^2.3.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "convert-excel-to-json": "^1.4.1"
   },
   "private": true,
   "devDependencies": {
     "@angular-devkit/architect": "~0.801.2",
-    "@angular-devkit/build-angular": "^0.803.23",
+    "@angular-devkit/build-angular": "^0.803.24",
     "@angular-devkit/core": "~8.1.2",
     "@angular-devkit/schematics": "~8.1.2",
     "@angular/cli": "~8.1.2",
@@ -85,6 +89,7 @@
       "app": "./"
     }
   },
+  
   "files": [
     "*.js",
     "delirium",

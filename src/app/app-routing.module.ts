@@ -11,6 +11,7 @@ import { SalaComponent } from './comun/sala/sala.component';
 import { CargarPartidaComponent } from './comun/cargarPartida/cargarPartida.component';
 import { HeroesComponent } from './comun/heroes/heroes.component';
 import { UnirsePartidaComponent } from './comun/unirsePartida/unirsePartida.component';
+import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
 
 const routes: Routes = [
 	{path: '' ,redirectTo: "/index", pathMatch: "full" },
@@ -25,7 +26,10 @@ const routes: Routes = [
 	{path: 'sala', redirectTo: "/sala", pathMatch: "full"},
 	{path: 'sala', component: SalaComponent},
 	{path: 'heroes', redirectTo: "/heroes", pathMatch: "full"},
-	{path: 'heroes', component: HeroesComponent}
+	{path: 'heroes', component: HeroesComponent},
+	{path: 'desarrollador', redirectTo: "/desarrollador", pathMatch: "full"},
+	{path: 'desarrollador', component: DesarrolladorComponent},
+
 	];
 
 @NgModule({

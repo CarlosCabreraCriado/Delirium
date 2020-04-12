@@ -5,6 +5,7 @@ const MOVIL = false;
 //Static Server
 const electron = require('electron');
 const ipc = require('electron').ipcMain;
+
 const url = require('url');
 const path = require('path');
 
@@ -127,7 +128,6 @@ function createWindow () {
 
   //mainWindow.setMenu(null);
   
-  
   // and load the index.html of the app.
   
   if(DEBUG){
@@ -151,6 +151,26 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+}
+
+function desarrollador() {
+
+  // Create the browser window.
+  desarrolladorWindow = new BrowserWindow({width: 1080, height: 700})
+  
+  if(DEBUG){
+    desarrolladorWindow.loadURL("http://localhost:4200/desarrollador");
+  }else{
+    desarrolladorWindow.loadURL(url.format({
+      pathname: path.join(__dirname, 'delirium/desarrollador.html'),
+      protocol: 'file:',
+      slashes: true
+    }))
+  }
+
+    desarrolladorWindow.on('closed', function () {
+      desarrolladorWindow= null;
+    })
 }
 
 // This method will be called when Electron has finished
@@ -311,7 +331,6 @@ app.on('activate', function () {
           }, {collection: 'Oficial'});
 
           parametrosModel = mongoose.model("parametrosModel", parametrosSchema,'Oficial');
-
           */
 
 ipc.on('verificarClave', function (event, arg) {
@@ -494,8 +513,10 @@ ipc.on('setDatos', function (event, arg) {
   event.returnValue = true;
 });
 
-ipc.on('getDatos', function (event) {
-  event.returnValue = datosJuego;
+ipc.on('getDatos', function (event, activarDatosOficial) {
+ 
+    event.returnValue = datosJuego;
+  
 });
 
           //Fin de definicion de modelos segun usuario
@@ -503,7 +524,6 @@ ipc.on('getDatos', function (event) {
 //*********************************************
 //        Gestion de Base de datos
 //*********************************************
-
 
 ipc.on('getDatosHeroeHech', function (event, arg) {
   heroeHechModel.find({nombreId: 'Heroes_Hech'})
@@ -578,6 +598,338 @@ ipc.on('getDatosParametros', function (event, arg) {
         console.log("Enviando Parametros...");
         event.returnValue = doc[0]._doc;
       });   
+});
+
+
+//*********************************************
+//        Panel de desarrollador
+//*********************************************
+
+ipc.on("desarrollador", (event, clave) => {
+    desarrollador();
+    event.returnValue = true;
+});
+
+
+ipc.on("actualizarEstadisticas",function(event,datos){
+  
+  console.log("Actualizando Estadisticas...") 
+  var actualizarHeroeStats = true;
+  var actualizarHeroeHech = true;
+  var actualizarEnemigos = true;
+  var actualizarBuff = true;
+  var actualizarObjetos = true;
+  var actualizarMazmorraSnack = true;
+  var actualizarGuardadoSnack = true;
+  var actualizarMazmorraDummy = true;
+  var actualizarGuardadoDummy = true;
+  var actualizarAnimaciones = true;
+  var actualizarParametros = true;
+  var actualizarPerfil = true;
+
+  var documentos = new Array(11);
+
+  datos.forEach(function(element,index){
+    switch(element.nombreId){
+      case "Heroes_Stats":
+      actualizarHeroeStats = false;
+      documentos[0]= element;
+      break;
+      case "Heroes_Hech":
+      actualizarHeroeHech = false;
+      documentos[1]=element;
+      break;
+      case "Enemigos":
+      actualizarEnemigos = false;
+      documentos[2]=element;
+      break;
+      case "Buff":
+      actualizarBuff = false;
+      documentos[3]=element;
+      break;
+      case "Objetos":
+      actualizarObjetos = false;
+      documentos[4]=element;
+      break;
+      case "MazmorraSnack":
+      actualizarMazmorraSnack = false;
+      documentos[5]=element;
+      break;
+      case "GuardadoSnack":
+      actualizarGuardadoSnack = false;
+      documentos[6]=element;
+      break;
+      case "MazmorraDummy":
+      actualizarMazmorraDummy = false;
+      documentos[7]=element;
+      break;
+      case "GuardadoDummy":
+      actualizarGuardadoDummy = false;
+      documentos[8]=element;
+      break;
+      case "Animaciones":
+      actualizarAnimaciones = false;
+      documentos[9]=element;
+      break;
+      case "Parametros":
+      actualizarParametros = false;
+      documentos[10]=element;
+      break;
+      case "Perfil":
+      actualizarPerfil = false;
+      documentos[11]=element;
+      break;
+    }
+  });
+  
+  //*************************
+  //  Actualiza Heroes_Stats
+  //*************************
+  
+  if(typeof documentos[0]!="undefined"){
+  var dataHeroeStatsModel = new heroeStatsModel(documentos[0]);
+
+  
+  heroeStatsModel.deleteOne({nombreId: 'Heroes_Stats'})
+    .then(function(producto){
+      dataHeroeStatsModel.save().then(function(){
+        console.log("Actualizacion de estadisticas Heroe_Stats completo");
+        actualizarHeroeStats = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion heroes_stats
+
+
+  //*************************
+  //  Actualiza Heroes_Hech
+  //*************************
+  if(typeof documentos[1]!="undefined"){
+  var dataHeroeHechModel = new heroeHechModel(documentos[1]);
+
+  heroeHechModel.deleteOne({nombreId: 'Heroes_Hech'})
+    .then(function(producto){
+      dataHeroeHechModel.save().then(function(){
+        console.log("Actualizacion de estadisticas Heroe_Hech completo");
+        actualizarHeroeHech = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion heroes_hech
+
+  //*************************
+  //  Actualiza Enemigos
+  //*************************
+  if(typeof documentos[2]!="undefined"){
+  var dataEnemigosModel = new enemigosModel(documentos[2]);
+
+  enemigosModel.deleteOne({nombreId: 'Enemigos'})
+    .then(function(producto){
+      dataEnemigosModel.save().then(function(){
+        console.log("Actualizacion de estadisticas Enemigos completo");
+        actualizarEnemigos = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion Enemigos
+
+  //*************************
+  //  Actualiza Buff
+  //*************************
+  if(typeof documentos[3]!= "undefined"){
+  var dataBuff = new buffModel(documentos[3]);
+
+  buffModel.deleteOne({nombreId: 'Buff'})
+    .then(function(producto){
+      dataBuff.save().then(function(){
+        console.log("Actualizacion de estadisticas Buff completo");
+        actualizarBuff = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion buff
+
+  //*************************
+  //  Actualiza Objetos
+  //*************************
+  if(typeof documentos[4]!= "undefined"){
+  var dataObjetos = new objetosModel(documentos[4]);
+
+  objetosModel.deleteOne({nombreId: 'Objetos'})
+    .then(function(producto){
+      dataObjetos.save().then(function(){
+        console.log("Actualizacion de estadisticas Objetos completo");
+        actualizarObjetos = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion objetos
+
+  //*************************
+  //  Actualiza MazmorraSnack
+  //*************************
+  if(typeof documentos[5]!= "undefined"){
+  var dataMazmorraSnack = new mazmorraSnackModel(documentos[5]);
+  console.log(dataMazmorraSnack);
+
+  mazmorraSnackModel.deleteOne({nombreId: 'MazmorraSnack'})
+    .then(function(producto){
+      dataMazmorraSnack.save().then(function(){
+        console.log("Actualizacion de estadisticas Mazmorra Snack completo");
+        actualizarMazmorraSnack = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion MazmorraSnack
+
+  //*************************
+  //  Actualiza GuardadoSnack
+  //*************************
+  if(typeof documentos[6]!= "undefined"){
+  var dataGuardadoSnack = new guardadoSnackModel(documentos[6]);
+
+  guardadoSnackModel.deleteOne({nombreId: 'GuardadoSnack'})
+    .then(function(producto){
+      dataGuardadoSnack.save().then(function(){
+        console.log("Actualizacion de estadisticas Guardado Snack completo");
+        actualizarGuardadoSnack = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion GuardadoSnack
+
+  //*************************
+  //  Actualiza MazmorraDummy
+  //*************************
+  if(typeof documentos[7]!= "undefined"){
+  var dataMazmorraDummy = new mazmorraDummyModel(documentos[7]);
+
+  mazmorraDummyModel.deleteOne({nombreId: 'MazmorraDummy'})
+    .then(function(producto){
+      dataMazmorraDummy.save().then(function(){
+        console.log("Actualizacion de estadisticas Mazmorra Dummy completo");
+        actualizarMazmorraDummy = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion MazmorraDummy
+
+  //*************************
+  //  Actualiza GuardadoDummy
+  //*************************
+  if(typeof documentos[8]!= "undefined"){
+
+  var dataGuardadoDummy = new guardadoDummyModel(documentos[8]);
+
+  guardadoDummyModel.deleteOne({nombreId: 'GuardadoDummy'})
+    .then(function(producto){
+      dataGuardadoDummy.save().then(function(){
+        console.log("Actualizacion de estadisticas Guardado Dummy completo");
+        actualizarGuardadoDummy = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion GuardadoDummy
+
+  //*************************
+  //  Actualiza Animaciones
+  //*************************
+  if(typeof documentos[9]!= "undefined"){
+
+  var dataAnimaciones = new animacionesModel(documentos[9]);
+
+  animacionesModel.deleteOne({nombreId: 'Animaciones'})
+    .then(function(producto){
+      dataAnimaciones.save().then(function(){
+        console.log("Actualizacion de estadisticas Animaciones completo");
+        actualizarAnimaciones = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion Animaciones
+
+  //*************************
+  //  Actualiza Parametros
+  //*************************
+  if(typeof documentos[10]!= "undefined"){
+
+  var dataParametros = new parametrosModel(documentos[10]);
+
+  parametrosModel.deleteOne({nombreId: 'Parametros'})
+    .then(function(producto){
+      dataParametros.save().then(function(){
+        console.log("Actualizacion de Parametros completo");
+        actualizarParametros = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion Parametros
+
+  //*************************
+  //  Actualiza Perfil
+  //*************************
+  if(typeof documentos[11]!= "undefined"){
+
+  var dataPerfil = new perfilModel(documentos[11]);
+
+  perfilModel.deleteOne({nombreId: 'Perfil'})
+    .then(function(producto){
+      dataPerfil.save().then(function(){
+        console.log("Actualizacion de Perfil completo");
+        actualizarPerfil = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion Perfil
 });
 
 
