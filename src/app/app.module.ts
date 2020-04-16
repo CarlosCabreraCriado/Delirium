@@ -36,8 +36,8 @@ import { DeveloperToolComponent } from './comun/developer-tool/developer-tool.co
 import { HeroesInfoComponent } from './comun/heroesInfo/heroesInfo.component';
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
 
-const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
-//const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
+//const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
+const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
 
 //Declaración del módulo:
 @NgModule({

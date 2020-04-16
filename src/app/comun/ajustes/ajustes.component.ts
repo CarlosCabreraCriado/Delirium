@@ -33,4 +33,10 @@ export class AjustesComponent implements OnInit {
     this.mostrarAjustes= false;
   }
 
+  cambiarValorSlider(EventSlider):void{
+    var slider = document.getElementById("GeneralVolRange");
+    console.log(slider)
+  }
+
+
 }
