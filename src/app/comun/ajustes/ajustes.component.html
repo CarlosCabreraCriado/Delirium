@@ -1,8 +1,10 @@
 
 
 <div *ngIf="mostrarAjustes" id="PantallaAjustes" [style.opacity]="opacidad">
-	<div class="contenedorAjustes">
+	<div class="contenedorAjustes" >
+		<!--<img alt="Pause Frame" class="pauseFrame" src="./assets/General/Frame-Delirium-Blanco.png"/>-->
 		<div class="titulo Texto1">Ajustes</div>
+		<hr class='line' id="line_top">
 		<div class="pestanaAjustes">
 
 			<div class="titulo2 Texto2">Información</div>
@@ -36,7 +38,7 @@
 			<div class="mensajeTexto Texto3">Controles de Teclado</div>
 			<div class="mensajeTexto textoModificador Texto3">Restringir Acciones</div>
 			<label class="toggle-container">
-  				<input type="checkbox" class="real-checkbox">
+  				<input type="checkbox" class="real-checkbox" >
   				<div class="toggle-button"></div>
 			</label>
 				<div class="mensajeTexto textoModificador Texto3">Restringir Recurso</div>
@@ -56,7 +58,7 @@
 			</label>
 
 		</div>
-
+		<hr class='line' id="line_bot">
 		<div class="ajustesOpcion Cancel Texto2" (click)="cerrarAjustes()">Cancel</div>
 		<div class="ajustesOpcion OK Texto2" (click)="cerrarAjustes()">OK</div>	
 	</div>

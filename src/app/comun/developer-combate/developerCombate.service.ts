@@ -2,6 +2,7 @@
 import { Injectable, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { AppService } from '../../app.service';
 import { LoggerService } from '../logger/logger.service'
+import { PausaService } from '../pausa/pausa.service'
 import { EventosService } from '../eventos/eventos.service'
 import { RngService } from '../rng/rng.service'
 import { InterfazService } from '../interfaz/interfaz.service'
@@ -93,7 +94,7 @@ export class DeveloperCombateService implements OnInit{
 	//Emision de eventos
 	@Output() mostrarAnimacionNumero: EventEmitter<any> = new EventEmitter();
 
-  	constructor(private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) { 
+  	constructor(private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) { 
   	 //this.db = new Datastore({filename:'../datos/example.dat', autoload: true});
 	}
 
@@ -193,7 +194,7 @@ export class DeveloperCombateService implements OnInit{
 			break;
 
 			case "Escape":
-				this.togglePause();
+				this.pausaService.togglePause();
 			break;
 
 			/* *************************************************
@@ -3323,20 +3324,6 @@ export class DeveloperCombateService implements OnInit{
  				this.socketService.enviarSocket("resetMazmorra",{peticion: "resetMazmorra", comando: "resetMazmorra", contenido: this.sala.nombre});
  			break;
  		}
- 	}
-
- 	/* 	----------------------------------------------
-			GESTION DE PAUSA
- 	----------------------------------------------*/
-
- 	togglePause():void{
- 		this.mostrarPausa=!this.mostrarPausa;
- 		if(this.mostrarPausa){
- 			console.log("Activando Pause");
- 		}else{
- 			console.log("Desactivando Pause");
- 		}
- 		return;
  	}
 
  	/* 	----------------------------------------------

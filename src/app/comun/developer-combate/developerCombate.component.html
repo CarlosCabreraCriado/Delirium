@@ -63,7 +63,7 @@
         <!--   ******************* -->
         <!--   CONTENIDO PRINCIPAL -->
         <!--   ******************* -->
-<img *ngIf="developerCombateService.cargaCompleta" class="iconoAjustes" src="./assets/General/gear.png" (click)="developerCombateService.togglePause();">
+<img *ngIf="developerCombateService.cargaCompleta" class="iconoAjustes" src="./assets/General/gear.png" (click)="pausaService.togglePause();">
 <div *ngIf="developerCombateService.cargaCompleta" class="Titulo Texto1">{{renderMazmorra.nombreSala}}</div>
 <div *ngIf="developerCombateService.cargaCompleta" id="usuario" class="Texto2">{{appService.validacion.nombre}}-{{appService.validacion.miembro}}</div>
 
@@ -266,45 +266,4 @@
 
 </div>
         
-        <!--   ******************* -->
-        <!--   PANTALLAS DE PAUSE  -->
-        <!--   ******************* -->
-        <div class="pause" id="pause">
-            <!-- Pantalla pause video -->
-            <div *ngIf="developerCombateService.mostrarPausa" id="generalPauseContainer">
-                <!-- Pantalla pause video -->
-                <div class="pauseContainer visible blanco" id="pauseVideoContainer">
-                    <img alt="Pause Frame" class="pauseFrame" src="./assets/General/Pause-Frame-Delirium-Blanco.png"/>
-                    <div class="pauseText Texto2">
-                        <ul>
-                            <li (click)="developerCombateService.togglePause();">Continuar</li>
-                            <li>Configuración</li>
-                            <li (click)="abandonarPartida()">Salir</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Pantalla pause normal -->
-                <div class="pauseContainer oculto blanco" id="pauseNormalContainer">
-                    <img alt="Pause Frame" class="pauseFrame" src="./assets/General/Pause-Frame-Delirium-Blanco.png"/>
-                    <div class="pauseText Texto2">
-                        <ul>
-                            <li>Continuar</li>
-                            <li>Salir</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Pantalla seguro -->
-            <div class="pauseConfirmar oculto blanco" id="pauseConfirmar">
-                <img alt="Pause Frame" class="confirmarFrame" id="confirmarFrame" src="./assets/General/Confirmar-Frame.png"/>
-                <div class="confirmarText Texto2">
-
-                    <div id="confirmarTitulo Texto1">Confirmar:</div>
-                    <ul>
-                        <li>No</li>
-                        <li>Si</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         

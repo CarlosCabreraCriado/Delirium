@@ -1,3 +1,35 @@
-<p>
-  pausa works!
-</p>
+<!--   ******************* -->
+<!--   PANTALLAS DE PAUSE  -->
+<!--   ******************* -->
+
+
+<div *ngIf="pausaService.mostrarPausa" class="pause" id="pause">
+    <!-- Pantalla pause -->
+    <div *ngIf="mostrarPausaGeneral" id="generalPauseContainer">
+        <!-- Pantalla pause  -->
+        <div class="pauseContainer  blanco" id="pauseContainer">
+            <img alt="Pause Frame" class="pauseFrame" src="./assets/General/Pause-Frame-Delirium-Blanco.png"/>
+            <div class="pauseText Texto2">
+                <ul>
+                    <li (click)="pausaService.togglePause();">Continuar</li>
+                    <li (click)="appService.mostrarAjustes('');">Configuración</li>
+                    <li (click)="mostrarPausaConfirmar=true; mostrarPausaGeneral=false;">Salir</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla seguro -->
+    <div *ngIf="mostrarPausaConfirmar" class="pauseConfirmar blanco" id="pauseConfirmar">
+        <img alt="Pause Frame" class="confirmarFrame" id="confirmarFrame" src="./assets/General/Confirmar-Frame.png"/>
+        <div class="confirmarText Texto2">
+
+            <div id="confirmarTitulo Texto1">Confirmar:</div>
+            <ul>
+                <li (click)="mostrarPausaConfirmar=false; mostrarPausaGeneral=true;">No</li>
+                <li (click)="mostrarPausaConfirmar=false; mostrarPausaGeneral=true; pausaService.abandonarPartida();">Si</li>
+            </ul>
+        </div>
+    </div>
+</div>
+        

@@ -10,21 +10,35 @@
 
 .contenedorAjustes
   position: relative
-  height: 60vh
-  width: 80%
-  top: 20vh
+  height: 70vh
+  width: 70%
+  top: 15vh
   left: 50%
-  margin-left: -40%
-  background-color: rgba(black, 0.7)
-  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5)
+  margin-left: -35%
+  background-color: rgba(black, 0.9)
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.7)
+  border: white double 10px
+
+.line
+  position: absolute
+  width: 60%
+  left: 50%
+  margin-left: -30%
+
+#line_top
+  top: 12%
+#line_bot
+  bottom: 12%
 
 .pestanaAjustes
   position: relative
-  top: 10%
-  height: 80%
+  top: 15%
+  height: 65%
+  width: 98%
   margin-top: 10px
   text-align: left
   overflow-y: scroll
+  z-index: 102
 
 .mensajeTexto
   position: relative 
@@ -39,13 +53,14 @@
 
 .titulo
   position: absolute
-  top: 0
+  top: 10px
   height: 10%
   width: 97%
   margin-right: 15px
   display: flex
   align-items: center
   justify-content: center
+  z-index: 103
 
 .titulo2
   position: relative
@@ -60,6 +75,7 @@
   display: inline-flex
   align-items: center
   justify-content: center
+  z-index: 104
 
   color: white 
 .ajustesOpcion:hover
@@ -113,7 +129,7 @@ $height: 20px
 .toggle-container
   display: inline-block
   margin: 10px 0
-  margin-left: 10%
+  margin-left: 12%
   vertical-align: middle
   width: $width
   height: $height
@@ -155,7 +171,26 @@ $height: 20px
       margin-left: $height
          
     
-  
+/* width */
+::-webkit-scrollbar 
+  width: 40px
+
+  /* Handle */
+::-webkit-scrollbar-button
+  width: 60px
+  height: 80px
+  background: url("../../../assets/General/Flecha_Blanca_Abajo.svg")
+  background-repeat: no-repeat
+  margin: -10px
+
+::-webkit-scrollbar-button:decrement
+  background: url("../../../assets/General/Flecha_Blanca_Arriba.svg")
+  background-repeat: no-repeat
+
+/* Handle */
+::-webkit-scrollbar-thumb 
+  background: #888
+  height: 20px
 
 
 

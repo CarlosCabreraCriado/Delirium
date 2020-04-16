@@ -382,19 +382,23 @@ export class AppService {
     }
 
     getDispositivo(){
-       return this.dispositivo;
+      return this.dispositivo;
     }
 
     setDispositivo(dispositivo){
-       this.dispositivo= dispositivo;
-       return;
+      this.dispositivo= dispositivo;
+      return;
     }
 
     openDesarrollador(){
-       this.electronService.ipcRenderer.sendSync('desarrollador');
-       return;
+      this.electronService.ipcRenderer.sendSync('desarrollador');
+      return;
     }
 
+    abandonarPartida(){
+      this.observarAppService.next("AbandonarPartida");
+      return;
+    }
 
 }
 

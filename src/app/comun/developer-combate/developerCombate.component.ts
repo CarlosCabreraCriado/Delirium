@@ -8,6 +8,7 @@ import { trigger,state,style, animate, transition} from '@angular/animations';
 import { AnimacionNumeroComponent} from '../animacion-numero/animacion-numero.component'
 import { LoggerComponent} from '../logger/logger.component'
 import { LoggerService} from '../logger/logger.service'
+import { PausaService} from '../pausa/pausa.service'
 import { EventosService} from '../eventos/eventos.service'
 import { RngComponent} from '../rng/rng.component'
 import { InterfazService} from '../interfaz/interfaz.service'
@@ -28,7 +29,7 @@ class AppAnimacionNumero {
 })
 
 export class DeveloperCombateComponent implements OnInit,AfterViewInit{
-	constructor(private developerCombateService: DeveloperCombateService, private appService: AppService, private loggerService:LoggerService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
+	constructor(private developerCombateService: DeveloperCombateService, private appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
 	
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
 
@@ -206,6 +207,10 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
         			}else{
         				//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.developerCombateService.validacion.nombre, nombreSala: "Oficial", contenido: this.appService.perfil.heroes[0]});
         			}
+        		break;
+
+        		case "AbandonarPartida":
+        			this.abandonarPartida();
         		break;
         	}
         });
@@ -551,7 +556,7 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
  	----------------------------------------------*/
  	abandonarPartida():void{
  		
- 		this.developerCombateService.togglePause();
+ 		this.pausaService.togglePause();
  		
  		//Quitar Suscripciones:
  		this.loggerSuscripcion.unsubscribe();

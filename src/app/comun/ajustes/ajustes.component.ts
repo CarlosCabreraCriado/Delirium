@@ -21,7 +21,7 @@ export class AjustesComponent implements OnInit {
 
     //Inicio suscripcion evento progreso Carga
     this.appService.ajustes.subscribe(mensaje => {
-      this.mensaje= "BUG LOG";
+      this.mensaje= "Abriendo Ajustes";
       this.opacidad= 1;
       this.mostrarAjustes= true; 
       console.log("Mostrando "+this.mensaje);
@@ -37,6 +37,5 @@ export class AjustesComponent implements OnInit {
     var slider = document.getElementById("GeneralVolRange");
     console.log(slider)
   }
-
 
 }
