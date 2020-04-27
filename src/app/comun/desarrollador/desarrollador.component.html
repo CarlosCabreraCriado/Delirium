@@ -31,8 +31,8 @@
     </div>
 
     <div class="contenedorUsuario">
-      <div class="usuario">Carlos</div>
-      <div class="version">v0.2.3</div>
+      <div class="usuario">{{appService.getValidacion().nombre}}</div>
+      <div class="version">v{{appService.version}}</div>
     </div>
     
   </div> <!-- Fin Barra Inicio -->
@@ -45,7 +45,10 @@
     <img src="assets/General/tool.png" class="iconoSave" alt="Icono Save">
     <img src="assets/General/bug.png" class="iconoBug" alt="Icono Bug">
 
-    <!-- Panel INMAP -->
+     
+  <!-- *************************************************
+        PANEL INMAP
+     ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='inmap'" id="panelInmap">
 
       <img class="mapaGeneral" src="assets/InMap/mapa.jpg">
@@ -74,47 +77,112 @@
       </div>
     </div> <!-- Final INMAP -->
 
-    <!-- Panel Mazmorra -->
+   
+  <!-- *************************************************
+        PANEL MAZMORRA
+     ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='mazmorra'" id="panelMazmorra">
     </div>
 
-    <!-- Panel Datos -->
+     
+  <!-- *************************************************
+        PANEL DATOS
+     ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
       <div class="contenedorBarraAccion">
-        <div class="botonAccion" (click)="desarrolladorService.seleccionarAccionDato('ver');">VER</div>
-        <div class="botonAccion" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
-        <div class="botonAccion" (click)="desarrolladorService.seleccionarAccionDato('modificar');">MODIFICAR</div>
+        <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('ver')" (click)="desarrolladorService.seleccionarAccionDato('ver');">VER</div>
+        <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('subir')" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
+        <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('modificar')" (click)="desarrolladorService.seleccionarAccionDato('modificar');">MODIFICAR</div>
       </div>
       <div class="contenedorArchivos">
         <div class="tituloArchivo">ARCHIVOS: </div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Hech');">HEROES HECH</div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Enemigos');">ENEMIGOS</div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Buff');">BUFF</div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Objetos');">OBJETOS</div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Animaciones');">ANIMACIONES</div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Parametros');">PARAMETROS</div>
-        <div class="archivo" (click)="desarrolladorService.seleccionarArchivoDato('Perfil');">PERFIL</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Stats')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Hech')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Hech');">HEROES HECH</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Enemigos')" (click)="desarrolladorService.seleccionarArchivoDato('Enemigos');">ENEMIGOS</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Buff')" (click)="desarrolladorService.seleccionarArchivoDato('Buff');">BUFF</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Objetos')"(click)="desarrolladorService.seleccionarArchivoDato('Objetos');">OBJETOS</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Animaciones')" (click)="desarrolladorService.seleccionarArchivoDato('Animaciones');">ANIMACIONES</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Parametros')" (click)="desarrolladorService.seleccionarArchivoDato('Parametros');">PARAMETROS</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Perfil')"(click)="desarrolladorService.seleccionarArchivoDato('Perfil');">PERFIL</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Personajes')"(click)="desarrolladorService.seleccionarArchivoDato('Personajes');">PERSONAJES</div>
       </div>
 
+      <!-- Estado Datos-VER -->
       <div *ngIf="desarrolladorService.estadoDatos=='ver'" class="contenedorOpcion ver">
         <json-editor [options]="editorVerOptions" [data]="desarrolladorService.archivoDato"></json-editor>
       </div>
-  
+      
+      <!-- Estado Datos-SUBIR -->
       <div *ngIf="desarrolladorService.estadoDatos=='subir'" class="contenedorOpcion subir">
-         <input id="botonSubirExcel" type="file" name="file" (change)="subirArchivo($event)" accept=".xlsx"/>
-         <label for="botonSubirExcel">Seleccione un archivo</label>
 
-         <div class="botonCambiarEstadisticas" (click)="this.desarrolladorService.cambiarEstadisticas(path)">Cambiar Estadisticas</div>
+        <!-- Pantalla Datos-Subir -->
+        <div class="pantallaSubir" *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='subir'">
+          <div class="titulo texto1">{{desarrolladorService.archivoSeleccionado.toUpperCase()}}</div>
+          <input id="botonSubirExcel" type="file" name="file" (change)="desarrolladorService.incluirArchivo($event)" multiple="false" accept=".xlsx"/>
+          <label for="botonSubirExcel">
+            <img class="iconoSubir" src="assets/desarrollador/subir.png"/>
+            <div class="textoBotonSubirExcel">SELECCIONE UN ARCHIVO</div>
+          </label>
+        </div>
+
+        <!-- Pantalla Datos-Info -->
+        <div class="pantallaInfo" *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='info'">
+
+          <div class="contenedorInfoDatos">
+            <img class="icono" src="assets/desarrollador/excel.png"/>
+            <img class="botonCerrar" src="assets/desarrollador/cerrar.png" (click)="desarrolladorService.cancelarArchivo()">
+            <div class="titulo texto1">{{desarrolladorService.archivoSeleccionado.toUpperCase()}}</div>
+      
+            <div class="contenedorVerificacion">
+              <div *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].verificado==true" class="contenedorInfoVerificacion">
+                <img class="iconoVerificado" src="assets/desarrollador/exito.png">
+                <div class="textoVerificacion Texto3"> Archivo verificado</div>
+              </div>
+
+              <div *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].error==true" class="contenedorInfoVerificacion">
+                <img class="iconoVerificado" src="assets/desarrollador/cerrar.png">
+                <div class="textoVerificacion Texto3"> ERROR</div>
+              </div>
+              
+              <div class="botonVerificar Texto3" (click)="desarrolladorService.verificarDatos()">VERIFICAR ARCHIVO</div>
+
+
+            </div>
+              <!--
+              <div class="contenedorVerificacion">
+                <img class="iconoVerificado" src="assets/desarrollador/error.png">
+                Archivo verificado
+              </div>
+              -->
+            <div *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].verificado==true" class="botonCambiarEstadisticas" (click)="desarrolladorService.subirArchivo()">SUBIR ARCHIVO</div>
+          </div>
+
+        </div>
+
+        <!-- Pantalla Datos-Info -->
+        <div class="pantallaSubido" *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='subido'">
+          <div class="contenedorSubido">
+            <div class="titulo texto1">SUBIDO CON EXITO: {{desarrolladorService.archivoSeleccionado.toUpperCase()}} </div>
+            <img class="icono" src="assets/desarrollador/exito.png">
+            <div class="botonVolver Texto3" (click)="desarrolladorService.cancelarArchivo()">VOLVER A SUBIR</div>
+          </div>
+
+        </div>
+
+      
       </div>
-  
+      
+      <!-- Estado Datos-MODIFICAR -->
       <div *ngIf="desarrolladorService.estadoDatos=='modificar'" class="contenedorOpcion modificar">
-         <json-editor [options]="editorModificarOptions" [data]="desarrolladorService.archivoDato" (change)="desarrolladorService.modificarDatos($event)"></json-editor>
+        <json-editor [options]="editorModificarOptions" [data]="desarrolladorService.archivoDato" (change)="desarrolladorService.modificarDatos($event)"></json-editor>
       </div>
 
     </div>
 
-    <!-- Panel Assets -->
+     
+  <!-- *************************************************
+        PANEL ASSETS
+     ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='assets'" id="panelAssets">
 
       <div class="contenedorTipoAssets">
@@ -142,9 +210,11 @@
     <div class="tituloConsola">
       Consola
     </div> 
-    <div class="contenidoConsola">
-      Esto es un texto de prueba para la consola. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis preti.
+
+    <div #contenedorMensajes class="contenedorMensajes ">
+      <ul *ngFor="let mensaje of desarrolladorService.logger; let i = index" class="mensajeLogger" [style.color]="desarrolladorService.loggerColor[i]">{{mensaje}}</ul>
     </div>
+
   </div> <!-- Fin Consola -->
     
 

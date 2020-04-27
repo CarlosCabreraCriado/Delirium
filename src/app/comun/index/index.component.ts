@@ -161,6 +161,7 @@ export class IndexComponent implements OnInit{
 							this.validacion= this.appService.getValidacion();
 							if(this.validacion){
 								this.socketService.enviarSocket('validacion', this.validacion);
+								this.appService.setModelosDatos();
 								this.appService.claveValida= true;
 								this.errorInicio = null;
 								this.procesando= false;

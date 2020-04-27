@@ -22,45 +22,171 @@ var Schema = mongoose.Schema;
 var heroeStatsModel = mongoose.Model;
 var heroeStatsSchema= mongoose.Schema;
 
+heroeStatsSchema = new Schema({
+  nombreId: String,
+  guerrero: [],
+  cruzado: [],
+  ingeniero: [],
+  cazador: [],
+  chronomante: [],
+  hechiceroip: [],
+  iluminado: [],
+  mago_de_sangre: []
+});
+
 //Schema y modelo de HeroeHech:
 var heroeHechModel = mongoose.Model;
 var heroeHechSchema= mongoose.Schema;
+
+heroeHechSchema = new Schema({
+  nombreId: String,
+  angel_caido: [],
+  caballero: [],
+  cazador: [] ,
+  chronomante: [],
+  clerigo: [], 
+  cruzado: [],
+  enano: [], 
+  gladiador: [], 
+  hechicero: [],
+  ingeniero: [], 
+  lich: [], 
+  minotauro: [], 
+  segador_de_almas: []
+});
 
 //Schema y modelo de Enemigos:
 var enemigosModel = mongoose.Model;
 var enemigosSchema= mongoose.Schema;
 
+enemigosSchema = new Schema({
+  nombreId: String,
+  enemigos_stats: [],
+  enemigos_hechizos: []
+});
+
 //Schema y modelo de HeroeHech:
 var buffModel = mongoose.Model;
 var buffSchema= mongoose.Schema;
+
+buffSchema = new Schema({
+  nombreId: String,
+  buff: []
+});
 
 //Schema y modelo de Objetos:
 var objetosModel = mongoose.Model;
 var objetosSchema = mongoose.Schema;
 
+objetosSchema = new Schema({
+  nombreId: String,
+  equipo: [],
+  consumible: []
+});
+
 //Schema y modelo animaciones:
 var animacionesModel = mongoose.Model;
 var animacionesSchema = mongoose.Schema;
+
+animacionesSchema = new Schema({
+  nombreId: String,
+  animaciones: []
+});
 
 //Schema y modelo de Mazmorra Snack:
 var mazmorraSnackModel = mongoose.Model;
 var mazmorraSnackSchema = mongoose.Schema;
 
+mazmorraSnackSchema = new Schema({
+  nombreId: String,
+  mazmorraGeneral: [],
+  mazmorraSalas: [],
+  mazmorraEnemigos: [],
+  mazmorraEventos: [],
+  mazmorraDialogos: []
+});
+
 //Schema y modelo de Guardado Snack:
 var guardadoSnackModel = mongoose.Model;
 var guardadoSnackSchema = mongoose.Schema;
+
+guardadoSnackSchema = new Schema({
+  nombreId: String,
+  guardadoGeneral: [],
+  guardadoHeroes: [],
+  guardadoObjetos: [],
+  guardadoObjetosGlobales: [],
+  guardadoMisiones: [],
+  guardadoInmap: []
+});
 
 //Schema y modelo de Mazmorra Dummy:
 var mazmorraDummyModel = mongoose.Model;
 var mazmorraDummySchema = mongoose.Schema;
 
+mazmorraDummySchema = new Schema({
+  nombreId: String,
+  mazmorraDummyGeneral: [],
+  mazmorraDummySalas: [],
+  mazmorraDummyEnemigos: [],
+  mazmorraDummyEventos: [],
+  mazmorraDummyDialogos: []
+});
+
 //Schema y modelo de Guardado Dummy:
 var guardadoDummyModel = mongoose.Model;
 var guardadoDummySchema = mongoose.Schema;
 
+guardadoDummySchema = new Schema({
+  nombreId: String,
+  guardadoDummyGeneral: [],
+  guardadoDummyHeroes: [],
+  guardadoDummyObjetos: [],
+  guardadoDummyObjetosGlobales: [],
+  guardadoDummyMisiones: [],
+  guardadoDummyInmap: []
+});
+
 //Schema y modelo de Parametros:
 var parametrosModel = mongoose.Model;
 var parametrosSchema = mongoose.Schema;
+
+parametrosSchema = new Schema({
+  nombreId: String,
+  parametrosGuerrero: [],
+  parametrosCruzado: [],
+  parametrosIngeniero: [],
+  parametrosCazador: [],
+  parametrosChronomante: [],
+  parametrosHechicero: [],
+  parametrosIluminado: [],
+  parametrosMagoDeSangre: [],
+  parametrosAtributos: [],
+  parametrosEscalado: []
+});
+
+//Schema y modelo de Perfil:
+var perfilModel = mongoose.Model;
+var perfilSchema = mongoose.Schema;
+
+perfilSchema = new Schema({
+  nombreId: String,
+  perfilLogros: [],
+  perfilHeroes: [],
+  perfilObjetos: [],
+  perfilObjetosGlobales: [],
+  perfilMisiones: [],
+  perfilInmap: []
+});
+
+//Schema y modelo de Perfil:
+var personajesModel = mongoose.Model;
+var personajesSchema = mongoose.Schema;
+
+personajesSchema = new Schema({
+  nombreId: String,
+  personajes: []
+});
 
 console.log("INICIANDO")
 //Schema y modelo de verificacion de clave
@@ -195,298 +321,55 @@ app.on('activate', function () {
   }
 })
 
-//*********************************************
-//        Verificar Clave de usuario
-//*********************************************
-//Definicion de modelo segun usuario
-    
-    /* 
-          //Modelo heroeHech
-          heroeStatsSchema = new Schema({
-            nombreId: String,
-            guerrero: [],
-            caballero: [],
-            ingeniero: [],
-            cazador: [],
-            chronomante: [],
-            arcanista: [],
-            iluminado: [],
-            mago_de_sangre: []
-          }, {collection: 'Oficial'});
-
-          heroeStatsModel = mongoose.model("heroeStatsModel", heroeStatsSchema,"Oficial");
-
-          //Modelo heroeHech
-          heroeHechSchema = new Schema({
-            nombreId: String,
-            guerrero: [],
-            caballero: [],
-            ingeniero: [],
-            cazador: [],
-            chronomante: [],
-            arcanista: [],
-            iluminado: [],
-            mago_de_sangre: []
-          }, {collection: 'Oficial'});
-
-          heroeHechModel = mongoose.model("heroeHechModel", heroeHechSchema,"Oficial");
-
-          //Modelo EnemigosStats
-          enemigosSchema = new Schema({
-            nombreId: String,
-            enemigos_stats: [],
-            enemigos_hechizos: []
-          }, {collection: 'Oficial'});
-
-          enemigosModel = mongoose.model("enemigosModel", enemigosSchema,"Oficial");
-
-          //Modelo Buff
-          buffSchema = new Schema({
-            nombreId: String,
-            buff: []
-          }, {collection: 'Oficial'});
-
-          buffModel = mongoose.model("buffModel", buffSchema,"Oficial");
-
-          //Modelo Objetos
-          objetosSchema = new Schema({
-            nombreId: String,
-            equipo: [],
-            consumible: []
-          }, {collection: 'Oficial'});
-
-          objetosModel = mongoose.model("objetosModel", objetosSchema,'Oficial');
-
-          //Modelo Animaciones
-          animacionesSchema = new Schema({
-            nombreId: String,
-            animaciones: []
-          }, {collection: 'Oficial'});
-
-          animacionesModel = mongoose.model("animacionesModel", animacionesSchema,'Oficial');
-
-          //Modelo Mazmorra Snack
-          mazmorraSnackSchema = new Schema({
-            nombreId: String,
-            mazmorraSnackGeneral: [],
-            mazmorraSnackSalas: [],
-            mazmorraSnackEnemigos: [],
-            mazmorraSnackEventos: [],
-            mazmorraSnackDialogos: []
-          }, {collection: 'Oficial'});
-
-          mazmorraSnackModel = mongoose.model("mazmorraSnackModel", mazmorraSnackSchema,'Oficial');
-
-          //Modelo Guardado Snack
-          guardadoSnackSchema = new Schema({
-            nombreId: String,
-            guardadoSnackGuardadoSnackGeneral: [],
-            guardadoSnackHeroes: [],
-            guardadoSnackObjetos: [],
-            guardadoSnackObjetosGlobales: [],
-            guardadoSnackMisiones: [],
-            guardadoSnackInmap: []
-          }, {collection: 'Oficial'});
-
-          guardadoSnackModel = mongoose.model("guardadoSnackModel", guardadoSnackSchema,'Oficial');
-
-          //Modelo Mazmorra Dummy
-          mazmorraDummySchema = new Schema({
-            nombreId: String,
-            mazmorraDummyGeneral: [],
-            mazmorraDummySalas: [],
-            mazmorraDummyEnemigos: [],
-            mazmorraDummyEventos: [],
-            mazmorraDummyDialogos: []
-          }, {collection: 'Oficial'});
-
-          mazmorraDummyModel = mongoose.model("mazmorraDummyModel", mazmorraDummySchema,'Oficial');
-
-          //Modelo Guardado Dummy
-          guardadoDummySchema = new Schema({
-            nombreId: String,
-            guardadoDummyGeneral: [],
-            guardadoDummyHeroes: [],
-            guardadoDummyObjetos: [],
-            guardadoDummyObjetosGlobales: [],
-            guardadoDummyMisiones: [],
-            guardadoDummyInmap: []
-          }, {collection: 'Oficial'});
-
-          guardadoDummyModel = mongoose.model("guardadoDummyModel", guardadoDummySchema,'Oficial');
-
-          //Modelo Guardado Dummy
-          parametrosSchema = new Schema({
-            nombreId: String,
-            parametrosGuerrero: [],
-            parametrosCruzado: [],
-            parametrosIngeniero: [],
-            parametrosCazador: [],
-            parametrosChronomante: [],
-            parametrosHechicero: [],
-            parametrosIluminado: [],
-            parametrosMagoDeSangre: [],
-            parametrosAtributos: [],
-            parametrosEscalado: []
-          }, {collection: 'Oficial'});
-
-          parametrosModel = mongoose.model("parametrosModel", parametrosSchema,'Oficial');
-          */
-
-ipc.on('verificarClave', function (event, arg) {
-
-  console.log("Validando Clave: "+arg);
+ipc.on('setModelosDatos', function (event, arg) {
+     
+  // Definir Schemas de datos si es desarrollador:
+  if(validacion.privilegios=="Desarrollador"|| validacion.privilegios=="Creador"){
+       
+    //Definicion de modelo segun usuario
+            
+    //Modelo heroeStat
+    heroeStatsModel = mongoose.model("heroeStatsModel", heroeStatsSchema,validacion.nombre);
   
-  verificarClave.find({clave: arg})
-      .then(function(doc) {
-        if(doc.length==0){
-          console.log("Clave incorrecta.");
-          event.returnValue = false;
-        }
+    //Modelo heroeHech
+    heroeHechModel = mongoose.model("heroeHechModel", heroeHechSchema,validacion.nombre);
+  
+    //Modelo EnemigosStats
+     enemigosModel = mongoose.model("enemigosModel", enemigosSchema,validacion.nombre);
+  
+    //Modelo Buff
+    buffModel = mongoose.model("buffModel", buffSchema,validacion.nombre);
+  
+    //Modelo Objetos
+    objetosModel = mongoose.model("objetosModel", objetosSchema,validacion.nombre);
+  
+    //Modelo Mazmorra Snack
+    mazmorraSnackModel = mongoose.model("mazmorraSnackModel", mazmorraSnackSchema,validacion.nombre);
+  
+    //Modelo Guardado Snack
+    guardadoSnackModel = mongoose.model("guardadoSnackModel", guardadoSnackSchema,validacion.nombre);
+  
+    //Modelo Mazmorra Dummy
+    mazmorraDummyModel = mongoose.model("mazmorraDummyModel", mazmorraDummySchema,validacion.nombre);
+  
+    //Modelo Guardado Dummy
+    guardadoDummyModel = mongoose.model("guardadoDummyModel", guardadoDummySchema,validacion.nombre);
+  
+    //Modelo Guardado Dummy
+    animacionesModel = mongoose.model("animacionesModel", animacionesSchema,validacion.nombre);
+            
+    //Modelo Parametros
+    parametrosModel = mongoose.model("parametrosModel", parametrosSchema,validacion.nombre);
+  
+    //Modelo Perfil
+    perfilModel = mongoose.model("perfilModel", perfilSchema,validacion.nombre);
 
-        console.log(doc[0]._doc);
-        validacion= doc[0]._doc;
+    //Modelo Personajes
+    personajesModel = mongoose.model("personajesModel", personajesSchema,validacion.nombre);
+
+  } //Fin de definicion de modelos segun usuario
         
-        // Definir Schemas de datos si es desarrollador:
-        if(validacion.privilegios=="Desarrollador"|| validacion.privilegios=="Creador"){
-          //Definicion de modelo segun usuario
-          
-          //Modelo heroeStat
-          heroeStatsSchema = new Schema({
-            nombreId: String,
-            guerrero: [],
-            cruzado: [],
-            ingeniero: [],
-            cazador: [],
-            chronomante: [],
-            hechiceroip: [],
-            iluminado: [],
-            mago_de_sangre: []
-          }, {collection: validacion.nombre});
-
-          heroeStatsModel = mongoose.model("heroeStatsModel", heroeStatsSchema,validacion.nombre);
-
-          //Modelo heroeHech
-          heroeHechSchema = new Schema({
-            nombreId: String,
-            guerrero: [],
-            cruzado: [],
-            ingeniero: [],
-            cazador: [],
-            chronomante: [],
-            hechicero: [],
-            iluminado: [],
-            mago_de_sangre: []
-          }, {collection: validacion.nombre});
-
-          heroeHechModel = mongoose.model("heroeHechModel", heroeHechSchema,validacion.nombre);
-
-          //Modelo EnemigosStats
-          enemigosSchema = new Schema({
-            nombreId: String,
-            enemigos_stats: [],
-            enemigos_hechizos: []
-          }, {collection: validacion.nombre});
-
-          enemigosModel = mongoose.model("enemigosModel", enemigosSchema,validacion.nombre);
-
-          //Modelo Buff
-          buffSchema = new Schema({
-            nombreId: String,
-            buff: []
-          }, {collection: validacion.nombre});
-
-          buffModel = mongoose.model("buffModel", buffSchema,validacion.nombre);
-
-          //Modelo Objetos
-          objetosSchema = new Schema({
-            nombreId: String,
-            equipo: [],
-            consumible: []
-          }, {collection: validacion.nombre});
-
-          objetosModel = mongoose.model("objetosModel", objetosSchema,validacion.nombre);
-
-          //Modelo Mazmorra Snack
-          mazmorraSnackSchema = new Schema({
-            nombreId: String,
-            mazmorraGeneral: [],
-            mazmorraSalas: [],
-            mazmorraEnemigos: [],
-            mazmorraEventos: [],
-            mazmorraDialogos: []
-          }, {collection: validacion.nombre});
-
-          mazmorraSnackModel = mongoose.model("mazmorraSnackModel", mazmorraSnackSchema,validacion.nombre);
-
-          //Modelo Guardado Snack
-          guardadoSnackSchema = new Schema({
-            nombreId: String,
-            guardadoGuardadoSnackGeneral: [],
-            guardadoHeroes: [],
-            guardadoObjetos: [],
-            guardadoObjetosGlobales: [],
-            guardadoMisiones: [],
-            guardadoInmap: []
-          }, {collection: validacion.nombre});
-
-          guardadoSnackModel = mongoose.model("guardadoSnackModel", guardadoSnackSchema,validacion.nombre);
-
-          //Modelo Mazmorra Dummy
-          mazmorraDummySchema = new Schema({
-            nombreId: String,
-            mazmorraDummyGeneral: [],
-            mazmorraDummySalas: [],
-            mazmorraDummyEnemigos: [],
-            mazmorraDummyEventos: [],
-            mazmorraDummyDialogos: []
-          }, {collection: validacion.nombre});
-
-          mazmorraDummyModel = mongoose.model("mazmorraDummyModel", mazmorraDummySchema,validacion.nombre);
-
-          //Modelo Guardado Dummy
-          guardadoDummySchema = new Schema({
-            nombreId: String,
-            guardadoDummyGeneral: [],
-            guardadoDummyHeroes: [],
-            guardadoDummyObjetos: [],
-            guardadoDummyObjetosGlobales: [],
-            guardadoDummyMisiones: [],
-            guardadoDummyInmap: []
-          }, {collection: validacion.nombre});
-
-          guardadoDummyModel = mongoose.model("guardadoDummyModel", guardadoDummySchema,validacion.nombre);
-
-          //Modelo Guardado Dummy
-          animacionesSchema = new Schema({
-            nombreId: String,
-            animaciones: [],
-          }, {collection: validacion.nombre});
-
-          animacionesModel = mongoose.model("animacionesModel", animacionesSchema,validacion.nombre);
-          
-          //Modelo Parametros
-          parametrosSchema = new Schema({
-            nombreId: String,
-            parametrosGuerrero: [],
-            parametrosCruzado: [],
-            parametrosIngeniero: [],
-            parametrosCazador: [],
-            parametrosChronomante: [],
-            parametrosHechicero: [],
-            parametrosIluminado: [],
-            parametrosMagoDeSangre: [],
-            parametrosAtributos: [],
-            parametrosEscalado: []
-          }, {collection: validacion.nombre});
-
-          parametrosModel = mongoose.model("parametrosModel", parametrosSchema,validacion.nombre);
-
-        } //Fin de definicion de modelos segun usuario
-        
-        event.returnValue = validacion;
-
-      }); 
+  event.returnValue = true;
 });
 
 ipc.on('comprobarLogin', function (event) {
@@ -514,9 +397,7 @@ ipc.on('setDatos', function (event, arg) {
 });
 
 ipc.on('getDatos', function (event, activarDatosOficial) {
- 
     event.returnValue = datosJuego;
-  
 });
 
           //Fin de definicion de modelos segun usuario
@@ -600,6 +481,14 @@ ipc.on('getDatosParametros', function (event, arg) {
       });   
 });
 
+ipc.on('getDatosPersonajes', function (event, arg) {
+  personajesModel.find({nombreId: 'Personajes'})
+      .then(function(doc) {
+        console.log("Enviando Parametros...");
+        event.returnValue = doc[0]._doc;
+      });   
+});
+
 
 //*********************************************
 //        Panel de desarrollador
@@ -612,8 +501,11 @@ ipc.on("desarrollador", (event, clave) => {
 
 
 ipc.on("actualizarEstadisticas",function(event,datos){
-  
-  console.log("Actualizando Estadisticas...") 
+  if(validacion.privilegios!="Desarrollador"&& validacion.privilegios!="Creador"){
+    console.log("PERMISO DENEGADO: No dispone de permisos para subir archivos")
+    event.returnValue = false;
+  }
+  console.log("Actualizando Estadisticas...");
   var actualizarHeroeStats = true;
   var actualizarHeroeHech = true;
   var actualizarEnemigos = true;
@@ -626,8 +518,9 @@ ipc.on("actualizarEstadisticas",function(event,datos){
   var actualizarAnimaciones = true;
   var actualizarParametros = true;
   var actualizarPerfil = true;
+  var actualizarPersonajes = true;
 
-  var documentos = new Array(11);
+  var documentos = new Array(12);
 
   datos.forEach(function(element,index){
     switch(element.nombreId){
@@ -679,6 +572,10 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       actualizarPerfil = false;
       documentos[11]=element;
       break;
+      case "Personajes":
+      actualizarPersonajes = false;
+      documentos[12]=element;
+      break;
     }
   });
   
@@ -687,15 +584,15 @@ ipc.on("actualizarEstadisticas",function(event,datos){
   //*************************
   
   if(typeof documentos[0]!="undefined"){
-  var dataHeroeStatsModel = new heroeStatsModel(documentos[0]);
 
+  var dataHeroeStatsModel = new heroeStatsModel(documentos[0]);
   
   heroeStatsModel.deleteOne({nombreId: 'Heroes_Stats'})
     .then(function(producto){
       dataHeroeStatsModel.save().then(function(){
         console.log("Actualizacion de estadisticas Heroe_Stats completo");
         actualizarHeroeStats = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil) && actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -711,19 +608,20 @@ ipc.on("actualizarEstadisticas",function(event,datos){
   //*************************
   if(typeof documentos[1]!="undefined"){
   var dataHeroeHechModel = new heroeHechModel(documentos[1]);
-
+  
   heroeHechModel.deleteOne({nombreId: 'Heroes_Hech'})
     .then(function(producto){
       dataHeroeHechModel.save().then(function(){
         console.log("Actualizacion de estadisticas Heroe_Hech completo");
         actualizarHeroeHech = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
     }).catch(function(error){
       console.log(error);
     });
+
   } //Fin de actualizacion heroes_hech
 
   //*************************
@@ -737,7 +635,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataEnemigosModel.save().then(function(){
         console.log("Actualizacion de estadisticas Enemigos completo");
         actualizarEnemigos = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -757,7 +655,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataBuff.save().then(function(){
         console.log("Actualizacion de estadisticas Buff completo");
         actualizarBuff = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -777,7 +675,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataObjetos.save().then(function(){
         console.log("Actualizacion de estadisticas Objetos completo");
         actualizarObjetos = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -798,7 +696,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataMazmorraSnack.save().then(function(){
         console.log("Actualizacion de estadisticas Mazmorra Snack completo");
         actualizarMazmorraSnack = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -818,7 +716,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataGuardadoSnack.save().then(function(){
         console.log("Actualizacion de estadisticas Guardado Snack completo");
         actualizarGuardadoSnack = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -838,7 +736,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataMazmorraDummy.save().then(function(){
         console.log("Actualizacion de estadisticas Mazmorra Dummy completo");
         actualizarMazmorraDummy = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -859,7 +757,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataGuardadoDummy.save().then(function(){
         console.log("Actualizacion de estadisticas Guardado Dummy completo");
         actualizarGuardadoDummy = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -880,7 +778,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataAnimaciones.save().then(function(){
         console.log("Actualizacion de estadisticas Animaciones completo");
         actualizarAnimaciones = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -901,7 +799,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataParametros.save().then(function(){
         console.log("Actualizacion de Parametros completo");
         actualizarParametros = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -922,7 +820,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataPerfil.save().then(function(){
         console.log("Actualizacion de Perfil completo");
         actualizarPerfil = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
         }
       });
@@ -930,6 +828,27 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       console.log(error);
     });
   } //Fin de actualizacion Perfil
+
+  //*************************
+  //  Actualiza Perfil
+  //*************************
+  if(typeof documentos[12]!= "undefined"){
+
+  var dataPersonajes = new personajesModel(documentos[12]);
+
+  personajesModel.deleteOne({nombreId: 'Personajes'})
+    .then(function(producto){
+      dataPersonajes.save().then(function(){
+        console.log("Actualizacion de Personajes completo");
+        actualizarPersonajes = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+          desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+        }
+      });
+    }).catch(function(error){
+      console.log(error);
+    });
+  } //Fin de actualizacion Personajes
 });
 
 

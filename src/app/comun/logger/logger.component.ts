@@ -43,6 +43,6 @@ export class LoggerComponent {
     return this.parametros;
   }
 
-
+  
 
 }

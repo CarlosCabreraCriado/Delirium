@@ -44,7 +44,6 @@ export class LoggerService {
  		}else{
  			this.loggerColor.push(color);
  		}
-
  	}
 
  	addComando(tecla: string){

@@ -31,6 +31,7 @@
     "@types/nedb": "^1.8.9",
     "@types/socket.io-client": "^1.4.32",
     "ang-jsoneditor": "^1.9.1",
+    "convert-excel-to-json": "^1.4.1",
     "core-js": "^2.6.9",
     "file-system": "^2.2.2",
     "fs": "0.0.1-security",
@@ -45,8 +46,8 @@
     "path": "^0.12.7",
     "rxjs": "~6.5.1",
     "socket.io-client": "^2.3.0",
-    "zone.js": "~0.9.1",
-    "convert-excel-to-json": "^1.4.1"
+    "xlsx": "^0.15.6",
+    "zone.js": "~0.9.1"
   },
   "private": true,
   "devDependencies": {
@@ -89,7 +90,6 @@
       "app": "./"
     }
   },
-  
   "files": [
     "*.js",
     "delirium",

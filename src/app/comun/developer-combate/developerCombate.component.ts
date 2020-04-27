@@ -571,6 +571,7 @@ export class DeveloperCombateComponent implements OnInit,AfterViewInit{
   		this.developerCombateService.musicaMazmorra.remove();
 		this.appService.cambiarUrl("index");	
  	}
+ 	
 	/* 	----------------------------------------------
 		FUNCIONES VARIAS
  		----------------------------------------------*/

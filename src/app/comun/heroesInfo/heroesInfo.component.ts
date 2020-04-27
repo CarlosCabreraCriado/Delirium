@@ -18,7 +18,6 @@ export class HeroesInfoComponent implements OnInit{
 	private mostrarHeroesInfo= false;
 
 	ngOnInit(){
-		
 	}
 
 	seleccionarPanel(panel:string):void{

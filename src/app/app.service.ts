@@ -84,9 +84,10 @@ export class AppService {
     private objetos: any;
     private animaciones: any;
     private parametros: any;
+    private personajes: any;
 
     public dispositivo: string;
-    public version: string = "0.2.2";
+    public version: string = "0.2.3";
     public control:string="null";
     private bloqueo: any= [0,0,0,0];
     private autoDesbloqueo: boolean= true;
@@ -215,6 +216,9 @@ export class AppService {
           break;
           case "Parametros":
             this.parametros = data[i];
+          break;
+          case "Personajes":
+            this.personajes = data[i];
           break;
         }
       }
@@ -381,6 +385,17 @@ export class AppService {
         return this.perfil;
     }
 
+    getPersonajes(){
+       if(this.personajes===undefined){
+          if(this.activarDatosOficiales){
+            this.personajes= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Personajes");
+          }else{
+            this.personajes= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Personajes");
+          }
+        }
+        return this.personajes;
+    }
+
     getDispositivo(){
        return this.dispositivo;
     }
@@ -393,6 +408,16 @@ export class AppService {
     openDesarrollador(){
        this.electronService.ipcRenderer.sendSync('desarrollador');
        return;
+    }
+
+    setModelosDatos(){
+      this.electronService.ipcRenderer.sendSync("setModelosDatos");
+    }
+
+    subirArchivo(objetoArchivo){
+      var documentos = [];
+      documentos.push(objetoArchivo);
+      this.electronService.ipcRenderer.send("actualizarEstadisticas", documentos);
     }
 
 
