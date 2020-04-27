@@ -5,6 +5,8 @@ import { AppService } from '../../app.service';
 import { Subscription } from "rxjs";
 import { HeroesInfoComponent} from '../heroesInfo/heroesInfo.component'
 import { HeroesInfoService} from '../heroesInfo/heroesInfo.service'
+import { HeroesCrearComponent} from '../heroesCrear/heroesCrear.component'
+import { HeroesCrearService} from '../heroesCrear/heroesCrear.service'
 //import { ElectronService } from 'ngx-electron';
 
 @Component({
@@ -15,7 +17,7 @@ import { HeroesInfoService} from '../heroesInfo/heroesInfo.service'
 
 export class HeroesComponent implements OnInit{
 
-	constructor(public appService: AppService, public heroesInfoService: HeroesInfoService/*, public electronService: ElectronService*/) { }
+	constructor(public appService: AppService, public heroesInfoService: HeroesInfoService, public heroesCrearService: HeroesCrearService/*, public electronService: ElectronService*/) { }
 
 	private cursorSuscripcion: Subscription = null;
 	
@@ -102,11 +104,13 @@ export class HeroesComponent implements OnInit{
 		this.appService.setSala(this.partidasCargadas[indicePartida]);
 		this.appService.setControl("sala");
 		this.appService.cambiarUrl("sala");
+		return;
 	}
 
 	retroceder():void{
 		this.appService.setControl("index");
 		this.appService.cambiarUrl("");
+		return;
 	}
 
 	seleccionarHeroe(index):void{
@@ -118,6 +122,14 @@ export class HeroesComponent implements OnInit{
 		//this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.replace(/_/g," ");
 		//this.heroeSeleccionado.clase= this.heroeSeleccionado.clase.charAt(0).toUpperCase() + this.heroeSeleccionado.clase.slice(1).toLowerCase();
 		//console.log(this.heroeSeleccionado.nombre - this.heroeSeleccionado.clase);
+		return;
+	}
+
+	crearHeroe():void{
+		console.log("Creando Heroe")
+		//this.heroesCrearService.setPersonaje(0);
+		this.heroesCrearService.mostrarHeroesCrear=true;
+		return;
 	}
 
 
