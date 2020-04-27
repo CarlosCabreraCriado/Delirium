@@ -66,8 +66,8 @@ export class AppService {
     public debugAutoValidacion:boolean=false;
     public debugClavesAuto=[1000,2307,2305,2567,9867];
     public debugClave:number=9867;
-    //public ipRemota: string= "http://www.carloscabreracriado.com";
-    public ipRemota: string= "http://127.0.0.1:8000";
+    public ipRemota: string= "http://www.carloscabreracriado.com";
+    //public ipRemota: string= "http://127.0.0.1:8000";
 
     //Variables de configuración:
     public activarDatosOficiales= true;
@@ -397,21 +397,25 @@ export class AppService {
     }
 
     getDispositivo(){
-       return this.dispositivo;
+      return this.dispositivo;
     }
 
     setDispositivo(dispositivo){
-       this.dispositivo= dispositivo;
-       return;
+      this.dispositivo= dispositivo;
+      return;
     }
 
     openDesarrollador(){
-       this.electronService.ipcRenderer.sendSync('desarrollador');
-       return;
+      this.electronService.ipcRenderer.sendSync('desarrollador');
+      return;
     }
 
     setModelosDatos(){
       this.electronService.ipcRenderer.sendSync("setModelosDatos");
+    }
+    abandonarPartida(){
+      this.observarAppService.next("AbandonarPartida");
+      return;
     }
 
     subirArchivo(objetoArchivo){

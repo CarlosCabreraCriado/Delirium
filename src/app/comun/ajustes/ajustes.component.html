@@ -1,8 +1,64 @@
 
 <div *ngIf="mostrarAjustes" id="PantallaAjustes" [style.opacity]="opacidad">
-	<div class="contenedorAjustes">
-		<div class="titulo">Ajustes</div>
-		<div class="mensajeTexto Texto2">Ajustes</div>
-		<div class="mensajeOpcion Texto2" (click)="cerrarAjustes()">OK</div>	
+	<div class="contenedorAjustes" >
+		<!--<img alt="Pause Frame" class="pauseFrame" src="./assets/General/Frame-Delirium-Blanco.png"/>-->
+		<div class="titulo Texto1">Ajustes</div>
+		<hr class='line' id="line_top">
+		<div class="pestanaAjustes">
+
+			<div class="titulo2 Texto2">Información</div>
+			<div class="mensajeTexto Texto3">Versión: {{appService.version}}</div>
+			<div class="mensajeTexto Texto3">Perfil: {{appService.validacion.nombre+"-"+appService.validacion.tipo}}</div>
+			<div class="mensajeTexto Texto3">Datos Oficiales: {{appService.activarDatosOficiales}}</div>
+
+			<div class="titulo2 Texto2">Sonido</div>
+			<div class="mensajeTexto textoModificador Texto3">Volumen General</div>
+			<div class="slidecontainer">
+  				<input type="range" min="0" max="100" value="50" class="volSlider" id="GeneralVolRange"  (change)="cambiarValorSlider($event)" >
+			</div>
+			<div class="mensajeTexto textoModificador Texto3">Volumen de Ambiente</div>
+			<div class="slidecontainer">
+  				<input type="range" min="0" max="100" value="50" class="volSlider" id="AmbientVolRange" (change)="cambiarValorSlider($event)" >
+			</div>
+			<div class="mensajeTexto textoModificador Texto3">Volumen de Efectos</div>
+			<div class="slidecontainer">
+  				<input type="range" min="0" max="100" value="50" class="volSlider" id="EffectsVolRange" (change)="cambiarValorSlider($event)" >
+			</div>
+
+			<div class="titulo2 Texto2">Gráficos</div>
+			<div class="mensajeTexto Texto3">Resolución</div>
+			<div class="mensajeTexto textoModificador Texto3">Antialiasing</div>
+			<label class="toggle-container">
+  				<input type="checkbox" class="real-checkbox">
+  				<div class="toggle-button"></div>
+			</label>
+
+			<div class="titulo2 Texto2">Juego</div>
+			<div class="mensajeTexto Texto3">Controles de Teclado</div>
+			<div class="mensajeTexto textoModificador Texto3">Restringir Acciones</div>
+			<label class="toggle-container">
+  				<input type="checkbox" class="real-checkbox" >
+  				<div class="toggle-button"></div>
+			</label>
+				<div class="mensajeTexto textoModificador Texto3">Restringir Recurso</div>
+			<label class="toggle-container">
+			  <input type="checkbox" class="real-checkbox">
+			  <div class="toggle-button"></div>
+			</label>
+			<div class="mensajeTexto textoModificador Texto3">Restringir RNG</div>
+			<label class="toggle-container">
+			  <input type="checkbox" class="real-checkbox">
+			  <div class="toggle-button"></div>
+			</label>
+			<div class="mensajeTexto textoModificador Texto3">Restringir Turno</div>
+			<label class="toggle-container">
+			  <input type="checkbox" class="real-checkbox">
+			  <div class="toggle-button"></div>
+			</label>
+
+		</div>
+		<hr class='line' id="line_bot">
+		<div class="ajustesOpcion Cancel Texto2" (click)="cerrarAjustes()">Cancel</div>
+		<div class="ajustesOpcion OK Texto2" (click)="cerrarAjustes()">OK</div>	
 	</div>
 </div>
