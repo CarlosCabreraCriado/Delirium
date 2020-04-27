@@ -34,6 +34,7 @@ import { BugLogComponent } from './comun/bug-log/bug-log.component';
 import { AjustesComponent } from './comun/ajustes/ajustes.component';
 import { DeveloperToolComponent } from './comun/developer-tool/developer-tool.component';
 import { HeroesInfoComponent } from './comun/heroesInfo/heroesInfo.component';
+import { HeroesCrearComponent } from './comun/heroesCrear/heroesCrear.component';
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
 
 //const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
@@ -64,6 +65,7 @@ const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', opti
     AjustesComponent,
     DeveloperToolComponent,
     HeroesInfoComponent,
+    HeroesCrearComponent,
     DesarrolladorComponent
   ],
   imports: [
