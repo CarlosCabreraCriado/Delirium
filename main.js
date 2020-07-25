@@ -62,7 +62,8 @@ var enemigosSchema= mongoose.Schema;
 enemigosSchema = new Schema({
   nombreId: String,
   enemigos_stats: [],
-  enemigos_hechizos: []
+  enemigos_hechizos: [],
+  enemigos_buffos: []
 });
 
 //Schema y modelo de HeroeHech:
@@ -153,16 +154,9 @@ var parametrosSchema = mongoose.Schema;
 
 parametrosSchema = new Schema({
   nombreId: String,
-  parametrosGuerrero: [],
-  parametrosCruzado: [],
-  parametrosIngeniero: [],
-  parametrosCazador: [],
-  parametrosChronomante: [],
-  parametrosHechicero: [],
-  parametrosIluminado: [],
-  parametrosMagoDeSangre: [],
-  parametrosAtributos: [],
-  parametrosEscalado: []
+  personajes: [],
+  atributos: [],
+  escalado: []
 });
 
 //Schema y modelo de Perfil:
@@ -171,12 +165,13 @@ var perfilSchema = mongoose.Schema;
 
 perfilSchema = new Schema({
   nombreId: String,
-  perfilLogros: [],
-  perfilHeroes: [],
-  perfilObjetos: [],
-  perfilObjetosGlobales: [],
-  perfilMisiones: [],
-  perfilInmap: []
+  configuracion: [],
+  logros: [],
+  heroes: [],
+  objetos: [],
+  objetos_globales: [],
+  misiones: [],
+  inmap: []
 });
 
 //Schema y modelo de Perfil:
@@ -594,11 +589,13 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarHeroeStats = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil) && actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
 
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion heroes_stats
 
@@ -616,10 +613,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarHeroeHech = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
 
   } //Fin de actualizacion heroes_hech
@@ -637,10 +636,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarEnemigos = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion Enemigos
 
@@ -657,10 +658,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarBuff = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion buff
 
@@ -677,10 +680,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarObjetos = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion objetos
 
@@ -698,10 +703,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarMazmorraSnack = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion MazmorraSnack
 
@@ -718,10 +725,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarGuardadoSnack = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion GuardadoSnack
 
@@ -738,10 +747,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarMazmorraDummy = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion MazmorraDummy
 
@@ -759,10 +770,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarGuardadoDummy = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion GuardadoDummy
 
@@ -780,10 +793,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarAnimaciones = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion Animaciones
 
@@ -801,10 +816,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarParametros = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion Parametros
 
@@ -822,10 +839,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarPerfil = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion Perfil
 
@@ -843,10 +862,12 @@ ipc.on("actualizarEstadisticas",function(event,datos){
         actualizarPersonajes = true;
         if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
+          event.returnValue = true;
         }
       });
     }).catch(function(error){
       console.log(error);
+      event.returnValue = false;
     });
   } //Fin de actualizacion Personajes
 });

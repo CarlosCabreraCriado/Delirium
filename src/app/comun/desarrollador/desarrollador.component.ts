@@ -35,9 +35,9 @@ export class DesarrolladorComponent implements OnInit{
 	ngOnInit(){
 		
 		this.desarrolladorService.log("-------------------------------","green");
-		this.desarrolladorService.log("Iniciando gestor de datos...","green");
+		this.desarrolladorService.log("  Iniciando gestor de datos... ","green");
 		this.desarrolladorService.log("-------------------------------","green");
-
+		this.desarrolladorService.inicializarGestor();
 		this.desarrolladorService.inicializarArchivos();
 	}
 

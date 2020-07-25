@@ -544,6 +544,17 @@ export class DeveloperCombateService implements OnInit{
 									this.parametros= data;
 									this.appService.setProgresoCarga("70%");
 
+									//Cargar Datos locales
+									if(!this.appService.activarDatosOficiales){
+										this.heroeStat=this.appService.getHeroesStats();
+										this.heroeHech=this.appService.getHeroesHech();
+										this.enemigos=this.appService.getEnemigos();
+										this.buff=this.appService.getBuff();
+										this.objetos=this.appService.getObjetos();
+										this.animaciones=this.appService.getAnimaciones();
+										this.parametros=this.appService.getParametros();
+									}
+
 									//Importar la partida:
 									this.importarPartida(sala);
 								});		
@@ -553,6 +564,7 @@ export class DeveloperCombateService implements OnInit{
 				});	
 			});
 		});
+
 	}
 
 	//Importa los datos de la partida y la mazmorra:

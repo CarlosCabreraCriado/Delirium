@@ -1,6 +1,7 @@
 
 import { Injectable, OnInit} from '@angular/core';
 import { AppService } from '../../app.service';
+import { HttpClient } from "@angular/common/http";
 import * as XLSX from 'xlsx';
 
 @Injectable({
@@ -8,6 +9,9 @@ import * as XLSX from 'xlsx';
 })
 
 export class DesarrolladorService implements OnInit{
+
+  //Variables de control:
+  public validacion: any= {}
 
   //Variables de Estado Paneles Principales:
 	public panel= "datos";
@@ -26,14 +30,25 @@ export class DesarrolladorService implements OnInit{
   public indexArchivoSeleccionado= 0;
 	public archivoSeleccionadoProvisional= "Null";
 
+  //Mensajes:
+  public mostrarMensaje= false;
+  public mostrarSpinner= true;
+  public mensaje= "Actualizando Datos..."
+
   //Logger Consola
   public logger=[];
   private loggerColor=[];
 
-  constructor(public appService: AppService)  { 
+  constructor(public appService: AppService, private http: HttpClient)  { 
   }
 
   ngOnInit(){
+    
+  }
+
+  inicializarGestor(){
+    console.log("INICIANDO HERRAMIENTA DESARROLLADOR");
+    this.validacion= this.appService.getValidacion();
   }
 
   inicializarArchivos(){
@@ -257,12 +272,12 @@ export class DesarrolladorService implements OnInit{
             };
           break;
           case 11: //PERFIL
-            vectorPaginas= ['LOGROS','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
+            vectorPaginas= ['CONFIGURACION','LOGROS','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
             documento={
               nombreId: "Perfil"
             };
           break;
-          case 12: //PERFIL
+          case 12: //PERSONAJES
             vectorPaginas= ['PERSONAJES']
             documento={
               nombreId: "Personajes"
@@ -277,7 +292,6 @@ export class DesarrolladorService implements OnInit{
           },
           sheets: vectorPaginas
         });*/
-        
         
         // Iteracion por pagina:
         for (var i = 0; i < vectorPaginas.length; i++) {
@@ -396,7 +410,7 @@ export class DesarrolladorService implements OnInit{
         nombresHojas= ['PERSONAJES','ATRIBUTOS','ESCALADO']
       break;
       case "Perfil":
-        nombresHojas= ['LOGROS','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
+        nombresHojas= ['CONFIGURACION','LOGROS','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
       break;
       case "Personajes":
         nombresHojas= ['PERSONAJES']
@@ -454,11 +468,53 @@ export class DesarrolladorService implements OnInit{
   subirArchivo(){
     this.archivosExcel[this.indexArchivoSeleccionado].estado="subido";
     this.log("Subiendo archivo...","orange");
-    this.appService.subirArchivo(this.archivosExcel[this.indexArchivoSeleccionado].objetoArchivo);
-    this.log("Archivo subido con exito.","green");
+    this.mostrarMensaje= true;
+    this.mostrarSpinner= true;
+    this.mensaje= "Subiendo archivo: "+this.archivoSeleccionado;
+    if(this.appService.subirArchivo(this.archivosExcel[this.indexArchivoSeleccionado].objetoArchivo)){
+      this.log("Archivo subido con exito.","green");
+      this.mostrarMensaje= false;
+      this.reloadDatos(false);
+    }else{
+      this.log("Error en la subida del archivo","red");
+      this.mostrarMensaje= false;
+    }
   }
-  
 
+  toggleDatosOficiales(){
+    this.archivoSeleccionado="null";
+    this.estadoDatos= "ver";
+    this.archivoDato={}
+    this.log("Datos Oficiales = "+!this.appService.activarDatosOficiales,"orange");
+    this.appService.toggleDatosOficialesDesarrollador();
+  }
+
+  reloadDatos(forzarEstadoVer:boolean){
+    this.log("Obteniendo datos (Perfil: "+this.appService.getValidacion().nombre+" + Oficial)","orange");
+    this.mostrarMensaje= true;
+    this.mostrarSpinner= true;
+    this.mensaje= "Actualizando Datos..."
+    var clave = {
+            clave: parseInt(this.appService.getValidacion().clave)
+          }
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/validacion",clave).subscribe((data) => {
+            
+            if(data){
+              this.appService.setInicio(data);
+              if(forzarEstadoVer){
+                this.archivoSeleccionado="null";
+                this.estadoDatos= "ver";
+              }
+              this.archivoDato={}
+              this.mostrarMensaje= false;
+              this.log("Adquisición de datos exitosa!","green");
+            }
+
+          },(err) => {
+            this.log("Error de adquisición de datos","red");
+          });
+  }
+ 
 } //FIN EXPORT
 
 

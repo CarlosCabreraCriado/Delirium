@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { ElectronService } from 'ngx-electron';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -66,8 +67,8 @@ export class AppService {
     public debugAutoValidacion:boolean=false;
     public debugClavesAuto=[1000,2307,2305,2567,9867];
     public debugClave:number=9867;
-    public ipRemota: string= "http://www.carloscabreracriado.com";
-    //public ipRemota: string= "http://127.0.0.1:8000";
+    //public ipRemota: string= "http://www.carloscabreracriado.com";
+    public ipRemota: string= "http://127.0.0.1:8000";
 
     //Variables de configuración:
     public activarDatosOficiales= true;
@@ -413,17 +414,38 @@ export class AppService {
     setModelosDatos(){
       this.electronService.ipcRenderer.sendSync("setModelosDatos");
     }
+
     abandonarPartida(){
       this.observarAppService.next("AbandonarPartida");
       return;
     }
 
-    subirArchivo(objetoArchivo){
+    subirArchivo(objetoArchivo):boolean{
       var documentos = [];
       documentos.push(objetoArchivo);
-      this.electronService.ipcRenderer.send("actualizarEstadisticas", documentos);
+      return this.electronService.ipcRenderer.sendSync("actualizarEstadisticas", documentos);
     }
 
+    toggleDatosOficiales(){
+      this.activarDatosOficiales= !this.activarDatosOficiales;
+      
+      this.setValidacion({});
+      //this.validacion = {};
+      //this.socketService.enviarSocket("logout",this.validacion);
+      this.claveValida = false;
+      this.setSala({});
+      this.setControl("");
+      this.cambiarUrl("index");
+      console.log(this.route.url)
+      this.mostrarMensaje("Configuración de datos cambiada con exito. Vuelva a iniciar sesión para consolidar los cambios. Datos Oficiales: "+this.activarDatosOficiales);
+      
+      //this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
+    }
+
+    toggleDatosOficialesDesarrollador(){
+      this.activarDatosOficiales= !this.activarDatosOficiales;
+      this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
+    }
 
 }
 

@@ -6,6 +6,16 @@
 <div id="contenedorDesarrollador">
 
   <!-- *************************************************
+        MENSAJES
+     ************************************************* -->
+  <div id="mensaje" *ngIf="desarrolladorService.mostrarMensaje">
+    <div class="contenedorMensaje">
+      <div class="titulo Texto3">{{desarrolladorService.mensaje}}</div>
+      <div *ngIf="desarrolladorService.mostrarSpinner" class="lds-dual-ring"></div>
+    </div>
+  </div>
+
+  <!-- *************************************************
         BARRA INICIO
      ************************************************* -->
 
@@ -31,7 +41,7 @@
     </div>
 
     <div class="contenedorUsuario">
-      <div class="usuario">{{appService.getValidacion().nombre}}</div>
+      <div class="usuario">{{desarrolladorService.validacion.nombre}}</div>
       <div class="version">v{{appService.version}}</div>
     </div>
     
@@ -42,8 +52,8 @@
      ************************************************* -->
   <div id="workspace">
 
-    <img src="assets/General/tool.png" class="iconoSave" alt="Icono Save">
     <img src="assets/General/bug.png" class="iconoBug" alt="Icono Bug">
+    <img src="assets/desarrollador/reload.png" class="iconoReload" alt="Icono reload" (click)="desarrolladorService.reloadDatos(true)">
 
      
   <!-- *************************************************
@@ -94,6 +104,9 @@
         <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('subir')" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
         <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('modificar')" (click)="desarrolladorService.seleccionarAccionDato('modificar');">MODIFICAR</div>
       </div>
+      <div class="botonCambiarDatos" (click)="desarrolladorService.toggleDatosOficiales()">
+        Datos oficiales: {{appService.activarDatosOficiales}}
+      </div>
       <div class="contenedorArchivos">
         <div class="tituloArchivo">ARCHIVOS: </div>
         <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Stats')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
@@ -113,7 +126,7 @@
       </div>
       
       <!-- Estado Datos-SUBIR -->
-      <div *ngIf="desarrolladorService.estadoDatos=='subir'" class="contenedorOpcion subir">
+      <div *ngIf="desarrolladorService.estadoDatos=='subir' && desarrolladorService.archivoSeleccionado!='null'" class="contenedorOpcion subir">
 
         <!-- Pantalla Datos-Subir -->
         <div class="pantallaSubir" *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='subir'">
