@@ -39,8 +39,10 @@ export class AppService {
 
           this.http.post(this.ipRemota+"/deliriumAPI/validacion",{clave: this.debugClave}).subscribe((data) => {
             if(data){
-              this.setInicio(data);
+              this.token= data["token"];
+              this.setInicio(data["datos"]);
               this.observarAppService.next("Iniciar");
+              console.log("TOKEN: "+this.token)
             }
           },(err) => {
             console.log(err);
@@ -51,7 +53,8 @@ export class AppService {
           this.http.post(this.ipRemota+"/deliriumAPI/autoValidacion",true).subscribe((data) => {
             if(data){
               console.log("ESTADO: ");
-              this.setInicio(data);
+              this.token= data["token"];
+              this.setInicio(data["datos"]);
               this.observarAppService.next("Iniciar");
             }
           },(err) => {
@@ -69,6 +72,7 @@ export class AppService {
     public debugClave:number=9867;
     //public ipRemota: string= "http://www.carloscabreracriado.com";
     public ipRemota: string= "http://127.0.0.1:8000";
+    private token: string;
 
     //Variables de configuración:
     public activarDatosOficiales= true;
@@ -107,6 +111,17 @@ export class AppService {
 
     // Observable string streams
     observarTeclaPulsada$ = this.observarTeclaPulsada.asObservable();
+
+    setToken(token){
+      this.electronService.ipcRenderer.sendSync('setToken',token);
+      this.token=token;
+      return;
+    }
+
+    getToken() {
+      this.token=this.electronService.ipcRenderer.sendSync('getToken');
+      return this.token;
+    }
 
     setControl(val:string):void{
     

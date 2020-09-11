@@ -5,6 +5,8 @@
   width: 100vw
   height: 100vh
   background-color: grey
+  font-family: Roboto, "Helvetica Neue", sans-serif
+
 // *************************************************
 //     BARRA INICIO
 // *************************************************
@@ -261,6 +263,330 @@
       animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite
     &:hover:after
       background-color: white
+
+
+// *************************************************
+//     SECCION DUNGEON BUILDER  
+// *************************************************
+#panelMazmorraInicio
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  .titulo
+    position: absolute
+    top: 5%
+    color: white
+    width: 50%
+    left: 50%
+    margin-left: -25%
+    text-align: center
+    font-size: 30px
+    top: 15%
+  .botonNuevaMazmorra
+    position: absolute
+    display: flex
+    top: 30%
+    width: 20%
+    left: 25%
+    height: 30%
+    border: 2px solid white
+    border-radius: 20px
+    background-color: black
+
+    img
+      position: absolute
+      max-height: 80%
+      width: 70%
+      margin-left: -35%
+      left: 50%
+      filter: invert(1)
+    div
+      position: absolute
+      width: 100%
+      height: 10%
+      top: 85%
+      text-align: center
+      color: white
+
+
+  .botonCargarMazmorra
+    position: absolute
+    display: flex
+    top: 30%
+    width: 20%
+    right: 25%
+    height: 30%
+    border: 2px solid white
+    border-radius: 20px
+    background-color: black
+    img
+      position: absolute
+      max-height: 80%
+      width: 70%
+      margin-left: -35%
+      left: 50%
+      filter: invert(1)
+    div
+      position: absolute
+      width: 100%
+      height: 10%
+      top: 85%
+      text-align: center
+      color: white
+
+.contenedorCargarMazmorra
+  position: absolute
+  background-color: black
+  border: solid white 5px
+  text-align: center
+  font-size: 30px
+  color: white
+  width: 80%
+  height: 70%
+  top: 15%
+  left: 10%
+  
+
+  .iconoCerrar
+    position: absolute
+    width: 5%
+    top: 2%
+    right: 2%
+    filter: invert(1)
+  .contenedorMazmorras
+    position: absolute
+    top: 15%
+    width: 100%
+    height: 85%
+    overflow-y: scroll
+    .cargarMazmorra
+      position: relative
+      display: flex
+      height: 20%
+      justify-content: center
+      align-items: center
+      background-color: black
+      margin: 2%
+      color: white
+      border: solid white 3px
+      &:hover
+        color: black
+        background-color: white
+
+#panelMazmorra
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+
+  .flechaDungeonBuilder
+    position: absolute
+    width: 10%
+
+    &.superior
+      bottom: 87%
+      left: 50%
+      margin-left: -5%
+    &.inferior
+      top: 87%
+      left: 50%
+      transform: rotate(180deg)
+      margin-left: -5%
+    &.derecha
+      top: 50%
+      left: 77%
+      transform: rotate(90deg)
+    &.izquierda
+      top: 50%
+      right: 77%
+      transform: rotate(-90deg)
+    &:hover
+      filter: invert(1)
+
+  .iconoZoomIn
+    position: absolute
+    width: 3%
+    top: 6%
+    left: 20%
+    &:hover
+      filter: invert(1)
+      
+  .iconoZoomOut
+    position: absolute
+    width: 3%
+    top: 6%
+    left: 25%
+    &:hover
+      filter: invert(1)
+
+  .iconoEliminar
+    position: absolute
+    width: 3%
+    top: 6%
+    right: 30%
+    &:hover
+      filter: invert(1)
+
+  .iconoGuardar
+    position: absolute
+    width: 3%
+    top: 6%
+    right: 25%
+    &:hover
+      filter: invert(1)
+
+  .iconoCerrar
+    position: absolute
+    width: 3%
+    top: 6%
+    right: 20%
+    &:hover
+      filter: invert(1)
+
+  .contenedorReticula
+    position: absolute
+    top: 15%
+    left: 20%
+    width: 60%
+    height: 70%
+
+    .piezaTablero
+      position: absolute
+      top: 0
+      left: 0
+      width: 30%
+      z-index: 9
+
+    .filaReticula
+      position: relative
+      width: 100%
+      height: 8.33%
+      z-index: 10
+
+      div
+        position: absolute
+        width: 100%
+        height: 100%
+        .cuadradoReticula
+          position: relative
+          display: inline-block
+          box-sizing: border-box
+          font-size: 10px
+          text-align: center
+          width: 5%
+          height: 100%
+          div
+            border: solid 1px black
+            &:hover
+              background-color: rgba(0,0,0,0.5)
+
+  .contenedorPanelParametros
+    position: absolute
+    top: 15%
+    left: 20%
+    width: 60%
+    height: 70%
+    background-color: white
+    z-index: 20
+    .toolbar
+      position: relative
+      width: 100%
+      height: 10%
+      background-color: black
+      .boton
+        position: relative
+        display: inline-block
+        width: 20%
+        color: white
+        line-height: 2
+        text-align: center
+      .boton:hover
+        color: black
+        background-color: white
+
+    .contenidoParametros
+      position: absolute
+      width: 100%
+      height: 90%
+
+      .formularioGeneral
+        position: absolute
+        display: flex
+        width: 100%
+        height: 100%
+        .columna
+          height: 90%
+          width: 50%
+          margin: 5%
+
+
+          .campoFormulario
+            height: 25%
+
+            &.descripcion
+              height: 40%
+              width: 100%
+
+
+  .panelDerecho
+    position: absolute
+    top: 15%
+    width: 15%
+    height: 36vw
+    right: 1%
+    background-color: rgba(0,0,0,0.5)
+    .contenedorTitulo
+      position: absolute
+      width: 100%
+      height: 10%
+      text-align: center
+      background-color: black
+      color: white
+      line-height: 2.5
+    .contenedorPanelDerecho
+      position: absolute
+      color: white
+      top: 10%
+      height: 90%
+      width: 100%
+      img
+        position: relative
+        width: 40%
+        margin: 5%
+        display: inline-block
+        &:hover
+          filter: invert(1)
+
+  .panelIzquierdo
+    position: absolute
+    top: 15%
+    width: 15%
+    height: 36vw
+    left: 1%
+    background-color: rgba(0,0,0,0.5)
+    .contenedorTitulo
+      position: absolute
+      width: 100%
+      height: 10%
+      text-align: center
+      background-color: black
+      color: white
+      line-height: 2.5
+    .contenedorPanelIzquierdo
+      position: absolute
+      top: 10%
+      height: 90%
+      width: 100%
+      img
+        position: relative
+        width: 40%
+        margin: 5%
+        display: inline-block
+        &:hover
+          filter: invert(1)
 
 // *************************************************
 //     PANEL DATOS

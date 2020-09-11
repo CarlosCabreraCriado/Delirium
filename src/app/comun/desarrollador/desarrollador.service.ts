@@ -2,6 +2,8 @@
 import { Injectable, OnInit} from '@angular/core';
 import { AppService } from '../../app.service';
 import { HttpClient } from "@angular/common/http";
+import { RenderReticula } from './renderReticula.class';
+import { Subject } from "rxjs";
 import * as XLSX from 'xlsx';
 
 @Injectable({
@@ -14,9 +16,10 @@ export class DesarrolladorService implements OnInit{
   public validacion: any= {}
 
   //Variables de Estado Paneles Principales:
-	public panel= "datos";
+	public panel= "mazmorra";
 	public estadoInmap= "";
-	public estadoMazmorra= "";
+	public estadoMazmorra= "parametros";
+  public estadoParametros= "General";
 	public estadoDatos= "subir";
 	public estadoAssets= "";
   public estadoDatosSubir= "subir";
@@ -39,17 +42,53 @@ export class DesarrolladorService implements OnInit{
   public logger=[];
   private loggerColor=[];
 
+  //Variables Mazmorra
+  public mazmorra:any = {};
+  public listaMazmorra:any= [];
+  public mostrarCargarMazmorra= false;
+
+  private mazmorraInicializada= false;
+  private mazmorraNombreId= "";
+  private renderReticula= {}  as RenderReticula;
+  private numFilasIni= 27;
+  private numColumnasIni= 37;
+  private margenReticula= 6;
+  private cuentaIndexPieza= 0;
+
+  private activarLimiteReticula: boolean = false;
+  private limiteReticulaXMin:number = 0;
+  private limiteReticulaXMax: number = 19;
+
+  private limiteReticulaYMin: number = 0;
+  private limiteReticulaYMax: number = 11;
+
+  private visorNumFilaIni:number = 14;
+  private visorNumColumnaIni: number= 24;
+
+  private visorFila;
+  private visorColumna;
+
+  private rotacion=0;
+
+  // Observable string sources
+  private observarDesarrolladorService = new Subject<string>();
+
+  // Observable string streams
+  observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
+
+
   constructor(public appService: AppService, private http: HttpClient)  { 
   }
 
   ngOnInit(){
-    
   }
 
   inicializarGestor(){
     console.log("INICIANDO HERRAMIENTA DESARROLLADOR");
     this.validacion= this.appService.getValidacion();
   }
+
+  
 
   inicializarArchivos(){
     console.log("Iniciando")
@@ -92,10 +131,957 @@ export class DesarrolladorService implements OnInit{
      }
    }
 
+//*************************************************
+//    PANEL MAZMORRA:
+//************************************************* 
+  
+  nuevaMazmorra(){
+    this.mazmorra= {
+      general: [
+          {
+              "evento_start_id": 0,
+              "loot_finish_id": 0,
+              "nombre": "",
+              "descripcion": "",
+              "imagen_id": 0,
+              "evento_finish_id": 0,
+              "nivel": 0
+          }
+      ],
+      salas: [],
+      enemigos: [],
+      dialogos: [],
+      eventos: [],
+      celdas: [],
+      nombre: "",
+      nombreId: "Mazmorra"
+    }
+    
+    this.inicializarReticula();
+    //this.observarDesarrolladorService.next("reloadReticula");
+    this.observarDesarrolladorService.next("reloadForm");
+    this.mazmorraInicializada= true;
+  }
 
-  //*************************************************
-  //		PANEL DATOS:
-  //************************************************* 
+  cerrarMazmorra(){
+    this.mazmorra= {}
+    //this.inicializarReticula();
+    this.mazmorraInicializada=false;
+    return;
+  }
+
+  cargarMazmorra(){
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/listaMazmorra",{token: this.appService.getToken()}).subscribe((res) => {
+      if(res){
+        console.log("Lista de mazmorras");
+        console.log(res);
+        this.listaMazmorra= res;
+        this.mostrarCargarMazmorra=true;
+      }else{
+        console.log("Fallo en la obtención de mazmorras");
+      }
+    },(err) => {
+      console.log(err);
+    });
+  }
+
+  seleccionarMazmorra(index){
+    this.mazmorra= this.listaMazmorra[index];
+    this.visorFila= [];
+    this.visorColumna=[];
+    for (var i = 0; i < this.visorNumFilaIni; ++i) {this.visorFila.push(i);}
+    for (var i = 0; i < this.visorNumColumnaIni; ++i) {this.visorColumna.push(i);}
+    this.renderReticula.celdas= this.mazmorra.celdas;
+    this.mostrarCargarMazmorra= false;
+    this.observarDesarrolladorService.next("reloadForm");
+    this.mazmorraInicializada= true;
+  }
+
+  guardarMazmorra(){  
+    this.mazmorra.celdas= Object.assign([],this.renderReticula.celdas);
+    console.log(this.mazmorra);
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: this.appService.getToken()}).subscribe((res) => {
+      if(res){
+        console.log("Mazmorra guardada en Base de datos");
+      }else{
+        console.log("Fallo en el guardado");
+      }
+    },(err) => {
+      console.log(err);
+    });
+
+    return;
+  }
+
+  eliminarMazmorra(){
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/eliminarMazmorra",{mazmorra: this.mazmorra, token: this.appService.getToken()}).subscribe((res) => {
+      if(res){
+        console.log("Mazmorra eliminada con exito");
+      }else{
+        console.log("Fallo en la eliminación de la mazmorra");
+      }
+    },(err) => {
+      console.log(err);
+    });
+
+    return;
+  }
+
+  inicializarReticula(){
+
+    this.renderReticula= { 
+      estado: '',
+      comando: '',
+      celdas: []
+    }
+
+    this.visorFila= [];
+    this.visorColumna=[];
+    for (var i = 0; i < this.visorNumFilaIni; ++i) {this.visorFila.push(i);}
+    for (var i = 0; i < this.visorNumColumnaIni; ++i) {this.visorColumna.push(i);}
+    
+    var numFilas = this.numFilasIni;
+    var numColumnas = this.numColumnasIni;
+    
+    var vectorFila= []
+    var objetoSector= {
+      X: 0,
+      Y: 0,
+      tipo: "none",
+      oriantacion: 1,
+      pieza: "none",
+      indexPieza: 0,
+      ancla: false,
+      seleccionada: false,
+      color: "inherit",
+      border: Object.assign([],["none", "none", "none", "none"])
+    }
+
+    //Creación reticula:
+    for(var i= 0; i<numFilas; i++){
+
+      //Creación de la fila:
+      vectorFila= []
+      for(var j= 0; j<numColumnas; j++){
+        objetoSector.X= i-this.margenReticula;
+        objetoSector.Y= j-this.margenReticula;
+
+        vectorFila.push(Object.assign({},objetoSector));
+      }
+
+      this.renderReticula.celdas.push(Object.assign([],vectorFila));
+    }
+
+    //Paso por valor:
+    for(var i= 0; i<numFilas; i++){
+      for(var j= 0; j<numColumnas; j++){
+        this.renderReticula.celdas[i][j].border= this.renderReticula.celdas[i][j].border.concat();
+      }
+    }
+
+    //Ajuste de 0:
+    for (var i = 0; i < this.visorColumna.length; ++i) {
+      this.visorColumna[i]= this.visorColumna[i]+this.margenReticula;
+    }
+
+    for (var i = 0; i < this.visorFila.length; ++i) {
+      this.visorFila[i]= this.visorFila[i]+this.margenReticula;
+    }
+
+    console.log(this.renderReticula)
+    return this.renderReticula;
+  }
+
+  addFilaReticula(posicion){
+    var objetoSector= {
+      X: 0,
+      Y: 0,
+      tipo: "none",
+      oriantacion: 1,
+      pieza: "none",
+      indexPieza: 0,
+      ancla: false,
+      seleccionada: false,
+      color: "inherit",
+      border: Object.assign([],["none", "none", "none", "none"])
+    }
+    var vectorFila = [];
+    var numColumnas = this.renderReticula.celdas[0].length;
+    var numFilas = this.renderReticula.celdas.length;
+   
+    switch (posicion) {
+      case "bottom":
+          for(var j= 0; j<numColumnas; j++){
+            objetoSector.X= numFilas-this.margenReticula;
+            objetoSector.Y= j-this.margenReticula;
+
+            vectorFila.push(Object.assign({},objetoSector));
+          }
+          this.renderReticula.celdas.push(Object.assign([],vectorFila));
+        break;
+
+      case "top":
+          for(var j= 0; j<numColumnas; j++){
+            objetoSector.X= this.numFilasIni-numFilas-this.margenReticula-1;
+            objetoSector.Y= j-this.margenReticula;
+
+            vectorFila.push(Object.assign({},objetoSector));
+          }
+          this.renderReticula.celdas.unshift(Object.assign([],vectorFila));
+        break;
+    }
+
+    //Paso por valor:
+    for(var i= 0; i<numFilas; i++){
+      for(var j= 0; j<numColumnas; j++){
+        this.renderReticula.celdas[i][j].border= this.renderReticula.celdas[i][j].border.concat();
+      }
+    }
+
+    return;
+  }
+
+  addColumnaReticula(posicion){
+    var objetoSector= {
+      X: 0,
+      Y: 0,
+      tipo: "none",
+      oriantacion: 1,
+      pieza: "none",
+      indexPieza: 0,
+      ancla: false,
+      seleccionada: false,
+      color: "inherit",
+      border: Object.assign([],["none", "none", "none", "none"])
+    }
+    var numColumnas = this.renderReticula.celdas[0].length;
+    var numFilas = this.renderReticula.celdas.length;
+    
+    switch (posicion) {
+      case "right":
+        for (var i = 0; i < numFilas; ++i) {
+          objetoSector.X= i-this.margenReticula;
+          objetoSector.Y= numColumnas-this.margenReticula;
+          this.renderReticula.celdas[i].push(Object.assign({},objetoSector))
+        }
+        break;
+
+      case "left":
+        for (var i = 0; i < numFilas; ++i) {
+          objetoSector.X= i-this.margenReticula;
+          objetoSector.Y= this.numColumnasIni-numColumnas-this.margenReticula-1;
+          this.renderReticula.celdas[i].unshift(Object.assign({},objetoSector))
+        }
+        break;
+    }
+
+    //Paso por valor:
+    for(var i= 0; i<numFilas; i++){
+      for(var j= 0; j<numColumnas; j++){
+        this.renderReticula.celdas[i][j].border= this.renderReticula.celdas[i][j].border.concat();
+      }
+    }
+
+    return;
+  }
+
+  getReticula(){return this.renderReticula;}
+
+  moverReticula(movimiento){
+    console.log("Cambiando Reticula")
+    switch (movimiento) {
+      case "right":
+        if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1]<this.margenReticula+2){
+          this.addColumnaReticula("right")
+        }
+        for (var i = 0; i < this.visorColumna.length; ++i) {
+          this.visorColumna[i]++;
+        }
+        break;
+
+      case "left":
+       
+        if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1]>this.margenReticula){
+            this.addColumnaReticula("left")
+        }else{
+          for (var i = 0; i < this.visorColumna.length; ++i) {
+            this.visorColumna[i]--;
+          }
+        }
+        break;
+
+      case "up":
+        if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1]>this.margenReticula){
+          this.addFilaReticula("top")
+        }else{
+          for (var i = 0; i < this.visorFila.length; ++i) {
+            this.visorFila[i]--;
+          }
+        }
+        
+        break;
+
+      case "down":
+
+        if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1]<this.margenReticula+2){
+          this.addFilaReticula("bottom")
+        }
+
+        for (var i = 0; i < this.visorFila.length; ++i) {
+          this.visorFila[i]++;
+        }
+        break;
+      
+      default:
+        // code...
+        break;
+    }
+  }
+
+  addPieza(tipoPieza){
+    this.log("Añadir pieza: "+tipoPieza,"orange");
+    this.renderReticula.estado="add"
+    this.renderReticula.comando= tipoPieza;
+    return;
+  }
+
+  renderAnchoSector(){
+    var width = 5;
+    width= 100/this.visorColumna.length;
+    return width+"%";
+  }
+
+  renderAltoSector(){
+    var height = 8.33;
+    height= 100/this.visorFila.length
+    return height+"%";
+  }
+
+  zoomIn(){
+    this.visorFila.pop();
+    this.visorColumna.pop();
+    return;
+  }
+
+  zoomOut(){
+
+    this.visorFila.push(this.visorFila[this.visorFila.length-1]+1);
+    this.visorColumna.push(this.visorColumna[this.visorColumna.length-1]+1);
+    if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1]<this.margenReticula){
+      this.addColumnaReticula("right")
+    }
+    if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1]<this.margenReticula){
+      this.addFilaReticula("bottom")
+    }
+
+    return;
+  }
+
+  clickSector(x,y){
+    console.log("X: "+x);
+    console.log("Y: "+y);
+    console.log(this.renderReticula.celdas[x][y])
+
+    switch (this.renderReticula.estado) {
+      case "add":
+        var colision= false;
+        var bordeSize = 3;
+        var bordeColor = "black";
+        this.cuentaIndexPieza++;
+
+        switch (this.renderReticula.comando) {
+
+          case "6x6":
+            //Comprobar Colision:
+            for (var i = 0; i < 6; ++i) {
+              for (var j = 0; j < 6; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && !colision){
+                  this.log("Error: Colisión de pieza.","red")
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+
+            //Dibujar pieza:
+            for (var i = 0; i < 6; ++i) {
+              for (var j = 0; j < 6; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;           
+              }
+            }
+
+            //Render Border
+            for (var i = 0; i < 6; ++i) {
+              for (var j = 0; j < 6; ++j) {
+                //Render de borde:
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+              }
+            }
+          break;
+
+          case "2x2":
+            
+
+            //Comprobar Colision:
+            for (var i = 0; i < 2; ++i) {
+              for (var j = 0; j < 2; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && !colision){
+                  this.log("Error: Colisión de pieza.","red")
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+
+            //Dibujar pieza:
+            for (var i = 0; i < 2; ++i) {
+              for (var j = 0; j < 2; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            //Render Borde:
+            for (var i = 0; i < 2; ++i) {
+              for (var j = 0; j < 2; ++j) {
+                //Render de borde:
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+              }
+            }
+          break;
+
+          case "2x1":
+
+            //Modificadores de rotacion:
+            var iRotacion= 0;
+            var jRotacion= 0;
+
+            if(this.rotacion==0 || this.rotacion==180){
+              iRotacion= 1;
+              jRotacion= 2;
+            }else{
+              iRotacion= 2;
+              jRotacion= 1;
+            }
+
+            //Comprobar colision
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+
+            //Dibujar Pieza:
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            //Render Borde
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                //Render de borde:
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+              }
+            }
+          break;
+
+          case "6x4":
+
+            //Modificadores de rotacion:
+            var iRotacion= 0;
+            var jRotacion= 0;
+
+            if(this.rotacion==0 || this.rotacion==180){
+              iRotacion= 4;
+              jRotacion= 6;
+            }else{
+              iRotacion= 6;
+              jRotacion= 4;
+            }
+
+            //Comprobar colision:
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+
+            //Dibujar pieza:
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+             //Render Border:
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                 //Render de borde:
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+              }
+            }
+          break;
+
+          case "4x2":
+            //Modificadores de rotacion:
+            var iRotacion= 0;
+            var jRotacion= 0;
+
+            if(this.rotacion==0 || this.rotacion==180){
+              iRotacion= 2;
+              jRotacion= 4;
+            }else{
+              iRotacion= 4;
+              jRotacion= 2;
+            }
+
+            //Comprobar colision
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && !colision){
+                  this.log("Error: Colisión de pieza.","red")
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+            //Dibujar pieza:
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            //Render Borde:
+            for (var i = 0; i < iRotacion; ++i) {
+              for (var j = 0; j < jRotacion; ++j) {
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+              }
+            }
+          break;
+
+          case "T":
+            //Modificadores de rotacion:
+            var iRotacion= 0;
+            var jRotacion= 0;
+            var iRotacion2= 0;
+            var jRotacion2= 0;
+            var iOffset=0;
+            var jOffset=0;
+            var iOffset2=0;
+            var jOffset2=1;
+
+            if(this.rotacion==0){
+              iRotacion= 2;
+              jRotacion= 4;
+              iOffset=0;
+              jOffset=0;
+
+              iRotacion2= 4;
+              jRotacion2= 2;
+              iOffset2=0;
+              jOffset2=1;
+            }
+
+            if(this.rotacion== 90){
+              iRotacion= 4;
+              jRotacion= 2;
+              iOffset=0;
+              jOffset=2;
+
+              iRotacion2= 2;
+              jRotacion2= 4;
+              iOffset2=1;
+              jOffset2=0;
+            }
+
+            if(this.rotacion== 180){
+              iRotacion= 2;
+              jRotacion= 4;
+              iOffset=2;
+              jOffset=0;
+
+              iRotacion2= 4;
+              jRotacion2= 2;
+              iOffset2=0;
+              jOffset2=1;
+            }
+
+            if(this.rotacion== 270){
+              iRotacion= 4;
+              jRotacion= 2;
+              iOffset=0;
+              jOffset=0;
+
+              iRotacion2= 2;
+              jRotacion2= 4;
+              iOffset2=1;
+              jOffset2=0;
+            }
+
+            //Comprobar Colision:
+            for (var i = iOffset; i < iRotacion+iOffset; ++i) {  //Palo Horizontal
+              for (var j = jOffset; j < jRotacion+jOffset; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+
+            for (var i = iOffset2; i < iRotacion2+iOffset2; ++i) { //Palo vertical
+              for (var j = jOffset2; j < jRotacion2+jOffset2; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && this.renderReticula.celdas[x+i][y+j].indexPieza!==this.cuentaIndexPieza && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+
+            //Dibujado de pieza:
+            for (var i = iOffset; i < iRotacion+iOffset; ++i) {  //Palo Horizontal
+              for (var j = jOffset; j < jRotacion+jOffset; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            for (var i = iOffset2; i < iRotacion2+iOffset2; ++i) { //Palo vertical
+              for (var j = jOffset2; j < jRotacion2+jOffset2; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            //Render Borde:
+            for (var i = iOffset; i < iRotacion+iOffset; ++i) {  //Palo Horizontal
+              for (var j = jOffset; j < jRotacion+jOffset; ++j) {
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+              }
+            }
+
+            for (var i = iOffset2; i < iRotacion2+iOffset2; ++i) { //Palo vertical
+              for (var j = jOffset2; j < jRotacion2+jOffset2; ++j) {
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+              }
+            }
+
+          break;
+
+          case "X":
+            //Comprobar colision:
+            for (var i = 2; i < 4; ++i) {  //Palo Horizontal
+              for (var j = 0; j < 6; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none"  && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+
+            for (var i = 0; i < 6; ++i) { //Palo vertical
+              for (var j = 2; j < 4; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && this.renderReticula.celdas[x+i][y+j].indexPieza!==this.cuentaIndexPieza && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+
+            //Dibujar Pieza:
+            for (var i = 2; i < 4; ++i) {  //Palo Horizontal
+              for (var j = 0; j < 6; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            for (var i = 0; i < 6; ++i) { //Palo vertical
+              for (var j = 2; j < 4; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            //Render Borde:
+            for (var i = 2; i < 4; ++i) {  //Palo Horizontal
+              for (var j = 0; j < 6; ++j) {
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+              }
+            }
+
+            for (var i = 0; i < 6; ++i) { //Palo vertical
+              for (var j = 2; j < 4; ++j) {
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+              }
+            }
+          break;
+
+          case "L":
+            //Modificadores de rotacion:
+            var iRotacion= 0;
+            var jRotacion= 0;
+            var iRotacion2= 0;
+            var jRotacion2= 0;
+            var iOffset=0;
+            var jOffset=0;
+            var iOffset2=0;
+            var jOffset2=0;
+
+            if(this.rotacion==0){
+              iRotacion= 4;
+              jRotacion= 2;
+              iOffset=0;
+              jOffset=2;
+
+              iRotacion2= 2;
+              jRotacion2= 4;
+              iOffset2=2;
+              jOffset2=0;
+            }
+
+            if(this.rotacion== 90){
+              iRotacion= 4;
+              jRotacion= 2;
+              iOffset=0;
+              jOffset=0;
+
+              iRotacion2= 2;
+              jRotacion2= 4;
+              iOffset2=2;
+              jOffset2=0;
+            }
+
+            if(this.rotacion== 180){
+              iRotacion= 2;
+              jRotacion= 4;
+              iOffset=0;
+              jOffset=0;
+
+              iRotacion2= 4;
+              jRotacion2= 2;
+              iOffset2=0;
+              jOffset2=0;
+            }
+
+            if(this.rotacion== 270){
+              iRotacion= 2;
+              jRotacion= 4;
+              iOffset=0;
+              jOffset=0;
+
+              iRotacion2= 4;
+              jRotacion2= 2;
+              iOffset2=0;
+              jOffset2=2;
+            }
+
+            //Comprobar colision:
+            for (var i = iOffset; i < iRotacion+iOffset; ++i) {  //Palo Horizontal
+              for (var j = jOffset; j < jRotacion+jOffset; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none"  && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+
+            for (var i = iOffset2; i < iRotacion2+iOffset2; ++i) { //Palo vertical
+              for (var j = jOffset2; j < jRotacion2+jOffset2; ++j) {
+                if(this.renderReticula.celdas[x+i][y+j].pieza !== "none" && this.renderReticula.celdas[x+i][y+j].indexPieza!==this.cuentaIndexPieza && !colision){
+                  this.log("Error: Colisión de pieza.","red");
+                  colision= true;
+                }
+              }
+            }
+            if(colision){break;}
+
+            //Dibujar pieza:
+            for (var i = iOffset; i < iRotacion+iOffset; ++i) {  //Palo Horizontal
+              for (var j = jOffset; j < jRotacion+jOffset; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            for (var i = iOffset2; i < iRotacion2+iOffset2; ++i) { //Palo vertical
+              for (var j = jOffset2; j < jRotacion2+jOffset2; ++j) {
+                this.renderReticula.celdas[x+i][y+j].color= "orange"
+                this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
+              }
+            }
+
+            //Render Borde:
+            for (var i = iOffset; i < iRotacion+iOffset; ++i) {  //Palo Horizontal
+              for (var j = jOffset; j < jRotacion+jOffset; ++j) {
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+              }
+            }
+
+            for (var i = iOffset2; i < iRotacion2+iOffset2; ++i) { //Palo vertical
+              for (var j = jOffset2; j < jRotacion2+jOffset2; ++j) {
+                if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+              }
+            }
+          break;
+          
+          default:
+            // code...
+            break;
+        } 
+        break; //Fin estado add
+      
+      case "eliminar":
+      var indexPiezaEliminar= this.renderReticula.celdas[x][y].indexPieza;
+        for (var i = 0; i < this.renderReticula.celdas.length; ++i) {
+          for (var j = 0; j < this.renderReticula.celdas[0].length; ++j) {
+            if(this.renderReticula.celdas[i][j].indexPieza===indexPiezaEliminar){
+             this.renderReticula.celdas[i][j]= {
+                X: i,
+                Y: j,
+                tipo: "none",
+                oriantacion: 1,
+                pieza: "none",
+                indexPieza: 0,
+                ancla: false,
+                seleccionada: false,
+                color: "inherit",
+                border: ["none", "none", "none", "none"]
+              }
+            }
+          }
+        }
+        break;
+      default:
+        // code...
+        break;
+    }
+    return;
+  }
+
+  seleccionarHerramienta(herramienta){
+    switch (herramienta) {
+      case "seleccion":
+        this.log("Herramienta: "+herramienta,"green");
+        this.renderReticula.estado="seleccionar";
+        this.estadoMazmorra= "seleccionar";
+        this.renderReticula.comando= "";
+        break;
+
+      case "add":
+        this.log("Herramienta: "+herramienta,"green");
+        this.renderReticula.estado="add";
+        this.estadoMazmorra= "add";
+        this.renderReticula.comando= "";
+        break;
+
+      case "eliminar":
+        this.log("Herramienta: "+herramienta,"green");
+        this.renderReticula.estado="eliminar";
+        this.estadoMazmorra= "add";
+        this.renderReticula.comando= "";
+        break;
+
+      case "rotar":
+        this.log("Herramienta: "+herramienta,"green");
+        this.renderReticula.estado="add";
+        this.estadoMazmorra= "add";
+        this.renderReticula.comando= "";
+        if(this.rotacion==270){
+          this.rotacion=0;
+        }else{
+          this.rotacion+=90;
+        }
+        break;
+
+      case "parametros":
+        this.log("Herramienta: "+herramienta,"green");
+        this.renderReticula.estado="parametros";
+        this.estadoMazmorra= "parametros";
+        this.renderReticula.comando= "";
+        break;
+      
+      default:
+        this.log("Herramienta no valida: "+herramienta,"red");
+        this.renderReticula.estado=""
+        this.renderReticula.comando= "";
+        break;
+    }
+    return;
+  }
+
+  seleccionarPanelParametros(parametros){
+    this.estadoParametros= parametros;
+    return;
+  }
+
+
+
+//
+
+//*************************************************
+//		PANEL DATOS:
+//************************************************* 
 
 	seleccionarAccionDato(opcion:string):void{
   		this.estadoDatos= opcion;

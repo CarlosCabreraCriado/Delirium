@@ -15,7 +15,8 @@ var Datastore = require('nedb');
 
 //Inicialización del sistema de almacenamiento remoto:
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://deliriumClient:delirium96@ds141633.mlab.com:41633/heroku_27lq85ms',{ useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://deliriumClient:delirium96@ds141633.mlab.com:41633/heroku_27lq85ms',{ useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://Delirium-Oficial:42JnbqT8Gq7oq9iu@carlos-cabrera-db.b1mri.mongodb.net/Delirium?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true });
 var Schema = mongoose.Schema;
 
 //Schema y modelo de HeroeStats:
@@ -207,6 +208,7 @@ var versionDeliriumServidor = mongoose.model('Delirium', verificarActualizacionS
 
 var clave;
 var validacion = false;
+var token="";
 var version="0.0.1";
 var versionDeliriumServidor;
 var datosJuego=null;
@@ -277,7 +279,13 @@ function createWindow () {
 function desarrollador() {
 
   // Create the browser window.
-  desarrolladorWindow = new BrowserWindow({width: 1080, height: 700})
+  desarrolladorWindow = new BrowserWindow({
+    width: 1080, 
+    height: 720,
+    webPreferences: {
+        webSecurity: false,
+        nodeIntegration: true}
+    })
   
   if(DEBUG){
     desarrolladorWindow.loadURL("http://localhost:4200/desarrollador");
@@ -371,6 +379,7 @@ ipc.on('comprobarLogin', function (event) {
   event.returnValue = validacion;
 });
 
+//SETTER GETTER (VALIDACION)
 ipc.on('getValidacion', function (event) {
   event.returnValue = validacion;
 });
@@ -383,6 +392,20 @@ ipc.on('setValidacion', function (event, arg) {
   event.returnValue = validacion;
 });
 
+//SETTER GETTER (TOKEN)
+ipc.on('getToken', function (event) {
+  event.returnValue = token;
+});
+
+ipc.on('setToken', function (event, arg) {
+  token = arg; 
+  console.log("Token: ");
+  console.log(token);
+   
+  event.returnValue = token;
+});
+
+//SETTER GETTER (DATOS)
 ipc.on('setDatos', function (event, arg) {
   datosJuego = arg; 
   console.log("Datos de Juego: ");
@@ -451,6 +474,16 @@ ipc.on('getDatosAnimaciones', function (event, arg) {
       });   
 });
 
+
+ipc.on('getDatosMazmorras', function (event, arg) {
+  console.log("Entrando en mazmorras");
+  mazmorraSnackModel.find({nombreId: 'Mazmorra'})
+      .then(function(doc) {
+        console.log("Enviando Mazmorras...");
+        event.returnValue = doc;
+      });
+});
+
 ipc.on('getDatosMazmorraSnack', function (event, arg) {
   console.log("Entrando en objetos");
   mazmorraSnackModel.find({nombreId: 'MazmorraSnack'})
@@ -496,10 +529,12 @@ ipc.on("desarrollador", (event, clave) => {
 
 
 ipc.on("actualizarEstadisticas",function(event,datos){
+
   if(validacion.privilegios!="Desarrollador"&& validacion.privilegios!="Creador"){
     console.log("PERMISO DENEGADO: No dispone de permisos para subir archivos")
     event.returnValue = false;
   }
+
   console.log("Actualizando Estadisticas...");
   var actualizarHeroeStats = true;
   var actualizarHeroeHech = true;

@@ -444,7 +444,8 @@ export class DeveloperCombateService implements OnInit{
  		console.log("-------------------------");
  		console.log("CARGANDO DATOS DE PARTIDA");
  		console.log("-------------------------");
-
+ 		console.log("SALA: ")
+ 		console.log(sala);
 		this.importarEstadisticasGenerales(sala);
 		return this.renderMazmorra;
 	}
@@ -496,52 +497,52 @@ export class DeveloperCombateService implements OnInit{
 		*/
 
 		//Petición estadisticas de heroe:
-		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarEstadisticasHeroes",{parametro: "Heroes_Stats"}).subscribe((data) => {
-				console.log("Estadisticas Heroes: ");
-				console.log(data);	
-				this.heroeStat= data;
-				this.appService.setProgresoCarga("10%");	
+		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Heroes_Stats"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
+			console.log("Estadisticas Heroes: ");
+			console.log(data);	
+			this.heroeStat= data[0];
+			this.appService.setProgresoCarga("10%");	
 
 		//Petición hechizos de heroe:
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarEstadisticasHechizos",{parametro: "Heroes_Hech"}).subscribe((data) => {
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Heroes_Hech"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
 				console.log("Hechizos Heroes: ");
 				console.log(data);	
-				this.heroeHech= data;
+				this.heroeHech= data[0];
 				this.appService.setProgresoCarga("20%");
 
 		//Petición Estadisticas Enemigos:
-				this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarEstadisticasEnemigos",{parametro: "Enemigos"}).subscribe((data) => {
+				this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Enemigos"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
 					console.log("Enemigos: ");
 					console.log(data);	
-					this.enemigos= data;
+					this.enemigos= data[0];
 					this.appService.setProgresoCarga("30%");
 
 		//Peticion Estadisticas Buffos:	
-					this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarEstadisticasBuff",{parametro: "Buff"}).subscribe((data) => {
+					this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Buff"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
 						console.log("Buffos: ");
 						console.log(data);	
-						this.buff= data;
+						this.buff= data[0];
 						this.appService.setProgresoCarga("40%");	
 
 		//Peticion Estadisticas Objetos:
-						this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarEstadisticasObjetos",{parametro: "Objetos"}).subscribe((data) => {
+						this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Objetos"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
 							console.log("Objetos: ");
 							console.log(data);	
-							this.objetos= data;
+							this.objetos= data[0];
 							this.appService.setProgresoCarga("50%");
 
 		//Peticion Animaciones:
-							this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarAnimaciones",{parametro: "Animaciones"}).subscribe((data) => {
+							this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Animaciones"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
 								console.log("Animaciones: ");
 								console.log(data);	
-								this.animaciones= data;
+								this.animaciones= data[0];
 								this.appService.setProgresoCarga("60%");
 
 		//Peticion parametros:
-								this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarParametros",{parametro: "Parametros"}).subscribe((data) => {
+								this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Parametros"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
 									console.log("Parametros: ");
 									console.log(data);	
-									this.parametros= data;
+									this.parametros= data[0];
 									this.appService.setProgresoCarga("70%");
 
 									//Cargar Datos locales
@@ -583,8 +584,6 @@ export class DeveloperCombateService implements OnInit{
 		this.appService.setProgresoCarga("100%");
 		*/
 
-
-		
 		console.log("-------------------------");
  		console.log(" CONFIGURANDO MAZMORRA");
  		console.log("-------------------------");
@@ -602,21 +601,20 @@ export class DeveloperCombateService implements OnInit{
 		var partida = {
 			nombreMazmorra: "MazmorraSnack",
 			nombrePartida: "GuardadoSnack",
-			heroeNombre: this.personaje.nombre,
-			heroeIndex: this.personaje.heroeIndex
 		}
 
-		this.renderMazmorra.personaje= partida.heroeNombre;
-		this.renderMazmorra.personajeIndex= partida.heroeIndex;
+		this.renderMazmorra.personaje= this.personaje.nombre;
+		this.renderMazmorra.personajeIndex= this.personaje.heroeIndex;
 		console.log("Cargando Mazmorra: "+partida.nombreMazmorra);
-		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarMazmorra",partida).subscribe((data) => {
+
+		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarMazmorra",{nombreMazmorra: partida.nombreMazmorra, nombreGuardado: partida.nombrePartida, heroeNombre: this.personaje.nombre, heroeIndex: this.personaje.heroeIndex, token: this.appService.getToken()}).subscribe((data) => {
 			console.log("Mazmorra: ");
 			console.log(data);	
 			this.mazmorra= data;
 			this.appService.setProgresoCarga("80%");
 
 			console.log("Cargando datos de partida: "+partida.nombrePartida);
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarGuardado",partida).subscribe((data) => {
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarGuardado",{nombreMazmorra: partida.nombreMazmorra, nombreGuardado: partida.nombrePartida, heroeNombre: this.personaje.nombre, heroeIndex: this.personaje.heroeIndex, token: this.appService.getToken()}).subscribe((data) => {
 				console.log("Guardado: ");
 				console.log(data);	
 				this.guardado= data;

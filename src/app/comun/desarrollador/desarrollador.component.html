@@ -1,5 +1,4 @@
 
-
 <!-- Diseño Fondo --> 
 
 <!-- Pantalla de Inicio --> 
@@ -91,11 +90,233 @@
   <!-- *************************************************
         PANEL MAZMORRA
      ************************************************* -->
-    <div *ngIf="desarrolladorService.panel=='mazmorra'" id="panelMazmorra">
+
+    <div *ngIf="desarrolladorService.panel=='mazmorra' && !desarrolladorService.mazmorraInicializada" id="panelMazmorraInicio">
+      <div class="titulo">DUNGEON BUILDER</div>
+      <div class="botonNuevaMazmorra" (click)="desarrolladorService.nuevaMazmorra()">
+        <img src="assets/desarrollador/add.svg">
+        <div >NUEVA</div>
+      </div>
+      <div class="botonCargarMazmorra" (click)="desarrolladorService.cargarMazmorra()">
+        <img src="assets/desarrollador/load-file.png">
+        <div>CARGAR</div>
+      </div>
+
+      <div *ngIf="desarrolladorService.mostrarCargarMazmorra" class="contenedorCargarMazmorra">
+        <img class="iconoCerrar" src="assets/desarrollador/cerrar.png" (click)="desarrolladorService.mostrarCargarMazmorra=false">
+        Seleccione una mazmorra:
+        <div class="contenedorMazmorras">
+          <div *ngFor="let mazmorra of desarrolladorService.listaMazmorra; let i = index" class="cargarMazmorra" (click)="desarrolladorService.seleccionarMazmorra(i)">
+            {{mazmorra.nombre}}
+          </div>
+        </div>
+      </div>
     </div>
 
+    <div *ngIf="desarrolladorService.panel=='mazmorra' && desarrolladorService.mazmorraInicializada" id="panelMazmorra">
+
+      <div class="panelIzquierdo">
+        <div class="contenedorTitulo">HERRAMIENTAS</div>
+        <div class="contenedorPanelIzquierdo">
+           <img class="herramienta" src="assets/desarrollador/pointer.png" (click)="desarrolladorService.seleccionarHerramienta('seleccion')"/>
+           <img class="herramienta" src="assets/desarrollador/add.svg" (click)="desarrolladorService.seleccionarHerramienta('add')"/>
+           <img class="herramienta" src="assets/desarrollador/reload.png" (click)="desarrolladorService.seleccionarHerramienta('rotar')"/>
+           <img class="herramienta" src="assets/desarrollador/papelera.svg" (click)="desarrolladorService.seleccionarHerramienta('eliminar')"/>
+           <img class="herramienta" src="assets/desarrollador/editar.png" (click)="desarrolladorService.seleccionarHerramienta('parametros')"/>
+           <img class="herramienta" src="assets/desarrollador/subir.png" (click)="desarrolladorService.seleccionarHerramienta('subir')"/>
+        </div>
+      </div>
+      
+      <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder superior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('up')">
+      <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder inferior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('down')">
+      <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder derecha" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('right')">
+      <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder izquierda" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('left')">
+
+      <img class="iconoZoomOut" src="assets/desarrollador/zoom-out.png" (click)="desarrolladorService.zoomOut()">
+      <img class="iconoZoomIn" src="assets/desarrollador/zoom-in.png" (click)="desarrolladorService.zoomIn()">
+
+      <img class="iconoEliminar" src="assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarMazmorra()">
+      <img class="iconoGuardar" src="assets/desarrollador/guardar.png" (click)="desarrolladorService.guardarMazmorra()">
+      <img class="iconoCerrar" src="assets/desarrollador/cerrar.png" (click)="desarrolladorService.cerrarMazmorra()">
+    
+      <div class="contenedorReticula">
+        <div *ngFor="let visorFila of desarrolladorService.visorFila; let i = index" class="filaReticula" [style.height]="desarrolladorService.renderAltoSector()">
+          <div *ngIf="i>=desarrolladorService.limiteReticulaYMin && i<=desarrolladorService.limiteReticulaYMax || !desarrolladorService.activarLimiteReticula">
+            <div *ngFor="let visorColumna of desarrolladorService.visorColumna; let j = index" class="cuadradoReticula" 
+            [style.background-color]="desarrolladorService.renderReticula.celdas[desarrolladorService.visorFila[i]][desarrolladorService.visorColumna[j]].color" 
+            [style.border-top]="desarrolladorService.renderReticula.celdas[desarrolladorService.visorFila[i]][desarrolladorService.visorColumna[j]].border[0]" 
+            [style.border-right]="desarrolladorService.renderReticula.celdas[desarrolladorService.visorFila[i]][desarrolladorService.visorColumna[j]].border[1]"
+            [style.border-bottom]="desarrolladorService.renderReticula.celdas[desarrolladorService.visorFila[i]][desarrolladorService.visorColumna[j]].border[2]"
+            [style.border-left]="desarrolladorService.renderReticula.celdas[desarrolladorService.visorFila[i]][desarrolladorService.visorColumna[j]].border[3]"
+            [style.width]="desarrolladorService.renderAnchoSector()"  
+            [ngClass]="renderizarSector(i,j)">
+              <div *ngIf="j>=desarrolladorService.limiteReticulaXMin && j<=desarrolladorService.limiteReticulaXMax || !desarrolladorService.activarLimiteReticula" (click)="desarrolladorService.clickSector(desarrolladorService.visorFila[i],desarrolladorService.visorColumna[j])">
+                <!--({{desarrolladorService.renderReticula.celdas[desarrolladorService.visorFila[i]][desarrolladorService.visorColumna[j]].X}},{{desarrolladorService.renderReticula.celdas[desarrolladorService.visorFila[i]][desarrolladorService.visorColumna[j]].Y}})-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="desarrolladorService.estadoMazmorra=='parametros'" class="contenedorPanelParametros">
+        <div class="toolbar">
+          <div class="boton" (click)="desarrolladorService.seleccionarPanelParametros('General')">GENERAL</div>
+          <div class="boton" (click)="desarrolladorService.seleccionarPanelParametros('Salas')">SALAS</div>
+          <div class="boton" (click)="desarrolladorService.seleccionarPanelParametros('Enemigos')">ENEMIGOS</div>
+          <div class="boton" (click)="desarrolladorService.seleccionarPanelParametros('Eventos')">EVENTOS</div>
+          <div class="boton" (click)="desarrolladorService.seleccionarPanelParametros('Dialogos')">DIALOGOS</div>
+        </div>
+       
+        <div class="contenidoParametros">
+          
+          <form *ngIf="desarrolladorService.estadoParametros=='General'" class="formularioGeneral" [formGroup]="formGeneral">
+            <div class="columna">
+              <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-label>Nombre mazmorra</mat-label>
+                <input matInput placeholder="Nombre" formControlName="nombre">
+              </mat-form-field>
+
+              <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-label>Nivel</mat-label>
+                <input matInput type="number" placeholder="desarrolladorService.mazmorra.general[0].nivel" formControlName="nivel" min="0">
+              </mat-form-field>
+
+              <mat-form-field appearance="legacy" class="campoFormulario descripcion">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
+              </mat-form-field>
+            </div>
+            
+            <div class="columna">
+              <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-label>Imagen ID</mat-label>
+                <input matInput type="number" placeholder="ID" formControlName="imagen_id">
+              </mat-form-field>
+
+              <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-label>Evento Start ID</mat-label>
+                <input matInput  type="number" placeholder="ID" formControlName="evento_start_id" min="0">
+              </mat-form-field>
+
+              <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-label>Evento finish ID</mat-label>
+                <input matInput type="number" placeholder="ID" formControlName="evento_finish_id" min="0">
+              </mat-form-field>
+
+              <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-label>Loot Finish ID</mat-label>
+                <input matInput type="number" placeholder="ID" formControlName="loot_finish_id" min="0">
+              </mat-form-field>
+            </div>
+          </form>
+
+          <form *ngIf="desarrolladorService.estadoParametros=='Salas'" class="formularioGeneral" [formGroup]="formGeneral">
+            SALAS
+            <hr>
+            Num_Sala
+            Nombre
+            Descripcion
+            Num_Enemigos
+            Num_Eventos
+            Num-Eventos
+            Evento_Inicial_ID
+            Evento_Final_ID
+          </form>
+
+          <form *ngIf="desarrolladorService.estadoParametros=='Enemigos'" class="formularioGeneral" [formGroup]="formGeneral">
+           ENEMIGOS
+           <hr>
+           Enemigo_ID
+           Num_Sala
+           Nombre
+           Imagen_ID
+           Nivel
+           Loot_ID
+           Loot_Prob
+           Buffo_Perma_ID
+           Evento_Muerte_ID
+           Evento_Spawn_ID
+           Evento_Intervalo_ID
+           Evento_Intervalos_Tiempo
+          </form>
+
+          <form *ngIf="desarrolladorService.estadoParametros=='Eventos'" class="formularioGeneral" [formGroup]="formGeneral">
+            EVENTOS
+            <hr>
+            ID  
+            MAZMORRA_ID 
+            SALA  
+            TIPO  
+            CODIGO 
+            RNG 
+            RNG_FALLO_EVENTO_ID
+            BUFF  
+            INSTA_BUFF  
+            OBJETIVO_BUFF 
+            LOOT_ID LOOT_PROB 
+            OBJETIVO_LOOT DIALOGO_ID  
+            OBJETIVO_DIALOGO  
+            SPAWN_ENEMIGO_ID  
+            SET_EVENTO_WATCHER  
+            REMOVE_EVENTO_WATCHER 
+            EVENTO_WATCHER_ID 
+            EXPIRE_WATCHER_TIEMPO 
+            INTERVALO_TRIGGER_WATCHER 
+            VARIABLE_TRIGGER_WATCHER  
+            ANADE_VARIABLE  
+            ELIMINA_VARIABLE  
+            IF_CONDICION_VARIABLE 
+            IF_FALSO_EVENTO_ID  
+            CINEMATICA_ID 
+            SONIDO_ID 
+            EVENTO_NEXT_ID
+          </form>
+
+          <form *ngIf="desarrolladorService.estadoParametros=='Dialogos'" class="formularioGeneral" [formGroup]="formGeneral">
+            DIALOGOS
+            <hr>
+            ID 
+            TIPO  
+            IMAGEN_ID 
+            TEXTO1  
+            TEXTO2  
+            TEXTO3  
+            TEXTO_ELEGIR  
+            ELECCION_EVENTO_ID  
+            TIMEOUT 
+            EVENTO_TIMEOUT_ID 
+            MINIMO_TIEMPO 
+            REDIRECT_DIALOGO_ID 
+            NEXT_EVENTO_ID
+          </form>
+
+        </div>
+
+      </div>
+
+      <div class="panelDerecho">
+        <div class="contenedorTitulo">AÑADIR</div>
+
+        <div *ngIf="desarrolladorService.estadoMazmorra=='add'" class="contenedorPanelDerecho">
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x6.svg" (click)="desarrolladorService.addPieza('6x6')"/>
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_T.svg" (click)="desarrolladorService.addPieza('T')"/>
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_X.svg" (click)="desarrolladorService.addPieza('X')"/>
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x1.svg" (click)="desarrolladorService.addPieza('2x1')"/>
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x2.svg" (click)="desarrolladorService.addPieza('2x2')"/>
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_L.svg" (click)="desarrolladorService.addPieza('L')"/>
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x4.svg" (click)="desarrolladorService.addPieza('6x4')"/>
+           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_4x2.svg" (click)="desarrolladorService.addPieza('4x2')"/>
+        </div>
+
+        <div *ngIf="desarrolladorService.estadoMazmorra=='seleccionar'" class="contenedorPanelDerecho">
+            Hola
+        </div>
+
+      </div>
+
+    </div>
      
-  <!-- *************************************************
+<!-- *************************************************
         PANEL DATOS
      ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
@@ -193,7 +414,7 @@
     </div>
 
      
-  <!-- *************************************************
+<!-- *************************************************
         PANEL ASSETS
      ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='assets'" id="panelAssets">
@@ -216,7 +437,7 @@
 
   </div> <!-- Fin Workspace -->
   
-  <!-- *************************************************
+<!-- *************************************************
         CONSOLA
      ************************************************* -->
   <div id="consola">

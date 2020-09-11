@@ -1,0 +1,12 @@
+{"_id":{"$oid":"5bd24169fb6fc017d2e6b4cb"},"clave":2567,"nombre":"Eduardo","tipo":"Cliente","apellido":"Martinez","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5bd2418dfb6fc017d2e6b50a"},"clave":9867,"nombre":"Victor","apellido":"Arias","tipo":"Cliente","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5bd241fcfb6fc017d2e6b5f7"},"clave":2305,"nombre":"Carlos","apellido":"Cabrera","tipo":"Cliente","privilegios":"Creador","nombreId":"Claves"}
+{"_id":{"$oid":"5bedd2d7e7179a56e2113d9a"},"clave":2307,"nombre":"Oficial","apellido":"- Carlos","tipo":"Cliente","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5d90ee9fe7179a0224442aa8"},"clave":25670,"nombre":"Eduardo","apellido":"Martinez","tipo":"Host","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5d90eed0e7179a0224442aaa"},"clave":23050,"nombre":"Carlos","apellido":"Cabrera","tipo":"Host","privilegios":"Creador","nombreId":"Claves"}
+{"_id":{"$oid":"5d90eeede7179a0224442ab4"},"clave":23070,"nombre":"Oficial","apellido":"- Carlos","tipo":"Host","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5d90ef19e7179a0224442abd"},"clave":98670,"nombre":"Victor","apellido":"Arias","tipo":"Host","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5e2dcf80e7179a2f01139496"},"clave":2342,"nombre":"Carla","tipo":"Cliente","apellido":"Del Castillo","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5e2dcff3e7179a2f011394b9"},"clave":23420,"nombre":"Carla","tipo":"Host","apellido":"Del Castillo","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5e3f0cdce7179a2f0119faac"},"clave":4742,"nombre":"Iván","tipo":"Cliente","apellido":"Hernandez","privilegios":"Desarrollador","nombreId":"Claves"}
+{"_id":{"$oid":"5e3f0d5fe7179a2f0119fac7"},"clave":47420,"nombre":"Iván","apellido":"Hernandez","tipo":"Host","privilegios":"Desarrollador","nombreId":"Claves"}

@@ -11,6 +11,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http"
 
+//Angular material:
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 //Declaración de componentes: 
 import { IndexComponent } from './comun/index/index.component';
 import { SalaComponent } from './comun/sala/sala.component';
@@ -75,7 +80,11 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     BrowserAnimationsModule,
     HttpClientModule,
     NgJsonEditorModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

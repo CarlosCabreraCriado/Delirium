@@ -157,7 +157,8 @@ export class IndexComponent implements OnInit{
 					this.http.post(this.appService.ipRemota+"/deliriumAPI/validacion",clave).subscribe((data) => {
 						
 						if(data){
-							this.appService.setInicio(data);
+							this.appService.setToken(data["token"]);
+							this.appService.setInicio(data["datos"]);
 							this.validacion= this.appService.getValidacion();
 							if(this.validacion){
 								this.socketService.enviarSocket('validacion', this.validacion);
