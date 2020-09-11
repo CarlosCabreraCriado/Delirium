@@ -39,7 +39,7 @@
     "fs": "0.0.1-security",
     "hammerjs": "^2.0.8",
     "jsoneditor": "^8.6.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mongoose": "^5.7.5",
     "nedb": "^1.8.0",
     "ngx-electron": "^1.0.4",
