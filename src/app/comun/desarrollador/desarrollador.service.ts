@@ -68,6 +68,8 @@ export class DesarrolladorService implements OnInit{
   private visorFila;
   private visorColumna;
 
+  public salaSeleccionadaId = 0;
+
   private rotacion=0;
 
   // Observable string sources
@@ -81,6 +83,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   ngOnInit(){
+
   }
 
   inicializarGestor(){
@@ -88,8 +91,7 @@ export class DesarrolladorService implements OnInit{
     this.validacion= this.appService.getValidacion();
   }
 
-  
-
+ 
   inicializarArchivos(){
     console.log("Iniciando")
     //Inicializar Estructura de Datos:
@@ -167,6 +169,7 @@ export class DesarrolladorService implements OnInit{
     this.mazmorra= {}
     //this.inicializarReticula();
     this.mazmorraInicializada=false;
+    this.salaSeleccionadaId=0;
     return;
   }
 
@@ -1072,7 +1075,40 @@ export class DesarrolladorService implements OnInit{
 
   seleccionarPanelParametros(parametros){
     this.estadoParametros= parametros;
+    switch(parametros){
+      case "Salas":
+        console.log(this.mazmorra.salas);
+      break;
+
+    }
     return;
+  }
+
+  seleccionarSala(salaID){
+    this.salaSeleccionadaId = salaID;
+    this.observarDesarrolladorService.next("reloadFormSala");
+  }
+
+  crearSala(){
+
+    //Check ID de salas: (Se asigan un ID que este disponible)
+    var cuentaID = 1;
+
+    while(this.mazmorra.salas.find(i=> i.sala_id==cuentaID)){
+      cuentaID++;
+    }
+
+    console.log("Creando sala con ID: "+cuentaID);
+    var nombreSala= "Sala "+cuentaID;
+    this.mazmorra.salas.push({
+      sala_id: cuentaID,
+      nombre: nombreSala,
+      descripcion: "",
+      evento_inicial_id: 0,
+      evento_final_id: 0
+    });
+
+    this.seleccionarSala(cuentaID);
   }
 
 

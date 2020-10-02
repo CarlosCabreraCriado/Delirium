@@ -517,11 +517,11 @@
         display: flex
         width: 100%
         height: 100%
+
         .columna
           height: 90%
           width: 50%
           margin: 5%
-
 
           .campoFormulario
             height: 25%
@@ -530,6 +530,75 @@
               height: 40%
               width: 100%
 
+      .formularioSalas
+        position: absolute
+        display: flex
+        width: 100%
+        height: 100%
+
+        .panelSalas
+          position: relative
+          height: 100%
+          width: 25%
+
+          .titulo
+            position: absolute
+            width: 100%
+            top: 2%
+            height: 8%
+            background-color: black
+            color: white
+            text-align: center
+
+          .contenedorSalas
+            position: absolute
+            width: 100%
+            top: 10%
+            height: 75%
+            background-color: lightgray
+
+            .sala
+              position: relative
+              width: 100%
+              text-align: center
+
+            .sala:hover
+              background-color: darkgrey
+
+          .botonAddSala
+            position: absolute
+            width: 100%
+            top: 85%
+            height: 10%
+            text-align: center
+            background-color: darkgray
+           
+          .botonAddSala:hover
+            background-color: black
+            color: white
+
+        .contenedorFormularioSala
+          position: relative
+          display: flex
+          width: 75%
+          height: 100%
+
+          .columna
+            position: relative
+            height: 90%
+            width: 50%
+            margin: 5%
+
+            .campoFormulario
+              height: 25%
+
+              &.descripcion
+                height: 40%
+                width: 100%
+
+          &.seleccioneSala
+            display: flex
+            align-items: center
 
   .panelDerecho
     position: absolute

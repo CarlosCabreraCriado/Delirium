@@ -430,7 +430,6 @@ ipc.on('getDatosHeroeHech', function (event, arg) {
         console.log("Enviando Estadisticas de Hechizos...");
         event.returnValue = doc[0]._doc;
       });
-      
 });
 
 ipc.on('getDatosHeroeStat', function (event, arg) {
