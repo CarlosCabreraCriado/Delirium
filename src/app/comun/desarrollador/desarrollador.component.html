@@ -266,21 +266,134 @@
 
           </form>
 
-          <form *ngIf="desarrolladorService.estadoParametros=='Enemigos'" class="formularioGeneral" [formGroup]="formGeneral">
-           ENEMIGOS
-           <hr>
-           Enemigo_ID
-           Num_Sala
-           Nombre
-           Imagen_ID
-           Nivel
-           Loot_ID
-           Loot_Prob
-           Buffo_Perma_ID
-           Evento_Muerte_ID
-           Evento_Spawn_ID
-           Evento_Intervalo_ID
-           Evento_Intervalos_Tiempo
+          <!-- FORMULARIO DE ENEMIGOS -->
+
+          <form *ngIf="desarrolladorService.estadoParametros=='Enemigos'" class="formularioEnemigos" [formGroup]="formEnemigos">
+           
+        <!-- 
+          Enemigo_ID
+          Num_Sala
+          Nombre
+          Imagen_ID
+          Nivel
+          Loot_ID
+          Loot_Prob
+
+          Buffo_Perma_ID
+          Evento_Muerte_ID
+          Evento_Spawn_ID
+          Evento_Intervalo_ID
+          Evento_Intervalos_Tiempo 
+        -->
+
+            <div class="panelEnemigos">
+              <div class="titulo"> Enemigos </div>
+              <div class="contenedorEnemigos">
+                <div *ngFor="let enemigo of desarrolladorService.mazmorra.enemigos; let index=i" class="enemigo" (click)="desarrolladorService.seleccionarEnemigo(enemigo.enemigo_id)">{{enemigo.nombre}}</div>
+              </div>
+              <div class="botonAddEnemigo" (click)="desarrolladorService.crearEnemigo()">Añadir Enemigo</div>
+            </div>
+
+            <div *ngIf="mostrarTipoEnemigo" class="panelTipoEnemigo">
+              <div class="titulo">Selecciona un tipo de enemigo: </div>
+              <img class="botonCerrar" src="./assets/desarrollador/cerrar.png" (click)="cerrarSeleccionarEnemigo()">
+              <div class="contenedorTipoEnemigo">
+                <div *ngFor="let tipoEnemigo of desarrolladorService.tipoEnemigos.enemigos_stats; let index = i"  class="tipoEnemigo" (click)="seleccionarTipoEnemigo(tipoEnemigo.id)">
+                  <img class="imagenTipoEnemigo" src="./assets/Enemigos/{{tipoEnemigo.nombreAsset}}.png">
+                  <div class="nombreTipoEnemigo">{{tipoEnemigo.nombre}}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contenedorFormularioEnemigo seleccioneEnemigo" *ngIf="desarrolladorService.enemigoSeleccionadoId==0"> <--- Seleccione un enemigo</div>
+
+            <div class="contenedorFormularioEnemigo" *ngIf="desarrolladorService.enemigoSeleccionadoId!=0">
+
+              <div class="panelEnemigoGeneral"> 
+                <div class="contenedorImagenEnemigo"> 
+                  <img src="./assets/Enemigos/{{desarrolladorService.tipoEnemigoSeleccionado.nombreAsset}}.png">
+                </div> 
+                <div class="contenedorInformacionEnemigo">
+                  {{desarrolladorService.tipoEnemigoSeleccionado.nombre}}
+                  <div class="boton botonEstadisticas" (click)="estadisticasEnemigo()">Estadisticas</div>
+                  <div class="boton botonTipoEnemigo" (click)="abrirSeleccionarTipoEnemigo()">Tipo Enemigo</div>
+                </div>
+              </div>
+
+              <div class="columna">
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Enemigo ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="enemigo_id" min="0">
+                </mat-form-field>
+
+                 <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Tipo Enemigo ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="tipo_enemigo_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput placeholder="Nombre" formControlName="nombre">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Sala ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="num_sala" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Imagen ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="imagen_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Nivel</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="nivel" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Loot ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="loot_id" min="0">
+                </mat-form-field>
+              </div>
+
+              <!-- Num_Enemigos
+                   Num_Eventos
+                   Num-Eventos -->
+
+              <div class="columna">
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Buffo Perma ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="buffo_perma_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Evento Muerte ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="evento_muerte_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Evento Spawn ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="evento_spawn_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Evento Intervalo ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="evento_intervalo_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Evento Intervalo Tiempo (PT)</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="evento_intervalo_tiempo" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Loot Prob.</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="loot_prob" min="0">
+                </mat-form-field>
+              </div>
+            </div>
+
           </form>
 
           <form *ngIf="desarrolladorService.estadoParametros=='Eventos'" class="formularioGeneral" [formGroup]="formGeneral">
@@ -297,7 +410,8 @@
             INSTA_BUFF  
             OBJETIVO_BUFF 
             LOOT_ID LOOT_PROB 
-            OBJETIVO_LOOT DIALOGO_ID  
+            OBJETIVO_LOOT 
+            DIALOGO_ID  
             OBJETIVO_DIALOGO  
             SPAWN_ENEMIGO_ID  
             SET_EVENTO_WATCHER  

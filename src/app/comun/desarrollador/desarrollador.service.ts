@@ -66,9 +66,13 @@ export class DesarrolladorService implements OnInit{
   private visorNumColumnaIni: number= 24;
 
   private visorFila;
-  private visorColumna;
+  private visorColumna; 
 
+  //Variables de parametros:
   public salaSeleccionadaId = 0;
+  public enemigoSeleccionadoId = 0;
+  public tipoEnemigos: any;
+  public tipoEnemigoSeleccionado:any;
 
   private rotacion=0;
 
@@ -89,9 +93,10 @@ export class DesarrolladorService implements OnInit{
   inicializarGestor(){
     console.log("INICIANDO HERRAMIENTA DESARROLLADOR");
     this.validacion= this.appService.getValidacion();
+    this.tipoEnemigos= this.appService.getEnemigos();
+    console.log(this.tipoEnemigos);
   }
 
- 
   inicializarArchivos(){
     console.log("Iniciando")
     //Inicializar Estructura de Datos:
@@ -1089,6 +1094,16 @@ export class DesarrolladorService implements OnInit{
     this.observarDesarrolladorService.next("reloadFormSala");
   }
 
+  seleccionarEnemigo(enemigoID){
+    this.enemigoSeleccionadoId = enemigoID;
+    this.observarDesarrolladorService.next("reloadFormEnemigo");
+  }
+
+  seleccionarTipoEnemigo(tipoEnemigoID){
+    this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoEnemigoID);
+    return;
+  }
+
   crearSala(){
 
     //Check ID de salas: (Se asigan un ID que este disponible)
@@ -1111,9 +1126,35 @@ export class DesarrolladorService implements OnInit{
     this.seleccionarSala(cuentaID);
   }
 
+  crearEnemigo(){
 
+    //Check ID de salas: (Se asigan un ID que este disponible)
+    var cuentaID = 1;
 
-//
+    while(this.mazmorra.enemigos.find(i=> i.enemigo_id==cuentaID)){
+      cuentaID++;
+    }
+    console.log("Creando enemigo con ID: "+cuentaID);
+    var nombreEnemigo= "Enemigo_ID_"+cuentaID;
+    this.mazmorra.enemigos.push({
+      enemigo_id: cuentaID,
+      tipo_enemigo_id: 1,
+      num_sala: 0,
+      nombre: nombreEnemigo,
+      imagen_id: 0,
+      nivel: 0,
+      loot_id: 0,
+      loot_prob: 0,
+      buffo_perma_id: 0,
+      evento_muerte_id: 0,
+      evento_spawn_id: 0,
+      evento_intervalo_id: 0,
+      evento_intervalo_tiempo: 0
+    });
+    this.seleccionarTipoEnemigo(1);
+    this.seleccionarEnemigo(cuentaID);
+  }
+
 
 //*************************************************
 //		PANEL DATOS:
