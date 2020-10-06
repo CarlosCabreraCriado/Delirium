@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { ElectronService } from 'ngx-electron';
+import { DialogoComponent } from './comun/dialogos/dialogos.component';
+import { MatDialog} from '@angular/material/dialog';
 
 
 @Injectable({
@@ -12,7 +14,7 @@ import { ElectronService } from 'ngx-electron';
 
 export class AppService {
 
-  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService) { 
+  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -70,8 +72,8 @@ export class AppService {
     public debugAutoValidacion:boolean=false;
     public debugClavesAuto=[1000,2307,2305,2567,9867];
     public debugClave:number=9867;
-    //public ipRemota: string= "http://www.carloscabreracriado.com";
-    public ipRemota: string= "http://127.0.0.1:8000";
+    public ipRemota: string= "http://www.carloscabreracriado.com";
+    //public ipRemota: string= "http://127.0.0.1:8000";
     private token: string;
 
     //Variables de configuración:
@@ -176,10 +178,8 @@ export class AppService {
     //Emision de eventos:
     @Output() mostrarCarga: EventEmitter<boolean> = new EventEmitter();
     @Output() progresoCarga: EventEmitter<string> = new EventEmitter();
-    @Output() mensaje: EventEmitter<string> = new EventEmitter();
     @Output() bugLog: EventEmitter<string> = new EventEmitter();
     @Output() ajustes: EventEmitter<string> = new EventEmitter();
-    @Output() developerTool: EventEmitter<string> = new EventEmitter();
 
   	audioTeclaPlay(): void{
   		let audio = new Audio();
@@ -266,8 +266,15 @@ export class AppService {
       console.log(this.electronService.ipcRenderer.sendSync('setValidacion',this.validacion));
     }
 
-    mostrarMensaje(val:string):void{
-      this.mensaje.emit(val);
+    mostrarDialogo(tipoDialogo:string, config:any):void{
+      const dialogRef = this.dialog.open(DialogoComponent,{
+          panelClass: [tipoDialogo, "generalContainer"], disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('Fin del dialogo');
+          console.log(result)
+        });
     }
 
     mostrarBugLog(val:string):void{
@@ -275,7 +282,7 @@ export class AppService {
     }
 
     mostrarDeveloperTool(val:string):void{
-      this.developerTool.emit(val);
+      this.mostrarDialogo("Informativo",{contenido: "Abriendo Developer Tool"})
       this.electronService.ipcRenderer.sendSync('desarrollador');
     }
 
@@ -452,8 +459,7 @@ export class AppService {
       this.setControl("");
       this.cambiarUrl("index");
       console.log(this.route.url)
-      this.mostrarMensaje("Configuración de datos cambiada con exito. Vuelva a iniciar sesión para consolidar los cambios. Datos Oficiales: "+this.activarDatosOficiales);
-      
+      this.mostrarDialogo("Informativo",{titulo: "Configuración de datos",contenido: "Configuración de datos cambiada con exito. Vuelva a iniciar sesión para consolidar los cambios. Datos Oficiales: "+this.activarDatosOficiales})
       //this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
     }
 

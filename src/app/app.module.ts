@@ -15,6 +15,7 @@ import { HttpClientModule } from "@angular/common/http"
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatDialogModule} from '@angular/material/dialog';    
 
 //Declaración de componentes: 
 import { IndexComponent } from './comun/index/index.component';
@@ -22,7 +23,6 @@ import { SalaComponent } from './comun/sala/sala.component';
 import { DeveloperComponent } from './comun/developer/developer.component';
 import { DeveloperCombateComponent } from './comun/developer-combate/developerCombate.component';
 import { CargaComponent } from './comun/carga/carga.component';
-import { MensajesComponent } from './comun/mensajes/mensajes.component';
 import { PausaComponent } from './comun/pausa/pausa.component';
 import { AnimacionNumeroComponent } from './comun/animacion-numero/animacion-numero.component';
 import { AnimacionEfectoComponent } from './comun/animacion-efecto/animacion-efecto.component';
@@ -37,13 +37,13 @@ import { UnirsePartidaComponent } from './comun/unirsePartida/unirsePartida.comp
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { BugLogComponent } from './comun/bug-log/bug-log.component';
 import { AjustesComponent } from './comun/ajustes/ajustes.component';
-import { DeveloperToolComponent } from './comun/developer-tool/developer-tool.component';
 import { HeroesInfoComponent } from './comun/heroesInfo/heroesInfo.component';
 import { HeroesCrearComponent } from './comun/heroesCrear/heroesCrear.component';
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
+import { DialogoComponent } from './comun/dialogos/dialogos.component';
 
-const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
-//const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
+//const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
+const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
 
 //Declaración del módulo:
 @NgModule({
@@ -54,7 +54,6 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     IndexComponent,
     SalaComponent,
     CargaComponent,
-    MensajesComponent,
     PausaComponent,
     AnimacionNumeroComponent,
     AnimacionEfectoComponent,
@@ -68,10 +67,13 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     UnirsePartidaComponent,
     BugLogComponent,
     AjustesComponent,
-    DeveloperToolComponent,
     HeroesInfoComponent,
     HeroesCrearComponent,
-    DesarrolladorComponent
+    DesarrolladorComponent,
+    DialogoComponent
+  ],
+  entryComponents:[
+    DialogoComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +86,8 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
