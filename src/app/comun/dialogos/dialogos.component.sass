@@ -1,0 +1,49 @@
+::ng-deep .generalContainer
+  .mat-dialog-container
+    min-width: 40vw
+    min-height: 20vh
+    background-color: rgba(black, 0.9)
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.7)
+    border: white double 10px
+    color: white
+    padding: 10px 24px
+
+    .title
+      margin: 0 0
+
+    .mat-input-element
+      caret-color: white
+    .mat-form-field-appearance-legacy .mat-form-field-label      
+      color: rgba(255,255,255,0.5)
+    .mat-form-field-underline
+      background-color: white
+
+    .botones
+      position: relative
+      display: flex
+      bottom: 0
+      min-height: 30px
+      margin: 10px 0
+      padding: 0
+      justify-content: center
+
+      .ajustesOpcion
+        position: absolute
+        display: flex
+        bottom: 0
+        width: 30%
+        height: 100%
+        align-items: center
+        justify-content: center
+        color: white
+        background-color: rgba(black, 0.9)
+
+      .ajustesOpcion:hover
+        background-color: rgba(255, 255, 255, 0.2) 
+        color: white
+
+      .OK
+        right: 10%
+      .Cancel
+        left: 10%
+

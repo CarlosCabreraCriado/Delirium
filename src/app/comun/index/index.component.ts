@@ -16,7 +16,7 @@ import { SocketService } from '../socket/socket.service';
 
 export class IndexComponent implements OnInit{
 
-	constructor(public appService: AppService, public indexService: IndexService/*, public electronService: ElectronService*/, private http: HttpClient, private socketService:SocketService) { }
+	constructor(public appService: AppService, public indexService: IndexService/*, public electronService: ElectronService*/, private http: HttpClient, private socketService:SocketService, ) { }
 
 	private cursorSuscripcion: Subscription = null;
 	
@@ -53,6 +53,7 @@ export class IndexComponent implements OnInit{
 		}
 	}
 
+
 	actualizarComponente(): void{
 		
 		if(this.appService.control=="null"){
@@ -77,7 +78,7 @@ export class IndexComponent implements OnInit{
 
 	configuracion():void{
 		this.pantalla= "inicio";
-		this.appService.mostrarMensaje("Opción no disponible.");
+		this.appService.mostrarDialogo("Informativo",{contenido:"Opción no disponible"});
 	}
 
 	heroes():void{
@@ -91,12 +92,12 @@ export class IndexComponent implements OnInit{
 
 	crearPartida():void{
 		if(this.appService.getValidacion().tipo!="Host"){
-			this.appService.mostrarMensaje("Acceso restringido a cuentas Host.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Acceso restringido a cuentas Host."});
 			return;
 		}
 
 		if(this.appService.dispositivo!="Desktop"){
-			this.appService.mostrarMensaje("Solo disponible desde Desktop");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Solo disponible desde Desktop"});
 			return;
 		}
 
@@ -111,7 +112,7 @@ export class IndexComponent implements OnInit{
 	unirsePartida():void{
 
 		if(this.appService.getValidacion().tipo!="Cliente"){
-			this.appService.mostrarMensaje("Acceso restringido a cuentas Cliente.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Acceso restringido a cuentas Cliente."});
 			return;
 		}
 

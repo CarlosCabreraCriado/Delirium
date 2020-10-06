@@ -86,7 +86,7 @@ export class SalaComponent implements OnInit{
       		    	this.appService.setSala(data.contenido);
 
       		    	if(this.validacion.tipo=="Cliente" && !this.sala.jugadores.find(i => i.usuario === this.validacion.nombre)){
-      		    		this.appService.mostrarMensaje("Te han expulsado de la sala.");
+      		    		this.appService.mostrarDialogo("Informativo",{contenido:"Te han expulsado de la sala."});
       		    	}
       		    	
       		    	if(this.sala.iniciada){
@@ -197,12 +197,12 @@ export class SalaComponent implements OnInit{
 	iniciarPartida():void{
 
 		if(this.sala.jugadores==undefined){
-			this.appService.mostrarMensaje("Jugadores insuficientes.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Jugadores insuficientes."});
 			return;
 		}
 
 		if(this.sala.jugadores.length<3){
-			this.appService.mostrarMensaje("Jugadores insuficientes.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Jugadores insuficientes."});
 			return;
 		}
 		console.log("Iniciando");
@@ -212,12 +212,12 @@ export class SalaComponent implements OnInit{
 	eliminarJugador(numJugador){
 
 		if(this.mostrarEntrarPartida){
-			this.appService.mostrarMensaje("Error. La sala ya esta iniciada.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Error. La sala ya esta iniciada."});
 			return;
 		}
 
 		if(!this.host){
-			this.appService.mostrarMensaje("Error. Debes de ser el host.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Error. Debes de ser el host."});
 			return;
 		}
 		console.log("Eliminando Jugador numero "+numJugador);
@@ -247,13 +247,13 @@ export class SalaComponent implements OnInit{
 	addBot(clase):void{
 
 		if(this.mostrarEntrarPartida){
-			this.appService.mostrarMensaje("Error. La sala ya esta iniciada.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Error. La sala ya esta iniciada."});
 			this.pantalla="default";
 			return;
 		}
 
 		if(!this.host){
-			this.appService.mostrarMensaje("Error. Debes de ser el host.");
+			this.appService.mostrarDialogo("Informativo",{contenido:"Error. Debes de ser el host."});
 			this.pantalla="default";
 			return;
 		}

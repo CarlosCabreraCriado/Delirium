@@ -39,7 +39,7 @@ export class AppComponent implements OnInit{
                 this.appService.setValidacion({});
                 this.appService.setControl("");
                 this.appService.cambiarUrl("index");
-                this.appService.mostrarMensaje("Se ha producido un error en la sincronización del socket.");
+                this.appService.mostrarDialogo("Informativo",{contenido:"Se ha producido un error en la sincronización del socket."});
             break;
           }
         });

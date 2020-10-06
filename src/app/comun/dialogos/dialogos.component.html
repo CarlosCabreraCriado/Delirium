@@ -1,0 +1,47 @@
+<!--   ******************* -->
+<!--         DIALOGOS      -->
+<!--   ******************* -->
+
+<div *ngIf="data.tipoDialogo == 'Informativo'" class= "contenedor">
+    <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
+    <div mat-dialog-content>
+      <p>{{data.contenido}}</p>
+    </div>
+    <div mat-dialog-actions class= "botones">
+      <button mat-button class = "ajustesOpcion" [mat-dialog-close] cdkFocusInitial>OK</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoDialogo == 'Confirmacion'" class= "contenedor">
+    <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
+    <div mat-dialog-content>
+      <p>{{data.contenido}}</p>
+    </div>
+    <div mat-dialog-actions class= "botones">
+      <button mat-button class = "ajustesOpcion OK" (click)="onAcceptClick()" cdkFocusInitial>Accept</button>
+      <button mat-button class = "ajustesOpcion Cancel" [mat-dialog-close]>Cancel</button> 
+    </div>
+</div>
+
+<div *ngIf="data.tipoDialogo == 'Pensando'" class= "contenedor"> 
+    <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
+    <div mat-dialog-actions class= "botones">
+        <button mat-button class = "ajustesOpcion" [mat-dialog-close]>Cancel</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoDialogo == 'IntroduccionDatos'" class= "contenedor"> 
+    <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
+    <div mat-dialog-content>
+      <p>{{data.contenido}}</p>
+      <mat-form-field>
+        <mat-label>{{data.inputLabel}}</mat-label>
+        <input matInput [(ngModel)]="data.input">
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class= "botones">
+      <button mat-button class = "ajustesOpcion Cancel" [mat-dialog-close]>Cancel</button>
+      <button mat-button class = "ajustesOpcion OK" [mat-dialog-close]="data.input" cdkFocusInitial>OK</button>
+    </div>
+
+</div>
