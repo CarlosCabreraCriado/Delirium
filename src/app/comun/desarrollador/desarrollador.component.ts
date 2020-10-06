@@ -227,8 +227,9 @@ export class DesarrolladorComponent implements OnInit{
     	return;
   	}
 
-  	seleccionarTipoEnemigo(){
-		this.mostrarTipoEnemigo =true;
+  	seleccionarTipoEnemigo(tipoEnemigoID){
+		this.mostrarTipoEnemigo =false;
+		this.desarrolladorService.seleccionarTipoEnemigo(tipoEnemigoID);
 		return;
 	}
 

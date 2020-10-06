@@ -315,20 +315,20 @@
                 </div> 
                 <div class="contenedorInformacionEnemigo">
                   {{desarrolladorService.tipoEnemigoSeleccionado.nombre}}
-                  <div class="boton botonEstadisticas" (click)="estadisticasEnemigo()">Estadisticas</div>
+                  <div class="boton botonEstadisticas" (click)="mostrarEstadisticasEnemigo()">Estadisticas</div>
                   <div class="boton botonTipoEnemigo" (click)="abrirSeleccionarTipoEnemigo()">Tipo Enemigo</div>
                 </div>
               </div>
 
               <div class="columna">
-                <mat-form-field appearance="legacy" class="campoFormulario">
-                  <mat-label>Enemigo ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="enemigo_id" min="0">
+                <mat-form-field  appearance="legacy" class="campoFormulario">
+                  <mat-label >Enemigo ID</mat-label>
+                  <input matInput disabled type="number" placeholder="0" formControlName="enemigo_id" min="0">
                 </mat-form-field>
 
-                 <mat-form-field appearance="legacy" class="campoFormulario">
+                 <mat-form-field disabled appearance="legacy" class="campoFormulario">
                   <mat-label>Tipo Enemigo ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="tipo_enemigo_id" min="0">
+                  <input matInput disabled type="number" placeholder="0" formControlName="tipo_enemigo_id" min="0">
                 </mat-form-field>
 
                 <mat-form-field appearance="legacy" class="campoFormulario">

@@ -1097,10 +1097,14 @@ export class DesarrolladorService implements OnInit{
   seleccionarEnemigo(enemigoID){
     this.enemigoSeleccionadoId = enemigoID;
     this.observarDesarrolladorService.next("reloadFormEnemigo");
+    return;
   }
 
   seleccionarTipoEnemigo(tipoEnemigoID){
     this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoEnemigoID);
+    this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].tipo_enemigo_id= tipoEnemigoID;
+    this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].nombre= this.tipoEnemigoSeleccionado.nombre;
+    this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
   }
 
@@ -1151,8 +1155,8 @@ export class DesarrolladorService implements OnInit{
       evento_intervalo_id: 0,
       evento_intervalo_tiempo: 0
     });
-    this.seleccionarTipoEnemigo(1);
     this.seleccionarEnemigo(cuentaID);
+    this.seleccionarTipoEnemigo(1);
   }
 
 
