@@ -310,7 +310,6 @@
       text-align: center
       color: white
 
-
   .botonCargarMazmorra
     position: absolute
     display: flex
@@ -512,6 +511,8 @@
       width: 100%
       height: 90%
 
+      //Formulario General
+
       .formularioGeneral
         position: absolute
         display: flex
@@ -529,6 +530,8 @@
             &.descripcion
               height: 40%
               width: 100%
+
+      //Formulario Salas
 
       .formularioSalas
         position: absolute
@@ -597,6 +600,169 @@
                 width: 100%
 
           &.seleccioneSala
+            display: flex
+            align-items: center
+
+      //Formulario Enemigos:
+      .formularioEnemigos
+        position: absolute
+        display: flex
+        width: 100%
+        height: 100%
+
+        .panelTipoEnemigo
+          position: absolute
+          width: 90%
+          height: 90%
+          color: white
+          text-align: center
+          background-color: rgba(0,0,0,0.9)
+          border: double 10px darkgrey
+          z-index: 10
+          margin: 2%
+          .titulo
+            position: relative
+            width: 96%
+            text-align: center
+            font-size: 20px
+            margin: 2%
+
+          .botonCerrar
+              position: absolute
+              top: 2%
+              right: 2%
+              width: 5%
+              filter: invert(1)
+
+          .contenedorTipoEnemigo
+            position: absolute
+            width: 95%
+            height: 80%
+            overflow-y: scroll
+
+            .tipoEnemigo
+              position: relative
+              width: 95%
+              height: 20%
+              margin: 2% 2%
+              border: solid white
+              overflow: hidden
+              .imagenTipoEnemigo
+                position: absolute
+                height: 100%
+                left: 5%
+
+              .nombretipoEnemigo
+                position: absolute
+                height: 100%
+                text-align: center
+            .tipoEnemigo:hover
+              background-color: white
+              color: black
+
+        .panelEnemigos
+          position: relative
+          height: 100%
+          width: 25%
+
+          .titulo
+            position: absolute
+            width: 100%
+            top: 2%
+            height: 8%
+            background-color: black
+            color: white
+            text-align: center
+
+          .contenedorEnemigos
+            position: absolute
+            width: 100%
+            top: 10%
+            height: 75%
+            background-color: lightgray
+
+            .enemigo
+              position: relative
+              width: 100%
+              text-align: center
+
+            .enemigo:hover
+              background-color: darkgrey
+
+          .botonAddEnemigo
+            position: absolute
+            width: 100%
+            top: 85%
+            height: 10%
+            text-align: center
+            background-color: darkgray
+           
+          .botonAddEnemigo:hover
+            background-color: black
+            color: white
+
+        .contenedorFormularioEnemigo
+          position: relative
+          display: flex
+          width: 75%
+          height: 100%
+          overflow-y: scroll
+
+          .panelEnemigoGeneral
+            position: absolute
+            width: 100%
+            height: 30%
+
+            .contenedorImagenEnemigo
+              position: relative
+              vertical-align: top
+              display: inline-block
+              height: 90%
+              width: 30%
+              border: double 2px black
+              overflow: hidden
+              margin: 2%
+              img 
+                width: 100%
+
+            .contenedorInformacionEnemigo
+              position: relative
+              display: inline-block
+              width: 60%
+              height: 90%
+              margin-top: 2%
+              text-align: center
+              font-size: 18px
+
+              .boton
+                position: relative
+                margin: 2%
+                background-color: black
+                color: white
+                padding: 2%
+                text-align: center
+                border-radius: 10px
+                border: 5px solid slategrey
+              .boton:hover
+                background-color: white
+                color: black
+                border: 5px solid black
+
+          .columna
+            position: relative
+            height: 90%
+            top: 30%
+            width: 50%
+            margin: 5%
+
+            .campoFormulario
+              height: 15%
+
+              &.descripcion
+                height: 40%
+                width: 100%
+
+          &.seleccioneEnemigo
             display: flex
             align-items: center
 
