@@ -206,7 +206,9 @@ export class DesarrolladorService implements OnInit{
   }
 
   guardarMazmorra(){  
-    this.mazmorra.celdas= Object.assign([],this.renderReticula.celdas);
+	//Procesar Guardado de celdas: 
+	this.mazmorra.celdas = this.procesarGuardadoCeldas();
+	
     console.log(this.mazmorra);
     this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: this.appService.getToken()}).subscribe((res) => {
       if(res){
@@ -219,6 +221,45 @@ export class DesarrolladorService implements OnInit{
     });
 
     return;
+  }
+
+  procesarGuardadoCeldas(){
+		var objetoReticula = Object.assign([],this.renderReticula.celdas)
+
+		//Procesar Celdas: 
+		//Procesado eje X:
+		var flagBorrado = true; 
+		for(var i=0; i<objetoReticula.length; i++){ 
+			flagBorrado= true;
+			for(var j=0; j<objetoReticula[i].length; j++){ if(objetoReticula[i][j].pieza!= "none"){
+					flagBorrado= false;
+				}
+			}
+
+			if(flagBorrado){
+				objetoReticula.splice(i,1);
+				i--;
+			}
+		}
+
+		//Procesar Eje Y: 
+		for(var i=0; i<objetoReticula[0].length; i++){ 
+			flagBorrado= true;
+			for(var j=0; j<objetoReticula.length; j++){
+			   if(objetoReticula[j][i].pieza!= "none"){
+					flagBorrado= false;
+				}
+			}
+
+			if(flagBorrado){
+				for(var j=0; j<objetoReticula.length; j++){
+					objetoReticula[j].splice(i,1);
+				}
+				i--;
+			}
+		}
+
+		return objetoReticula 
   }
 
   eliminarMazmorra(){

@@ -1,6 +1,23 @@
 
-const DEBUG = true;
+
+
+//DETERMINA SI ES DESARROLLO O PRODUCCION:
+
+//        MODOS POSIBLES:
+
+// remoteDev: Modo desarrollo con servidor remoto
+// localDev: Modo desarrollo con servidor local
+// production: Modo produccion
+
+const DEBUG = process.env.NODE_ENV 
+console.log("MODO EJECUCION: "+DEBUG);
+
 const MOVIL = false;
+if(MOVIL){
+  console.log("DISPLAY MODE: MOVIL")
+}else{
+  console.log("DISPLAY MODE: DESKTOP")
+}
 
 //Static Server
 const electron = require('electron');
@@ -253,7 +270,7 @@ function createWindow () {
   
   // and load the index.html of the app.
   
-  if(DEBUG){
+  if(DEBUG!=="production"){
     mainWindow.loadURL("http://localhost:4200/cargarPartida");
   }else{
     mainWindow.loadURL(url.format({
@@ -287,7 +304,7 @@ function desarrollador() {
         nodeIntegration: true}
     })
   
-  if(DEBUG){
+  if(DEBUG!=="production"){
     desarrolladorWindow.loadURL("http://localhost:4200/desarrollador");
   }else{
     desarrolladorWindow.loadURL(url.format({

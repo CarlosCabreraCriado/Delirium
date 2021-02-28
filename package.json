@@ -8,7 +8,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -16,7 +15,14 @@
     "dist": "electron-builder",
     "dist-mac": "electron-packager . --platform=darwin",
     "electron-build": "ng build --prod && electron .",
-    "electron-test": "ng serve && electron ."
+    "electron-test": "ng serve && electron .",
+    
+    "electron": "NODE_ENV=remoteDev electron .",
+    "dev": "NODE_ENV=localDev electron.",
+    "production": "NODE_ENV=production electron.",
+    
+    "build": "NODE_ENV=production electron-builder build --win --mac --publish never",
+    "deploy": "NODE_ENV=production electron-builder build --win --mac --publish always"
   },
   "dependencies": {
     "@angular/animations": "~8.1.2",

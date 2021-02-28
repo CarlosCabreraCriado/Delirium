@@ -150,7 +150,7 @@ export class IndexComponent implements OnInit{
 		if(this.appService.claveValida==false){
 
 					this.procesando=true;
-					console.log("Comprobando clave: "+ this.claveElement.nativeElement.value);
+					console.log("Comprobando clave: "+ parseInt(this.claveElement.nativeElement.value));
 					var clave = {
 						clave: parseInt(this.claveElement.nativeElement.value)
 					}

@@ -452,22 +452,28 @@
       </div>
 
       <div class="panelDerecho">
-        <div class="contenedorTitulo">AÑADIR</div>
 
-        <div *ngIf="desarrolladorService.estadoMazmorra=='add'" class="contenedorPanelDerecho">
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x6.svg" (click)="desarrolladorService.addPieza('6x6')"/>
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_T.svg" (click)="desarrolladorService.addPieza('T')"/>
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_X.svg" (click)="desarrolladorService.addPieza('X')"/>
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x1.svg" (click)="desarrolladorService.addPieza('2x1')"/>
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x2.svg" (click)="desarrolladorService.addPieza('2x2')"/>
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_L.svg" (click)="desarrolladorService.addPieza('L')"/>
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x4.svg" (click)="desarrolladorService.addPieza('6x4')"/>
-           <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_4x2.svg" (click)="desarrolladorService.addPieza('4x2')"/>
-        </div>
+		  <div *ngIf="desarrolladorService.estadoMazmorra=='add'">
+			<div class="contenedorTitulo">AÑADIR</div>
 
-        <div *ngIf="desarrolladorService.estadoMazmorra=='seleccionar'" class="contenedorPanelDerecho">
-            Hola
-        </div>
+			<div class="contenedorPanelDerecho">
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x6.svg" (click)="desarrolladorService.addPieza('6x6')"/>
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_T.svg" (click)="desarrolladorService.addPieza('T')"/>
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_X.svg" (click)="desarrolladorService.addPieza('X')"/>
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x1.svg" (click)="desarrolladorService.addPieza('2x1')"/>
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x2.svg" (click)="desarrolladorService.addPieza('2x2')"/>
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_L.svg" (click)="desarrolladorService.addPieza('L')"/>
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x4.svg" (click)="desarrolladorService.addPieza('6x4')"/>
+			   <img class="piezaTablero" [style.transform]="'rotate('+desarrolladorService.rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_4x2.svg" (click)="desarrolladorService.addPieza('4x2')"/>
+			</div>
+		  </div> <!-- Fin panel añadir -->
+
+		<div *ngIf="desarrolladorService.estadoMazmorra=='seleccionar'">
+			<div class="contenedorTitulo">SELECCIÓN</div>
+			<div class="contenedorPanelDerecho">
+				Hola
+			</div>
+		</div>	<!-- Fin panel selecionar --> 
 
       </div>
 

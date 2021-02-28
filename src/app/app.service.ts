@@ -266,7 +266,7 @@ export class AppService {
       console.log(this.electronService.ipcRenderer.sendSync('setValidacion',this.validacion));
     }
 
-    mostrarDialogo(tipoDialogo:string, config:any):void{
+    mostrarDialogo(tipoDialogo:string, config:any):any{
       const dialogRef = this.dialog.open(DialogoComponent,{
           panelClass: [tipoDialogo, "generalContainer"], disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
         });
@@ -275,6 +275,7 @@ export class AppService {
           console.log('Fin del dialogo');
           console.log(result)
         });
+        return dialogRef;
     }
 
     mostrarBugLog(val:string):void{
