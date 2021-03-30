@@ -1,0 +1,354 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+	</SharedSettings>
+	<Placeable Name="Cave Wall Turn">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Cave front turn 1.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-80"/>
+		<Setting Key="DrawingOffsetY" Value="-200"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/lower corner small.png"/>
+		<Setting Key="ColliderOffsetX" Value="3"/>
+		<Setting Key="ColliderOffsetY" Value="184"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall 2 tiles.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-80"/>
+		<Setting Key="DrawingOffsetY" Value="-200"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="-52"/>
+		<Setting Key="ColliderOffsetY" Value="185"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall 2">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall 1 tile.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="5"/>
+		<Setting Key="DrawingOffsetY" Value="-160"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="90"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="-70"/>
+		<Setting Key="ColliderOffsetY" Value="180"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall 3">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall 1 tile 2.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-170"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="90"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="-67"/>
+		<Setting Key="ColliderOffsetY" Value="190"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall 4">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall 1 tile 3.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-170"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="90"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="-67"/>
+		<Setting Key="ColliderOffsetY" Value="190"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall Ramp 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall ramp 1.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="29"/>
+		<Setting Key="DrawingOffsetY" Value="-89"/>
+		<Setting Key="DrawingOffsetZ" Value="-6"/>
+		<Setting Key="CornerOffsetX" Value="145"/>
+		<Setting Key="CornerOffsetY" Value="141"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/cave wall ramp 1.png"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall Ramp 2">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall ramp 2.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-16"/>
+		<Setting Key="DrawingOffsetY" Value="-84"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="13"/>
+		<Setting Key="ColliderOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Entrance">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave entrance.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-80"/>
+		<Setting Key="DrawingOffsetY" Value="-200"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/cave entrance.png"/>
+		<Setting Key="ColliderOffsetX" Value="-56"/>
+		<Setting Key="ColliderOffsetY" Value="119"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall Corner 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall corner 1.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="80"/>
+		<Setting Key="DrawingOffsetY" Value="-160"/>
+		<Setting Key="CornerOffsetX" Value="5"/>
+		<Setting Key="CornerOffsetY" Value="75"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/side corner smallest.png"/>
+		<Setting Key="ColliderOffsetX" Value="-28"/>
+		<Setting Key="ColliderOffsetY" Value="144"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall Corner 2">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall corner 2.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-5"/>
+		<Setting Key="DrawingOffsetY" Value="-140"/>
+		<Setting Key="CornerOffsetX" Value="5"/>
+		<Setting Key="CornerOffsetY" Value="75"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/side corner small.png"/>
+		<Setting Key="ColliderOffsetY" Value="166"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall Corner (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall corner lower.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-65"/>
+		<Setting Key="DrawingOffsetY" Value="-220"/>
+		<Setting Key="CornerOffsetX" Value="5"/>
+		<Setting Key="CornerOffsetY" Value="75"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/lower corner large.png"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+		<Setting Key="ColliderOffsetY" Value="170"/>
+	</Placeable>
+	
+	<Placeable Name="Cave Wall Corner (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/cave wall corner upper.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="65"/>
+		<Setting Key="DrawingOffsetY" Value="-135"/>
+		<Setting Key="DrawingOffsetZ" Value="-8"/>
+		<Setting Key="CornerOffsetX" Value="275"/>
+		<Setting Key="CornerOffsetY" Value="170"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/upper corner small.png"/>
+		<Setting Key="ColliderOffsetY" Value="193"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/Cave Wall 1.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="-48"/>
+		<Setting Key="DrawingOffsetY" Value="58"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/triple wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="48"/>
+		<Setting Key="ColliderOffsetY" Value="-56"/>
+		
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall 2">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/Cave Wall 2.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="-66"/>
+		<Setting Key="DrawingOffsetY" Value="52"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="68"/>
+		<Setting Key="ColliderOffsetY" Value="-50"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall 3">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/cave wall 3.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="-45"/>
+		<Setting Key="DrawingOffsetY" Value="60"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="90"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="46"/>
+		<Setting Key="ColliderOffsetY" Value="-59"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall 4">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/cave wall 4.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="-49"/>
+		<Setting Key="DrawingOffsetY" Value="71"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="90"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="50"/>
+		<Setting Key="ColliderOffsetY" Value="-70"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall 5">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/cave wall 5.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="-62"/>
+		<Setting Key="DrawingOffsetY" Value="65"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="90"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="62"/>
+		<Setting Key="ColliderOffsetY" Value="-65"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall Corner (Lower 1)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/cave wall corner lower 1.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="-33"/>
+		<Setting Key="DrawingOffsetY" Value="40"/>
+		<Setting Key="CornerOffsetX" Value="5"/>
+		<Setting Key="CornerOffsetY" Value="75"/>	
+		<Setting Key="ForceGradualReveal" Value="True"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/lower corner small.png"/>
+		<Setting Key="ColliderOffsetX" Value="32"/>
+		<Setting Key="ColliderOffsetY" Value="-78"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall Corner (Lower 2)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/cave wall corner lower 2.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="55"/>
+		<Setting Key="DrawingOffsetY" Value="43"/>
+		<Setting Key="CornerOffsetX" Value="5"/>
+		<Setting Key="CornerOffsetY" Value="75"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/lower corner smallest.png"/>
+		<Setting Key="ColliderOffsetX" Value="14"/>
+		<Setting Key="ColliderOffsetY" Value="-43"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall Corner (Upper Large)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/cave wall corner upper.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="67"/>
+		<Setting Key="DrawingOffsetY" Value="91"/>
+		<Setting Key="CornerOffsetX" Value="275"/>
+		<Setting Key="CornerOffsetY" Value="170"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/upper corner large.png"/>
+		<Setting Key="ColliderOffsetX" Value="14"/>
+		<Setting Key="ColliderOffsetY" Value="-48"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall Corner (Upper 1)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/Cave turn upper 1.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="-80"/>
+		<Setting Key="DrawingOffsetY" Value="35"/>
+		<Setting Key="CornerOffsetX" Value="275"/>
+		<Setting Key="CornerOffsetY" Value="170"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/upper corner small.png"/>
+		<Setting Key="ColliderOffsetX" Value="13"/>
+		<Setting Key="ColliderOffsetY" Value="-32"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall Corner (Upper 2)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/Cave turn upper 2.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-4"/>
+		<Setting Key="CornerOffsetX" Value="275"/>
+		<Setting Key="CornerOffsetY" Value="170"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/upper corner smallest.png"/>
+		<Setting Key="ColliderOffsetY" Value="-30"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall Corner (Upper 3)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/Cave turn upper 3.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-2"/>
+		<Setting Key="DrawingOffsetY" Value="-4"/>
+		<Setting Key="CornerOffsetX" Value="275"/>
+		<Setting Key="CornerOffsetY" Value="170"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/upper corner smallest.png"/>
+		<Setting Key="ColliderOffsetX" Value="4"/>
+		<Setting Key="ColliderOffsetY" Value="-30"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Far Cave Wall Corner (Upper 4)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Caves/Back/Cave turn upper 4.png"/>
+		<Setting Key="Category" Value="Caves"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-3"/>
+		<Setting Key="DrawingOffsetY" Value="10"/>
+		<Setting Key="CornerOffsetX" Value="275"/>
+		<Setting Key="CornerOffsetY" Value="170"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/caves/upper corner smallest.png"/>
+		<Setting Key="ColliderOffsetX" Value="2"/>
+		<Setting Key="ColliderOffsetY" Value="-42"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+</Settings>

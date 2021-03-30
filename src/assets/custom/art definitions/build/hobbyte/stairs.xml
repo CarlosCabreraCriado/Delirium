@@ -1,0 +1,100 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="OffsetZ" Value="-1000"/>
+	</SharedSettings>
+	<Placeable Name="Stone Stairs">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Stairs/Stone stairs.png"/>
+		<Setting Key="Category" Value="Stairs"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-77"/>
+		<Setting Key="DrawingOffsetZ" Value="-4"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="77"/>	
+	</Placeable>
+	<Placeable Name="Stone Stairs (Facing Away)">
+		<Setting Key="ConceptCreator" Value="Oscar Muñoz"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Stairs/Stone Stairs Reverse.png"/>
+		<Setting Key="Category" Value="Stairs"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="-65"/>
+		<Setting Key="DrawingOffsetY" Value="-35"/>
+		<Setting Key="DrawingOffsetZ" Value="-12"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Spiral Stairs 1">
+		<Setting Key="ConceptCreator" Value="Oscar Muñoz"/>
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Stairs/Stone Spiral Stairs 1.png"/>
+		<Setting Key="Category" Value="Stairs"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="0,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 4"/>
+		<Setting Key="DrawingOffsetX" Value="-47"/>
+		<Setting Key="DrawingOffsetY" Value="-66"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="12"/>
+		<Setting Key="CornerOffsetY" Value="79"/>	
+	</Placeable>
+	<Placeable Name="Spiral Stairs (&quot;Flat&quot;) 1">
+		<Setting Key="ConceptCreator" Value="Oscar Muñoz"/>
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Stairs/Stone Spiral Stairs flat 1.png"/>
+		<Setting Key="Category" Value="Stairs"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="0,1"/>
+		<Setting Key="DrawingOffsetX" Value="21"/>
+		<Setting Key="DrawingOffsetY" Value="-61"/>
+		<Setting Key="DrawingOffsetZ" Value="-9"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="40"/>	
+	</Placeable>
+	<Placeable Name="Spiral Stairs 2">
+		<Setting Key="ConceptCreator" Value="Oscar Muñoz"/>
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Stairs/Stone Spiral Stairs 2.png"/>
+		<Setting Key="Category" Value="Stairs"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1;1,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1;Spiral Stairs (&quot;Flat&quot;) 1"/>
+		<Setting Key="DrawingOffsetX" Value="-9"/>
+		<Setting Key="DrawingOffsetY" Value="-41"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="90"/>	
+	</Placeable>
+	<Placeable Name="Spiral Stairs 3">
+		<Setting Key="ConceptCreator" Value="Oscar Muñoz"/>
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Stairs/Stone Spiral Stairs 3.png"/>
+		<Setting Key="Category" Value="Stairs"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 2"/>
+		<Setting Key="DrawingOffsetX" Value="-83"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Spiral Stairs 4">
+		<Setting Key="ConceptCreator" Value="Oscar Muñoz"/>
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Stairs/Stone Spiral Stairs 4.png"/>
+		<Setting Key="Category" Value="Stairs"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 3"/>
+		<Setting Key="DrawingOffsetX" Value="-4"/>
+		<Setting Key="DrawingOffsetY" Value="40"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+</Settings>

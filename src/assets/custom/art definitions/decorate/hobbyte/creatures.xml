@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="Creator" Value="Hobbyte"/>
+		<Setting Key="CreatorURL" Value="http://hobbyte.net/"/>
+		<Setting Key="PlayModeAsset" Value="True"/>
+	</SharedSettings>
+	<Placeable Name="Lynx">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Creatures/lynx white.png"/>
+		<Setting Key="ConceptCreator" Value="James &quot;WiildStar&quot; Stoffel"/>
+		<Setting Key="Category" Value="Creatures"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-40"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="40"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetX" Value="5"/>
+		<Setting Key="ColliderOffsetY" Value="25"/>
+	</Placeable>
+	<Placeable Name="Lynx (Colour)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Creatures/lynx ginger.png"/>
+		<Setting Key="ConceptCreator" Value="James &quot;WiildStar&quot; Stoffel"/>
+		<Setting Key="Category" Value="Creatures"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-40"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="40"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetX" Value="5"/>
+		<Setting Key="ColliderOffsetY" Value="25"/>
+	</Placeable>
+	<Placeable Name="Horse">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Creatures/horse.png"/>
+		<Setting Key="ConceptCreator" Value="James &quot;WiildStar&quot; Stoffel"/>
+		<Setting Key="Creator" Value="Thomas König"/>
+		<Setting Key="Category" Value="Creatures"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="30"/>
+		<Setting Key="CornerOffsetY" Value="75"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Creatures/visibility/horse.png"/>
+		<Setting Key="ColliderOffsetX" Value="-10"/>
+		<Setting Key="ColliderOffsetY" Value="90"/>
+	</Placeable>
+	<Placeable Name="Horse and Wagon">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Creatures/horse and wagon.png"/>
+		<Setting Key="ConceptCreator" Value="Sarah B. Cheney"/>
+		<Setting Key="Category" Value="Creatures"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="140"/>
+		<Setting Key="CornerOffsetY" Value="120"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Creatures/visibility/horse and wagon.png"/>
+	</Placeable>
+	<Placeable Name="Dragon (Centrepiece)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Creatures/dragon.png"/>
+		<Setting Key="Category" Value="Creatures"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-190"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="100"/>
+		<Setting Key="CornerOffsetY" Value="300"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Creatures/visibility/dragon.png"/>
+	</Placeable>
+</Settings>

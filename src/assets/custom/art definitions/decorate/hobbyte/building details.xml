@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="Creator" Value="Hobbyte"/>
+		<Setting Key="CreatorURL" Value="http://hobbyte.net/"/>
+	</SharedSettings>
+	<Placeable Name="Fireplace">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/fireplace.png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-130"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="30"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Building Details/visibility/fireplace.png"/>
+		<Setting Key="ColliderOffsetX" Value="4"/>
+		<Setting Key="ColliderOffsetY" Value="142"/>
+	</Placeable>
+	<Placeable Name="Furnace (Lit)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Furnace (Lit).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="11"/>
+		<Setting Key="CornerOffsetY" Value="31"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Building Details/visibility/furnace.png"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	<Placeable Name="Furnace">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Furnace.png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="11"/>
+		<Setting Key="CornerOffsetY" Value="31"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Building Details/visibility/furnace.png"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	<Placeable Name="Pillar">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Pillar.png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-140"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="15"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/small grid.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="140"/>
+	</Placeable>
+	<Placeable Name="Pillar 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Pillar2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-190"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="15"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/floor grid.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="140"/>
+	</Placeable>
+	<Placeable Name="Portal (Black)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Portal (Dark).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	<Placeable Name="Portal (Blue)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Portal (Blue).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	<Placeable Name="Portal (Empty)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Portal (Empty).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="SortingName" Value="Portal _(Empty)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	<Placeable Name="Portal (Green)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Portal (Green).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	<Placeable Name="Portal (Purple)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Portal (Purple).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	<Placeable Name="Portal (Red)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Portal (Red).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	<Placeable Name="Window (Dark Bars)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Window (Dark Bars).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="SortingName" Value="Window (Bars, Dark)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="5"/>
+		<Setting Key="CornerOffsetX" Value="33"/>
+		<Setting Key="CornerOffsetY" Value="65"/>	
+	</Placeable>
+	<Placeable Name="Window (Light Bars)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Window (Light Bars).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="SortingName" Value="Window (Bars, Light)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="5"/>
+		<Setting Key="CornerOffsetX" Value="33"/>
+		<Setting Key="CornerOffsetY" Value="65"/>	
+	</Placeable>
+	<Placeable Name="Window (Glass)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Window (glass).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="5"/>
+		<Setting Key="CornerOffsetX" Value="33"/>
+		<Setting Key="CornerOffsetY" Value="65"/>	
+	</Placeable>
+	<Placeable Name="Window (Glass, Tall Round)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Window (glass, tall round).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="5"/>
+		<Setting Key="CornerOffsetX" Value="33"/>
+		<Setting Key="CornerOffsetY" Value="115"/>	
+	</Placeable>
+	<Placeable Name="Window (Glass, Taller Round)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Window (glass, taller round).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="5"/>
+		<Setting Key="CornerOffsetX" Value="33"/>
+		<Setting Key="CornerOffsetY" Value="115"/>	
+	</Placeable>
+	<Placeable Name="Window (Glass, Tall)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Window (glass, tall).png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="5"/>
+		<Setting Key="CornerOffsetX" Value="33"/>
+		<Setting Key="CornerOffsetY" Value="115"/>	
+	</Placeable>
+	<Placeable Name="Blacksmith's Forge">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/Smithy.png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="2"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Building Details/visibility/smithy.png"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+		<Setting Key="ColliderOffsetY" Value="146"/>
+	</Placeable>
+	<Placeable Name="Sacrificial Pit">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/sacrificial pit.png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="2"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		<Setting Key="ForceGradualReveal" Value="True"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Building Details/visibility/sacrificial pit.png"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+		<Setting Key="ColliderOffsetY" Value="130"/>
+	</Placeable>
+	<Placeable Name="Dock (shallow at top)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/dock.png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="SortingName" Value="Dock Boat Bridge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="2"/>
+		<Setting Key="CornerOffsetX" Value="330"/>
+		<Setting Key="CornerOffsetY" Value="250"/>	
+		<Setting Key="ForceGradualReveal" Value="True"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Building Details/visibility/dock.png"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+	<Placeable Name="Dock (shallow at bottom)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Building Details/dock2.png"/>
+		<Setting Key="Category" Value="Building Details"/>
+		<Setting Key="SortingName" Value="Dock Boat Bridge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="2"/>
+		<Setting Key="CornerOffsetX" Value="330"/>
+		<Setting Key="CornerOffsetY" Value="250"/>	
+		<Setting Key="ForceGradualReveal" Value="True"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Building Details/visibility/dock.png"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</Placeable>
+</Settings>

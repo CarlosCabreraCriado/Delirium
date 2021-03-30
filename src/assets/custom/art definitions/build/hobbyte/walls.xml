@@ -1,0 +1,124 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="DrawingOffsetZ" Value="-0.6"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader)"/>
+	</SharedSettings>
+	<Placeable Name="Stone Wall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Wall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-112"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+		<Setting Key="JointColliderImagePath" Value="Art/_colliders/hobbyte/Joint.png"/>
+		<Setting Key="JointColliderOffsetY" Value="112"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		
+		<Setting Key="JointStraight" Value="Art/Build/Hobbyte/Walls/Stone/Straight Joint.png"/>
+		<Setting Key="JointTopAngle" Value="Art/Build/Hobbyte/Walls/Stone/Top Angle Joint.png"/>
+		<Setting Key="JointBottomAngle" Value="Art/Build/Hobbyte/Walls/Stone/Bottom Angle Joint.png"/>
+		<Setting Key="JointSideAngle" Value="Art/Build/Hobbyte/Walls/Stone/Side Angle Joint.png"/>
+		<Setting Key="JointCross" Value="Art/Build/Hobbyte/Walls/Stone/Cross Joint.png"/>
+		<Setting Key="JointTopHeavyT" Value="Art/Build/Hobbyte/Walls/Stone/Top Heavy T Joint.png"/>
+		<Setting Key="JointBottomHeavyT" Value="Art/Build/Hobbyte/Walls/Stone/Bottom Heavy T Joint.png"/>
+	</Placeable>
+	<Placeable Name="Stone Wall End (Lower) 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Wall end1.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-112"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="43"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	<Placeable Name="Stone Wall End (Upper) 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Wall end far1.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-112"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="43"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="112"/>
+	</Placeable>
+	
+	<Placeable Name="Simple Wall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Wall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-109"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="109"/>
+		<Setting Key="JointColliderImagePath" Value="Art/_colliders/hobbyte/Joint.png"/>
+		<Setting Key="JointColliderOffsetY" Value="109"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		
+		<Setting Key="JointStraight" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Straight Joint.png"/>
+		<Setting Key="JointTopAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Top Angle Joint.png"/>
+		<Setting Key="JointBottomAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Bottom Angle Joint.png"/>
+		<Setting Key="JointSideAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Side Angle Joint.png"/>
+		<Setting Key="JointCross" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Cross Joint.png"/>
+		<Setting Key="JointTopHeavyT" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Top Heavy T Joint.png"/>
+		<Setting Key="JointBottomHeavyT" Value="Art/Build/Hobbyte/Walls/Simple Wall/Simple Bottom Heavy T Joint.png"/>
+	</Placeable>
+	
+	<Placeable Name="Prison Wall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Prison/Prison Wall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-105"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="105"/>
+		<Setting Key="BlocksSight" Value="False"/>
+	</Placeable>
+	
+	<Placeable Name="Palisade">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Palisade/Palisade.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-160"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="160"/>
+	</Placeable>
+	
+</Settings>

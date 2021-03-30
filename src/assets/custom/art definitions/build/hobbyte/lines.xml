@@ -1,0 +1,375 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-12"/>
+		<Setting Key="Category" Value="Lines"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</SharedSettings>
+	
+	<Placeable Name="Wall Line">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Line Wall.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a a)"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Curved, Large Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve lower.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Curved Large Lower)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Curved, Large Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve upper.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Curved Large Upper)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="52"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Curved, Large Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve side.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Curved Large Side)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="92"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Curved, Small Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve lower.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Curved Small Lower)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="12"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Curved, Small Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve upper.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Curved Small Upper)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-11"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Curved, Small Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve side.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Curved Small Side)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-17"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Horizontal)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Horizontal Line.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Horizontal a)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Horizontal Half)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Horizontal Line Half.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Horizontal Half)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line Half.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Vertical)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Vertical Line.png"/>
+		<Setting Key="SortingName" Value="Wall Line (a Vertical)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Vertical Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	
+	
+	
+	<Placeable Name="Wall Line (Broad)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Line Wall Broad.png"/>
+		<Setting Key="SortingName" Value="Wall Line (Broad a)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad Curved, Large Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve lower Broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad Curved, Large Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve upper Broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="52"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad Curved, Large Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve side Broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="92"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad Curved, Small Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve lower broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="12"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad Curved, Small Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve side broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-17"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad Curved, Small Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve upper broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-11"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad, Horizontal)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Horizontal Line Broad.png"/>
+		<Setting Key="SortingName" Value="Wall Line (Broad, Horizontal a)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad, Horizontal Half)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Horizontal Line Broad Half.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line Half.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broad, Vertical)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Vertical Line Broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Vertical Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	
+	
+	
+	<Placeable Name="Wall Line (Broader)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Line Wall Very Broad.png"/>
+		<Setting Key="SortingName" Value="Wall Line (Broader a)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader Curved, Large Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve lower Broader.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader Curved, Large Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve upper Broader.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="52"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader Curved, Large Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line large curve side Broader.png"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="92"/>
+		<Setting Key="DrawingOffsetZ" Value="-12"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader Curved, Small Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve lower very broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="12"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader Curved, Small Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve side very broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-19"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader Curved, Small Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/line small curve upper very broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-11"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader, Horizontal)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Horizontal Line Very Broad.png"/>
+		<Setting Key="SortingName" Value="Wall Line (Broader, Horizontal a)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader, Horizontal Half)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Horizontal Line Very Broad Half.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line Half.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Broader, Vertical)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Vertical Line Very Broad.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Vertical Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+
+	
+	
+	<Placeable Name="Wall Line (Dashed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Dashed Line Wall.png"/>
+		<Setting Key="SortingName" Value="Wall Line (Dashed a)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed Curved, Large Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/dashed large curve lower.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed Curved, Large Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/dashed large curve upper.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="52"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed Curved, Large Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/dashed large curve side.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="92"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed Curved, Small Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/dashed small curve lower.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="12"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve lower.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed Curved, Small Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/dashed small curve side.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-17"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed Curved, Small Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/dashed small curve upper.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetY" Value="-11"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve upper.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed, Horizontal)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Dashed Horizontal Line.png"/>
+		<Setting Key="SortingName" Value="Wall Line (Dashed, Horizontal a)"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed, Horizontal Half)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Dashed Horizontal Line Half.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Horizontal Line Half.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Wall Line (Dashed, Vertical)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Lines/Dashed Vertical Line.png"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Vertical Line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+</Settings>

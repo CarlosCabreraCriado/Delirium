@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="Creator" Value="Hobbyte"/>
+		<Setting Key="CreatorURL" Value="http://hobbyte.net/"/>
+		<Setting Key="PlayModeAsset" Value="True"/>
+		<Setting Key="Type" Value="Character"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-103"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Tokens/visibility/small token.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="105"/>
+	</SharedSettings>
+	<Placeable Name="Archer, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Archer Female.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Archer, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Archer Male.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Barbarian, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Barbarian Female.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Barbarian, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Barbarian Male.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Thief, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Thief Female.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Thief, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Thief Male.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Warrior, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Warrior Female.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Warrior, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Warrior Male.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Wizard, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Wizard Female.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	<Placeable Name="Wizard, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Adventurers/Wizard Male.png"/>
+		<Setting Key="Category" Value="Tokens/Adventurers"/>
+	</Placeable>
+	
+	<Placeable Name="Bandit 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Bandit1.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Bandit 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Bandit2.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Evil Warrior">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Evil Warrior.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Ghost">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Ghost.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Goblin">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/goblin.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Lich">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Lich.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Lich">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Lich.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Lich">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Lich.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Lich">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Lich.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Lizardman">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Lizardman.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Mummy">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Mummy.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Necromancer">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Necromancer.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Orc">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Orc.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Skeleton">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Skeleton.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Vampire">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Vampire.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Werewolf">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Werewolf.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Witch">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Witch.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Zombie">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Zombie.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	
+	<Placeable Name="Demon">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Demon.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-235"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="87"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Tokens/visibility/large token.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="235"/>
+	</Placeable>
+	<Placeable Name="Giant">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Giant.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-235"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="87"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Tokens/visibility/large token.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="235"/>
+	</Placeable>
+	<Placeable Name="Minotaur">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Minotaur.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-235"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="87"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Tokens/visibility/large token.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="235"/>
+	</Placeable>
+	<Placeable Name="Giant Spider">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Spider.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-235"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="87"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Tokens/visibility/large token.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="235"/>
+	</Placeable>
+	<Placeable Name="Troll">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Tokens/Enemies/Troll.png"/>
+		<Setting Key="Category" Value="Tokens/Enemies"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-235"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="87"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Tokens/visibility/large token.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="235"/>
+	</Placeable>
+	
+</Settings>
