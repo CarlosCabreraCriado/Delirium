@@ -1,7 +1,7 @@
 {
   "name": "Delirium",
   "main": "main.js",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Juego de rol de mesa",
   "author": "Carlos Cabrera",
   "license": "MIT",
@@ -11,16 +11,15 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "electron .",
+    "electron": "run-script-os",
+    "electron:win32": "SET NODE_ENV=dev&& electron .",
+    "electron:darwin": "NODE_ENV=dev electron .",
     "dist": "electron-builder",
     "dist-mac": "electron-packager . --platform=darwin",
     "electron-build": "ng build --prod && electron .",
     "electron-test": "ng serve && electron .",
-    
-    "electron": "NODE_ENV=remoteDev electron .",
     "dev": "NODE_ENV=localDev electron.",
     "production": "NODE_ENV=production electron.",
-    
     "build": "NODE_ENV=production electron-builder build --win --mac --publish never",
     "deploy": "NODE_ENV=production electron-builder build --win --mac --publish always"
   },
@@ -82,6 +81,7 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.4.0",
+    "run-script-os": "^1.1.6",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.4.3"

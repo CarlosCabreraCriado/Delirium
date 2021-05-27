@@ -1,5 +1,4 @@
 
-
 #contenedorDesarrollador
   position: absolute
   width: 100vw
@@ -843,6 +842,100 @@
           &.seleccioneEnemigo
             display: flex
             align-items: center
+
+    //Panel Eventos:
+
+    .formularioEventos
+      position: absolute
+      display: flex
+      width: 100%
+      height: 100%
+
+      .panelEventos 
+        position: relative
+        height: 100%
+        width: 25%
+
+        .titulo
+          position: absolute
+          width: 100%
+          top: 2%
+          height: 8%
+          background-color: black
+          color: white
+          text-align: center
+
+        .contenedorEventos
+          position: absolute
+          width: 100%
+          top: 10%
+          height: 75%
+          background-color: lightgray
+
+          .evento
+            position: relative
+            width: 100%
+            text-align: center
+
+          .evento:hover
+            background-color: darkgrey
+
+        .botonAddEvento
+          position: absolute
+          width: 100%
+          top: 85%
+          height: 10%
+          text-align: center
+          background-color: darkgray
+         
+        .botonAddEvento:hover
+          background-color: black
+          color: white
+
+      .contenedorFormularioEvento
+        position: relative
+        display: flex
+        width: 75%
+        height: 100%
+        overflow-y: scroll
+
+        .columna
+          position: relative
+          height: 90%
+          width: 50%
+          margin: 5%
+
+          .campoFormulario
+            height: 25%
+
+            &.descripcion
+              height: 40%
+              width: 100%
+
+        .botonOpcionParametros
+          position: absolute
+          width: 20%
+          height: 5%
+          margin-left: -10%
+          border: 2px solid black
+          text-align: center
+          left: 50%
+          bottom: 5%
+          &:hover
+              color: white
+              background-color: black
+
+        &.seleccioneEvento
+          display: flex
+          align-items: center
+
+        .botonEliminarEvento
+          position: absolute
+          width: 5%
+          right: 0
+          margin: 1%
+          &:hover
+              filter: invert(0.5)
 
   .panelDerecho
     position: absolute

@@ -79,9 +79,10 @@ export class DesarrolladorService implements OnInit{
 	public mostrarPanelAsignarSala = false;
 	public mostrarPanelAsignarEvento = false;
 
-  //Variables de parametros:
+   //Variables de parametros:
 	public salaSeleccionadaId = 0;
 	public enemigoSeleccionadoId = 0;
+	public eventoSeleccionadoId = 0;
 
 	public tipoEnemigos: any;
 	public tipoEnemigoSeleccionado:any;
@@ -1192,24 +1193,30 @@ export class DesarrolladorService implements OnInit{
     return;
   }
 
-  seleccionarSala(salaID){
+  seleccionarSala(salaID: number){
     this.salaSeleccionadaId = salaID;
     this.observarDesarrolladorService.next("reloadFormSala");
   }
 
-  seleccionarEnemigo(enemigoID){
+  seleccionarEnemigo(enemigoID: number){
     this.enemigoSeleccionadoId = enemigoID;
     this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== this.mazmorra.enemigos.find(j=> j.enemigo_id== enemigoID).tipo_enemigo_id);
     this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
   }
 
-  seleccionarTipoEnemigo(tipoEnemigoID){
+  seleccionarTipoEnemigo(tipoEnemigoID: number){
     this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoEnemigoID);
     this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].tipo_enemigo_id= tipoEnemigoID;
     this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].nombre= this.tipoEnemigoSeleccionado.nombre;
     this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
+  }
+
+  seleccionarEvento(eventoID: number){
+    this.eventoSeleccionadoId = eventoID;
+    this.observarDesarrolladorService.next("reloadFormEventos");
+	return;
   }
 
   crearSala(){
@@ -1262,6 +1269,54 @@ export class DesarrolladorService implements OnInit{
     });
     this.seleccionarEnemigo(cuentaID);
     this.seleccionarTipoEnemigo(1);
+  }
+
+  crearEvento(){
+
+    //Check ID de salas: (Se asigan un ID que este disponible)
+    var cuentaID = 1;
+
+    while(this.mazmorra.eventos.find(i=> i.id_evento==cuentaID)){
+      cuentaID++;
+    }
+
+    console.log("Creando Evento con ID: "+cuentaID);
+
+    var nombreEvento= "Evento "+cuentaID;
+
+    this.mazmorra.eventos.push({
+			id_evento: cuentaID,
+			id_mazmorra: 0, 
+			id_sala: 0,
+			tipo: 0,
+			codigo: 0,
+			rng: 0, 
+			rng_fallo_evento_id: 0, 
+			buff: 0,
+			insta_buff: 0,
+			objetivo_buff: 0,
+			loot_id: 0,
+			loot_prob: 0,
+			objetivo_loot: 0,
+			dialogo_id: 0,
+			objetivo_dialogo: 0,
+			spawn_enemigo_id: 0,
+			set_evento_watcher: 0,
+			remove_evento_watcher: 0,
+			evento_watcher_id: 0,
+			expire_watcher_id: 0,
+			intervalo_trigger_watcher: 0,
+			variable_trigger_watcher: 0,
+			add_variable: 0,
+			elimina_variable: 0,
+			if_condicion_variable: 0,
+			if_falso_evento_id: 0,
+			cinematica_id: 0,
+			sonido_id: 0,
+			evento_next_id: 0 
+    });
+
+    this.seleccionarEvento(cuentaID);
   }
 
 
@@ -1792,6 +1847,17 @@ export class DesarrolladorService implements OnInit{
 
 		//Deselecciona la sala seleccionada:
 		this.enemigoSeleccionadoId=0;
+
+	return;
+  }
+
+  eliminarEvento(){
+	  
+		//Elimina el evento:
+		this.mazmorra["eventos"].splice(this.mazmorra.eventos.indexOf(this.mazmorra.eventos.find(i=> i.id_evento==this.eventoSeleccionadoId)),1);
+
+		//Deselecciona la sala seleccionada:
+		this.eventoSeleccionadoId=0;
 
 	return;
   }

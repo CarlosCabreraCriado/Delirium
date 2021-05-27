@@ -427,37 +427,170 @@
 
           </form>
 
-          <form *ngIf="desarrolladorService.estadoParametros=='Eventos'" class="formularioGeneral" [formGroup]="formGeneral">
-            EVENTOS
-            <hr>
-            ID  
-            MAZMORRA_ID 
-            SALA  
-            TIPO  
-            CODIGO 
-            RNG 
-            RNG_FALLO_EVENTO_ID
-            BUFF  
-            INSTA_BUFF  
-            OBJETIVO_BUFF 
-            LOOT_ID LOOT_PROB 
-            OBJETIVO_LOOT 
-            DIALOGO_ID  
-            OBJETIVO_DIALOGO  
-            SPAWN_ENEMIGO_ID  
-            SET_EVENTO_WATCHER  
-            REMOVE_EVENTO_WATCHER 
-            EVENTO_WATCHER_ID 
-            EXPIRE_WATCHER_TIEMPO 
-            INTERVALO_TRIGGER_WATCHER 
-            VARIABLE_TRIGGER_WATCHER  
-            ANADE_VARIABLE  
-            ELIMINA_VARIABLE  
-            IF_CONDICION_VARIABLE 
-            IF_FALSO_EVENTO_ID  
-            CINEMATICA_ID 
-            SONIDO_ID 
-            EVENTO_NEXT_ID
+          <form *ngIf="desarrolladorService.estadoParametros=='Eventos'" class="formularioEventos" [formGroup]="formEventos">
+            <div class="panelEventos">
+              <div class="titulo"> Eventos </div>
+              <div class="contenedorEventos">
+                <div *ngFor="let evento of desarrolladorService.mazmorra.eventos; let index=i" class="evento" (click)=desarrolladorService.seleccionarEvento(evento.id_evento)>{{evento.id_evento}}</div>
+              </div>
+              <div class="botonAddEvento" (click)="desarrolladorService.crearEvento()">Añadir Evento</div>
+            </div>
+
+            <div class="contenedorFormularioEvento seleccioneEvento" *ngIf="desarrolladorService.eventoSeleccionadoId==0"> <--- Selecciona un evento</div>
+
+            <div class="contenedorFormularioEvento" *ngIf="desarrolladorService.eventoSeleccionadoId!=0">
+
+            <div class="columna">
+				
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="id_evento" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>ID Mazmorra</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="id_mazmorra" min="0">
+                </mat-form-field>
+				
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>ID Sala</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="id_sala" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Tipo</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="tipo" min="0">
+                </mat-form-field>
+				
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Codigo</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="codigo" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>RNG</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="rng" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>RNG Fallo Evento ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="rng_fallo_evento_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Buff</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="buff" min="0">
+                </mat-form-field>
+				
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Insta Buff</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="insta_buff" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Objetivo Buff</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="objetivo_buff" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Loot ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="loot_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Loot Prob</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="loot_prob" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Objetivo Loot</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="objetivo_loot" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Dialogo ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="dialogo_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Objetivo Dialogo</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="objetivo_dialogo" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Spawn Enemigo ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="spawn_enemigo_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Set evento Watcher</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="set_evento_watcher" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Remove Evento Watcher</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="remove_evento_watcher" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Evento Watcher ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="evento_watcher_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Expire Watcher ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="expire_watcher_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Intervalo Trigger Watcher</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="intervalo_trigger_watcher" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Variable Trigger Watcher</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="variable_trigger_watcher" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Add Variable</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="add_variable" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Elimina Variable</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="elimina_variable" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>If condicion variable</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="if_condicion_variable" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>If falso Evento ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="if_falso_evento_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Cinematica ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="cinematica_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Sonido ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="sonido_id" min="0">
+                </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Evento Next ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="evento_next_id" min="0">
+                </mat-form-field>
+			</div> <!-- Fin Columna -->
+			
+		 	  <img src="./assets/desarrollador/papelera.svg" class="botonEliminarEvento" (click)="desarrolladorService.eliminarEvento()"/>
+
+            </div>
           </form>
 
           <form *ngIf="desarrolladorService.estadoParametros=='Dialogos'" class="formularioGeneral" [formGroup]="formGeneral">

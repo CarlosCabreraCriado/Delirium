@@ -35,6 +35,8 @@ export class DesarrolladorComponent implements OnInit{
   	private formGeneral: FormGroup;
   	private formSala: FormGroup;
   	private formEnemigos: FormGroup;
+  	private formEventos: FormGroup;
+  	private formDialogos: FormGroup;
   	private formAsignarSala: FormGroup;
   	private formAsignarEvento: FormGroup;
 
@@ -69,6 +71,52 @@ export class DesarrolladorComponent implements OnInit{
     private evento_spawn_id_Enemigos = new FormControl('0');
     private evento_intervalo_id_Enemigos = new FormControl('0');
     private evento_intervalo_tiempo_Enemigos = new FormControl('0');
+
+	//Campos Eventos:
+	private id_evento = new FormControl('0');
+	private id_mazmorra = new FormControl('0');
+	private id_sala = new FormControl('0');
+	private tipo_evento = new FormControl('0');
+	private codigo = new FormControl('0');
+	private rng = new FormControl('0');
+	private rng_fallo_evento_id = new FormControl('0');
+	private buff = new FormControl('0');
+	private insta_buff = new FormControl('0');
+	private objetivo_buff = new FormControl('0');
+	private loot_id = new FormControl('0');
+	private loot_prob = new FormControl('0');
+	private objetivo_loot = new FormControl('0');
+	private dialogo_evento_id = new FormControl('0');
+	private objetivo_dialogo = new FormControl('0');
+	private spawn_enemigo_id = new FormControl('0');
+	private set_evento_watcher = new FormControl('0');
+	private remove_evento_watcher = new FormControl('0');
+	private evento_watcher_id = new FormControl('0');
+	private expire_watcher_id = new FormControl('0');
+	private intervalo_trigger_watcher = new FormControl('0');
+	private variable_trigger_watcher = new FormControl('0');
+	private add_variable = new FormControl('0');
+	private elimina_variable = new FormControl('0');
+	private if_condicion_variable = new FormControl('0');
+	private if_falso_evento_id = new FormControl('0');
+	private cinematica_id = new FormControl('0');
+	private sonido_id = new FormControl('0');
+	private evento_next_id = new FormControl('0');
+	
+	//Campor Dialogos:
+	private dialogo_id = new FormControl('0');
+	private tipo_dialogo = new FormControl('0');
+	private imagen_id = new FormControl('0');
+	private texto1 = new FormControl('0');
+	private texto2 = new FormControl('0');
+	private texto3 = new FormControl('0');
+	private texto_elegir = new FormControl('0');
+	private eleccion_evento_id = new FormControl('0');
+	private timeout = new FormControl('0');
+	private evento_timeout_id = new FormControl('0');
+	private minimo_tiempo = new FormControl('0');
+	private redirect_dialogo_id = new FormControl('0');
+	private next_evento_id = new FormControl('0');
 
 	//Campos Asignar Isometrico:
   	private asignar_id_sala = new FormControl('0');
@@ -136,6 +184,39 @@ export class DesarrolladorComponent implements OnInit{
         	evento_intervalo_tiempo: this.evento_intervalo_tiempo_Enemigos
 	    });
 
+		//Inicializacion formulario Eventos:
+	    this.formEventos = this.formBuilder.group({
+			id_evento: this.id_evento,
+			id_mazmorra: this.id_mazmorra, 
+			id_sala: this.id_sala,
+			tipo: this.tipo_evento,
+			codigo: this.codigo,
+			rng: this.rng, 
+			rng_fallo_evento_id: this.rng_fallo_evento_id, 
+			buff: this.buff,
+			insta_buff: this.insta_buff,
+			objetivo_buff: this.objetivo_buff,
+			loot_id: this.loot_id,
+			loot_prob: this.loot_prob,
+			objetivo_loot: this.objetivo_loot,
+			dialogo_id: this.dialogo_evento_id,
+			objetivo_dialogo: this.objetivo_dialogo,
+			spawn_enemigo_id: this.spawn_enemigo_id,
+			set_evento_watcher: this.set_evento_watcher,
+			remove_evento_watcher: this.remove_evento_watcher,
+			evento_watcher_id: this.evento_watcher_id,
+			expire_watcher_id: this.expire_watcher_id,
+			intervalo_trigger_watcher: this.intervalo_trigger_watcher,
+			variable_trigger_watcher: this.variable_trigger_watcher,
+			add_variable: this.add_variable,
+			elimina_variable: this.elimina_variable,
+			if_condicion_variable: this.if_condicion_variable,
+			if_falso_evento_id: this.if_falso_evento_id,
+			cinematica_id: this.cinematica_id,
+			sonido_id: this.sonido_id,
+			evento_next_id: this.evento_next_id
+	    });
+
 		//Inicialización formulario Asignar Sala:
 	    this.formAsignarSala = this.formBuilder.group({
 	   		asignar_id_sala: this.asignar_id_sala
@@ -162,6 +243,11 @@ export class DesarrolladorComponent implements OnInit{
 	          	case "reloadFormEnemigo":
 				case "reloadForm":
 	          		this.formEnemigos.setValue(this.desarrolladorService.mazmorra["enemigos"][this.desarrolladorService.mazmorra.enemigos.indexOf(this.desarrolladorService.mazmorra.enemigos.find(i=> i.enemigo_id==this.desarrolladorService.enemigoSeleccionadoId))]);
+	          	break;
+				
+	          	case "reloadFormEventos":
+				case "reloadForm":
+	          		this.formEventos.setValue(this.desarrolladorService.mazmorra["eventos"][this.desarrolladorService.mazmorra.eventos.indexOf(this.desarrolladorService.mazmorra.eventos.find(i=> i.id_evento==this.desarrolladorService.eventoSeleccionadoId))]);
 	          	break;
 
 	          	case "reloadReticula":
