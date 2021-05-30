@@ -1,34 +1,42 @@
 
 <!-- Diseño Fondo --> 
 
-
-<video *ngIf="appService.dispositivo=='Desktop'" autoplay class="video-fondo" id="video-fondo" oncanplay="this.muted=true" loop poster="assets/General/papiro.jpg">
+<video *ngIf="appService.dispositivo=='Desktop'" autoplay class="video-fondo" id="video-fondo" oncanplay="this.muted=true" loop poster="assets/General/Fondo-Papiro.png">
   <source src="assets/videos/video-fondo.mp4" type="video/mp4"/>
 </video> 
 
-<img src="assets/General/papiro.jpg" class="Fondo-papiro" alt="Fondo-papiro">
+<img src="assets/General/Fondo-Papiro.png" class="Fondo-papiro" alt="Fondo-papiro">
 
 <!-- Pantalla de Inicio --> 
 <div id="ContenedorInicio" class="ContenedorInicio visible">
 
-  <div *ngIf="appService.claveValida && !procesando"  id="contenedorIconos">
+  <div id="contenedorIconos">
     <img src="assets/General/gear.png" class="icono ajustes" alt="Icono Bug" (click)="appService.mostrarAjustes('');">
     <img src="assets/General/bug.png" class="icono tool" alt="Icono Bug" (click)="appService.mostrarBugLog('');">
     <img src="assets/General/tool.png" class="icono developer" alt="Icono Bug" (click)="appService.mostrarDeveloperTool('');">
   </div>
   
-
-  <div *ngIf="appService.claveValida"  class="usuario Texto2" (click)="logout()">{{appService.validacion.nombre+"-"+appService.validacion.tipo}}</div>
-
-  <div *ngIf="!appService.claveValida" class="usuario Texto2">
-  Sesión no iniciada</div>
-  
   <div id="contenedorLogo"> 
-    <img class="animated Logo fadeIn" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo"> 
+    <img class="Logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo"> 
   </div>
 
-  <img *ngIf="pantalla!='inicio'" id="flechaRetroceso" class="flechaRetroceso" alt="flecha" src="assets/General/Flecha.svg" (click)="retroceder()">
+  <div class="contenedorInicioSesion">
+	  <div class="marcoInicioSesion"></div>
+	  <div class="Texto2 bloque textoIniciarSesion">Inicar sesión</div>
+	  <hr class="Texto2 bloque separador">
+	  <div class="Texto2 bloque textoUsuario">Usuario:</div>
+	  <div class="Texto2 bloque input inputUsuario">
+		  <input type="text" class="Texto2"/>
+	  </div>
+	  <div class="Texto2 bloque textoContraseña">Contraseña:</div>
+	  <div class="Texto2 bloque input inputContraseña">
+		  <input #clave type="password" class="Texto2"/>
+	  </div>
+	  <botonComponent *ngIf="!procesando" class="contenedorBoton" [color]="'violeta'" [texto]="'Iniciar'" (click)="checkClave();"></botonComponent>
+      <div *ngIf="procesando" class="lds-dual-ring"></div>
+  </div>
 
+  <!--
     <div *ngIf="!appService.claveValida" id="contenedorVerificacion" class="visible">
 
       <form id="formularioClave" class="Texto1" *ngIf="!appService.claveValida && !procesando">
@@ -45,34 +53,7 @@
       <div *ngIf="procesando" class="lds-dual-ring"></div>
 
     </div>
-
-    <div *ngIf="appService.claveValida && !procesando" id="menu" class="Text-container" [ngClass]="renderizarPantalla('inicio')">
-
-        <ul class="Titulo Texto1">Comienza la aventura:
-        <li class="Texto2" (click)="jugar()">
-          Jugar
-        </li>
-        <li class="Texto2" (click)="heroes()">
-          Mis heroes
-      	</li>
-        <li class="Texto2" (click)="configuracion()">
-          Configuración
-        </li>
-
-        </ul>
-  
-    </div>
-
-    <!-- Pantalla Jugar --> 
-    <div id="ContenedorJugar" [ngClass]="renderizarPantalla('jugar')">
-  
-       <div class="Text-container">
-           <ul class="Titulo Texto1">Jugar:
-             <li class="Texto2" (click)="crearPartida()">Crear partida</li>
-             <li class="Texto2" (click)="unirsePartida()">Unirse a partida</li>
-           </ul>
-       </div>
-     </div>
+  -->
 
  </div>
  

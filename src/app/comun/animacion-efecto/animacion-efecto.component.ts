@@ -1,8 +1,8 @@
 
 
-import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {trigger,state,style,animate,transition, keyframes} from '@angular/animations';
-import {DeveloperCombateService} from '../developer-combate/developerCombate.service'
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { trigger,state,style,animate,transition, keyframes } from '@angular/animations';
+import { DeveloperCombateService } from '../developer-combate/developerCombate.service'
 
 @Component({
   selector: 'appAnimacionEfecto',
@@ -41,12 +41,12 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 	private nombreSonido: string= "Basico2.mp3"
 	public tiempoEfecto: string= "0.44";
 	public stepsEfecto: string= "5";
-  private animaciones: any;
+    private animaciones: any;
 
-	 @Input() enemigo: any;
-   @Input() enemigoAnimacion = 0;
-	 @Input() heroe: any;
-   @Input() heroeAnimacion = 0;
+	@Input() enemigo: any;
+    @Input() enemigoAnimacion = 0;
+	@Input() heroe: any;
+    @Input() heroeAnimacion = 0;
 
   constructor(private developerCombateService: DeveloperCombateService) { }
 

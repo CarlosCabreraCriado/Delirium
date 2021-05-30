@@ -1,4 +1,6 @@
 
+@import "../../../variables.sass"
+
 .video-fondo
   position: fixed
   min-height: 100%
@@ -11,7 +13,6 @@
   min-height: 100%
   z-index: 2
   opacity: 0.7
-  
 
 .ContenedorInicio
   position: fixed
@@ -20,22 +21,6 @@
   width: 100%
   min-height: 100%
   z-index: 3
-
-
-  
-.ContenedorCarga
-  position: absolute
-  width: 100%
-  min-height: 100%
-  z-index: 4
-  animation-delay: 2s
-  transition: linear 2s
-
-.usuario
-  position: absolute
-  right: 5%
-  top: 5%
-  z-index: 6
 
 #error
   color: red
@@ -50,15 +35,12 @@
     height: 100%
     margin: 10px
 
-
 #contenedorLogo
   position: relative
-  top: 15%
-  margin-top: 10%
+  top: 15vh
   width: 100%
-  height: 40%
-  @media only screen and (min-width: 768px) //Pantallas mas de 600px
-    margin-top: 15%
+  height: 20vh
+//@media only screen and (min-width: 768px) //Pantallas mas de 600px
 
 .Logo
   position: relative
@@ -69,123 +51,75 @@
   max-height: 100%
   animation-delay: 0.5s
 
-.Delirium
-  position: fixed
-  width: 50%
-  top: 10%
-  left: 50%
-  margin-left: -25%
-  animation-delay: 0.5s
-  @media only screen and (min-width: 768px) //Pantallas mas de 600px
-    //font-size: 150px
-  
-  
-.Text-container
-  position: relative
+.contenedorInicioSesion
+  position: absolute
+  color: white
+  width: 30%
+  height: 40%
   top: 40%
-  width: 70%
   left: 50%
-  margin-left: -35%
-  padding: 0
-  z-index: 3
+  margin-left: -15%
+  background-color: rgba(0,0,0,0.7)
 
-ul
-  position: relative
-  top: 10%
-  text-align: center
-  width: 100% 
-  margin: 20px 0 0 0
-  padding: 0
-  list-style: none
-  @media only screen and (min-width: 768px) //Pantallas mas de 600px
-    margin: 70px 0 0 0
+  .marcoInicioSesion
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    padding-top: 20px
+    padding-left: 20px
+    margin-top: -10px
+    padding-left: 20px
+    margin-left: -10px
+    background-image: url("../../../assets/Frames/Frame-Iniciar-Sesion.png")
+    background-position: center center
+    background-size: 100% 100%
 
-  
-li
-  position: relative
-  text-align: center
-  left: 25%
-  margin-left: -50%
-  width: 50%
-  margin: 5px 0 0 0
-  @media only screen and (min-width: 768px) //Pantallas mas de 600px
-    margin: 10px 0 0 0
+  .bloque 
+    position: relative
+    width: 100%
+    margin-top: 10px
+    margin-bottom: 10px
 
+  .textoIniciarSesion  
+    text-align: center
 
-#formularioClave
-  position: absolute
-  text-align: center
-  width: 100%
-  left: 50%
-  margin-left: -50%
-  top: 0
+  .separador
+    width: 80%
+    margin-left: 10%
 
+  .textoUsuario
+    margin-left: 10%
 
-.inputClave
-  position: relative
-  width: 30%
-  background: none
-  border-style: none
-  border-width: 2px
-  border-bottom: solid 1px
+  .textoContraseña
+    margin-left: 10%
 
+  .input
+    width: 80%
+    height: 50px
+    margin-left: 10%
+    border: $colorTexto solid 3px
+    border-radius: 20px
+    background-color: $colorFondo2
+    input
+        display: block
+        position: relative
+        width: 90%
+        height: 80%
+        left: 5%
+        top: 5%
+        color: white
+        background-color: $colorFondo2
+        border: 0
 
-#botonSubmit
-  position: relative
-  width: 150px
-  height: 45px
-  line-height: 45px
-  left: 50%
-  text-align: center
-  margin-left: -75px
-  margin-top: 5px
-  font-family: inherit
-  display: block
-  background: none
-  border: none
-  //border: solid 2px black
-
-#botonAcceso
-  
-  width: 350px
-  margin-left: -100px
-  top: -25px
-  position: relative
-
-#flechaRetroceso
-  position: absolute
-  top: 5%
-  width: 10%
-  left: 5%
-  transform: rotate(180deg) 
-  z-index: 6
-
-#contenedorVerificacion
-  position: relative
-  width: 100%
-  margin-top: 0%
-  top: 30%
-  @media only screen and (min-width: 768px) //Pantallas mas de 600px
-    margin-top: 5%
-    top: 45%
-
-.enviarFormulario
-  position: relative
-  width: 30%
-  text-shadow: none
-
-
-#clave
-  position: relative
-  width: 125px
-  background-color: rgba(255,255,255,0.1)
-
-  
-.flecha
-  display: inline-block
-  position: relative
-  bottom: -10px
-  height: 50px
+  botonComponent
+    position: relative
+    display: block
+    width: 50%
+    left: 50%
+    margin-left: -25%
+    height: 20%
 
 .lds-dual-ring 
   position: relative

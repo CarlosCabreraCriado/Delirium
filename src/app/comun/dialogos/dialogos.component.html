@@ -1,6 +1,20 @@
+
 <!--   ******************* -->
 <!--         DIALOGOS      -->
 <!--   ******************* -->
+
+
+<div *ngIf="data.tipoDialogo == 'Error'" class= "contenedor">
+
+	<h1 class="title Texto2">Error</h1>
+
+	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
+	
+	<botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="botonUnico"></botonComponent>
+	
+	<div class="frame"></div>
+
+</div>
 
 <div *ngIf="data.tipoDialogo == 'Informativo'" class= "contenedor">
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>

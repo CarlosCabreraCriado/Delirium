@@ -142,7 +142,7 @@ export class SalaComponent implements OnInit{
 		this.appService.setProgresoCarga("100");
 
 		setTimeout(()=>{    
-      		this.appService.mostrarPantallacarga(false);
+      		//this.appService.mostrarPantallacarga(false);
       		/*
       		if(this.sala.nombre==""|| this.sala.nombre== undefined){
       			this.sala.nombre=this.validacion.nombre;

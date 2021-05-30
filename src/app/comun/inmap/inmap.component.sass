@@ -1,0 +1,88 @@
+
+@import '../../../variables.sass'
+@import '../../../breakpoints.scss'
+
+#flechaRetroceso
+    position: absolute
+    top: 0
+    right: 0
+    width: 10%
+
+// DISEÑO DE FONDO:
+#fondo
+    position: absolute
+    width: 100%
+    height: 100%
+    background-color: $colorFondo
+
+    .fondoPapiro
+        position: absolute
+        display: block
+        opacity: 0.4
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+
+#ContenedorPanelGeneral
+    position: absolute
+    top: 0
+    left: 0
+    width: 15%
+    height: 100%
+    background-color: $colorFondo1
+
+    @include media("<=desktop")
+        background-color: green
+    @include media("<=tablet")
+        background-color: orange
+    @include media("<=phone")
+        background-color: yellow
+    @include media("<=smphone")
+        background-color: red
+
+    .framePanelGeneral
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background-image: url("../../../assets/Frames/Frame-Panel-General.png")
+        background-size: 100% 100%
+        
+    .contenedorBotonGeneral
+        position: relative
+        display: flex
+        flex-direction: column
+        height: 18% 
+        width: 100%
+        margin-top: 1vh
+        margin-bottom: 1vh
+        align-items: center
+        justify-content: center
+        &.primerBotonGeneral
+            margin-top: 3vh
+        
+        .iconoPanelGeneral
+            position: relative
+            height: 80%
+            margin-left: 5%
+        .textoPanelGeneral
+            position: relative
+            text-align: center
+            color: white
+            width: 100%
+            height: 20%
+
+#ContenedorMapa
+    position: absolute
+    width: 85%
+    height: 100%
+    margin-left: 15%
+    .mapaMundo
+        position: absolute
+        display: block
+        top: 10%
+        width: 90%
+    
+

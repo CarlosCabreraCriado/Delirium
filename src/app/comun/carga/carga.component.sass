@@ -1,4 +1,5 @@
 
+@import '../../../variables.sass'
 
 #PantallaCarga
   position: fixed
@@ -7,42 +8,36 @@
   width: 100%
   opacity: 0.7
   background-color: black
-  color: white
+  color: $colorTexto
   text-align: center
   transition: opacity 2s
   opacity: 0
 
+.logo
+  position: relative
+  display: block
+  width: 10%
+  top: 30%
+  left: 50%
+  margin-left: -5%
+  margin-bottom: 5%
+
 .tituloCarga
   position: relative
-  top: 20%
-  color: white
-  @media only screen and (min-width: 600px) //Pantallas mas de 600px
-    top: 30%
+  top: 30%
 
 .subtituloCarga
   position: relative
-  top: 20%
-  color: white
-  @media only screen and (min-width: 600px) //Pantallas mas de 600px
-    top: 30%
-
-.contenedorBarraCarga
-  position: relative
   top: 30%
-  height: 40px
-  width: 60%
-  left: 50%
-  margin-left: -30%
-  border: 2px solid white
-  @media only screen and (min-width: 600px) //Pantallas mas de 600px
-    top: 40%
 
-.barraCarga
-  position: relative
-  height: 100%
-  width: 50%
-  left: 0px
-  background-color: white
-  transition: width 2s
+.animacionCarga
+  animation: blink 2s linear infinite;
 
+@keyframes blink
+  0%
+    opacity: 0.3
+  50%
+    opacity: 1 
+  100%
+    opacity: 0.3
 

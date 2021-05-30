@@ -40,6 +40,8 @@ import { HeroesInfoComponent } from './comun/heroesInfo/heroesInfo.component';
 import { HeroesCrearComponent } from './comun/heroesCrear/heroesCrear.component';
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
+import { BotonComponent } from './comun/boton/boton.component';
+import { InMapComponent } from './comun/inmap/inmap.component';
 
 const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
 //const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
@@ -69,7 +71,9 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     HeroesInfoComponent,
     HeroesCrearComponent,
     DesarrolladorComponent,
-    DialogoComponent
+    DialogoComponent,
+	BotonComponent,
+	InMapComponent
   ],
   entryComponents:[
     DialogoComponent

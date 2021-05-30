@@ -7,7 +7,6 @@ import { ElectronService } from 'ngx-electron';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
 import { MatDialog} from '@angular/material/dialog';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -249,7 +248,7 @@ export class AppService {
     }
 
   	cambiarUrl(url): void{
-      console.log("CAMBIANDO A URL: "+url);
+        console.log("CAMBIANDO A URL: "+url);
   		this.router.navigateByUrl(url);
   	}
 
@@ -267,8 +266,9 @@ export class AppService {
     }
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
+
       const dialogRef = this.dialog.open(DialogoComponent,{
-          panelClass: [tipoDialogo, "generalContainer"], disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+          width: "100px",panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
         });
 
         dialogRef.afterClosed().subscribe(result => {
