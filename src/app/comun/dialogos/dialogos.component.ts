@@ -1,7 +1,7 @@
 
-import { Component , Inject, ViewChild} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { BotonComponent} from '../boton/boton.component';
+import { Component , Inject, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BotonComponent } from '../boton/boton.component';
 
 export interface DialogData {
   tipoDialogo: string;
@@ -24,6 +24,7 @@ export class DialogoComponent {
       this.confirmation = true;
       this.dialogRef.close();
     }
+
 }
 
 

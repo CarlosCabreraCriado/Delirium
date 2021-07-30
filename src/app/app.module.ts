@@ -40,8 +40,21 @@ import { HeroesInfoComponent } from './comun/heroesInfo/heroesInfo.component';
 import { HeroesCrearComponent } from './comun/heroesCrear/heroesCrear.component';
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
+import { ConfiguracionComponent } from './comun/configuracion/configuracion.component';
 import { BotonComponent } from './comun/boton/boton.component';
 import { InMapComponent } from './comun/inmap/inmap.component';
+import { CreditoComponent } from './comun/credito/credito.component';
+import { HeroeComponent } from './comun/heroe/heroe.component';
+import { BarraComponent } from './comun/barra/barra.component';
+import { PanelPersonaje } from './comun/panel-personaje/panel-personaje.component';
+import { IndicadorPantallaComponent } from './comun/indicador-pantalla/indicador-pantalla.component';
+import { EstadisticasGeneralComponent } from './comun/estadisticas-general/estadisticas-general.component';
+import { PanelEquipoComponent } from './comun/panel-equipo/panel-equipo.component';
+import { PanelMazmorraComponent } from './comun/panel-mazmorra/panel-mazmorra.component';
+import { PanelDiarioComponent } from './comun/panel-diario/panel-diario.component';
+import { PanelTiendaComponent } from './comun/panel-tienda/panel-tienda.component';
+import { ExperienciaComponent } from './comun/experiencia/experiencia.component';
+import { PanelControlComponent } from './comun/panel-control/panel-control.component';
 
 const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
 //const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
@@ -72,11 +85,26 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     HeroesCrearComponent,
     DesarrolladorComponent,
     DialogoComponent,
+	ConfiguracionComponent,
 	BotonComponent,
-	InMapComponent
+	InMapComponent,
+	CreditoComponent,
+	HeroeComponent,
+	BarraComponent,
+	PanelPersonaje,
+	IndicadorPantallaComponent,
+	EstadisticasGeneralComponent,
+	PanelEquipoComponent,
+	PanelMazmorraComponent,
+	PanelDiarioComponent,
+	PanelTiendaComponent,
+	ExperienciaComponent,
+	PanelControlComponent
+
   ],
   entryComponents:[
-    DialogoComponent
+    DialogoComponent,
+	ConfiguracionComponent
   ],
   imports: [
     BrowserModule,
@@ -94,6 +122,6 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
   ],
   providers: [],
   bootstrap: [AppComponent]
-})
 
+})
 export class AppModule { }

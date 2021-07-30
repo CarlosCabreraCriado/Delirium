@@ -1,0 +1,38 @@
+
+<!--   ******************* -->
+<!--      Configuración    -->
+<!--   ******************* -->
+
+<div class= "contenedor">
+
+	<h1 class="title Texto2">Configuración</h1>
+
+	<hr class="divisor"/>
+
+	<div class="contenedorPestanas">
+		<div class="pestana Texto2 seleccionado">General</div>
+		<div class="pestana Texto2">Sonido</div>
+		<div class="pestana Texto2">Gráficos</div>
+	</div>
+
+	<hr class="divisor"/>
+
+	<div class="contenedorOpciones">
+		
+		<!--PANEL OPCIONES GENERAL -->
+		<div class="opcionesGenerales Texto3">
+			<div class="opcionesGenerales Texto3">Versión: 0.2.3</div>
+			<div class="botonCerrarSesion Texto3" [mat-dialog-close]="cerrarSession">Cerrar Sesión</div>
+		</div>
+
+	</div>
+	
+	<div class="contenedorBotones">
+		<botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [color]="'verde'" class="boton"></botonComponent>
+		<botonComponent mat-button (click)="cerrarSesion()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+	</div>
+	
+	<div class="frame"></div>
+
+</div>
+

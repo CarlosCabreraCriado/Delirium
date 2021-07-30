@@ -17,27 +17,27 @@
 
 <div id="ContenedorPanelGeneral"> 
 	
-	<div class="contenedorBotonGeneral primerBotonGeneral">
+	<div class="contenedorBotonGeneral primerBotonGeneral" (click)="cambiarPantalla('Personaje')">
 		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Personaje.png" />	
 		<div class="textoPanelGeneral Texto2">Personaje</div>
 	</div>
 
-	<div class="contenedorBotonGeneral">
+	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Equipo')">
 		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Equipo.png" />	
 		<div class="textoPanelGeneral Texto2">Equipo</div>
 	</div>
 
-	<div class="contenedorBotonGeneral">
+	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Mazmorra')">
 		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Mazmorra.png" />	
 		<div class="textoPanelGeneral Texto2">Mazmorra</div>
 	</div>
 
-	<div class="contenedorBotonGeneral">
+	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Diario')">
 		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Diario.png" />	
 		<div class="textoPanelGeneral Texto2">Diario</div>
 	</div>
 
-	<div class="contenedorBotonGeneral">
+	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Tienda')">
 		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Logros.png" />	
 		<div class="textoPanelGeneral Texto2">Tienda</div>
 	</div>
@@ -46,10 +46,87 @@
 	
 </div>
 
-<!--   ******************* -->
-<!--          MAPA         -->
-<!--   ******************* -->
+<!--   ************************** -->
+<!--    CONTENEDOR MAIN WINDOW    -->
+<!--   ************************** -->
 
-<div id="ContenedorMapa">
-	<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
-</div>
+<div id="contenedorMainWindow">
+
+	<!--   ******************* -->
+	<!--          MAPA         -->
+	<!--   ******************* -->
+
+	<div id="ContenedorMapa">
+		<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+	</div>
+
+	<!--   ******************* -->
+	<!--      Texto Delirium   -->
+	<!--   ******************* -->
+
+	<img id="textoDelirium" src="../../../assets/General/Texto-Delirium.png"/>
+
+	<!--   ******************* -->
+	<!--        Credito      -->
+	<!--   ******************* -->
+
+	<creditoComponent id="creditoMapa" [gemas]= "100" [monedas]= "200"></creditoComponent>
+
+	<!--   ******************* -->
+	<!--      Configuracion    -->
+	<!--   ******************* -->
+
+	<img id="iconoConfiguracion" src="../../../assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
+
+	<!--   ******************* -->
+	<!--      Panel Control    -->
+	<!--   ******************* -->
+
+	<panelControlComponent id="panelControl"></panelControlComponent>
+
+	<!--   ******************* -->
+	<!--        Experiencia    -->
+	<!--   ******************* -->
+
+	<experienciaComponent id="experiencia"></experienciaComponent>
+
+	<!--   ******************* -->
+	<!--      Paneles Heroes   -->
+	<!--   ******************* -->
+	<div id="contenedorHeroes">
+		<heroeComponent [Personaje]="'Mago'" [Roll]="'DPS'" [Nombre]="'Hive'" [Nivel]="20" class="panelHeroe"></heroeComponent>
+		<heroeComponent [Personaje]="'Caballero'" [Roll]="'Tank'" [Nombre]="'Vrutus'" [Nivel]="18" [lider]="true" class="panelHeroe"></heroeComponent>
+		<heroeComponent [Personaje]="'Monje'" [Roll]="'Heal'" [Nombre]="'Puerhorn'" [Nivel]="22" [lider]="false" class="panelHeroe"></heroeComponent>
+		<heroeComponent [Personaje]="'Chronomante'" [Roll]="'DPS'" [Nombre]="'Doomcrash'" [Nivel]="17" [lider]="false" class="panelHeroe"></heroeComponent>
+		<heroeComponent [Personaje]="'Sacerdote'" [Roll]="'DPS'" [Nombre]="'Lombuitres'" [Nivel]="21" [lider]="false" class="panelHeroe"></heroeComponent>
+	</div>
+
+
+</div> <!-- Fin Contenedor Main Window -->
+
+	<!--   ******************* -->
+	<!--          PANELES      -->
+	<!--   ******************* -->
+
+	<div id="ContenedorPaneles">
+		<div class="panel panelPersonaje" *ngIf="pantalla =='Personaje'">
+			<panelPersonajeComponent></panelPersonajeComponent>
+		</div>
+
+		<div class="panel panelPersonaje" *ngIf="pantalla =='Equipo'">
+			<panelEquipoComponent></panelEquipoComponent>
+		</div>
+		
+		<div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
+			<panelMazmorraComponent></panelMazmorraComponent>
+		</div>
+		
+		<div class="panel panelMazmorra" *ngIf="pantalla =='Diario'">
+			<panelDiarioComponent></panelDiarioComponent>
+		</div>
+
+		<div class="panel panelMazmorra" *ngIf="pantalla =='Tienda'">
+			<panelTiendaComponent></panelTiendaComponent>
+		</div>
+	</div>
+

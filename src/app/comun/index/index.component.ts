@@ -80,7 +80,9 @@ export class IndexComponent implements OnInit{
 
 	configuracion():void{
 		this.pantalla= "inicio";
-		this.appService.mostrarDialogo("Informativo",{contenido:"Opción no disponible"});
+		this.appService.mostrarDialogo("Informativo",{contenido:"Opción no disponible"}).then(()=>{
+			console.log("HOLAA")	
+		});
 	}
 
 	heroes():void{

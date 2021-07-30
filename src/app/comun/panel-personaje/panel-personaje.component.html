@@ -1,0 +1,141 @@
+
+<!--   ******************* -->
+<!--         Plantilla       -->
+<!--   ******************* -->
+
+<div class="contenedorPanelPersonaje">
+	<div class="fondoPanel"></div>
+	<div class="fondoPestana"></div>
+
+	<div id="contenedorPanelInterno">
+		<div class="fondoPanelInterior"></div>
+		<!-- PANEL GENERAL -->
+
+		<div *ngIf="pantalla=='General'" class="contenedorGeneral">
+			<div class="contenedorDescripcion">
+				<div class="titulo Texto1">Descripción</div>
+				<div class="texto Texto3"> 
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri
+	diculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim.
+				</div>
+			</div>
+			
+			<div class="contenedorEstadisticas">
+				<div class="titulo Texto1">Estadísticas</div>
+
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Armadura'" [valor]="50"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Vitalidad'" [valor]="80"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Curación'" [valor]="40"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Daño Físico'" [valor]="30"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Daño Mágico'" [valor]="10"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Energía'" [valor]="100"></estadisticasGeneralComponent>
+			</div>
+
+			<div class="contenedorRol">
+				<div class="titulo Texto1">Rol</div>
+				<div class="contenedorFrameRol">
+					<div class="tituloRol Texto1">DPS</div>
+					<img class="iconoRol" src="/../../../assets/Iconos/Rol-DPS.png">
+				</div>
+			</div>
+		</div> <!-- Cierre de panel General -->
+
+		<!-- PANEL HABILIDADES -->
+		<div *ngIf="pantalla=='Habilidades'" class="contenedorHabilidades">
+			
+			<div class="contenedorPasiva">
+				<div class="titulo Texto1">Pasiva</div>
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[0]+'% '+imagenHechVertical[0]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">Bola de fuego</div>
+						<div class="texto Texto4"> 
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="contenedorHechizos">
+
+				<div class="titulo Texto1">Habilidades</div>
+				<!-- HECHIZO 1 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[1]+'% '+imagenHechVertical[1]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">Bola de fuego</div>
+						<div class="texto Texto4"> 
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri
+						</div>
+					</div>
+				</div>
+
+				<!-- HECHIZO 2 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[2]+'% '+imagenHechVertical[2]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">Bola de fuego</div>
+						<div class="texto Texto4"> 
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri
+						</div>
+					</div>
+				</div>
+
+				<!-- HECHIZO 3 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[3]+'% '+imagenHechVertical[3]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">Bola de fuego</div>
+						<div class="texto Texto4"> 
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri
+						</div>
+					</div>
+				</div>
+
+				
+				<!-- HECHIZO 4 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[4]+'% '+imagenHechVertical[4]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">Bola de fuego</div>
+						<div class="texto Texto4"> 
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri
+						</div>
+					</div>
+				</div>
+
+				<!-- HECHIZO 5 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[5]+'% '+imagenHechVertical[5]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">Bola de fuego</div>
+						<div class="texto Texto4"> 
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri
+						</div>
+					</div>
+				</div>
+
+			</div>	
+
+		</div>
+
+	</div>
+
+	<div id="contenedorExterno">
+
+		<div class="marcoPersonaje">
+			<img  class="imagenPersonaje" src="../../../assets/Personajes/Mago.png"/>	
+			<img src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
+		</div>
+
+		<div class="contenedorSeleccion">
+			<div class="Texto1 seleccion" [ngClass]="renderizarOpcionSeleccionada('General')" (click)="cambiarPantalla('General')">General</div>
+			<hr class="separador"/>
+			<div class="Texto1 seleccion" [ngClass]="renderizarOpcionSeleccionada('Habilidades')" (click)="cambiarPantalla('Habilidades')">Habilidades</div>
+			<hr class="separador"/>
+			<div class="Texto1 seleccion" [ngClass]="renderizarOpcionSeleccionada('Talentos')" (click)="cambiarPantalla('Talentos')">Talentos</div>
+		</div>
+
+	</div>
+
+</div>

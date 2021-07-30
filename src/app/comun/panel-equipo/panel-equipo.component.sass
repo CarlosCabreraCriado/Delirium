@@ -1,0 +1,170 @@
+
+@import "../../../variables.sass"
+@import "../../../breakpoints.scss"
+
+::ng-deep .contenedorPanelEquipo
+
+.contenedorPanelEquipo
+    color: $colorTexto
+
+    .fondoPanel
+        position: absolute
+        width: 90%
+        height: 100%
+        right: 0
+        background-image: url("../../../assets/Background/Fondo-Panel-Personaje.png")
+        background-size: 100% 100% 
+        @include media("<=tablet")
+            width: 86%
+        @include media("<=phone")
+            width: 90%
+
+    .fondoPestana
+        position: absolute
+        width: 12%
+        height: 22%
+        left: 0 
+        top: 21%
+        background-image: url("../../../assets/Background/Pestana-Panel-Personaje.png")
+        background-size: 100% 100% 
+        @include media("<=tablet")
+            width: 15%
+            left: 0
+        @include media("<=phone")
+            width: 13%
+            left: 0 
+
+    #contenedorPanelInterno
+        position: absolute
+        width: 40%
+        height: 98%
+        right: 0
+        top: 1% 
+
+        .fondoPanelInterior
+            position: absolute
+            width: 100%
+            height: 100%
+            background-image: url("../../../assets/Background/Fondo-Panel-Personaje-Interno.png")
+            background-size: 100% 100% 
+
+        .titulo
+            position: relative
+            width: 100%
+            text-align: center
+            margin: 10px 
+
+        .containerEstadisticas
+            position: relative
+            width: 100%
+            height: 30%
+
+            .columna
+                position: relative
+                display: inline-block
+                width: 40%
+                height: 100%
+                margin-left: 7.5%
+
+                .estadistica
+                    position: relative
+                    width: 100%
+                    height: 30%
+                    margin: 2% 0
+                    img
+                        position: relative
+                        display: inline-block
+                        max-width: 20%
+                        max-height: 100%
+                    .textoEstadisticas
+                        position: relative
+                        display: inline-block
+                        vertical-align: top
+                        margin-left: 10%
+                        width: 60%
+                        .valor
+                            
+
+        .contenedorEfectos
+            position: relative
+            display: flex
+            align-items: center
+            justify-content: center
+            width: 80%
+            height: 40%
+            margin: 10px 10%
+            border: 3px solid $colorTexto
+
+    #contenedorExterno
+        position: absolute
+        height: 100%
+        left: 12%
+        width: 49%
+        .titulo
+            position: absolute
+            top: 5%
+            left: 20%
+        .contenedorEquipo
+            position: absolute
+            width: 70%
+            height: 40%
+            top: 15%
+            left: 15%
+
+            img 
+                position: absolute
+                width: 50%
+                left: 17%
+                max-height: 100%
+                max-width: 50%
+
+            .columna
+                position: absolute
+                top: 0
+                width: 25%
+                height: 90%
+                padding-top: 10%
+
+                &.Derecha
+                    right: 0
+                &.Izquierda
+                    left: 0
+
+            .reticulaPequena
+                position: relative
+                width: 80%
+                padding-top: 80%
+                height: 0
+                margin: 10px 0
+
+                &.Derecha
+                    right: -20%
+                img
+                    width: 100%
+                    max-width: 100%
+                    top: 0
+                    left: 0
+
+            .reticulaGrande
+                position: relative
+                width: 100%
+                padding-top: 100%
+                height: 0
+                margin: 10px 0
+                background: url("../../../assets/Frames/Frame-Item.png")
+                background-size: 100% 100%
+
+                img
+                    width: 100%
+                    max-width: 100%
+                    top: 0
+                    left: 0
+
+            .frameItem
+                position: absolute 
+                width: 100%
+                height: 100%
+                top: 0
+                background: url("../../../assets/Frames/Frame-Item.png")
+                background-size: 100% 100%
+

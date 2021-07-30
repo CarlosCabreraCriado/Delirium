@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { ElectronService } from 'ngx-electron';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
+import { ConfiguracionComponent } from './comun/configuracion/configuracion.component';
 import { MatDialog} from '@angular/material/dialog';
 
 @Injectable({
@@ -13,7 +14,7 @@ import { MatDialog} from '@angular/material/dialog';
 
 export class AppService {
 
-  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog) { 
+  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog, private dialogoConfiguracion: MatDialog) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -278,8 +279,23 @@ export class AppService {
         return dialogRef;
     }
 
+    mostrarConfiguracion(tipoDialogo:string, config:any):any{
+
+      const dialogConfiguracion = this.dialog.open(ConfiguracionComponent,{
+          width: "100px",panelClass: [tipoDialogo, "contenedorConfiguracion"],backdropClass: "fondoConfiguracion", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+        });
+
+        dialogConfiguracion.afterClosed().subscribe(result => {
+          console.log('Cierre Configuracion. Devuelve:');
+          console.log(result)
+        });
+
+        return;
+    }
+
     mostrarBugLog(val:string):void{
       this.bugLog.emit(val);
+      this.cambiarUrl("inmap");
     }
 
     mostrarDeveloperTool(val:string):void{

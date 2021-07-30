@@ -1,0 +1,54 @@
+
+@import "../../../variables.sass"
+@import "../../../breakpoints.scss"
+
+.contenedorEstadisticasGeneral
+    position: relative
+    width: 100%
+    height: 100%
+
+    .icono
+        position: relative
+        display: inline-block
+        height: 90%
+
+    .contenedorTituloStats
+        position: absolute
+        left: 20% 
+        top: 0
+        width: 70%
+        height: 100%
+        vertical-align: top
+        
+        .titulo
+            height: 40%
+            margin-top: -10%
+            margin-bottom: 10%
+            margin-left: 10%
+             
+        .bordeExterior
+            position: relative
+            display: flex
+            height: 30%
+            width: 90%
+            margin-left: 10%
+            border: 2px solid $colorTexto
+            @include media("<=phone")
+                border: 1px solid $colorTexto
+
+        .reticula
+            position: relative
+            display: inline-block
+            height: 100%
+            width: 9%
+            border-right: 2px solid $colorTexto
+            @include media("<=phone")
+                border-right: 1px solid $colorTexto
+
+        .barra
+            position: absolute
+            left: 0px
+            top: 0px
+            height: 100%
+            background-color: blue
+
