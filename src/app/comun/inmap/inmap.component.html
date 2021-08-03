@@ -8,7 +8,6 @@
 
 <div class="fondo" id="fondo">
     <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
-	<img id="flechaRetroceso" class="flechaRetroceso" alt="flecha" src="assets/General/Flecha.svg" (click)="retroceder()">
 </div>
 
 <!--   ******************* -->
@@ -94,11 +93,12 @@
 	<!--      Paneles Heroes   -->
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
-		<heroeComponent [Personaje]="'Mago'" [Roll]="'DPS'" [Nombre]="'Hive'" [Nivel]="20" class="panelHeroe"></heroeComponent>
-		<heroeComponent [Personaje]="'Caballero'" [Roll]="'Tank'" [Nombre]="'Vrutus'" [Nivel]="18" [lider]="true" class="panelHeroe"></heroeComponent>
-		<heroeComponent [Personaje]="'Monje'" [Roll]="'Heal'" [Nombre]="'Puerhorn'" [Nivel]="22" [lider]="false" class="panelHeroe"></heroeComponent>
-		<heroeComponent [Personaje]="'Chronomante'" [Roll]="'DPS'" [Nombre]="'Doomcrash'" [Nivel]="17" [lider]="false" class="panelHeroe"></heroeComponent>
-		<heroeComponent [Personaje]="'Sacerdote'" [Roll]="'DPS'" [Nombre]="'Lombuitres'" [Nivel]="21" [lider]="false" class="panelHeroe"></heroeComponent>
+
+		
+		<heroeComponent *ngFor="let jugador of this.inmapService.grupo; let i = index" [tipo]="renderizarTipo(jugador)" [Personaje]="camelize(jugador.heroe.clase)" [Roll]="'DPS'" [Nombre]="jugador.heroe.nombre" [Nivel]="jugador.heroe.nivel" [lider]="false" (click)="clickHeroe(jugador)"  class="panelHeroe"></heroeComponent>
+
+		<heroeComponent *ngIf="this.inmapService.grupo.length<5" [tipo]="'add'" [Personaje]="''" [Roll]="''" [Nombre]="''" [Nivel]="" [lider]="false" class="panelHeroe"></heroeComponent>
+
 	</div>
 
 

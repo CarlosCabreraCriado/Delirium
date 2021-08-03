@@ -74,7 +74,32 @@
             position: absolute
             clip-path: circle(45% at center)
 
-        
+        .contenedorIcono
+            position: absolute
+            display: flex
+            justify-content: center
+            align-items: center
+            top: 0
+            left: 0 
+            height: 100%
+            width: 100%
+            clip-path: circle(45% at center)
+            &.seleccionar
+                background-color: $colorFondo1
+            
+            &.add
+                background-image: url("../../../assets/Background/Fondo-Add-Jugador.png")
+                background-size: 100% 100% 
+                img
+                    filter: brightness(10)
+            img
+                position: absolute
+                width: 50%
+                height: auto
+
+
+
+          
         .contenedorFrameRol
             position: absolute
             top: 0

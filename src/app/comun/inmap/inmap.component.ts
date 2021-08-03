@@ -2,7 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { AppService } from '../../app.service';
-import { ConfiguracionComponent } from '../../comun/configuracion/configuracion.component';
+import { InMapService } from './inmap.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-inmap',
@@ -12,57 +13,53 @@ import { ConfiguracionComponent } from '../../comun/configuracion/configuracion.
 
 export class InMapComponent implements OnInit{
 
-	constructor(private dialog: MatDialog, public configuracionDialogo:MatDialog, public appService: AppService) { }
+	constructor(private dialog: MatDialog, public appService: AppService, private inmapService: InMapService) { }
 
-	private validacion: any;
-	private perfil: any;
-
-	private pantalla: string = "Inmap";
+	private pantalla: string = "Equipo";
+	private idCuenta: string;
+	private appServiceSuscripcion: Subscription = null;
 
 	ngOnInit(){
-
-		//Comprueba el Logueo:
-		this.validacion = this.appService.getValidacion();
-		console.log(this.validacion);
-		if(!this.validacion){
-			this.appService.setControl("index");
-			this.appService.cambiarUrl("");
-		}
-
-		//Carga el perfil:
-		this.perfil=this.appService.getPerfil();
 
 		setTimeout(()=>{    
       		this.appService.mostrarPantallacarga(false);
  		}, 1000);
+
+		//Observar Eventos AppService:
+		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
+			(val) => {
+				switch(val){
+					case "actualizarHeroeSeleccionado":
+						this.inmapService.importarHeroeSeleccionado();
+						this.inmapService.cargarGrupo();
+						break;
+				}
+		});
+
+		//Comprueba el Logueo carga el perfil en Servicio InMap:
+		this.inmapService.cargarPerfil();
+
+		//Get id Cuenta;
+		this.idCuenta = this.inmapService.getIDCuenta();
+
+		//Importar Datos Generales al servicio Inmap:
+		this.inmapService.importarDatosGenerales();	
+
+		//Cargar Grupo:
+		this.inmapService.cargarGrupo();
+
+
 	}
 
 	abrirConfiguracion(){
-		//this.configuracionDialogo = this.appService.mostrarConfiguracion("", {})
-		var tipoDialogo = "";
-		var config:any = {};
-
-		const dialogConfiguracion = this.dialog.open(ConfiguracionComponent,{
-		  width: "100px",panelClass: [tipoDialogo, "contenedorConfiguracion"],backdropClass: "fondoConfiguracion", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
-		});
-
-		dialogConfiguracion.afterClosed().subscribe(result => {
-		  console.log('Cierre Configuracion. Devuelve:');
-		  console.log(result)
-		  return; 
-		});
-		
-	}
-
-
-	retroceder():void{
-		console.log("hola")
-		//this.appService.setControl("index");
-		//this.appService.cambiarUrl("");
+		this.appService.mostrarConfiguracion("", {})
 		return;
 	}
 
+
 	cambiarPantalla(nombrePantalla:string):void{
+
+		//Realiza el cambio de pantalla:
 		if(this.pantalla == nombrePantalla){
 			this.pantalla = 'Inmap';
 		}else{
@@ -71,8 +68,31 @@ export class InMapComponent implements OnInit{
 		return;
 	}
 
+	camelize(texto: string){
+ 		return texto.toLowerCase().charAt(0).toUpperCase() + texto.toLowerCase().slice(1);
+	}
 
+	renderizarTipo(jugador:any){
 
+		//Si no hay heroe seleccionado:
+		if(jugador.heroe.nombre==null ){
+			if(jugador.cuentaID==this.idCuenta){
+				return "seleccionar";
+			}
+		}
+		return "jugador";
+	}
+
+	clickHeroe(jugador:any){
+
+		switch(this.renderizarTipo(jugador)){
+			case "seleccionar":
+				this.cambiarPantalla("Personaje");
+				break;
+			
+		}
+		return;
+	}
 }
 
 

@@ -1433,7 +1433,7 @@ export class DesarrolladorService implements OnInit{
       
         switch(docIndex){
           case 0: //HEROE STATS
-            vectorPaginas= ['GUERRERO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','ILUMINADO','MAGO_DE_SANGRE']
+            vectorPaginas= ['MINOTAURO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','CLERIGO','SEGADOR_DE_ALMAS']
             documento={
               nombreId: "Heroes_Stats"
             };
@@ -1643,7 +1643,7 @@ export class DesarrolladorService implements OnInit{
     switch(this.archivoSeleccionado){
       
       case "Heroes_Stats":
-        nombresHojas= ['GUERRERO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','ILUMINADO','MAGO_DE_SANGRE']
+        nombresHojas= ['MINOTAURO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','CLERIGO','SEGADOR_DE_ALMAS']
       break;
       case "Heroes_Hech":
         nombresHojas= ['ANGEL_CAIDO','CABALLERO','CAZADOR','CHRONOMANTE','CLERIGO','CRUZADO','ENANO','GLADIADOR','HECHICERO','INGENIERO','LICH','MINOTAURO','SEGADOR_DE_ALMAS']
@@ -1760,13 +1760,17 @@ export class DesarrolladorService implements OnInit{
     this.mostrarMensaje= true;
     this.mostrarSpinner= true;
     this.mensaje= "Actualizando Datos..."
+
     var clave = {
             clave: parseInt(this.appService.getValidacion().clave)
           }
+		  console.log("CLAVEEE: "+clave);
+		  console.log(clave)
+		  
     this.http.post(this.appService.ipRemota+"/deliriumAPI/validacion",clave).subscribe((data) => {
             
             if(data){
-              this.appService.setInicio(data);
+				this.appService.setInicio(data["datos"]);
               if(forzarEstadoVer){
                 this.archivoSeleccionado="null";
                 this.estadoDatos= "ver";

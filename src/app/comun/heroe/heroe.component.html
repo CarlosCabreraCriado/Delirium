@@ -5,31 +5,40 @@
 
 <div class="contenedorHeroe">
 
-	<div class="fondoDetalle">
+	<div *ngIf="tipo=='jugador'" class="fondoDetalle">
 		<div class="frameDetalle"></div>
 	</div>
 
-	<div class="nombre Texto3">{{Nombre}}</div>
+	<div *ngIf="tipo=='jugador'" class="nombre Texto3">{{Nombre}}</div>
 
 	<img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
 
 	<div class="frameCirculo">
 
-		<img  class="imagenPersonaje" src="../../../assets/Personajes/{{Personaje}}.png"/>	
+		<img  *ngIf="tipo=='jugador'" class="imagenPersonaje" src="../../../assets/Personajes/{{Personaje}}.png"/>	
+
+		<div *ngIf="tipo=='seleccionar'" class="contenedorIcono seleccionar">
+			<img class="imagenSeleccionarHeroe" src="../../../assets/Iconos/Icono-Heroe.png"/>	
+		</div>
+
+		<div *ngIf="tipo=='add'" class="contenedorIcono add">
+			<img class="imagenPersonaje" src="../../../assets/Iconos/Rol-Heal.png"/>	
+		</div>
+
 		<img src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
 
-		<div class="contenedorFrameRol">
+		<div *ngIf="tipo=='jugador'" class="contenedorFrameRol">
 			<img class="iconoRol" src="../../../assets/Iconos/Rol-{{Roll}}.png"/>	
 			<img class="frameRol Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 
-		<div class="contenedorFrameNivel">
+		<div *ngIf="tipo=='jugador'" class="contenedorFrameNivel">
 			<div class="nivel Texto2">{{Nivel}}</div>	
 			<img class="frameNivel Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 	</div>
 	
-	<div class="contenedorBarras">
+	<div *ngIf="tipo=='jugador'" class="contenedorBarras">
 		<barraComponent [tipo]="'Vida'" class="barra"></barraComponent>
 		<barraComponent [tipo]="'Mana'" class="barra"></barraComponent>
 		<barraComponent [tipo]="'Energia'" class="barra"></barraComponent>

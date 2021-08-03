@@ -11,8 +11,21 @@ export class PanelEquipoComponent {
 
 	@Input() texto: string; 
 
+	private zindexBolsa: number= 20
+	private zindexBanco: number= 10
+
 	constructor() {}
 
+	cambiarPestanaInventario(tipoInventario:string){
+		if(tipoInventario == "Bolsa"){
+		   this.zindexBanco= 10
+		   this.zindexBolsa= 20
+		}	
+		if(tipoInventario == "Banco"){
+		   this.zindexBanco= 20
+		   this.zindexBolsa= 10
+		}	
+	}
 
 }
 

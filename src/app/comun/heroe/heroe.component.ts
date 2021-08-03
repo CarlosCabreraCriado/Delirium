@@ -10,6 +10,7 @@ import { Component , Input } from '@angular/core';
 export class HeroeComponent {
 
 	@Input() Personaje: string; 
+	@Input() tipo: string; 
 	@Input() Roll: string; 
 	@Input() Nivel: string; 
 	@Input() Nombre: string; 

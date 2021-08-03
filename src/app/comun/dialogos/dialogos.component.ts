@@ -16,7 +16,12 @@ export interface DialogData {
 
 export class DialogoComponent {
 
-  private confirmation: boolean = false;
+	private confirmation: boolean = false;
+
+  	@ViewChild('crearCorreo',{static: false}) crearCorreoElement:ElementRef; 
+  	@ViewChild('crearUsuario',{static: false}) crearUsuarioElement:ElementRef; 
+  	@ViewChild('crearPassword',{static: false}) crearPasswordElement:ElementRef; 
+  	@ViewChild('crearPassword2',{static: false}) crearPassword2Element:ElementRef; 
 
 	constructor(public dialogRef: MatDialogRef<DialogoComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
@@ -24,6 +29,12 @@ export class DialogoComponent {
       this.confirmation = true;
       this.dialogRef.close();
     }
+
+	crearCuenta(){
+		this.appService.crearCuenta(this.crearCorreoElement.nativeElement.value,this.crearCorreoElement.nativeElement.value,this.crearCorreoElement.nativeElement.value,this.crearCorreoElement.nativeElement.value);
+
+		return;
+	}
 
 }
 

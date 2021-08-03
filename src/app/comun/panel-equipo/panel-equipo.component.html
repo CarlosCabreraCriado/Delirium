@@ -123,6 +123,62 @@
 			</div>	
 		</div>
 
+		<!-- Inventario -->
+		<div id="contenedorInventario">
+			<creditoComponent id="credito" [gemas]= "100" [monedas]= "200"></creditoComponent>
+			<img class="icono bolsa" src="../../../assets/Iconos/Icono-Bolsa.png" (click)="cambiarPestanaInventario('Bolsa')"/>
+			<div class="contenedor bolsa" [ngStyle]="{'z-index': zindexBolsa}">	
+				<div class="contenedorReticula">
+
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Arcos/4.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pociones/7.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pergaminos/3.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pecheras/8.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pociones/33.jpg"/>	
+					</div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+
+				</div>
+			</div>
+				
+			<img class="icono banco" src="../../../assets/Iconos/Icono-Banco.png" (click)="cambiarPestanaInventario('Banco')" />
+			<div class="contenedor banco"[ngStyle]="{'z-index': zindexBanco}">	
+				<div class="contenedorReticula">
+
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Arcos/1.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pociones/2.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pergaminos/2.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pecheras/1.jpg"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/Pociones/29.jpg"/>	
+					</div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 </div>

@@ -168,3 +168,69 @@
                 background: url("../../../assets/Frames/Frame-Item.png")
                 background-size: 100% 100%
 
+        #credito
+            position: absolute
+            top: 5%
+            right: 0
+            width: 50%
+            height: 15%
+
+        #contenedorInventario
+            position: absolute
+            width: 90%
+            height: 40% 
+            left: 50%
+            margin-left: -45%
+            bottom: 5%
+            .icono
+                position: absolute
+                width: 17%
+                top: 4%
+                height: auto
+                z-index: 120 !important
+                &.bolsa
+                  left: 3%
+                &.banco
+                  left: 26%
+
+            .contenedor
+                position: absolute
+                width: 100%
+                height: 100%
+                &.bolsa
+                  background: url("../../../assets/Background/Fondo-Bolsa.png")
+                  background-size: 100% 100%
+
+                &.banco
+                  background: url("../../../assets/Background/Fondo-Banco.png")
+                  background-size: 100% 100%
+
+                .contenedorReticula
+                    position: absolute
+                    width: 90%
+                    height: 60%
+                    top: 30%
+                    left: 5%
+                    .reticula
+                        position: relative
+                        display: inline-block
+                        width: 16.6%
+                        padding-top: 16.6%
+                        height: 0
+                        border: 2px solid $colorTexto 
+                        box-sizing: border-box
+                        float: left
+                        .objeto
+                            position: absolute
+                            width: 100%
+                            height: 100%
+                            top: 0
+                            left: 0
+                    
+
+            
+
+
+
+
+

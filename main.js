@@ -42,14 +42,12 @@ var heroeStatsSchema= mongoose.Schema;
 
 heroeStatsSchema = new Schema({
   nombreId: String,
-  guerrero: [],
   cruzado: [],
-  ingeniero: [],
-  cazador: [],
   chronomante: [],
-  hechiceroip: [],
-  iluminado: [],
-  mago_de_sangre: []
+  hechicero: [],
+  clerigo: [],
+  minotauro: [],
+  segador_de_almas: []
 });
 
 //Schema y modelo de HeroeHech:
@@ -58,18 +56,11 @@ var heroeHechSchema= mongoose.Schema;
 
 heroeHechSchema = new Schema({
   nombreId: String,
-  angel_caido: [],
-  caballero: [],
-  cazador: [] ,
   chronomante: [],
   clerigo: [], 
   cruzado: [],
-  enano: [], 
-  gladiador: [], 
-  hechicero: [],
-  ingeniero: [], 
-  lich: [], 
   minotauro: [], 
+  hechicero: [],
   segador_de_almas: []
 });
 
@@ -271,7 +262,7 @@ function createWindow () {
   // and load the index.html of the app.
   
   if(DEBUG!=="production"){
-    mainWindow.loadURL("http://localhost:4200/cargarPartida");
+    mainWindow.loadURL("http://localhost:4200/index.html");
   }else{
     mainWindow.loadURL(url.format({
       pathname: path.join(__dirname, 'delirium/index.html'),

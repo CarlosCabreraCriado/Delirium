@@ -101,6 +101,7 @@ export class AppService {
     private validacion: any= false;
     public claveValida: boolean= false;
     private sala: any={};
+	private heroeSeleccionado = null;
 
     // Observable string sources
     private observarAppService = new Subject<string>();
@@ -180,6 +181,7 @@ export class AppService {
     @Output() progresoCarga: EventEmitter<string> = new EventEmitter();
     @Output() bugLog: EventEmitter<string> = new EventEmitter();
     @Output() ajustes: EventEmitter<string> = new EventEmitter();
+    @Output() eventoAppService: EventEmitter<string> = new EventEmitter();
 
   	audioTeclaPlay(): void{
   		let audio = new Audio();
@@ -247,6 +249,8 @@ export class AppService {
 
       return;
     }
+	crearCuenta(correo,usuario,password,password2){
+	}
 
   	cambiarUrl(url): void{
         console.log("CAMBIANDO A URL: "+url);
@@ -256,6 +260,16 @@ export class AppService {
     mostrarPantallacarga(val:boolean):void{
       this.mostrarCarga.emit(val);
     }
+
+	getHeroeSeleccionado(){
+		return this.heroeSeleccionado;
+	}
+
+	setHeroeSeleccionado(heroe: any){
+		this.heroeSeleccionado = heroe;
+		this.observarAppService.next("actualizarHeroeSeleccionado");
+		return;
+	}
 
     setProgresoCarga(val:string):void{
       this.progresoCarga.emit(val);
@@ -279,6 +293,19 @@ export class AppService {
         return dialogRef;
     }
 
+    mostrarCrearCuenta():any{
+
+      const dialogRef = this.dialog.open(DialogoComponent,{
+          width: "100px", panelClass: ["containerCrearCuenta", "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "CrearCuenta"}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('Fin del dialogo');
+          console.log(result)
+        });
+        return dialogRef;
+    }
+
     mostrarConfiguracion(tipoDialogo:string, config:any):any{
 
       const dialogConfiguracion = this.dialog.open(ConfiguracionComponent,{
@@ -288,6 +315,16 @@ export class AppService {
         dialogConfiguracion.afterClosed().subscribe(result => {
           console.log('Cierre Configuracion. Devuelve:');
           console.log(result)
+
+		  if(result === "cerrarSesion") {
+			this.setControl("index");
+			this.cambiarUrl("");
+		  }
+
+		  if(result === "developerTool") {
+			  this.mostrarDeveloperTool("")
+		  }
+
         });
 
         return;
@@ -322,11 +359,14 @@ export class AppService {
     getValidacion(){
        console.log("Validando: ");
        console.log(this.electronService.ipcRenderer);
+
        this.validacion = this.electronService.ipcRenderer.sendSync('getValidacion');
+
        if(this.perfil==undefined){
          console.log("Obteniendo Datos: ");
-         //this.setInicio();
+		 this.getDatos(this.validacion.clave)
        }
+
        if(this.validacion.nombre===undefined){}
        console.log(this.validacion);
        return this.validacion;

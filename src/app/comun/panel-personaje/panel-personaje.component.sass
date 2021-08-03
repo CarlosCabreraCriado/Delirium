@@ -34,6 +34,120 @@
             width: 13%
             left: 0 
 
+    #contenedorSeleccionarHeroe
+        position: absolute
+        width: 85%
+        height: 90%
+        top: 6%
+        left: 14%
+        z-index: 110
+        background-image: url("../../../assets/Background/Fondo-Seleccion-Heroe.png")
+        background-size: 100% 100% 
+        .frame
+            position: absolute
+            width: 100%
+            height: 100%
+            background-image: url("../../../assets/Frames/Frame-Seleccion-Heroe.png")
+            background-size: 100% 100% 
+
+        .seccionElegirHeroe
+            position: absolute
+            width: 65%
+            left: 32%
+            height: 90%
+            top: 5%
+            .titulo
+                position: relative
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 100%
+                height: 10%
+                border-bottom: 2px solid $colorTexto
+
+            .contenedorHeroes
+                position: relative
+                width: 100%
+                height: 85%
+                margin-top: 5%
+
+                .nombreHeroe
+                    position: absolute
+                    bottom: -45%
+                    width: 100%
+                    height: 40%
+                    left: 10%
+                    margin-top: 5%
+                    text-align: center
+                    overflow: hidden
+                    text-overflow: ellipsis
+                    word-wrap: break-word
+                    display: block
+                    line-height: 1em 
+                    max-height: 2em 
+
+                .heroe
+                    position: relative
+                    display: inline-block
+                    z-index: 120
+                    width: 20%
+                    padding-left: 5%
+                    margin-bottom: 10%
+                    text-align: center
+
+                    .contenedorMarcoHeroe
+                        position: relative
+                        width: 100%
+                        height: 0
+                        padding-top: 100% 
+                        .frameHeroe
+                            position: absolute
+                            top: 0
+                            z-index: 10
+                            width: 100%
+                            height: 100%
+                            background-image: url("../../../assets/Frames/Frame-Heroe-Circulo.png")
+                            background-size: 100% 100% 
+                        
+                        .imagenHeroe
+                            position: absolute
+                            width: 100%
+                            top: 0
+                            left: 0
+                            clip-path: circle(45% at center)
+                        
+
+        .seccionFiltros
+            position: absolute
+            width: 27%
+            left: 3%
+            height: 55%
+            top: 40%
+            border-right: 2px solid $colorTexto
+
+            .titulo
+                position: relative
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 90%
+                left: 5%
+                height: 10%
+                border-bottom: 2px solid $colorTexto
+
+            .contenedorFiltros
+                position: relative
+                display: flex
+                width: 100%
+                height: 90%
+                .iconoRol
+                    position: relative
+                    display: inline-block
+                    width: 25%
+                    height: 15%
+                    margin-left: 5% 
+                    margin-top: 10%
+
     #contenedorPanelInterno
         position: absolute
         width: 60%
@@ -207,6 +321,8 @@
             height: 23vw
             top: 5%
             left: 7%
+            z-index: 130
+
             @include media("<=desktop")
                 height: 23vw
                 top: 5%
@@ -226,6 +342,20 @@
             .imagenPersonaje
                 position: absolute
                 clip-path: circle(45% at center)
+
+            .contenedorIcono
+                position: absolute
+                display: flex
+                width: 100%
+                height: 100%
+                justify-content: center 
+                align-items: center 
+
+                img
+                    position: absolute 
+                    width: 50%
+                    height: auto
+
 
         .contenedorSeleccion
             position: absolute
