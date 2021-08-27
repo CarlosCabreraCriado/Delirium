@@ -54,7 +54,7 @@
 	</div>
 
 	<div class="contenedorBotones">	
-		<botonComponent mat-button [texto]="'Crear Cuenta'" [color]="'verde'" class="boton" (click)="crearCuenta();"></botonComponent>
+		<botonComponent mat-button [mat-dialog-close]= "crearCuenta()" [texto]="'Crear Cuenta'" [color]="'verde'" class="boton"></botonComponent>
 		<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
 	

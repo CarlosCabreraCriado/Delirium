@@ -1,0 +1,154 @@
+ 
+@import "../../../variables.sass"
+
+::ng-deep .fondoSocial
+    background-color: rgba(black, 0.4)
+
+::ng-deep .contenedorSocial
+  display: flex
+  justify-content: center
+  align-items: center
+
+  .mat-dialog-container
+    position: absolute !important
+    width: 50%
+    height: 20%
+    min-width: 70vw
+    min-height: 80vh
+    color: $colorTexto
+    padding: 0
+    overflow: initial
+
+  .contenedor
+    position: absolute
+    width: 100%
+    height: 100%
+    color: $colorTexto
+    background-color: $colorFondo2
+
+    .frame
+        position: absolute
+        top: 0 
+        left: 0 
+        padding-top: 5%
+        margin-top: -2.5%
+        padding-left: 3%
+        margin-left: -1.5%
+        width: 100%
+        height: 100%
+        background-image: url("../../../assets/Frames/Frame-Dialogo.png")
+        background-size: 100% 100% 
+
+    .title
+        margin-top: 20px
+        width: 100%
+        text-align: center
+
+    .textoDialogo
+        margin-top: 20px
+        width: 100%
+        text-align: center
+
+    .divisor
+        position: relative
+        width: 80%
+        margin: 0 10%
+
+    .contenedorPestanas
+        position: relative
+        display: flex
+        justify-content: center
+        width: 80%
+        margin: 0 10%
+        z-index: 10
+        height: 10%
+        .pestana
+            position: relative
+            display: flex
+            align-items: center
+            justify-content: center
+            width: 33%
+            &.seleccionado
+                background-color: rgba(black,0.3)
+
+    .contenedorOpciones
+        position: relative
+        width: 80%
+        height: 60%
+        margin: 0 10%
+        z-index: 10
+        background-color: rgba(black,0.3)
+
+        .opcionesGenerales
+            position: relative
+            width: 100%
+            height: 100%
+            padding: 3% 0
+
+            .amigo
+                position: relative
+                display: flex
+                flex-direction: row
+                width: 100%
+                height: 20%
+                margin-bottom: 3%
+                box-shadow: inset 0px 0px 10px 0px white
+
+                .nombre
+                    position: relative
+                    display: inline-flex
+                    align-items: center
+                    justify-content: center
+                    height: 100%
+                    width: 40%
+                .nivel
+                    position: relative
+                    display: inline-flex
+                    align-items: center
+                    justify-content: center
+                    height: 100%
+                    height: 100%
+                    width: 30%
+
+                .contenedorBotonInvitar
+                    position: relative
+                    display: inline-flex
+                    align-items: center
+                    justify-content: center
+                    height: 100%
+                    width: 20%
+
+                    .botonInvitar
+                        width: 100%
+                        text-align: center
+                        height: 2rem
+                        border: 2px $colorTexto solid
+                        border-radius: 50px
+                        line-height: 1
+
+                .botonEliminar
+                    position: relative
+                    display: inline-flex
+                    align-items: center
+                    justify-content: center
+                    height: 100%
+                    height: 100%
+                    width: 5%
+
+    .contenedorBotones
+        position: absolute
+        display: flex
+        justify-content: center
+        width: 100%
+        height: 10%
+        bottom: 3%
+
+        .boton
+            position: relative
+            display: inline-block
+            color: white
+            height: 100%
+            width: 20%
+            margin: 0 15%
+
+

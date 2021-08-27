@@ -193,6 +193,7 @@ personajesSchema = new Schema({
 });
 
 console.log("INICIANDO")
+
 //Schema y modelo de verificacion de clave
 var verificarClaveSchema = new Schema({
   clave: {type: Number,required: true},

@@ -6,6 +6,8 @@ import { HttpClient } from "@angular/common/http";
 import { ElectronService } from 'ngx-electron';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
 import { ConfiguracionComponent } from './comun/configuracion/configuracion.component';
+import { SocialComponent } from './comun/social/social.component';
+import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { MatDialog} from '@angular/material/dialog';
 
 @Injectable({
@@ -14,7 +16,7 @@ import { MatDialog} from '@angular/material/dialog';
 
 export class AppService {
 
-  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog, private dialogoConfiguracion: MatDialog) { 
+  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -249,7 +251,9 @@ export class AppService {
 
       return;
     }
+
 	crearCuenta(correo,usuario,password,password2){
+
 	}
 
   	cambiarUrl(url): void{
@@ -306,6 +310,24 @@ export class AppService {
         return dialogRef;
     }
 
+    mostrarCrearHeroe(tipoDialogo:string, config:any):any{
+
+      const dialogCrearHeroe = this.dialog.open(CrearHeroeComponent,{
+          width: "100px",panelClass: [tipoDialogo, "contenedorCrearHeroe"],backdropClass: "fondoCrearHeroe", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+        });
+
+        dialogCrearHeroe.afterClosed().subscribe(result => {
+          console.log('Cierre Configuracion. Devuelve:');
+          console.log(result)
+
+		  if(result === "crearHeroe") {
+		  }
+
+        });
+
+        return;
+    }
+
     mostrarConfiguracion(tipoDialogo:string, config:any):any{
 
       const dialogConfiguracion = this.dialog.open(ConfiguracionComponent,{
@@ -325,6 +347,20 @@ export class AppService {
 			  this.mostrarDeveloperTool("")
 		  }
 
+        });
+
+        return;
+    }
+
+    mostrarSocial(tipoDialogo:string, config:any):any{
+
+      const dialogSocial = this.dialog.open(SocialComponent,{
+          width: "100px",panelClass: [tipoDialogo, "contenedorSocial"],backdropClass: "fondoSocial", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+        });
+
+        dialogSocial.afterClosed().subscribe(result => {
+          console.log('Cierre Configuracion. Devuelve:');
+          console.log(result)
         });
 
         return;

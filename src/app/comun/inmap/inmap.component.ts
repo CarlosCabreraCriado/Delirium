@@ -15,7 +15,7 @@ export class InMapComponent implements OnInit{
 
 	constructor(private dialog: MatDialog, public appService: AppService, private inmapService: InMapService) { }
 
-	private pantalla: string = "Equipo";
+	private pantalla: string = "Inmap";
 	private idCuenta: string;
 	private appServiceSuscripcion: Subscription = null;
 
@@ -53,6 +53,11 @@ export class InMapComponent implements OnInit{
 
 	abrirConfiguracion(){
 		this.appService.mostrarConfiguracion("", {})
+		return;
+	}
+
+	abrirSocial(){
+		this.appService.mostrarSocial("", {})
 		return;
 	}
 

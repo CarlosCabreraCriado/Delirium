@@ -1,6 +1,6 @@
 
-import { Component , Inject, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component , Inject, ViewChild,  ElementRef } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { BotonComponent } from '../boton/boton.component';
 
 export interface DialogData {
@@ -16,7 +16,7 @@ export interface DialogData {
 
 export class DialogoComponent {
 
-	private confirmation: boolean = false;
+private confirmation: boolean = false;
 
   	@ViewChild('crearCorreo',{static: false}) crearCorreoElement:ElementRef; 
   	@ViewChild('crearUsuario',{static: false}) crearUsuarioElement:ElementRef; 
@@ -31,9 +31,15 @@ export class DialogoComponent {
     }
 
 	crearCuenta(){
-		this.appService.crearCuenta(this.crearCorreoElement.nativeElement.value,this.crearCorreoElement.nativeElement.value,this.crearCorreoElement.nativeElement.value,this.crearCorreoElement.nativeElement.value);
 
-		return;
+		var camposCuenta = {
+			usuario: this.crearUsuarioElement.nativeElement.value,
+			email: this.crearCorreoElement.nativeElement.value,
+			password: this.crearPasswordElement.nativeElement.value,
+			password2: this.crearPassword2Element.nativeElement.value
+		}
+
+		return camposCuenta;
 	}
 
 }

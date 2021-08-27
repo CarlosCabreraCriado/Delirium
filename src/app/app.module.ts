@@ -41,6 +41,8 @@ import { HeroesCrearComponent } from './comun/heroesCrear/heroesCrear.component'
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
 import { ConfiguracionComponent } from './comun/configuracion/configuracion.component';
+import { SocialComponent } from './comun/social/social.component';
+import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { BotonComponent } from './comun/boton/boton.component';
 import { InMapComponent } from './comun/inmap/inmap.component';
 import { CreditoComponent } from './comun/credito/credito.component';
@@ -86,6 +88,8 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     DesarrolladorComponent,
     DialogoComponent,
 	ConfiguracionComponent,
+	SocialComponent,
+	CrearHeroeComponent,
 	BotonComponent,
 	InMapComponent,
 	CreditoComponent,
@@ -102,10 +106,14 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
 	PanelControlComponent
 
   ],
+
   entryComponents:[
     DialogoComponent,
-	ConfiguracionComponent
+	ConfiguracionComponent,
+	SocialComponent,
+	CrearHeroeComponent
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,

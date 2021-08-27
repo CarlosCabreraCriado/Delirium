@@ -18,20 +18,31 @@
 					<div *ngFor="let heroe of perfil.heroes; let i = index" class="heroe Texto2" (click)="seleccionarHeroe(i)">
 						<div class="contenedorMarcoHeroe">
 							<div class="frameHeroe"></div>
-							<img  class="imagenHeroe" src="../../../assets/Personajes/{{camelize(heroe.clase)}}.png"/>	
+							<img  class="imagenHeroe" src="../../../assets/Personajes/heroes/01.png"/>	
+							<div class="contenedorNivel">{{heroe.nivel}}</div>
 						</div>
-						<div class="nombreHeroe">{{heroe.nombre}}</div>
-					</div>	
+
+						<div class="contenedorDetalles">
+							<div class="nombreHeroe">{{heroe.nombre}}</div>
+							<div class="descripcion Texto4">{{heroe.descripcion}}</div>
+							
+							<div class="contenedorRoles">
+								<img class="iconoRol" src="../../../assets/Iconos/Rol-Tank.png">		
+								<img class="iconoRol" src="../../../assets/Iconos/Rol-Heal.png">		
+								<img class="iconoRol" src="../../../assets/Iconos/Rol-DPS.png">		
+							</div>
+						</div>
+
+					</div>
 
 				</div>
 			</div>
 
-			<div class="seccionFiltros">
-				<div class="titulo Texto1">Filtros</div>
-				<div class="contenedorFiltros">
-					<img class="iconoRol" src="../../../assets/Iconos/Rol-Tank.png">
-					<img class="iconoRol" src="../../../assets/Iconos/Rol-Heal.png">
-					<img class="iconoRol" src="../../../assets/Iconos/Rol-DPS.png">
+			<div class="seccionOpciones">
+				<div class="titulo Texto1">Opciones</div>
+				<div class="contenedorOpciones">
+					<div class="boton Texto2" (click)="appService.mostrarCrearHeroe('',{})"> Crear Heroe </div>
+					<div class="boton Texto2"> Eliminar Heroe </div>
 				</div>
 			</div>
 			<div class="frame"></div>
