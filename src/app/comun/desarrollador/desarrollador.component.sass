@@ -1,5 +1,4 @@
 
-
 #contenedorDesarrollador
   position: absolute
   width: 100vw
@@ -14,7 +13,7 @@
   position: absolute
   width: 100%
   height: 100%
-  z-index: 100
+  z-index: 10001
   background-color: rgba(0,0,0, 0.7)
 
   .contenedorMensaje
@@ -33,6 +32,16 @@
       position: relative
       width: 100%
       margin: 5% 0
+
+    .botonAceptar
+        position: relative
+        width: 30%
+        height: 10%
+        border: 2px solid white
+        margin: auto
+        &:hover
+            color: black
+            background-color: white
 
     .lds-dual-ring 
       position: relative
@@ -421,6 +430,22 @@
     &:hover
       filter: invert(1)
 
+  .iconoToggleIsometrico
+    position: absolute
+    width: 3%
+    top: 6%
+    left: 30%
+    &:hover
+      filter: invert(1)
+
+  .iconoToggleParametros
+    position: absolute
+    width: 3%
+    top: 6%
+    left: 35%
+    &:hover
+      filter: invert(1)
+
   .iconoEliminar
     position: absolute
     width: 3%
@@ -444,6 +469,37 @@
     right: 20%
     &:hover
       filter: invert(1)
+
+  .contenedorIsometrico
+    position: absolute
+    overflow: scroll
+    top: 15%
+    left: 20%
+    width: 60% 
+    height: 70% 
+    .mensajeIsometricoVacio
+        position: absolute
+        width: 100%
+        text-align: center
+        font-size: 30px
+        top: 45%
+
+    .canvasIsometrico
+        position: absolute
+        overflow: scroll
+        width: 3496px 
+        height: 2480px 
+        background-color: white
+
+        .elementoIsomentrico
+            position: absolute
+            transform: translate(-50%,-50%)
+            
+        .imagenElementoIsometrico    
+            width: 100%
+            //height: 100%
+            &:hover
+                filter: sepia(100%) saturate(30)
 
   .contenedorReticula
     position: absolute
@@ -489,7 +545,7 @@
     width: 60%
     height: 70%
     background-color: white
-    z-index: 20
+    z-index: 10000
     .toolbar
       position: relative
       width: 100%
@@ -598,6 +654,19 @@
               &.descripcion
                 height: 40%
                 width: 100%
+
+          .botonOpcionParametros
+            position: absolute
+            width: 20%
+            height: 5%
+            margin-left: -10%
+            border: 2px solid black
+            text-align: center
+            left: 50%
+            bottom: 5%
+            &:hover
+                color: white
+                background-color: black
 
           &.seleccioneSala
             display: flex
@@ -762,9 +831,111 @@
                 height: 40%
                 width: 100%
 
+          .botonEliminarEnemigo
+            position: absolute
+            width: 5%
+            right: 0
+            margin: 1%
+            &:hover
+                filter: invert(0.5)
+
           &.seleccioneEnemigo
             display: flex
             align-items: center
+
+    //Panel Eventos:
+
+    .formularioEventos
+      position: absolute
+      display: flex
+      width: 100%
+      height: 100%
+
+      .panelEventos 
+        position: relative
+        height: 100%
+        width: 25%
+
+        .titulo
+          position: absolute
+          width: 100%
+          top: 2%
+          height: 8%
+          background-color: black
+          color: white
+          text-align: center
+
+        .contenedorEventos
+          position: absolute
+          width: 100%
+          top: 10%
+          height: 75%
+          background-color: lightgray
+
+          .evento
+            position: relative
+            width: 100%
+            text-align: center
+
+          .evento:hover
+            background-color: darkgrey
+
+        .botonAddEvento
+          position: absolute
+          width: 100%
+          top: 85%
+          height: 10%
+          text-align: center
+          background-color: darkgray
+         
+        .botonAddEvento:hover
+          background-color: black
+          color: white
+
+      .contenedorFormularioEvento
+        position: relative
+        display: flex
+        width: 75%
+        height: 100%
+        overflow-y: scroll
+
+        .columna
+          position: relative
+          height: 90%
+          width: 50%
+          margin: 5%
+
+          .campoFormulario
+            height: 25%
+
+            &.descripcion
+              height: 40%
+              width: 100%
+
+        .botonOpcionParametros
+          position: absolute
+          width: 20%
+          height: 5%
+          margin-left: -10%
+          border: 2px solid black
+          text-align: center
+          left: 50%
+          bottom: 5%
+          &:hover
+              color: white
+              background-color: black
+
+        &.seleccioneEvento
+          display: flex
+          align-items: center
+
+        .botonEliminarEvento
+          position: absolute
+          width: 5%
+          right: 0
+          margin: 1%
+          &:hover
+              filter: invert(0.5)
 
   .panelDerecho
     position: absolute
@@ -783,6 +954,7 @@
       line-height: 2.5
     .contenedorPanelDerecho
       position: absolute
+      overflow-y: scroll
       color: white
       top: 10%
       height: 90%
@@ -794,6 +966,81 @@
         display: inline-block
         &:hover
           filter: invert(1)
+      .tituloSeccion      
+        position: relative
+        width: 100%
+        height: 5%
+        text-align: center
+        margin: 5% 0
+        border-top: solid white 2px
+        border-bottom: solid white 2px
+
+      .subtituloSeccion
+          position: relative
+          width: 100%
+          height: 5%
+          margin: 5% 0
+          img
+              position: relative
+              margin: 0 5% 0 0
+              width: 20%
+              max-height: 100%
+              display: inline-block
+              vertical-align: middle
+              &:hover
+                  filter: invert(1)
+          .texto
+            position: relative
+            width: 70%
+            display: inline-block
+
+          .botonSeleccion
+            position: relative
+            width: 80%
+            height: 100%
+            margin-left: 10%
+            margin-bottom: 5%
+            border: white 2px solid
+            border-radius: 20px
+            text-align: center
+            background-color: black
+            &:hover
+                color: black
+                background-color: white
+                border: black 2px solid
+
+      .contenedorSeleccion
+        position: absolute
+        background-color: black
+        border: solid white 5px
+        text-align: center
+        color: white
+        width: 80%
+        height: 70%
+        top: 15%
+        left: 10%
+        .contenedorOpcionesSeleccion
+            position: relative
+            margin: 5% 0px
+            .formularioSeleccion
+                position: relative
+                width: 80%
+                margin: 10%
+                color: black
+                background-color: white
+                text-align: center
+        .texto
+            position: relative
+            margin: 5% 0
+        .boton
+          position: relative
+          margin: 5% 10% 
+          width: 80%
+          height: 25px 
+          border: white 2px solid
+          &:hover
+            background-color: white
+            color: black
 
   .panelIzquierdo
     position: absolute
@@ -822,6 +1069,8 @@
         display: inline-block
         &:hover
           filter: invert(1)
+      #botonSubirIsometrico
+        display: none
 
 // *************************************************
 //     PANEL DATOS

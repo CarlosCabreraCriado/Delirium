@@ -24,6 +24,7 @@ export class DesarrolladorComponent implements OnInit{
   	public path= [];
 
   	public renderReticula= {} as RenderReticula;
+	private escalaIsometrico: number= 0.5;
 
   	private desarrolladorSuscripcion: Subscription = null;
 
@@ -34,6 +35,10 @@ export class DesarrolladorComponent implements OnInit{
   	private formGeneral: FormGroup;
   	private formSala: FormGroup;
   	private formEnemigos: FormGroup;
+  	private formEventos: FormGroup;
+  	private formDialogos: FormGroup;
+  	private formAsignarSala: FormGroup;
+  	private formAsignarEvento: FormGroup;
 
   	//Campos General:
   	private nombre_General = new FormControl("Primera mazmorra");
@@ -50,6 +55,7 @@ export class DesarrolladorComponent implements OnInit{
   	private descripcion_Sala = new FormControl('Sala de ejemplo');
   	private evento_inicial_id_Sala = new FormControl('0');
   	private evento_final_id_Sala = new FormControl('0');
+  	private mostrarIsometricoSala = new FormControl(true);
 
   	//Campos Enemigos:
   	private enemigo_id_Enemigos = new FormControl('0');
@@ -66,9 +72,59 @@ export class DesarrolladorComponent implements OnInit{
     private evento_intervalo_id_Enemigos = new FormControl('0');
     private evento_intervalo_tiempo_Enemigos = new FormControl('0');
 
+	//Campos Eventos:
+	private id_evento = new FormControl('0');
+	private id_mazmorra = new FormControl('0');
+	private id_sala = new FormControl('0');
+	private tipo_evento = new FormControl('0');
+	private codigo = new FormControl('0');
+	private rng = new FormControl('0');
+	private rng_fallo_evento_id = new FormControl('0');
+	private buff = new FormControl('0');
+	private insta_buff = new FormControl('0');
+	private objetivo_buff = new FormControl('0');
+	private loot_id = new FormControl('0');
+	private loot_prob = new FormControl('0');
+	private objetivo_loot = new FormControl('0');
+	private dialogo_evento_id = new FormControl('0');
+	private objetivo_dialogo = new FormControl('0');
+	private spawn_enemigo_id = new FormControl('0');
+	private set_evento_watcher = new FormControl('0');
+	private remove_evento_watcher = new FormControl('0');
+	private evento_watcher_id = new FormControl('0');
+	private expire_watcher_id = new FormControl('0');
+	private intervalo_trigger_watcher = new FormControl('0');
+	private variable_trigger_watcher = new FormControl('0');
+	private add_variable = new FormControl('0');
+	private elimina_variable = new FormControl('0');
+	private if_condicion_variable = new FormControl('0');
+	private if_falso_evento_id = new FormControl('0');
+	private cinematica_id = new FormControl('0');
+	private sonido_id = new FormControl('0');
+	private evento_next_id = new FormControl('0');
+	
+	//Campor Dialogos:
+	private dialogo_id = new FormControl('0');
+	private tipo_dialogo = new FormControl('0');
+	private imagen_id = new FormControl('0');
+	private texto1 = new FormControl('0');
+	private texto2 = new FormControl('0');
+	private texto3 = new FormControl('0');
+	private texto_elegir = new FormControl('0');
+	private eleccion_evento_id = new FormControl('0');
+	private timeout = new FormControl('0');
+	private evento_timeout_id = new FormControl('0');
+	private minimo_tiempo = new FormControl('0');
+	private redirect_dialogo_id = new FormControl('0');
+	private next_evento_id = new FormControl('0');
+
+	//Campos Asignar Isometrico:
+  	private asignar_id_sala = new FormControl('0');
+  	private asignar_evento = new FormControl('0');
 
   	@ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
   	@ViewChild('contenedorMensajes',{static: false}) private contenedorMensajes: ElementRef;
+  	@ViewChild('canvasIsometrico',{static: false}) private canvasIsometrico: ElementRef;
 
 	constructor(public appService: AppService, public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) { 
 
@@ -90,6 +146,7 @@ export class DesarrolladorComponent implements OnInit{
 		//Inicializar Reticula:
 		//this.renderReticula = this.desarrolladorService.inicializarReticula();
 
+		//Inicialización formulario General:
 		this.formGeneral = this.formBuilder.group({
 		    nombre: this.nombre_General,
 		    descripcion: this.descripcion_General,
@@ -100,14 +157,17 @@ export class DesarrolladorComponent implements OnInit{
 		    loot_finish_id: this.loot_finish_id_General
 	    });
 
+		//Inicialización formulario Sala:
 	    this.formSala = this.formBuilder.group({
 	   		sala_id: this.sala_id_Sala,
 	     	nombre: this.nombre_Sala,
 	     	descripcion: this.descripcion_Sala,
 	     	evento_inicial_id: this.evento_inicial_id_Sala,
-	    	evento_final_id: this.evento_final_id_Sala
+	    	evento_final_id: this.evento_final_id_Sala,
+			mostrarIsometrico: this.mostrarIsometricoSala
 	    });
-
+		
+		//Inicializacion formulario Enemigos:
 	    this.formEnemigos = this.formBuilder.group({
 	    	enemigo_id: this.enemigo_id_Enemigos,
 	    	tipo_enemigo_id: this.tipo_enemigo_id_Enemigos,
@@ -124,19 +184,70 @@ export class DesarrolladorComponent implements OnInit{
         	evento_intervalo_tiempo: this.evento_intervalo_tiempo_Enemigos
 	    });
 
+		//Inicializacion formulario Eventos:
+	    this.formEventos = this.formBuilder.group({
+			id_evento: this.id_evento,
+			id_mazmorra: this.id_mazmorra, 
+			id_sala: this.id_sala,
+			tipo: this.tipo_evento,
+			codigo: this.codigo,
+			rng: this.rng, 
+			rng_fallo_evento_id: this.rng_fallo_evento_id, 
+			buff: this.buff,
+			insta_buff: this.insta_buff,
+			objetivo_buff: this.objetivo_buff,
+			loot_id: this.loot_id,
+			loot_prob: this.loot_prob,
+			objetivo_loot: this.objetivo_loot,
+			dialogo_id: this.dialogo_evento_id,
+			objetivo_dialogo: this.objetivo_dialogo,
+			spawn_enemigo_id: this.spawn_enemigo_id,
+			set_evento_watcher: this.set_evento_watcher,
+			remove_evento_watcher: this.remove_evento_watcher,
+			evento_watcher_id: this.evento_watcher_id,
+			expire_watcher_id: this.expire_watcher_id,
+			intervalo_trigger_watcher: this.intervalo_trigger_watcher,
+			variable_trigger_watcher: this.variable_trigger_watcher,
+			add_variable: this.add_variable,
+			elimina_variable: this.elimina_variable,
+			if_condicion_variable: this.if_condicion_variable,
+			if_falso_evento_id: this.if_falso_evento_id,
+			cinematica_id: this.cinematica_id,
+			sonido_id: this.sonido_id,
+			evento_next_id: this.evento_next_id
+	    });
+
+		//Inicialización formulario Asignar Sala:
+	    this.formAsignarSala = this.formBuilder.group({
+	   		asignar_id_sala: this.asignar_id_sala
+	    });
+
+		//Inicialización formulario Asignar Evento:
+	    this.formAsignarEvento = this.formBuilder.group({
+	   		asignar_evento: this.asignar_evento
+	    });
+
 		this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe(
 	        (val) => {
 	          switch (val) {
+				case "reloadForm":
 	          	case "reloadFormGeneral":
 	          		this.formGeneral.setValue(this.desarrolladorService.mazmorra["general"][0]);
 	          	break;
 
 	          	case "reloadFormSala":
+				case "reloadForm":
 	          		this.formSala.setValue(this.desarrolladorService.mazmorra["salas"][this.desarrolladorService.mazmorra.salas.indexOf(this.desarrolladorService.mazmorra.salas.find(i=> i.sala_id==this.desarrolladorService.salaSeleccionadaId))]);
 	          	break;
 
 	          	case "reloadFormEnemigo":
+				case "reloadForm":
 	          		this.formEnemigos.setValue(this.desarrolladorService.mazmorra["enemigos"][this.desarrolladorService.mazmorra.enemigos.indexOf(this.desarrolladorService.mazmorra.enemigos.find(i=> i.enemigo_id==this.desarrolladorService.enemigoSeleccionadoId))]);
+	          	break;
+				
+	          	case "reloadFormEventos":
+				case "reloadForm":
+	          		this.formEventos.setValue(this.desarrolladorService.mazmorra["eventos"][this.desarrolladorService.mazmorra.eventos.indexOf(this.desarrolladorService.mazmorra.eventos.find(i=> i.id_evento==this.desarrolladorService.eventoSeleccionadoId))]);
 	          	break;
 
 	          	case "reloadReticula":
@@ -233,8 +344,101 @@ export class DesarrolladorComponent implements OnInit{
 		return;
 	}
 
+	zoomIn(){
 
- 
+		if(this.desarrolladorService.mostrarIsometrico){
+			this.escalaIsometrico += 0.1;
+		}else{
+			this.desarrolladorService.zoomIn();
+		}
+		return;
+	}
+	
+	zoomOut(){
+		if(this.desarrolladorService.mostrarIsometrico){
+			this.escalaIsometrico -= 0.1;
+		}else{
+			this.desarrolladorService.zoomOut();
+		}
+		return;
+	}
+
+	asignarSala(){
+		console.log("Asignando Sala..."); 
+		this.desarrolladorService.asignarSala(this.asignar_id_sala.value);	
+	}
+
+	renderizarElementoIsometrico(elemento: any):any{
+		
+		var opcionesCanvas = this.desarrolladorService.mazmorra.isometrico.MapSave.MapSettings
+		var style = {
+			"position": "absolute",
+			"top": "",
+			"left": "",
+			"width": "",
+			"height": "",
+			"z-index": 0,
+			"transform": "translate(-50%,-50%) scaleX(1) scale("+this.escalaIsometrico+")",
+			"display": "block",
+			"filter": "none"
+		}
+
+		//Renderizar Elemento:
+		var top = (parseFloat(elemento.Position.y)*this.escalaIsometrico/*+parseFloat(elemento.VisibilityColliderStackingOffset.y)*/) + "px";
+		style["top"]= top.replace(/,/g,".")
+
+		var left= (parseFloat(elemento.Position.x)*this.escalaIsometrico/*-parseFloat(elemento.VisibilityColliderStackingOffset.x)*/) + "px";
+		style["left"]= left.replace(/,/g,".")
+
+		var zIndex= (parseFloat(elemento.Position.z)+100)*10
+		style["z-index"]= Math.floor(zIndex)
+
+		if(elemento.Mirror=="true"){
+			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+this.escalaIsometrico+")";
+		}
+
+		//Aplicar filtrado de visualizacion:
+		style.display = "block";
+		if(!this.desarrolladorService.mostrarGrid){
+			if(elemento.tipo == "grid"){
+				style.display = "none";
+			}
+		}	
+		
+		if(!this.desarrolladorService.mostrarDecorado){
+			if(elemento.tipo == "decorado"){
+				style.display = "none";
+			}
+		}	
+
+		//Aplicar filtrado de Sala
+		if(!this.desarrolladorService.mostrarSalaNula){
+			if(elemento.sala==0){
+				style.display= "none";
+			} 
+		}
+
+		for(var i =0; i<this.desarrolladorService.mazmorra.salas.length; i++){
+			if((!this.desarrolladorService.mazmorra.salas[i].mostrarIsometrico) && (elemento.sala==this.desarrolladorService.mazmorra.salas[i].sala_id)){
+				style.display= "none";
+			} 
+		}
+
+		//Renderizar Seleccion:
+		if(elemento.seleccionado){
+			style.filter = "sepia(100%) saturate(100)";
+		}
+
+		//Aplicar filtro de Seleccion: 
+		//var width= ((window.innerWidth*0.7)/opcionesCanvas.MapSizeX)*100 + "px";
+		//style.width= width.replace(/,/g,".")
+
+		//var height= ((window.innerHeight*0.6)/opcionesCanvas.MapSizeY)*100 + "%";
+		//style.height= height.replace(/,/g,".")
+
+		return style;
+	}
+
 }
 
 

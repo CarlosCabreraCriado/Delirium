@@ -72,7 +72,7 @@
      ************************************************* -->
 <div *ngIf="developerCombateService.cargaCompleta" class="Panel-Enemigos">
     <div [ngClass]="'nEnemigos'+renderMazmorra.enemigos.length">
-        <div *ngFor="let enemigo of renderMazmorra.enemigos; let i = index" class="Panel Enemigo" [ngClass]="appService.renderizarMarcoEnemigo(i)">
+        <div *ngFor="let enemigo of renderMazmorra.enemigos; let i = index" class="Panel Enemigo" [ngClass]="renderizarMarcoEnemigo(i)">
             <div class="hitBoxEnemigo"  (click)="developerCombateService.seleccionEnemigo(i)"></div>
             <div class="contenedorMarcoEnemigo">
                 <div class="contenedorAgro Texto2">

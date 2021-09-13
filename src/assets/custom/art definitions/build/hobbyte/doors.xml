@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="Category" Value="Doors"/>
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="SnapType" Value="EdgeOrCorner"/>
+		<Setting Key="PlacementType" Value="Single"/>
+	</SharedSettings>
+	<Placeable Name="Stone Wall Door (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stone/Door Closed.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-102"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>
+		<Setting Key="TogglesTo" Value="Stone Wall Door (Open)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="102"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Stone Wall Door (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stone/Door Open.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-102"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Stone Wall Door (Closed)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/open door.png"/>
+		<Setting Key="ColliderOffsetY" Value="102"/>
+	</Placeable>
+	<Placeable Name="Stone Wall Doorway">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stone/Doorway.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-102"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/open door.png"/>
+		<Setting Key="ColliderOffsetY" Value="102"/>
+	</Placeable>
+	<Placeable Name="Stone Wall Door Sticker (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stone/Door Closed_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-102"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Stone Wall Door Sticker (Open)"/>
+		<Setting Key="SortingName" Value="Stone Wall Door (Closed) Sticker"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="102"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Stone Wall Door Sticker (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stone/Door Open_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-102"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Stone Wall Door Sticker (Closed)"/>
+		<Setting Key="SortingName" Value="Stone Wall Door (Open) Sticker"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/open door.png"/>
+		<Setting Key="ColliderOffsetY" Value="102"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	<Placeable Name="Stone Wall Doorway Sticker">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stone/Doorway_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-102"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/open door.png"/>
+		<Setting Key="ColliderOffsetY" Value="102"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	
+	<Placeable Name="Simple Door (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stickers/Door 2 Closed.png"/>
+		<Setting Key="DrawingOffsetX" Value="-10"/>
+		<Setting Key="DrawingOffsetY" Value="-86"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Simple Door (Open)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="86"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Simple Door (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stickers/Door 2 Open.png"/>
+		<Setting Key="DrawingOffsetX" Value="-10"/>
+		<Setting Key="DrawingOffsetY" Value="-86"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Simple Door (Closed)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/open door.png"/>
+		<Setting Key="ColliderOffsetY" Value="86"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	
+	<Placeable Name="Iron Door (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stickers/Door 3 Closed.png"/>
+		<Setting Key="DrawingOffsetX" Value="-10"/>
+		<Setting Key="DrawingOffsetY" Value="-70"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Iron Door (Open)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="70"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Iron Door (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stickers/Door 3 Open.png"/>
+		<Setting Key="DrawingOffsetX" Value="-10"/>
+		<Setting Key="DrawingOffsetY" Value="-70"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Iron Door (Closed)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/open door.png"/>
+		<Setting Key="ColliderOffsetY" Value="70"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	
+	<Placeable Name="Gothic Door (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stickers/Door 4 Closed.png"/>
+		<Setting Key="DrawingOffsetX" Value="-10"/>
+		<Setting Key="DrawingOffsetY" Value="-74"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Gothic Door (Open)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="74"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Gothic Door (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Stickers/Door 4 Open.png"/>
+		<Setting Key="DrawingOffsetX" Value="-10"/>
+		<Setting Key="DrawingOffsetY" Value="-74"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Gothic Door (Closed)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/open door.png"/>
+		<Setting Key="ColliderOffsetY" Value="74"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	
+	<Placeable Name="Prison Door (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Prison/Prison Door Closed.png"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-105"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="TogglesTo" Value="Prison Door (Open)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="105"/>
+	</Placeable>
+	<Placeable Name="Prison Door (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Prison/Prison Door Open.png"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-105"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="TogglesTo" Value="Prison Door (Closed)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="105"/>
+	</Placeable>
+	
+	<Placeable Name="Double Door (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double/Door Closed.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="TogglesTo" Value="Double Door (Open)"/>
+		<Setting Key="SortingName" Value="X Double Door (Closed)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Double Door (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double/Door Open.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="TogglesTo" Value="Double Door (Closed)"/>
+		<Setting Key="SortingName" Value="X Double Door (Open)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+	</Placeable>
+	<Placeable Name="Double Doorway">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double/Doorway.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="SortingName" Value="X Double Doorway"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+	</Placeable>
+	
+	<Placeable Name="Double Door Sticker (Closed)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double/Door Closed_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="TogglesTo" Value="Double Door Sticker (Open)"/>
+		<Setting Key="SortingName" Value="X Double Door (Closed) X Sticker"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Double Door Sticker (Open)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double/Door Open_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Double Door Sticker (Closed)"/>
+		<Setting Key="SortingName" Value="X Double Door (Open) X Sticker"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	<Placeable Name="Double Doorway Sticker">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double/Doorway_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="SortingName" Value="X Double Doorway Sticker"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	
+	
+	<Placeable Name="Double Door (Closed, Tall)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double tall/Door Closed.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="TogglesTo" Value="Double Door (Open, Tall)"/>
+		<Setting Key="SortingName" Value="X Double Door (Closed) Tall"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Double Door (Open, Tall)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double tall/Door Open.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="TogglesTo" Value="Double Door (Closed, Tall)"/>
+		<Setting Key="SortingName" Value="X Double Door (Open) Tall"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+	</Placeable>
+	<Placeable Name="Double Doorway (Tall)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double tall/Doorway.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="SortingName" Value="X Double Doorway (Tall)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+	</Placeable>
+	
+	<Placeable Name="Double Door Sticker (Closed, Tall)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double tall/Door Closed_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="TogglesTo" Value="Double Door Sticker (Open, Tall)"/>
+		<Setting Key="SortingName" Value="X Double Door (Closed) X Tall Sticker"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	<Placeable Name="Double Door Sticker (Open, Tall)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double tall/Door Open_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="TogglesTo" Value="Double Door Sticker (Closed, Tall)"/>
+		<Setting Key="SortingName" Value="X Double Door (Open) X Tall Sticker"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	<Placeable Name="Double Doorway Sticker (Tall)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Double tall/Doorway_Sticker.png"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-157"/>
+		<Setting Key="CornerOffsetX" Value="64"/>
+		<Setting Key="CornerOffsetY" Value="41"/>	
+		<Setting Key="SortingName" Value="X Double Doorway Sticker (Tall)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double door open.png"/>
+		<Setting Key="ColliderOffsetY" Value="157"/>
+		<Setting Key="ColliderOffsetX" Value="11"/>
+	</Placeable>
+	<Placeable Name="Wooden Gate">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Doors/Wooden Gate/Gate.png"/>
+		<Setting Key="Type" Value="Default"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-172"/>
+		<Setting Key="CornerOffsetX" Value="128"/>
+		<Setting Key="CornerOffsetY" Value="81"/>
+		<Setting Key="SortingName" Value="X Double Doorway (Tall)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/double wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="172"/>
+	</Placeable>
+</Settings>

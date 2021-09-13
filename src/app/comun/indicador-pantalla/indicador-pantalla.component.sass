@@ -1,0 +1,39 @@
+
+@import "../../../variables.sass"
+@import "../../../breakpoints.scss"
+
+::ng-deep .contenedorIndicadorPantalla
+
+.contenedorIndicadorPantalla
+    position: absolute
+    bottom: 0
+    right: 0 
+    z-index: 1000
+    color: white
+    text-align: center
+
+    background-color: green
+    @include media("<=desktop")
+        background-color: blue
+    @include media("<=tablet")
+        color: black
+        background-color: yellow
+    @include media("<=phone")
+        color: black
+        background-color: orange
+    @include media("<=smphone")
+        color: black
+        background-color: red
+
+    .textoIndicadorPantalla::before
+        content: "No media"
+        @include media("<=desktop")
+            content: "<=desktop"
+        @include media("<=tablet")
+            content: "<=tablet"
+        @include media("<=phone")
+            content: "<=phone"
+        @include media("<=smphone")
+            content: "<=smphone"
+
+

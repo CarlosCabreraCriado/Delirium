@@ -12,6 +12,7 @@ import { CargarPartidaComponent } from './comun/cargarPartida/cargarPartida.comp
 import { HeroesComponent } from './comun/heroes/heroes.component';
 import { UnirsePartidaComponent } from './comun/unirsePartida/unirsePartida.component';
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
+import {InMapComponent} from './comun/inmap/inmap.component';
 
 const routes: Routes = [
 	{path: '' ,redirectTo: "/index", pathMatch: "full" },
@@ -29,6 +30,8 @@ const routes: Routes = [
 	{path: 'heroes', component: HeroesComponent},
 	{path: 'desarrollador', redirectTo: "/desarrollador", pathMatch: "full"},
 	{path: 'desarrollador', component: DesarrolladorComponent},
+	{path: 'inmap', redirectTo: "/inmap", pathMatch: "full"},
+	{path: 'inmap', component: InMapComponent}
 
 	];
 

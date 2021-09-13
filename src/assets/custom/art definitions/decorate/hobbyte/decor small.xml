@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="Creator" Value="Hobbyte"/>
+		<Setting Key="CreatorURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</SharedSettings>
+	<Placeable Name="Mug (Frothy, Wood)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Mug Frothy.png"/>
+		<Setting Key="ConceptCreator" Value="Kim Ravn Hansen"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="3"/>
+		<Setting Key="DrawingOffsetY" Value="-20"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="20"/>
+	</Placeable>
+	<Placeable Name="Mug (Frothy, Steel)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Mug Frothy Steel.png"/>
+		<Setting Key="ConceptCreator" Value="Kim Ravn Hansen"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="3"/>
+		<Setting Key="DrawingOffsetY" Value="-20"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="20"/>
+	</Placeable>
+	<Placeable Name="Mug (Wood)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Mug.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="3"/>
+		<Setting Key="DrawingOffsetY" Value="-20"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="20"/>
+	</Placeable>
+	<Placeable Name="Mug (Steel)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Mug steel.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="3"/>
+		<Setting Key="DrawingOffsetY" Value="-20"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="20"/>
+	</Placeable>
+	<Placeable Name="Potted Lily">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/lily.png"/>
+		<Setting Key="ConceptCreator" Value="Kleis"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-38"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="38"/>
+	</Placeable>
+	<Placeable Name="Bottle (Skull)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/skull bottle.png"/>
+		<Setting Key="ConceptCreator" Value="Glen Cole III"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-20"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="20"/>
+	</Placeable>
+	<Placeable Name="Bottle (Dark)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/flask 1.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-28"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="28"/>
+	</Placeable>
+	<Placeable Name="Bottle (Light)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/flask 2.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-28"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="28"/>
+	</Placeable>
+	<Placeable Name="Bottle, Small (Dark)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/flask 3.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-15"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="15"/>
+	</Placeable>
+	<Placeable Name="Bottle, Small (Light)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/flask 4.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-15"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="15"/>
+	</Placeable>
+	<Placeable Name="Book, Large 1 (closed)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Book 1.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="SortingName" Value="Book, XL Large 1 (closed)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-10"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	<Placeable Name="Book, Large 2 (open)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Book 2.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="SortingName" Value="Book, XL Large 2 (open)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-10"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	<Placeable Name="Book, Large 4 (closed)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Book 4.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Made by MisterMaster"/>
+		<Setting Key="SortingName" Value="Book, XL Large 3 (closed)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-10"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	<Placeable Name="Book, Large 3 (closed)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Book 3.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Made by MisterMaster"/>
+		<Setting Key="SortingName" Value="Book, XL Large 4 (closed)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-10"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	<Placeable Name="Book, Small (closed)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Book Small 1.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-10"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	<Placeable Name="Book, Small (open)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Book Small 2.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-10"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	<Placeable Name="Book Stack 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Bookstack 1.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Made by MisterMaster"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-20"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/Bookstack 1.png"/>
+	</Placeable>
+	<Placeable Name="Book Stack 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Bookstack 2.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Made by MisterMaster"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-40"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>
+		<Setting Key="Type" Value="Default"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/Bookstack 2.png"/>
+	</Placeable>
+	<Placeable Name="Book Stack 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Bookstack 3.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Made by MisterMaster"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-40"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/Bookstack 3.png"/>
+	</Placeable>
+	<Placeable Name="Brazier">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Brazier.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Made by MisterMaster"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/brazier.png"/>
+	</Placeable>
+	
+	<Placeable Name="Bread 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/bread-1.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Bread 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/bread-2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Bread 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/bread-3.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Bread 4">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/bread-4.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Bread 5">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/bread-5.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Serving Plate (Plain)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/serving plate 1.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Serving Plate (Fancy)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/serving plate 2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Food, Roasted Turkey">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/turkey.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Food, Roasted Chicken">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/chicken.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>
+	</Placeable>
+	<Placeable Name="Glass 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/glass1.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Glass 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/glass2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Glass 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/glass3.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Paper">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/paper.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Quill and Ink">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/quill.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-30"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="35"/>
+	</Placeable>
+	<Placeable Name="Candelabra">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/candelabra.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="-2"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="2"/>
+		<Setting Key="ColliderOffsetY" Value="60"/>
+	</Placeable>
+	<Placeable Name="Candle">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/candle.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-35"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="35"/>
+	</Placeable>
+	<Placeable Name="Floor Length Candlestick (Empty)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Floor-length candle minus candle.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-70"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="72"/>
+	</Placeable>
+	<Placeable Name="Floor Length Candlestick">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Floor-length candle.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-70"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="72"/>
+	</Placeable>
+	<Placeable Name="Satchel">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Satchel.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="10"/>
+		<Setting Key="ColliderOffsetY" Value="0"/>
+	</Placeable>
+	<Placeable Name="Satchel with scrolls">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Satchel scrolls.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="10"/>
+		<Setting Key="ColliderOffsetY" Value="0"/>
+	</Placeable>
+	<Placeable Name="Spoon">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/big spoon.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Carving Fork">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/carving fork.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Knife">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/knife.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Meat Cleaver">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/meat cleaver.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Spatula">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/spatula.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Food on a Tray">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/food on tray.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Plate with Knife and Fork">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/plate knife fork.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Plate with Knife and Fork (Reverse)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/plate knife fork 180.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Trash Bag of Devouring">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Trash bag of devouring.png"/>
+		<Setting Key="ConceptCreator" Value="Dirk Rothe"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="50"/>
+	</Placeable>
+	<Placeable Name="Music Box (Walnut)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/walnut music.png"/>
+		<Setting Key="ConceptCreator" Value="Balazar Bear"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-15"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="35"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="15"/>
+	</Placeable>
+	<Placeable Name="Bonfire">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Bonfire.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Bonfire (Darker)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Bonfire - darker.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Wall Torch">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Torch.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="5"/>
+		<Setting Key="CornerOffsetX" Value="33"/>
+		<Setting Key="CornerOffsetY" Value="65"/>	
+	</Placeable>	
+	<Placeable Name="Dog House">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/doghouse.png"/>
+		<Setting Key="ConceptCreator" Value="Marcus Sparks"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-82"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/doghouse.png"/>
+	</Placeable>
+	<Placeable Name="Dog Bowl">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/dogbowl.png"/>
+		<Setting Key="ConceptCreator" Value="Marcus Sparks"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="SortingName" Value="Dog House Bowl"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-10"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="10"/>
+	</Placeable>
+	<Placeable Name="Dog House Sign 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/dog sign.png"/>
+		<Setting Key="ConceptCreator" Value="Marcus Sparks"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="SortingName" Value="Dog House Sign"/>
+		<Setting Key="DrawingOffsetX" Value="5"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="-5"/>
+		<Setting Key="ColliderOffsetY" Value="60"/>
+	</Placeable>
+	<Placeable Name="Dog House Sign 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/dog sign 2.png"/>
+		<Setting Key="ConceptCreator" Value="Marcus Sparks"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="SortingName" Value="Dog House Sign 2"/>
+		<Setting Key="DrawingOffsetX" Value="5"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="10"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="-5"/>
+		<Setting Key="ColliderOffsetY" Value="60"/>
+	</Placeable>
+	<Placeable Name="Crystal Ball On Plinth">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/Crystal ball.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Jens Villemoes"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-70"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="15"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle small.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="70"/>
+	</Placeable>
+	<Placeable Name="Copper Still">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/destillery.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Roberto Vargas"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-75"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/destillery.png"/>
+	</Placeable>
+	<Placeable Name="Grave 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/grave1.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-75"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/destillery.png"/>
+	</Placeable>
+	<Placeable Name="Grave 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/grave2.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-75"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/destillery.png"/>
+	</Placeable>
+	<Placeable Name="Grave 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/grave3.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-75"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/destillery.png"/>
+	</Placeable>
+	<Placeable Name="Anvil">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/smithy anvil.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="SortingName" Value="Blacksmith's Anvil"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/anvil.png"/>
+	</Placeable>
+	<Placeable Name="Bellows">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/smithy bellows.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="SortingName" Value="Blacksmith's Bellows"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Bucket">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/smithy bucket.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="SortingName" Value="Blacksmith's Bucket"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-30"/>
+		<Setting Key="DrawingOffsetZ" Value="2"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>
+		<Setting Key="Type" Value="Default"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Decor Small/visibility/circle tiny.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="30"/>
+	</Placeable>
+	<Placeable Name="Hammer">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/smithy hammer.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="SortingName" Value="Blacksmith's Hammer"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Pliers">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/smithy pliers.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="SortingName" Value="Blacksmith's Hammer"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Blacksmith's Tools">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/smithy tools.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Display, Swords">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/sword display.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+	<Placeable Name="Display, Shield">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Decor Small/shield display.png"/>
+		<Setting Key="Category" Value="Decor, Small"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="DrawingOffsetZ" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="18"/>
+		<Setting Key="CornerOffsetY" Value="25"/>	
+	</Placeable>
+</Settings>

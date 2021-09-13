@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</SharedSettings>
+	<Placeable Name="Compass Rose 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/CompassRose.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="AllowsMirror" Value="False"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Compass Rose 1 - Large">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/CompassRose Large.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="AllowsMirror" Value="False"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Compass Rose 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/CompassRose empty.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Compass Rose 2 - Large">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/CompassRose Large empty.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Spike Trap">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/spiketrap.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="DrawingOffsetY" Value="-15"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="15"/>
+	</Placeable>
+	<Placeable Name="Floor Tiles">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/Tiles.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Symbol (Summoning 1)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/Floor Symbol Summoning1.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Symbol (Summoning 1) - Large">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/Floor Symbol Summoning1 Large.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Symbol (Summoning 1) - Huge">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/Floor Symbol Summoning1 Huge.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="SortingName" Value="Symbol (Summoning 1) - XL"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Blood Splatter 1 (Sacrificial Pit Landing )">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/blood splatter.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Blood Splatter 2 (Sacrificial Pit Landing )">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/blood splatter up.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Floor Hatch">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/Floor Hatch.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+	<Placeable Name="Large Floor Crack">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Floor Details/Crack Large.png"/>
+		<Setting Key="Category" Value="Floor Details"/>
+		<Setting Key="DrawingOffsetZ" Value="-2"/>
+	</Placeable>
+</Settings>

@@ -4,9 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from '../../app.service';
 import { IndexService } from './index.service';
 import { Subscription } from "rxjs";
-//import { ElectronService } from 'ngx-electron';
 import { HttpClient } from "@angular/common/http";
 import { SocketService } from '../socket/socket.service';
+import { BotonComponent } from '../boton/boton.component';
 
 @Component({
   selector: 'app-index',
@@ -32,6 +32,8 @@ export class IndexComponent implements OnInit{
   	@ViewChild('clave',{static: false}) claveElement:ElementRef; 
 
 	ngOnInit(){
+
+		this.logout(); //Logout al cargar pagina 
 
 		this.appService.claveValida= false;
 		this.cursor= this.cursorMin;
@@ -78,7 +80,11 @@ export class IndexComponent implements OnInit{
 
 	configuracion():void{
 		this.pantalla= "inicio";
-		this.appService.mostrarDialogo("Informativo",{contenido:"Opción no disponible"});
+		this.appService.mostrarDialogo("Informativo",{contenido:"Opción no disponible"})
+	}
+
+	mostrarCrearCuenta(){
+		this.appService.mostrarCrearCuenta()
 	}
 
 	heroes():void{
@@ -150,7 +156,7 @@ export class IndexComponent implements OnInit{
 		if(this.appService.claveValida==false){
 
 					this.procesando=true;
-					console.log("Comprobando clave: "+ this.claveElement.nativeElement.value);
+					console.log("Comprobando clave: "+ parseInt(this.claveElement.nativeElement.value));
 					var clave = {
 						clave: parseInt(this.claveElement.nativeElement.value)
 					}
@@ -168,6 +174,12 @@ export class IndexComponent implements OnInit{
 								this.appService.claveValida= true;
 								this.errorInicio = null;
 								this.procesando= false;
+								this.appService.mostrarPantallacarga(true);
+								this.appService.setControl("inmap");
+								setTimeout(()=>{    
+									this.appService.setProgresoCarga("100");
+									this.appService.cambiarUrl("/inmap");
+								}, 2000);
 							}
 						}
 					},(err) => {
@@ -175,6 +187,7 @@ export class IndexComponent implements OnInit{
 						this.procesando= false;
 						this.appService.claveValida= false;
 						this.errorInicio= err.error;
+						this.appService.mostrarDialogo("Error",{contenido:"El usuario o la contraseña no son validos."});
 					});
 						
 					this.claveElement.nativeElement.value = "";

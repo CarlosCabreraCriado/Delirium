@@ -5,8 +5,10 @@ import { Subject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { ElectronService } from 'ngx-electron';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
+import { ConfiguracionComponent } from './comun/configuracion/configuracion.component';
+import { SocialComponent } from './comun/social/social.component';
+import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { MatDialog} from '@angular/material/dialog';
-
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ import { MatDialog} from '@angular/material/dialog';
 
 export class AppService {
 
-  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog) { 
+  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -72,8 +74,8 @@ export class AppService {
     public debugAutoValidacion:boolean=false;
     public debugClavesAuto=[1000,2307,2305,2567,9867];
     public debugClave:number=9867;
-    public ipRemota: string= "http://www.carloscabreracriado.com";
-    //public ipRemota: string= "http://127.0.0.1:8000";
+    //public ipRemota: string= "http://www.carloscabreracriado.com";
+    public ipRemota: string= "http://127.0.0.1:8000";
     private token: string;
 
     //Variables de configuración:
@@ -101,6 +103,7 @@ export class AppService {
     private validacion: any= false;
     public claveValida: boolean= false;
     private sala: any={};
+	private heroeSeleccionado = null;
 
     // Observable string sources
     private observarAppService = new Subject<string>();
@@ -180,6 +183,7 @@ export class AppService {
     @Output() progresoCarga: EventEmitter<string> = new EventEmitter();
     @Output() bugLog: EventEmitter<string> = new EventEmitter();
     @Output() ajustes: EventEmitter<string> = new EventEmitter();
+    @Output() eventoAppService: EventEmitter<string> = new EventEmitter();
 
   	audioTeclaPlay(): void{
   		let audio = new Audio();
@@ -248,14 +252,28 @@ export class AppService {
       return;
     }
 
+	crearCuenta(correo,usuario,password,password2){
+
+	}
+
   	cambiarUrl(url): void{
-      console.log("CAMBIANDO A URL: "+url);
+        console.log("CAMBIANDO A URL: "+url);
   		this.router.navigateByUrl(url);
   	}
 
     mostrarPantallacarga(val:boolean):void{
       this.mostrarCarga.emit(val);
     }
+
+	getHeroeSeleccionado(){
+		return this.heroeSeleccionado;
+	}
+
+	setHeroeSeleccionado(heroe: any){
+		this.heroeSeleccionado = heroe;
+		this.observarAppService.next("actualizarHeroeSeleccionado");
+		return;
+	}
 
     setProgresoCarga(val:string):void{
       this.progresoCarga.emit(val);
@@ -266,19 +284,91 @@ export class AppService {
       console.log(this.electronService.ipcRenderer.sendSync('setValidacion',this.validacion));
     }
 
-    mostrarDialogo(tipoDialogo:string, config:any):void{
+    mostrarDialogo(tipoDialogo:string, config:any):any{
+
       const dialogRef = this.dialog.open(DialogoComponent,{
-          panelClass: [tipoDialogo, "generalContainer"], disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+          width: "100px",panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
         });
 
         dialogRef.afterClosed().subscribe(result => {
           console.log('Fin del dialogo');
           console.log(result)
         });
+        return dialogRef;
+    }
+
+    mostrarCrearCuenta():any{
+
+      const dialogRef = this.dialog.open(DialogoComponent,{
+          width: "100px", panelClass: ["containerCrearCuenta", "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "CrearCuenta"}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('Fin del dialogo');
+          console.log(result)
+        });
+        return dialogRef;
+    }
+
+    mostrarCrearHeroe(tipoDialogo:string, config:any):any{
+
+      const dialogCrearHeroe = this.dialog.open(CrearHeroeComponent,{
+          width: "100px",panelClass: [tipoDialogo, "contenedorCrearHeroe"],backdropClass: "fondoCrearHeroe", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+        });
+
+        dialogCrearHeroe.afterClosed().subscribe(result => {
+          console.log('Cierre Configuracion. Devuelve:');
+          console.log(result)
+
+		  if(result === "crearHeroe") {
+		  }
+
+        });
+
+        return;
+    }
+
+    mostrarConfiguracion(tipoDialogo:string, config:any):any{
+
+      const dialogConfiguracion = this.dialog.open(ConfiguracionComponent,{
+          width: "100px",panelClass: [tipoDialogo, "contenedorConfiguracion"],backdropClass: "fondoConfiguracion", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+        });
+
+        dialogConfiguracion.afterClosed().subscribe(result => {
+          console.log('Cierre Configuracion. Devuelve:');
+          console.log(result)
+
+		  if(result === "cerrarSesion") {
+			this.setControl("index");
+			this.cambiarUrl("");
+		  }
+
+		  if(result === "developerTool") {
+			  this.mostrarDeveloperTool("")
+		  }
+
+        });
+
+        return;
+    }
+
+    mostrarSocial(tipoDialogo:string, config:any):any{
+
+      const dialogSocial = this.dialog.open(SocialComponent,{
+          width: "100px",panelClass: [tipoDialogo, "contenedorSocial"],backdropClass: "fondoSocial", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+        });
+
+        dialogSocial.afterClosed().subscribe(result => {
+          console.log('Cierre Configuracion. Devuelve:');
+          console.log(result)
+        });
+
+        return;
     }
 
     mostrarBugLog(val:string):void{
       this.bugLog.emit(val);
+      this.cambiarUrl("inmap");
     }
 
     mostrarDeveloperTool(val:string):void{
@@ -305,11 +395,14 @@ export class AppService {
     getValidacion(){
        console.log("Validando: ");
        console.log(this.electronService.ipcRenderer);
+
        this.validacion = this.electronService.ipcRenderer.sendSync('getValidacion');
+
        if(this.perfil==undefined){
          console.log("Obteniendo Datos: ");
-         //this.setInicio();
+		 this.getDatos(this.validacion.clave)
        }
+
        if(this.validacion.nombre===undefined){}
        console.log(this.validacion);
        return this.validacion;

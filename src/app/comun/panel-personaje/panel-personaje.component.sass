@@ -1,0 +1,431 @@
+
+@import "../../../variables.sass"
+@import "../../../breakpoints.scss"
+
+::ng-deep .contenedorPanelPersonaje
+
+.contenedorPanelPersonaje
+    color: $colorTexto
+
+    .fondoPanel
+        position: absolute
+        width: 90%
+        height: 100%
+        right: 0
+        background-image: url("../../../assets/Background/Fondo-Panel-Personaje.png")
+        background-size: 100% 100% 
+        @include media("<=tablet")
+            width: 86%
+        @include media("<=phone")
+            width: 90%
+
+    .fondoPestana
+        position: absolute
+        width: 12%
+        height: 22%
+        left: 0 
+        top: 1%
+        background-image: url("../../../assets/Background/Pestana-Panel-Personaje.png")
+        background-size: 100% 100% 
+        @include media("<=tablet")
+            width: 15%
+            left: 0
+        @include media("<=phone")
+            width: 13%
+            left: 0 
+
+    #contenedorSeleccionarHeroe
+        position: absolute
+        width: 85%
+        height: 90%
+        top: 6%
+        left: 14%
+        z-index: 110
+        background-image: url("../../../assets/Background/Fondo-Seleccion-Heroe.png")
+        background-size: 100% 100% 
+        .frame
+            position: absolute
+            width: 100%
+            height: 100%
+            background-image: url("../../../assets/Frames/Frame-Seleccion-Heroe.png")
+            background-size: 100% 100% 
+
+        .seccionElegirHeroe
+            position: absolute
+            width: 65%
+            left: 32%
+            height: 90%
+            top: 5%
+            .titulo
+                position: relative
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 100%
+                height: 10%
+                border-bottom: 2px solid $colorTexto
+
+            .contenedorHeroes
+                position: relative
+                display: flex
+                flex-direction: column
+                width: 100%
+                height: 85%
+                margin-top: 5%
+                overflow-y: scroll
+
+                .heroe
+                    position: relative
+                    display: flex
+                    z-index: 120
+                    height: 28vh
+                    margin-bottom: 2%
+                    text-align: center
+                    background-color: $colorFondo1
+                    box-shadow: inset 0px 0px 10px 3px white
+
+                    .contenedorMarcoHeroe
+                        position: relative
+                        width: 25vh 
+                        height: 25vh
+                        padding-left: 1.5vh
+                        padding-top: 1.5vh
+                        .frameHeroe
+                            position: absolute
+                            z-index: 10
+                            width: 25vh 
+                            height: 25vh 
+                            border: 5px solid $colorTexto
+                            border-radius: 100%
+                            box-sizing: border-box
+                        
+                        .imagenHeroe
+                            position: relative
+                            height: 100%
+                            top: 0
+                            left: 0
+                            clip-path: circle(55% at center)
+
+                        .contenedorNivel
+                            position: absolute
+                            display: flex
+                            align-items: center
+                            justify-content: center
+                            z-index: 100
+                            bottom: 0
+                            right: 0
+                            width: 25%
+                            height: 25%
+                            border: 5px solid $colorTexto
+                            border-radius: 100%
+                            box-sizing: border-box
+                            background-color: $colorFondo1
+                        
+                    .contenedorDetalles
+                        position: relative
+                        display: flex
+                        flex-direction: column
+                        height: 100%
+                        text-align: justify
+                        margin-left: 3% 
+                        flex: 2
+
+                        .nombreHeroe
+                            position: relative
+                            width: 100%
+                            height: 10%
+                            margin-top: 5%
+                            flex: 1
+
+                        .descripcion
+                            position: relative
+                            margin-top: 5%
+                            flex: 3
+
+                        .contenedorRoles
+                            position: relative
+                            display: flex
+                            flex-direction: row
+                            justify-content: center
+                            align-items: center
+                            flex: 1
+
+                            .iconoRol
+                                position: relative
+                                margin: 0 5%
+                                height: 60%
+                            
+                            
+
+        .seccionOpciones
+            position: absolute
+            width: 27%
+            left: 3%
+            height: 55%
+            top: 40%
+            border-right: 2px solid $colorTexto
+
+            .titulo
+                position: relative
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 90%
+                left: 5%
+                height: 10%
+                border-bottom: 2px solid $colorTexto
+
+            .contenedorOpciones
+                position: relative
+                display: flex
+                flex-direction: column
+                justify-content: center
+                z-index: 100
+                width: 100%
+                height: 90%
+                .boton
+                    position: relative
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    width: 90%
+                    height: 40%
+                    border: 3px solid $colorTexto
+                    margin: 5% 
+
+    #contenedorPanelInterno
+        position: absolute
+        width: 60%
+        height: 98%
+        right: 0
+        top: 1% 
+
+        .fondoPanelInterior
+            position: absolute
+            width: 100%
+            height: 100%
+            background-image: url("../../../assets/Background/Fondo-Panel-Personaje-Interno.png")
+            background-size: 100% 100% 
+        
+        .contenedorGeneral
+            position: absolute
+            width: 100%
+            height: 100%
+            overflow-y: scroll
+            .contenedorDescripcion
+                position: relative
+                top: 2%
+                margin: 30px
+                z-index: 101
+                text-align: justify
+                @include media("<=tablet")
+                    top: 0
+                    margin: 0 30px
+                @include media("<=smphone")
+                    top: 0
+                    margin: 0 10px 
+                .titulo
+                    margin: 20px 30px
+                    @include media("<=tablet")
+                        margin: 10px 20px
+                    @include media("<=smphone")
+                        margin: 5px 10px
+
+            .contenedorEstadisticas
+                position: relative
+                display: inline-block
+                top: 2%
+                width: 45%
+                height: 60%
+                margin: 30px
+                z-index: 101
+                border-right: solid 1px $colorTexto
+                @include media("<=tablet")
+                    margin: 5px 30px 
+                @include media("<=phone")
+                    margin: 5px 20px 
+                @include media("<=smphone")
+                    margin: 5px 10px 
+                .titulo
+                    margin: 20px 30px
+                    @include media("<=tablet")
+                        margin: 10px 30px 
+                    @include media("<=phone")
+                        margin: 5px 30px 
+
+                .estadisticasGeneral
+                    position: relative
+                    display: block
+                    height: 12%
+                    margin-bottom: 5%
+                    margin-left: 5%
+                    width: 95%
+
+            .contenedorRol
+                position: relative
+                display: inline-block
+                vertical-align: top
+                text-align: center
+                width: 35%
+                top: 2%
+                margin: 30px
+                z-index: 101
+                @include media("<=tablet")
+                    margin: 5px 10px 
+                .titulo
+                    margin: 20px 30px
+                    @include media("<=tablet")
+                        margin: 10px 30px 
+                .contenedorFrameRol
+                    position: absolute
+                    width: 50%
+                    left: 50%
+                    margin-left: -25%
+                    padding-top: 50%
+                    height: 0 
+                    border-radius: 100%
+                    border: 5px solid $colorTexto
+                    @include media("<=phone")
+                        border: 3px solid $colorTexto
+                    @include media("<=smphone")
+                        border: 2px solid $colorTexto
+
+                .iconoRol
+                    position: absolute
+                    left: 50%
+                    width: 60%
+                    margin-left: -30%
+                    top: 20%
+                .tituloRol
+                    position: relative
+                    margin-top: 5%
+                
+        .contenedorHabilidades
+            position: absolute
+            width: 100%
+            height: 100%
+            text-align: justify
+            overflow-y: scroll
+            hr
+                width: 80%
+                border-color: $colorTexto
+            .contenedorPasiva
+                position: relative
+                margin: 0px 30px
+                z-index: 101
+                .titulo
+                    margin: 10px 30px
+
+            .contenedorHechizos
+                position: relative
+                margin:  0px 30px
+                z-index: 101
+                .titulo
+                    margin: 10px 30px
+
+            .contenedorHabilidad
+                position: relative
+                width: 97%
+                height: 20%
+                margin-left: 5%
+                margin-bottom: 20px
+                .imagenHabilidad
+                    position: relative
+                    display: inline-block
+                    height: 0
+                    width: 15%
+                    padding-top: 15%
+                    background-color: black
+
+                .contenedorTexto
+                    position: relative
+                    display: inline-block
+                    vertical-align: top
+                    margin-left: 5%
+                    width: 75%
+                    .titulo
+                        margin: 10px 0px
+                        @include media("<=tablet")
+                            margin: 0px  
+
+    #contenedorExterno
+        position: absolute
+        height: 100%
+        left: 12%
+        width: 29%
+
+        @include media("<=tablet")
+            left: 15%
+            width: 25%
+        @include media("<=phone")
+            left: 11%
+            width: 30%
+
+        .marcoPersonaje
+            position: absolute
+            height: 23vw
+            top: 5%
+            left: 7%
+            z-index: 130
+
+            @include media("<=desktop")
+                height: 23vw
+                top: 5%
+                left: 8%
+            @include media("<=tablet")
+                height: 23vw
+                top: 5%
+                left: 2%
+            @include media("<=phone")
+                width: 13%
+                left: 10% 
+            img 
+                position: relative
+                display: block
+                height: 100%
+
+            .imagenPersonaje
+                position: absolute
+                clip-path: circle(45% at center)
+
+            .contenedorIcono
+                position: absolute
+                display: flex
+                width: 100%
+                height: 100%
+                justify-content: center 
+                align-items: center 
+
+                img
+                    position: absolute 
+                    width: 50%
+                    height: auto
+
+
+        .contenedorSeleccion
+            position: absolute
+            top: 40%
+            width: 100%
+            height: 40%
+            color: $colorTexto 
+            @include media("<=phone")
+                top: 52%
+
+            hr
+                margin: 0 40px
+                border-bottom: 0px
+                border-top: $colorTexto solid 1px
+
+            .seleccion
+                position: relative
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 100%
+                height: 30%
+                &.seleccionado
+                    background: url("../../../assets/Background/Sombreado-Seleccion-Personaje.png")
+                    background-size: 100% 100%
+
+
+

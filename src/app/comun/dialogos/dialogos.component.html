@@ -1,8 +1,68 @@
+
 <!--   ******************* -->
 <!--         DIALOGOS      -->
 <!--   ******************* -->
 
+
+<div *ngIf="data.tipoDialogo == 'Error'" class= "contenedor">
+
+	<h1 class="title Texto2">Error</h1>
+
+	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
+	
+	<botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="botonUnico"></botonComponent>
+	
+	<div class="frame"></div>
+
+</div>
+
 <div *ngIf="data.tipoDialogo == 'Informativo'" class= "contenedor">
+
+	<h1 class="title Texto2">{{data.titulo}}</h1>
+
+	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
+	
+	<botonComponent mat-button [mat-dialog-close] [texto]="'OK'" [color]="'verde'" class="botonUnico"></botonComponent>
+	
+	<div class="frame"></div>
+
+</div>
+
+
+<div *ngIf="data.tipoDialogo == 'CrearCuenta'" class= "contenedor">
+
+	<h1 class="title Texto1 colorTexto">Crear Cuenta:</h1>
+
+	<div class="contenedorFormulario colorTexto">
+		<div class="texto Texto2">Correo Electrónico:</div>
+		<div class="formulario">
+		  <input #crearCorreo type="text" class="Texto2"/>
+		</div>
+		<div class="texto Texto2">Usuario:</div>
+		<div class="formulario">
+		  <input #crearUsuario type="text" class="Texto2"/>
+		</div>
+		<div class="texto Texto2">Contraseña:</div>
+		<div class="formulario">
+		  <input #crearPassword type="text" class="Texto2"/>
+		</div>
+		<div class="texto Texto2">Repetir Contraseña:</div>
+		<div class="formulario">
+		  <input #crearPassword2 type="text" class="Texto2"/>
+		</div>
+		
+	</div>
+
+	<div class="contenedorBotones">	
+		<botonComponent mat-button [mat-dialog-close]= "crearCuenta()" [texto]="'Crear Cuenta'" [color]="'verde'" class="boton"></botonComponent>
+		<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+	</div>
+	
+	<div class="frame"></div>
+
+</div>
+
+<div *ngIf="data.tipoDialogo == 'InformativoAntiguo'" class= "contenedor">
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-content>
       <p>{{data.contenido}}</p>

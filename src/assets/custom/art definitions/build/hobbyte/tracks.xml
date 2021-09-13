@@ -1,0 +1,149 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+	</SharedSettings>
+	<Placeable Name="Mine Cart (Full)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/mine cart full.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-75"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetY" Value="75"/>
+	</Placeable>
+	<Placeable Name="Mine Cart (Empty)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/mine cart empty.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-75"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetY" Value="75"/>
+	</Placeable>
+	<Placeable Name="Track (Straight)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track straight.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-7"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetY" Value="7"/>
+	</Placeable>
+	<Placeable Name="Track Broken (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track broken lower.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-7"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetY" Value="7"/>
+	</Placeable>
+	<Placeable Name="Track Broken (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track broken upper.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-7"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ColliderOffsetY" Value="7"/>
+	</Placeable>
+	<Placeable Name="Track Shifter">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track shifter.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="-135"/>
+		<Setting Key="DrawingOffsetY" Value="-12"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/tracks/track shifter.png"/>
+	</Placeable>
+	<Placeable Name="Track Intersection">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track intersection.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-85"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/tracks/track intersection.png"/>
+	</Placeable>
+	<Placeable Name="Track Shifter (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track shifter lower.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="69"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/tracks/track shifter lower.png"/>
+	</Placeable>
+	<Placeable Name="Track Shifter (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track shifter upper.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-84"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/tracks/track shifter upper.png"/>
+	</Placeable>
+	<Placeable Name="Track Turn">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track turn.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="-38"/>
+		<Setting Key="DrawingOffsetY" Value="-9"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/tracks/track turn.png"/>
+	</Placeable>
+	<Placeable Name="Tracks Turn (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track turn lower.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="19"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/tracks/track turn lower.png"/>
+	</Placeable>
+	<Placeable Name="Track Turn (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Tracks/track turn upper.png"/>
+		<Setting Key="Category" Value="Mining"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-43"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/tracks/track turn upper.png"/>
+	</Placeable>
+</Settings>

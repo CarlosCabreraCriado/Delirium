@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Stella Laghi"/>
+		<Setting Key="ArtistURL" Value="https://www.patreon.com/stelliadi_isometric"/>
+		<Setting Key="Creator" Value="Hobbyte"/>
+		<Setting Key="CreatorURL" Value="http://hobbyte.net/"/>
+		<Setting Key="PlayModeAsset" Value="True"/>
+		<Setting Key="Type" Value="Character"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-123"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Tokens/visibility/small token.png"/>
+	</SharedSettings>
+	<Placeable Name="Archer, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/archer_f.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Archer, Female 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/archer_f2.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="115"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/> 
+		<Setting Key="ArtistURL" Value=""/>
+	</Placeable>
+	<Placeable Name="Archer, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Archer_m.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="DrawingOffsetY" Value="-108"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Barbarian, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Barbarian_f.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Barbarian, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Barbarian_m.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Thief, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Thief_f.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Thief, Goblin">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/thief_g.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="ArtistURL" Value=""/>
+	</Placeable>
+	<Placeable Name="Thief, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Thief_m.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Warrior, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Warrior_f.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Warrior, Female 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Warrior_f2.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="ArtistURL" Value=""/>
+	</Placeable>
+	<Placeable Name="Warrior, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Warrior_m.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+	</Placeable>
+	<Placeable Name="Warrior, Male 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Warrior_m2.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="ArtistURL" Value=""/>
+	</Placeable>
+	<Placeable Name="Warrior, Male 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Warrior_m3.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="125"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="ArtistURL" Value=""/>
+	</Placeable>
+	<Placeable Name="Wizard, Female">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Wizard_f.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="130"/>
+	</Placeable>
+	<Placeable Name="Wizard, Male 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Wizard_m.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="ColliderOffsetY" Value="120"/>
+	</Placeable>
+	<Placeable Name="Wizard, Male">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Characters/Adventurers/Wizard_m2.png"/>
+		<Setting Key="Category" Value="Characters/Adventurers"/>
+		<Setting Key="DrawingOffsetY" Value="-145"/>
+		<Setting Key="ColliderOffsetY" Value="140"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="ArtistURL" Value=""/>
+	</Placeable>
+</Settings>

@@ -1,0 +1,264 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</SharedSettings>
+	<Placeable Name="Stream 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river straight.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Stream 2">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river straight 2.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Stream Cave Exit">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river cave exit.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-44"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>
+	</Placeable>
+	<Placeable Name="Stream Split (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river split lower.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="2"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Stream Split (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river split.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Stream Bend (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river bend upper.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="43"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>
+	</Placeable>
+	<Placeable Name="Stream Bend (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river bend lower.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-56"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Stream Bend">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/river bend.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="-40"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Stream, Pond (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/lake upper.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="55"/>
+		<Setting Key="DrawingOffsetY" Value="-32"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Stream, Pond (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Stream/lake lower.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="-57"/>
+		<Setting Key="DrawingOffsetY" Value="34"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River 1">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river straight.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River 2">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river straight 2.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River Cave Exit">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river cave exit.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-66"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>
+	</Placeable>
+	<Placeable Name="River Split (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river split.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River Split (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river split lower.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="3"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River Bend (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river bend upper.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="63"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>
+	</Placeable>
+	<Placeable Name="River Bend (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river bend lower.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-85"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River Bend">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/river bend.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="10"/>
+		<Setting Key="DrawingOffsetY" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River, Lake (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/lake upper.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="12"/>
+		<Setting Key="DrawingOffsetY" Value="-9"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="River, Lake (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/River/lake lower.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Corner"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="-20"/>
+		<Setting Key="DrawingOffsetY" Value="8"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="0"/>	
+	</Placeable>
+	<Placeable Name="Waterfall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/waterfall.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-155"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/triple wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="-66"/>
+		<Setting Key="ColliderOffsetY" Value="178"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Waterfall Extender">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/waterfall Extender.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-155"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>
+		
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,2"/>
+		<Setting Key="StacksWithImages" Value="Waterfall;Waterfall Extender;Waterfall Extender, Simple"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/triple wall.png"/>
+		<Setting Key="ColliderOffsetX" Value="-66"/>
+		<Setting Key="ColliderOffsetY" Value="178"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Waterfall Extender, Simple">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/waterfall Extender simple.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-155"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="70"/>	
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,2"/>
+		<Setting Key="StacksWithImages" Value="Waterfall;Waterfall Extender;Waterfall Extender, Simple"/>
+		
+		<Setting Key="Type" Value="WallDecorationBothSides"/>
+		<Setting Key="ForceGradualReveal" Value="False"/>
+	</Placeable>
+	<Placeable Name="Water (Tiled)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Rivers and streams/Water.png"/>
+		<Setting Key="Category" Value="Water"/>
+		<Setting Key="SortingName" Value="X Water Tile Grid"/>
+		<Setting Key="DrawingOffsetZ" Value="-6"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+	</Placeable>
+</Settings>

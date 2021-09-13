@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="Creator" Value="Hobbyte"/>
+		<Setting Key="CreatorURL" Value="http://hobbyte.net/"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</SharedSettings>
+	<Placeable Name="Bed">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Beds/Bed.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="30"/>
+		<Setting Key="CornerOffsetY" Value="44"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Beds/visibility/bed.png"/>
+	</Placeable>
+	<Placeable Name="Bed (Bunk)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Beds/Bunk Bed.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="30"/>
+		<Setting Key="CornerOffsetY" Value="44"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Beds/visibility/bunk bed.png"/>
+	</Placeable>
+	<Placeable Name="Chair (facing away)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/Chair (facing away).png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/chair.png"/>
+	</Placeable>
+	<Placeable Name="Chair">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/Chair.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/chair.png"/>
+	</Placeable>
+	<Placeable Name="Throne">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/Throne.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="ConceptCreator" Value="Made by MisterMaster"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/throne.png"/>
+	</Placeable>
+	
+	<Placeable Name="Stool">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/Stool.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/chair.png"/>
+	</Placeable>
+	
+	<Placeable Name="Bar Stool 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/Bar Stool.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="ConceptCreator" Value="Michael Roberts"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/chair.png"/>
+	</Placeable>
+	<Placeable Name="Bar Stool 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/Bar Stool 2.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="ConceptCreator" Value="Michael Roberts"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/chair.png"/>
+	</Placeable>
+	<Placeable Name="Bar Stool 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/Bar Stool Fallen.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="ConceptCreator" Value="Michael Roberts"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="20"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/bar stool fallen.png"/>
+	</Placeable>
+	<Placeable Name="Bench">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/bench.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-49"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="-110"/>
+		<Setting Key="CornerOffsetY" Value="70"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Chairs/visibility/bench.png"/>
+	</Placeable>
+	
+	<Placeable Name="Table">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Table.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Table.png"/>
+	</Placeable>
+	<Placeable Name="Table, Round">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Round Table.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/round Table.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="60"/>
+	</Placeable>
+	<Placeable Name="Table With Chairs 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Table With Chairs 1.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Table.png"/>
+	</Placeable>
+	<Placeable Name="Table With Chairs 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Table With Chairs 2.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Table.png"/>
+	</Placeable>
+	<Placeable Name="Table With Chairs 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Table With Chairs 3.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Table.png"/>
+	</Placeable>
+	<Placeable Name="Table With Chairs 4">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Table With Chairs 4.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Table.png"/>
+	</Placeable>
+	<Placeable Name="Table With Chairs 5">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Table With Chairs 5.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Table.png"/>
+	</Placeable>
+	<Placeable Name="Table With Chairs 6">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Table With Chairs 6.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="63"/>
+		<Setting Key="CornerOffsetY" Value="85"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Table.png"/>
+	</Placeable>
+	<Placeable Name="Desk">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Desks/Desk.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="48"/>
+		<Setting Key="CornerOffsetY" Value="67"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Desks/visibility/Desk.png"/>
+	</Placeable>
+	<Placeable Name="Desk (with paper and quill)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Desks/Desk paper quill.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="48"/>
+		<Setting Key="CornerOffsetY" Value="67"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Desks/visibility/Desk.png"/>
+	</Placeable>
+	<Placeable Name="Desk (Fancy)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Desks/Fancy Desk.png"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="SortingName" Value="Desk (X Fancy)"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-90"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="30"/>
+		<Setting Key="CornerOffsetY" Value="67"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Desks/visibility/fancy Desk.png"/>
+	</Placeable>
+	<Placeable Name="Blacksmith's Work Table">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/Work Table.png"/>
+		<Setting Key="ConceptCreator" Value="David Stifter"/>
+		<Setting Key="Category" Value="Furniture"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="48"/>
+		<Setting Key="CornerOffsetY" Value="67"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Furniture/Tables &amp; chairs/Tables/visibility/Work Table.png"/>
+	</Placeable>
+</Settings>

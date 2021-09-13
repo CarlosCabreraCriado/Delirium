@@ -1,0 +1,188 @@
+
+<!--   ******************* -->
+<!--         Plantilla       -->
+<!--   ******************* -->
+
+<div class="contenedorPanelPersonaje">
+	<div class="fondoPanel"></div>
+	<div class="fondoPestana"></div>
+
+		<!-- PANEL SELECCION HEROE -->
+		<div *ngIf="mostrarSeleccionHeroe || heroeSeleccionado==null" id="contenedorSeleccionarHeroe">
+
+			<div class="seccionElegirHeroe">
+
+				<div class="titulo Texto1">Heroes</div>
+				<div class="contenedorHeroes">
+
+					<div *ngFor="let heroe of perfil.heroes; let i = index" class="heroe Texto2" (click)="seleccionarHeroe(i)">
+						<div class="contenedorMarcoHeroe">
+							<div class="frameHeroe"></div>
+							<img  class="imagenHeroe" src="../../../assets/Personajes/heroes/01.png"/>	
+							<div class="contenedorNivel">{{heroe.nivel}}</div>
+						</div>
+
+						<div class="contenedorDetalles">
+							<div class="nombreHeroe">{{heroe.nombre}}</div>
+							<div class="descripcion Texto4">{{heroe.descripcion}}</div>
+							
+							<div class="contenedorRoles">
+								<img class="iconoRol" src="../../../assets/Iconos/Rol-Tank.png">		
+								<img class="iconoRol" src="../../../assets/Iconos/Rol-Heal.png">		
+								<img class="iconoRol" src="../../../assets/Iconos/Rol-DPS.png">		
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div class="seccionOpciones">
+				<div class="titulo Texto1">Opciones</div>
+				<div class="contenedorOpciones">
+					<div class="boton Texto2" (click)="appService.mostrarCrearHeroe('',{})"> Crear Heroe </div>
+					<div class="boton Texto2"> Eliminar Heroe </div>
+				</div>
+			</div>
+			<div class="frame"></div>
+
+		</div>
+
+	<div id="contenedorPanelInterno">
+		<div class="fondoPanelInterior"></div>
+
+		<!-- PANEL GENERAL -->
+		<div *ngIf="pantalla=='General' && heroeSeleccionado!=null" class="contenedorGeneral">
+			<div class="contenedorDescripcion">
+				<div class="titulo Texto1">{{heroeSeleccionado.clase}}</div>
+				<div class="texto Texto3"> 
+					{{heroeSeleccionado.descripcion}}		
+				</div>
+			</div>
+			
+			<div class="contenedorEstadisticas">
+				<div class="titulo Texto1">Estadísticas</div>
+
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Armadura'" [valor]="50"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Vitalidad'" [valor]="80"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Curación'" [valor]="40"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Daño Físico'" [valor]="30"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Daño Mágico'" [valor]="10"></estadisticasGeneralComponent>
+				<estadisticasGeneralComponent class="estadisticasGeneral" [tipo]= "'Energía'" [valor]="100"></estadisticasGeneralComponent>
+			</div>
+
+			<div class="contenedorRol">
+				<div class="titulo Texto1">Rol</div>
+				<div class="contenedorFrameRol">
+					<div class="tituloRol Texto1">DPS</div>
+					<img class="iconoRol" src="/../../../assets/Iconos/Rol-DPS.png">
+				</div>
+			</div>
+		</div> <!-- Cierre de panel General -->
+
+		<!-- PANEL HABILIDADES -->
+		<div *ngIf="pantalla=='Habilidades' && heroeSeleccionado!=null" class="contenedorHabilidades">
+			
+			<div class="contenedorPasiva">
+				<div class="titulo Texto1">Pasiva</div>
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[0]+'% '+imagenHechVertical[0]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][0].nombre}}</div>
+						<div class="texto Texto4"> 
+							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][0].descripcion}}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="contenedorHechizos">
+
+				<div class="titulo Texto1">Habilidades</div>
+				<!-- HECHIZO 1 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[1]+'% '+imagenHechVertical[1]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][1].nombre}}</div>
+						<div class="texto Texto4"> 
+							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][1].descripcion}}
+						</div>
+					</div>
+				</div>
+
+				<!-- HECHIZO 2 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[2]+'% '+imagenHechVertical[2]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][2].nombre}}</div>
+						<div class="texto Texto4">  
+							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][2].descripcion}}
+						</div>
+					</div>
+				</div>
+
+				<!-- HECHIZO 3 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[3]+'% '+imagenHechVertical[3]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][3].nombre}}</div>
+						<div class="texto Texto4">  
+							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][3].descripcion}}
+						</div>
+					</div>
+				</div>
+
+				
+				<!-- HECHIZO 4 -->	
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[4]+'% '+imagenHechVertical[4]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].nombre}}</div>
+						<div class="texto Texto4"> 
+						   	{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].descripcion}}
+						</div>
+					</div>
+				</div>
+
+				<!-- HECHIZO 5 -->	
+				<!--
+				<div class="contenedorHabilidad">
+					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[5]+'% '+imagenHechVertical[5]+'%','background-size': '1800%'}"/>
+					<div class="contenedorTexto">
+						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].nombre}}</div>
+						<div class="texto Texto4">  
+							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].descripcion}}
+						</div>
+					</div>
+				</div>
+				-->
+
+			</div>	
+
+		</div>
+
+	</div>
+
+	<div id="contenedorExterno">
+
+		<div class="marcoPersonaje" (click)="toggleMostrarSeleccionHeroe()">
+			<div *ngIf="heroeSeleccionado==null" class="contenedorIcono">
+				<img class="imagenSeleccionarHeroe" src="../../../assets/Iconos/Icono-Heroe.png"/>	
+			</div>
+			<img *ngIf="heroeSeleccionado!=null" class="imagenPersonaje" src="../../../assets/Personajes/{{camelize(heroeSeleccionado['clase'])}}.png"/>	
+			<img src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
+		</div>
+
+		<div class="contenedorSeleccion">
+			<div class="Texto1 seleccion" [ngClass]="renderizarOpcionSeleccionada('General')" (click)="cambiarPantalla('General')">General</div>
+			<hr class="separador"/>
+			<div class="Texto1 seleccion" [ngClass]="renderizarOpcionSeleccionada('Habilidades')" (click)="cambiarPantalla('Habilidades')">Habilidades</div>
+			<hr class="separador"/>
+			<div class="Texto1 seleccion" [ngClass]="renderizarOpcionSeleccionada('Talentos')" (click)="cambiarPantalla('Talentos')">Talentos</div>
+		</div>
+
+	</div>
+
+</div>
+

@@ -1,6 +1,23 @@
 
-const DEBUG = true;
+
+
+//DETERMINA SI ES DESARROLLO O PRODUCCION:
+
+//        MODOS POSIBLES:
+
+// remoteDev: Modo desarrollo con servidor remoto
+// localDev: Modo desarrollo con servidor local
+// production: Modo produccion
+
+const DEBUG = process.env.NODE_ENV 
+console.log("MODO EJECUCION: "+DEBUG);
+
 const MOVIL = false;
+if(MOVIL){
+  console.log("DISPLAY MODE: MOVIL")
+}else{
+  console.log("DISPLAY MODE: DESKTOP")
+}
 
 //Static Server
 const electron = require('electron');
@@ -25,14 +42,12 @@ var heroeStatsSchema= mongoose.Schema;
 
 heroeStatsSchema = new Schema({
   nombreId: String,
-  guerrero: [],
   cruzado: [],
-  ingeniero: [],
-  cazador: [],
   chronomante: [],
-  hechiceroip: [],
-  iluminado: [],
-  mago_de_sangre: []
+  hechicero: [],
+  clerigo: [],
+  minotauro: [],
+  segador_de_almas: []
 });
 
 //Schema y modelo de HeroeHech:
@@ -41,18 +56,11 @@ var heroeHechSchema= mongoose.Schema;
 
 heroeHechSchema = new Schema({
   nombreId: String,
-  angel_caido: [],
-  caballero: [],
-  cazador: [] ,
   chronomante: [],
   clerigo: [], 
   cruzado: [],
-  enano: [], 
-  gladiador: [], 
-  hechicero: [],
-  ingeniero: [], 
-  lich: [], 
   minotauro: [], 
+  hechicero: [],
   segador_de_almas: []
 });
 
@@ -185,6 +193,7 @@ personajesSchema = new Schema({
 });
 
 console.log("INICIANDO")
+
 //Schema y modelo de verificacion de clave
 var verificarClaveSchema = new Schema({
   clave: {type: Number,required: true},
@@ -253,8 +262,8 @@ function createWindow () {
   
   // and load the index.html of the app.
   
-  if(DEBUG){
-    mainWindow.loadURL("http://localhost:4200/cargarPartida");
+  if(DEBUG!=="production"){
+    mainWindow.loadURL("http://localhost:4200/index.html");
   }else{
     mainWindow.loadURL(url.format({
       pathname: path.join(__dirname, 'delirium/index.html'),
@@ -287,7 +296,7 @@ function desarrollador() {
         nodeIntegration: true}
     })
   
-  if(DEBUG){
+  if(DEBUG!=="production"){
     desarrolladorWindow.loadURL("http://localhost:4200/desarrollador");
   }else{
     desarrolladorWindow.loadURL(url.format({

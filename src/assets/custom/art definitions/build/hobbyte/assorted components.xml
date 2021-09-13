@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</SharedSettings>
+	<Placeable Name="Bridge (Railing)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/Bridge with railing.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-3"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="CornerOffsetX" Value="185"/>
+		<Setting Key="CornerOffsetY" Value="180"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/components/bridge.png"/>
+		<Setting Key="ColliderOffsetY" Value="-2"/>
+		<Setting Key="ColliderOffsetY" Value="40"/>
+	</Placeable>
+	<Placeable Name="Bridge (Plain)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/Bridge.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-3"/>
+		<Setting Key="DrawingOffsetY" Value="-45"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/components/bridge.png"/>
+		<Setting Key="ColliderOffsetY" Value="-2"/>
+		<Setting Key="ColliderOffsetY" Value="40"/>
+	</Placeable>
+	<Placeable Name="Bar">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/Bar Straight.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SortingName" Value="X Bar Desk"/>
+		<Setting Key="ConceptCreator" Value="Michael Roberts"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-62"/>
+		<Setting Key="DrawingOffsetZ" Value="-4"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="JointStraight" Value="Art/Build/Hobbyte/Components/Bar Joint.png"/>
+		<Setting Key="JointBottomAngle" Value="Art/Build/Hobbyte/Components/Bar Lower Angle.png"/>
+		<Setting Key="JointTopAngle" Value="Art/Build/Hobbyte/Components/Bar Upper Angle.png"/>
+		<Setting Key="JointSideAngle" Value="Art/Build/Hobbyte/Components/Bar Side Angle.png"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="62"/>
+		<Setting Key="JointColliderImagePath" Value="Art/_colliders/hobbyte/Joint.png"/>
+		<Setting Key="JointColliderOffsetY" Value="62"/>
+	</Placeable>
+	
+	<Placeable Name="Roof (Small)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/Small Roof.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="SortingName" Value="Roof _ (Small)"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="11"/>
+		<Setting Key="DrawingOffsetY" Value="-205"/>
+		<Setting Key="DrawingOffsetZ" Value="15"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/components/small roof.png"/>
+	</Placeable>
+	
+	<Placeable Name="Roof (Medium)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/Roof Bend.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="SortingName" Value="Roof M (Medium)"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-3"/>
+		<Setting Key="DrawingOffsetY" Value="-110"/>
+		<Setting Key="DrawingOffsetZ" Value="20"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Roof (Large)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/Large Roof.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="SortingName" Value="Roof XL (Large)"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="28"/>
+		<Setting Key="DrawingOffsetY" Value="-120"/>
+		<Setting Key="DrawingOffsetZ" Value="30"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/components/large roof.png"/>
+	</Placeable>
+	
+	<Placeable Name="Roof (Half)">
+		<Setting Key="ImagePath" Value="Art/build/hobbyte/components/roof half1.png"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="SortingName" Value="Roof Y (Half)"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="70"/>
+		<Setting Key="DrawingOffsetY" Value="-125"/>
+		<Setting Key="DrawingOffsetZ" Value="15"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/components/roof half1.png"/>
+		<Setting Key="ColliderOffsetY" Value="85"/>
+	</Placeable>
+	
+	<Placeable Name="Roof (Half, Far)">
+		<Setting Key="ImagePath" Value="Art/build/hobbyte/components/roof half2.png"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="Type" Value="Decoration"/>
+		<Setting Key="SortingName" Value="Roof Z (Half, Far)"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="70"/>
+		<Setting Key="DrawingOffsetY" Value="-125"/>
+		<Setting Key="DrawingOffsetZ" Value="15"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/components/roof half1.png"/>
+		<Setting Key="ColliderOffsetY" Value="85"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Stone Part 1)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/stone bridge 1.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="8"/>
+		<Setting Key="DrawingOffsetY" Value="-34"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Stone Part 2)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/stone bridge 2.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-62"/>
+		<Setting Key="DrawingOffsetY" Value="-105"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	<Placeable Name="Bridge (Stone Part 3)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/stone bridge 3.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-40"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Front, Start)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/bridge start.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="142"/>
+		<Setting Key="DrawingOffsetY" Value="-53"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Front, End)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/bridge end.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="-22"/>
+		<Setting Key="DrawingOffsetY" Value="-93"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Front, Middle)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/bridge middle.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="61"/>
+		<Setting Key="DrawingOffsetY" Value="-72"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Back, Start)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/bridge back start.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="165"/>
+		<Setting Key="DrawingOffsetY" Value="87"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Back, End)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/bridge back end.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="3"/>
+		<Setting Key="DrawingOffsetY" Value="47"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+	
+	<Placeable Name="Bridge (Back, Middle)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Components/bridge back middle.png"/>
+		<Setting Key="Category" Value="Assorted Components"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="DrawingOffsetX" Value="86"/>
+		<Setting Key="DrawingOffsetY" Value="68"/>
+		<Setting Key="DrawingOffsetZ" Value="-5"/>
+		<Setting Key="CornerOffsetX" Value="150"/>
+		<Setting Key="CornerOffsetY" Value="140"/>
+	</Placeable>
+</Settings>

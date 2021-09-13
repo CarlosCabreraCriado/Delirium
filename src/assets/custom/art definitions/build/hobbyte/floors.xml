@@ -1,0 +1,496 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="DrawingOffsetZ" Value="-14.9"/>
+		<Setting Key="ForceGradualReveal" Value="True"/>
+	</SharedSettings>
+	<Placeable Name="Floor Grid">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/Floor Grid.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Near">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope near.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Floor Grid Slope a Near"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="138"/>
+		<Setting Key="DrawingOffsetY" Value="-149"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Far">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope far.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Floor Grid Slope a Far"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="153"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Outer Near Corner">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope near corner.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-226"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Inner Near Corner">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope near corner inner.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-3"/>
+		<Setting Key="DrawingOffsetY" Value="-239"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Inner Far Corner">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope far corner inner.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-3"/>
+		<Setting Key="DrawingOffsetY" Value="-79"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Outer Far Corner">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope far corner.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-83"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Outer Side Corner">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope side corner.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="-7"/>
+		<Setting Key="DrawingOffsetY" Value="-154"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Grid Slope Inner Side Corner">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/slope side corner inner.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-150"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Tile Grid">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/Floor Tile Grid.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+	</Placeable>
+	<Placeable Name="Floor Hex (Horizontal)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/hex floor horizontal.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Floor Hex (Vertical)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/hex floor vertical.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="-15"/>
+	</Placeable>
+	<Placeable Name="Grass Grid">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/Grass Floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="X Grass Grid"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+	</Placeable>
+	<Placeable Name="Dirt (Watercolour, Heavy)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour dirt path.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Dirt a Heavy"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.98"/>
+	</Placeable>
+	<Placeable Name="Dirt (Watercolour, Medium)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour dirt path.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Dirt b Medium"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.975"/>
+		<Setting Key="Opacity" Value="0.85"/>
+	</Placeable>
+	<Placeable Name="Dirt (Watercolour, Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour dirt path.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Dirt c Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.97"/>
+		<Setting Key="Opacity" Value="0.7"/>
+	</Placeable>
+	<Placeable Name="Dirt (Watercolour, Ultra Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour dirt path.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Dirt d Ultra Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.968"/>
+		<Setting Key="Opacity" Value="0.55"/>
+	</Placeable>
+	<Placeable Name="Grass (Watercolour, Heavy)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour grass floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Grass a Heavy"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.02"/>
+	</Placeable>
+	<Placeable Name="Grass (Watercolour, Medium)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour grass floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Grass b Medium"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.015"/>
+		<Setting Key="Opacity" Value="0.85"/>
+	</Placeable>
+	<Placeable Name="Grass (Watercolour, Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour grass floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Grass c Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.01"/>
+		<Setting Key="Opacity" Value="0.7"/>
+	</Placeable>
+	<Placeable Name="Grass (Watercolour, Ultra Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour grass floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Grass d Ultra Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.005"/>
+		<Setting Key="Opacity" Value="0.55"/>
+	</Placeable>
+	<Placeable Name="Water (Watercolour, Heavy)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour water floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Water a Heavy"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.005"/>
+	</Placeable>
+	<Placeable Name="Water (Watercolour, Medium)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour water floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Water b Medium"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.003"/>
+		<Setting Key="Opacity" Value="0.85"/>
+	</Placeable>
+	<Placeable Name="Water (Watercolour, Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour water floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Water c Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.002"/>
+		<Setting Key="Opacity" Value="0.7"/>
+	</Placeable>
+	<Placeable Name="Water (Watercolour, Ultra Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour water floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Water d Ultra Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.999"/>
+		<Setting Key="Opacity" Value="0.55"/>
+	</Placeable>
+	<Placeable Name="Lava (Watercolour, Heavy)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour lava floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Lava a Heavy"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.005"/>
+	</Placeable>
+	<Placeable Name="Lava (Watercolour, Medium)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour lava floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Lava b Medium"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.003"/>
+		<Setting Key="Opacity" Value="0.85"/>
+	</Placeable>
+	<Placeable Name="Lava (Watercolour, Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour lava floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Lava c Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.002"/>
+		<Setting Key="Opacity" Value="0.75"/>
+	</Placeable>
+	<Placeable Name="Lava (Watercolour, Ultra Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour lava floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Lava d Ultra Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.999"/>
+		<Setting Key="Opacity" Value="0.65"/>
+	</Placeable>
+		<Placeable Name="Sand (Watercolour, Heavy)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour sand floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Sand a Heavy"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.005"/>
+	</Placeable>
+	<Placeable Name="Sand (Watercolour, Medium)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour sand floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Sand b Medium"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.003"/>
+		<Setting Key="Opacity" Value="0.85"/>
+	</Placeable>
+	<Placeable Name="Sand (Watercolour, Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour sand floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Sand c Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.002"/>
+		<Setting Key="Opacity" Value="0.7"/>
+	</Placeable>
+	<Placeable Name="Sand (Watercolour, Ultra Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour sand floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Sand d Ultra Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.999"/>
+		<Setting Key="Opacity" Value="0.55"/>
+	</Placeable>
+		<Placeable Name="Blood (Watercolour, Heavy)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour blood floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Blood a Heavy"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.005"/>
+	</Placeable>
+	<Placeable Name="Blood (Watercolour, Medium)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour blood floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Blood b Medium"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.003"/>
+		<Setting Key="Opacity" Value="0.85"/>
+	</Placeable>
+	<Placeable Name="Blood (Watercolour, Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour blood floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Blood c Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="1.002"/>
+		<Setting Key="Opacity" Value="0.75"/>
+	</Placeable>
+	<Placeable Name="Blood (Watercolour, Ultra Light)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Floors/watercolour blood floor.png"/>
+		<Setting Key="Category" Value="Floors"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="SortingName" Value="Watercolour Blood d Ultra Light"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,1"/>
+		<Setting Key="StacksWithImages" Value="Spiral Stairs 1"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Rectangle"/>
+		<Setting Key="ColorTint" Value="#FFFFFF"/>
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Floor Grid.png"/>
+		<Setting Key="ImageScale" Value="0.999"/>
+		<Setting Key="Opacity" Value="0.65"/>
+	</Placeable>
+</Settings>

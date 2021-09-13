@@ -19,10 +19,12 @@ export class CargaComponent implements OnInit {
   private opacidad:any = 0;
 
   ngOnInit() {
+
     //Inicio suscripción mostrar carga
     this.appService.mostrarCarga.subscribe(mostrar => {
       if(mostrar){this.opacidad=1; this.mostrarPantallaCarga=true;}else{this.opacidad=0; this.mostrarPantallaCarga=false;}
     });
+
     //Inicio suscripcion evento progreso Carga
     this.appService.progresoCarga.subscribe(progreso => {
       this.progreso= progreso;

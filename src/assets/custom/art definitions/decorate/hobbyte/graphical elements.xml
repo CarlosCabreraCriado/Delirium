@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="https://hobbyte.net/"/>
+		<Setting Key="DrawingOffsetZ" Value="10"/>
+		<Setting Key="AllowsMirror" Value="False"/>
+	</SharedSettings>
+	<Placeable Name="Logo (A1 and larger)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/created with dungeon builder.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+	</Placeable>
+	<Placeable Name="Logo (A2 &amp; A3)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/created with dungeon builder medium.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+	</Placeable>
+	<Placeable Name="Logo (A4)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/created with dungeon builder small.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+	</Placeable>
+	<Placeable Name="Logo (A5 and smaller)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/created with dungeon builder tiny.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+	</Placeable>
+	<Placeable Name="Eraser, Large">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Large.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 6 Large"/>
+	</Placeable>
+	<Placeable Name="Eraser, Microscopic">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Microscopic.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 1 Microscopic"/>
+	</Placeable>
+	<Placeable Name="Eraser, Minuscule">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Minuscule.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 2 Minuscule"/>
+	</Placeable>
+	<Placeable Name="Eraser, Tiny">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Tiny.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 3 Tiny"/>
+	</Placeable>
+	<Placeable Name="Eraser, Small">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Small.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 4 Small"/>
+	</Placeable>
+	<Placeable Name="Eraser, Small and Fuzzy">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Small Fuzzy.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 4 Small"/>
+	</Placeable>
+	<Placeable Name="Eraser, Medium and Fuzzy">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Medium Fuzzy.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 5 Medium"/>
+	</Placeable>
+	<Placeable Name="Eraser, Medium">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Medium.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 5 Medium"/>
+	</Placeable>
+	<Placeable Name="Eraser, Large">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Graphical Elements/Eraser Large.png"/>
+		<Setting Key="Category" Value="Graphical Elements"/>
+		<Setting Key="SortingName" Value="Eraser, 6 Large"/>
+	</Placeable>
+</Settings>

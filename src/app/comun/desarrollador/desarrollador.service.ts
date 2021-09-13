@@ -13,71 +13,83 @@ import * as XLSX from 'xlsx';
 export class DesarrolladorService implements OnInit{
 
   //Variables de control:
-  public validacion: any= {}
+	public validacion: any= {}
 
   //Variables de Estado Paneles Principales:
 	public panel= "mazmorra";
 	public estadoInmap= "";
 	public estadoMazmorra= "parametros";
-  public estadoParametros= "General";
+	public estadoParametros= "General";
 	public estadoDatos= "subir";
 	public estadoAssets= "";
-  public estadoDatosSubir= "subir";
+	public estadoDatosSubir= "subir";
 	
   //VARIABLES DE DATOS
-  public archivosExcel: any= [];
+	public archivosExcel: any= [];
 	public archivoDato: any;
 	public archivoDatoProvisional: any;
 
 	public archivoSeleccionado="Heroes_Stats";
-  public indexArchivoSeleccionado= 0;
+	public indexArchivoSeleccionado= 0;
 	public archivoSeleccionadoProvisional= "Null";
 
   //Mensajes:
-  public mostrarMensaje= false;
-  public mostrarSpinner= true;
-  public mensaje= "Actualizando Datos..."
+	public mostrarMensaje= false;
+	public mostrarSpinner= true;
+	public mostrarBotonAceptar= false;
+	public mensaje= "Actualizando Datos..."
 
   //Logger Consola
-  public logger=[];
-  private loggerColor=[];
+	public logger=[];
+	private loggerColor=[];
 
   //Variables Mazmorra
-  public mazmorra:any = {};
-  public listaMazmorra:any= [];
-  public mostrarCargarMazmorra= false;
+	public mazmorra:any = {};
+	public listaMazmorra:any= [];
+	public mostrarCargarMazmorra= false;
+	
+	private mazmorraInicializada= false;
+	private mazmorraNombreId= "";
+	private renderReticula= {}  as RenderReticula;
+	private numFilasIni= 27;
+	private numColumnasIni= 37;
+	private margenReticula= 6;
+	private cuentaIndexPieza= 0;
+	
+	private activarLimiteReticula: boolean = false;
+	private limiteReticulaXMin:number = 0;
+	private limiteReticulaXMax: number = 19;
+	
+	private limiteReticulaYMin: number = 0;
+	private limiteReticulaYMax: number = 11;
+	
+	private visorNumFilaIni:number = 14;
+	private visorNumColumnaIni: number= 24;
+	
+	private visorFila;
+	private visorColumna; 
 
-  private mazmorraInicializada= false;
-  private mazmorraNombreId= "";
-  private renderReticula= {}  as RenderReticula;
-  private numFilasIni= 27;
-  private numColumnasIni= 37;
-  private margenReticula= 6;
-  private cuentaIndexPieza= 0;
+  //Variables Isometrico
+	public mostrarIsometrico = false;
+	public isometrico: any = null; 
+	public mostrarGrid= true
+	public mostrarDecorado = true;
+	public mostrarSalaNula = true;
 
-  private activarLimiteReticula: boolean = false;
-  private limiteReticulaXMin:number = 0;
-  private limiteReticulaXMax: number = 19;
+	public mostrarPanelAsignarSala = false;
+	public mostrarPanelAsignarEvento = false;
 
-  private limiteReticulaYMin: number = 0;
-  private limiteReticulaYMax: number = 11;
+   //Variables de parametros:
+	public salaSeleccionadaId = 0;
+	public enemigoSeleccionadoId = 0;
+	public eventoSeleccionadoId = 0;
 
-  private visorNumFilaIni:number = 14;
-  private visorNumColumnaIni: number= 24;
-
-  private visorFila;
-  private visorColumna; 
-
-  //Variables de parametros:
-  public salaSeleccionadaId = 0;
-  public enemigoSeleccionadoId = 0;
-  public tipoEnemigos: any;
-  public tipoEnemigoSeleccionado:any;
-
-  private rotacion=0;
+	public tipoEnemigos: any;
+	public tipoEnemigoSeleccionado:any;
+	private rotacion=0;
 
   // Observable string sources
-  private observarDesarrolladorService = new Subject<string>();
+	private observarDesarrolladorService = new Subject<string>();
 
   // Observable string streams
   observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
@@ -194,7 +206,15 @@ export class DesarrolladorService implements OnInit{
   }
 
   seleccionarMazmorra(index){
+
+	//Cargar Mazmorra:
     this.mazmorra= this.listaMazmorra[index];
+	
+	//Inicializar variables de control Builder:
+	for(var i=0; i<this.mazmorra.salas.length; i++){
+		this.mazmorra.salas[i].mostrarIsometrico = true;
+	}
+
     this.visorFila= [];
     this.visorColumna=[];
     for (var i = 0; i < this.visorNumFilaIni; ++i) {this.visorFila.push(i);}
@@ -206,11 +226,19 @@ export class DesarrolladorService implements OnInit{
   }
 
   guardarMazmorra(){  
-    this.mazmorra.celdas= Object.assign([],this.renderReticula.celdas);
+
+	//Procesar Guardado de celdas: 
+	this.mazmorra.celdas = this.procesarGuardadoCeldas();
+	
     console.log(this.mazmorra);
+	
     this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: this.appService.getToken()}).subscribe((res) => {
       if(res){
         console.log("Mazmorra guardada en Base de datos");
+		this.mostrarBotonAceptar= true;
+		this.mostrarSpinner= false;
+		this.mensaje= "Mazmorra guardada con exito";
+		this.mostrarMensaje= true;
       }else{
         console.log("Fallo en el guardado");
       }
@@ -219,6 +247,45 @@ export class DesarrolladorService implements OnInit{
     });
 
     return;
+  }
+
+  procesarGuardadoCeldas(){
+		var objetoReticula = Object.assign([],this.renderReticula.celdas)
+
+		//Procesar Celdas: 
+		//Procesado eje X:
+		var flagBorrado = true; 
+		for(var i=0; i<objetoReticula.length; i++){ 
+			flagBorrado= true;
+			for(var j=0; j<objetoReticula[i].length; j++){ if(objetoReticula[i][j].pieza!= "none"){
+					flagBorrado= false;
+				}
+			}
+
+			if(flagBorrado){
+				objetoReticula.splice(i,1);
+				i--;
+			}
+		}
+
+		//Procesar Eje Y: 
+		for(var i=0; i<objetoReticula[0].length; i++){ 
+			flagBorrado= true;
+			for(var j=0; j<objetoReticula.length; j++){
+			   if(objetoReticula[j][i].pieza!= "none"){
+					flagBorrado= false;
+				}
+			}
+
+			if(flagBorrado){
+				for(var j=0; j<objetoReticula.length; j++){
+					objetoReticula[j].splice(i,1);
+				}
+				i--;
+			}
+		}
+
+		return objetoReticula 
   }
 
   eliminarMazmorra(){
@@ -465,12 +532,37 @@ export class DesarrolladorService implements OnInit{
     return height+"%";
   }
 
+  toggleIsometrico(){
+    this.mostrarIsometrico= !this.mostrarIsometrico;
+
+	if(this.mostrarIsometrico){
+		this.estadoMazmorra="isometrico";
+	}else{
+		this.estadoMazmorra="seleccionar"
+	}
+
+	console.log("Isometrico: "+this.mostrarIsometrico);
+    return;
+  }
+
+  toggleVerCapaIsometrico(capa: string){
+	  switch(capa){
+		  case "grid":
+			this.mostrarGrid = !this.mostrarGrid;
+			  break;
+		  case "decorado":
+			this.mostrarDecorado = !this.mostrarDecorado;
+			  break;
+	  }
+	return;
+  }
+
   zoomIn(){
     this.visorFila.pop();
     this.visorColumna.pop();
     return;
   }
-
+  
   zoomOut(){
 
     this.visorFila.push(this.visorFila[this.visorFila.length-1]+1);
@@ -1063,12 +1155,24 @@ export class DesarrolladorService implements OnInit{
         break;
 
       case "parametros":
+		
         this.log("Herramienta: "+herramienta,"green");
         this.renderReticula.estado="parametros";
-        this.estadoMazmorra= "parametros";
+		if(this.estadoMazmorra=="parametros"){
+			this.estadoMazmorra= "";	
+		}else{
+			this.estadoMazmorra= "parametros";
+		}
         this.renderReticula.comando= "";
         break;
       
+      case "cargarArchivoIsometrico":
+        this.log("Herramienta: "+herramienta,"green");
+        this.renderReticula.estado="parametros";
+        this.estadoMazmorra= "isometrico";
+        this.renderReticula.comando= "";
+        break;
+		
       default:
         this.log("Herramienta no valida: "+herramienta,"red");
         this.renderReticula.estado=""
@@ -1089,23 +1193,30 @@ export class DesarrolladorService implements OnInit{
     return;
   }
 
-  seleccionarSala(salaID){
+  seleccionarSala(salaID: number){
     this.salaSeleccionadaId = salaID;
     this.observarDesarrolladorService.next("reloadFormSala");
   }
 
-  seleccionarEnemigo(enemigoID){
+  seleccionarEnemigo(enemigoID: number){
     this.enemigoSeleccionadoId = enemigoID;
+    this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== this.mazmorra.enemigos.find(j=> j.enemigo_id== enemigoID).tipo_enemigo_id);
     this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
   }
 
-  seleccionarTipoEnemigo(tipoEnemigoID){
+  seleccionarTipoEnemigo(tipoEnemigoID: number){
     this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoEnemigoID);
     this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].tipo_enemigo_id= tipoEnemigoID;
     this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].nombre= this.tipoEnemigoSeleccionado.nombre;
     this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
+  }
+
+  seleccionarEvento(eventoID: number){
+    this.eventoSeleccionadoId = eventoID;
+    this.observarDesarrolladorService.next("reloadFormEventos");
+	return;
   }
 
   crearSala(){
@@ -1124,7 +1235,8 @@ export class DesarrolladorService implements OnInit{
       nombre: nombreSala,
       descripcion: "",
       evento_inicial_id: 0,
-      evento_final_id: 0
+      evento_final_id: 0,
+	  mostrarIsometrico: true
     });
 
     this.seleccionarSala(cuentaID);
@@ -1157,6 +1269,54 @@ export class DesarrolladorService implements OnInit{
     });
     this.seleccionarEnemigo(cuentaID);
     this.seleccionarTipoEnemigo(1);
+  }
+
+  crearEvento(){
+
+    //Check ID de salas: (Se asigan un ID que este disponible)
+    var cuentaID = 1;
+
+    while(this.mazmorra.eventos.find(i=> i.id_evento==cuentaID)){
+      cuentaID++;
+    }
+
+    console.log("Creando Evento con ID: "+cuentaID);
+
+    var nombreEvento= "Evento "+cuentaID;
+
+    this.mazmorra.eventos.push({
+			id_evento: cuentaID,
+			id_mazmorra: 0, 
+			id_sala: 0,
+			tipo: 0,
+			codigo: 0,
+			rng: 0, 
+			rng_fallo_evento_id: 0, 
+			buff: 0,
+			insta_buff: 0,
+			objetivo_buff: 0,
+			loot_id: 0,
+			loot_prob: 0,
+			objetivo_loot: 0,
+			dialogo_id: 0,
+			objetivo_dialogo: 0,
+			spawn_enemigo_id: 0,
+			set_evento_watcher: 0,
+			remove_evento_watcher: 0,
+			evento_watcher_id: 0,
+			expire_watcher_id: 0,
+			intervalo_trigger_watcher: 0,
+			variable_trigger_watcher: 0,
+			add_variable: 0,
+			elimina_variable: 0,
+			if_condicion_variable: 0,
+			if_falso_evento_id: 0,
+			cinematica_id: 0,
+			sonido_id: 0,
+			evento_next_id: 0 
+    });
+
+    this.seleccionarEvento(cuentaID);
   }
 
 
@@ -1273,7 +1433,7 @@ export class DesarrolladorService implements OnInit{
       
         switch(docIndex){
           case 0: //HEROE STATS
-            vectorPaginas= ['GUERRERO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','ILUMINADO','MAGO_DE_SANGRE']
+            vectorPaginas= ['MINOTAURO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','CLERIGO','SEGADOR_DE_ALMAS']
             documento={
               nombreId: "Heroes_Stats"
             };
@@ -1422,6 +1582,45 @@ export class DesarrolladorService implements OnInit{
       reader.readAsBinaryString(target.files[0]);
   }
 
+  incluirIsometrico(evt: any) {
+
+      //Lectura de evento Input
+      const target: DataTransfer = <DataTransfer>(evt.target);
+
+      //Gestion de errores
+      if(target.files.length !== 1) throw new Error('No se pueden seleccionar varios archivos');
+
+      //Lectura de archivo
+      const reader: FileReader = new FileReader();
+      reader.readAsBinaryString(target.files[0]);
+      reader.onload = (e: any) => {
+        
+        this.log("Cargando Archivo Isometrico...","lightblue");
+        var obj = JSON.parse(e.target.result);
+		
+		delete obj.MapSave["-xmlns:xsd"]
+		delete obj.MapSave["-xmlns:xsi"]
+
+		for(var i= 0; i<obj.MapSave.Placeables.Placeable.length; i++){
+			delete obj.MapSave.Placeables.Placeable[i].Credits
+			obj.MapSave.Placeables.Placeable[i].oculto = false;
+			obj.MapSave.Placeables.Placeable[i].sala = 0;
+			obj.MapSave.Placeables.Placeable[i].evento = 0;
+			obj.MapSave.Placeables.Placeable[i].seleccionado = false;
+			if(obj.MapSave.Placeables.Placeable[i].Name=="Floor Grid"){
+				obj.MapSave.Placeables.Placeable[i].tipo = "grid";
+			}else{
+				obj.MapSave.Placeables.Placeable[i].tipo = "decorado";
+			}
+		}
+
+		this.mazmorra.isometrico = Object.assign({}, obj);
+		console.log(this.mazmorra)
+		console.log("Mapa Isometrico: ");	
+        console.log(obj);
+      }
+  }
+
   verificarDatos(){
 
     this.log("***** INICIANDO VERIFICACION ("+this.archivoSeleccionado+") ****** ","aqua");
@@ -1444,7 +1643,7 @@ export class DesarrolladorService implements OnInit{
     switch(this.archivoSeleccionado){
       
       case "Heroes_Stats":
-        nombresHojas= ['GUERRERO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','ILUMINADO','MAGO_DE_SANGRE']
+        nombresHojas= ['MINOTAURO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','CLERIGO','SEGADOR_DE_ALMAS']
       break;
       case "Heroes_Hech":
         nombresHojas= ['ANGEL_CAIDO','CABALLERO','CAZADOR','CHRONOMANTE','CLERIGO','CRUZADO','ENANO','GLADIADOR','HECHICERO','INGENIERO','LICH','MINOTAURO','SEGADOR_DE_ALMAS']
@@ -1561,13 +1760,17 @@ export class DesarrolladorService implements OnInit{
     this.mostrarMensaje= true;
     this.mostrarSpinner= true;
     this.mensaje= "Actualizando Datos..."
+
     var clave = {
             clave: parseInt(this.appService.getValidacion().clave)
           }
+		  console.log("CLAVEEE: "+clave);
+		  console.log(clave)
+		  
     this.http.post(this.appService.ipRemota+"/deliriumAPI/validacion",clave).subscribe((data) => {
             
             if(data){
-              this.appService.setInicio(data);
+				this.appService.setInicio(data["datos"]);
               if(forzarEstadoVer){
                 this.archivoSeleccionado="null";
                 this.estadoDatos= "ver";
@@ -1580,6 +1783,87 @@ export class DesarrolladorService implements OnInit{
           },(err) => {
             this.log("Error de adquisición de datos","red");
           });
+  }
+
+  seleccionarElementoIsometrico(indexElemento: number){
+		this.mazmorra.isometrico.MapSave.Placeables.Placeable[indexElemento].seleccionado = !this.mazmorra.isometrico.MapSave.Placeables.Placeable[indexElemento].seleccionado;
+	return;
+  }
+
+  asignarSala(idSala: number){
+	  //Verificar Sala;
+	  var salaValida= false; 
+	  for(var i=0; i<this.mazmorra.salas.length; i++){
+		  if(this.mazmorra.salas[i].sala_id == idSala){
+			  salaValida = true;
+		  }
+	  }
+
+	  if(!salaValida && idSala!=0){
+		  this.mostrarPanelAsignarSala= true;
+		  this.mensaje= "Id Sala Invalido"
+		  this.mostrarMensaje= true;
+		  this.mostrarSpinner= false;
+		  this.mostrarBotonAceptar= true;
+		  console.log("Error: id_sala invalido"+idSala);
+		  return;
+	  }
+
+	  //Asignando ID SALA;
+	  for(var i=0; i<this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+		  if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+			this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala = idSala;
+			this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+		  }
+	  }	  
+
+	  this.mostrarPanelAsignarSala= false;
+	  this.mensaje = "Selección asignada"
+	  this.mostrarMensaje= true;
+	  this.mostrarSpinner= false;
+	  this.mostrarBotonAceptar= true;
+	  console.log("Sala Asignada: "+idSala);
+	  
+  	return;
+  }
+
+  eliminarSala(salaSeleccionadaId: number){
+	  
+		//Elimina elemento sala del Array de salas:
+		this.mazmorra["salas"].splice(this.mazmorra.salas.indexOf(this.mazmorra.salas.find(i=> i.sala_id==this.salaSeleccionadaId)),1);
+		//Quita asignación de sala a elementos de sala eliminada:
+		for(var i= 0; i<this.mazmorra.isometrico.MapSave.Placeables.Placeable.length;i++){
+			if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala==this.salaSeleccionadaId){
+				this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala= 0;
+			}
+		}
+		
+		//Deselecciona la sala seleccionada:
+		this.salaSeleccionadaId=0;
+
+	return;
+  }
+  
+  eliminarEnemigo(){
+	  
+		//Elimina elemento sala del Array de salas:
+		this.mazmorra["enemigos"].splice(this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId)),1);
+
+		//Deselecciona la sala seleccionada:
+		this.enemigoSeleccionadoId=0;
+
+	return;
+  }
+
+  eliminarEvento(){
+	  
+		//Elimina el evento:
+		this.mazmorra["eventos"].splice(this.mazmorra.eventos.indexOf(this.mazmorra.eventos.find(i=> i.id_evento==this.eventoSeleccionadoId)),1);
+
+		//Deselecciona la sala seleccionada:
+		this.eventoSeleccionadoId=0;
+
+	return;
   }
  
 } //FIN EXPORT

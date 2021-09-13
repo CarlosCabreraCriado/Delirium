@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="Creator" Value="Hobbyte"/>
+		<Setting Key="CreatorURL" Value="http://hobbyte.net/"/>
+	</SharedSettings>
+	<Placeable Name="Tree (Pine)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/pine tree.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="-5"/>
+		<Setting Key="DrawingOffsetY" Value="-230"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/tree.png"/>
+		<Setting Key="ColliderOffsetX" Value="5"/>
+		<Setting Key="ColliderOffsetY" Value="260"/>
+	</Placeable>
+	<Placeable Name="Tree (Pine) 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/pine tree2.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="DrawingOffsetX" Value="-5"/>
+		<Setting Key="DrawingOffsetY" Value="-230"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/tree.png"/>
+		<Setting Key="ColliderOffsetX" Value="5"/>
+		<Setting Key="ColliderOffsetY" Value="260"/>
+	</Placeable>
+	<Placeable Name="Tree (Dead)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/dead tree.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="-15"/>
+		<Setting Key="DrawingOffsetY" Value="-200"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="40"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/tree.png"/>
+		<Setting Key="ColliderOffsetX" Value="15"/>
+		<Setting Key="ColliderOffsetY" Value="230"/>
+	</Placeable>
+	<Placeable Name="Tree (Oak)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/pine oak.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="-15"/>
+		<Setting Key="DrawingOffsetY" Value="-200"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="40"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/tree.png"/>
+		<Setting Key="ColliderOffsetX" Value="15"/>
+		<Setting Key="ColliderOffsetY" Value="220"/>
+	</Placeable>
+	<Placeable Name="Bush">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/bush.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="30"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/bush.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="60"/>
+	</Placeable>
+	<Placeable Name="Bush 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/bush2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="30"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/bush.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="60"/>
+	</Placeable>
+	<Placeable Name="Bush 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/bush3.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="30"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/bush.png"/>
+		<Setting Key="ColliderOffsetX" Value="0"/>
+		<Setting Key="ColliderOffsetY" Value="60"/>
+	</Placeable>
+	<Placeable Name="Stone (Small 1)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/stone.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ConceptCreator" Value="Thomas König"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-30"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="5"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Grass Tuft 1 (Colour)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/grass spot 1 colour.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Grass Tuft 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/grass spot 1.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Grass Tuft 2 (Colour)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/grass spot 2 colour.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Grass Tuft 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/grass spot 2.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Dandelion (Colour)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/dandelion colour.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Dandelion">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/dandelion.png"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Rock Formation (Small)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/rock formation small.png"/>
+		<Setting Key="SortingName" Value="Rock Formation Small"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-50"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/rock formation small.png"/>
+	</Placeable>
+	<Placeable Name="Rock Formation (Large)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/rock formation large.png"/>
+		<Setting Key="SortingName" Value="Rock Formation XL Large"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-150"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/Decorate/Hobbyte/Nature/visibility/rock formation large.png"/>
+	</Placeable>
+	
+	<Placeable Name="Field Front">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_front.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="SortingName" Value="Field A Front"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Back 1">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_back.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Back 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_back2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Corner (Bottom)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_corner_bottom.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Corner (Top)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_corner_top.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Corner (Side)">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_corner1.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Corner (Side)  2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_corner2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Leaves">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_leaves.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Leaves 2">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_leaves2.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Leaves 3">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_leaves3.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+	<Placeable Name="Field Leaves 4">
+		<Setting Key="ImagePath" Value="Art/Decorate/Hobbyte/Nature/field_leaves4.png"/>
+		<Setting Key="Artist" Value="Lærke Elimar"/>
+		<Setting Key="Category" Value="Nature"/>
+		<Setting Key="ImageScale" Value="0.7"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-5"/>
+		<Setting Key="DrawingOffsetZ" Value="0"/>
+		<Setting Key="CornerOffsetX" Value="0"/>
+		<Setting Key="CornerOffsetY" Value="50"/>
+		<Setting Key="Type" Value="Decoration"/>
+	</Placeable>
+</Settings>

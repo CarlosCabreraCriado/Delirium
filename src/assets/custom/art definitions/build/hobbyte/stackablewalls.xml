@@ -1,0 +1,302 @@
+<Settings>
+	<SharedSettings>
+		<Setting Key="Artist" Value="Aage Jørgensen, ArtByAage"/>
+		<Setting Key="ArtistURL" Value="http://artbyaage.blogspot.com/"/>
+		<Setting Key="DrawingOffsetZ" Value="-0.55"/>
+	</SharedSettings>
+	<Placeable Name="Simple Low Wall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Wall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-109"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="109"/>
+		<Setting Key="JointColliderImagePath" Value="Art/_colliders/hobbyte/Joint.png"/>
+		<Setting Key="JointColliderOffsetY" Value="109"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader)"/>
+		
+		<Setting Key="JointStraight" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Straight Joint.png"/>
+		<Setting Key="JointTopAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Top Angle Joint.png"/>
+		<Setting Key="JointBottomAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Bottom Angle Joint.png"/>
+		<Setting Key="JointSideAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Side Angle Joint.png"/>
+		<Setting Key="JointCross" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Cross Joint.png"/>
+		<Setting Key="JointTopHeavyT" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Top Heavy T Joint.png"/>
+		<Setting Key="JointBottomHeavyT" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple Bottom Heavy T Joint.png"/>
+	</Placeable>
+	
+	<Placeable Name="Prison Low Wall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Prison/Prison Wall Stacking.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-105"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Prison Low Wall"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="105"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Wall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-109"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall;Stone Wall"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="109"/>
+		<Setting Key="JointColliderImagePath" Value="Art/_colliders/hobbyte/Joint.png"/>
+		<Setting Key="JointColliderOffsetY" Value="109"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader)"/>
+		
+		<Setting Key="JointStraight" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Straight Joint.png"/>
+		<Setting Key="JointTopAngle" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Top Angle Joint.png"/>
+		<Setting Key="JointBottomAngle" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Bottom Angle Joint.png"/>
+		<Setting Key="JointSideAngle" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Side Angle Joint.png"/>
+		<Setting Key="JointCross" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Cross Joint.png"/>
+		<Setting Key="JointTopHeavyT" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Top Heavy T Joint.png"/>
+		<Setting Key="JointBottomHeavyT" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Bottom Heavy T Joint.png"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Horizontal">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Horizontal Wall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Horizontal"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/horizontal line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader, Horizontal)"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Vertical">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Low Stone Vertical Wall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-88"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Horizontal"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/vertical line.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader, Vertical)"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Curve, Small (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Small Curve Lower.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-60"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Curve, Small (Lower)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve lower.png"/>
+		<Setting Key="ColliderOffsetY" Value="64"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader Curved, Small Lower)"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Curve, Small (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Small Curve Upper.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-97"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Curve, Small (Upper)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve upper.png"/>
+		<Setting Key="ColliderOffsetY" Value="78"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader Curved, Small Upper)"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Curve, Small (Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Small Curve Side.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="-29"/>
+		<Setting Key="DrawingOffsetY" Value="-80"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Curve, Small (Side)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line small curve side.png"/>
+		<Setting Key="ColliderOffsetX" Value="6"/>
+		<Setting Key="ColliderOffsetY" Value="72"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader Curved, Small Side)"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Curve, Large (Lower)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Large Curve Lower.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-120"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Curve, Large (Lower)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve lower.png"/>
+		<Setting Key="ColliderOffsetY" Value="64"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader Curved, Large Lower)"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Curve, Large (Upper)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Large Curve Upper.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-32"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Curve, Large (Upper)"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader Curved, Large Upper)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve upper.png"/>
+		<Setting Key="ColliderOffsetY" Value="78"/>
+		<Setting Key="BlocksSight" Value="True"/>
+	</Placeable>
+	
+	<Placeable Name="Stone Low Wall Curve, Large (Side)">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Stone/Low/Large Curve Side.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Center"/>
+		<Setting Key="PlacementType" Value="Single"/>
+		<Setting Key="DrawingOffsetX" Value="81"/>
+		<Setting Key="DrawingOffsetY" Value="-77"/>
+		<Setting Key="DrawingOffsetZ" Value="-3"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1"/>
+		<Setting Key="StacksWithImages" Value="Stone Low Wall Curve, Large (Side)"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/line large curve side.png"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="ColliderOffsetX" Value="8"/>
+		<Setting Key="ColliderOffsetY" Value="72"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader Curved, Large Side)"/>
+	</Placeable>
+	
+	<Placeable Name="Simple Low Extender">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Artist" Value="Kim Markfoged, Hobbyte"/>
+		<Setting Key="ArtistURL" Value="http://hobbyte.net/"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="1,1;1,1;1,1"/>
+		<Setting Key="StacksWithImages" Value="Simple Low Wall;Simple Low Extender;Simple Wall"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-109"/>
+		<Setting Key="CornerOffsetX" Value="58"/>
+		<Setting Key="CornerOffsetY" Value="43"/>
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="109"/>
+		<Setting Key="JointColliderImagePath" Value="Art/_colliders/hobbyte/Joint.png"/>
+		<Setting Key="JointColliderOffsetY" Value="109"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader)"/>
+		
+		<Setting Key="JointStraight" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender Straight Joint.png"/>
+		<Setting Key="JointTopAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender Top Angle Joint.png"/>
+		<Setting Key="JointBottomAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender Bottom Angle Joint.png"/>
+		<Setting Key="JointSideAngle" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender Side Angle Joint.png"/>
+		<Setting Key="JointCross" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender Cross Joint.png"/>
+		<Setting Key="JointTopHeavyT" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender Top Heavy T Joint.png"/>
+		<Setting Key="JointBottomHeavyT" Value="Art/Build/Hobbyte/Walls/Simple Wall/Low Simple_Extender Bottom Heavy T Joint.png"/>
+	</Placeable>
+	
+	<Placeable Name="Wood Wall">
+		<Setting Key="ImagePath" Value="Art/Build/Hobbyte/Walls/Wood/WoodWall.png"/>
+		<Setting Key="Category" Value="Walls"/>
+		<Setting Key="Type" Value="Wall"/>
+		<Setting Key="SnapType" Value="Edge"/>
+		<Setting Key="PlacementType" Value="Line"/>
+		<Setting Key="StacksWithRelativeIsoPositions" Value="2,2"/>
+		<Setting Key="StacksWithImages" Value="Wood Wall"/>
+		<Setting Key="DrawingOffsetX" Value="0"/>
+		<Setting Key="DrawingOffsetY" Value="-168"/>
+		<Setting Key="CornerOffsetX" Value="60"/>
+		<Setting Key="CornerOffsetY" Value="48"/>	
+		
+		<Setting Key="ColliderImagePath" Value="Art/_colliders/hobbyte/Wall.png"/>
+		<Setting Key="ColliderOffsetY" Value="168"/>
+		<Setting Key="JointColliderImagePath" Value="Art/_colliders/hobbyte/Joint.png"/>
+		<Setting Key="JointColliderOffsetY" Value="168"/>
+		<Setting Key="BlocksSight" Value="True"/>
+		<Setting Key="LowerAlternativeName" Value="Wall Line (Broader)"/>
+		
+		<Setting Key="JointSideAngle" Value="Art/Build/Hobbyte/Walls/Wood/WoodWall Side Angle.png"/>
+		<Setting Key="JointTopHeavyT" Value="Art/Build/Hobbyte/Walls/Wood/WoodWall Top T.png"/>
+		<Setting Key="JointBottomHeavyT" Value="Art/Build/Hobbyte/Walls/Wood/WoodWall Bottom T.png"/>
+		<Setting Key="JointCross" Value="Art/Build/Hobbyte/Walls/Wood/WoodWall Bottom T.png"/>
+		<Setting Key="JointTopAngle" Value="Art/Build/Hobbyte/Walls/Wood/WoodWall Top Angle.png"/>
+		<Setting Key="JointBottomAngle" Value="Art/Build/Hobbyte/Walls/Wood/WoodWall Bottom Angle.png"/>
+	</Placeable>
+</Settings>

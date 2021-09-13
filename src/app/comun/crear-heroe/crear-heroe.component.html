@@ -1,0 +1,82 @@
+
+<!--   ******************* -->
+<!--      Crear Heroe    -->
+<!--   ******************* -->
+
+<div class= "contenedor">
+
+	<h1 class="title Texto2">Crear Heroe</h1>
+
+	<hr class="divisor"/>
+
+	<div class="contenedorClases">
+		
+		<!-- Emblema Guerrero -->
+		<div class="clase Texto2 seleccionado">
+			<img src="../../../assets/Emblemas/guerrero.png">
+		</div>
+
+		<!-- Emblema Hechicero -->
+		<div class="clase Texto2">
+			<img src="../../../assets/Emblemas/hechicero.png">
+		</div>
+
+		<!-- Emblema Cazador -->
+		<div class="clase Texto2">
+			<img src="../../../assets/Emblemas/cazador.png">
+		</div>
+
+		<!-- Emblema Sacerdote -->
+		<div class="clase Texto2">
+			<img src="../../../assets/Emblemas/sacerdote.png">
+		</div>
+
+		<!-- Emblema Picaro -->
+		<div class="clase Texto2">
+			<img src="../../../assets/Emblemas/picaro.png">
+		</div>
+
+	</div>
+	<hr class="divisor"/>
+
+	<div class="contenedorHeroe">
+
+		<div class="contenedorGenero">
+
+			<img class="imagenHeroe" src="../../../assets/Personajes/heroes/01.png">
+
+			<div class="contenedorBotonesGenero">
+				<div class="botonGenero masculino"> </div>
+				<div class="botonGenero femenino"></div>
+			</div>
+
+			<div class="contenedorFormularioNombre">
+				<input class="formularioTexto Texto2" type="text"/>
+			</div>
+				
+		</div>
+
+		<div class="contenedorDescripcion">
+
+			<div class="tituloClase Texto2">Hechicero</div>
+			<div class="descripcionClase Texto4">Esto es una despripcion de la clase.Esto es una despripcion de la clase.Esto es una despripcion de la clase.Esto es una despripcion de la clase.</div>
+
+			<div class="tituloRoles Texto2">Roles</div>
+			<div class="contenedorRoles">
+				<img class="iconoRol" src="../../../assets/Iconos/Rol-Tank.png">		
+				<img class="iconoRol" src="../../../assets/Iconos/Rol-Heal.png">		
+				<img class="iconoRol" src="../../../assets/Iconos/Rol-DPS.png">		
+			</div>
+
+			<div class="contenedorBotones">
+				<botonComponent mat-button [mat-dialog-close] [texto]="'Crear Heroe'" [color]="'verde'" class="boton"></botonComponent>
+				<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="frame"></div>
+
+</div>
+

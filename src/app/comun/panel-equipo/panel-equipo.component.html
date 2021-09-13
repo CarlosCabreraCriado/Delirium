@@ -1,0 +1,186 @@
+
+<!--   ******************* -->
+<!--         Plantilla       -->
+<!--   ******************* -->
+
+<div class="contenedorPanelEquipo">
+	<div class="fondoPanel"></div>
+	<div class="fondoPestana"></div>
+
+	<!-- PANEL INTERNO -->
+	<div id="contenedorPanelInterno">
+		<div class="fondoPanelInterior"></div>
+
+
+		<div class="titulo Texto1">Estadisticas</div>
+
+		<div class="containerEstadisticas">
+			<div class="columna">
+				
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Armadura.png">
+					<div class="textoEstadisticas Texto3">
+						<div class="nombre">Armadura </div>
+						<div class="valor">10 </div>
+					</div>
+				</div>
+					
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Vitalidad.png">
+					<div class="textoEstadisticas Texto3">
+						<div class="nombre">Vitalidad </div>
+						<div class="valor">10 </div>
+					</div>
+				</div>
+
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Curacion.png">
+					<div class="textoEstadisticas Texto3">
+						<div class="nombre">Curación </div>
+						<div class="valor">10 </div>
+					</div>
+				</div>	
+			</div>	
+
+			<div class="columna">
+
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
+					<div class="textoEstadisticas Texto3">
+						<div class="nombre">Daño Físico </div>
+						<div class="valor">10 </div>
+					</div>
+				</div>
+					
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Dano-Magico.png">
+					<div class="textoEstadisticas Texto3">
+						<div class="nombre">Daño Mágico </div>
+						<div class="valor">10 </div>
+					</div>
+				</div>
+
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Energia-Stat.png">
+					<div class="textoEstadisticas Texto3">
+						<div class="nombre">Energía </div>
+						<div class="valor">10 </div>
+					</div>
+				</div>	
+
+			</div>	
+		</div>
+
+		<div class="titulo Texto1">Efectos</div>
+
+		<div class="contenedorEfectos Texto2">
+			No hay efectos activos
+		</div>
+
+	</div>
+
+
+	<!-- PANEL EXTERNO -->
+	<div id="contenedorExterno">
+
+		<div class="titulo Texto1">Equipo</div>
+
+		<div class="contenedorEquipo">
+
+			<div class="columna Izquierda">
+				<div class="reticulaPequena">
+					<img src="../../../assets/Items/cascos/3.png"/> 
+					<div class="frameItem"></div>
+				</div>
+				<div class="reticulaPequena">
+					<img src="../../../assets/Items/pecheras/2.png"/> 
+					<div class="frameItem"></div>
+				</div>
+				<div class="reticulaGrande">
+					<img src="../../../assets/Items/espadas/4.png"/> 
+					<div class="frameItem"></div>
+				</div>
+			</div>	
+
+			<img class="imagenPersonaje" src="../../../assets/Paneles/Equipo/Maniqui.png"/>
+
+			<div class="columna Derecha">
+
+				<div class="reticulaPequena Derecha">
+					<img src="../../../assets/Items/pantalones/2.png"/> 
+					<div class="frameItem"></div>
+				</div>
+
+				<div class="reticulaPequena Derecha">
+					<img src="../../../assets/Items/botas/2.png"/> 
+					<div class="frameItem"></div>
+				</div>
+
+				<div class="reticulaGrande">
+					<img src="../../../assets/Items/escudos/2.png"/> 
+					<div class="frameItem"></div>
+				</div>
+			</div>	
+		</div>
+
+		<!-- Inventario -->
+		<div id="contenedorInventario">
+			<creditoComponent id="credito" [gemas]= "100" [monedas]= "200"></creditoComponent>
+			<img class="icono bolsa" src="../../../assets/Iconos/Icono-Bolsa.png" (click)="cambiarPestanaInventario('Bolsa')"/>
+			<div class="contenedor bolsa" [ngStyle]="{'z-index': zindexBolsa}">	
+				<div class="contenedorReticula">
+
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/arcos/4.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/otros/7.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/otros/3.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/pecheras/8.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/otros/33.png"/>	
+					</div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+
+				</div>
+			</div>
+				
+			<img class="icono banco" src="../../../assets/Iconos/Icono-Banco.png" (click)="cambiarPestanaInventario('Banco')" />
+			<div class="contenedor banco"[ngStyle]="{'z-index': zindexBanco}">	
+				<div class="contenedorReticula">
+
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/dagas/1.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/otros/28.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/otros/2.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/pecheras/1.png"/>	
+					</div>
+					<div class="reticula">
+						<img class="objeto" src="../../../assets/Items/otros/29.png"/>	
+					</div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+					<div class="reticula"></div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
