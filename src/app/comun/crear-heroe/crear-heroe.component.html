@@ -12,27 +12,27 @@
 	<div class="contenedorClases">
 		
 		<!-- Emblema Guerrero -->
-		<div class="clase Texto2 seleccionado">
+		<div class="clase Texto2 seleccionado" (click)="seleccionarClase('guerrero')">
 			<img src="../../../assets/Emblemas/guerrero.png">
 		</div>
 
 		<!-- Emblema Hechicero -->
-		<div class="clase Texto2">
+		<div class="clase Texto2" (click)="seleccionarClase('hechicero')">
 			<img src="../../../assets/Emblemas/hechicero.png">
 		</div>
 
 		<!-- Emblema Cazador -->
-		<div class="clase Texto2">
+		<div class="clase Texto2" (click)="seleccionarClase('cazador')">
 			<img src="../../../assets/Emblemas/cazador.png">
 		</div>
 
 		<!-- Emblema Sacerdote -->
-		<div class="clase Texto2">
+		<div class="clase Texto2" (click)="seleccionarClase('sacerdote')">
 			<img src="../../../assets/Emblemas/sacerdote.png">
 		</div>
 
 		<!-- Emblema Picaro -->
-		<div class="clase Texto2">
+		<div class="clase Texto2" (click)="seleccionarClase('picaro')">
 			<img src="../../../assets/Emblemas/picaro.png">
 		</div>
 
@@ -43,11 +43,11 @@
 
 		<div class="contenedorGenero">
 
-			<img class="imagenHeroe" src="../../../assets/Personajes/heroes/01.png">
+			<img class="imagenHeroe" src="../../../assets/Personajes/heroes/{{idImagen}}.png">
 
 			<div class="contenedorBotonesGenero">
-				<div class="botonGenero masculino"> </div>
-				<div class="botonGenero femenino"></div>
+				<div class="botonGenero masculino" ><div class="botonInteriorGenero" (click)="seleccionarGenero('masculino')"></div></div>
+				<div class="botonGenero femenino" (click)="seleccionarGenero('femenino')"><div class="botonInteriorGenero" (click)="seleccionarGenero('femenino')"></div></div>
 			</div>
 
 			<div class="contenedorFormularioNombre">

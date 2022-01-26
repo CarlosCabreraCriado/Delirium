@@ -8,7 +8,7 @@ import { SocketService } from '../socket/socket.service';
   providedIn: 'root'
 })
 
-export class InMapService implements OnInit{
+export class InMapService {
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription
@@ -30,9 +30,13 @@ export class InMapService implements OnInit{
 	public heroeSeleccionado: any;	
 	public grupo: any;
 
-  constructor(private appService: AppService,private socketService:SocketService) { }
+	//Variables de sala:
+	private sala:any={
+		nombre: "",
+		jugadores: [{}]
+	};
 
-	ngOnInit(){
+  constructor(private appService: AppService,private socketService:SocketService) { 
 
 		//Suscripcion Socket:
       	this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
@@ -43,7 +47,7 @@ export class InMapService implements OnInit{
       		    	console.log("Contenido: ");
       		    	console.log(data.contenido);
       			break;
-      			/*
+      			
       			case "estadoSala":
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Contenido: ");
@@ -53,7 +57,7 @@ export class InMapService implements OnInit{
       		    	console.log(this.sala);
       		    	
       			break;
-				*/
+				
       			case "cerrarSala":
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Contenido: ");
@@ -61,8 +65,22 @@ export class InMapService implements OnInit{
       		    	//this.appService.setSala(this.sala);
       		    	//console.log(this.sala); 	
       			break;
+
+      			case "iniciarPartida":
+      				console.log("Peticion: "+data.peticion);
+      		    	console.log("Contenido: ");
+      		    	console.log(data.contenido);
+      		    	this.sala = data.contenido;
+      		    	this.appService.setSala(this.sala);
+      		    	this.socketSubscripcion.unsubscribe();
+      		    	this.appService.setControl("mazmorra");
+					this.appService.cambiarUrl("mazmorra");
+      			break;
       		}
       	});
+
+		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.validacion.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
+
 	}
 	
 	cargarPerfil(){
@@ -113,11 +131,11 @@ export class InMapService implements OnInit{
 		}
 
 		//Forzar Grupo:
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "MINOTAURO", especializacion: "-", id: 1, nivel: 5, nombre: "ETC", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+		this.grupo.push({ cuentaID: "", heroe: {	clase: "guerrero", especializacion: "-", idImagen: 3, id: 1, nivel: 5, nombre: "Varian", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "CHRONOMANTE", especializacion: "-", id: 1, nivel: 5, nombre: "Valera", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+		this.grupo.push({ cuentaID: "", heroe: {	clase: "picaro", especializacion: "-", idImagen: 10, id: 1, nivel: 5, nombre: "Valera", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "CLERIGO", especializacion: "-", id: 1, nivel: 5, nombre: "Anduin", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+		this.grupo.push({ cuentaID: "", heroe: {	clase: "sacerdote", especializacion: "-", idImagen: 7, id: 1, nivel: 5, nombre: "Anduin", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 
 		//this.grupo.push({ cuentaID: "", heroe: {	clase: "CRUZADO", especializacion: "-", id: 1, nivel: 5, nombre: "Uther", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 		
@@ -125,6 +143,109 @@ export class InMapService implements OnInit{
 
 		console.log("Grupo: ");
 		console.log(this.grupo);
+
+	}
+
+	iniciarPartida():void{
+
+		//Inicio de Sala:
+		/*this.sala= {
+			nombre: "Developer",
+			jugadores: [
+			{
+				clase: "picaro",
+				especializacion: "-",
+				id: 4,
+				nivel: 10,
+				nombre: "Nandelt",
+				num_consumibles: 0,
+				num_objetos_inventario: 0,
+				oro: 0,
+				px: 0,
+				usuario: "Iván",
+				online: false
+			},
+			{
+				clase: "guerrero",
+				especializacion: "-",
+				id: 1,
+				nivel: 10,
+				nombre: "Vrutus",
+				num_consumibles: 0,
+				num_objetos_inventario: 0,
+				oro: 0,
+				px: 0,
+				usuario: "Victor",
+				online: false
+			},
+			{
+				clase: "sacerdote",
+				especializacion: "-",
+				id: 3,
+				nivel: 10,
+				nombre: "Hive",
+				num_consumibles: 0,
+				num_objetos_inventario: 0,
+				oro: 0,
+				px: 0,
+				usuario: "Eduardo",
+				online: false
+			},
+			{
+				clase: "hechicero",
+				especializacion: "-",
+				id: 2,
+				nivel: 10,
+				nombre: "Mediv",
+				num_consumibles: 0,
+				num_objetos_inventario: 0,
+				oro: 0,
+				px: 0,
+				usuario: "Carlos",
+				online: false
+			 }]
+		}*/    
+			this.heroeSeleccionado= {
+				clase: "hechicero",
+				especializacion: "-",
+				id: 2,
+				nivel: 10,
+				nombre: "Mediv",
+				num_consumibles: 0,
+				num_objetos_inventario: 0,
+				oro: 0,
+				px: 0,
+				usuario: "Carlos",
+				online: false
+			 }
+
+		this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.validacion.nombre,nombreSala: "Developer", contenido: this.heroeSeleccionado});
+
+		console.log("SALA:")
+		console.log(this.sala);
+
+		if(this.sala.jugadores==undefined){
+			this.appService.mostrarDialogo("Informativo",{contenido:"Jugadores insuficientes."});
+			return;
+		}
+
+		if(this.sala.jugadores.length<3){
+			this.appService.mostrarDialogo("Informativo",{contenido:"Jugadores insuficientes."});
+			return;
+		}
+
+	//	this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.validacion.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
+
+		console.log("Iniciando");
+
+		this.socketService.enviarSocket('iniciarPartida', {nombre: this.validacion.nombre, clave: this.validacion.clave});
+
+		//Secuencia de inicio:
+
+		this.appService.setSala(this.sala);
+		this.socketSubscripcion.unsubscribe();
+		this.appService.setControl("mazmorra");
+		this.appService.cambiarUrl("mazmorra");
 
 	}
 

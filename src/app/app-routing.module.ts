@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 //Declaración de componentes:
 import { DeveloperComponent } from './comun/developer/developer.component';
 import { IndexComponent } from './comun/index/index.component';
-import { DeveloperCombateComponent } from './comun/developer-combate/developerCombate.component';
+import { MazmorraComponent } from './comun/mazmorra/mazmorra.component';
 import { SalaComponent } from './comun/sala/sala.component';
 import { CargarPartidaComponent } from './comun/cargarPartida/cargarPartida.component';
 import { HeroesComponent } from './comun/heroes/heroes.component';
@@ -18,8 +18,8 @@ const routes: Routes = [
 	{path: '' ,redirectTo: "/index", pathMatch: "full" },
 	{path: 'index',component: IndexComponent},
 	{path: 'snack',redirectTo: "/index", pathMatch: "full"},
-	{path: 'developer', redirectTo: "/developer-combate", pathMatch: "full"},
-	{path: 'developer-combate', component: DeveloperCombateComponent},
+	{path: 'mazmorra', redirectTo: "/mazmorra", pathMatch: "full"},
+	{path: 'mazmorra', component: MazmorraComponent},
 	{path: 'cargarPartida', redirectTo: "/cargarPartida", pathMatch: "full"},
 	{path: 'cargarPartida', component: CargarPartidaComponent},
 	{path: 'unirsePartida', redirectTo: "/unirsePartida", pathMatch: "full"},

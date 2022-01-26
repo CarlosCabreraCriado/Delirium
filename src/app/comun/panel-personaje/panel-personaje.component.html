@@ -1,4 +1,3 @@
-
 <!--   ******************* -->
 <!--         Plantilla       -->
 <!--   ******************* -->
@@ -18,7 +17,7 @@
 					<div *ngFor="let heroe of perfil.heroes; let i = index" class="heroe Texto2" (click)="seleccionarHeroe(i)">
 						<div class="contenedorMarcoHeroe">
 							<div class="frameHeroe"></div>
-							<img  class="imagenHeroe" src="../../../assets/Personajes/heroes/01.png"/>	
+							<img  class="imagenHeroe" src="../../../assets/Personajes/heroes/{{heroe.idImagen}}.png"/>	
 							<div class="contenedorNivel">{{heroe.nivel}}</div>
 						</div>
 
@@ -170,7 +169,7 @@
 			<div *ngIf="heroeSeleccionado==null" class="contenedorIcono">
 				<img class="imagenSeleccionarHeroe" src="../../../assets/Iconos/Icono-Heroe.png"/>	
 			</div>
-			<img *ngIf="heroeSeleccionado!=null" class="imagenPersonaje" src="../../../assets/Personajes/{{camelize(heroeSeleccionado['clase'])}}.png"/>	
+			<img *ngIf="heroeSeleccionado!=null" class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{heroeSeleccionado['idImagen']}}.png"/>	
 			<img src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 

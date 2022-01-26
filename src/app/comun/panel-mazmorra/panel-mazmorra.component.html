@@ -11,7 +11,7 @@
 	<div id="contenedorPanelInterno">
 		<div class="fondoPanelInterior"></div>
 
-		<div class="tituloMazmorra Texto1">CLoacas</div>
+		<div class="tituloMazmorra Texto1">Cloacas</div>
 
 		<div class="contenedorImagenMazmorra">
 			
@@ -26,7 +26,7 @@
 			<div class="textoDescripcion Texto3"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri </div>
 		</div>
 
-		<botonComponent mat-button [mat-dialog-close] [texto]="'Fijar'" [color]="'verde'" class="botonFijar"></botonComponent>
+		<botonComponent mat-button [texto]="'Fijar'" [color]="'verde'" class="botonFijar" (click)="this.appService.iniciarMazmorra()"></botonComponent>
 		<div class="tiempoEstimado Texto2">Tiempo estimado: 1 Hora</div>
 
 	</div>

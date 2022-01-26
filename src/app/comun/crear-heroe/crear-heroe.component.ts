@@ -19,12 +19,53 @@ export class CrearHeroeComponent {
 	private confirmation: boolean = false;
 	private comando = "";
 
+	private claseSeleccionada = "guerrero";
+	private generoSeleccionado = "masculino";
+	private nombre = "";
+	private idImagen = 3;
+
 	constructor(public dialogRef: MatDialogRef<CrearHeroeComponent>, @Inject(MAT_DIALOG_DATA) public data: CrearHeroeData) { }
 
     onAcceptClick(): void {
       this.confirmation = true;
       this.dialogRef.close();
     }
+
+	renderIdImagen(){
+
+		switch(this.claseSeleccionada){
+			case "guerrero":
+				this.idImagen= 3;
+				break
+			case "hechicero":
+				this.idImagen= 1;
+				break
+			case "sacerdote":
+				this.idImagen= 7;
+				break
+			case "cazador":
+				this.idImagen= 5;
+				break
+			case "picaro":
+				this.idImagen= 9;
+				break
+		}
+
+		if(this.generoSeleccionado=="femenino"){
+			this.idImagen++;
+		}
+
+	}
+
+	seleccionarClase(clase: string){
+		this.claseSeleccionada = clase;
+		this.renderIdImagen();
+	}
+
+	seleccionarGenero(genero: string){
+		this.generoSeleccionado = genero;
+		this.renderIdImagen();
+	}
 
 
 }

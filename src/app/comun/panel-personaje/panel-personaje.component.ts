@@ -42,6 +42,14 @@ export class PanelPersonaje implements OnInit {
 		//Inicia el renderizado de los sprites de hechizos:
 		this.renderizarImagenHechizos();
 
+		//Cargar Descripciones de personaje:
+		for(var i= 0; i<this.perfil.heroes.length; i++){
+			this.perfil.heroes[i]["descripcion"] = this.personajes["personajes"].find(j=>j.personaje==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
+		}
+
+		console.log("HEROES:")
+		console.log(this.perfil)
+
 		return;
 	}
 
@@ -93,6 +101,8 @@ export class PanelPersonaje implements OnInit {
 
 		//Añadir parametros al heroe:
 		this.heroeSeleccionado["descripcion"] = this.personajes["personajes"].find(i=>i.personaje==this.heroeSeleccionado.clase.toLowerCase())["descripcion"]
+
+		this.heroeSeleccionado["idImagen"] = this.perfil.heroes[index].idImagen; 
 
 		console.log("HEROE SELECCIONADO");
 		console.log(this.heroeSeleccionado);

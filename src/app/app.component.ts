@@ -20,6 +20,7 @@ export class AppComponent implements OnInit{
 
 	//Declara Suscripcion Evento Socket:
   private socketSubscripcion: Subscription
+  private validacion: any;
 
   constructor(private appService: AppService,private socketService:SocketService){ }
   
@@ -30,6 +31,13 @@ export class AppComponent implements OnInit{
 	}
 
   ngOnInit(){
+
+	  this.validacion = this.appService.getValidacion()
+	  //Check reconeccion Socket:
+	  if(this.validacion!={} && this.validacion!= undefined){
+		this.socketService.enviarSocket('validacion', this.validacion);
+	  }
+
   //Suscripcion Socket:
        this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
          

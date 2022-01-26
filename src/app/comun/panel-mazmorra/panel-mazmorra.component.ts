@@ -1,5 +1,6 @@
 
 import { Component , Input  } from '@angular/core';
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'panelMazmorraComponent',
@@ -11,7 +12,7 @@ export class PanelMazmorraComponent {
 
 	@Input() texto: string; 
 
-	constructor() {}
+	constructor(private appService: AppService) {}
 
 
 }

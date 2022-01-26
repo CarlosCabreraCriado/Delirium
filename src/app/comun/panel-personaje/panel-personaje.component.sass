@@ -79,6 +79,7 @@
                     display: flex
                     z-index: 120
                     height: 28vh
+                    min-height: 28vh
                     margin-bottom: 2%
                     text-align: center
                     background-color: $colorFondo1
@@ -363,6 +364,9 @@
 
         .marcoPersonaje
             position: absolute
+            display: flex
+            justify-content: center
+            align-items: center
             height: 23vw
             top: 5%
             left: 7%
@@ -386,7 +390,7 @@
 
             .imagenPersonaje
                 position: absolute
-                clip-path: circle(45% at center)
+                height: 90%
 
             .contenedorIcono
                 position: absolute

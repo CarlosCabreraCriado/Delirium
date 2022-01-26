@@ -15,6 +15,7 @@ export class HeroeComponent {
 	@Input() Nivel: string; 
 	@Input() Nombre: string; 
 	@Input() lider: boolean; 
+	@Input() idImagen: string; 
 
 	constructor() {}
 

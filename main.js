@@ -33,7 +33,8 @@ var Datastore = require('nedb');
 //Inicialización del sistema de almacenamiento remoto:
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://deliriumClient:delirium96@ds141633.mlab.com:41633/heroku_27lq85ms',{ useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('mongodb+srv://Delirium-Oficial:42JnbqT8Gq7oq9iu@carlos-cabrera-db.b1mri.mongodb.net/Delirium?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true });
+//
+mongoose.connect('mongodb+srv://Delirium-Oficial:iLTIZC2vCk0KetXY@carlos-cabrera-db.b1mri.mongodb.net/Delirium?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true });
 var Schema = mongoose.Schema;
 
 //Schema y modelo de HeroeStats:
@@ -43,11 +44,11 @@ var heroeStatsSchema= mongoose.Schema;
 heroeStatsSchema = new Schema({
   nombreId: String,
   cruzado: [],
-  chronomante: [],
+  picaro: [],
   hechicero: [],
-  clerigo: [],
-  minotauro: [],
-  segador_de_almas: []
+  sacerdote: [],
+  guerrero: [],
+  cazador: []
 });
 
 //Schema y modelo de HeroeHech:
@@ -56,12 +57,12 @@ var heroeHechSchema= mongoose.Schema;
 
 heroeHechSchema = new Schema({
   nombreId: String,
-  chronomante: [],
-  clerigo: [], 
+  picaro: [],
+  sacerdote: [], 
   cruzado: [],
-  minotauro: [], 
+  guerrero: [], 
   hechicero: [],
-  segador_de_almas: []
+  cazador: []
 });
 
 //Schema y modelo de Enemigos:

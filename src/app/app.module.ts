@@ -20,7 +20,7 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { IndexComponent } from './comun/index/index.component';
 import { SalaComponent } from './comun/sala/sala.component';
 import { DeveloperComponent } from './comun/developer/developer.component';
-import { DeveloperCombateComponent } from './comun/developer-combate/developerCombate.component';
+import { MazmorraComponent } from './comun/mazmorra/mazmorra.component';
 import { CargaComponent } from './comun/carga/carga.component';
 import { PausaComponent } from './comun/pausa/pausa.component';
 import { AnimacionNumeroComponent } from './comun/animacion-numero/animacion-numero.component';
@@ -66,7 +66,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
   declarations: [
     AppComponent,
     DeveloperComponent,
-    DeveloperCombateComponent,
+    MazmorraComponent,
     IndexComponent,
     SalaComponent,
     CargaComponent,

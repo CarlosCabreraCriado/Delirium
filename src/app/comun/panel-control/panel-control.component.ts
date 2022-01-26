@@ -1,5 +1,6 @@
 
 import { Component , Input } from '@angular/core';
+import { InMapService } from '../inmap/inmap.service';
 
 @Component({
   selector: 'panelControlComponent',
@@ -15,7 +16,7 @@ export class PanelControlComponent {
 	private textoBotonLateralDerecho = "Mover"
 	private textoBotonLateralIzquierdo = "Objeto"
 
-	constructor() {}
+	constructor(private inmapService: InMapService) {}
 
 }
 

@@ -71,8 +71,9 @@ export class HeroesComponent implements OnInit{
 		}
 
 		this.perfil=this.appService.getPerfil();
-
+		
 		this.appService.setProgresoCarga("100");
+
 		setTimeout(()=>{    
       		this.appService.mostrarPantallacarga(false);
  		}, 1000);
