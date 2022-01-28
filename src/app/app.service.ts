@@ -561,5 +561,6 @@ export class AppService {
       this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
     }
 
+
 }
 

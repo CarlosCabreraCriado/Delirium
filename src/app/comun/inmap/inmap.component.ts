@@ -25,6 +25,7 @@ export class InMapComponent implements OnInit{
       		this.appService.mostrarPantallacarga(false);
  		}, 1000);
 
+
 		//Observar Eventos AppService:
 		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
 			(val) => {
@@ -35,6 +36,7 @@ export class InMapComponent implements OnInit{
 						break;
 				}
 		});
+
 
 		//Comprueba el Logueo carga el perfil en Servicio InMap:
 		this.inmapService.cargarPerfil();
@@ -47,8 +49,6 @@ export class InMapComponent implements OnInit{
 
 		//Cargar Grupo:
 		this.inmapService.cargarGrupo();
-
-
 	}
 
 	abrirConfiguracion(){
@@ -59,6 +59,15 @@ export class InMapComponent implements OnInit{
 	abrirSocial(){
 		this.appService.mostrarSocial("", {})
 		return;
+	}
+
+	comandoPanelControl(comando:any){
+
+		//Si se pulsa el centro accede a mazmorra:
+		if(comando=="centro"){
+			this.inmapService.iniciarPartida();	
+		}
+
 	}
 
 

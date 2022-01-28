@@ -155,7 +155,7 @@
 	<!--      Panel Control    -->
 	<!--   ******************* -->
 
-	<panelControlComponent id="panelControl"></panelControlComponent>
+	<panelControlComponent [tipo]="'mazmorra'" (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"></panelControlComponent>
 
 <!-- *************************************************
             Panel Enemigos (ANTIGUO)
@@ -281,7 +281,7 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.idImagen"[Nivel]="heroe.nivel" [lider]="false" (click)="clickHeroe(heroe)"  class="panelHeroe"></heroeComponent>
+		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.idImagen"[Nivel]="heroe.nivel" [lider]="false" [renderHeroe]="heroe" (click)="clickHeroe(heroe)"  class="panelHeroe"></heroeComponent>
 
 	</div>
 

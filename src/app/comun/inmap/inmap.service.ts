@@ -224,21 +224,9 @@ export class InMapService {
 		console.log("SALA:")
 		console.log(this.sala);
 
-		if(this.sala.jugadores==undefined){
-			this.appService.mostrarDialogo("Informativo",{contenido:"Jugadores insuficientes."});
-			return;
-		}
-
-		if(this.sala.jugadores.length<3){
-			this.appService.mostrarDialogo("Informativo",{contenido:"Jugadores insuficientes."});
-			return;
-		}
-
-	//	this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.validacion.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
-
 		console.log("Iniciando");
 
-		this.socketService.enviarSocket('iniciarPartida', {nombre: this.validacion.nombre, clave: this.validacion.clave});
+		//this.socketService.enviarSocket('iniciarPartida', {nombre: this.validacion.nombre, clave: this.validacion.clave});
 
 		//Secuencia de inicio:
 

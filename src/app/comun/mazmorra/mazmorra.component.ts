@@ -626,6 +626,12 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		this.heroesInfoService.mostrarHeroesInfo=true;
 	}
 
+	comandoPanelControl(comando:any){
+		//Si se pulsa el centro accede a mazmorra:
+		if(comando=="centro"){
+		}
+	}
+
 }
 
 

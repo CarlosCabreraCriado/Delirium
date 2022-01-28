@@ -12,72 +12,31 @@
 
     .contenedorBotonCentral
         position: absolute
+        height: 100%
         width: 30%
         bottom: 0
-        left: 50%
+        left: 35%
         z-index: 10
-        margin-left: -15%
-        padding-top: 30%
-        background: url(../../../assets/background/Fondo-Control-Principal.png)
-        background-size: 100% 100%
-
-        .frameBotonCentral
-            position: absolute
-            height: 100%
-            top: 0
-            left: 0
-            width: 100%
-            background: url(../../../assets/Frames/Frame-Heroe-Circulo.png)
-            background-size: 100% 100%
-
-        .textoBoton
-            position: absolute
-            display: flex
-            align-items: center
-            width: 100%
-            height: 100%
-            text-align: center
-            top: 0%
+        .icono
+          position: absolute
+          width: 100%
+          height: 100%
 
     .contenedorBotonLateral
         position: absolute
-        width: 50%
-        height: 30%
+        width: 30%
+        height: 100%
         bottom: 0
-
-        .textoBoton
-            position: absolute
-            display: flex
-            align-items: center
-            width: 100%
-            height: 100%
-            justify-content: center
-            top: 0%
-
-        .frameBotonLateral
-            position: absolute
-            height: 100%
-            top: 0
-            left: 0
-            width: 100%
-
-            &.derecho
-                background: url(../../../assets/Frames/Frame-Control-Lateral.png)
-                background-size: 100% 100%
-            &.izquierdo
-                background: url(../../../assets/Frames/Frame-Control-Lateral.png)
-                background-size: 100% 100%
-                transform: scaleX(-1)
+        .icono
+          position: absolute
+          width: 100%
+          height: 100%
 
         &.derecho
             right: 0
-            background: url(../../../assets/background/Fondo-Control-Lateral-Verde.png)
-            background-size: 100% 100%
 
         &.izquierdo
             left: 0
-            background: url(../../../assets/background/Fondo-Control-Lateral-Naranja.png)
-            background-size: 100% 100%
 
 
 
