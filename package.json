@@ -50,7 +50,7 @@
     "ngx-electron": "^1.0.4",
     "ngx-json-viewer": "^2.4.0",
     "ngx-socket-io": "~3.0.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "path": "^0.12.7",
     "rxjs": "~6.5.1",
     "socket.io-client": "^2.3.0",
