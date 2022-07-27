@@ -267,6 +267,28 @@
         width: 100%
         margin-top: 2vh
 
+#contenedorEnemigos 
+    position: absolute
+    display: flex
+    flex-direction: column
+    left: 1%
+    top: 10%
+    width: 15%
+    height: 70%
+
+    @include media("<=desktop")
+        width: 22%
+    @include media("<=phone")
+        width: 17%
+    @include media("<=smphone")
+        width: 20%
+
+    .panelEnemigo
+        position: relative
+        display: block
+        height: 14.15%
+        width: 100%
+        margin-bottom: 3%
 //------------------------------Enemigos-------------------------
 
 .Panel-Enemigos

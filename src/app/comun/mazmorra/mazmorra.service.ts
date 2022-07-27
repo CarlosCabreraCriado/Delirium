@@ -69,6 +69,8 @@ export class MazmorraService implements OnInit{
 	public sincronizar:boolean= true;
 	public emisor:boolean= false;
 	public comandoSocketActivo:boolean= false;
+	public esHeroe: boolean= false;
+	public esEnemigo: boolean= false;
 
 	//OPCIONESE DE DEBUG:
 	private restringirAcciones = true;
@@ -129,6 +131,8 @@ export class MazmorraService implements OnInit{
       			break;
       		}
       	});
+
+
 	}
 
 	/* 	----------------------------------------------
@@ -732,7 +736,7 @@ export class MazmorraService implements OnInit{
 
  				case "CHRONOMANTE":
  				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
- 				break;3
+ 				break;
  			}
  		}
 
@@ -861,6 +865,7 @@ export class MazmorraService implements OnInit{
 
  		console.log("Partida Inicializada: ");
  		console.log(this.renderMazmorra);
+
  	}
 
  	getRenderMazmorra(): RenderMazmorra{
@@ -1116,6 +1121,7 @@ export class MazmorraService implements OnInit{
 
  	//Gestiona el cambio de sala:
  	cambiarSala(sala:number):void{
+
  		//Añade los enemigos de la nueva sala a la instancia:
  		var enemigosAdd= this.mazmorra.enemigos.filter(j => j.sala == sala);
  		this.loggerService.log("--------------Cambiando Sala------------------");
@@ -1463,11 +1469,11 @@ export class MazmorraService implements OnInit{
 
  		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
  		var indiceCaster;
- 		var esHeroe = false;
- 		var esEnemigo = false;
+ 		this.esHeroe = false;
+ 		this.esEnemigo = false;
  		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
- 				esHeroe= true;
+ 				this.esHeroe= true;
  				indiceCaster = i;
   				break;
  			}
@@ -1475,13 +1481,13 @@ export class MazmorraService implements OnInit{
 
  		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].turno){
- 				esEnemigo= true;
+ 				this.esEnemigo= true;
  				indiceCaster= i;
  				break;
  			}
  		}
 
- 		if(esHeroe){
+ 		if(this.esHeroe){
  			if(this.renderMazmorra.heroes[indiceCaster].recurso < this.heroeHech[this.renderMazmorra.heroes[indiceCaster].clase.toLowerCase()].find(j => j.id==numHechizo).recurso){
  				if(this.restringirRecurso){
  					this.mensajeAccion("Recurso Insuficiente", 1000);
@@ -1504,7 +1510,7 @@ export class MazmorraService implements OnInit{
  			}
  		}
 
- 		if(esEnemigo){
+ 		if(this.esEnemigo){
  			if(this.renderMazmorra.enemigos[indiceCaster].acciones< this.enemigos.enemigos_hech.find(i => i.id==this.renderMazmorra.enemigos[indiceCaster].hechizos).acciones){
  				if(this.restringirAcciones){
  					this.mensajeAccion("Acciones Insuficientes", 1000);
@@ -3338,7 +3344,7 @@ export class MazmorraService implements OnInit{
 
  	/* 	----------------------------------------------
 			MANEJO DE COMANDOS
- 	----------------------------------------------*/
+		----------------------------------------------*/
 
  	activarComandoSocket():void{
  		this.comandoSocketActivo=true;
@@ -3353,9 +3359,9 @@ export class MazmorraService implements OnInit{
  	comprobarConectado():void{	
  	}
 
- 	/* 	----------------------------------------------
+ 	/*  ----------------------------------------------
 			GESTION DE EVENTOS
- 	----------------------------------------------*/
+		----------------------------------------------*/
 
  	eventosObs(comando): void{
  	}
@@ -3399,7 +3405,6 @@ export class MazmorraService implements OnInit{
  			case "lanzarHechizo":
  				this.activarRNG();
  			break;
-
  		}
  	}
 
@@ -3410,6 +3415,21 @@ export class MazmorraService implements OnInit{
  		}
  		return;
  	}
+
+	seleccionarHeroe(index):void{
+
+		console.log("Heroe seleccionado: ");
+
+		//Si castea un heroe:
+ 		if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoAliado"&& (this.esHeroe)){
+ 			this.renderMazmorra.heroes[index].objetivo = !this.renderMazmorra.heroes[index].objetivo;
+ 		}
+
+		//Si castea un Enemigo:
+ 		if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoEnemigo"&& (this.esEnemigo)){
+ 			this.renderMazmorra.heroes[index].objetivo = !this.renderMazmorra.heroes[index].objetivo;
+ 		}
+	}
 
  	/* 	----------------------------------------------
 			GESTION CONTROLES TACTILES

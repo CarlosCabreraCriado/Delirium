@@ -11,6 +11,7 @@ export class BarraComponent {
 
 	@Input() texto: string; 
 	@Input() tipo: string; 
+	@Input() valor: number; 
 
 	constructor() {}
 

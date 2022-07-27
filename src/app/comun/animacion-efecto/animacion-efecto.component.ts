@@ -2,7 +2,7 @@
 
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { trigger,state,style,animate,transition, keyframes } from '@angular/animations';
-import { DeveloperCombateService } from '../developer-combate/developerCombate.service'
+import { MazmorraService } from '../mazmorra/mazmorra.service'
 
 @Component({
   selector: 'appAnimacionEfecto',
@@ -48,14 +48,14 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 	@Input() heroe: any;
     @Input() heroeAnimacion = 0;
 
-  constructor(private developerCombateService: DeveloperCombateService) { }
+  constructor(private mazmorraService: MazmorraService) { }
 
   ngOnInit() {
   	//Inicio suscripcion evento progreso Carga
-    	this.developerCombateService.mostrarAnimacionNumero.subscribe(val => {
+    	this.mazmorraService.mostrarAnimacionNumero.subscribe(val => {
       		this.mostrarAnimacion= true;
     	});
-      this.animaciones = this.developerCombateService.animaciones;
+      this.animaciones = this.mazmorraService.animaciones;
   }
 
   resetAnimacionNumero(): void{
@@ -71,7 +71,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
   renderIndividual(): any{
     var clase= "";
 
-    if(this.developerCombateService.getDispositivo()=="Movil"){
+    if(this.mazmorraService.getDispositivo()=="Movil"){
       clase= clase+" Individual"
     }
     return clase;

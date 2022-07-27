@@ -3,7 +3,7 @@
 <!--           Heroe       -->
 <!--   ******************* -->
 
-<div class="contenedorHeroe">
+<div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe(indexHeroe)">
 
 	<div *ngIf="tipo=='jugador'" class="fondoDetalle">
 		<div class="frameDetalle"></div>
@@ -39,9 +39,41 @@
 	</div>
 	
 	<div *ngIf="tipo=='jugador'" class="contenedorBarras">
-		<barraComponent [tipo]="'Vida'" class="barra"></barraComponent>
+		<barraComponent [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
 		<barraComponent [tipo]="'Mana'" class="barra"></barraComponent>
 		<barraComponent [tipo]="'Energia'" class="barra"></barraComponent>
 	</div>
 
 </div>
+<!--
+			HEROE ANTIGUO 
+
+<div *ngIf="appService.dispositivo!='Movil'" [ngClass]="'nHeroes'+renderMazmorra.heroes.length">
+        <div *ngFor="let heroes of renderMazmorra.heroes; let i = index" class="Panel Heroe" [ngClass]="renderizarMarcoHeroe(i)" (click)="seleccionarHeroe(i);">
+
+            <img src="./assets/Mazmorras/Marco-Heroe.png" class="Marco-Heroe">
+            <div class="Nombre-Heroe Texto2">{{renderMazmorra.heroes[i].nombre}}</div>
+            <div class="contenedorMarcoHeroe">
+                <img *ngIf="!sala.jugadores[i].online" src="./assets/General/disconected.svg" class="desconectado">
+                <img src="./assets/Clases/{{renderMazmorra.heroes[i].clase.split(' ').join('_').toLowerCase()}}.png" class="Imagen-Heroe">
+                <appAnimacionEfecto #animacionEfecto [heroe]="heroes" [heroeAnimacion]="heroes.animacion"></appAnimacionEfecto>
+                <appAnimacionNumero #animacionNumero [heroe]="heroes" [heroeVida]="heroes.vida" [heroeIndex]="i"></appAnimacionNumero>
+                <appMarcoClase #marcoClase [heroe]="heroes" [heroeIndex]="i"></appMarcoClase>
+            </div>
+            <div class="Barras-Vida-Mana-Heroe">
+                <div class="Container-Vida-Heroe">
+                    <div class="Vida-Heroe Texto3" [style.width]="renderMazmorra.heroes[i].vida+'%'">{{renderMazmorra.heroes[i].vida}}%</div>
+                    <div class="Escudo" [style.width]="renderMazmorra.heroes[i].escudo+'%'" [style.marginLeft]="-renderMazmorra.heroes[i].escudo/2+'%'" [style.left]="renderizarEscudoHeroe(i)"></div>
+                </div>
+                <div class="Container-Mana-Heroe">
+                    <div class="Mana-Heroe Texto3" [style.width]="renderMazmorra.heroes[i].recurso+'%'">{{renderMazmorra.heroes[i].recurso}}%</div>
+                </div>
+                <div class="Buffos-DeBuffos-Heroe">
+                
+                    <div *ngFor="let buff of renderMazmorra.heroes[i].buff; let j = index" [ngClass]="renderizarClaseBuffosHeroe(i,j)">{{renderMazmorra.heroes[i].buff[j].duracion}}</div>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+-->

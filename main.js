@@ -34,7 +34,7 @@ var Datastore = require('nedb');
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://deliriumClient:delirium96@ds141633.mlab.com:41633/heroku_27lq85ms',{ useNewUrlParser: true, useUnifiedTopology: true });
 //
-mongoose.connect('mongodb+srv://Delirium-Oficial:iLTIZC2vCk0KetXY@carlos-cabrera-db.b1mri.mongodb.net/Delirium?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://Delirium-Oficial:zwwkGSyxCztTkTEr@carlos-cabrera-db.b1mri.mongodb.net/?retryWrites=true&w=majority',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
 var Schema = mongoose.Schema;
 
 //Schema y modelo de HeroeStats:

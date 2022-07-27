@@ -1,0 +1,122 @@
+
+import { Component , Input } from '@angular/core';
+
+@Component({
+  selector: 'enemigoComponent',
+  templateUrl: './enemigo.component.html',
+  styleUrls: ['./enemigo.component.sass']
+})
+
+export class EnemigoComponent {
+
+	@Input() renderEnemigo: any; 
+	@Input() renderMazmorra: any; 
+	@Input() indexEnemigo: number; 
+
+	constructor() {}
+
+	renderizarEstiloBuffosEnemigos(buff:any):any{
+		
+		var estilo={}
+		var  indexVertical= Math.floor(buff.icon_id/10);
+        var  indexHorizontal= buff.icon_id-indexVertical*10;
+
+		estilo={
+			'background':'url(./assets/Buffos/Buff.png) '+(0.5+11*indexHorizontal)+'% '+(0.5+9.9*indexVertical)+'%',
+			'background-size': '1000% 1100%'
+		}
+		return estilo;
+	}
+
+	renderizarClaseBuffosEnemigos(j:number): string{
+		var clases;
+
+		//Renderiza buffo o debuffo:
+		if(this.renderEnemigo.buff[j].tipo2== "DEBUF"){
+			clases = "DeBuffo-Enemigo";
+		}
+
+		//Renderiza buffo o debuffo:
+		if(this.renderEnemigo.buff[j].tipo2== "BUFF"){
+			clases = "Buffo-Enemigo";
+		}
+		return clases;
+	}
+
+	renderizarMarcoEnemigo(): string{
+		var clases = "Enemigo-"+(this.indexEnemigo+1);
+		//Renderiza Marco de turno:
+		if(this.renderMazmorra.enemigos[this.indexEnemigo].turno){
+			clases = clases + " Turno";
+		}
+
+		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
+ 		var esHeroe = false;
+ 		var esEnemigo = false;
+ 		for(var k=0; k<this.renderMazmorra.heroes.length; k++){
+ 			if(this.renderMazmorra.heroes[k].turno){
+ 				esHeroe= true;
+  				break;
+ 			}
+ 		}
+
+ 		for(var k=0; k<this.renderMazmorra.enemigos.length; k++){
+ 			if(this.renderMazmorra.enemigos[k].turno){
+ 				esEnemigo= true;
+ 				break;
+ 			}
+ 		}
+
+		//Renderiza Marco de objetivoAuxiliar:
+		if(this.renderMazmorra.enemigos[this.indexEnemigo].objetivoAuxiliar){
+
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="AM"){
+				clases = clases + " ObjetivoAuxiliarAliado";
+			}
+
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EM"){
+				clases = clases + " ObjetivoAuxiliarEnemigo";
+			}
+
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="OM"){
+				if(esHeroe){
+					clases = clases + " ObjetivoAuxiliarEnemigo";
+				}
+				if(esEnemigo){
+					clases = clases + " ObjetivoAuxiliarAliado";
+				}
+			}
+		}
+
+		//Renderiza Marco de objetivo:
+		if(this.renderMazmorra.enemigos[this.indexEnemigo].objetivo){
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EU"){
+				clases = clases + " ObjetivoEnemigo";
+			}
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="AU"){
+				clases = clases + " ObjetivoAliado";
+			}
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EM"){
+				clases = clases + " ObjetivoEnemigo";
+			}
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="AM"){
+				clases = clases + " ObjetivoAliado";
+			}
+			if(this.renderMazmorra.estadoControl.tipoObjetivo=="OM"){
+				if(esHeroe){
+					clases = clases + " ObjetivoEnemigo";
+				}
+				if(esEnemigo){
+					clases = clases + " ObjetivoAliado";
+				}
+			}
+		}
+		return clases;
+	}
+
+}
+
+
+
+
+

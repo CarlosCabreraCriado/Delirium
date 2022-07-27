@@ -32,6 +32,7 @@ import { InterfazComponent } from './comun/interfaz/interfaz.component';
 import { EventosComponent } from './comun/eventos/eventos.component';
 import { CargarPartidaComponent } from './comun/cargarPartida/cargarPartida.component';
 import { HeroesComponent } from './comun/heroes/heroes.component';
+import { EnemigoComponent } from './comun/enemigo/enemigo.component';
 import { UnirsePartidaComponent } from './comun/unirsePartida/unirsePartida.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { BugLogComponent } from './comun/bug-log/bug-log.component';
@@ -80,6 +81,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
     EventosComponent,
     CargarPartidaComponent,
     HeroesComponent,
+    EnemigoComponent,
     UnirsePartidaComponent,
     BugLogComponent,
     AjustesComponent,

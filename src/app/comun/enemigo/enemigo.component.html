@@ -1,0 +1,28 @@
+
+<!--   ******************* -->
+<!--         ENEMIGO       -->
+<!--   ******************* -->
+
+<div class="contenedorEnemigo" [ngClass]="renderizarMarcoEnemigo()">
+	<div class="contenedorImagen">
+		<div class="frameImagen"></div>
+		<img class="imagenEnemigo" src="../../../assets/Enemigos/demonios/{{renderEnemigo.enemigo_id}}.png">
+
+                <appAnimacionEfecto #animacionEfecto [enemigo]="renderEnemigo" [enemigoAnimacion]="renderEnemigo.animacion"></appAnimacionEfecto>
+                <appAnimacionNumero #animacionNumero [enemigo]="renderEnemigo" [enemigoVida]="renderEnemigo.vida" [enemigoIndex]="indexEnemigo"></appAnimacionNumero>
+
+	</div>
+
+	<div class="contenedorDetalle">
+		<div class="frameDetalle"></div>
+		<div class="nombreEnemigo Texto3">Demonio</div>
+
+		<barraComponent [tipo]="'Vida'" [valor]="renderEnemigo.vida" class="barra"></barraComponent>
+
+		<div class="Buffos-DeBuffos-Enemigo">
+			<div *ngFor="let buff of renderEnemigo.buff; let j = index" [ngClass]="renderizarClaseBuffosEnemigos(j)" [ngStyle]="renderizarEstiloBuffosEnemigos(renderEnemigo.buff[j])">{{renderEnemigo.buff[j].duracion}}</div>
+		</div>
+
+	</div>
+
+</div>

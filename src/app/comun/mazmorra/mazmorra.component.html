@@ -124,13 +124,6 @@
 
 <app-interfaz [renderMazmorra]="renderMazmorra"></app-interfaz>
 
- 
-        <!--   ******************* -->
-        <!--    PANEL INFO HEROES        -->
-        <!--   ******************* -->
-
-<app-interfaz [renderMazmorra]="renderMazmorra"></app-interfaz>
-
         <!--   ******************* -->
         <!--     RNG PANEL         -->
         <!--   ******************* -->
@@ -281,8 +274,16 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.idImagen"[Nivel]="heroe.nivel" [lider]="false" [renderHeroe]="heroe" (click)="clickHeroe(heroe)"  class="panelHeroe"></heroeComponent>
+		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [indexHeroe]="i"[Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.idImagen"[Nivel]="heroe.nivel" [lider]="false" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderHeroe]="heroe"  class="panelHeroe" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
 
+	</div>
+
+	<!--   ******************* -->
+	<!--     Paneles Enemigos  -->
+	<!--   ******************* -->
+
+	<div id="contenedorEnemigos">
+		<enemigoComponent *ngFor="let enemigo of this.mazmorraService.renderMazmorra.enemigos; let i = index" [indexEnemigo]="i" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderEnemigo]="enemigo" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
 	</div>
 
 <!-- *************************************************

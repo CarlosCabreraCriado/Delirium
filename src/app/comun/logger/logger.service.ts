@@ -419,7 +419,7 @@ export class LoggerService {
 
 
  				//****************************************
- 				//       Eliminar Enemigo
+ 				//       Abrir Sala
  				//****************************************
 
  				case "add sala":

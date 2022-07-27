@@ -35,6 +35,8 @@ export class PanelControlComponent {
 				case "centro":
 					this.comandoPanelControl.next(comando);
 				break;
+				case "derecha":
+					this.comandoPanelControl.next('elegirHechizo') 
 			}
 		}
 	}

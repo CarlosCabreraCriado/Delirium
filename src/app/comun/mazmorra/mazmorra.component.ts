@@ -629,6 +629,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	comandoPanelControl(comando:any){
 		//Si se pulsa el centro accede a mazmorra:
 		if(comando=="centro"){
+			this.mazmorraService.pasarTurno()
+		}
+		if(comando=="elegirHechizo"){
+			this.mazmorraService.routerInterfaz('elegirHechizo')
 		}
 	}
 

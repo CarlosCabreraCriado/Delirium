@@ -147,6 +147,125 @@
                 color: white
 
 
+//------------------------------------------------------------------
+//---------------------Efectos Generales----------------------------
+//------------------------------------------------------------------
+$highlightTurnoColor: lightgray
+$highlightObjetivoColor: red
+
+.Turno 
+  background: $highlightTurnoColor
+  animation: highlightTurno
+  animation-duration: 1s
+  animation-iteration-count: infinite
+  animation-direction: alternate 
+
+.Offline 
+  background-color: gold
+   
+
+@keyframes highlightTurno 
+  0% 
+    background: $highlightTurnoColor 
+  100% 
+    background: rgba(211, 211, 211, 0)  
+
+.ObjetivoEnemigo 
+  border-color: red
+  border-style: ridge
+  animation: highlightObjetivoEnemigo
+  animation-duration: 1s
+  animation-iteration-count: infinite
+  animation-direction: alternate 
+
+.ObjetivoAuxiliarEnemigo 
+  border-color: orange
+  border-style: dashed
+  animation: highlightObjetivoEnemigoAuxiliar
+  animation-duration: 1s
+  animation-iteration-count: infinite
+  animation-direction: alternate 
+
+.ObjetivoAuxiliarEnemigo.ObjetivoEnemigo 
+  border-color: orange red
+  border-style: dashed ridge
+  animation-duration: 1s
+  animation-iteration-count: infinite
+  animation-direction: alternate 
+
+.ObjetivoAliado 
+  border-color: green
+  border-style: ridge
+  animation: highlightObjetivoAliado
+  animation-duration: 1s
+  animation-iteration-count: infinite
+  animation-direction: alternate 
+
+.ObjetivoAuxiliarAliado 
+  border-color: green
+  border-style: dashed
+  animation: highlightObjetivoAliado
+  animation-duration: 1s
+  animation-iteration-count: infinite
+  animation-direction: alternate 
+
+.ObjetivoAuxiliarAliado.ObjetivoAliado 
+  border-color: lightblue green
+  border-style: dashed ridge
+  animation-duration: 1s
+  animation-iteration-count: infinite
+  animation-direction: alternate 
+
+
+@keyframes highlightObjetivoEnemigo 
+  0% 
+    border-color: red 
+  100% 
+    border-color: rgba(255, 0, 0, 0.2)  
+
+@keyframes highlightObjetivoAliado 
+  0% 
+    border-color: green 
+  100% 
+    border-color: rgba(0, 255, 0, 0.2)  
+    
+
+// .animacionNumero 
+//   position: absolute
+//   font-size: 100px
+//   background-size: 100%
+//   top: -50%
+//   left: 40%
+//   width: 100%
+//   padding-top: 37.62%
+//   z-index: 10
+//   opacity: 0 
+
+// .animacionNumero.activo 
+//   animation: animacionNumero
+//   animation-duration: 1.5s
+//   animation-fill-mode: none
+//   opacity: 0 
+
+// @keyframes animacionNumero 
+//   0% 
+//     opacity: 1 
+//   50% 
+//     top: -110%
+//     opacity: 1 
+//   100% 
+//     top: -110%
+//     opacity: 0  
+
+
+.ocultar
+  opacity: 0 !important
+
+.oculto 
+  display: none 
+
+.visible 
+  display: inline 
             
 
 
