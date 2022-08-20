@@ -12,6 +12,10 @@
 /node_modules
 /node_modules2
 
+#Mongo DB
+.wt
+*.wt
+
 # IDEs and editors
 /.idea
 .project

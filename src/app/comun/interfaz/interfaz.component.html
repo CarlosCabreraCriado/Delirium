@@ -1,12 +1,15 @@
 
 
 
+
 <div *ngIf="interfazService.mostrarInterfaz" id="contenedorInterfaz">
+	<div class="fondoNegro"></div>
 
 	<!-- *************************************************
 				Interfaz HECHIZOS
 		 ************************************************* -->
 
+		 <!--
 	<div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
 		<div class="tituloInterfaz Texto1">Seleccione un hechizo:  </div>
 		<div class="contenedorHechizos">
@@ -17,30 +20,63 @@
 			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(6)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[4]+'% '+interfazService.imagenHechVertical[4]+'%','background-size': '1800%'}">5</div>
 		</div>
 		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
+	</div>
+
+		 -->
+
+<div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
+<div class= "contenedor">
+
+	<h1 class="title Texto2">Hechizos</h1>
+	<hr class="divisor"/>
+
+	<div class="contenedorPestanas">
+		<div class="pestana Texto2 seleccionado">Hechizos</div>
+		<div class="pestana Texto2">Objetos</div>
+	</div>
+
+	<hr class="divisor"/>
+
+	<div class="contenedorOpciones">
+		
+		<!--PANEL OPCIONES GENERAL -->
+		<div class="opcionesGenerales Texto3">
+		<div class="contenedorHechizos">
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[0]+'.png) ','background-size': '100%'}">1</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[1]+'.png) ','background-size': '100%'}">2</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[2]+'.png) ','background-size': '100%'}">3</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[3]+'.png) ','background-size': '100%'}">4</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(6)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[4]+'.png) ','background-size': '100%'}">5</div>
+		</div>
+		</div>
 
 	</div>
+	
+	<div class="contenedorBotones">
+		<botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [color]="'verde'" class="boton"></botonComponent>
+		<botonComponent mat-button (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+	</div>
+	
+	<div class="frame"></div>
+</div>
+</div>
 
 	<!-- *************************************************
-				Interfaz Objetivo Enemigo
+				Interfaz Objetivo 
 		 ************************************************* -->
 
-	<div  id="contenedorInterfazObjetivoEnemigo" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo'">
-		<div class="tituloInterfaz Texto1">Seleccone el objetivo:  </div>
-		
-		<div class="botonLanzar Texto2" (click)="interfazService.lanzarHechizo()">Lanzar</div>
-		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
+	<div  id="contenedorInterfazObjetivo" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo' || interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
+		<div class="tituloInterfaz Texto1">Seleccionar objetivo:  </div>
+
+			<div class="hechizo hechizo1 Texto1" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[0]+'.png) ','background-size': '100%'}"></div>
+
+		<div class="contenedorBotones">
+			<botonComponent mat-button (click)="interfazService.lanzarHechizo()" [texto]="'Lanzar'" [color]="'verde'" class="boton"></botonComponent>
+			<botonComponent mat-button (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+	</div>
+		<div class="frame"></div>
 	</div>
 
-	<!-- *************************************************
-				Interfaz Objetivo Aliado
-		 ************************************************* -->
-
-	<div  id="contenedorInterfazObjetivoAliado" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
-		<div class="tituloInterfaz Texto1">Seleccone el objetivo:  </div>
-		
-		<div class="botonCancelar Texto2" (click)="interfazService.lanzarHechizo()">Lanzar</div>
-		<div class="botonCancelar Texto2" (click)="interfazService.cancelarHechizo()">Cancelar</div>
-	</div>
 
 </div>
  

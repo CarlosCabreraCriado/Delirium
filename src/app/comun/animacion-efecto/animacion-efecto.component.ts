@@ -47,6 +47,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
     @Input() enemigoAnimacion = 0;
 	@Input() heroe: any;
     @Input() heroeAnimacion = 0;
+	@Input() loop: any;
 
   constructor(private mazmorraService: MazmorraService) { }
 
@@ -55,11 +56,18 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
     	this.mazmorraService.mostrarAnimacionNumero.subscribe(val => {
       		this.mostrarAnimacion= true;
     	});
+
+      this.mostrarAnimacion= true;
       this.animaciones = this.mazmorraService.animaciones;
+
   }
 
   resetAnimacionNumero(): void{
-  	this.mostrarAnimacion = false;
+
+	if(!this.loop){
+		this.mostrarAnimacion = false;
+	}
+
     if(this.enemigo){
       this.enemigo.animacion=0;
     }

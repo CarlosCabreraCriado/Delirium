@@ -22,7 +22,15 @@ export class CargaComponent implements OnInit {
 
     //Inicio suscripción mostrar carga
     this.appService.mostrarCarga.subscribe(mostrar => {
-      if(mostrar){this.opacidad=1; this.mostrarPantallaCarga=true;}else{this.opacidad=0; this.mostrarPantallaCarga=false;}
+      if(mostrar){
+		  this.mostrarPantallaCarga=true;
+		  this.opacidad=1; 
+	  }else{
+		  this.opacidad=0; 
+ 			setTimeout(()=>{  
+				this.mostrarPantallaCarga=false;
+ 			}, 2000);	
+	  }
     });
 
     //Inicio suscripcion evento progreso Carga

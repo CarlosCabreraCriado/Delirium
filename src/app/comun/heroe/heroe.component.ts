@@ -20,13 +20,19 @@ export class HeroeComponent {
 	@Input() indexHeroe: number; 
 	@Input() renderMazmorra: any; 
 	@Input() pantalla: string; 
+	@Input() seleccionable: boolean;
 
 	constructor() {}
 
 	renderizarMarcoHeroe(): string{
+
 		if(this.pantalla == "inMap"){ return;}
 
 		var clases = "Heroe-"+(this.indexHeroe+1);
+
+		if(this.seleccionable){
+			clases = clases + " seleccionable";
+		}
 
 		//Renderiza marco de turno:
 		if(this.renderMazmorra.heroes[this.indexHeroe].turno){

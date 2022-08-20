@@ -10,10 +10,10 @@ export class InterfazService {
 
 	private valorTirada:any = 0;
 	public mostrarInterfaz: boolean= false;
-  private pantallaInterfaz: string= "Hechizos";
-  public idImagenHechizo= [1,1,2,3,4];
-  public imagenHechHorizontal= [0,0,0,0,0];
-  public imagenHechVertical= [0,0,0,0,0];
+	private pantallaInterfaz: string= "Hechizos";
+	public idImagenHechizo= [1,1,2,3,4];
+	public imagenHechHorizontal= [0,0,0,0,0];
+	public imagenHechVertical= [0,0,0,0,0];
 
   private heroesHech:any;
   private enemigos: any;
@@ -25,8 +25,10 @@ export class InterfazService {
   // Observable string streams
   observarInterfaz$ = this.observarInterfaz.asObservable();
 
-  	constructor() { }
+  constructor() { }
 
+	//FUNCIÓN RENDER DE SPRITE:
+	/*
     renderImagenHech(){
 
       //Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
@@ -69,6 +71,11 @@ export class InterfazService {
       }
       return;
     }
+	*/
+
+    renderImagenHech(){
+
+	}
 
     setPantallaInterfaz(val):void{
       this.pantallaInterfaz= val;
@@ -94,8 +101,11 @@ export class InterfazService {
       return this.pantallaInterfaz;
     }
 
-    activarInterfaz():void{
+    activarInterfaz(hechizosSeleccionados:any):void{
       this.mostrarInterfaz = true;
+	  this.idImagenHechizo = hechizosSeleccionados;
+	  console.log("Hechizos: ")
+	  console.log(this.idImagenHechizo)
       this.renderImagenHech();
     }
 
@@ -114,7 +124,7 @@ export class InterfazService {
       return;
     }
 
-    selecionarHechizo(numHechizo):void{
+    seleccionarHechizo(numHechizo):void{
       this.observarInterfaz.next({comando: "selecionarHechizo",valor: numHechizo});
       return;
     }

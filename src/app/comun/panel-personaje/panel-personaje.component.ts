@@ -32,7 +32,7 @@ export class PanelPersonaje implements OnInit {
 
 		console.log("Importando Datos de AppService... ")
 		this.heroeStat=this.appService.getHeroesStats();
-		this.heroeHech=this.appService.getHeroesHech();
+		this.heroeHech=this.appService.getHechizos();
 		this.buff=this.appService.getBuff();
 		this.objetos=this.appService.getObjetos();
 		this.perfil=this.appService.getPerfil();
@@ -43,8 +43,10 @@ export class PanelPersonaje implements OnInit {
 		this.renderizarImagenHechizos();
 
 		//Cargar Descripciones de personaje:
-		for(var i= 0; i<this.perfil.heroes.length; i++){
-			this.perfil.heroes[i]["descripcion"] = this.personajes["personajes"].find(j=>j.personaje==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
+		console.log(this.personajes)
+		console.log(this.perfil)
+		for(var i= 0; i<this.perfil.heroes.length; i++){ 
+			this.perfil.heroes[i]["descripcion"] = this.personajes["personajes"].find(j=>j.clase==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
 		}
 
 		console.log("HEROES:")
@@ -100,7 +102,7 @@ export class PanelPersonaje implements OnInit {
 		this.heroeSeleccionado = this.perfil.heroes[index];
 
 		//Añadir parametros al heroe:
-		this.heroeSeleccionado["descripcion"] = this.personajes["personajes"].find(i=>i.personaje==this.heroeSeleccionado.clase.toLowerCase())["descripcion"]
+		this.heroeSeleccionado["descripcion"] = this.personajes["personajes"].find(i=>i.clase==this.heroeSeleccionado.clase.toLowerCase())["descripcion"]
 
 		this.heroeSeleccionado["idImagen"] = this.perfil.heroes[index].idImagen; 
 

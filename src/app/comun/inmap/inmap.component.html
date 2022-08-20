@@ -14,36 +14,7 @@
 <!--      PANEL GENERAL    -->
 <!--   ******************* -->
 
-<div id="ContenedorPanelGeneral"> 
-	
-	<div class="contenedorBotonGeneral primerBotonGeneral" (click)="cambiarPantalla('Personaje')">
-		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Personaje.png" />	
-		<div class="textoPanelGeneral Texto2">Personaje</div>
-	</div>
-
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Equipo')">
-		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Equipo.png" />	
-		<div class="textoPanelGeneral Texto2">Equipo</div>
-	</div>
-
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Mazmorra')">
-		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Mazmorra.png" />	
-		<div class="textoPanelGeneral Texto2">Mazmorra</div>
-	</div>
-
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Diario')">
-		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Diario.png" />	
-		<div class="textoPanelGeneral Texto2">Diario</div>
-	</div>
-
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Tienda')">
-		<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Tienda.png" />	
-		<div class="textoPanelGeneral Texto2">Tienda</div>
-	</div>
-
-	<div class="framePanelGeneral"></div>
-	
-</div>
+<panelGeneralComponent id="PanelGeneral" (comandoPanelGeneral)="comandoPanelGeneral($event)"></panelGeneralComponent>
 
 <!--   ************************** -->
 <!--    CONTENEDOR MAIN WINDOW    -->
@@ -100,7 +71,7 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-		<heroeComponent *ngFor="let jugador of this.inmapService.grupo; let i = index" [tipo]="renderizarTipo(jugador)" [renderMazmorra]="{}" [renderHeroe]="{vida: 100}" [pantalla]="'inMap'" [Personaje]="camelize(jugador.heroe.clase)" [Roll]="'DPS'" [Nombre]="jugador.heroe.nombre" [idImagen]="jugador.heroe.idImagen"[Nivel]="jugador.heroe.nivel" [lider]="false" (click)="clickHeroe(jugador)"  class="panelHeroe"></heroeComponent>
+		<heroeComponent *ngFor="let jugador of this.inmapService.grupo; let i = index" [tipo]="renderizarTipo(jugador)" [renderMazmorra]="{}" [renderHeroe]="{vida: 100}" [pantalla]="'inMap'" [Personaje]="camelize(jugador.heroe.clase)" [Roll]="'DPS'" [Nombre]="jugador.heroe.nombre" [idImagen]="jugador.heroe.id_imagen"[Nivel]="jugador.heroe.nivel" [lider]="false" (click)="clickHeroe(jugador)"  class="panelHeroe"></heroeComponent>
 
 		<heroeComponent *ngIf="this.inmapService.grupo.length<5" [pantalla]="'inMap'" [tipo]="'add'" [Personaje]="''" [Roll]="''" [Nombre]="''" [Nivel]="" [lider]="false" class="panelHeroe"></heroeComponent>
 

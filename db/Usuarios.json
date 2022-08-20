@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "61087855a70fbf725df82108"
+  },
+  "usuario": "Doomcrash",
+  "email": "carloscabreracriado@gmail.com",
+  "password": "$2b$08$YjA4T.1Um8/lJReVtOO1beGsPOX7/mLC4kJz90bPi3inSlVxsUz/i",
+  "privilegios": "usuario",
+  "__v": 0,
+  "perfil": ""
+}]

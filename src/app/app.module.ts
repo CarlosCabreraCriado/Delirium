@@ -52,6 +52,7 @@ import { BarraComponent } from './comun/barra/barra.component';
 import { PanelPersonaje } from './comun/panel-personaje/panel-personaje.component';
 import { IndicadorPantallaComponent } from './comun/indicador-pantalla/indicador-pantalla.component';
 import { EstadisticasGeneralComponent } from './comun/estadisticas-general/estadisticas-general.component';
+import { PanelGeneralComponent } from './comun/panel-general/panel-general.component';
 import { PanelEquipoComponent } from './comun/panel-equipo/panel-equipo.component';
 import { PanelMazmorraComponent } from './comun/panel-mazmorra/panel-mazmorra.component';
 import { PanelDiarioComponent } from './comun/panel-diario/panel-diario.component';
@@ -100,13 +101,13 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
 	PanelPersonaje,
 	IndicadorPantallaComponent,
 	EstadisticasGeneralComponent,
+	PanelGeneralComponent,
 	PanelEquipoComponent,
 	PanelMazmorraComponent,
 	PanelDiarioComponent,
 	PanelTiendaComponent,
 	ExperienciaComponent,
 	PanelControlComponent
-
   ],
 
   entryComponents:[

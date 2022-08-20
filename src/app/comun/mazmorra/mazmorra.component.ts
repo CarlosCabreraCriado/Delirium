@@ -71,6 +71,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	public renderMazmorra: RenderMazmorra;
 	public sala:any={};
 	
+	public escalaIsometrico:number = 0.3;
 /* 	----------------------------------------------
 	SUSCRIPCIONES E IMPORTACION DE OBJETOS A SERVICIO
  	----------------------------------------------*/
@@ -291,6 +292,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		return;
 	}
 
+	comandoPanelGeneral(pantalla:string){
+		this.cambiarPantalla(pantalla);
+	}
 
 	cambiarPantalla(nombrePantalla:string):void{
 
@@ -636,6 +640,63 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		}
 	}
 
+	//********************
+	// RENDER ISOMETRICO
+	//********************
+	
+	renderizarElementoIsometrico(elemento: any):any{
+
+		var opcionesCanvas = this.mazmorraService.mazmorra.isometrico.MapSave.MapSettings
+		var style = {
+			"position": "absolute",
+			"top": "",
+			"left": "",
+			"width": "",
+			"height": "",
+			"z-index": 0,
+			"transform": "translate(-50%,-50%) scaleX(1) scale("+this.escalaIsometrico+")",
+			"-webkit-mask-image": "url('"+elemento.ImagePath+"')",
+			//"mix-blend-mode": "multiply"',
+			"display": "block"
+		}
+
+		//Renderizar Elemento:
+		var top = (parseFloat(elemento.Position.y)*this.escalaIsometrico/*+parseFloat(elemento.VisibilityColliderStackingOffset.y)*/) + "px";
+		style["top"]= top.replace(/,/g,".")
+
+		var left= (parseFloat(elemento.Position.x)*this.escalaIsometrico/*-parseFloat(elemento.VisibilityColliderStackingOffset.x)*/) + "px";
+		style["left"]= left.replace(/,/g,".")
+
+		var zIndex= (parseFloat(elemento.Position.z)+100)*10
+		style["z-index"]= Math.floor(zIndex)
+
+		if(elemento.Mirror=="true"){
+			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+this.escalaIsometrico+")";
+		}
+
+		//Aplicar filtrado de visualizacion:
+		style.display = "block";
+
+		for(var i =0; i<this.mazmorraService.mazmorra.salas.length; i++){
+			if((!this.mazmorraService.mazmorra.salas[i].mostrarIsometrico) && (elemento.sala==this.mazmorraService.mazmorra.salas[i].sala_id)){
+				style.display= "none";
+			} 
+		}
+
+		//Renderizar Seleccion:
+		if(elemento.seleccionado){
+			style["filter"] = "sepia(100%) saturate(100)";
+		}
+
+		//Aplicar filtro de Seleccion: 
+		//var width= ((window.innerWidth*0.7)/opcionesCanvas.MapSizeX)*100 + "px";
+		//style.width= width.replace(/,/g,".")
+
+		//var height= ((window.innerHeight*0.6)/opcionesCanvas.MapSizeY)*100 + "%";
+		//style.height= height.replace(/,/g,".")
+
+		return style;
+	}
 }
 
 

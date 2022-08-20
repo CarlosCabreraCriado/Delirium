@@ -33,8 +33,8 @@ var Datastore = require('nedb');
 //Inicialización del sistema de almacenamiento remoto:
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://deliriumClient:delirium96@ds141633.mlab.com:41633/heroku_27lq85ms',{ useNewUrlParser: true, useUnifiedTopology: true });
-//
-mongoose.connect('mongodb+srv://Delirium-Oficial:zwwkGSyxCztTkTEr@carlos-cabrera-db.b1mri.mongodb.net/?retryWrites=true&w=majority',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb+srv://Delirium-Oficial:zwwkGSyxCztTkTEr@carlos-cabrera-db.b1mri.mongodb.net/?retryWrites=true&w=majority',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
 var Schema = mongoose.Schema;
 
 //Schema y modelo de HeroeStats:
@@ -43,26 +43,20 @@ var heroeStatsSchema= mongoose.Schema;
 
 heroeStatsSchema = new Schema({
   nombreId: String,
-  cruzado: [],
-  picaro: [],
-  hechicero: [],
-  sacerdote: [],
   guerrero: [],
-  cazador: []
+  hechicero: [],
+  cazador: [],
+  sacerdote: [],
+  ladron: []
 });
 
 //Schema y modelo de HeroeHech:
-var heroeHechModel = mongoose.Model;
-var heroeHechSchema= mongoose.Schema;
+var hechizosModel = mongoose.Model;
+var hechizosSchema= mongoose.Schema;
 
-heroeHechSchema = new Schema({
+hechizosSchema = new Schema({
   nombreId: String,
-  picaro: [],
-  sacerdote: [], 
-  cruzado: [],
-  guerrero: [], 
-  hechicero: [],
-  cazador: []
+  hechizos: []
 });
 
 //Schema y modelo de Enemigos:
@@ -101,7 +95,8 @@ var animacionesSchema = mongoose.Schema;
 
 animacionesSchema = new Schema({
   nombreId: String,
-  animaciones: []
+  animaciones: [],
+  sonidos: []
 });
 
 //Schema y modelo de Mazmorra Snack:
@@ -180,6 +175,7 @@ perfilSchema = new Schema({
   heroes: [],
   objetos: [],
   objetos_globales: [],
+  hechizos: [],
   misiones: [],
   inmap: []
 });
@@ -338,47 +334,53 @@ ipc.on('setModelosDatos', function (event, arg) {
      
   // Definir Schemas de datos si es desarrollador:
   if(validacion.privilegios=="Desarrollador"|| validacion.privilegios=="Creador"){
+	  var nombreValidacion = ""
+	  if(arg["oficial"]){
+		 nombreValidacion = "Oficial" 
+	  }else{
+		  nombreValidacion = validacion.nombre;
+	  }
        
+
     //Definicion de modelo segun usuario
-            
     //Modelo heroeStat
-    heroeStatsModel = mongoose.model("heroeStatsModel", heroeStatsSchema,validacion.nombre);
+    heroeStatsModel = mongoose.model("heroeStatsModel", heroeStatsSchema,nombreValidacion);
   
-    //Modelo heroeHech
-    heroeHechModel = mongoose.model("heroeHechModel", heroeHechSchema,validacion.nombre);
+    //Modelo Hechizos
+    hechizosModel = mongoose.model("hechizosModel", hechizosSchema,nombreValidacion);
   
     //Modelo EnemigosStats
-     enemigosModel = mongoose.model("enemigosModel", enemigosSchema,validacion.nombre);
+     enemigosModel = mongoose.model("enemigosModel", enemigosSchema,nombreValidacion);
   
     //Modelo Buff
-    buffModel = mongoose.model("buffModel", buffSchema,validacion.nombre);
+    buffModel = mongoose.model("buffModel", buffSchema,nombreValidacion);
   
     //Modelo Objetos
-    objetosModel = mongoose.model("objetosModel", objetosSchema,validacion.nombre);
+    objetosModel = mongoose.model("objetosModel", objetosSchema,nombreValidacion);
   
     //Modelo Mazmorra Snack
-    mazmorraSnackModel = mongoose.model("mazmorraSnackModel", mazmorraSnackSchema,validacion.nombre);
+    mazmorraSnackModel = mongoose.model("mazmorraSnackModel", mazmorraSnackSchema,nombreValidacion);
   
     //Modelo Guardado Snack
-    guardadoSnackModel = mongoose.model("guardadoSnackModel", guardadoSnackSchema,validacion.nombre);
+    guardadoSnackModel = mongoose.model("guardadoSnackModel", guardadoSnackSchema,nombreValidacion);
   
     //Modelo Mazmorra Dummy
-    mazmorraDummyModel = mongoose.model("mazmorraDummyModel", mazmorraDummySchema,validacion.nombre);
+    mazmorraDummyModel = mongoose.model("mazmorraDummyModel", mazmorraDummySchema,nombreValidacion);
   
     //Modelo Guardado Dummy
-    guardadoDummyModel = mongoose.model("guardadoDummyModel", guardadoDummySchema,validacion.nombre);
+    guardadoDummyModel = mongoose.model("guardadoDummyModel", guardadoDummySchema,nombreValidacion);
   
     //Modelo Guardado Dummy
-    animacionesModel = mongoose.model("animacionesModel", animacionesSchema,validacion.nombre);
+    animacionesModel = mongoose.model("animacionesModel", animacionesSchema,nombreValidacion);
             
     //Modelo Parametros
-    parametrosModel = mongoose.model("parametrosModel", parametrosSchema,validacion.nombre);
+    parametrosModel = mongoose.model("parametrosModel", parametrosSchema,nombreValidacion);
   
     //Modelo Perfil
-    perfilModel = mongoose.model("perfilModel", perfilSchema,validacion.nombre);
+    perfilModel = mongoose.model("perfilModel", perfilSchema,nombreValidacion);
 
     //Modelo Personajes
-    personajesModel = mongoose.model("personajesModel", personajesSchema,validacion.nombre);
+    personajesModel = mongoose.model("personajesModel", personajesSchema,nombreValidacion);
 
   } //Fin de definicion de modelos segun usuario
         
@@ -435,7 +437,7 @@ ipc.on('getDatos', function (event, activarDatosOficial) {
 //*********************************************
 
 ipc.on('getDatosHeroeHech', function (event, arg) {
-  heroeHechModel.find({nombreId: 'Heroes_Hech'})
+  hechizosModel.find({nombreId: 'Hechizos'})
       .then(function(doc) {
         console.log("Enviando Estadisticas de Hechizos...");
         event.returnValue = doc[0]._doc;
@@ -546,7 +548,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
 
   console.log("Actualizando Estadisticas...");
   var actualizarHeroeStats = true;
-  var actualizarHeroeHech = true;
+  var actualizarHechizos = true;
   var actualizarEnemigos = true;
   var actualizarBuff = true;
   var actualizarObjetos = true;
@@ -567,8 +569,8 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       actualizarHeroeStats = false;
       documentos[0]= element;
       break;
-      case "Heroes_Hech":
-      actualizarHeroeHech = false;
+      case "Hechizos":
+      actualizarHechizos = false;
       documentos[1]=element;
       break;
       case "Enemigos":
@@ -631,7 +633,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataHeroeStatsModel.save().then(function(){
         console.log("Actualizacion de estadisticas Heroe_Stats completo");
         actualizarHeroeStats = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil) && actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil) && actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -645,17 +647,17 @@ ipc.on("actualizarEstadisticas",function(event,datos){
 
 
   //*************************
-  //  Actualiza Heroes_Hech
+  //  Actualiza Hechizos 
   //*************************
   if(typeof documentos[1]!="undefined"){
-  var dataHeroeHechModel = new heroeHechModel(documentos[1]);
+  var dataHechizosModel = new hechizosModel(documentos[1]);
   
-  heroeHechModel.deleteOne({nombreId: 'Heroes_Hech'})
+  hechizosModel.deleteOne({nombreId: 'Hechizos'})
     .then(function(producto){
-      dataHeroeHechModel.save().then(function(){
-        console.log("Actualizacion de estadisticas Heroe_Hech completo");
-        actualizarHeroeHech = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+      dataHechizosModel.save().then(function(){
+        console.log("Actualizacion de estadisticas Hechizos completo");
+        actualizarHechizos = true;
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -665,7 +667,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       event.returnValue = false;
     });
 
-  } //Fin de actualizacion heroes_hech
+  } //Fin de actualizacion Hechizos 
 
   //*************************
   //  Actualiza Enemigos
@@ -678,7 +680,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataEnemigosModel.save().then(function(){
         console.log("Actualizacion de estadisticas Enemigos completo");
         actualizarEnemigos = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -700,7 +702,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataBuff.save().then(function(){
         console.log("Actualizacion de estadisticas Buff completo");
         actualizarBuff = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -722,7 +724,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataObjetos.save().then(function(){
         console.log("Actualizacion de estadisticas Objetos completo");
         actualizarObjetos = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -745,7 +747,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataMazmorraSnack.save().then(function(){
         console.log("Actualizacion de estadisticas Mazmorra Snack completo");
         actualizarMazmorraSnack = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -767,7 +769,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataGuardadoSnack.save().then(function(){
         console.log("Actualizacion de estadisticas Guardado Snack completo");
         actualizarGuardadoSnack = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -789,7 +791,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataMazmorraDummy.save().then(function(){
         console.log("Actualizacion de estadisticas Mazmorra Dummy completo");
         actualizarMazmorraDummy = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -812,7 +814,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataGuardadoDummy.save().then(function(){
         console.log("Actualizacion de estadisticas Guardado Dummy completo");
         actualizarGuardadoDummy = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -835,7 +837,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataAnimaciones.save().then(function(){
         console.log("Actualizacion de estadisticas Animaciones completo");
         actualizarAnimaciones = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones)&& (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -858,7 +860,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataParametros.save().then(function(){
         console.log("Actualizacion de Parametros completo");
         actualizarParametros = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -881,7 +883,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataPerfil.save().then(function(){
         console.log("Actualizacion de Perfil completo");
         actualizarPerfil = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }
@@ -904,7 +906,7 @@ ipc.on("actualizarEstadisticas",function(event,datos){
       dataPersonajes.save().then(function(){
         console.log("Actualizacion de Personajes completo");
         actualizarPersonajes = true;
-        if((actualizarBuff && actualizarEnemigos) && (actualizarHeroeHech && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
+        if((actualizarBuff && actualizarEnemigos) && (actualizarHechizos && actualizarHeroeStats) && (actualizarMazmorraDummy && actualizarMazmorraSnack) && (actualizarGuardadoDummy && actualizarGuardadoSnack) && (actualizarObjetos&&actualizarAnimaciones) && (actualizarParametros&&actualizarPerfil)&& actualizarPersonajes){
           desarrolladorWindow.webContents.send("cambioEstadisticasCompleto");
           event.returnValue = true;
         }

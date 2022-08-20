@@ -16,10 +16,12 @@ export class DesarrolladorService implements OnInit{
 	public validacion: any= {}
 
   //Variables de Estado Paneles Principales:
-	public panel= "mazmorra";
+	public panel= "datos";
 	public estadoInmap= "";
 	public estadoMazmorra= "parametros";
 	public estadoParametros= "General";
+	public estadoHerramientaDatos= "Hechizos";
+	public estadoPanelDatosDerecha= "";
 	public estadoDatos= "subir";
 	public estadoAssets= "";
 	public estadoDatosSubir= "subir";
@@ -38,6 +40,10 @@ export class DesarrolladorService implements OnInit{
 	public mostrarSpinner= true;
 	public mostrarBotonAceptar= false;
 	public mensaje= "Actualizando Datos..."
+
+	//Selector de imagenes:
+	public mostrarSelectorImagen= false;
+	public estadoSelectorImagen= "";
 
   //Logger Consola
 	public logger=[];
@@ -82,9 +88,20 @@ export class DesarrolladorService implements OnInit{
    //Variables de parametros:
 	public salaSeleccionadaId = 0;
 	public enemigoSeleccionadoId = 0;
+	public enemigoSeleccionadoSalaIndex = 0;
+	public enemigoSeleccionadoIndex = 0;
 	public eventoSeleccionadoId = 0;
 
+	public hechizoSeleccionadoIndex = 0;
+	public buffSeleccionadoIndex = 0;
+	public animacionSeleccionadoIndex = 0;
+	
+	//CARGA DE DATOS:
 	public tipoEnemigos: any;
+	public hechizos: any;
+	public buff: any;
+	public animaciones: any;
+	public imagenes: any= [];
 	public tipoEnemigoSeleccionado:any;
 	private rotacion=0;
 
@@ -106,14 +123,24 @@ export class DesarrolladorService implements OnInit{
     console.log("INICIANDO HERRAMIENTA DESARROLLADOR");
     this.validacion= this.appService.getValidacion();
     this.tipoEnemigos= this.appService.getEnemigos();
-    console.log(this.tipoEnemigos);
+	this.hechizos = this.appService.getHechizos();
+	this.buff = this.appService.getBuff();
+	this.animaciones = this.appService.getAnimaciones();
+	this.seleccionarBuff(0)
+	this.seleccionarHechizo(0)
+
+	//Inicializar Imagenes:
+	for(var i=1; i<308; i++){
+		this.imagenes.push(i);
+	}
+	console.log(this.buff)
   }
 
   inicializarArchivos(){
     console.log("Iniciando")
     //Inicializar Estructura de Datos:
     this.archivosExcel= [];
-    var nombresArchivos= ["Heroes_Stats","Heroes_Hech","Enemigos","Buff","Objetos","Animaciones","Parametros","Perfil","Personajes"];
+    var nombresArchivos= ["Heroes_Stats","Hechizos","Enemigos","Buff","Objetos","Animaciones","Parametros","Perfil","Personajes"];
 
     for(var i = 0; i<nombresArchivos.length; i++){
       this.archivosExcel.push(
@@ -1200,15 +1227,36 @@ export class DesarrolladorService implements OnInit{
 
   seleccionarEnemigo(enemigoID: number){
     this.enemigoSeleccionadoId = enemigoID;
-    this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== this.mazmorra.enemigos.find(j=> j.enemigo_id== enemigoID).tipo_enemigo_id);
+	var tipoId= 0;
+	
+	//Buscar ID Enemigo:
+	for(var i = 0; i<this.mazmorra.salas.length; i++){
+		for(var j = 0; j<this.mazmorra.salas[i].enemigos.length; j++){
+			if(this.mazmorra.salas[i].enemigos[j].enemigo_id == enemigoID){
+				tipoId = this.mazmorra.salas[i].enemigos[j].tipo_enemigo_id;
+				this.enemigoSeleccionadoSalaIndex = i;
+				this.enemigoSeleccionadoIndex = j;
+				break;
+			}
+		}
+		if(tipoId!=0){break;}
+	}
+	if(tipoId==0){console.log("ERROR: No se ha encontrado ningun enemigo con ID: "+enemigoID);return}
+
+    this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoId);
     this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
   }
 
   seleccionarTipoEnemigo(tipoEnemigoID: number){
     this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoEnemigoID);
-    this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].tipo_enemigo_id= tipoEnemigoID;
-    this.mazmorra.enemigos[this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId))].nombre= this.tipoEnemigoSeleccionado.nombre;
+
+    this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex].tipo_enemigo_id= tipoEnemigoID;
+
+    this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex].nombre= this.tipoEnemigoSeleccionado.nombre;
+
+    this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex].imagen_id= this.tipoEnemigoSeleccionado.imagen_id;
+
     this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
   }
@@ -1242,22 +1290,31 @@ export class DesarrolladorService implements OnInit{
     this.seleccionarSala(cuentaID);
   }
 
-  crearEnemigo(){
+  crearEnemigo(indexSala){
 
     //Check ID de salas: (Se asigan un ID que este disponible)
     var cuentaID = 1;
+	var idOcupados = [];
 
-    while(this.mazmorra.enemigos.find(i=> i.enemigo_id==cuentaID)){
+	for(var i = 0;i<this.mazmorra.salas.length;i++){
+		for(var j = 0;j<this.mazmorra.salas[i].enemigos.length;j++){
+			idOcupados.push(parseInt(this.mazmorra.salas[i].enemigos[j].enemigo_id));
+		}
+	}
+
+    while((idOcupados.indexOf(cuentaID))!=-1){
       cuentaID++;
     }
+
     console.log("Creando enemigo con ID: "+cuentaID);
+
     var nombreEnemigo= "Enemigo_ID_"+cuentaID;
-    this.mazmorra.enemigos.push({
+    this.mazmorra.salas[indexSala].enemigos.push({
       enemigo_id: cuentaID,
       tipo_enemigo_id: 1,
       num_sala: 0,
       nombre: nombreEnemigo,
-      imagen_id: 0,
+      imagen_id: 1,
       nivel: 0,
       loot_id: 0,
       loot_prob: 0,
@@ -1267,6 +1324,7 @@ export class DesarrolladorService implements OnInit{
       evento_intervalo_id: 0,
       evento_intervalo_tiempo: 0
     });
+
     this.seleccionarEnemigo(cuentaID);
     this.seleccionarTipoEnemigo(1);
   }
@@ -1339,8 +1397,8 @@ export class DesarrolladorService implements OnInit{
           this.indexArchivoSeleccionado= 0;
   				break;
 	
-  			case "Heroes_Hech":
-  				this.archivoDato= this.appService.getHeroesHech()
+  			case "Hechizos":
+  				this.archivoDato= this.appService.getHechizos()
           this.indexArchivoSeleccionado= 1;
   				break;
 	
@@ -1438,10 +1496,10 @@ export class DesarrolladorService implements OnInit{
               nombreId: "Heroes_Stats"
             };
           break;
-          case 1: //HEROES HECH
-            vectorPaginas= ['ANGEL_CAIDO','CABALLERO','CAZADOR','CHRONOMANTE','CLERIGO','CRUZADO','ENANO','GLADIADOR','HECHICERO','INGENIERO','LICH','MINOTAURO','SEGADOR_DE_ALMAS']
+          case 1: //HECHIZOS
+            vectorPaginas= ['HECHIZOS']
             documento={
-              nombreId: "Heroes_Hech"
+              nombreId: "Hechizos"
             };
           break;
           case 2: //ENEMIGOS
@@ -1487,7 +1545,7 @@ export class DesarrolladorService implements OnInit{
             };
           break;
           case 9: //ANIMACIONES
-            vectorPaginas= ['ANIMACIONES']
+            vectorPaginas= ['ANIMACIONES','SONIDOS']
             documento={
               nombreId: "Animaciones"
             };
@@ -1643,10 +1701,10 @@ export class DesarrolladorService implements OnInit{
     switch(this.archivoSeleccionado){
       
       case "Heroes_Stats":
-        nombresHojas= ['MINOTAURO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','CLERIGO','SEGADOR_DE_ALMAS']
+        nombresHojas= ['GUERRERO','HECHICERO','CAZADOR','LADRON','SACERDOTE']
       break;
-      case "Heroes_Hech":
-        nombresHojas= ['ANGEL_CAIDO','CABALLERO','CAZADOR','CHRONOMANTE','CLERIGO','CRUZADO','ENANO','GLADIADOR','HECHICERO','INGENIERO','LICH','MINOTAURO','SEGADOR_DE_ALMAS']
+      case "Hechizos":
+        nombresHojas= ['HECHIZOS']
       break;
       case "Enemigos":
         nombresHojas= ['ENEMIGOS_STATS','ENEMIGOS_HECH','ENEMIGOS_PASIVAS','ENEMIGOS_BUFFOS']
@@ -1670,13 +1728,13 @@ export class DesarrolladorService implements OnInit{
         nombresHojas= ['GENERAL','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
       break;
       case "Animaciones":
-        nombresHojas= ['ANIMACIONES']
+        nombresHojas= ['ANIMACIONES','SONIDOS']
       break;
       case "Parametros":
         nombresHojas= ['PERSONAJES','ATRIBUTOS','ESCALADO']
       break;
       case "Perfil":
-        nombresHojas= ['CONFIGURACION','LOGROS','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
+        nombresHojas= ['CONFIGURACION','LOGROS','HEROES','OBJETOS','OBJETOS_GLOBALES','HECHIZOS','MISIONES','INMAP']
       break;
       case "Personajes":
         nombresHojas= ['PERSONAJES']
@@ -1847,7 +1905,7 @@ export class DesarrolladorService implements OnInit{
   eliminarEnemigo(){
 	  
 		//Elimina elemento sala del Array de salas:
-		this.mazmorra["enemigos"].splice(this.mazmorra.enemigos.indexOf(this.mazmorra.enemigos.find(i=> i.enemigo_id==this.enemigoSeleccionadoId)),1);
+		this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex]["enemigos"].splice(this.enemigoSeleccionadoIndex,1);
 
 		//Deselecciona la sala seleccionada:
 		this.enemigoSeleccionadoId=0;
@@ -1865,7 +1923,102 @@ export class DesarrolladorService implements OnInit{
 
 	return;
   }
+
+  setEstadoDatos(estadoDatos:string){
+	this.estadoHerramientaDatos = estadoDatos; 
+	if(estadoDatos=="Animaciones"){
+		this.setEstadoPanelDerecho('Sonidos');
+	}else{
+		this.setEstadoPanelDerecho("")
+	}
+	return;
+  }
+
+  seleccionarHechizo(indexHechizo:number){
+	  this.hechizoSeleccionadoIndex= indexHechizo;
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormHechizos");
+  }
+
+  seleccionarBuff(indexBuff:number){
+	  this.buffSeleccionadoIndex= indexBuff;
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormBuff");
+  }
+
+  seleccionarAnimacion(indexAnimacion:number){
+	  this.animacionSeleccionadoIndex= indexAnimacion;
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormAnimaciones");
+  }
+
+  abrirSelectorImagen(estado:string){
+	  this.estadoSelectorImagen = estado;
+	  this.mostrarSelectorImagen = true;
+  }
+  
+  seleccionarImagen(indexImagen:number){
+	  switch(this.estadoSelectorImagen){
+		  case "hechizo":
+			  this.hechizos.hechizos[this.hechizoSeleccionadoIndex].imagen_id = indexImagen;
+			  break;
+		  case "buff":
+			  this.buff.buff[this.buffSeleccionadoIndex].imagen_id = indexImagen;
+			  break;
+	  }
+
+  }
+
+  setEstadoPanelDerecho(estado:string){
+	  this.estadoPanelDatosDerecha = estado;
+  }
+
+  addBuff(indexBuff:number){
+	  this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id = this.buff.buff[indexBuff].id;
+  }
+
+  renderImagenBuff(indexHechizo:number){
+	return this.buff.buff.find(i=> i.id == this.hechizos.hechizos[indexHechizo].buff_id).imagen_id;
+  }
  
+  renderImagenEncadenado(indexHechizo:number){
+	return this.hechizos.hechizos.find(i=> i.id == this.hechizos.hechizos[indexHechizo].hech_encadenado_id).imagen_id;
+  }
+
+  eliminarEncadenado(){
+	this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id=0;
+  }
+  eliminarBuff(){
+	this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id=0;
+  }
+  
+  addEncadenado(indexEncadenado:number){
+	  this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id = this.hechizos.hechizos[indexEncadenado].id;
+  }
+
+  guardarPanelDatos(){  
+	
+	  console.log("GUARDANDO: ")
+	  console.log(this.hechizos)
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarHechizos",{hechizos: this.hechizos, token: this.appService.getToken()}).subscribe((res) => {
+      if(res){
+        console.log("Objeto Hechizos guardado con exito");
+		this.mostrarBotonAceptar= true;
+		this.mostrarSpinner= false;
+		this.mensaje= "Datos guardados con exito";
+		this.mostrarMensaje= true;
+      }else{
+        console.log("Fallo en el guardado");
+      }
+    },(err) => {
+      console.log(err);
+    });
+
+    return;
+  }
 } //FIN EXPORT
 
 

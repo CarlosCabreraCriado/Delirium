@@ -1,1 +1,10 @@
-{"_id":{"$oid":"5bd23a62fb6fc017d2e6aee6"},"nombre":"Delirium","descripcion":"Juego de mesa RPG","versionName":"0.0.0","version":1,"autor":"Carlos Cabrera Criado"}
+[{
+  "_id": {
+    "$oid": "5bd23a62fb6fc017d2e6aee6"
+  },
+  "nombre": "Delirium",
+  "descripcion": "Juego de mesa RPG",
+  "versionName": "0.0.0",
+  "version": 1,
+  "autor": "Carlos Cabrera Criado"
+}]

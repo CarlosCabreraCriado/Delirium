@@ -39,6 +39,10 @@ export class DesarrolladorComponent implements OnInit{
   	private formDialogos: FormGroup;
   	private formAsignarSala: FormGroup;
   	private formAsignarEvento: FormGroup;
+  	private formHechizos: FormGroup;
+  	private formBuff: FormGroup;
+  	private formAnimaciones: FormGroup;
+  	private formSonidos: FormGroup;
 
   	//Campos General:
   	private nombre_General = new FormControl("Primera mazmorra");
@@ -118,6 +122,46 @@ export class DesarrolladorComponent implements OnInit{
 	private redirect_dialogo_id = new FormControl('0');
 	private next_evento_id = new FormControl('0');
 
+  	//Campos Hechizos:
+  	private id_Hechizos = new FormControl('0');
+  	private nombre_Hechizos = new FormControl('???');
+    private descripcion_Hechizos = new FormControl('????????');
+    private distancia_Hechizos = new FormControl('1');
+    private objetivo_Hechizos = new FormControl('EU');
+    private tipo_dano_Hechizos = new FormControl('F');
+    private dano_Hechizos = new FormControl('0');
+    private heal_Hechizos = new FormControl('0');
+    private escudo_Hechizos = new FormControl('0');
+    private amenaza_Hechizos = new FormControl('1');
+    private energia_Hechizos = new FormControl('0');
+    private poder_Hechizos = new FormControl('0');
+    private funcion_Hechizos = new FormControl('');
+
+  	//Campos Buff:
+  	private id_Buff = new FormControl('0');
+  	private nombre_Buff = new FormControl('???');
+    private descripcion_Buff = new FormControl('????????');
+    private duracion_Buff = new FormControl('????????');
+    private tipo_dano_Buff = new FormControl('F');
+    private dano_Buff = new FormControl('0');
+    private heal_Buff = new FormControl('0');
+    private escudo_Buff = new FormControl('0');
+    private dano_T_Buff = new FormControl('0');
+    private heal_T_Buff = new FormControl('0');
+    private escudo_T_Buff = new FormControl('0');
+    private stat_inc_Buff = new FormControl('0');
+    private stat_inc_inicial_Buff = new FormControl('0');
+    private stat_inc_T_Buff = new FormControl('0');
+    private funcion_Buff = new FormControl('');
+
+  	//Campos Animaciones:
+  	private id_Animaciones = new FormControl('0');
+  	private nombre_Animaciones = new FormControl('???');
+    private duracion_Animaciones = new FormControl('0');
+    private num_frames_Animaciones = new FormControl('1');
+    private hue_Animaciones = new FormControl('0');
+    private frame_ref_Animaciones = new FormControl('0');
+
 	//Campos Asignar Isometrico:
   	private asignar_id_sala = new FormControl('0');
   	private asignar_evento = new FormControl('0');
@@ -140,8 +184,6 @@ export class DesarrolladorComponent implements OnInit{
 		this.desarrolladorService.log("-------------------------------","green");
 		this.desarrolladorService.log("  Iniciando gestor de datos... ","green");
 		this.desarrolladorService.log("-------------------------------","green");
-		this.desarrolladorService.inicializarGestor();
-		this.desarrolladorService.inicializarArchivos();
 
 		//Inicializar Reticula:
 		//this.renderReticula = this.desarrolladorService.inicializarReticula();
@@ -161,6 +203,7 @@ export class DesarrolladorComponent implements OnInit{
 	    this.formSala = this.formBuilder.group({
 	   		sala_id: this.sala_id_Sala,
 	     	nombre: this.nombre_Sala,
+			enemigos: [],
 	     	descripcion: this.descripcion_Sala,
 	     	evento_inicial_id: this.evento_inicial_id_Sala,
 	    	evento_final_id: this.evento_final_id_Sala,
@@ -182,6 +225,62 @@ export class DesarrolladorComponent implements OnInit{
         	evento_spawn_id: this.evento_spawn_id_Enemigos,
         	evento_intervalo_id: this.evento_intervalo_id_Enemigos,
         	evento_intervalo_tiempo: this.evento_intervalo_tiempo_Enemigos
+	    });
+
+		//Inicializacion formulario Hechizos:
+	    this.formHechizos = this.formBuilder.group({
+	    	id: this.id_Hechizos,
+	    	nombre: this.nombre_Hechizos,
+        	categoria: "",
+        	tipo: "BASICO",
+        	imagen_id: 0,
+        	nivel: 1,
+        	recurso: this.energia_Hechizos,
+        	poder: this.poder_Hechizos,
+        	acciones: 0,
+        	distancia: this.distancia_Hechizos,
+        	objetivo: this.objetivo_Hechizos,
+        	tipo_daño: this.tipo_dano_Hechizos,
+        	daño_dir: this.dano_Hechizos,
+        	heal_dir: this.heal_Hechizos,
+        	escudo_dir: this.escudo_Hechizos,
+        	mod_amenaza: this.amenaza_Hechizos,
+        	buff_id: 0, 
+        	animacion_id: 0, 
+        	funcion: this.funcion_Hechizos,
+        	hech_encadenado_id: 0, 
+        	descripcion: this.descripcion_Hechizos
+	    });
+
+		//Inicializacion formulario Buff:
+	    this.formBuff = this.formBuilder.group({
+	    	id: this.id_Buff,
+	    	nombre: this.nombre_Buff,
+        	duracion: this.duracion_Buff,
+        	tipo: "BUFF",
+        	imagen_id: 1,
+        	tipo_daño: this.tipo_dano_Buff,
+        	daño_t: this.dano_T_Buff,
+        	heal_t: this.heal_T_Buff,
+        	escudo_t: this.escudo_T_Buff,
+        	stat_inc: this.stat_inc_Buff,
+        	stat_inc_inicial: this.stat_inc_inicial_Buff,
+        	stat_inc_t: this.stat_inc_T_Buff,
+        	animacion_id: 0, 
+        	funcion: this.funcion_Buff,
+        	descripcion: this.descripcion_Buff
+	    });
+
+		//Inicializacion formulario Buff:
+	    this.formAnimaciones = this.formBuilder.group({
+	    	id: this.id_Animaciones,
+	    	nombre: this.nombre_Animaciones,
+        	duracion: this.duracion_Animaciones,
+        	sprite_id: 0,
+        	hue_filter: this.hue_Animaciones,
+        	frame_ref: this.frame_ref_Animaciones,
+        	num_frames: this.num_frames_Animaciones,
+        	sonido_id: 0,
 	    });
 
 		//Inicializacion formulario Eventos:
@@ -242,12 +341,29 @@ export class DesarrolladorComponent implements OnInit{
 
 	          	case "reloadFormEnemigo":
 				case "reloadForm":
-	          		this.formEnemigos.setValue(this.desarrolladorService.mazmorra["enemigos"][this.desarrolladorService.mazmorra.enemigos.indexOf(this.desarrolladorService.mazmorra.enemigos.find(i=> i.enemigo_id==this.desarrolladorService.enemigoSeleccionadoId))]);
+
+	          		this.formEnemigos.setValue(this.desarrolladorService.mazmorra["salas"][this.desarrolladorService.enemigoSeleccionadoSalaIndex].enemigos[this.desarrolladorService.enemigoSeleccionadoIndex]);
+				
 	          	break;
 				
 	          	case "reloadFormEventos":
 				case "reloadForm":
 	          		this.formEventos.setValue(this.desarrolladorService.mazmorra["eventos"][this.desarrolladorService.mazmorra.eventos.indexOf(this.desarrolladorService.mazmorra.eventos.find(i=> i.id_evento==this.desarrolladorService.eventoSeleccionadoId))]);
+	          	break;
+
+	          	case "reloadFormHechizos":
+				case "reloadForm":
+	          		this.formHechizos.setValue(this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex]);
+	          	break;
+
+	          	case "reloadFormBuff":
+				case "reloadForm":
+	          		this.formBuff.setValue(this.desarrolladorService.buff.buff[this.desarrolladorService.buffSeleccionadoIndex]);
+	          	break;
+
+	          	case "reloadFormAnimaciones":
+				case "reloadForm":
+	          		this.formAnimaciones.setValue(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex]);
 	          	break;
 
 	          	case "reloadReticula":
@@ -257,6 +373,9 @@ export class DesarrolladorComponent implements OnInit{
 	          }
 	        }
       	);
+
+		this.desarrolladorService.inicializarGestor();
+		this.desarrolladorService.inicializarArchivos();
 
 		this.formGeneral.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.mazmorra["general"][0] = val;
@@ -272,17 +391,32 @@ export class DesarrolladorComponent implements OnInit{
 
 		this.formEnemigos.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.enemigoSeleccionadoId){
-				this.desarrolladorService.mazmorra.enemigos[this.desarrolladorService.mazmorra.enemigos.indexOf(this.desarrolladorService.mazmorra.enemigos.find(i=> i.enemigo_id==this.desarrolladorService.enemigoSeleccionadoId))] = val;
+				this.desarrolladorService.mazmorra.salas[this.desarrolladorService.enemigoSeleccionadoSalaIndex].enemigos[this.desarrolladorService.enemigoSeleccionadoIndex] = val;
 			}
 			console.log(val)
 		});
 
+		//Suscripcion de dambios formulario Hechizos:
+		this.formHechizos.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.hechizoSeleccionadoIndex+1){
+				this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex]= val;
+			}
+			console.log(val)
+		});
+
+		//Suscripcion de dambios formulario BUFF:
+		this.formBuff.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.buffSeleccionadoIndex+1){
+				this.desarrolladorService.buff.buff[this.desarrolladorService.buffSeleccionadoIndex]= val;
+			}
+			console.log(val)
+		});
 		//Crear registro de nombres de enemigos para display de assets:
-		var nombreAsset:string;
+		var familia:string;
 		for (var i = 0; i < this.desarrolladorService.tipoEnemigos.enemigos_stats.length; ++i) {
-			nombreAsset= this.desarrolladorService.tipoEnemigos.enemigos_stats[i].nombre;
-			nombreAsset= nombreAsset.toLowerCase().replace(/ /g,'_').replace(/ñ/g,'n');
-			this.desarrolladorService.tipoEnemigos.enemigos_stats[i].nombreAsset= nombreAsset;
+			familia= this.desarrolladorService.tipoEnemigos.enemigos_stats[i].familia;
+			familia= familia.toLowerCase().replace(/ /g,'_').replace(/ñ/g,'n');
+			this.desarrolladorService.tipoEnemigos.enemigos_stats[i].familia= familia;
 		}
 		return;
 	}
@@ -304,7 +438,7 @@ export class DesarrolladorComponent implements OnInit{
         } catch(err) { }                 
     }
 
-	renderDatoSeleccionado(datoSeleccionado){
+	renderDatoSeleccionado(datoSeleccionado:string){
 		if(this.desarrolladorService.archivoSeleccionado==datoSeleccionado){
 			return "seleccionado"
 		}else{
@@ -312,7 +446,23 @@ export class DesarrolladorComponent implements OnInit{
 		}
 	}
 
-	renderOpcionDatoSeleccionado(opcionSeleccionado){
+	renderBotonAddSeleccionado(datoSeleccionado:string){
+		if(this.desarrolladorService.estadoPanelDatosDerecha==datoSeleccionado){
+			return "seleccionado"
+		}else{
+			return ""
+		}
+	}
+
+	renderIconoDatosSeleccionado(datoSeleccionado:string){
+		if(this.desarrolladorService.estadoHerramientaDatos==datoSeleccionado){
+			return "seleccionado"
+		}else{
+			return ""
+		}
+	}
+
+	renderOpcionDatoSeleccionado(opcionSeleccionado:string){
 		if(this.desarrolladorService.estadoDatos==opcionSeleccionado){
 			return "seleccionado"
 		}else{

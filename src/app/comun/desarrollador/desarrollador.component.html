@@ -32,12 +32,12 @@
       <div id="botonMazmorra" class="boton">Dungeon Builder</div>
     </div>
 
-    <div class="botonContainer" (click)="desarrolladorService.setPanel('datos')">
-      <div id="botonDatos" class="boton">Gestor Datos</div>
+    <div class="botonContainer" style="border-right: solid 2px" (click)="desarrolladorService.setPanel('datos')">
+      <div id="botonAssets" class="boton">Gestor Datos</div>
     </div>
 
-    <div class="botonContainer" style="border-right: solid 2px" (click)="desarrolladorService.setPanel('assets')">
-      <div id="botonAssets" class="boton">Gestor Assets</div>
+    <div class="botonContainer" (click)="desarrolladorService.setPanel('import/export')">
+      <div id="botonDatos" class="boton">Import/Export</div>
     </div>
 
     <div class="contenedorUsuario">
@@ -108,7 +108,7 @@
         Seleccione una mazmorra:
         <div class="contenedorMazmorras">
           <div *ngFor="let mazmorra of desarrolladorService.listaMazmorra; let i = index" class="cargarMazmorra" (click)="desarrolladorService.seleccionarMazmorra(i)">
-            {{mazmorra.nombre}}
+            {{mazmorra.nombreId}}
           </div>
         </div>
       </div>
@@ -117,6 +117,8 @@
     <div *ngIf="desarrolladorService.panel=='mazmorra' && desarrolladorService.mazmorraInicializada" id="panelMazmorra">
 
       <div class="panelIzquierdo">
+
+	<div *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="contenedorPanelIzquierdo">
         <div class="contenedorTitulo">HERRAMIENTAS</div>
         <div class="contenedorPanelIzquierdo">
            <img class="herramienta" src="assets/desarrollador/pointer.png" (click)="desarrolladorService.seleccionarHerramienta('seleccion')"/>
@@ -132,12 +134,32 @@
           </label>
 
         </div>
-      </div>
+	</div>
+
+		<div *ngIf="desarrolladorService.estadoMazmorra=='parametros'" class="contenedorPanelIzquierdo">
+			<div class="panelEnemigos">
+              <div class="titulo"> Enemigos </div>
+              <div class="contenedorEnemigos">
+				  
+				  
+                <div *ngFor="let sala of desarrolladorService.mazmorra.salas; let i=index" class="sala" >
+					Sala {{sala.sala_id}}: {{sala.nombre}} 
+					<div *ngFor="let enemigo of desarrolladorService.mazmorra.salas[i].enemigos; let j=index" class="enemigo" (click)="desarrolladorService.seleccionarEnemigo(enemigo.enemigo_id)">{{enemigo.nombre}}</div>
+					<div class="add"(click)="desarrolladorService.crearEnemigo(i)">Añadir</div>
+				</div> </div>
+
+            </div>
+		</div>
+
+	  </div> <!-- Fin Panel Izquierdo -->
       
+	  <!-- FLECHAS MAZMORRA CELDAS -->
+	  <!-- 
       <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder superior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('up')">
       <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder inferior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('down')">
       <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder derecha" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('right')">
       <img *ngIf="desarrolladorService.estadoMazmorra!='parametros'" class="flechaDungeonBuilder izquierda" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="desarrolladorService.moverReticula('left')">
+	  -->
 
       <img class="iconoZoomOut" src="assets/desarrollador/zoom-out.png" (click)="zoomOut()">
       <img class="iconoZoomIn" src="assets/desarrollador/zoom-in.png" (click)="zoomIn()">
@@ -182,7 +204,6 @@
 
 			</div>
 		  </div>
-
       </div>
 
       <!-- Contenedor Parametros -->
@@ -247,7 +268,7 @@
             <div class="panelSalas">
               <div class="titulo"> Salas </div>
               <div class="contenedorSalas">
-                <div *ngFor="let sala of desarrolladorService.mazmorra.salas; let index=i" class="sala" (click)=desarrolladorService.seleccionarSala(sala.sala_id)>{{sala.nombre}}</div>
+                <div *ngFor="let sala of desarrolladorService.mazmorra.salas; let i=index" class="sala" (click)=desarrolladorService.seleccionarSala(sala.sala_id)>{{sala.nombre}}</div>
               </div>
               <div class="botonAddSala" (click)="desarrolladorService.crearSala()">Añadir Sala</div>
             </div>
@@ -314,20 +335,12 @@
           Evento_Intervalos_Tiempo 
         -->
 
-            <div class="panelEnemigos">
-              <div class="titulo"> Enemigos </div>
-              <div class="contenedorEnemigos">
-                <div *ngFor="let enemigo of desarrolladorService.mazmorra.enemigos; let index=i" class="enemigo" (click)="desarrolladorService.seleccionarEnemigo(enemigo.enemigo_id)">{{enemigo.nombre}}</div>
-              </div>
-              <div class="botonAddEnemigo" (click)="desarrolladorService.crearEnemigo()">Añadir Enemigo</div>
-            </div>
-
             <div *ngIf="mostrarTipoEnemigo" class="panelTipoEnemigo">
               <div class="titulo">Selecciona un tipo de enemigo: </div>
               <img class="botonCerrar" src="./assets/desarrollador/cerrar.png" (click)="cerrarSeleccionarEnemigo()">
               <div class="contenedorTipoEnemigo">
                 <div *ngFor="let tipoEnemigo of desarrolladorService.tipoEnemigos.enemigos_stats; let index = i"  class="tipoEnemigo" (click)="seleccionarTipoEnemigo(tipoEnemigo.id)">
-                  <img class="imagenTipoEnemigo" src="./assets/Enemigos/{{tipoEnemigo.nombreAsset}}.png">
+					<img class="imagenTipoEnemigo" src="./assets/Enemigos/{{tipoEnemigo.familia}}/{{tipoEnemigo.imagen_id}}.png">
                   <div class="nombreTipoEnemigo">{{tipoEnemigo.nombre}}</div>
                 </div>
               </div>
@@ -339,10 +352,10 @@
 
               <div class="panelEnemigoGeneral"> 
                 <div class="contenedorImagenEnemigo"> 
-                  <img src="./assets/Enemigos/{{desarrolladorService.tipoEnemigoSeleccionado.nombreAsset}}.png">
+					<img src="./assets/Enemigos/{{desarrolladorService.tipoEnemigoSeleccionado.familia}}/{{desarrolladorService.mazmorra.salas[this.desarrolladorService.enemigoSeleccionadoSalaIndex].enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].imagen_id}}.png">
                 </div> 
                 <div class="contenedorInformacionEnemigo">
-                  {{desarrolladorService.tipoEnemigoSeleccionado.nombre}}
+				  <div class="nombreEnemigo">{{desarrolladorService.tipoEnemigoSeleccionado.nombre}}</div>
                   <div class="boton botonEstadisticas" (click)="mostrarEstadisticasEnemigo()">Estadisticas</div>
                   <div class="boton botonTipoEnemigo" (click)="abrirSeleccionarTipoEnemigo()">Tipo Enemigo</div>
                 </div>
@@ -704,7 +717,7 @@
 <!-- *************************************************
         PANEL DATOS
      ************************************************* -->
-    <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
+    <div *ngIf="desarrolladorService.panel=='import/export'" id="panelDatos">
       <div class="contenedorBarraAccion">
         <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('ver')" (click)="desarrolladorService.seleccionarAccionDato('ver');">VER</div>
         <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('subir')" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
@@ -716,7 +729,7 @@
       <div class="contenedorArchivos">
         <div class="tituloArchivo">ARCHIVOS: </div>
         <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Stats')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Hech')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Hech');">HEROES HECH</div>
+        <div class="archivo" [ngClass]="renderDatoSeleccionado('Hechizos')" (click)="desarrolladorService.seleccionarArchivoDato('Hechizos');">HECHIZOS</div>
         <div class="archivo" [ngClass]="renderDatoSeleccionado('Enemigos')" (click)="desarrolladorService.seleccionarArchivoDato('Enemigos');">ENEMIGOS</div>
         <div class="archivo" [ngClass]="renderDatoSeleccionado('Buff')" (click)="desarrolladorService.seleccionarArchivoDato('Buff');">BUFF</div>
         <div class="archivo" [ngClass]="renderDatoSeleccionado('Objetos')"(click)="desarrolladorService.seleccionarArchivoDato('Objetos');">OBJETOS</div>
@@ -797,30 +810,327 @@
       </div>
 
     </div>
-
      
 <!-- *************************************************
         PANEL ASSETS
      ************************************************* -->
-    <div *ngIf="desarrolladorService.panel=='assets'" id="panelAssets">
+    <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
 
-      <div class="contenedorTipoAssets">
-        <div class="tituloArchivo">TIPO ASSET: </div>
-        <div class="archivo">PERSONAJES</div>
-        <div class="archivo">BUFF</div>
-        <div class="archivo">ENEMIGOS</div>
-        <div class="archivo">HECHIZOS</div>
-        <div class="archivo">OBJETOS</div>
-        <div class="archivo">ANIMACIONES</div>
+      <div class="contenedorTipoDatos">
+        <img class="icono" src="./assets/Iconos/06.PNG" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.setEstadoDatos('Hechizos')"/>
+        <img class="icono" src="./assets/Iconos/Icono-Diario.png" [ngClass]="renderIconoDatosSeleccionado('Buff')" (click)="desarrolladorService.setEstadoDatos('Buff')"/>
+        <img class="icono" src="./assets/Iconos/05.PNG" [ngClass]="renderIconoDatosSeleccionado('Animaciones')" (click)="desarrolladorService.setEstadoDatos('Animaciones')"/>
+        <img class="icono" src="./assets/Iconos/07.png" [ngClass]="renderIconoDatosSeleccionado('Enemigos')" (click)="desarrolladorService.setEstadoDatos('Enemigos')"/>
+        <img class="icono" src="./assets/Iconos/Icono-Personaje.png" [ngClass]="renderIconoDatosSeleccionado('Personaje')" (click)="desarrolladorService.setEstadoDatos('Personaje')"/>
+        <img class="icono" src="./assets/Iconos/Icono-Equipo.png" [ngClass]="renderIconoDatosSeleccionado('Equipo')" (click)="desarrolladorService.setEstadoDatos('Equipo')"/>
+        <img class="icono" src="./assets/Iconos/Icono-Misiones.png" [ngClass]="renderIconoDatosSeleccionado('Misiones')" (click)="desarrolladorService.setEstadoDatos('Misiones')"/>
       </div>
 
-      <div class="contenedorVisualizador">
-        <div class="visualizador"></div>
+	  <img class="botonGuardar" src="./assets/desarrollador/guardar.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.guardarPanelDatos()"/>
+
+      <div class="contenedorLateral izquierda">
+		  
+		  <!-- LISTA HECHIZOS -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">HECHIZOS: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">
+			<div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index"  class="hechizo" (click)="desarrolladorService.seleccionarHechizo(i)">
+				<img class="imagenHechizo" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
+				<div class="nombre">{{hechizo.nombre}}</div>
+			</div>
+		</div>
+
+		<!-- LISTA BUFF -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">Buff: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
+			<div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index"  class="hechizo" (click)="desarrolladorService.seleccionarBuff(i)">
+				<img class="imagenHechizo" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
+				<div class="nombre">{{buff.nombre}}</div>
+			</div>
+		</div>
+
+		<!-- LISTA ANIMACIONES -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">Animaciones: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
+			<div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index"  class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
+				<div class="nombre">{{animacion.nombre}}</div>
+				<img class="imagenHechizo" src="./assets/Efectos/{{animacion.id}}.png">
+			</div>
+		</div>
+
+	  </div> <!-- FIN CONTENEDOR LISTA IZQUIERDA -->
+      <div class="contenedorCentral">
+
+        <div id="visualizadorHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">
+			<div class="contenedorImagenHechizo">
+				<img (click)="desarrolladorService.abrirSelectorImagen('hechizo')" class="imagenHechizo" src="./assets/Habilidades/Spell/{{desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].imagen_id}}.png"/>
+			</div>
+			<form  class="formularioGeneral" [formGroup]="formHechizos">
+
+				  <mat-form-field appearance="legacy" class="formId">
+					<mat-label>ID</mat-label>
+					<input matInput placeholder="ID" formControlName="id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre hechizo</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDescripcion">
+					<mat-label>Descripción</mat-label>
+					<input matInput placeholder="Descripción" formControlName="descripcion">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDistancia">
+					<mat-label>Distancia</mat-label>
+					<input matInput placeholder="" formControlName="distancia">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formObjetivo">
+					<mat-label>Objetivo</mat-label>
+					<input matInput placeholder="Descripción" formControlName="objetivo">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formTipoDaño">
+					<mat-label>Tipo Daño</mat-label>
+					<input matInput placeholder="Descripción" formControlName="tipo_daño">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDañoDir">
+					<mat-label>Daño</mat-label>
+					<input matInput placeholder="Descripción" formControlName="daño_dir">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formHealDir">
+					<mat-label>Heal</mat-label>
+					<input matInput placeholder="Descripción" formControlName="heal_dir">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formEscudoDir">
+					<mat-label>Escudo</mat-label>
+					<input matInput placeholder="Descripción" formControlName="escudo_dir">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formAmenaza">
+					<mat-label>Mod. Amenaza</mat-label>
+					<input matInput placeholder="Descripción" formControlName="mod_amenaza">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formEnergia">
+					<mat-label>Energía</mat-label>
+					<input matInput placeholder="Descripción" formControlName="recurso">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formPoder">
+					<mat-label>Poder</mat-label>
+					<input matInput placeholder="Descripción" formControlName="poder">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formFuncion">
+					<mat-label>Función</mat-label>
+					<input matInput placeholder="Descripción" formControlName="funcion">
+				  </mat-form-field>
+
+			</form>
+
+			<div class="tituloBuff">Buff:</div>	
+			<div class="contenedorBuff">
+				<div class="contenedorImagenEncadenado">
+
+					<img *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].buff_id!=0" (click)="desarrolladorService.setEstadoPanelDerecho('Buff')" class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.renderImagenBuff(this.desarrolladorService.hechizoSeleccionadoIndex)}}.png"/>
+					<img *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].buff_id==0" [ngClass]="renderBotonAddSeleccionado('Buff')" (click)="desarrolladorService.setEstadoPanelDerecho('Buff')" class="imagenEncadenado" src="./assets/desarrollador/add.svg"/>
+				</div>
+				<!--<div class="botonAddBuff">Add</div>	-->
+			</div>
+			<div class="tituloEncadenado">Encadenado:</div>	
+			<div class="contenedorEncadenado">
+				<div class="contenedorImagenEncadenado">
+					<img class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].imagen_id}}.png"/>
+
+					<img class="flecha" src="./assets/desarrollador/flecha-izquierda.png"/>
+					<img *ngIf="desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].hech_encadenado_id!=0" (click)="desarrolladorService.setEstadoPanelDerecho('Hechizos')" class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.renderImagenEncadenado(this.desarrolladorService.hechizoSeleccionadoIndex)}}.png"/>
+					<img *ngIf="desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].hech_encadenado_id==0" [ngClass]="renderBotonAddSeleccionado('Hechizos')" (click)="desarrolladorService.setEstadoPanelDerecho('Hechizos')" class="imagenAddEncadenado" src="./assets/desarrollador/add.svg"/>
+				</div>
+
+				<!--<div class="botonAddEncadenado">Add</div>	-->
+			</div>
+			</div> <!-- FIN VISUALIZADOR HECHIZOS -->
+
+			<div id="visualizadorBuff" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
+			<div class="contenedorImagen">
+				<img (click)="desarrolladorService.abrirSelectorImagen('buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
+			</div>
+			<form  class="formularioGeneral" [formGroup]="formBuff">
+
+				  <mat-form-field appearance="legacy" class="formId">
+					<mat-label>ID</mat-label>
+					<input matInput placeholder="ID" formControlName="id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre hechizo</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDescripcion">
+					<mat-label>Descripción</mat-label>
+					<input matInput placeholder="Descripción" formControlName="descripcion">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDistancia">
+					<mat-label>Buff/Debuff</mat-label>
+					<input matInput placeholder="" formControlName="tipo_daño">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formObjetivo">
+					<mat-label>Tipo Daño</mat-label>
+					<input matInput placeholder="Descripción" formControlName="tipo">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formAmenaza">
+					<mat-label>Daño T</mat-label>
+					<input matInput placeholder="Descripción" formControlName="daño_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formEnergia">
+					<mat-label>Heal T</mat-label>
+					<input matInput placeholder="Descripción" formControlName="heal_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formPoder">
+					<mat-label>Escudo T</mat-label>
+					<input matInput placeholder="Descripción" formControlName="escudo_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatInc">
+					<mat-label>Stat Inc</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatIncInicial">
+					<mat-label>Stat Inc Inial</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc_inicial">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatIncT">
+					<mat-label>Stat Inc T</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formFuncion">
+					<mat-label>Función</mat-label>
+					<input matInput placeholder="Descripción" formControlName="funcion">
+				  </mat-form-field>
+
+			</form>
+
+			</div>       <!-- FIN VISUALIZACIÓN BUFF -->
+
+			<div id="visualizadorAnimaciones" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
+			<div class="contenedorImagen">
+				<img (click)="desarrolladorService.abrirSelectorImagen('buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
+
+                <appAnimacionEfecto #animacionEfecto [enemigo]="" [loop]="false" [enemigoAnimacion]="desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].id"></appAnimacionEfecto>
+
+			</div>
+
+			<form  class="formularioGeneral" [formGroup]="formAnimaciones">
+
+				  <mat-form-field appearance="legacy" class="formId">
+					<mat-label>ID</mat-label>
+					<input matInput placeholder="ID" formControlName="id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre Animación</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Duración</mat-label>
+					<input matInput placeholder="" formControlName="duracion">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNumFrames">
+					<mat-label>Num Frames</mat-label>
+					<input matInput placeholder="" formControlName="num_frames">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formHue">
+					<mat-label>HUE</mat-label>
+					<input matInput placeholder="" formControlName="hue_filter">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formFrameRef">
+					<mat-label>Frame Ref</mat-label>
+					<input matInput placeholder="Frame Ref" formControlName="frame_ref">
+				  </mat-form-field>
+
+
+			</form>
+
+			</div>       <!-- FIN VISUALIZACIÓN ANIMACIONES -->
       </div>
+
+	  <div class="contenedorLateral derecha">
+		  
+		  <!-- LISTA HECHIZOS -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Hechizos'">HECHIZOS: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Hechizos'">
+			<div class="hechizo" (click)="desarrolladorService.eliminarEncadenado()">
+				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
+				<div class="nombre">Eliminar Hechizo Encadenado</div>
+			</div>
+			<div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index"  class="hechizo" (click)="desarrolladorService.addEncadenado(i)">
+				<img class="imagenHechizo" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
+				<div class="nombre">{{hechizo.nombre}}</div>
+			</div>
+		</div>
+
+		<!-- LISTA BUFF -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Buff'">Buff: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Buff'">
+			<div class="hechizo" (click)="desarrolladorService.eliminarBuff()">
+				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
+				<div class="nombre">Eliminar buff</div>
+			</div>
+			<div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index"  class="hechizo" (click)="desarrolladorService.addBuff(i)">
+				<img class="imagenHechizo" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
+				<div class="nombre">{{buff.nombre}}</div>
+			</div>
+		</div>
+
+		<!-- LISTA SONIDOS -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">Sonidos: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">
+			<div class="hechizo" (click)="desarrolladorService.eliminarBuff()">
+				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
+				<div class="nombre">Eliminar sonido</div>
+			</div>
+			<div *ngFor="let sonido of this.desarrolladorService.animaciones.sonidos; let i=index"  class="hechizo" (click)="true">
+				<img class="imagenHechizo" src="./assets/Habilidades/Spell/283.png">
+				<div class="nombre">{{sonido.nombre}}</div>
+			</div>
+		</div>
+
+	  </div> <!-- Fin contenedor lateral derecha -->
 
     </div>
 
   </div> <!-- Fin Workspace -->
+
+  <!-- SELECTOR DE IMAGENES -->
+  <div id="SelectorImagenes" *ngIf="desarrolladorService.mostrarSelectorImagen">
+	  <div class="frame">
+		  <div class="titulo">Seleccione una imagen:</div>
+			<img (click)="desarrolladorService.mostrarSelectorImagen = false" class="botonCerrar" src="./assets/desarrollador/cerrar.png"/>
+		  <div class="contenedorImagenes">
+			  <div *ngFor="let imagenes of desarrolladorService.imagenes; let i= index" class="imagen">
+				  <img (click)="desarrolladorService.seleccionarImagen(i+1)" src="./assets/Habilidades/Spell/{{imagenes}}.png"/>
+			  </div>
+		  </div>
+	  </div>
+  </div>
   
 <!-- *************************************************
         CONSOLA

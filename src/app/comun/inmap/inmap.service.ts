@@ -105,7 +105,7 @@ export class InMapService {
 	importarDatosGenerales(){
 		console.log("Importando Datos al servicio Inmap... ")
 		this.heroeStat=this.appService.getHeroesStats();
-		this.heroeHech=this.appService.getHeroesHech();
+		this.heroeHech=this.appService.getHechizos();
 		this.enemigos=this.appService.getEnemigos();
 		this.buff=this.appService.getBuff();
 		this.objetos=this.appService.getObjetos();
@@ -131,13 +131,14 @@ export class InMapService {
 		}
 
 		//Forzar Grupo:
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "guerrero", especializacion: "-", idImagen: 3, id: 1, nivel: 5, nombre: "Varian", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+		this.grupo.push({ cuentaID: "", heroe: {	clase: "hechicero", especializacion: "-", id_imagen: 1, id: 1, nivel: 5, nombre: "Hive", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "picaro", especializacion: "-", idImagen: 10, id: 1, nivel: 5, nombre: "Valera", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+		this.grupo.push({ cuentaID: "", heroe: {	clase: "cazador", especializacion: "-", id_imagen: 5, id: 1, nivel: 5, nombre: "Nandelt", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "sacerdote", especializacion: "-", idImagen: 7, id: 1, nivel: 5, nombre: "Anduin", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+		this.grupo.push({ cuentaID: "", heroe: {	clase: "ladron", especializacion: "-", id_imagen: 9, id: 1, nivel: 5, nombre: "Doomcrash", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 
-		//this.grupo.push({ cuentaID: "", heroe: {	clase: "CRUZADO", especializacion: "-", id: 1, nivel: 5, nombre: "Uther", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+		this.grupo.push({ cuentaID: "", heroe: {	clase: "sacerdote", especializacion: "-", id_imagen: 7, id: 1, nivel: 5, nombre: "Puerhorn", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
+
 		
 		this.heroeSeleccionado = {};
 

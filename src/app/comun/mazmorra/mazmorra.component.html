@@ -26,36 +26,7 @@
 		<!--      PANEL GENERAL    -->
 		<!--   ******************* -->
 
-		<div id="ContenedorPanelGeneral"> 
-			
-			<div class="contenedorBotonGeneral primerBotonGeneral" (click)="cambiarPantalla('Personaje')">
-				<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Personaje.png" />	
-				<div class="textoPanelGeneral Texto2">Personaje</div>
-			</div>
-
-			<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Equipo')">
-				<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Equipo.png" />	
-				<div class="textoPanelGeneral Texto2">Equipo</div>
-			</div>
-
-			<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Mazmorra')">
-				<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Mazmorra.png" />	
-				<div class="textoPanelGeneral Texto2">Mazmorra</div>
-			</div>
-
-			<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Diario')">
-				<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Diario.png" />	
-				<div class="textoPanelGeneral Texto2">Diario</div>
-			</div>
-
-			<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Tienda')">
-				<img class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Tienda.png" />	
-				<div class="textoPanelGeneral Texto2">Tienda</div>
-			</div>
-
-			<div class="framePanelGeneral"></div>
-			
-		</div>
+		<panelGeneralComponent id="PanelGeneral" (comandoPanelGeneral)="comandoPanelGeneral($event)"></panelGeneralComponent>
 
 	<!--   ******************* -->
 	<!--          PANELES      -->
@@ -142,8 +113,6 @@
 
 <appHeroesInfo></appHeroesInfo>
 
-
-
 	<!--   ******************* -->
 	<!--      Panel Control    -->
 	<!--   ******************* -->
@@ -194,7 +163,7 @@
 <div *ngIf="mazmorraService.cargaCompleta" class="Panel Barra-Accion" [ngClass]="renderIndividual()">
 
 	<!-- Panel de mensajes -->
-    <div *ngIf="renderMazmorra.render.barraAccion.mostrar" id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':renderMazmorra.render.barraAccion.mostrar}">
+    <div *ngIf="true" id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':renderMazmorra.render.barraAccion.mostrar}">
         {{renderMazmorra.render.barraAccion.mensajeAccion}}
     </div>
 
@@ -274,7 +243,7 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [indexHeroe]="i"[Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.idImagen"[Nivel]="heroe.nivel" [lider]="false" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderHeroe]="heroe"  class="panelHeroe" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
+		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [indexHeroe]="i"[Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.id_imagen"[Nivel]="heroe.nivel" [lider]="false" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
 
 	</div>
 
@@ -283,7 +252,7 @@
 	<!--   ******************* -->
 
 	<div id="contenedorEnemigos">
-		<enemigoComponent *ngFor="let enemigo of this.mazmorraService.renderMazmorra.enemigos; let i = index" [indexEnemigo]="i" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderEnemigo]="enemigo" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
+		<enemigoComponent *ngFor="let enemigo of this.mazmorraService.renderMazmorra.enemigos; let i = index" [indexEnemigo]="i" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
 	</div>
 
 <!-- *************************************************
@@ -369,10 +338,32 @@
             CONTROLES MOVIL
      ************************************************* -->
 
-    <div *ngIf="appService.dispositivo=='Movil'" id="contenedorControlesMovil">
+	 <!--
+	 <div *ngIf="appService.dispositivo=='Movil'" id="contenedorControlesMovil">
         <div class="botonHechizo Texto2" (click)="mazmorraService.routerInterfaz('elegirHechizo')">Hechizo</div>
         <div class="botonMovimiento Texto2">Movimiento</div>
         <div (click)="appService.teclaPulsada('p')" class="botonOtros Texto2">Pasar Turno</div>
+    </div>
+	 -->
+
+     <!-- *************************************************
+            MAPA MAZMORRA
+     ************************************************* -->
+
+	 <div id="contenedorMapaMazmorra">
+
+	  <!-- Contenedor Isometrico -->
+      <div class="contenedorIsometrico">
+
+		  <div *ngIf="this.mazmorraService.mostrarMazmorra" class="canvasIsometrico">
+
+            <div *ngFor="let elementoIsometrico of this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="true" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
+				<img class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
+
+			</div>
+		  </div>
+      </div>
+
     </div>
 
 </div>

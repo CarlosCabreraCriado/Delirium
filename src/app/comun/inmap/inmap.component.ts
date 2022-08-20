@@ -61,15 +61,17 @@ export class InMapComponent implements OnInit{
 		return;
 	}
 
+	comandoPanelGeneral(pantalla:string){
+		this.cambiarPantalla(pantalla);
+	}
+
 	comandoPanelControl(comando:any){
 
 		//Si se pulsa el centro accede a mazmorra:
 		if(comando=="centro"){
 			this.inmapService.iniciarPartida();	
 		}
-
 	}
-
 
 	cambiarPantalla(nombrePantalla:string):void{
 

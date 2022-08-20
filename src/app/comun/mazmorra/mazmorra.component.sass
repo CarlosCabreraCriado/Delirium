@@ -174,6 +174,7 @@
     top: 2%
     left: 27%
     height: 6%
+    z-index: 6 
 
 #iconoSocial
     position: absolute
@@ -198,53 +199,6 @@
       top: 0
       left: 0
 
-#ContenedorPanelGeneral
-    position: absolute
-    top: 0
-    left: 0
-    width: 12%
-    height: 100%
-    background-color: $colorFondo1
-    @include media("<=tablet")
-        width: 15%
-    @include media("<=phone")
-        width: 12%
-
-    .framePanelGeneral
-        position: absolute
-        top: 0
-        left: 0
-        z-index: 100
-        width: 100%
-        height: 100%
-        background-image: url("../../../assets/Frames/Frame-Panel-General.png")
-        background-size: 100% 100%
-        
-    .contenedorBotonGeneral
-        position: relative
-        display: flex
-        flex-direction: column
-        height: 18% 
-        width: 100%
-        z-index: 101
-        margin-top: 1vh
-        margin-bottom: 1vh
-        align-items: center
-        justify-content: center
-        &.primerBotonGeneral
-            margin-top: 3vh
-        
-        .iconoPanelGeneral
-            position: relative
-            height: 80%
-            margin-left: 5%
-        .textoPanelGeneral
-            position: relative
-            text-align: center
-            color: white
-            width: 100%
-            height: 20%
-
 #contenedorHeroes 
     position: absolute
     display: flex
@@ -253,6 +207,8 @@
     top: 0
     width: 25%
     height: 100%
+    z-index: 6
+
     @include media("<=desktop")
         width: 32%
     @include media("<=phone")
@@ -275,6 +231,7 @@
     top: 10%
     width: 15%
     height: 70%
+    z-index: 6
 
     @include media("<=desktop")
         width: 22%
@@ -289,6 +246,7 @@
         height: 14.15%
         width: 100%
         margin-bottom: 3%
+
 //------------------------------Enemigos-------------------------
 
 .Panel-Enemigos
@@ -858,10 +816,12 @@
 
 #Barra-Mensajes 
   position: absolute
+  display: flex
+  justify-content: center
+  align-items: center
   width: 100%
   height: 100%
   color: white
-  line-height: 150px
   text-align: center
   background-color: rgba(0, 0, 0, 0.7)
   z-index: 15
@@ -889,13 +849,14 @@
   z-index: 20 !important
 
 .Barra-Accion 
-  width: 100vw
-  height: 20vh
-  top: 60vh 
+  width: 50vw
+  height: 7vh
+  left: 10vw
+  top: 68vh 
   z-index: 15
 
   &.Individual
-    height: 40vh
+    height: 7vh
   
   .Accion-Turno-Heroe 
     position: absolute
@@ -1155,6 +1116,43 @@ $highlightObjetivoColor: red
   animation-iteration-count: infinite
   animation-direction: alternate 
 
+//MAPA MAZMORRA
+
+#contenedorMapaMazmorra
+  .contenedorIsometrico
+    position: absolute
+    overflow: scroll
+    top: 0
+    left: 0
+    width: 100% 
+    height: 100% 
+    &::-webkit-scrollbar
+        display: none
+
+    .mensajeIsometricoVacio
+        position: absolute
+        width: 100%
+        text-align: center
+        font-size: 30px
+        top: 45%
+
+    .canvasIsometrico
+        position: absolute
+        overflow: scroll
+        width: 3496px 
+        height: 2480px 
+        mix-blend-mode: multiply
+        z-index: 5
+
+        .elementoIsomentrico
+            position: absolute
+            transform: translate(-50%,-50%)
+            
+        .imagenElementoIsometrico    
+            width: 100%
+            //height: 100%
+            &:hover
+                filter: sepia(100%) saturate(30)
 
 @keyframes highlightObjetivoEnemigo 
   0% 

@@ -12,6 +12,7 @@ export class EnemigoComponent {
 	@Input() renderEnemigo: any; 
 	@Input() renderMazmorra: any; 
 	@Input() indexEnemigo: number; 
+	@Input() seleccionable: boolean;
 
 	constructor() {}
 
@@ -45,6 +46,12 @@ export class EnemigoComponent {
 
 	renderizarMarcoEnemigo(): string{
 		var clases = "Enemigo-"+(this.indexEnemigo+1);
+
+		if(this.seleccionable){
+			console.log("SELECCIONANDO")
+			clases = clases + " seleccionable";
+		}
+
 		//Renderiza Marco de turno:
 		if(this.renderMazmorra.enemigos[this.indexEnemigo].turno){
 			clases = clases + " Turno";

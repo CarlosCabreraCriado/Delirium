@@ -36,7 +36,7 @@ export class HeroesCrearService {
 
   	actualizarDatos(){
   		this.perfil= this.appService.getPerfil();
-  		this.heroeHech= this.appService.getHeroesHech();
+  		this.heroeHech= this.appService.getHechizos();
   		this.heroeStat= this.appService.getHeroesStats();
   		this.enemigos= this.appService.getEnemigos();
   		this.buff= this.appService.getBuff();

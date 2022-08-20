@@ -548,7 +548,7 @@ export class DeveloperCombateService implements OnInit{
 									//Cargar Datos locales
 									if(!this.appService.activarDatosOficiales){
 										this.heroeStat=this.appService.getHeroesStats();
-										this.heroeHech=this.appService.getHeroesHech();
+										this.heroeHech=this.appService.getHechizos();
 										this.enemigos=this.appService.getEnemigos();
 										this.buff=this.appService.getBuff();
 										this.objetos=this.appService.getObjetos();
@@ -3422,7 +3422,7 @@ export class DeveloperCombateService implements OnInit{
  				this.interfazService.setHeroesHech(this.heroeHech);
  				this.interfazService.setEnemigos(this.enemigos);
  				this.interfazService.setRender(this.renderMazmorra);
- 				this.interfazService.activarInterfaz();
+ 				this.interfazService.activarInterfaz([0,0,0,0,0]);
  				console.log(pantalla)
  			break;
  		}

@@ -86,7 +86,7 @@ export class AppService {
     public perfil:any;
 
     //Definicion estadisticas generales:
-    private heroeHech: any;
+    private hechizos: any;
     private heroeStat: any;
     private enemigos: any;
     private buff: any;
@@ -200,6 +200,8 @@ export class AppService {
 
     setInicio(datosJuego: any){
 
+		if(datosJuego == null){return;}
+
       var data= [];
 
       if(this.activarDatosOficiales){
@@ -231,8 +233,8 @@ export class AppService {
           case "Heroes_Stats":
             this.heroeStat = data[i];
           break;
-          case "Heroes_Hech":
-            this.heroeHech = data[i];
+          case "Hechizos":
+            this.hechizos = data[i];
           break;
           case "Parametros":
             this.parametros = data[i];
@@ -424,15 +426,15 @@ export class AppService {
       return this.heroeStat;
     }
 
-    getHeroesHech(){
-      if(this.heroeHech===undefined){
+    getHechizos(){
+      if(this.hechizos===undefined){
         if(this.activarDatosOficiales){
-          this.heroeHech= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Heroes_Hech");
+          this.hechizos= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Hechizos");
         }else{
-          this.heroeHech= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Heroes_Hech");
+          this.hechizos= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Hechizos");
         }
       }
-      return this.heroeHech;
+      return this.hechizos;
     }
 
     getBuff(){
@@ -527,7 +529,7 @@ export class AppService {
     }
 
     setModelosDatos(){
-      this.electronService.ipcRenderer.sendSync("setModelosDatos");
+      this.electronService.ipcRenderer.sendSync("setModelosDatos",{"oficial":false});
     }
 
     abandonarPartida(){
@@ -558,6 +560,7 @@ export class AppService {
 
     toggleDatosOficialesDesarrollador(){
       this.activarDatosOficiales= !this.activarDatosOficiales;
+	  this.electronService.ipcRenderer.sendSync("setModelosDatos",{"oficial":this.activarDatosOficiales})
       this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
     }
 

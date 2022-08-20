@@ -73,7 +73,8 @@ export interface RenderMazmorra {
 			objetivo: boolean,
 			objetivoAuxiliar: boolean,
 			animacion: number,
-			online: boolean
+			online: boolean,
+			id_imagen: number
 		}[]
 		
 		objetosGlobales:{
