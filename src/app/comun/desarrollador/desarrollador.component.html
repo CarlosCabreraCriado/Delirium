@@ -853,7 +853,7 @@
 		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
 			<div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index"  class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
 				<div class="nombre">{{animacion.nombre}}</div>
-				<img class="imagenHechizo" src="./assets/Efectos/{{animacion.id}}.png">
+				<!-- <img class="imagenHechizo" src="./assets/Efectos/{{animacion.sprite_id}}.png">-->
 			</div>
 		</div>
 
@@ -1028,9 +1028,9 @@
 
 			<div id="visualizadorAnimaciones" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
 			<div class="contenedorImagen">
-				<img (click)="desarrolladorService.abrirSelectorImagen('buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
+				<div (click)="desarrolladorService.abrirSelectorImagen('buff')" class="fondoAnimacion"></div>
 
-                <appAnimacionEfecto #animacionEfecto [enemigo]="" [loop]="false" [enemigoAnimacion]="desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].id"></appAnimacionEfecto>
+				<appAnimacionEfecto [loop]="true" [animacion]="desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex]"></appAnimacionEfecto>
 
 			</div>
 
@@ -1046,6 +1046,20 @@
 					<input matInput placeholder="Nombre" formControlName="nombre">
 				  </mat-form-field>
 
+			</form>
+
+			<form  class="formularioGeneral" [formGroup]="formSubanimacion">
+
+				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+					<mat-label>Nombre Subanimación</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formSpriteId">
+					<mat-label>Sprite ID</mat-label>
+					<input matInput  type="number" placeholder="Sprite Id" formControlName="sprite_id">
+				  </mat-form-field>
+
 				  <mat-form-field appearance="legacy" class="formDuracion">
 					<mat-label>Duración</mat-label>
 					<input matInput placeholder="" formControlName="duracion">
@@ -1053,12 +1067,7 @@
 
 				  <mat-form-field appearance="legacy" class="formNumFrames">
 					<mat-label>Num Frames</mat-label>
-					<input matInput placeholder="" formControlName="num_frames">
-				  </mat-form-field>
-
-				  <mat-form-field appearance="legacy" class="formHue">
-					<mat-label>HUE</mat-label>
-					<input matInput placeholder="" formControlName="hue_filter">
+					<input matInput type="number" placeholder="" formControlName="num_frames">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formFrameRef">
@@ -1066,8 +1075,57 @@
 					<input matInput placeholder="Frame Ref" formControlName="frame_ref">
 				  </mat-form-field>
 
+				  <mat-form-field appearance="legacy" class="formHue">
+					<mat-label>HUE</mat-label>
+					<input matInput type="number" placeholder="" formControlName="hue_filter">
+				  </mat-form-field>
 
+				  <mat-form-field appearance="legacy" class="formSepia">
+					<mat-label>Sepia</mat-label>
+					<input matInput type="number" placeholder="" formControlName="sepia">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formBrillo">
+					<mat-label>Brillo</mat-label>
+					<input matInput type="number" placeholder="" formControlName="brillo">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formSaturation">
+					<mat-label>Saturación</mat-label>
+					<input matInput type="number" placeholder="" formControlName="saturation">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDelay">
+					<mat-label>Delay</mat-label>
+					<input matInput type="number" placeholder="" formControlName="delay">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formOffsetX">
+					<mat-label>OffsetX</mat-label>
+					<input matInput type="number" placeholder="" formControlName="offset_x">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formOffsetY">
+					<mat-label>OffsetY</mat-label>
+					<input matInput type="number" placeholder="" formControlName="offset_y">
+				  </mat-form-field>
 			</form>
+
+			<!-- Inicio panel subanimacion -->
+			<div class="contenedorSubLista contenedorSubanimacion">
+				
+				<div class="tituloSubLista">Subanimación</div>
+				<div *ngFor="let subanimacion of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].subanimaciones; let i=index"  class="elemento" (click)="desarrolladorService.seleccionarSubanimacion(i)">{{subanimacion.nombre}} </div>
+
+			</div>
+
+			<!-- Inicio panel Sonidos -->
+			<div class="contenedorSubLista contenedorSonido">
+
+				<div class="tituloSubLista">Sonidos</div>
+				<div *ngFor="let sonido of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].sonidos; let i=index"  class="elemento" (click)="true">subanimacion </div>
+
+			</div>
 
 			</div>       <!-- FIN VISUALIZACIÓN ANIMACIONES -->
       </div>

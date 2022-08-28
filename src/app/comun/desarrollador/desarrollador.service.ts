@@ -95,12 +95,15 @@ export class DesarrolladorService implements OnInit{
 	public hechizoSeleccionadoIndex = 0;
 	public buffSeleccionadoIndex = 0;
 	public animacionSeleccionadoIndex = 0;
+	public subanimacionSeleccionadoIndex = 0;
 	
 	//CARGA DE DATOS:
 	public tipoEnemigos: any;
 	public hechizos: any;
 	public buff: any;
 	public animaciones: any;
+	public subanimaciones: any;
+	public sonidos: any;
 	public imagenes: any= [];
 	public tipoEnemigoSeleccionado:any;
 	private rotacion=0;
@@ -126,8 +129,11 @@ export class DesarrolladorService implements OnInit{
 	this.hechizos = this.appService.getHechizos();
 	this.buff = this.appService.getBuff();
 	this.animaciones = this.appService.getAnimaciones();
+
 	this.seleccionarBuff(0)
 	this.seleccionarHechizo(0)
+	this.seleccionarAnimacion(0)
+	this.seleccionarSubanimacion(0)
 
 	//Inicializar Imagenes:
 	for(var i=1; i<308; i++){
@@ -164,9 +170,9 @@ export class DesarrolladorService implements OnInit{
   }
 
 
-  //*************************************************
+  // *************************************************
   //    CONSOLA:
-  //************************************************* 
+  // ************************************************* 
 
   log(mensaje:any,color?:any):void{
      this.logger.push(mensaje);
@@ -177,7 +183,7 @@ export class DesarrolladorService implements OnInit{
      }
    }
 
-//*************************************************
+// *************************************************
 //    PANEL MAZMORRA:
 //************************************************* 
   
@@ -1949,10 +1955,23 @@ export class DesarrolladorService implements OnInit{
   }
 
   seleccionarAnimacion(indexAnimacion:number){
+
 	  this.animacionSeleccionadoIndex= indexAnimacion;
+
+	  console.log(this.animaciones)
+	  this.subanimaciones = this.animaciones.animaciones[indexAnimacion].subanimaciones;
+	  this.sonidos = this.animaciones.animaciones[indexAnimacion].sonidos;
 
 	  //Actualizar Formulario:
 		this.observarDesarrolladorService.next("reloadFormAnimaciones");
+  }
+
+  seleccionarSubanimacion(indexSubAnimacion:number){
+
+	  this.subanimacionSeleccionadoIndex= indexSubAnimacion;
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
   }
 
   abrirSelectorImagen(estado:string){
@@ -1969,7 +1988,6 @@ export class DesarrolladorService implements OnInit{
 			  this.buff.buff[this.buffSeleccionadoIndex].imagen_id = indexImagen;
 			  break;
 	  }
-
   }
 
   setEstadoPanelDerecho(estado:string){

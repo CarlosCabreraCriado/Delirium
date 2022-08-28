@@ -2,7 +2,6 @@
 
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { trigger,state,style,animate,transition, keyframes } from '@angular/animations';
-import { MazmorraService } from '../mazmorra/mazmorra.service'
 
 @Component({
   selector: 'appAnimacionEfecto',
@@ -12,8 +11,8 @@ import { MazmorraService } from '../mazmorra/mazmorra.service'
     trigger('animacionEfecto', [
       // ...
       state('inicio', style({
-      	backgroundPositionX: "-500%",
-       	opacity: 0
+      	backgroundPositionX: "-1000%",
+       	opacity: 1
       })),
 
       state('fin', style({
@@ -21,73 +20,75 @@ import { MazmorraService } from '../mazmorra/mazmorra.service'
     	opacity: 0
       })),
 
-      transition('* => true', [
+      transition('* => *', [
         animate('{{tiempoEfectoParam}}s steps({{stepsParam}})', keyframes([
-    			style({ backgroundPositionX: "-{{stepsParam}}00%",opacity: 1 , offset: 0}),
-    			style({ backgroundPositionX: "0%", offset: 1})
+    			style({ backgroundPositionX: "-{{stepsParam}}00%",opacity: 1 , 'background-size': "{{stepsParam}}00% 100%", offset: 0}),
+    			style({ backgroundPositionX: "0%", offset: 1, 'background-size': "{{stepsParam}}00% 100%"})
   		]))
-      ],{params : { tiempoEfectoParam: "0.44", stepsParam: "5"}}),
+      ],{params : { tiempoEfectoParam: "0.44", stepsParam: "9"}}),
     ]),
   ],
 })
 
 export class AnimacionEfectoComponent implements OnInit, OnChanges {
 
-	public mostrarAnimacion: boolean= false;
-	private idAnimacion: number= 0;
-	private colorNumero: string= "red";
 	private efectoSonido = new Audio();
-	public nombreEfecto: string= "Basico2";
-	private nombreSonido: string= "Basico2.mp3"
-	public tiempoEfecto: string= "0.44";
-	public stepsEfecto: string= "5";
-    private animaciones: any;
+	private flagLoop:boolean = true;
+	public estadoAnimacion: string= "inicio";
 
-	@Input() enemigo: any;
-    @Input() enemigoAnimacion = 0;
-	@Input() heroe: any;
-    @Input() heroeAnimacion = 0;
+	public tiempoEfecto = 0.44;
+	public stepsEfecto: string= "5";
+	public hue: string= "0";
+	public spriteId: string= "0";
+
+	@Input() animacion: any;
 	@Input() loop: any;
 
-  constructor(private mazmorraService: MazmorraService) { }
+  constructor() { }
 
   ngOnInit() {
-  	//Inicio suscripcion evento progreso Carga
-    	this.mazmorraService.mostrarAnimacionNumero.subscribe(val => {
-      		this.mostrarAnimacion= true;
-    	});
 
-      this.mostrarAnimacion= true;
-      this.animaciones = this.mazmorraService.animaciones;
+  	//Inicio suscripcion evento progreso Carga
+    //	this.mazmorraService.mostrarAnimacionNumero.subscribe(val => {
+    // 		this.mostrarAnimacion= true;
+    //	});
+
+	console.log(this.animacion)
+  }
+
+  finAnimacion(): void{
+
+	if(this.loop && this.estadoAnimacion=="fin"){
+		if(this.flagLoop){
+			this.flagLoop = false;
+			setTimeout(()=>{  
+					this.estadoAnimacion = "inicio";
+			}, this.tiempoEfecto*1000+1000);	
+		}
+	}
 
   }
 
-  resetAnimacionNumero(): void{
-
-	if(!this.loop){
-		this.mostrarAnimacion = false;
+  inicioAnimacion(indexSubanimacion: number): void{
+	if(this.estadoAnimacion=="inicio"){
+		this.estadoAnimacion = "fin";	
+		this.flagLoop=true;
 	}
-
-    if(this.enemigo){
-      this.enemigo.animacion=0;
-    }
-    if(this.heroe){
-      this.heroe.animacion=0;
-    }
   }
 
   renderIndividual(): any{
     var clase= "";
 
-    if(this.mazmorraService.getDispositivo()=="Movil"){
-      clase= clase+" Individual"
-    }
+    //if(this.mazmorraService.getDispositivo()=="Movil"){
+     // clase= clase+" Individual"
+    //}
+
     return clase;
   }
 
   //Sonido Efecto:
-	efectoSonidoPlay(nombreSonido:string): void{
-  		this.efectoSonido.src = "./assets/sounds/"+nombreSonido;
+	efectoSonidoPlay(sonido_id:string,formato:string): void{
+  		this.efectoSonido.src = "./assets/sounds/"+sonido_id+"."+formato;
   		this.efectoSonido.load();
   		this.efectoSonido.play();
   		this.efectoSonido.volume= 1;
@@ -95,31 +96,26 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 
    ngOnChanges(changes: SimpleChanges) {
 
-    //Procesar si es enemigo:
-    if(changes.enemigoAnimacion){ 
+    if(changes.animacion){ 
+
       // Detectar cambio animacion:
-      if((changes.enemigoAnimacion.currentValue!=0) && ((changes.enemigoAnimacion.previousValue==0) /* || (changes.enemigoAnimacion.previousValue==undefined)*/)){
-       
-        this.efectoSonidoPlay(this.animaciones.animaciones.find(i => i.id == changes.enemigoAnimacion.currentValue).sonido_nombre);
-        this.tiempoEfecto = this.animaciones.animaciones.find(i => i.id == changes.enemigoAnimacion.currentValue).animacion_tiempo;
-        this.stepsEfecto = this.animaciones.animaciones.find(i => i.id == changes.enemigoAnimacion.currentValue).num_frames;
-        this.nombreEfecto = this.animaciones.animaciones.find(i => i.id == changes.enemigoAnimacion.currentValue).sprite_nombre;
-        this.mostrarAnimacion= true;
-      }
+        //this.efectoSonidoPlay(this.animaciones["animaciones"].find(i => i.id == changes.idAnimacion.currentValue).sonido_nombre);
+        //this.tiempoEfecto = this.animaciones.animaciones.find(i => i.id == changes.idAnimacion.currentValue).animacion_tiempo;
+        //this.stepsEfecto = this.animaciones.animaciones.find(i => i.id == changes.idAnimacion.currentValue).num_frames;
+        //this.nombreEfecto = this.animaciones.animaciones.find(i => i.id == changes.idAnimacion.currentValue).sprite_nombre;
+        //this.mostrarAnimacion= true;
+
+       //this.efectoSonidoPlay(this.animacion.sonido_id);
+       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].hue_filter!=null){this.hue = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].hue_filter;}
+       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].duracion!=null){this.tiempoEfecto = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].duracion;}
+       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].num_frames!=null){this.stepsEfecto = this.animacion.subanimacion[this.desarrolladorService.sub].num_frames;}
+       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].sprite_id!=null){this.spriteId = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].sprite_id;}
+
+		if(!this.loop){
+			this.estadoAnimacion = "inicio";
+		}
     }
-    
-    //Procesar si es heroe:
-    if(changes.heroeAnimacion){
-       // Detectar cambio animacion:
-      if((changes.heroeAnimacion.currentValue!=0) && (changes.heroeAnimacion.previousValue==0)){
-       
-        this.efectoSonidoPlay(this.animaciones.animaciones.find(i => i.id == changes.heroeAnimacion.currentValue).sonido_nombre);
-        this.tiempoEfecto = this.animaciones.animaciones.find(i => i.id == changes.heroeAnimacion.currentValue).animacion_tiempo;
-        this.stepsEfecto = this.animaciones.animaciones.find(i => i.id == changes.heroeAnimacion.currentValue).num_frames;
-        this.nombreEfecto = this.animaciones.animaciones.find(i => i.id == changes.heroeAnimacion.currentValue).sprite_nombre;
-        this.mostrarAnimacion= true;
-      }
-    }
+
 
   } //Final ngOnChanges
 

@@ -23,6 +23,8 @@ if(MOVIL){
 const electron = require('electron');
 const ipc = require('electron').ipcMain;
 
+//electron.commandLine.appendSwitch('ignore-certificate-errors');
+
 const url = require('url');
 const path = require('path');
 
@@ -32,9 +34,13 @@ var Datastore = require('nedb');
 
 //Inicialización del sistema de almacenamiento remoto:
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://deliriumClient:delirium96@ds141633.mlab.com:41633/heroku_27lq85ms',{ useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect('mongodb+srv://Delirium-Oficial:zwwkGSyxCztTkTEr@carlos-cabrera-db.b1mri.mongodb.net/?retryWrites=true&w=majority',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('mongodb://localhost:27017',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
+var dbLocal = false;
+if(dbLocal){
+	mongoose.connect('mongodb://localhost:27017',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
+}else{
+	mongoose.connect('mongodb+srv://Delirium-Oficial:zwwkGSyxCztTkTEr@carlos-cabrera-db.b1mri.mongodb.net/?retryWrites=true&w=majority',{ dbName: "Delirium", useNewUrlParser: true, useUnifiedTopology: true });
+}
+
 var Schema = mongoose.Schema;
 
 //Schema y modelo de HeroeStats:
@@ -96,6 +102,7 @@ var animacionesSchema = mongoose.Schema;
 animacionesSchema = new Schema({
   nombreId: String,
   animaciones: [],
+  sprites: [],
   sonidos: []
 });
 

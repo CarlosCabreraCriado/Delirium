@@ -194,7 +194,7 @@ export class AppService {
 
 	  //Router de tecla
   	teclaPulsada(tecla): void{
-  		this.audioTeclaPlay();
+  		//this.audioTeclaPlay();
   		this.observarTeclaPulsada.next(tecla);
   	}
 

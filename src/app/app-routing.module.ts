@@ -12,7 +12,7 @@ import { CargarPartidaComponent } from './comun/cargarPartida/cargarPartida.comp
 import { HeroesComponent } from './comun/heroes/heroes.component';
 import { UnirsePartidaComponent } from './comun/unirsePartida/unirsePartida.component';
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
-import {InMapComponent} from './comun/inmap/inmap.component';
+import { InMapComponent } from './comun/inmap/inmap.component';
 
 const routes: Routes = [
 	{path: '' ,redirectTo: "/index", pathMatch: "full" },

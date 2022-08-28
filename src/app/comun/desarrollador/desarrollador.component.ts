@@ -1,5 +1,5 @@
 
-import { Component, OnInit , ViewChild, ElementRef, AfterViewChecked} from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from '../../app.service';
 import { DesarrolladorService } from './desarrollador.service';
@@ -7,6 +7,8 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { RenderReticula } from './renderReticula.class'
 import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { Subscription } from "rxjs";
+
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import * as XLSX from 'xlsx';
 
@@ -42,6 +44,7 @@ export class DesarrolladorComponent implements OnInit{
   	private formHechizos: FormGroup;
   	private formBuff: FormGroup;
   	private formAnimaciones: FormGroup;
+  	private formSubanimacion: FormGroup;
   	private formSonidos: FormGroup;
 
   	//Campos General:
@@ -158,9 +161,25 @@ export class DesarrolladorComponent implements OnInit{
   	private id_Animaciones = new FormControl('0');
   	private nombre_Animaciones = new FormControl('???');
     private duracion_Animaciones = new FormControl('0');
-    private num_frames_Animaciones = new FormControl('1');
-    private hue_Animaciones = new FormControl('0');
-    private frame_ref_Animaciones = new FormControl('0');
+    private subanimaciones_Animaciones = new FormControl('0');
+    private sonidos_Animaciones = new FormControl('0');
+
+	//Campos Subanimacion:
+  	private id_Subanimacion = new FormControl(0);
+  	private nombre_Subanimacion = new FormControl('???');
+  	private sprite_id_Subanimacion = new FormControl('0');
+    private duracion_Subanimacion = new FormControl('0');
+    private num_frames_Subanimacion = new FormControl('1');
+    private frame_ref_Subanimacion = new FormControl('0');
+
+    private hue_Subanimacion = new FormControl('0');
+    private sepia_Subanimacion = new FormControl('0');
+    private brillo_Subanimacion = new FormControl('0');
+    private saturacion_Subanimacion = new FormControl('0');
+
+    private delay_Subanimacion = new FormControl('0');
+    private offsetx_Subanimacion = new FormControl('0');
+    private offsety_Subanimacion = new FormControl('0');
 
 	//Campos Asignar Isometrico:
   	private asignar_id_sala = new FormControl('0');
@@ -271,16 +290,30 @@ export class DesarrolladorComponent implements OnInit{
         	descripcion: this.descripcion_Buff
 	    });
 
-		//Inicializacion formulario Buff:
+		//Inicializacion formulario Animaciones:
 	    this.formAnimaciones = this.formBuilder.group({
 	    	id: this.id_Animaciones,
 	    	nombre: this.nombre_Animaciones,
         	duracion: this.duracion_Animaciones,
-        	sprite_id: 0,
-        	hue_filter: this.hue_Animaciones,
-        	frame_ref: this.frame_ref_Animaciones,
-        	num_frames: this.num_frames_Animaciones,
-        	sonido_id: 0,
+			subanimaciones: [],
+			sonidos: []
+	    });
+
+		//Inicializacion formulario Subanimación:
+	    this.formSubanimacion = this.formBuilder.group({
+	    	id: this.desarrolladorService.subanimacionSeleccionadoIndex+1,
+	    	nombre: this.nombre_Subanimacion,
+        	duracion: this.duracion_Subanimacion,
+        	sprite_id: this.sprite_id_Subanimacion,
+        	frame_ref: this.frame_ref_Subanimacion,
+        	num_frames: this.num_frames_Subanimacion,
+        	hue_filter: this.hue_Subanimacion,
+        	sepia: this.sepia_Subanimacion,
+        	brillo: this.brillo_Subanimacion,
+        	saturation: this.saturacion_Subanimacion,
+        	delay: this.delay_Subanimacion,
+        	offset_x: this.offsetx_Subanimacion,
+        	offset_y: this.offsety_Subanimacion
 	    });
 
 		//Inicializacion formulario Eventos:
@@ -363,7 +396,18 @@ export class DesarrolladorComponent implements OnInit{
 
 	          	case "reloadFormAnimaciones":
 				case "reloadForm":
+					console.log(this.formAnimaciones)
+					console.log(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex])
+
+					//this.formAnimaciones.value.duracion = this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].duracion
+
 	          		this.formAnimaciones.setValue(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex]);
+	          	break;
+
+	          	case "reloadFormSubAnimacion":
+				case "reloadForm":
+				console.log(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex])
+	          		this.formSubanimacion.setValue(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]);
 	          	break;
 
 	          	case "reloadReticula":
@@ -382,6 +426,7 @@ export class DesarrolladorComponent implements OnInit{
 			console.log(val)
 		});
 
+		//Suscripcion de dambios formulario Sala:
 		this.formSala.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.salaSeleccionadaId){
 				this.desarrolladorService.mazmorra.salas[this.desarrolladorService.mazmorra.salas.indexOf(this.desarrolladorService.mazmorra.salas.find(i=> i.sala_id==this.desarrolladorService.salaSeleccionadaId))] = val;
@@ -389,6 +434,7 @@ export class DesarrolladorComponent implements OnInit{
 			console.log(val)
 		});
 
+		//Suscripcion de dambios formulario Enemigos:
 		this.formEnemigos.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.enemigoSeleccionadoId){
 				this.desarrolladorService.mazmorra.salas[this.desarrolladorService.enemigoSeleccionadoSalaIndex].enemigos[this.desarrolladorService.enemigoSeleccionadoIndex] = val;
@@ -411,6 +457,15 @@ export class DesarrolladorComponent implements OnInit{
 			}
 			console.log(val)
 		});
+
+		//Suscripcion de dambios formulario Animaciones:
+		this.formAnimaciones.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.animacionSeleccionadoIndex+1){
+				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex]= val;
+			}
+			console.log(val)
+		});
+
 		//Crear registro de nombres de enemigos para display de assets:
 		var familia:string;
 		for (var i = 0; i < this.desarrolladorService.tipoEnemigos.enemigos_stats.length; ++i) {
