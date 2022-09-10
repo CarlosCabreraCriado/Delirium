@@ -22,10 +22,16 @@ import { trigger,state,style,animate,transition, keyframes } from '@angular/anim
 
       transition('* => *', [
         animate('{{tiempoEfectoParam}}s steps({{stepsParam}})', keyframes([
-    			style({ backgroundPositionX: "-{{stepsParam}}00%",opacity: 1 , 'background-size': "{{stepsParam}}00% 100%", offset: 0}),
-    			style({ backgroundPositionX: "0%", offset: 1, 'background-size': "{{stepsParam}}00% 100%"})
+    			style({ backgroundPositionX: "-{{stepsParam}}00%",
+						opacity: 1 , 
+						'background-size': "{{stepsParam}}00% 100%", 
+						offset: 0
+				}),
+    			style({ backgroundPositionX: "0%", 
+						offset: 1, 
+						'background-size': "{{stepsParam}}00% 100%"})
   		]))
-      ],{params : { tiempoEfectoParam: "0.44", stepsParam: "9"}}),
+      ],{params : { tiempoEfectoParam: "0", stepsParam: "1", hue: "0"}}),
     ]),
   ],
 })
@@ -36,8 +42,8 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 	private flagLoop:boolean = true;
 	public estadoAnimacion: string= "inicio";
 
-	public tiempoEfecto = 0.44;
-	public stepsEfecto: string= "5";
+	public tiempoEfecto = 0;
+	public stepsEfecto: string= "1";
 	public hue: string= "0";
 	public spriteId: string= "0";
 
@@ -56,7 +62,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 	console.log(this.animacion)
   }
 
-  finAnimacion(): void{
+  finAnimacion(indexSubanimacion:number): void{
 
 	if(this.loop && this.estadoAnimacion=="fin"){
 		if(this.flagLoop){
@@ -70,10 +76,19 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
   }
 
   inicioAnimacion(indexSubanimacion: number): void{
+
+	//Determinar duracion total de la animacion:
+	for(var i=0;i<this.animacion.subanimaciones.length; i++){
+		if(this.animacion.subanimaciones[i].duracion>this.tiempoEfecto){
+			this.tiempoEfecto = this.animacion.subanimaciones[i].duracion;
+		}
+	}
+
 	if(this.estadoAnimacion=="inicio"){
 		this.estadoAnimacion = "fin";	
 		this.flagLoop=true;
 	}
+
   }
 
   renderIndividual(): any{
@@ -109,7 +124,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
        //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].hue_filter!=null){this.hue = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].hue_filter;}
        //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].duracion!=null){this.tiempoEfecto = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].duracion;}
        //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].num_frames!=null){this.stepsEfecto = this.animacion.subanimacion[this.desarrolladorService.sub].num_frames;}
-       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].sprite_id!=null){this.spriteId = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].sprite_id;}
+       //if(this.animacion.subanimacion[this.indexSubanimacion].sprite_id!=null){this.spriteId = this.animacion.subanimacion[this.indexSubanimacion].sprite_id;}
 
 		if(!this.loop){
 			this.estadoAnimacion = "inicio";

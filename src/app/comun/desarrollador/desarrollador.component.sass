@@ -1403,10 +1403,24 @@
     height: 70%
     background-color: rgba(0,0,0,0.5)
 
+  .botonAddLista
+      position: absolute
+      display: flex
+      align-items: center
+      justify-content: center
+      background-color: greenyellow
+      top: 83%
+      height: 5%
+      width: 20%
+      left: 3%
+      &:hover
+        background-color: white
+        color: black
+
   .contenedorLateral
     position: absolute
     top: 20%
-    height: 60%
+    height: 55%
     width: 20%
     color: white
     &.izquierda
@@ -1416,7 +1430,11 @@
       .listaHechizos
         border: solid 2px greenyellow
         box-sizing: border-box
-    
+
+      .listaHechizos
+        border: solid 2px greenyellow
+        box-sizing: border-box
+
     .listaHechizos
         position: relative
         width: 100%
@@ -1431,6 +1449,9 @@
             background-color: rgba(0,0,0,0.5)
             &:hover
                 background-color: grey
+            &.seleccionado
+                background-color: white
+                color: black
 
             .imagenHechizo
                 position: relative
@@ -1499,7 +1520,7 @@
           color: white
 
       .formId
-        right: 5%
+        right: 10%
         top: 5%
         width: 10%
       .formNombre
@@ -1553,6 +1574,13 @@
         top: 65%
         width: 30%
 
+    .botonEliminar
+      position: absolute
+      top: 5%
+      width: 5%
+      right: 5%
+      &:hover
+        filter: invert(1)
 
     .tituloEncadenado
         position: absolute
@@ -1645,7 +1673,7 @@
           color: white
 
       .formId
-        right: 5%
+        right: 10%
         top: 5%
         width: 10%
       .formNombre
@@ -1712,6 +1740,13 @@
         top: 85%
         width: 30%
 
+    .botonEliminar
+      position: absolute
+      top: 5%
+      width: 5%
+      right: 5%
+      &:hover
+        filter: invert(1)
 #visualizadorAnimaciones
     position: absolute
     width: 100%
@@ -1733,6 +1768,8 @@
       position: absolute
       width: 100%
       height: 100%
+      &.subanimacion
+        top: 25% 
 
       mat-form-field
         position: absolute
@@ -1742,7 +1779,7 @@
           color: white
 
       .formId
-        right: 5%
+        right: 10%
         top: 5%
         width: 10%
       .formNombre
@@ -1751,58 +1788,58 @@
 
       .formNombreSubanimacion
         left: 30%
-        top: 25%
+        top: 0%
       .formSpriteId
         left: 30%
-        top: 40%
+        top: 15%
         width: 10%
       .formDuracion
         left: 45%
-        top: 40%
+        top: 15%
         width: 10%
       .formNumFrames
         left: 60%
-        top: 40%
+        top: 15%
         width: 10%
       .formFrameRef
         left: 75%
-        top: 40%
+        top: 15%
         width: 10%
 
       .formHue
         left: 30%
-        top: 55%
+        top: 30%
         width: 10%
       .formSepia
         left: 45%
-        top: 55%
+        top: 30%
         width: 10%
       .formBrillo
         left: 60%
-        top: 55%
+        top: 30%
         width: 10%
       .formSaturation
         left: 75%
-        top: 55%
+        top: 30%
         width: 10%
 
       .formDelay
         left: 30%
-        top: 70%
+        top: 45%
         width: 10%
       .formOffsetX
         left: 45%
-        top: 70%
+        top: 45%
         width: 10%
       .formOffsetY
         left: 60%
-        top: 70%
+        top: 45%
         width: 10%
     
     .contenedorSubLista
       position: absolute
       width: 25%
-      height: 25%
+      height: 20%
       left: 2%
       background-color: grey
       &.contenedorSubanimacion
@@ -1818,11 +1855,41 @@
         width: 100%
       .elemento
         position: relative
+        display: flex
+        justify-content: center
+        align-items: center
         width: 100%
         &:hover
           background-color: white
           color: black
+      .seleccionado
+          background-color: white
 
+    .botonAdd
+      position: absolute
+      width: 25%
+      height: 5%
+      left: 2%
+      display: flex
+      align-items: center
+      justify-content: center
+      bottom: 0
+      background-color: greenyellow
+      &:hover
+        background-color: white
+        color: black
+      &.botonSubanimacion
+        top: 60%
+      &.botonSonidos
+        top: 90%
+
+    .botonEliminar
+      position: absolute
+      top: 5%
+      width: 5%
+      right: 5%
+      &:hover
+        filter: invert(1)
 
 // *************************************************
 //     SELECTOR IMAGENES

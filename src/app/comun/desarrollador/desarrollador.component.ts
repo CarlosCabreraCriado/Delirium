@@ -466,6 +466,14 @@ export class DesarrolladorComponent implements OnInit{
 			console.log(val)
 		});
 
+		//Suscripcion de dambios formulario Subanimacion:
+		this.formSubanimacion.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.animacionSeleccionadoIndex+1 && this.desarrolladorService.subanimacionSeleccionadoIndex+1){
+				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]= val;
+			}
+			console.log(val)
+		});
+
 		//Crear registro de nombres de enemigos para display de assets:
 		var familia:string;
 		for (var i = 0; i < this.desarrolladorService.tipoEnemigos.enemigos_stats.length; ++i) {
@@ -523,6 +531,26 @@ export class DesarrolladorComponent implements OnInit{
 		}else{
 			return ""
 		}
+	}
+
+	renderListaSeleccionado(opcionSeleccionado:string,indiceSeleccionado:number){
+		switch(opcionSeleccionado){
+			case "subanimacion":
+				if(this.desarrolladorService.subanimacionSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "sonido":
+				break;
+			case "hechizo":
+				if(this.desarrolladorService.hechizoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "buff":
+				if(this.desarrolladorService.buffSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "animaciones":
+				if(this.desarrolladorService.animacionSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+		}
+		return "";
 	}
 
 	renderizarSector(i,j){

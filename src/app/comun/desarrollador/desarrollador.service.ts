@@ -1940,6 +1940,87 @@ export class DesarrolladorService implements OnInit{
 	return;
   }
 
+  addDato(){
+	  switch(this.estadoHerramientaDatos){
+		  case "Hechizos":
+				this.hechizos.hechizos.push({
+					"id": this.hechizos.hechizos.length+1,
+					"nombre": "Hechizo "+(this.hechizos.hechizos.length+1),
+					"categoria": "-",
+					"tipo": "BASICO",
+					"imagen_id": 229,
+					"nivel": 1,
+					"recurso": 0,
+					"poder": 0,
+					"acciones": 1,
+					"distancia": 1,
+					"objetivo": "EU",
+					"tipo_daño": "F",
+					"daño_dir": 0,
+					"heal_dir": 0,
+					"escudo_dir": 0,
+					"mod_amenaza": 1,
+					"buff_id": 0,
+					"animacion_id": 1,
+					"funcion": "-",
+					"hech_encadenado_id": 0,
+					"descripcion": "Descripcion del hechizo "+(this.hechizos.hechizos.length+1)
+				})
+			  break;
+			case "Buff":
+				this.buff.buff.push({
+				"id": this.buff.buff.length+1,
+				"nombre": "Buffo "+(this.buff.buff.length+1),
+				"duracion": 1,
+				"tipo": "BUFF",
+				"imagen_id": 152,
+				"tipo_daño": "-",
+				"daño_t": 0,
+				"heal_t": 20,
+				"escudo_t": 0,
+				"stat_inc": 0,
+				"stat_inc_inicial": 0,
+				"stat_inc_t": 0,
+				"animacion_id": 0,
+				"funcion": "-",
+				"descripcion": "Descripcion de buff"+(this.buff.buff.length+1)
+			})
+			break;
+
+			case "Animaciones":
+				this.animaciones.animaciones.push({
+				  "id": this.animaciones.animaciones.length+1,
+				  "nombre": "Animación "+(this.animaciones.animaciones.length+1),
+				  "duracion": "1",
+				  "sonidos": [
+					{
+					  "sonido_id": 1,
+					  "nombre": "Sonido 1",
+					  "delay": 0
+					}
+				  ],
+				  "subanimaciones": [
+					{
+					  "id": 1,
+					  "sprite_id": 1,
+					  "nombre": "SubAnimacion 1",
+					  "hue_filter": 0,
+					  "sepia": 0,
+					  "saturation": 0,
+					  "brillo": 0,
+					  "frame_ref": 5,
+					  "num_frames": 6,
+					  "duracion": "1",
+					  "delay": "0",
+					  "offset_x": 0,
+					  "offset_y": 0
+					}
+				  ]
+			})
+			break;
+		}//Fin switch
+  }
+
   seleccionarHechizo(indexHechizo:number){
 	  this.hechizoSeleccionadoIndex= indexHechizo;
 
@@ -1947,8 +2028,40 @@ export class DesarrolladorService implements OnInit{
 		this.observarDesarrolladorService.next("reloadFormHechizos");
   }
 
+  eliminarHechizo(){
+
+	  console.log("Eliminando Hechizo:"+this.hechizoSeleccionadoIndex)
+	  this.hechizos.hechizos.splice(this.hechizoSeleccionadoIndex,1)
+
+	  //Cambia el indice de seleccion:
+	  if(this.hechizoSeleccionadoIndex>0){
+		this.hechizoSeleccionadoIndex= this.hechizoSeleccionadoIndex-1;
+	  }else{
+		  this.hechizoSeleccionadoIndex = 0;
+	  }
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormHechizos");
+  }
+
   seleccionarBuff(indexBuff:number){
 	  this.buffSeleccionadoIndex= indexBuff;
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormBuff");
+  }
+  
+  eliminarBuff(){
+
+	  console.log("Eliminando Buff:")
+	  this.buff.buff.splice(this.buffSeleccionadoIndex,1)
+
+	  //Cambia el indice de seleccion:
+	  if(this.buffSeleccionadoIndex>0){
+		this.buffSeleccionadoIndex= this.buffSeleccionadoIndex-1;
+	  }else{
+		  this.buffSeleccionadoIndex = 0;
+	  }
 
 	  //Actualizar Formulario:
 		this.observarDesarrolladorService.next("reloadFormBuff");
@@ -1966,9 +2079,73 @@ export class DesarrolladorService implements OnInit{
 		this.observarDesarrolladorService.next("reloadFormAnimaciones");
   }
 
+  eliminarAnimacion(){
+
+	  console.log("Eliminando Animacion:"+this.animacionSeleccionadoIndex)
+	  this.animaciones.animaciones.splice(this.animacionSeleccionadoIndex,1)
+
+	  //Cambia el indice de seleccion:
+	  if(this.animacionSeleccionadoIndex>0){
+		this.animacionSeleccionadoIndex= this.animacionSeleccionadoIndex-1;
+	  }else{
+		  this.animacionSeleccionadoIndex = 0;
+	  }
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormAnimaciones");
+  }
+
   seleccionarSubanimacion(indexSubAnimacion:number){
 
 	  this.subanimacionSeleccionadoIndex= indexSubAnimacion;
+
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+  }
+
+  addSubanimacion(){
+
+	  var indexSubanimacion = this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length
+
+	  this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.push({
+		  id: this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length,
+		  nombre: "Subanimacion "+(indexSubanimacion+1),
+		  sprite_id: 0,
+		  duracion: 1,
+		  num_frames: 1,
+		  frame_ref: 1,
+		  hue_filter: 0,
+		  sepia: 0,
+		  brillo: 0,
+		  delay: 0,
+		  offset_x: 0,
+		  offset_y: 0,
+		  saturation: 0
+	  })
+
+	  this.subanimacionSeleccionadoIndex= indexSubanimacion;
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+  }
+
+  eliminarSubanimacion(){
+
+	  var indexSubanimacion = this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length
+
+	  //Evita la eliminación si es el ultimo elemento:
+	  if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length<=1){
+	  	return;
+	  }
+
+	  this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.splice(this.subanimacionSeleccionadoIndex,1)
+
+	  //Cambia el indice de seleccion:
+	  
+	  if(this.subanimacionSeleccionadoIndex>0){
+		this.subanimacionSeleccionadoIndex= this.subanimacionSeleccionadoIndex-1;
+	  }else{
+		  this.subanimacionSeleccionadoIndex = 0;
+	  }
 
 	  //Actualizar Formulario:
 		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
@@ -2009,7 +2186,8 @@ export class DesarrolladorService implements OnInit{
   eliminarEncadenado(){
 	this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id=0;
   }
-  eliminarBuff(){
+
+  eliminarBuffHechizo(){
 	this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id=0;
   }
   
@@ -2020,20 +2198,60 @@ export class DesarrolladorService implements OnInit{
   guardarPanelDatos(){  
 	
 	  console.log("GUARDANDO: ")
-	  console.log(this.hechizos)
-    this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarHechizos",{hechizos: this.hechizos, token: this.appService.getToken()}).subscribe((res) => {
-      if(res){
-        console.log("Objeto Hechizos guardado con exito");
-		this.mostrarBotonAceptar= true;
-		this.mostrarSpinner= false;
-		this.mensaje= "Datos guardados con exito";
-		this.mostrarMensaje= true;
-      }else{
-        console.log("Fallo en el guardado");
-      }
-    },(err) => {
-      console.log(err);
-    });
+	  
+	  switch(this.estadoHerramientaDatos){
+
+		  case "Hechizos":
+			console.log(this.hechizos)
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarHechizos",{hechizos: this.hechizos, token: this.appService.getToken()}).subscribe((res) => {
+			  if(res){
+				console.log("Objeto Hechizos guardado con exito");
+				this.mostrarBotonAceptar= true;
+				this.mostrarSpinner= false;
+				this.mensaje= "Datos guardados con exito";
+				this.mostrarMensaje= true;
+			  }else{
+				console.log("Fallo en el guardado");
+			  }
+			},(err) => {
+			  console.log(err);
+			});
+		  break;
+
+		  case "Buff":
+			console.log(this.buff)
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarBuff",{buff: this.buff, token: this.appService.getToken()}).subscribe((res) => {
+			  if(res){
+				console.log("Objeto Buff guardado con exito");
+				this.mostrarBotonAceptar= true;
+				this.mostrarSpinner= false;
+				this.mensaje= "Datos Buff con exito";
+				this.mostrarMensaje= true;
+			  }else{
+				console.log("Fallo en el guardado");
+			  }
+			},(err) => {
+			  console.log(err);
+			});
+		  break;
+
+		  case "Animaciones":
+			console.log(this.animaciones)
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarAnimaciones",{animaciones: this.animaciones, token: this.appService.getToken()}).subscribe((res) => {
+			  if(res){
+				console.log("Objeto animaciones guardado con exito");
+				this.mostrarBotonAceptar= true;
+				this.mostrarSpinner= false;
+				this.mensaje= "Datos animaciones con exito";
+				this.mostrarMensaje= true;
+			  }else{
+				console.log("Fallo en el guardado");
+			  }
+			},(err) => {
+			  console.log(err);
+			});
+		  break;
+	  }
 
     return;
   }

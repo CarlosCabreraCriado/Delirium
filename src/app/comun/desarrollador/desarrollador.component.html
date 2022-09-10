@@ -833,16 +833,17 @@
 		  <!-- LISTA HECHIZOS -->
         <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">HECHIZOS: </div>
 		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">
-			<div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index"  class="hechizo" (click)="desarrolladorService.seleccionarHechizo(i)">
+			<div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index" [ngClass]="renderListaSeleccionado('hechizo',i)" class="hechizo" (click)="desarrolladorService.seleccionarHechizo(i)">
 				<img class="imagenHechizo" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
 				<div class="nombre">{{hechizo.nombre}}</div>
 			</div>
 		</div>
 
+
 		<!-- LISTA BUFF -->
         <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">Buff: </div>
 		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
-			<div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index"  class="hechizo" (click)="desarrolladorService.seleccionarBuff(i)">
+			<div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index" [ngClass]="renderListaSeleccionado('buff',i)" class="hechizo" (click)="desarrolladorService.seleccionarBuff(i)">
 				<img class="imagenHechizo" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
 				<div class="nombre">{{buff.nombre}}</div>
 			</div>
@@ -851,13 +852,18 @@
 		<!-- LISTA ANIMACIONES -->
         <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">Animaciones: </div>
 		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
-			<div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index"  class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
+			<div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado('animaciones',i)" class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
 				<div class="nombre">{{animacion.nombre}}</div>
 				<!-- <img class="imagenHechizo" src="./assets/Efectos/{{animacion.sprite_id}}.png">-->
 			</div>
 		</div>
 
 	  </div> <!-- FIN CONTENEDOR LISTA IZQUIERDA -->
+	  
+	  <div class="botonAddLista" (click)="desarrolladorService.addDato()">
+			Añadir
+		</div>
+
       <div class="contenedorCentral">
 
         <div id="visualizadorHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">
@@ -866,6 +872,7 @@
 			</div>
 			<form  class="formularioGeneral" [formGroup]="formHechizos">
 
+				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarHechizo()"/>
 				  <mat-form-field appearance="legacy" class="formId">
 					<mat-label>ID</mat-label>
 					<input matInput placeholder="ID" formControlName="id">
@@ -962,6 +969,8 @@
 			</div>
 			<form  class="formularioGeneral" [formGroup]="formBuff">
 
+				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarBuff()"/>
+
 				  <mat-form-field appearance="legacy" class="formId">
 					<mat-label>ID</mat-label>
 					<input matInput placeholder="ID" formControlName="id">
@@ -1036,6 +1045,8 @@
 
 			<form  class="formularioGeneral" [formGroup]="formAnimaciones">
 
+					<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarAnimacion()"/>
+
 				  <mat-form-field appearance="legacy" class="formId">
 					<mat-label>ID</mat-label>
 					<input matInput placeholder="ID" formControlName="id">
@@ -1048,7 +1059,10 @@
 
 			</form>
 
-			<form  class="formularioGeneral" [formGroup]="formSubanimacion">
+
+			<form  class="formularioGeneral subanimacion" [formGroup]="formSubanimacion">
+
+				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarSubanimacion()"/>
 
 				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
 					<mat-label>Nombre Subanimación</mat-label>
@@ -1111,21 +1125,22 @@
 				  </mat-form-field>
 			</form>
 
+
 			<!-- Inicio panel subanimacion -->
 			<div class="contenedorSubLista contenedorSubanimacion">
 				
 				<div class="tituloSubLista">Subanimación</div>
-				<div *ngFor="let subanimacion of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].subanimaciones; let i=index"  class="elemento" (click)="desarrolladorService.seleccionarSubanimacion(i)">{{subanimacion.nombre}} </div>
-
+				<div *ngFor="let subanimacion of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].subanimaciones; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('subanimacion',i)" (click)="desarrolladorService.seleccionarSubanimacion(i)">{{subanimacion.nombre}} </div>
 			</div>
+				<div class="botonAdd botonSubanimacion" (click)="desarrolladorService.addSubanimacion()">Añadir</div>
 
 			<!-- Inicio panel Sonidos -->
 			<div class="contenedorSubLista contenedorSonido">
 
 				<div class="tituloSubLista">Sonidos</div>
-				<div *ngFor="let sonido of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].sonidos; let i=index"  class="elemento" (click)="true">subanimacion </div>
-
+				<div *ngFor="let sonido of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].sonidos; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('sonido',i)" (click)="true">{{sonido.nombre}}</div>
 			</div>
+				<div class="botonAdd botonSonidos" (click)="desarrolladorService.addSonido()">Añadir</div>
 
 			</div>       <!-- FIN VISUALIZACIÓN ANIMACIONES -->
       </div>
@@ -1135,7 +1150,7 @@
 		  <!-- LISTA HECHIZOS -->
         <div class="tituloArchivo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Hechizos'">HECHIZOS: </div>
 		<div class="listaHechizos"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Hechizos'">
-			<div class="hechizo" (click)="desarrolladorService.eliminarEncadenado()">
+			<div class="hechizo" (click)="desarrolladorService.eliminarEncadenado()" >
 				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
 				<div class="nombre">Eliminar Hechizo Encadenado</div>
 			</div>
@@ -1145,10 +1160,11 @@
 			</div>
 		</div>
 
+
 		<!-- LISTA BUFF -->
         <div class="tituloArchivo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Buff'">Buff: </div>
 		<div class="listaHechizos"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Buff'">
-			<div class="hechizo" (click)="desarrolladorService.eliminarBuff()">
+			<div class="hechizo" (click)="desarrolladorService.eliminarBuffHechizo()">
 				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
 				<div class="nombre">Eliminar buff</div>
 			</div>
@@ -1161,7 +1177,7 @@
 		<!-- LISTA SONIDOS -->
         <div class="tituloArchivo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">Sonidos: </div>
 		<div class="listaHechizos"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">
-			<div class="hechizo" (click)="desarrolladorService.eliminarBuff()">
+			<div class="hechizo" (click)="desarrolladorService.eliminarBuffHechizo()">
 				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
 				<div class="nombre">Eliminar sonido</div>
 			</div>
