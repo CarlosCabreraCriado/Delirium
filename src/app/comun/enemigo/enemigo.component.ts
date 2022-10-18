@@ -23,8 +23,8 @@ export class EnemigoComponent {
         var  indexHorizontal= buff.icon_id-indexVertical*10;
 
 		estilo={
-			'background':'url(./assets/Buffos/Buff.png) '+(0.5+11*indexHorizontal)+'% '+(0.5+9.9*indexVertical)+'%',
-			'background-size': '1000% 1100%'
+			'background':'url(./assets/Habilidades/Spell/'+buff.icon_id+'.png) 100% 100%',
+			'background-size': '100% 100%'
 		}
 		return estilo;
 	}
@@ -33,13 +33,13 @@ export class EnemigoComponent {
 		var clases;
 
 		//Renderiza buffo o debuffo:
-		if(this.renderEnemigo.buff[j].tipo2== "DEBUF"){
-			clases = "DeBuffo-Enemigo";
+		if(this.renderEnemigo.buff[j].tipo== "DEBUF"){
+			clases = "Buffo-Enemigo debuf";
 		}
 
 		//Renderiza buffo o debuffo:
-		if(this.renderEnemigo.buff[j].tipo2== "BUFF"){
-			clases = "Buffo-Enemigo";
+		if(this.renderEnemigo.buff[j].tipo== "BUFF"){
+			clases = "Buffo-Enemigo buff";
 		}
 		return clases;
 	}
@@ -60,14 +60,14 @@ export class EnemigoComponent {
 		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
  		var esHeroe = false;
  		var esEnemigo = false;
- 		for(var k=0; k<this.renderMazmorra.heroes.length; k++){
+ 		for(var k=0; k <this.renderMazmorra.heroes.length; k++){
  			if(this.renderMazmorra.heroes[k].turno){
  				esHeroe= true;
   				break;
  			}
  		}
 
- 		for(var k=0; k<this.renderMazmorra.enemigos.length; k++){
+ 		for(var k=0; k <this.renderMazmorra.enemigos.length; k++){
  			if(this.renderMazmorra.enemigos[k].turno){
  				esEnemigo= true;
  				break;

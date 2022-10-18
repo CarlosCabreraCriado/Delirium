@@ -16,8 +16,8 @@ export class DesarrolladorService implements OnInit{
 	public validacion: any= {}
 
   //Variables de Estado Paneles Principales:
-	public panel= "datos";
-	public estadoInmap= "";
+	public panel= "inmap";
+	public estadoInmap= "global";
 	public estadoMazmorra= "parametros";
 	public estadoParametros= "General";
 	public estadoHerramientaDatos= "Hechizos";
@@ -44,7 +44,8 @@ export class DesarrolladorService implements OnInit{
 	//Selector de imagenes:
 	public mostrarSelectorImagen= false;
 	public estadoSelectorImagen= "";
-
+    private pathImagenes = "Habilidades/Spell";
+    
   //Logger Consola
 	public logger=[];
 	private loggerColor=[];
@@ -75,7 +76,7 @@ export class DesarrolladorService implements OnInit{
 	private visorFila;
 	private visorColumna; 
 
-  //Variables Isometrico
+  //Variables Mazmorra Isometrico
 	public mostrarIsometrico = false;
 	public isometrico: any = null; 
 	public mostrarGrid= true
@@ -84,6 +85,16 @@ export class DesarrolladorService implements OnInit{
 
 	public mostrarPanelAsignarSala = false;
 	public mostrarPanelAsignarEvento = false;
+
+    //Variables Inmap:
+    private regionInmap:number = 1;
+    private region: any = {};
+    private coordenadaX: number = 0; 
+    private coordenadaY: number = 0; 
+    private regionSeleccionada: string = "";
+    private tileSeleccionado: number = 1;
+    public herramientaInMap: string = "add";
+    private opcionOverlay: boolean = false;
 
    //Variables de parametros:
 	public salaSeleccionadaId = 0;
@@ -136,9 +147,10 @@ export class DesarrolladorService implements OnInit{
 	this.seleccionarSubanimacion(0)
 
 	//Inicializar Imagenes:
-	for(var i=1; i<308; i++){
+	for(var i=1; i <308; i++){
 		this.imagenes.push(i);
 	}
+
 	console.log(this.buff)
   }
 
@@ -148,7 +160,7 @@ export class DesarrolladorService implements OnInit{
     this.archivosExcel= [];
     var nombresArchivos= ["Heroes_Stats","Hechizos","Enemigos","Buff","Objetos","Animaciones","Parametros","Perfil","Personajes"];
 
-    for(var i = 0; i<nombresArchivos.length; i++){
+    for(var i = 0; i <nombresArchivos.length; i++){
       this.archivosExcel.push(
         {
           nombreArchivo: nombresArchivos[i],
@@ -169,6 +181,63 @@ export class DesarrolladorService implements OnInit{
   	this.panel= panel;
   }
 
+  inicializarIsometricoMapa(){
+
+      var dimensionX = 72;
+      var dimensionY = 72;
+
+      var isometricoMapa = []
+      for(var i = 0; i < dimensionX; i++){
+
+        isometricoMapa[i] = [];    
+
+        for(var j = 0; j < dimensionY; j++){
+
+            isometricoMapa[i][j]={
+                coordenadaX: i,
+                coodenadaY: j,
+                tileBase: false,
+                tileId: 0,
+                tileImage: 0,
+                //tileImage: 209,
+                //tileImage: Math.floor(Math.random() * 216)+1,
+                tipoTerreno: "tierra",
+                atravesable: true,
+                visitado: false,
+                eventoId: 0,
+                indicadorEvento: false,
+                cogerMisionId: 0,
+                indicadorCogerMision: false,
+                indicadorPeligro: false,
+                indicadorTerronoDificil: false,
+                probabilidadEventoCamino: 0,
+                categoriaEventoCamino: "",
+                nombre: "",
+                descripcion: "",
+                checkEventos: [],
+                animacionId: 0,
+                estado: "",
+                inspeccionable: false,
+                mensajeInspeccion: ""
+            }
+        }
+      }
+
+      console.log("ISOMETRICO INICIALIZADO: ")
+      this.region = {
+          nombreId: "Asfaloth",
+          isometrico: isometricoMapa,
+          dimensionX: dimensionX,
+          dimensionY: dimensionY,
+          escala: 0.3,
+          posicionTop: "1066px",
+          posicionLeft: "2936px"
+      }
+
+      console.log(this.region)
+
+  }
+
 
   // *************************************************
   //    CONSOLA:
@@ -185,7 +254,7 @@ export class DesarrolladorService implements OnInit{
 
 // *************************************************
 //    PANEL MAZMORRA:
-//************************************************* 
+// ************************************************* 
   
   nuevaMazmorra(){
     this.mazmorra= {
@@ -244,7 +313,7 @@ export class DesarrolladorService implements OnInit{
     this.mazmorra= this.listaMazmorra[index];
 	
 	//Inicializar variables de control Builder:
-	for(var i=0; i<this.mazmorra.salas.length; i++){
+	for(var i=0; i <this.mazmorra.salas.length; i++){
 		this.mazmorra.salas[i].mostrarIsometrico = true;
 	}
 
@@ -288,9 +357,9 @@ export class DesarrolladorService implements OnInit{
 		//Procesar Celdas: 
 		//Procesado eje X:
 		var flagBorrado = true; 
-		for(var i=0; i<objetoReticula.length; i++){ 
+		for(var i=0; i <objetoReticula.length; i++){ 
 			flagBorrado= true;
-			for(var j=0; j<objetoReticula[i].length; j++){ if(objetoReticula[i][j].pieza!= "none"){
+			for(var j=0; j <objetoReticula[i].length; j++){ if(objetoReticula[i][j].pieza!= "none"){
 					flagBorrado= false;
 				}
 			}
@@ -302,16 +371,16 @@ export class DesarrolladorService implements OnInit{
 		}
 
 		//Procesar Eje Y: 
-		for(var i=0; i<objetoReticula[0].length; i++){ 
+		for(var i=0; i <objetoReticula[0].length; i++){ 
 			flagBorrado= true;
-			for(var j=0; j<objetoReticula.length; j++){
+			for(var j=0; j <objetoReticula.length; j++){
 			   if(objetoReticula[j][i].pieza!= "none"){
 					flagBorrado= false;
 				}
 			}
 
 			if(flagBorrado){
-				for(var j=0; j<objetoReticula.length; j++){
+				for(var j=0; j <objetoReticula.length; j++){
 					objetoReticula[j].splice(i,1);
 				}
 				i--;
@@ -366,11 +435,11 @@ export class DesarrolladorService implements OnInit{
     }
 
     //Creación reticula:
-    for(var i= 0; i<numFilas; i++){
+    for(var i= 0; i <numFilas; i++){
 
       //Creación de la fila:
       vectorFila= []
-      for(var j= 0; j<numColumnas; j++){
+      for(var j= 0; j <numColumnas; j++){
         objetoSector.X= i-this.margenReticula;
         objetoSector.Y= j-this.margenReticula;
 
@@ -381,8 +450,8 @@ export class DesarrolladorService implements OnInit{
     }
 
     //Paso por valor:
-    for(var i= 0; i<numFilas; i++){
-      for(var j= 0; j<numColumnas; j++){
+    for(var i= 0; i <numFilas; i++){
+      for(var j= 0; j <numColumnas; j++){
         this.renderReticula.celdas[i][j].border= this.renderReticula.celdas[i][j].border.concat();
       }
     }
@@ -419,7 +488,7 @@ export class DesarrolladorService implements OnInit{
    
     switch (posicion) {
       case "bottom":
-          for(var j= 0; j<numColumnas; j++){
+          for(var j= 0; j <numColumnas; j++){
             objetoSector.X= numFilas-this.margenReticula;
             objetoSector.Y= j-this.margenReticula;
 
@@ -429,7 +498,7 @@ export class DesarrolladorService implements OnInit{
         break;
 
       case "top":
-          for(var j= 0; j<numColumnas; j++){
+          for(var j= 0; j <numColumnas; j++){
             objetoSector.X= this.numFilasIni-numFilas-this.margenReticula-1;
             objetoSector.Y= j-this.margenReticula;
 
@@ -440,8 +509,8 @@ export class DesarrolladorService implements OnInit{
     }
 
     //Paso por valor:
-    for(var i= 0; i<numFilas; i++){
-      for(var j= 0; j<numColumnas; j++){
+    for(var i= 0; i <numFilas; i++){
+      for(var j= 0; j <numColumnas; j++){
         this.renderReticula.celdas[i][j].border= this.renderReticula.celdas[i][j].border.concat();
       }
     }
@@ -484,8 +553,8 @@ export class DesarrolladorService implements OnInit{
     }
 
     //Paso por valor:
-    for(var i= 0; i<numFilas; i++){
-      for(var j= 0; j<numColumnas; j++){
+    for(var i= 0; i <numFilas; i++){
+      for(var j= 0; j <numColumnas; j++){
         this.renderReticula.celdas[i][j].border= this.renderReticula.celdas[i][j].border.concat();
       }
     }
@@ -499,7 +568,7 @@ export class DesarrolladorService implements OnInit{
     console.log("Cambiando Reticula")
     switch (movimiento) {
       case "right":
-        if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1]<this.margenReticula+2){
+        if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1] <this.margenReticula+2){
           this.addColumnaReticula("right")
         }
         for (var i = 0; i < this.visorColumna.length; ++i) {
@@ -531,7 +600,7 @@ export class DesarrolladorService implements OnInit{
 
       case "down":
 
-        if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1]<this.margenReticula+2){
+        if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1] <this.margenReticula+2){
           this.addFilaReticula("bottom")
         }
 
@@ -600,10 +669,10 @@ export class DesarrolladorService implements OnInit{
 
     this.visorFila.push(this.visorFila[this.visorFila.length-1]+1);
     this.visorColumna.push(this.visorColumna[this.visorColumna.length-1]+1);
-    if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1]<this.margenReticula){
+    if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1] <this.margenReticula){
       this.addColumnaReticula("right")
     }
-    if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1]<this.margenReticula){
+    if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1] <this.margenReticula){
       this.addFilaReticula("bottom")
     }
 
@@ -1236,8 +1305,8 @@ export class DesarrolladorService implements OnInit{
 	var tipoId= 0;
 	
 	//Buscar ID Enemigo:
-	for(var i = 0; i<this.mazmorra.salas.length; i++){
-		for(var j = 0; j<this.mazmorra.salas[i].enemigos.length; j++){
+	for(var i = 0; i <this.mazmorra.salas.length; i++){
+		for(var j = 0; j <this.mazmorra.salas[i].enemigos.length; j++){
 			if(this.mazmorra.salas[i].enemigos[j].enemigo_id == enemigoID){
 				tipoId = this.mazmorra.salas[i].enemigos[j].tipo_enemigo_id;
 				this.enemigoSeleccionadoSalaIndex = i;
@@ -1302,8 +1371,8 @@ export class DesarrolladorService implements OnInit{
     var cuentaID = 1;
 	var idOcupados = [];
 
-	for(var i = 0;i<this.mazmorra.salas.length;i++){
-		for(var j = 0;j<this.mazmorra.salas[i].enemigos.length;j++){
+	for(var i = 0;i <this.mazmorra.salas.length;i++){
+		for(var j = 0;j <this.mazmorra.salas[i].enemigos.length;j++){
 			idOcupados.push(parseInt(this.mazmorra.salas[i].enemigos[j].enemigo_id));
 		}
 	}
@@ -1665,7 +1734,7 @@ export class DesarrolladorService implements OnInit{
 		delete obj.MapSave["-xmlns:xsd"]
 		delete obj.MapSave["-xmlns:xsi"]
 
-		for(var i= 0; i<obj.MapSave.Placeables.Placeable.length; i++){
+		for(var i= 0; i <obj.MapSave.Placeables.Placeable.length; i++){
 			delete obj.MapSave.Placeables.Placeable[i].Credits
 			obj.MapSave.Placeables.Placeable[i].oculto = false;
 			obj.MapSave.Placeables.Placeable[i].sala = 0;
@@ -1748,7 +1817,7 @@ export class DesarrolladorService implements OnInit{
     }
 
     //Descomposicion de Hojas:
-    for(var i=0; i<nombresHojas.length; i++){
+    for(var i=0; i <nombresHojas.length; i++){
       try{
 
         this.log("Obteniendo Hoja: "+nombresHojas[i], "orange")
@@ -1757,7 +1826,7 @@ export class DesarrolladorService implements OnInit{
         cabecerasHojas.push(XLSX.utils.sheet_to_json(worksheet, {header: 1,range: 12})[0]);
 
         //Formateo de columnas:
-        for(var j= 0; j<cabecerasHojas[i].length;j++){
+        for(var j= 0; j <cabecerasHojas[i].length;j++){
           cabecerasHojas[i][j]= cabecerasHojas[i][j].toLowerCase();
           cabecerasHojas[i][j]= cabecerasHojas[i][j].replace(/ /g,"_");
         }
@@ -1778,7 +1847,7 @@ export class DesarrolladorService implements OnInit{
     }
 
     //CONSTRUCTOR DE ARCHIVO:
-    for(var i=0; i<nombresHojas.length; i++){
+    for(var i=0; i <nombresHojas.length; i++){
       objetoArchivo[nombresHojas[i].toLowerCase().replace(/ /g,"_")]=hojasArchivo[i];
     }
 
@@ -1857,7 +1926,7 @@ export class DesarrolladorService implements OnInit{
   asignarSala(idSala: number){
 	  //Verificar Sala;
 	  var salaValida= false; 
-	  for(var i=0; i<this.mazmorra.salas.length; i++){
+	  for(var i=0; i <this.mazmorra.salas.length; i++){
 		  if(this.mazmorra.salas[i].sala_id == idSala){
 			  salaValida = true;
 		  }
@@ -1874,7 +1943,7 @@ export class DesarrolladorService implements OnInit{
 	  }
 
 	  //Asignando ID SALA;
-	  for(var i=0; i<this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+	  for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
 		  if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
 			this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala = idSala;
 			this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
@@ -1896,7 +1965,7 @@ export class DesarrolladorService implements OnInit{
 		//Elimina elemento sala del Array de salas:
 		this.mazmorra["salas"].splice(this.mazmorra.salas.indexOf(this.mazmorra.salas.find(i=> i.sala_id==this.salaSeleccionadaId)),1);
 		//Quita asignación de sala a elementos de sala eliminada:
-		for(var i= 0; i<this.mazmorra.isometrico.MapSave.Placeables.Placeable.length;i++){
+		for(var i= 0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length;i++){
 			if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala==this.salaSeleccionadaId){
 				this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala= 0;
 			}
@@ -2133,7 +2202,7 @@ export class DesarrolladorService implements OnInit{
 	  var indexSubanimacion = this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length
 
 	  //Evita la eliminación si es el ultimo elemento:
-	  if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length<=1){
+	  if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length <=1){
 	  	return;
 	  }
 
@@ -2152,8 +2221,32 @@ export class DesarrolladorService implements OnInit{
   }
 
   abrirSelectorImagen(estado:string){
-	  this.estadoSelectorImagen = estado;
-	  this.mostrarSelectorImagen = true;
+	this.estadoSelectorImagen = estado;
+
+    var numeroImagenes = 0
+
+    console.log(this.estadoSelectorImagen)
+    
+    switch(this.estadoSelectorImagen){
+        case "hechizo":
+        case "buff":
+            numeroImagenes = 308;
+            this.pathImagenes = "Habilidades/Spell"
+            break;
+        case "tile":
+            numeroImagenes = 216;
+            this.pathImagenes = "Mapa/Tiles"
+            break;
+    }
+
+    //Inicializar Imagenes:
+    this.imagenes= [];
+    for(var i=1; i <numeroImagenes; i++){
+        this.imagenes.push(i);
+    }
+
+    this.mostrarSelectorImagen = true;
+    return;
   }
   
   seleccionarImagen(indexImagen:number){
@@ -2164,6 +2257,8 @@ export class DesarrolladorService implements OnInit{
 		  case "buff":
 			  this.buff.buff[this.buffSeleccionadoIndex].imagen_id = indexImagen;
 			  break;
+            case "tile":
+                this.tileSeleccionado = indexImagen;
 	  }
   }
 
@@ -2255,6 +2350,97 @@ export class DesarrolladorService implements OnInit{
 
     return;
   }
+
+  // *************************************************
+  //    INMAP:
+  // ************************************************* 
+
+  seleccionarZona(zona:string){
+
+        if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;} 
+
+		console.log("Cargando Region: "+zona);
+		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: this.appService.getToken()}).subscribe((data) => {
+			console.log("Región: ");
+			console.log(data);	
+			this.region= data;
+            this.regionSeleccionada = zona;
+            //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
+            this.estadoInmap= "isometrico"      
+        })
+
+  }
+  
+  guardarInMap(){  
+	
+	  console.log("GUARDANDO MAPA: ")
+      console.log(this.region);
+	  
+	  switch(this.regionSeleccionada){
+
+		  case "Asfaloth":
+			console.log(this.region)
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarRegion",{region: this.region, token: this.appService.getToken()}).subscribe((res) => {
+			  if(res){
+				console.log("Objeto Region guardado con exito");
+				this.mostrarBotonAceptar= true;
+				this.mostrarSpinner= false;
+				this.mensaje= "Datos guardados con exito";
+				this.mostrarMensaje= true;
+			  }else{
+				console.log("Fallo en el guardado");
+			  }
+			},(err) => {
+			  console.log(err);
+			});
+		  break;
+	  } //End Switch
+
+    return;
+  }
+
+  seleccionarHerramientaInMap(herramienta:string){
+      console.log("Cambiando Herramienta: "+herramienta);
+
+      switch(herramienta){
+
+        case "add":
+        case "eliminar":
+            this.herramientaInMap = herramienta;
+        break;
+         
+        case "overlay":
+            this.opcionOverlay = true;
+        break;
+
+        case "base":
+            this.opcionOverlay = false;
+        break;
+      }
+
+  }
+
+  clickTile(i:number,j:number){
+    console.log("Click: i: "+i+" j: "+j) 
+    switch(this.herramientaInMap){
+        case "add":
+            if(!this.opcionOverlay){
+                this.region.isometrico[i][j].tileImage= this.tileSeleccionado;
+            }else{
+                this.region.isometrico[i][j].tileImageOverlay= this.tileSeleccionado;
+            }
+            break;
+        case "eliminar":
+            if(!this.opcionOverlay){
+                this.region.isometrico[i][j].tileImage=0;
+            }else{
+                this.region.isometrico[i][j].tileImageOverlay=0;
+            }
+            break;
+    }
+                
+  }
+
 } //FIN EXPORT
 
 

@@ -40,8 +40,8 @@
 	
 	<div *ngIf="tipo=='jugador'" class="contenedorBarras">
 		<barraComponent [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
-		<barraComponent [tipo]="'Mana'" class="barra"></barraComponent>
-		<barraComponent [tipo]="'Energia'" class="barra"></barraComponent>
+		<barraComponent [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+		<!-- <barraComponent [tipo]="'Mana'" class="barra"></barraComponent> -->
 	</div>
 
 </div>

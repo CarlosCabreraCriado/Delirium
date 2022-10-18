@@ -8,6 +8,7 @@
   position: absolute
   width: 100%
   height: 100%
+  z-index: 6
   background-color: $colorFondo1
 
   .contenedorImagen
@@ -53,41 +54,44 @@
 
     .Buffos-DeBuffos-Enemigo 
       position: absolute
-      right: 0
+      display: flex
+      justify-content: center
+      left: 5%
       top: 60%
       height: 32px
-      width: 100%
+      width: 90%
       min-height: 32px 
 
-      .Buffo-Enemigo 
+      .contenedorBuffo
         position: relative
-        float: left
-        vertical-align: top
-        width: 32px
-        heigth: 32px
-        line-height: 32px
-        color: white
-        text-align: center
-        margin: 1px
-        border: 2px solid green
-        padding: 0px
-        background-image: url(../../../assets/Buffos/Buff.png)
-        background-size: 1000%
-        overflow: hidden 
+        width: 20%
 
-      .DeBuffo-Enemigo 
-        position: relative
-        float: left
-        vertical-align: top
-        height: 100%
-        width: 12%
-        line-height: 0.5
-        color: white
-        background-size: 100% 100%
-        text-align: center
-        margin: 1px
-        border: 2px solid red
-        padding: 0px 
+        .contadorDuracion
+          position: absolute
+          width: 100%
+          height: 100%
+          display: flex
+          z-index: 2
+          justify-content: center
+          align-items: center
+          color: black 
+
+        .Buffo-Enemigo 
+          position: absolute
+          top: 0
+          left: 0
+          width: 100%
+          vertical-align: top
+          line-height: 32px
+          color: black
+          text-align: center
+          padding-top: 100% 
+          overflow: hidden 
+
+        .buff
+          border: 2px solid green
+        .debuf
+          border: 2px solid red
 
 //------------------------------------------------------------------
 //---------------------Efectos Generales----------------------------
@@ -103,7 +107,7 @@ $highlightObjetivoColor: red
   animation-direction: alternate 
 
 .seleccionable
-  z-index: 21
+  z-index: 21 !important
 
 .Offline 
   background-color: gold

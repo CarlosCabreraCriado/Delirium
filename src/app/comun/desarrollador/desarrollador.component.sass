@@ -1,4 +1,7 @@
 
+@import '../../../breakpoints.scss'
+@import '../../../variables.sass'
+
 #contenedorDesarrollador
   position: absolute
   width: 100vw
@@ -157,114 +160,6 @@
     left: 3%
   .iconoBug:hover
     filter: invert(100%)
-
-// *************************************************
-//     SECCION INMAP BUILDER
-// *************************************************
-
-#panelInmap
-  .mapaGeneral
-    position: absolute
-    max-height: 100%
-    max-width: 100%
-    margin: auto
-    height: auto
-    width: auto
-    top: 0
-    bottom: 0
-    left: 0
-    right: 0
-  .zona1
-    top: 80%
-    left: 72%
-  .zona2
-    top: 67%
-    left: 64%
-  .zona3
-    top: 57%
-    left: 65%
-  .zona4
-    top: 55%
-    left: 74%
-  .zona5
-    top: 47%
-    left: 66%
-  .zona6
-    top: 50%
-    left: 50%
-  .zona7
-    top: 34%
-    left: 72%
-  .zona8
-    top: 22%
-    left: 71%
-  .zona9
-    top: 22%
-    left: 62%
-  .zona10
-    top: 29%
-    left: 55%
-  .zona11
-    top: 84%
-    left: 61%
-  .zona12
-    top: 87%
-    left: 48%
-  .zona13
-    top: 74%
-    left: 45%
-  .zona14
-    top: 88%
-    left: 34%
-  .zona15
-    top: 88%
-    left: 23%
-  .zona16
-    top: 71%
-    left: 27%
-  .zona17
-    top: 60%
-    left: 23%
-  .zona18
-    top: 42%
-    left: 20%
-  .zona19
-    top: 18%
-    left: 25%
-  .zona20
-    top: 29%
-    left: 39%
-  .pulsacion
-    position: absolute
-    transform: translateX(-50%) translateY(-50%)
-    width: 20px
-    height: 20px
-    &:before 
-      content: ''
-      position: relative
-      display: block
-      width: 300%
-      height: 300%
-      box-sizing: border-box
-      margin-left: -100%
-      margin-top: -100%
-      border-radius: 45px
-      background-color: #01a4e9
-      animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite
-    &:after 
-      content: ''
-      position: absolute
-      left: 0
-      top: 0
-      display: block
-      width: 100%
-      height: 100%
-      background-color: #01a4e9
-      border-radius: 10px
-      box-shadow: 0 0 8px rgba(0,0,0,.3)
-      animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite
-    &:hover:after
-      background-color: white
 
 
 // *************************************************
@@ -1542,6 +1437,10 @@
         left: 5%
         top: 65%
         width: 10%
+      .formAnimacion
+        left: 5%
+        top: 80%
+        width: 15%
 
       .formDañoDir
         left: 30%
@@ -1570,9 +1469,9 @@
         width: 10%
 
       .formFuncion
-        left: 60%
+        left: 70%
         top: 65%
-        width: 30%
+        width: 20%
 
     .botonEliminar
       position: absolute
@@ -1585,14 +1484,39 @@
     .tituloEncadenado
         position: absolute
         top: 86%
-        left: 22%
+        left: 32%
         color: white
+
+    .contenedorAnimacion
+        position: absolute
+        display: flex
+        top: 80%
+        left: 50%
+        width: 48%
+        height: 15%
+        background-color: grey
+
+        .contenedorImagenAnimacion
+            position: relative
+            .flecha
+                filter: invert(1)
+                transform: rotate(180deg)
+            img
+                position: relative 
+                height: 100%
+                z-index: 10
+                &.seleccionado
+                    border: solid 2px greenyellow
+                    box-sizing: border-box
+            .imagenAddEncadenado
+                &:hover
+                    filter: invert(1)
     .contenedorEncadenado
         position: absolute
         display: flex
         top: 80%
-        left: 40%
-        width: 58%
+        left: 50%
+        width: 48%
         height: 15%
         background-color: grey
 
@@ -1615,13 +1539,14 @@
     .tituloBuff
         position: absolute
         top: 68%
-        left: 30%
+        left: 40%
         color: white
+
     .contenedorBuff
         position: absolute
         display: flex
         top: 62.5%
-        left: 40%
+        left: 50%
         height: 15%
         width: 0
         background-color: grey
@@ -1695,6 +1620,10 @@
         left: 5%
         top: 65%
         width: 10%
+      .formAnimacion
+        left: 5%
+        top: 65%
+        width: 15%
 
       .formDañoDir
         left: 30%
@@ -1988,8 +1917,530 @@
     overflow-y: scroll
     overflow-x: hidden
 
+// *************************************************
+//     SECCION INMAP BUILDER
+// *************************************************
 
-//ANIMACIONE:
+#panelInmap
+
+  .contenedorPanelLateral
+    position: absolute
+    width: 15% 
+    height: 100%
+    padding-top: 5%
+
+    &.izquierda
+      left: 0
+    &.derecha
+      right: 0
+
+    .tituloSeccion
+      position: relative
+      text-align: center
+      margin: 10px 0
+      width: 100%
+
+    .selector
+      position: relative
+      display: flex
+      width: 100%
+      height: fit-content
+      .opcion
+        position: relative
+        display: flex
+        width: 50%
+        height: 100%
+        margin: 5% 0
+        line-height: 1.5
+        align-items: center
+        justify-content: center
+        color: white
+        background-color: black
+        &.seleccionado
+          color: black
+          background-color: white
+        &:hover
+          color: black
+          background-color: white
+
+      .tile
+        position: relative
+        display: flex
+        height: fit-content
+        justify-content: center
+        .iconoTile
+          position: relative
+          width: 50%
+          border: solid 2px black
+    
+      
+    .boton
+      position: relative
+      display: flex
+      width: 100%
+      height: 5%
+      .opcion
+        position: relative
+        display: flex
+        width: 50%
+        height: 100%
+        align-items: center
+        justify-content: center
+        color: white
+        background-color: black
+
+  #fondo
+    position: absolute
+    height: 100%
+    width: 70%
+    left: 15%
+    background-color: $colorFondo
+
+    .fondoPapiro
+        position: absolute
+        display: block
+        opacity: 0.4
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+
+  #contenedorMapa
+    position: absolute
+    height: 100%
+    width: 70%
+    left: 15%
+    overflow: scroll
+
+    &.bordeDesarrollador
+      border: 2px black solid
+
+    .contenedorScroll
+      position: absolute
+      width:200%
+      height:200%
+
+
+    .mapaMundo
+      position: absolute
+      //top:50%
+      //left: 50%
+      max-height: 100%
+      max-width: 100%
+      //transform: scale(0.8)
+
+    .mapaRegion
+      position: absolute
+      top:50%
+      left: 50%
+      //max-height: 100%
+      //max-width: 100%
+      transform: scale(0.8)
+
+    .contenedorMarcadoresZonas
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      .pulsacion
+        position: absolute
+        transform: translateX(-50%) translateY(-50%)
+        width: 20px
+        height: 20px
+        &:before 
+          content: ''
+          position: relative
+          display: block
+          width: 300%
+          height: 300%
+          box-sizing: border-box
+          margin-left: -100%
+          margin-top: -100%
+          border-radius: 45px
+          background-color: white
+          animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite
+        &:after 
+          content: ''
+          position: absolute
+          left: 0
+          top: 0
+          display: block
+          width: 100%
+          height: 100%
+          background-color: dimgray
+          border-radius: 10px
+          box-shadow: 0 0 8px rgba(0,0,0,.3)
+          animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite
+        &:hover:after
+          background-color: white
+      .zona1
+        position: absolute
+        top: 91%
+        left: 87%
+
+    .contenedorMapaIsometrico
+      position: absolute
+      width: 100%
+      height: 100%
+      top: 0 
+      left: 0
+
+      
+    .wrapper 
+        position: absolute
+        //height: fit-content
+        //width: fit-content
+        //opacity: 0.5
+        top: 1066px
+        left: 2936px
+
+    .row
+      position: relative
+      white-space: nowrap
+      pointer-events: none
+    .floor 
+        -webkit-transform: rotateX(55deg) rotateZ(45deg)
+        -webkit-transform-style: preserve-3d
+        font-size: 0
+
+
+    .floor .tile 
+        font-size: 11pt
+        color: #ccc
+        display: inline-block
+        //background: #111
+        width: 48px
+        height: 48px
+        margin: 0
+        box-shadow: 0 0 0 .1em hsla(0, 0%, 0%, .2)
+        border: solid 1px gray
+        line-height: 48px
+        text-align: center
+        position: relative
+        vertical-align: top
+        pointer-events: all
+        .imagenTile
+          position: absolute
+          bottom: 0
+          right: 0
+          width: 70.71px
+          height: 127px
+          margin-right: 9px
+          margin-bottom: -19px
+          -webkit-transform: rotateZ(-45deg)
+          -webkit-transform-style: preserve-3d
+          pointer-events: none
+
+    .floor .player
+        position: absolute
+        z-index: 1
+        width: 47px
+        height: 47px
+        border-radius: 3px
+        transform-style: preserve-3d
+        -webkit-transition: all 250ms
+        -moz-transition: all 250ms
+        -ms-transition: all 250ms
+        -o-transition: all 250ms
+        transition: all 250ms
+        opacity: 1
+
+    .floor .player.die
+        animation: fallanddie 0.5s
+        animation-fill-mode: forwards
+
+    .floor .player div
+        border: solid 1px rgba(0,0,0,.5)
+        position: absolute
+        width: 47px
+        height: 47px
+        border-radius: 3px
+        transform-style: preserve-3d
+        -webkit-transform-style: preserve-3d
+        -moz-transform-style: preserve-3d
+        background: rgba(255, 255, 255, 0.5)
+
+    .floor .player .front 
+        transform-origin: 50% 100%
+        -webkit-transform-origin: 50% 100%
+        -moz-transform-origin: 50% 100%
+        transform: rotateX(-90deg)
+        -webkit-transform: rotateX(-90deg)
+        -moz-transform: rotateX(-90deg)
+
+    .floor .player .top
+        transform-origin: 50% 0%
+        transform: rotateX(-90deg)
+        -webkit-transform-origin: 50% 0%
+        -webkit-transform: rotateX(-90deg)
+        -moz-transform-origin: 50% 0%
+        -moz-transform: rotateX(-90deg)
+
+    .floor .player .right 
+        transform-origin: 100% 50%
+        transform: rotateY(90deg)
+        -webkit-transform-origin: 100% 50%
+        -webkit-transform: rotateY(90deg)
+        -moz-transform-origin: 100% 50%
+        -moz-transform: rotateY(90deg)
+
+    .floor .player.red div
+        background: rgba(255, 0, 0, 0.5)
+
+    .floor .player.blue div
+        background: rgba(255, 255, 255, 1)
+
+    .floor .player.green div
+        background: rgba(0, 255, 0, 0.5)
+
+
+    .warning
+       position: absolute
+       top: 5px
+       left: 5px
+       font-size: 13px
+       color: rgba(150,50,50,1)
+
+// Niebla:
+
+/* ---------- Fog ---------- */
+.fogwrapper
+  height: 100%
+  position: absolute
+  top: 0
+  width: 100%
+  -webkit-filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2)
+  filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2)
+
+#foglayer_01, #foglayer_02, #foglayer_03 
+  height: 100%
+  position: absolute
+  width: 200%
+
+#foglayer_01 .image01, #foglayer_01 .image02,
+#foglayer_02 .image01, #foglayer_02 .image02,
+#foglayer_03 .image01, #foglayer_03 .image02 
+  float: left
+  height: 100%
+  width: 50%
+
+#foglayer_01 
+  //-webkit-animation: foglayer_01_opacity 100s linear infinite, foglayer_moveme 100s linear infinite
+  //-moz-animation: foglayer_01_opacity 100s linear infinite, foglayer_moveme 100s linear infinite
+  //animation: foglayer_01_opacity 100s linear infinite, foglayer_moveme 100s linear infinite
+  animation: foglayer_moveme 100s linear infinite
+
+#foglayer_02, #foglayer_03 
+  //-webkit-animation: foglayer_02_opacity 210s linear infinite, foglayer_moveme 100s linear infinite
+  //-moz-animation: foglayer_02_opacity 210s linear infinite, foglayer_moveme 100s linear infinite
+  //animation: foglayer_02_opacity 210s linear infinite, foglayer_moveme 100s linear infinite
+  animation: foglayer_moveme 100s linear infinite
+
+
+/* ---------- Moving Fog ---------- */
+/*
+  'size: cover' || 'size: 100%' results remain the same
+  'attachment: scroll' can be added or removed results remain the same
+  'attachment: fixed' causing unexpected results in Chrome
+  'repeat-x' || 'no-repeat' results remain the same */ 
+
+#foglayer_01 .image01, #foglayer_01 .image02 
+  background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog1.png") center center/cover no-repeat transparent
+
+#foglayer_02 .image01, #foglayer_02 .image02,
+#foglayer_03 .image01, #foglayer_03 .image02
+  background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog2.png") center center/cover no-repeat transparent
+
+/* ---------- Keyframe Layer 1 ---------- */
+@-webkit-keyframes foglayer_01_opacity 
+  0%  
+    opacity: .1 
+  22%  
+    opacity: .5 
+  40%  
+    opacity: .28 
+  58%  
+    opacity: .4 
+  80%  
+    opacity: .16 
+  100%  
+    opacity: .1 
+
+@-moz-keyframes foglayer_01_opacity 
+  0%  
+    opacity: .1 
+  22%  
+    opacity: .5 
+  40%  
+    opacity: .28 
+  58%  
+    opacity: .4 
+  80%  
+    opacity: .16 
+  100%  
+    opacity: .1 
+
+@-o-keyframes foglayer_01_opacity 
+  0%  
+    opacity: .1 
+  22%  
+    opacity: .5 
+  40%  
+    opacity: .28 
+  58%  
+    opacity: .4 
+  80%  
+    opacity: .16 
+  100%  
+    opacity: .1 
+
+@keyframes foglayer_01_opacity 
+  0%  
+    opacity: .1 
+  22%  
+    opacity: .5 
+  40%  
+    opacity: .28 
+  58%  
+    opacity: .4 
+  80%  
+    opacity: .16 
+  100%  
+    opacity: .1 
+
+/* ---------- Keyframe Layer 2 ---------- */
+@-webkit-keyframes foglayer_02_opacity 
+  0%  
+    opacity: .5 
+  25%  
+    opacity: .2 
+  50%  
+    opacity: .1 
+  80%  
+    opacity: .3 
+  100%  
+    opacity: .5 
+
+@-moz-keyframes foglayer_02_opacity 
+  0%  
+    opacity: .5 
+  25%  
+    opacity: .2 
+  50%  
+    opacity: .1 
+  80%  
+    opacity: .3 
+  100%  
+    opacity: .5 
+
+@-o-keyframes foglayer_02_opacity 
+  0%  
+    opacity: .5 
+  25%  
+    opacity: .2 
+  50%  
+    opacity: .1 
+  80%  
+    opacity: .3 
+  100%  
+    opacity: .5 
+
+@keyframes foglayer_02_opacity 
+  0%  
+    opacity: .5 
+  25%  
+    opacity: .2 
+  50%  
+    opacity: .1 
+  80%  
+    opacity: .3 
+  100%  
+    opacity: .5 
+
+/* ---------- Keyframe Layer 3 ---------- */
+
+@-webkit-keyframes foglayer_03_opacity 
+  0%  
+    opacity: .8 
+  27%  
+    opacity: .2 
+  52%  
+    opacity: .6 
+  68%  
+    opacity: .3 
+  100%  
+    opacity: .8 
+
+@-moz-keyframes foglayer_03_opacity 
+  0%  
+    opacity: .8 
+  27%  
+    opacity: .2 
+  52%  
+    opacity: .6 
+  68%  
+    opacity: .3 
+  100%  
+    opacity: .8 
+
+@-o-keyframes foglayer_03_opacity 
+  0%  
+    opacity: .8 
+  27%  
+    opacity: .2 
+  52%  
+    opacity: .6 
+  68%  
+    opacity: .3 
+  100%  
+    opacity: .8 
+
+@keyframes foglayer_03_opacity 
+  0%  
+    opacity: .8 
+  27%  
+    opacity: .2 
+  52%  
+    opacity: .6 
+  68%  
+    opacity: .3 
+  100%  
+    opacity: .8 
+
+/* ---------- Keyframe moveMe ---------- */
+@-webkit-keyframes foglayer_moveme 
+  0%  
+    left: 0 
+  100%  
+    left: -100% 
+
+@-moz-keyframes foglayer_moveme 
+  0%  
+    left: 0 
+  100%  
+    left: -100% 
+
+@-o-keyframes foglayer_moveme 
+  0%  
+    left: 0 
+  100%  
+    left: -100% 
+
+@keyframes foglayer_moveme 
+  0%  
+    left: 0 
+  100%  
+    left: -100% 
+
+
+@media only screen and (min-width: 280px) and (max-width: 767px) 
+    #foglayer_01 .image01, #foglayer_01 .image02,
+    #foglayer_02 .image01, #foglayer_02 .image02,
+    #foglayer_03 .image01, #foglayer_03 .image02 
+      width: 100%
+
+// ANIMACIONE:
 
 @keyframes lds-dual-ring 
   0% 

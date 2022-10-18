@@ -37,6 +37,10 @@ export class PanelControlComponent {
 				break;
 				case "derecha":
 					this.comandoPanelControl.next('elegirHechizo') 
+				break;
+				case "izquierda":
+					this.comandoPanelControl.next('elegirMovimiento') 
+				break;
 			}
 		}
 	}

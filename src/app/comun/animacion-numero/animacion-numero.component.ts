@@ -59,13 +59,13 @@ export class AnimacionNumeroComponent implements OnInit, OnChanges {
     // Detectar cambio en vida:
     if(changes.enemigoVida){
     	//si se ha dañado al enemigo:
-    	if(changes.enemigoVida.currentValue<changes.enemigoVida.previousValue){
+    	if(changes.enemigoVida.currentValue <changes.enemigoVida.previousValue){
     		this.numeroAnimacion= Math.round((changes.enemigoVida.previousValue-changes.enemigoVida.currentValue)*10)/10;
     		this.colorNumero="red";
     		this.mostrarAnimacion= true;
   		}
   		//si se ha curado al enemigo:
-    	if(changes.enemigoVida.currentValue>changes.enemigoVida.previousValue){
+    	if(changes.enemigoVida.currentValue >changes.enemigoVida.previousValue){
     		this.numeroAnimacion=  Math.round((changes.enemigoVida.currentValue-changes.enemigoVida.previousValue)*10)/10;
     		this.colorNumero="green";
     		this.mostrarAnimacion= true;
@@ -75,13 +75,13 @@ export class AnimacionNumeroComponent implements OnInit, OnChanges {
     // Detectar cambio en vida:
     if(changes.heroeVida){
     	//si se ha dañado al enemigo:
-    	if(changes.heroeVida.currentValue<changes.heroeVida.previousValue){
+    	if(changes.heroeVida.currentValue <changes.heroeVida.previousValue){
     		this.numeroAnimacion=  Math.round((changes.heroeVida.previousValue-changes.heroeVida.currentValue)*10)/10;
     		this.colorNumero="red";
     		this.mostrarAnimacion= true;
   		}
   		//si se ha curado al enemigo:
-    	if(changes.heroeVida.currentValue>changes.heroeVida.previousValue){
+    	if(changes.heroeVida.currentValue >changes.heroeVida.previousValue){
     		this.numeroAnimacion=  Math.round((changes.heroeVida.currentValue-changes.heroeVida.previousValue)*10)/10;
     		this.colorNumero="green";
     		this.mostrarAnimacion= true;

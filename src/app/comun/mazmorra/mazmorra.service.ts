@@ -77,11 +77,15 @@ export class MazmorraService implements OnInit{
 	private seleccionarEnemigos: boolean= false;
 
 	//OPCIONESE DE DEBUG:
-	private restringirAcciones = true;
-	private restringirRecurso = false;
-	private restringirRNG= false;
-	private restringirTurno= false;
-	private forzarGeneradoRender= true;
+	private restringirAcciones = false;
+	private restringirRecurso = true;
+	private restringirRNG = false;
+	private restringirTurno = false;
+	private forzarGeneradoRender = true;
+	private permitirMultiControl = true;
+
+	//Variables Isometrico:
+	public estiloIsometrico: any = {};
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription
@@ -141,7 +145,7 @@ export class MazmorraService implements OnInit{
 
 	/* 	----------------------------------------------
 			ROUTER DE MAZMORRA
- 	----------------------------------------------*/
+ 	---------------------------------------------- */
  	routerMazmorra(tecla:string):void{
  		
  		//Devolver a index si la pagina se ha recargado:
@@ -151,10 +155,10 @@ export class MazmorraService implements OnInit{
         	return;
       	}*/
 
-      	console.log("ESTADO: "+this.renderMazmorra.estadoControl.estado);
-
       	if(this.appService.control=="null"){this.appService.setControl("mazmorra");}
 		if(this.appService.control!="mazmorra"){return;}
+
+      	console.log("ESTADO: "+this.renderMazmorra.estadoControl.estado);
 
 		//Router del Logger:
 		if(this.renderMazmorra.estadoControl.estado=="looger"){	
@@ -172,9 +176,9 @@ export class MazmorraService implements OnInit{
 		
 		switch(tecla){
 
-			/* *************************************************
+			/* ----------------------------------------------
 						ROUTER SIN RESTRICCION
-			************************************************* */
+			------------------------------------------------- */
 
 			case "Tab":
 			if(this.renderMazmorra.estadoControl.estado=="seleccionAccion"){
@@ -186,7 +190,7 @@ export class MazmorraService implements OnInit{
 			break;
 
 			case "ArrowUp":
-				if (this.musicaMazmorra.volume<1) {
+				if (this.musicaMazmorra.volume <1) {
 					this.musicaMazmorra.volume= this.musicaMazmorra.volume+0.1;
 				}else{
 					this.musicaMazmorra.volume= 1;
@@ -243,27 +247,7 @@ export class MazmorraService implements OnInit{
 			break;
 
 			case "p":
-				//Restringir accion por turno incorrecto.
-				if(!this.comandoSocketActivo){
-					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){break;}
-				}else{
-					this.desactivarComandoSocket();
-				}
-			
-			if(this.emisor){
-				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "pasarTurno"});
-				this.emisor=false;
-			}
-
-			console.log("Pasando Turno...");
-			if(this.renderMazmorra.estadoControl.estado=="seleccionObjetivo"){
-				this.renderMazmorra.estadoControl.estado = "seleccionAccion";
- 				this.renderMazmorra.estadoControl.hechizo = 0;
-				this.cancelarObjetivo();
-			}
-			//Pasar turno aplicando buffos:
-			this.loggerService.log("-------------- Pasando Turno ------------------");
- 			this.lanzarBuffos();
+				this.pasarTurno();
 			break;
 
 			case "0":
@@ -675,6 +659,9 @@ export class MazmorraService implements OnInit{
 
  		//Inicializar Eventos:
  		this.eventosService.inicializarEventos(this.mazmorra);
+		
+		//Inicializar Canvas Isometrico:
+		//this.appService.renderizarCanvasIsometrico();
 
  		//Inicializar Estado: 
  		this.renderMazmorra.estadoControl = {
@@ -699,6 +686,7 @@ export class MazmorraService implements OnInit{
  				nombre: this.guardado.heroes[i].nombre,
  				vida: 100,
  				escudo: 0,
+				energia: 100,
  				recurso: 100,
  				acciones: 2,
  				recursoEspecial: 0,
@@ -720,38 +708,38 @@ export class MazmorraService implements OnInit{
  				turno: false,
  				objetivo: false,
  				objetivoAuxiliar: false,
- 				animacion: 0,
+				mostrarAnimacion: false,
+ 				animacion: {
+					id: 1,
+					nombre: "Basico",
+					duracion: "1",
+					subanimaciones: [],
+					sonidos: []
+				},
  				online: this.guardado.heroes[i].online
  			};
  			this.renderMazmorra.heroes[i].objetos = this.guardado.objetos.filter(j => j.portador_nombre === this.guardado.heroes[i].nombre);
  		}
 
- 		//Inicializa el recurso especial de cada clase: 
- 		for (var i = 0; i < this.guardado.heroes.length; i++) {
- 			switch (this.renderMazmorra.heroes[i].clase) {
- 				
- 				case "MINOTAURO":
- 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
- 				this.renderMazmorra.heroes[i].recurso=0;
- 				break;
-
- 				case "CLERIGO":
- 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
- 				break;
-
- 				case "HECHICERO":
- 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
- 				break;
-
- 				case "CHRONOMANTE":
- 				this.renderMazmorra.heroes[i].recursoEspecial.valor=0;
- 				break;
- 			}
- 		}
 
  		this.renderMazmorra.heroes[0].turno= true;
 
  		//Inicialización de la primera sala:
+		
+		//Detectar la sala inicial:
+		var idSalaInicial = 0;
+		for(var i = 0; i < this.mazmorra.salas.length; i++){
+			if(this.mazmorra.salas[i].salaInicial){
+				idSalaInicial = this.mazmorra.salas[i].sala_id;
+			}	
+		}
+
+		if(idSalaInicial > 0){
+			this.cambiarSala(idSalaInicial);
+		}
+
+		//Inicializacion de sala (ANTIGUA)
+		/*
  		this.renderMazmorra.salaActual = 2;
  		this.renderMazmorra.numEnemigos = this.mazmorra.salas.find(j => j.sala_id === this.renderMazmorra.salaActual).enemigos.length;
  		this.renderMazmorra.nombreSala = this.mazmorra.salas.find(j => j.sala_id === this.renderMazmorra.salaActual).nombre;
@@ -760,6 +748,7 @@ export class MazmorraService implements OnInit{
  			this.renderMazmorra.enemigos[i] = {
  				nombre: this.mazmorra.salas[this.renderMazmorra.salaActual].enemigos[i].nombre,
  				enemigo_id: this.mazmorra.salas[this.renderMazmorra.salaActual].enemigos[i].enemigo_id,
+				familia: this.enemigos.enemigos_stats.find(k => k.id === this.mazmorra.salas[this.renderMazmorra.salaActual].enemigos[i].tipo_enemigo_id).familia.toLowerCase(),
  				vida: 100,
  				escudo: 0,
  				agro: [],
@@ -784,11 +773,11 @@ export class MazmorraService implements OnInit{
  			//this.renderMazmorra.enemigos[i].nombre = this.enemigos.enemigos_stats.find(j => j.id === this.renderMazmorra.enemigos[i].enemigo_id).nombre
  			
  			//Inicializacion de Agro:
- 			for(var j= 0; j<this.renderMazmorra.numHeroes;j++){
+ 			for(var j= 0; j <this.renderMazmorra.numHeroes;j++){
  				this.renderMazmorra.enemigos[i].agro.push(0);
  			}
- 			
  		}
+		*/
 
  		//Inicializando variables de render:
  		this.renderMazmorra.render = {
@@ -808,6 +797,7 @@ export class MazmorraService implements OnInit{
 
  		console.log(this.renderMazmorra);
 
+
  		//Calcular estadisticas Heroes:
  		for (var i = 0; i < this.renderMazmorra.numHeroes; i++) {
  			this.calcularEstadisticas(true,this.renderMazmorra.heroes[i]);
@@ -823,7 +813,7 @@ export class MazmorraService implements OnInit{
 
  		//Inicializar Analisis de estadisticas:
  		this.renderMazmorra.estadisticas= [];
- 		for(var i=0; i< this.renderMazmorra.numHeroes; i++){
+ 		for(var i=0; i < this.renderMazmorra.numHeroes; i++){
  			this.renderMazmorra.estadisticas[i]={
  				dano: [],
  				heal: [],
@@ -833,12 +823,15 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Agregar nuevo registro de analisis:
- 		for(var i=0; i<this.renderMazmorra.numHeroes;i++){
+ 		for(var i=0; i <this.renderMazmorra.numHeroes;i++){
  			this.renderMazmorra.estadisticas[i].dano.push(0);
  			this.renderMazmorra.estadisticas[i].heal.push(0);
  			this.renderMazmorra.estadisticas[i].escudo.push(0);
  			this.renderMazmorra.estadisticas[i].agro.push(0);
  		}
+
+		//Check de cambio de control de personaje: 
+		this.cambiarControlPersonaje();
 
  		//Iniciar Looger:
  		this.loggerService.log("-----------------------------","yellow");
@@ -846,7 +839,7 @@ export class MazmorraService implements OnInit{
  		this.loggerService.log("Partida Iniciada...","yellow");
  		this.loggerService.log("-----------------------------","yellow");
 
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			this.loggerService.log(this.renderMazmorra.heroes[i].nombre+" ---> "+this.renderMazmorra.heroes[i].clase,"orange");
  		}
  		
@@ -875,6 +868,10 @@ export class MazmorraService implements OnInit{
  		console.log("Partida Inicializada: ");
  		console.log(this.renderMazmorra);
 		this.mostrarMazmorra= true;
+
+		//Inicializar Canvas Isometrico:
+		this.appService.renderizarCanvasIsometrico();
+
 
  	}
 
@@ -932,11 +929,37 @@ export class MazmorraService implements OnInit{
  	//Funcion principal de paso de turno:
  	pasarTurno(): void{
 
+				//Restriccion por BLOQUEO:
+				if(this.appService.control=="null"){this.appService.setControl("mazmorra");}
+				if(this.appService.control!="mazmorra"){return;}
+
+				//Restringir accion por turno incorrecto.
+				if(!this.comandoSocketActivo){
+					if(this.personaje.heroeIndex!= this.renderMazmorra.registroTurno[this.renderMazmorra.registroTurno.length-1] && this.restringirTurno){return;}
+				}else{
+					this.desactivarComandoSocket();
+				}
+			
+			if(this.emisor){
+				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "pasarTurno"});
+				this.emisor=false;
+			}
+
+			console.log("Pasando Turno...");
+			if(this.renderMazmorra.estadoControl.estado=="seleccionObjetivo"){
+				this.renderMazmorra.estadoControl.estado = "seleccionAccion";
+ 				this.renderMazmorra.estadoControl.hechizo = 0;
+				this.cancelarObjetivo();
+			}
+			//Pasar turno aplicando buffos:
+			this.loggerService.log("-------------- Pasando Turno ------------------");
+ 			this.lanzarBuffos();
+
  		//Elimina a los enemigos Muertos:
  		this.enemigoMuerto(-1);
 
  		//Agregar nuevo registro de analisis:
- 		for(var i=0; i<this.renderMazmorra.numHeroes;i++){
+ 		for(var i=0; i <this.renderMazmorra.numHeroes;i++){
  			this.renderMazmorra.estadisticas[i].dano.push(0);
  			this.renderMazmorra.estadisticas[i].heal.push(0);
  			this.renderMazmorra.estadisticas[i].escudo.push(0);
@@ -961,11 +984,12 @@ export class MazmorraService implements OnInit{
  				this.autoGuardado2 = cloneDeep(this.autoGuardado);
  				this.autoGuardado = cloneDeep(this.renderMazmorra);
  				this.turnoModificado= false;
+				this.cambiarControlPersonaje();
  				return;
  			}
 
  			//Paso de turno entre enemigos:
- 			for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  				if(this.renderMazmorra.enemigos[i].turno){
  					this.loggerService.log("-------------- Turno de "+this.renderMazmorra.enemigos[i].nombre+" ------------------");
  					this.mensajeAccion("Turno de "+this.renderMazmorra.enemigos[i].nombre,2000);
@@ -976,13 +1000,14 @@ export class MazmorraService implements OnInit{
  					this.autoGuardado2 = cloneDeep(this.autoGuardado);
  					this.autoGuardado = cloneDeep(this.renderMazmorra);
  					this.turnoModificado= false;
+					this.cambiarControlPersonaje();
  					return;
  				}
  			}
  		} //Fin de modificador por muerte.
 
  		//Paso de turno entre heroes:
- 		for(var i=0; i<this.renderMazmorra.heroes.length-1; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length-1; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				this.renderMazmorra.heroes[i].turno = false;
  				this.renderMazmorra.heroes[i+1].turno = true;
@@ -996,11 +1021,12 @@ export class MazmorraService implements OnInit{
  				this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  				this.autoGuardado2 = cloneDeep(this.autoGuardado);
  				this.autoGuardado = cloneDeep(this.renderMazmorra);
+				this.cambiarControlPersonaje();
  				return;
  			}
  		}
  		//Paso de turno entre enemigos:
- 		for(var i=0; i<this.renderMazmorra.enemigos.length-1; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length-1; i++){
  			if(this.renderMazmorra.enemigos[i].turno){
  				this.renderMazmorra.enemigos[i].turno = false;
  				this.renderMazmorra.enemigos[i+1].turno = true;
@@ -1014,6 +1040,7 @@ export class MazmorraService implements OnInit{
  				this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  				this.autoGuardado2 = cloneDeep(this.autoGuardado);
  				this.autoGuardado = cloneDeep(this.renderMazmorra);
+				this.cambiarControlPersonaje();
  				return;
  			}
  		}
@@ -1043,6 +1070,7 @@ export class MazmorraService implements OnInit{
  			this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  			this.autoGuardado2 = cloneDeep(this.autoGuardado);
  			this.autoGuardado = cloneDeep(this.renderMazmorra);
+			this.cambiarControlPersonaje();
  			return;
  		}
 
@@ -1061,8 +1089,10 @@ export class MazmorraService implements OnInit{
 			this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.renderMazmorra});
  			this.autoGuardado2 = cloneDeep(this.autoGuardado);
  			this.autoGuardado = cloneDeep(this.renderMazmorra);
+			this.cambiarControlPersonaje();
  			return;
  		}
+
  	}
 
  	//Muestra mensaje en barra de acción y bloquea input:
@@ -1075,6 +1105,27 @@ export class MazmorraService implements OnInit{
       			this.appService.setControl("desbloqueoMensaje");
  		}, tiempoMensaje);	
  	}
+
+	//Cambiar Control Personaje:
+	cambiarControlPersonaje(){
+
+		//CAMBIAR PERSONAJE CONTROL SI PERMITE MULTI CONTROL:
+		if(this.permitirMultiControl){
+			console.log("Cambiando control personaje (Multicontrol)");
+			console.log(this.personaje)
+			//Buscar si el turno es de un Heroe y seleccionar como control:
+			for(var i=0; i <this.renderMazmorra.heroes.length-1; i++){
+				if(this.renderMazmorra.heroes[i].turno){
+					this.renderMazmorra.personaje = this.renderMazmorra.heroes[i].nombre;
+					this.renderMazmorra.personajeIndex = i;
+					this.personaje.nombre = this.renderMazmorra.heroes[i].nombre;
+					this.personaje.heroeIndex = i;
+					this.personaje.clase = this.renderMazmorra.heroes[i].clase;;
+				}
+			}
+		}
+
+	}
 
  	//Gestiona el cambio de sala:
  	addEnemigo(idEnemigo:number):void{
@@ -1092,6 +1143,8 @@ export class MazmorraService implements OnInit{
  			this.renderMazmorra.enemigos.push({
  				nombre: enemigoAdd.nombre,
  				enemigo_id: enemigoAdd.id,
+				tipo_enemigo_id: enemigoAdd.tipo_enemigo_id,
+				familia: this.enemigos.enemigos_stats.find(k => k.id === enemigoAdd.enemigo_id).familia.toLowerCase(),
  				turno: false,
  				vida: 100,
  				escudo: 0,
@@ -1110,11 +1163,18 @@ export class MazmorraService implements OnInit{
  				acciones: 2,
  				objetivoAuxiliar: false,
  				hechizos: enemigoAdd.hechizos_id,
- 				animacion: 0
+				mostrarAnimacion: false,
+ 				animacion: {
+					id: 1,
+					nombre: "Basico",
+					duracion: "1",
+					subanimaciones: [],
+					sonidos: []
+				}
  			});
 
  			//Inicializacion de Agro:
- 			for(var j= 0; j<this.renderMazmorra.numHeroes;j++){
+ 			for(var j= 0; j <this.renderMazmorra.numHeroes;j++){
  				this.renderMazmorra.enemigos[this.renderMazmorra.enemigos.length-1].agro.push(0);
  			}
 
@@ -1133,17 +1193,24 @@ export class MazmorraService implements OnInit{
  	cambiarSala(sala:number):void{
 
  		//Añade los enemigos de la nueva sala a la instancia:
- 		var enemigosAdd= this.mazmorra.enemigos.filter(j => j.sala == sala);
+		console.log(this.mazmorra)
+
+ 		var enemigosAdd= this.mazmorra.salas.filter(j => j.sala_id == sala)[0].enemigos;
+
  		this.loggerService.log("--------------Cambiando Sala------------------");
  		this.loggerService.log("Cambiando de sala: "+sala);
 
- 		for(var i=0; i<enemigosAdd.length;i++){
+		console.log(enemigosAdd)
+
+ 		for(var i=0; i <enemigosAdd.length;i++){
  			if(enemigosAdd[i].nombre=="0"){
  				enemigosAdd[i].nombre = this.enemigos.enemigos_stats.find(j => j.id == enemigosAdd[i].enemigo_id).nombre;
  			}
  			this.renderMazmorra.enemigos.push({
  				nombre: enemigosAdd[i].nombre,
  				enemigo_id: enemigosAdd[i].enemigo_id,
+				tipo_enemigo_id: enemigosAdd[i].tipo_enemigo_id,
+				familia: this.enemigos.enemigos_stats.find(k => k.id === enemigosAdd[i].enemigo_id).familia.toLowerCase(),
  				turno: false,
  				vida: 100,
  				escudo: 0,
@@ -1162,11 +1229,18 @@ export class MazmorraService implements OnInit{
  				acciones: 2,
  				objetivoAuxiliar: false,
  				hechizos: this.enemigos.enemigos_stats.find(k => k.id === enemigosAdd[i].enemigo_id).hechizos_id,
- 				animacion: 0
+				mostrarAnimacion: false,
+ 				animacion: {
+					id: 1,
+					nombre: "Basico",
+					duracion: "1",
+					subanimaciones: [],
+					sonidos: []
+				}
  			});
 
  			//Inicializacion de Agro:
- 			for(var j= 0; j<this.renderMazmorra.numHeroes;j++){
+ 			for(var j= 0; j <this.renderMazmorra.numHeroes;j++){
  				this.renderMazmorra.enemigos[this.renderMazmorra.enemigos.length-1].agro.push(0);
  			}
 
@@ -1207,7 +1281,7 @@ export class MazmorraService implements OnInit{
  			estadisticasEquipo= 0;
 
  			//Calcula estadisticas HEROE:
- 			if(this.renderMazmorra.nivel_equipo<nivel_spec){
+ 			if(this.renderMazmorra.nivel_equipo <nivel_spec){
  				caster.estadisticas.armadura= 0;
  				console.log(clase);
 				console.log(this.parametros)
@@ -1248,9 +1322,12 @@ export class MazmorraService implements OnInit{
 
  	//Selecciona los objetivos del hechizo indicado segun de quien sea el turno:
  	seleccionObjetivo(numHechizo: number):void{
+
  		this.renderMazmorra.estadoControl.estado = "seleccionObjetivo";
  		this.renderMazmorra.estadoControl.hechizo = numHechizo;
+
  		console.log(this.renderMazmorra.render.objetivoPredefinido.enemigos);
+
  		//Si hay objetivos predefinidos Lanza el hechizo automaticamente
  		if(this.renderMazmorra.render.objetivoPredefinido.enemigos.length!=0){
  			//this.lanzarHechizo();
@@ -1266,7 +1343,7 @@ export class MazmorraService implements OnInit{
 
  		var clase;
  		//Detectar de quien es el turno (Heroes):
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				//Turno del heroe[i]:
  				clase= this.renderMazmorra.heroes[i].clase.toLowerCase();
@@ -1301,7 +1378,7 @@ export class MazmorraService implements OnInit{
 
  				//Si el caster es heroe y el objetivo es AA:
  				if(this.renderMazmorra.estadoControl.tipoObjetivo=="AA"){
- 					for(var j=0; j<this.renderMazmorra.heroes.length; j++){
+ 					for(var j=0; j <this.renderMazmorra.heroes.length; j++){
  						this.renderMazmorra.heroes[j].objetivo = true;
  					}
  					//this.lanzarHechizo();
@@ -1310,7 +1387,7 @@ export class MazmorraService implements OnInit{
 
  				//Si el caster es heroe y el objetivo es EE:
  				if(this.renderMazmorra.estadoControl.tipoObjetivo=="EA"){
- 					for(var j=0; j<this.renderMazmorra.enemigos.length; j++){
+ 					for(var j=0; j <this.renderMazmorra.enemigos.length; j++){
  						this.renderMazmorra.enemigos[j].objetivo = true;
  					}
  					//this.lanzarHechizo();
@@ -1321,7 +1398,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Detectar de quien es el turno (Enemigos):
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].turno){
  				//Turno del enemigo[i]:
  				clase= this.renderMazmorra.enemigos[i].nombre;
@@ -1357,7 +1434,7 @@ export class MazmorraService implements OnInit{
 
  				//Si el caster es enemigo y el objetivo es AA:
  				if(this.renderMazmorra.estadoControl.tipoObjetivo=="AA"){
- 					for(var j=0; j<this.renderMazmorra.enemigos.length; j++){
+ 					for(var j=0; j <this.renderMazmorra.enemigos.length; j++){
  						this.renderMazmorra.enemigos[j].objetivo = true;
  					}
  					//this.lanzarHechizo();
@@ -1366,7 +1443,7 @@ export class MazmorraService implements OnInit{
 
  				//Si el caster es enemigo y el objetivo es EE:
  				if(this.renderMazmorra.estadoControl.tipoObjetivo=="EE"){
- 					for(var j=0; j<this.renderMazmorra.heroes.length; j++){
+ 					for(var j=0; j <this.renderMazmorra.heroes.length; j++){
  						this.renderMazmorra.heroes[j].objetivo = true;
  					}
  					//this.lanzarHechizo();
@@ -1381,7 +1458,7 @@ export class MazmorraService implements OnInit{
  	cancelarObjetivo(): void{
 
  		//Elimina objetivos en heroes: 
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].objetivoAuxiliar){
  				this.renderMazmorra.heroes[i].objetivoAuxiliar= false;
  			}
@@ -1391,7 +1468,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Elimina objetivos en enemigos:
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].objetivoAuxiliar){
  				this.renderMazmorra.enemigos[i].objetivoAuxiliar= false;
  			}
@@ -1408,9 +1485,9 @@ export class MazmorraService implements OnInit{
  		//Mueve objetivo AU && EU:
  		if(this.renderMazmorra.estadoControl.tipoObjetivo=="EU" || this.renderMazmorra.estadoControl.tipoObjetivo=="AU"){
  			//Evalua objetivos en heroes:
- 			for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  				if(this.renderMazmorra.heroes[i].objetivo){
- 					if((val+i>=0) && (val+i<this.renderMazmorra.heroes.length)){
+ 					if((val+i>=0) && (val+i <this.renderMazmorra.heroes.length)){
  						this.renderMazmorra.heroes[i].objetivo=false;
  						this.renderMazmorra.heroes[i+val].objetivo=true;
  						return;
@@ -1418,9 +1495,9 @@ export class MazmorraService implements OnInit{
  				}
  			}
  			//Evalua objetivos en enemigos:
- 			for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  				if(this.renderMazmorra.enemigos[i].objetivo){
- 					if((val+i>=0) && (val+i<this.renderMazmorra.enemigos.length)){
+ 					if((val+i>=0) && (val+i <this.renderMazmorra.enemigos.length)){
  						this.renderMazmorra.enemigos[i].objetivo=false;
  						this.renderMazmorra.enemigos[i+val].objetivo=true;
  						return;
@@ -1432,9 +1509,9 @@ export class MazmorraService implements OnInit{
  		//Mueve el objetivo Auxiliar en AM && EM 
  		if(this.renderMazmorra.estadoControl.tipoObjetivo=="EM" || this.renderMazmorra.estadoControl.tipoObjetivo=="AM"){
  			//Evalua objetivos Auxiliares en heroes:
- 			for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  				if(this.renderMazmorra.heroes[i].objetivoAuxiliar){
- 					if((val+i>=0) && (val+i<this.renderMazmorra.heroes.length)){
+ 					if((val+i>=0) && (val+i <this.renderMazmorra.heroes.length)){
  						this.renderMazmorra.heroes[i].objetivoAuxiliar=false;
  						this.renderMazmorra.heroes[i+val].objetivoAuxiliar=true;
  						return;
@@ -1442,9 +1519,9 @@ export class MazmorraService implements OnInit{
  				}
  			}
  			//Evalua objetivos Auxiliares en enemigos:
- 			for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  				if(this.renderMazmorra.enemigos[i].objetivoAuxiliar){
- 					if((val+i>=0) && (val+i<this.renderMazmorra.enemigos.length)){
+ 					if((val+i>=0) && (val+i <this.renderMazmorra.enemigos.length)){
  						this.renderMazmorra.enemigos[i].objetivoAuxiliar=false;
  						this.renderMazmorra.enemigos[i+val].objetivoAuxiliar=true;
  						return;
@@ -1457,14 +1534,14 @@ export class MazmorraService implements OnInit{
  	//Selecciona el objetivo desde un objetivo auxiliar:
  	seleccionarObjetivo(): void{
  		//Evalua objetivos Auxiliares en heroes: (Invierte el objetivo en el objetivo auxiliar)
- 			for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  				if(this.renderMazmorra.heroes[i].objetivoAuxiliar){
  					this.renderMazmorra.heroes[i].objetivo= !this.renderMazmorra.heroes[i].objetivo;
  					return;
  				}
  			}
  			//Evalua objetivos Auxiliares en enemigos: (Invierte el objetivo en el objetivo auxiliar)
- 			for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  				if(this.renderMazmorra.enemigos[i].objetivoAuxiliar){
  					this.renderMazmorra.enemigos[i].objetivo= !this.renderMazmorra.enemigos[i].objetivo;
  					return;
@@ -1483,7 +1560,7 @@ export class MazmorraService implements OnInit{
  		var indiceCaster;
  		this.esHeroe = false;
  		this.esEnemigo = false;
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				this.esHeroe= true;
  				indiceCaster = i;
@@ -1491,7 +1568,7 @@ export class MazmorraService implements OnInit{
  			}
  		}
 
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].turno){
  				this.esEnemigo= true;
  				indiceCaster= i;
@@ -1507,9 +1584,16 @@ export class MazmorraService implements OnInit{
  				}
  			}
 
+ 			if(this.renderMazmorra.heroes[indiceCaster].energia < this.hechizos.hechizos.find(j => j.id==numHechizo).recurso){
+ 				if(this.restringirRecurso){
+ 					this.mensajeAccion("Energia Insuficiente", 1000);
+ 					resultado = false;
+ 				}
+ 			}
+
  			if(this.renderMazmorra.heroes[indiceCaster].recursoEspecial < this.hechizos.hechizos.find(j => j.id==numHechizo).poder){
  				if(this.restringirRecurso){
- 					this.mensajeAccion("Recurso Insuficiente", 1000);
+ 					this.mensajeAccion("Poder Insuficiente", 1000);
  					resultado = false;
  				}
  			}
@@ -1523,7 +1607,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		if(this.esEnemigo){
- 			if(this.renderMazmorra.enemigos[indiceCaster].acciones< this.enemigos.enemigos_hech.find(i => i.id==this.renderMazmorra.enemigos[indiceCaster].hechizos).acciones){
+ 			if(this.renderMazmorra.enemigos[indiceCaster].acciones < this.enemigos.enemigos_hech.find(i => i.id==this.renderMazmorra.enemigos[indiceCaster].hechizos).acciones){
  				if(this.restringirAcciones){
  					this.mensajeAccion("Acciones Insuficientes", 1000);
  					resultado = false;
@@ -1548,7 +1632,7 @@ export class MazmorraService implements OnInit{
  		var caster;
  		var esHeroe = false;
  		var esEnemigo = false;
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				esHeroe= true;
  				caster= this.renderMazmorra.heroes[i];
@@ -1556,7 +1640,7 @@ export class MazmorraService implements OnInit{
  			}
  		}
 
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].turno){
  				esEnemigo= true;
  				caster= this.renderMazmorra.enemigos[i];
@@ -1587,20 +1671,20 @@ export class MazmorraService implements OnInit{
  		//Si el caster es heroe:
  		if(esHeroe){
  			hechizo={
- 				id: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].id,
- 				nombre: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].nombre,
- 				tipo: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].tipo_daño,
- 				recurso: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].recurso,
- 				poder: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].poder,
- 				acciones: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].acciones,
- 				dano_dir: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].daño_dir,
- 				heal_dir: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].heal_dir,
- 				escudo_dir: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].escudo_dir,
-				buff_id: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].buff_id,
-				funcion: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].funcion,
-				objetivo: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].objetivo,
-				animacion: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].animacion_id,
-				hechizo_encadenado_id: this.hechizos[caster.clase.toLowerCase()][this.renderMazmorra.estadoControl.hechizo-1].hech_encadenado_id
+ 				id: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].id,
+ 				nombre: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].nombre,
+ 				tipo: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].tipo_daño,
+ 				recurso: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].recurso,
+ 				poder: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].poder,
+ 				acciones: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].acciones,
+ 				dano_dir: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].daño_dir,
+ 				heal_dir: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].heal_dir,
+ 				escudo_dir: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].escudo_dir,
+				buff_id: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].buff_id,
+				funcion: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].funcion,
+				objetivo: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].objetivo,
+				animacion: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].animacion_id,
+				hechizo_encadenado_id: this.hechizos.hechizos[this.renderMazmorra.estadoControl.hechizo-1].hech_encadenado_id
  			}
 
  		console.log("Lanzando hechizo:");
@@ -1643,10 +1727,12 @@ export class MazmorraService implements OnInit{
  		if(esHeroe){
  			this.renderMazmorra.heroes.find(i => i.nombre == caster.nombre).recurso -= hechizo.recurso;
  			this.renderMazmorra.heroes.find(i => i.nombre == caster.nombre).recursoEspecial -= hechizo.poder;
+ 			this.renderMazmorra.heroes.find(i => i.nombre == caster.nombre).energia -= hechizo.recurso;
 
  			if(caster.recurso>100){
  				caster.recurso= 100;
  			}
+
  		}
 
  		//---------------------------------------------------------------
@@ -1670,14 +1756,14 @@ export class MazmorraService implements OnInit{
  		var objetivosHeroes=[];
 
  		//Iteramos enemigos:
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].objetivo){
  				objetivosEnemigos.push(i);
  			}
  		}
 
  		//Iteramos heroes:
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].objetivo){
  				objetivosHeroes.push(i);
  			}
@@ -1686,7 +1772,7 @@ export class MazmorraService implements OnInit{
  		//Eliminamos los objetivos:
 
  			//Elimina objetivos en heroes: 
- 			for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  				if(this.renderMazmorra.heroes[i].objetivoAuxiliar){
  					this.renderMazmorra.heroes[i].objetivoAuxiliar= false;
  				}
@@ -1696,7 +1782,7 @@ export class MazmorraService implements OnInit{
 
  			}
  			//Elimina objetivos en enemigos:
- 			for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 			for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  				if(this.renderMazmorra.enemigos[i].objetivoAuxiliar){
  					this.renderMazmorra.enemigos[i].objetivoAuxiliar= false;
  				}
@@ -1742,7 +1828,7 @@ export class MazmorraService implements OnInit{
  		var casterIndice;
  		var parametroSeleccionado;
 
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				esHeroe= true;
  				caster= this.renderMazmorra.heroes[i];
@@ -1751,7 +1837,7 @@ export class MazmorraService implements OnInit{
  			}
  		}
 
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].turno){
  				esEnemigo= true;
  				caster= this.renderMazmorra.enemigos[i];
@@ -1772,8 +1858,14 @@ export class MazmorraService implements OnInit{
  			}
 
  			//Realiza animacion:
- 			this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].animacion= hechizo.animacion;
- 			
+ 			this.renderMazmorra.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].animacion= this.animaciones.animaciones.find(i => i.id== hechizo.animacion);
+
+			var objetivoProvisional = objetivoEnemigos[objetivoEnemigos.length-1];
+			this.renderMazmorra.enemigos[objetivoProvisional].mostrarAnimacion= true;
+			setTimeout(()=>{  
+				this.renderMazmorra.enemigos[objetivoProvisional].mostrarAnimacion= false;
+			}, 1000*(this.renderMazmorra.enemigos[objetivoProvisional].animacion.duracion));	
+
 
  			//Modificar de potencia del hechizo de salida:
  			if(esHeroe){
@@ -1798,7 +1890,7 @@ export class MazmorraService implements OnInit{
 						dano_t: this.buff.buff.find(i => i.id==hechizo.buff_id).daño_t,
 						heal_t: this.buff.buff.find(i => i.id==hechizo.buff_id).heal_t,
 						escudo_t: this.buff.buff.find(i => i.id==hechizo.buff_id).escudo_t,
-						icon_id: this.buff.buff.find(i => i.id==hechizo.buff_id).icon_id,
+						icon_id: this.buff.buff.find(i => i.id==hechizo.buff_id).imagen_id,
 						rng: this.renderMazmorra.estadoControl.rng,
 						origen: "0"
 	 				});
@@ -1843,7 +1935,7 @@ export class MazmorraService implements OnInit{
  					var operador;
  					var valorStat;
 
- 					for(var i=0; i<vectorInstrucciones.length;i++){
+ 					for(var i=0; i <vectorInstrucciones.length;i++){
  						console.log("Analizando la primera Instrucción: ");
  						console.log(vectorInstrucciones[i]);
 
@@ -1880,7 +1972,7 @@ export class MazmorraService implements OnInit{
 	 					}
 	 					
 
-	 					for(var j=0; j<2;j++){
+	 					for(var j=0; j <2;j++){
 	 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
 	 						switch(parametroSeleccionado){
 		 						case "VT":
@@ -2062,7 +2154,7 @@ export class MazmorraService implements OnInit{
  					var operador;
  					var valorStat;
 
- 					for(var i=0; i<vectorInstrucciones.length;i++){
+ 					for(var i=0; i <vectorInstrucciones.length;i++){
  						console.log("Analizando la primera Instrucción: ");
  						console.log(vectorInstrucciones[i]);
 
@@ -2103,7 +2195,7 @@ export class MazmorraService implements OnInit{
 	 						agro: 0,
 	 					}
 	 					
-	 					for(var j=0; j<2;j++){
+	 					for(var j=0; j <2;j++){
 	 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
 	 						switch(parametroSeleccionado){
 		 						case "VT":
@@ -2345,7 +2437,7 @@ export class MazmorraService implements OnInit{
  		//Verificación del caster:
  		var esHeroe = false;
  		var indiceHeroeCaster = -1;
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				esHeroe= true;
  				indiceHeroeCaster= i;
@@ -2369,7 +2461,7 @@ export class MazmorraService implements OnInit{
  		this.renderMazmorra.heroes[indiceHeroe].vida = Math.round(this.renderMazmorra.heroes[indiceHeroe].vida * 100) / 100;
 
  		//Mantener rango de vida:
- 		if(this.renderMazmorra.heroes[indiceHeroe].vida<=0){
+ 		if(this.renderMazmorra.heroes[indiceHeroe].vida <=0){
  			this.renderMazmorra.heroes[indiceHeroe].vida= 0;
  		}
  		if(this.renderMazmorra.heroes[indiceHeroe].vida>100){
@@ -2408,7 +2500,7 @@ export class MazmorraService implements OnInit{
  		//Verificación del caster:
  		var esHeroe = false;
  		var indiceHeroeCaster = -1;
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				esHeroe= true;
  				indiceHeroeCaster= i;
@@ -2467,7 +2559,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Elimina al enemigo si esta muerto:
- 		if(this.renderMazmorra.enemigos[indiceEnemigo].vida<=0){
+ 		if(this.renderMazmorra.enemigos[indiceEnemigo].vida <=0){
  			this.renderMazmorra.enemigos[indiceEnemigo].vida= 0;
  			this.enemigoMuerto(indiceEnemigo);
  			console.log("Enemigo Muerto: "+indiceEnemigo);
@@ -2483,7 +2575,7 @@ export class MazmorraService implements OnInit{
  		var caster;
  		var esHeroe = false;
  		var esEnemigo = false;
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			if(this.renderMazmorra.heroes[i].turno){
  				esHeroe= true;
  				caster= this.renderMazmorra.heroes[i];
@@ -2491,7 +2583,7 @@ export class MazmorraService implements OnInit{
  			}
  		}
 
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			if(this.renderMazmorra.enemigos[i].turno){
  				esEnemigo= true;
  				caster= this.renderMazmorra.enemigos[i];
@@ -2604,16 +2696,16 @@ export class MazmorraService implements OnInit{
  		} 
 
  		//Itera entre los enemigos:
- 		for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.enemigos.length; i++){
  			aplicarBuffos.enemigos[i]= [];
- 			for(var j=0; j<this.renderMazmorra.enemigos[i].buff.length; j++){
+ 			for(var j=0; j <this.renderMazmorra.enemigos[i].buff.length; j++){
  				aplicarBuffos.enemigos[i][j] = this.renderMazmorra.enemigos[i].buff[j].id;
  			}
  		}
 
- 		for(var i=0; i<this.renderMazmorra.heroes.length; i++){
+ 		for(var i=0; i <this.renderMazmorra.heroes.length; i++){
  			aplicarBuffos.heroes[i]= [];
- 			for(var j=0; j<this.renderMazmorra.heroes[i].buff.length; j++){
+ 			for(var j=0; j <this.renderMazmorra.heroes[i].buff.length; j++){
  				aplicarBuffos.heroes[i][j] = this.renderMazmorra.heroes[i].buff[j].id;
  			}
  		}
@@ -2628,7 +2720,7 @@ export class MazmorraService implements OnInit{
  		var desbloqueo=true;
 
  		//Aplicar buffos en los enemigos:
- 		for(var i=0; i<aplicarBuffos.enemigos.length; i++){
+ 		for(var i=0; i <aplicarBuffos.enemigos.length; i++){
  			//Enemigo con buffos pendientes:
  			if(aplicarBuffos.enemigos[i].length>0){
 
@@ -2663,7 +2755,7 @@ export class MazmorraService implements OnInit{
  				}
 
  				//Si el enemigo muere elimina la cola de Buff:
- 				if(this.renderMazmorra.enemigos[i].vida<=0){
+ 				if(this.renderMazmorra.enemigos[i].vida <=0){
  					this.renderMazmorra.render.enemigoMuerto.push(i);
  					aplicarBuffos.enemigos[i] = [];
  				}else{
@@ -2675,7 +2767,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Aplicar buffos en los heroes:
- 		for(var i=0; i<aplicarBuffos.heroes.length; i++){
+ 		for(var i=0; i <aplicarBuffos.heroes.length; i++){
  			//Heroe con buffos pendientes:
  			if(aplicarBuffos.heroes[i].length>0){
 
@@ -2710,7 +2802,7 @@ export class MazmorraService implements OnInit{
  				}
 
  				//Si el heroe muere elimina la cola de Buff:
- 				if(this.renderMazmorra.heroes[i].vida<=0){
+ 				if(this.renderMazmorra.heroes[i].vida <=0){
  					this.renderMazmorra.render.heroeMuerto.push(i);
  					aplicarBuffos.heroes[i] = [];
  				}else{
@@ -2721,7 +2813,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Verifica si quedan objetivos Enemigos por aplicar buffos:
- 		for(var i=0; i<aplicarBuffos.enemigos.length; i++){
+ 		for(var i=0; i <aplicarBuffos.enemigos.length; i++){
  			if(aplicarBuffos.enemigos[i].length>0){
  				//Enemigo con buffos pendientes:
  				var desbloqueo= false;
@@ -2729,7 +2821,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Verifica si quedan objetivos Aliados por aplicar buffos:
- 		for(var i=0; i<aplicarBuffos.heroes.length; i++){
+ 		for(var i=0; i <aplicarBuffos.heroes.length; i++){
  			if(aplicarBuffos.heroes[i].length>0){
  				//Heroe con buffos pendientes:
  				var desbloqueo= false;
@@ -2747,7 +2839,7 @@ export class MazmorraService implements OnInit{
  			//Desbloquea y termina la aplicación de buffos:
  			this.appService.setControl("desbloqueoBuff");
  			this.renderMazmorra.render.barraAccion.mostrar = false;
- 			this.pasarTurno();
+ 			//this.pasarTurno();
  		}
  	}
 
@@ -2881,7 +2973,7 @@ export class MazmorraService implements OnInit{
  		this.renderMazmorra.heroes[indiceHeroe].vida = Math.round(this.renderMazmorra.heroes[indiceHeroe].vida * 100) / 100;
 
  		//Mantener rango de vida:
- 		if(this.renderMazmorra.heroes[indiceHeroe].vida<=0){
+ 		if(this.renderMazmorra.heroes[indiceHeroe].vida <=0){
  			this.renderMazmorra.heroes[indiceHeroe].vida= 0;
  		}
  		if(this.renderMazmorra.heroes[indiceHeroe].vida>100){
@@ -2966,7 +3058,7 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Evaluar enemigo muerto:
- 		if(this.renderMazmorra.enemigos[indiceEnemigo].vida<0){
+ 		if(this.renderMazmorra.enemigos[indiceEnemigo].vida <0){
  			this.renderMazmorra.enemigos[indiceEnemigo].vida= 0;
  			console.log("Enemigo Muerto: "+indiceEnemigo);
  			this.loggerService.log("Enemigo muerto: "+this.renderMazmorra.enemigos[indiceEnemigo].nombre,"red");
@@ -3047,7 +3139,7 @@ export class MazmorraService implements OnInit{
  					var operador;
  					var valorStat;
 
- 					for(var i=0; i<vectorInstrucciones.length;i++){
+ 					for(var i=0; i <vectorInstrucciones.length;i++){
  						console.log("Analizando la primera Instrucción: ");
  						console.log(vectorInstrucciones[i]);
 
@@ -3090,7 +3182,7 @@ export class MazmorraService implements OnInit{
 	 						agro: 0,
 	 					}
 	 					
-	 					for(var j=0; j<2;j++){
+	 					for(var j=0; j <2;j++){
 	 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
 	 						switch(parametroSeleccionado){
 		 						case "VT":
@@ -3209,7 +3301,7 @@ export class MazmorraService implements OnInit{
  		for (var i = this.renderMazmorra.render.enemigoMuerto.length -1; i >= 0; i--){
 
  			//Eliminar Objetivo Predefinido si el enemigo ha muerto:
- 			for(var j=0; j<this.renderMazmorra.render.objetivoPredefinido.enemigos.length;j++){
+ 			for(var j=0; j <this.renderMazmorra.render.objetivoPredefinido.enemigos.length;j++){
  				if(this.renderMazmorra.render.objetivoPredefinido.enemigos[j]==this.renderMazmorra.render.enemigoMuerto[i]){
  					this.renderMazmorra.render.objetivoPredefinido.enemigos.splice(j,1);
  					
@@ -3383,8 +3475,11 @@ export class MazmorraService implements OnInit{
  		----------------------------------------------*/
 
  	interfazObs(comando):void{
+
  		console.log("Evento Interfaz: "+comando.comando);
- 		console.log("Valor: "+comando.valor);
+		if(comando.valor!=""){
+			console.log("Valor: "+comando.valor);
+		}
 
  		switch(comando.comando){
  			case "cancelar":
@@ -3393,7 +3488,8 @@ export class MazmorraService implements OnInit{
 				this.seleccionarHeroes = false;
  				this.cancelarObjetivo();
  			break;
- 			case "selecionarHechizo":
+ 			case "seleccionarHechizo":
+
  				console.log("Lanzando Hechizo: "+comando.valor);
  				if(this.verificarCasteo(comando.valor)){
  					this.seleccionObjetivo(comando.valor);
@@ -3401,7 +3497,7 @@ export class MazmorraService implements OnInit{
  					switch(this.renderMazmorra.estadoControl.tipoObjetivo){
  						case "EU":
 							this.seleccionarEnemigos = true;
-						console.log("SELECCIONANDO ENEMIGOS")
+							console.log("SELECCIONANDO ENEMIGOS")
  							this.interfazService.setPantallaInterfaz("seleccionObjetivoEnemigo");
  						break;
  						case "EM":
@@ -3438,7 +3534,7 @@ export class MazmorraService implements OnInit{
 		//Si castea heroe:
  		if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoEnemigo"){
 			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EU"){
-				for(var i = 0;i<this.renderMazmorra.enemigos.length; i++){
+				for(var i = 0;i <this.renderMazmorra.enemigos.length; i++){
 					this.renderMazmorra.enemigos[i].objetivo = false;
 				}
 				this.renderMazmorra.enemigos[numEnemigo].objetivo = true;
@@ -3471,22 +3567,34 @@ export class MazmorraService implements OnInit{
  	routerInterfaz(pantalla): void{
  		switch(pantalla){
  			case "elegirHechizo":
- 				//this.renderMazmorra.estadoControl.estado="eligiendoHechizo";
- 				this.interfazService.setHeroesHech(this.hechizos);
+ 			//this.renderMazmorra.estadoControl.estado="eligiendoHechizo";
+ 			this.interfazService.setHeroesHech(this.hechizos);
 			console.log(this.perfil)
 			console.log(this.hechizos)
-				var hechizosSeleccionados = [0,0,0,0,0];
-				for(var i=0; i<this.perfil["hechizos"].length;i++){
+
+			var hechizosEquipadosID = [0,0,0,0,0];
+			var hechizosEquipadosImagenID = [0,0,0,0,0];
+
+			//Rellenar vector de imagenes de hechizos:
+
+				for(var i=0; i <this.perfil["hechizos"].length;i++){
 					if(this.perfil.hechizos[i]["nombre_personaje"].toLowerCase()==this.personaje.nombre.toLowerCase()){
 						if(this.perfil.hechizos[i]["slot"]>0 && this.perfil.hechizos[i]["equipado"]=="true"){
-							hechizosSeleccionados[this.perfil.hechizos[i]["slot"]-1]= this.hechizos.hechizos.find(j => j.id == this.perfil.hechizos[i]["hechizo_id"])["imagen_id"];
+							hechizosEquipadosID[this.perfil.hechizos[i]["slot"]-1]= this.perfil.hechizos[i]["hechizo_id"];
+							hechizosEquipadosImagenID[this.perfil.hechizos[i]["slot"]-1]= this.hechizos.hechizos.find(j => j.id == this.perfil.hechizos[i]["hechizo_id"])["imagen_id"];
 						}
 					}
 				}
+
  				this.interfazService.setEnemigos(this.enemigos);
- 				this.interfazService.activarInterfaz(hechizosSeleccionados);
+ 				this.interfazService.activarInterfazHechizos(hechizosEquipadosID, hechizosEquipadosImagenID);
  				console.log(pantalla)
  			break;
+
+			case "elegirMovimiento":
+				console.log("MOVIMIENTO")
+ 				this.interfazService.activarInterfazMovimiento(5);
+			break;
  		}
  		return;
  	}
@@ -3498,10 +3606,8 @@ export class MazmorraService implements OnInit{
 		this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: this.renderMazmorra});
  		return;
  	}
+
 }
-
-
-
 
 
 

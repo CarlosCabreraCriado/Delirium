@@ -1,5 +1,5 @@
 
-import { Component, OnInit, AfterViewInit, NgModule, ViewChildren, QueryList, Directive} from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule, ViewChildren, ViewChild, ElementRef, QueryList, Directive} from '@angular/core';
 import { AppService } from '../../app.service';
 import { MazmorraService } from './mazmorra.service';
 import { Subscription } from "rxjs";
@@ -32,6 +32,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	constructor(private mazmorraService: MazmorraService, private appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
 	
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
+  	@ViewChild('canvasIsometrico',{static: false}) canvasIsometrico: ElementRef;
 
 	//Declara Suscripción para imput de teclado:
 	private tecla: string;
@@ -71,7 +72,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	public renderMazmorra: RenderMazmorra;
 	public sala:any={};
 	
+	public estiloIsometrico: any = {};
 	public escalaIsometrico:number = 0.3;
+
 /* 	----------------------------------------------
 	SUSCRIPCIONES E IMPORTACION DE OBJETOS A SERVICIO
  	----------------------------------------------*/
@@ -114,6 +117,13 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Contenido: ");
       		    	console.log(data.contenido);
+      			break;
+
+      			case "renderizarCanvas":
+      				console.log("Peticion: "+data.peticion);
+      		    	console.log("Contenido: ");
+      		    	console.log(data.contenido);
+					this.renderizarCanvasIsometrico();
       			break;
 
       			case "estadoSala":
@@ -215,6 +225,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         		case "AbandonarPartida":
         			this.abandonarPartida();
         		break;
+
+        		case "renderizarCanvasIsometrico":
+        			this.renderizarCanvasIsometrico();
+        		break;
         	}
         });
 
@@ -311,6 +325,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		ELIMINACIÓN DE PANTALLA DE CARGA
  	----------------------------------------------*/
 	ngAfterViewInit() {
+
+		//Render de Canvas:
+		//this.renderizarCanvasIsometrico();
+		
 		setTimeout(()=>{    
       		this.appService.mostrarPantallacarga(false);
  		}, 2000);
@@ -353,14 +371,14 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
 		var esHeroe = false;
 		var esEnemigo = false;
-		for(var k=0; k<this.renderMazmorra.heroes.length; k++){
+		for(var k=0; k <this.renderMazmorra.heroes.length; k++){
 			if(this.renderMazmorra.heroes[k].turno){
 				esHeroe= true;
 				break;
 			}
 		}
 
-		for(var k=0; k<this.renderMazmorra.enemigos.length; k++){
+		for(var k=0; k <this.renderMazmorra.enemigos.length; k++){
 			if(this.renderMazmorra.enemigos[k].turno){
 				esEnemigo= true;
 				break;
@@ -463,14 +481,14 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
  		var esHeroe = false;
  		var esEnemigo = false;
- 		for(var k=0; k<this.renderMazmorra.heroes.length; k++){
+ 		for(var k=0; k <this.renderMazmorra.heroes.length; k++){
  			if(this.renderMazmorra.heroes[k].turno){
  				esHeroe= true;
   				break;
  			}
  		}
 
- 		for(var k=0; k<this.renderMazmorra.enemigos.length; k++){
+ 		for(var k=0; k <this.renderMazmorra.enemigos.length; k++){
  			if(this.renderMazmorra.enemigos[k].turno){
  				esEnemigo= true;
  				break;
@@ -549,7 +567,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		var clase= "0%";
 		var sumaAgro= 0;
 
-		for(var i=0; i< this.renderMazmorra.enemigos[indiceEnemigo].agro.length;i++){
+		for(var i=0; i < this.renderMazmorra.enemigos[indiceEnemigo].agro.length;i++){
 			sumaAgro += this.renderMazmorra.enemigos[indiceEnemigo].agro[i];
 		}
 
@@ -638,11 +656,47 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		if(comando=="elegirHechizo"){
 			this.mazmorraService.routerInterfaz('elegirHechizo')
 		}
+		if(comando=="elegirMovimiento"){
+			this.mazmorraService.routerInterfaz('elegirMovimiento')
+		}
 	}
 
 	//********************
 	// RENDER ISOMETRICO
 	//********************
+	
+	renderizarCanvasIsometrico(){
+
+		var posicionMax_x = 0;
+		var posicionMax_y = 0;
+
+		for(var i = 0; i < this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+			if(this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.x > posicionMax_x && !this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].oculto){
+				posicionMax_x = this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.x; 
+			}
+			if(this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.y > posicionMax_y && !this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].oculto){
+				posicionMax_y = this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.y; 
+			}
+		}
+
+		//console.log("Posicion Max X: "+ posicionMax_x);
+		//console.log("Posicion Max Y: "+ posicionMax_y);
+
+		this.estiloIsometrico = {
+
+			"width": ""+(posicionMax_x*1.8)+"px",
+			"height": ""+(posicionMax_y*1)+"px",
+			"margin-left": ""+(posicionMax_x/2)+"px",
+			"margin-top": ""+(posicionMax_y/2)+"px",
+			"margin-right": ""+(posicionMax_x/2)+"px",
+			"margin-bottom": ""+(posicionMax_y/2)+"px"
+		}
+
+		//Centrar el isometrico:
+		this.canvasIsometrico.nativeElement.scrollTop = posicionMax_y/2 
+		this.canvasIsometrico.nativeElement.scrollLeft = posicionMax_x/2 
+
+	}
 	
 	renderizarElementoIsometrico(elemento: any):any{
 
@@ -677,7 +731,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		//Aplicar filtrado de visualizacion:
 		style.display = "block";
 
-		for(var i =0; i<this.mazmorraService.mazmorra.salas.length; i++){
+		for(var i =0; i <this.mazmorraService.mazmorra.salas.length; i++){
 			if((!this.mazmorraService.mazmorra.salas[i].mostrarIsometrico) && (elemento.sala==this.mazmorraService.mazmorra.salas[i].sala_id)){
 				style.display= "none";
 			} 

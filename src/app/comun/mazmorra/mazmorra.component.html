@@ -243,7 +243,7 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [indexHeroe]="i"[Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.id_imagen"[Nivel]="heroe.nivel" [lider]="false" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
+		<heroeComponent *ngFor="let heroe of this.mazmorraService.renderMazmorra.heroes; let i = index" [tipo]="'jugador'" [indexHeroe]="i"[Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.id_imagen"[Nivel]="heroe.nivel" [lider]="false" [renderMazmorra]="this.mazmorraService.renderMazmorra" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
 
 	</div>
 
@@ -353,14 +353,16 @@
 	 <div id="contenedorMapaMazmorra">
 
 	  <!-- Contenedor Isometrico -->
-      <div class="contenedorIsometrico">
+      <div #canvasIsometrico class="contenedorIsometrico">
 
-		  <div *ngIf="this.mazmorraService.mostrarMazmorra" class="canvasIsometrico">
+		  <div  class="canvasIsometrico" [ngStyle]= "this.estiloIsometrico">
 
+			<div *ngIf="this.mazmorraService.mostrarMazmorra">
             <div *ngFor="let elementoIsometrico of this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="true" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
 				<img class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
 
 			</div>
+			  </div>
 		  </div>
       </div>
 

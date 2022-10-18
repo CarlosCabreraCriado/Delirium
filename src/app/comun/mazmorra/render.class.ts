@@ -45,7 +45,8 @@ export interface RenderMazmorra {
 				general: number
 			}
 			escudo: number
-			recurso: number
+			recurso: number,
+			energia: number,
 			recursoEspecial: any,
 			acciones: number,
 			cargaUlti: number
@@ -72,7 +73,14 @@ export interface RenderMazmorra {
 			}[],
 			objetivo: boolean,
 			objetivoAuxiliar: boolean,
-			animacion: number,
+			mostrarAnimacion: boolean,
+			animacion: {
+				id: number,
+				nombre: string,
+				duracion: any,
+				subanimaciones: any[],
+				sonidos: any[]
+			}
 			online: boolean,
 			id_imagen: number
 		}[]
@@ -85,6 +93,8 @@ export interface RenderMazmorra {
 		enemigos: {
 			nombre: string,
 			enemigo_id: number,
+			tipo_enemigo_id: number,
+			familia: string,
 			vida: number,
 			escudo: number,
 			acciones: number;
@@ -115,7 +125,14 @@ export interface RenderMazmorra {
 			hechizos: [],
 			objetivo: boolean,
 			objetivoAuxiliar: boolean,
-			animacion: number
+			mostrarAnimacion: boolean,
+			animacion: {
+				id: number,
+				nombre: string,
+				duracion: any,
+				subanimaciones: any[],
+				sonidos: any[]
+			}
 		}[]
 		render: {
 			barraAccion: {

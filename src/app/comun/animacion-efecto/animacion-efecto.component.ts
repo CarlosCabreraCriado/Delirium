@@ -78,7 +78,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
   inicioAnimacion(indexSubanimacion: number): void{
 
 	//Determinar duracion total de la animacion:
-	for(var i=0;i<this.animacion.subanimaciones.length; i++){
+	for(var i=0;i <this.animacion.subanimaciones.length; i++){
 		if(this.animacion.subanimaciones[i].duracion>this.tiempoEfecto){
 			this.tiempoEfecto = this.animacion.subanimaciones[i].duracion;
 		}
@@ -111,6 +111,9 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 
    ngOnChanges(changes: SimpleChanges) {
 
+	   console.log("CAMBIO ANIMACION")
+	   console.log(changes)
+
     if(changes.animacion){ 
 
       // Detectar cambio animacion:
@@ -129,6 +132,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 		if(!this.loop){
 			this.estadoAnimacion = "inicio";
 		}
+		
     }
 
 

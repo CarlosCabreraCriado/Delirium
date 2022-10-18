@@ -9,21 +9,6 @@
 				Interfaz HECHIZOS
 		 ************************************************* -->
 
-		 <!--
-	<div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
-		<div class="tituloInterfaz Texto1">Seleccione un hechizo:  </div>
-		<div class="contenedorHechizos">
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[0]+'% '+interfazService.imagenHechVertical[0]+'%','background-size': '1800%'}">1</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[1]+'% '+interfazService.imagenHechVertical[1]+'%','background-size': '1800%'}">2</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[2]+'% '+interfazService.imagenHechVertical[2]+'%','background-size': '1800%'}">3</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[3]+'% '+interfazService.imagenHechVertical[3]+'%','background-size': '1800%'}">4</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.selecionarHechizo(6)" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+interfazService.imagenHechHorizontal[4]+'% '+interfazService.imagenHechVertical[4]+'%','background-size': '1800%'}">5</div>
-		</div>
-		<div class="botonCancelar Texto2" (click)="interfazService.desactivarInterfaz()">Cancelar</div>
-	</div>
-
-		 -->
-
 <div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
 <div class= "contenedor">
 
@@ -42,11 +27,11 @@
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
 		<div class="contenedorHechizos">
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[0]+'.png) ','background-size': '100%'}">1</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[1]+'.png) ','background-size': '100%'}">2</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[2]+'.png) ','background-size': '100%'}">3</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[3]+'.png) ','background-size': '100%'}">4</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(6)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[4]+'.png) ','background-size': '100%'}">5</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">1</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}">2</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}">3</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}">4</div>
+			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}">5</div>
 		</div>
 		</div>
 
@@ -68,7 +53,13 @@
 	<div  id="contenedorInterfazObjetivo" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo' || interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
 		<div class="tituloInterfaz Texto1">Seleccionar objetivo:  </div>
 
-			<div class="hechizo hechizo1 Texto1" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.idImagenHechizo[0]+'.png) ','background-size': '100%'}"></div>
+		<div class="hechizo hechizo1 Texto1" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[interfazService.indexHechizoSeleccionado]+'.png) ','background-size': '100%'}"></div>
+
+		<div class="contenedorEnergia">
+			<img class="icono" src="./assets/Iconos/Icono-Energia-Stat.png"/>
+			<div class="valor Texto1">20</div>
+			<div class="frameAtributo"></div>
+		</div>
 
 		<div class="contenedorBotones">
 			<botonComponent mat-button (click)="interfazService.lanzarHechizo()" [texto]="'Lanzar'" [color]="'verde'" class="boton"></botonComponent>
@@ -77,6 +68,37 @@
 		<div class="frame"></div>
 	</div>
 
+	<!-- *************************************************
+				Interfaz Movimiento 
+		 ************************************************* -->
+
+	<div  id="contenedorInterfazMovimiento" *ngIf="interfazService.pantallaInterfaz=='movimiento'">
+		<div class="tituloInterfaz Texto2">Cantidad de movimiento: </div>
+
+        <div class="contenedorSeleccionValor">
+            <div class="botonCambiarValor Texto1">-</div>	
+            <img class="iconoMovimiento" src="./assets/Iconos/09.png"/>
+            <div class="botonCambiarValor Texto1">+</div>	
+        </div>
+
+		<div class="contenedorAtributo movimiento">
+			<img class="icono" src="./assets/Iconos/Icono-Movimiento.png"/>
+			<div class="valor Texto1">4</div>
+			<div class="frameAtributo"></div>
+		</div>
+
+		<div class="contenedorAtributo energia">
+			<img class="icono" src="./assets/Iconos/Icono-Energia-Stat.png"/>
+			<div class="valor Texto1">20</div>
+			<div class="frameAtributo"></div>
+		</div>
+
+		<div class="contenedorBotones">
+			<botonComponent mat-button (click)="interfazService.realizarMovimiento()" [texto]="'Moverse'" [color]="'verde'" class="boton"></botonComponent>
+			<botonComponent mat-button (click)="interfazService.cancelarMovimiento()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+	</div>
+		<div class="frame"></div>
+	</div>
 
 </div>
  

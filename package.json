@@ -38,6 +38,7 @@
     "@types/nedb": "^1.8.9",
     "@types/socket.io-client": "^1.4.32",
     "ang-jsoneditor": "^1.9.1",
+    "animate.css": "^4.1.1",
     "convert-excel-to-json": "^1.4.1",
     "core-js": "^2.6.9",
     "file-system": "^2.2.2",

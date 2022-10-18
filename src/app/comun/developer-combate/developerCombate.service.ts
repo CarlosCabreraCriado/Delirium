@@ -178,7 +178,7 @@ export class DeveloperCombateService implements OnInit{
 			break;
 
 			case "ArrowUp":
-				if (this.musicaMazmorra.volume<1) {
+				if (this.musicaMazmorra.volume <1) {
 					this.musicaMazmorra.volume= this.musicaMazmorra.volume+0.1;
 				}else{
 					this.musicaMazmorra.volume= 1;
@@ -3422,7 +3422,7 @@ export class DeveloperCombateService implements OnInit{
  				this.interfazService.setHeroesHech(this.heroeHech);
  				this.interfazService.setEnemigos(this.enemigos);
  				this.interfazService.setRender(this.renderMazmorra);
- 				this.interfazService.activarInterfaz([0,0,0,0,0]);
+ 				this.interfazService.activarInterfazHechizos([1,1,1,1,1],[1,1,1,1,1]);
  				console.log(pantalla)
  			break;
  		}

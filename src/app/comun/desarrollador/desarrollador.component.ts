@@ -27,6 +27,7 @@ export class DesarrolladorComponent implements OnInit{
 
   	public renderReticula= {} as RenderReticula;
 	private escalaIsometrico: number= 0.5;
+	private escalaMapaIsometrico: number= 3;
 
   	private desarrolladorSuscripcion: Subscription = null;
 
@@ -129,6 +130,7 @@ export class DesarrolladorComponent implements OnInit{
   	private id_Hechizos = new FormControl('0');
   	private nombre_Hechizos = new FormControl('???');
     private descripcion_Hechizos = new FormControl('????????');
+    private animacion_Hechizos = new FormControl('1');
     private distancia_Hechizos = new FormControl('1');
     private objetivo_Hechizos = new FormControl('EU');
     private tipo_dano_Hechizos = new FormControl('F');
@@ -146,6 +148,7 @@ export class DesarrolladorComponent implements OnInit{
     private descripcion_Buff = new FormControl('????????');
     private duracion_Buff = new FormControl('????????');
     private tipo_dano_Buff = new FormControl('F');
+    private animacion_Buff = new FormControl('1');
     private dano_Buff = new FormControl('0');
     private heal_Buff = new FormControl('0');
     private escudo_Buff = new FormControl('0');
@@ -188,6 +191,7 @@ export class DesarrolladorComponent implements OnInit{
   	@ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
   	@ViewChild('contenedorMensajes',{static: false}) private contenedorMensajes: ElementRef;
   	@ViewChild('canvasIsometrico',{static: false}) private canvasIsometrico: ElementRef;
+  	@ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
 
 	constructor(public appService: AppService, public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) { 
 
@@ -265,7 +269,7 @@ export class DesarrolladorComponent implements OnInit{
         	escudo_dir: this.escudo_Hechizos,
         	mod_amenaza: this.amenaza_Hechizos,
         	buff_id: 0, 
-        	animacion_id: 0, 
+        	animacion_id: this.animacion_Hechizos, 
         	funcion: this.funcion_Hechizos,
         	hech_encadenado_id: 0, 
         	descripcion: this.descripcion_Hechizos
@@ -285,7 +289,7 @@ export class DesarrolladorComponent implements OnInit{
         	stat_inc: this.stat_inc_Buff,
         	stat_inc_inicial: this.stat_inc_inicial_Buff,
         	stat_inc_t: this.stat_inc_T_Buff,
-        	animacion_id: 0, 
+        	animacion_id: this.animacion_Buff, 
         	funcion: this.funcion_Buff,
         	descripcion: this.descripcion_Buff
 	    });
@@ -421,6 +425,7 @@ export class DesarrolladorComponent implements OnInit{
 		this.desarrolladorService.inicializarGestor();
 		this.desarrolladorService.inicializarArchivos();
 
+
 		this.formGeneral.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.mazmorra["general"][0] = val;
 			console.log(val)
@@ -485,7 +490,13 @@ export class DesarrolladorComponent implements OnInit{
 	}
 
 	ngAfterViewChecked() {        
-        this.scrollToBottom();      
+
+        //this.scrollToBottom();      
+
+        //Centrado de mapa:
+		//this.canvasMapa.nativeElement.scrollTop = 300
+		//this.canvasMapa.nativeElement.scrollLeft = 500
+
     } 
 
 	/*
@@ -595,6 +606,42 @@ export class DesarrolladorComponent implements OnInit{
 		}
 		return;
 	}
+
+	zoomMapaIsometrico(zoom:number){
+		this.escalaMapaIsometrico += zoom;
+		this.escalaMapaIsometrico = parseFloat(this.escalaMapaIsometrico.toFixed(2))
+
+        //console.log(this.canvasMapa)
+		//this.canvasMapa.nativeElement.scrollTop = 8281
+		//this.canvasMapa.nativeElement.scrollLeft = 12400
+	}
+
+    posicionarMapaIsometrico(){
+        //console.log(this.canvasMapa)
+		this.canvasMapa.nativeElement.scrollTop = 8281
+		this.canvasMapa.nativeElement.scrollLeft = 12400
+    }
+
+    renderizarSelector(opcion:string){
+
+        if(opcion == 'add' && this.desarrolladorService.herramientaInMap == 'add'){
+            return "opcion seleccionado";
+        }
+
+        if(opcion == 'eliminar' && this.desarrolladorService.herramientaInMap == 'eliminar'){
+            return "opcion seleccionado";
+        }
+
+        if(opcion == 'base' && !this.desarrolladorService.opcionOverlay){
+            return "opcion seleccionado";
+        }
+
+        if(opcion == 'overlay' && this.desarrolladorService.opcionOverlay){
+            return "opcion seleccionado";
+        }
+
+        return "opcion";
+    }
 
 	asignarSala(){
 		console.log("Asignando Sala..."); 

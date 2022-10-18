@@ -36,20 +36,20 @@ export class HeroeComponent {
 
 		//Renderiza marco de turno:
 		if(this.renderMazmorra.heroes[this.indexHeroe].turno){
-			clases = clases + " Turno";
+			clases = clases + " animate__animated animate__infinite animate__pulse";
 		}
 
 		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
 		var esHeroe = false;
 		var esEnemigo = false;
-		for(var k=0; k<this.renderMazmorra.heroes.length; k++){
+		for(var k=0; k <this.renderMazmorra.heroes.length; k++){
 			if(this.renderMazmorra.heroes[k].turno){
 				esHeroe= true;
 				break;
 			}
 		}
 
-		for(var k=0; k<this.renderMazmorra.enemigos.length; k++){
+		for(var k=0; k <this.renderMazmorra.enemigos.length; k++){
 			if(this.renderMazmorra.enemigos[k].turno){
 				esEnemigo= true;
 				break;

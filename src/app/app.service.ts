@@ -158,7 +158,7 @@ export class AppService {
       }
 
      var flagCambio = true;
-     for(var i=0; i<this.bloqueo.length; i++){
+     for(var i=0; i <this.bloqueo.length; i++){
        if(this.bloqueo[i]){
          flagCambio = false;
        }
@@ -210,7 +210,7 @@ export class AppService {
         data= datosJuego.datosDesarrollador;
       }
 
-      for(var i=0; i<data.length; i++){
+      for(var i=0; i <data.length; i++){
         switch(data[i].nombreId){
           case "Perfil":
             this.perfil = data[i];
@@ -285,6 +285,11 @@ export class AppService {
       this.validacion= val;
       console.log(this.electronService.ipcRenderer.sendSync('setValidacion',this.validacion));
     }
+
+	renderizarCanvasIsometrico(){
+		this.observarAppService.next("renderizarCanvasIsometrico");
+		return;
+	}
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
 

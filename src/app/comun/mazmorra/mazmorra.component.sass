@@ -159,6 +159,7 @@
     left: 0% 
     width: 100%
     height: 3%
+    z-index: 6
 
 #panelControl
   position: absolute
@@ -188,6 +189,7 @@
     left: 2% 
     width: 25%
     height: 6%
+    z-index: 6
 
 
 #ContenedorPaneles
@@ -199,11 +201,12 @@
       top: 0
       left: 0
 
+
 #contenedorHeroes 
     position: absolute
     display: flex
     flex-direction: column
-    right: 0
+    right: 1%
     top: 0
     width: 25%
     height: 100%
@@ -231,7 +234,6 @@
     top: 10%
     width: 15%
     height: 70%
-    z-index: 6
 
     @include media("<=desktop")
         width: 22%
@@ -835,13 +837,6 @@
     animation-direction: alternate
     animation-duration: 1s 
 
-@keyframes aparecerBarraMensajes 
-  0% 
-    opacity: 0 
-  25% 
-    opacity: 1 
-  100% 
-    opacity: 1 
 
 .mostrar
   opacity: 1 !important
@@ -1064,12 +1059,6 @@ $highlightObjetivoColor: red
   background-color: gold
    
 
-@keyframes highlightTurno 
-  0% 
-    background: $highlightTurnoColor 
-  100% 
-    background: rgba(211, 211, 211, 0)  
-
 .ObjetivoEnemigo 
   border-color: red
   border-style: ridge
@@ -1138,7 +1127,6 @@ $highlightObjetivoColor: red
 
     .canvasIsometrico
         position: absolute
-        overflow: scroll
         width: 3496px 
         height: 2480px 
         mix-blend-mode: multiply
@@ -1154,17 +1142,6 @@ $highlightObjetivoColor: red
             &:hover
                 filter: sepia(100%) saturate(30)
 
-@keyframes highlightObjetivoEnemigo 
-  0% 
-    border-color: red 
-  100% 
-    border-color: rgba(255, 0, 0, 0.2)  
-
-@keyframes highlightObjetivoAliado 
-  0% 
-    border-color: green 
-  100% 
-    border-color: rgba(0, 255, 0, 0.2)  
     
 
 // .animacionNumero 
@@ -1206,9 +1183,33 @@ $highlightObjetivoColor: red
 
 
 
+// Animaciones
 
+@keyframes aparecerBarraMensajes 
+  0% 
+    opacity: 0 
+  25% 
+    opacity: 1 
+  100% 
+    opacity: 1 
 
+@keyframes highlightObjetivoEnemigo 
+  0% 
+    border-color: red 
+  100% 
+    border-color: rgba(255, 0, 0, 0.2)  
 
+@keyframes highlightObjetivoAliado 
+  0% 
+    border-color: green 
+  100% 
+    border-color: rgba(0, 255, 0, 0.2)  
+
+@keyframes highlightTurno 
+  0% 
+    background: $highlightTurnoColor 
+  100% 
+    background: rgba(211, 211, 211, 0)  
 
 
 

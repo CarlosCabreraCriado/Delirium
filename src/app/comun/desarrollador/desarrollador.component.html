@@ -61,30 +61,132 @@
      ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='inmap'" id="panelInmap">
 
-      <img class="mapaGeneral" src="assets/InMap/mapa.jpg">
+        <!-- Fondo Mapa -->
+        <div class="fondo" id="fondo">
+            <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
+        </div>
 
-      <div class="contenedorMarcadoresZonas">
-        <div class="zona zona1 pulsacion" (click)="desarrolladorService.seleccionarZona(1);"></div>
-        <div class="zona zona2 pulsacion" (click)="desarrolladorService.seleccionarZona(2);"></div>
-        <div class="zona zona3 pulsacion" (click)="desarrolladorService.seleccionarZona(3);"></div>
-        <div class="zona zona4 pulsacion" (click)="desarrolladorService.seleccionarZona(4);"></div>
-        <div class="zona zona5 pulsacion" (click)="desarrolladorService.seleccionarZona(5);"></div>
-        <div class="zona zona6 pulsacion" (click)="desarrolladorService.seleccionarZona(6);"></div>
-        <div class="zona zona7 pulsacion" (click)="desarrolladorService.seleccionarZona(7);"></div>
-        <div class="zona zona8 pulsacion" (click)="desarrolladorService.seleccionarZona(8);"></div>
-        <div class="zona zona9 pulsacion" (click)="desarrolladorService.seleccionarZona(9);"></div>
-        <div class="zona zona10 pulsacion" (click)="desarrolladorService.seleccionarZona(10);"></div>
-        <div class="zona zona11 pulsacion" (click)="desarrolladorService.seleccionarZona(11);"></div>
-        <div class="zona zona12 pulsacion" (click)="desarrolladorService.seleccionarZona(12);"></div>
-        <div class="zona zona13 pulsacion" (click)="desarrolladorService.seleccionarZona(13);"></div>
-        <div class="zona zona14 pulsacion" (click)="desarrolladorService.seleccionarZona(14);"></div>
-        <div class="zona zona15 pulsacion" (click)="desarrolladorService.seleccionarZona(15);"></div>
-        <div class="zona zona16 pulsacion" (click)="desarrolladorService.seleccionarZona(16);"></div>
-        <div class="zona zona17 pulsacion" (click)="desarrolladorService.seleccionarZona(17);"></div>
-        <div class="zona zona18 pulsacion" (click)="desarrolladorService.seleccionarZona(18);"></div>
-        <div class="zona zona19 pulsacion" (click)="desarrolladorService.seleccionarZona(19);"></div>
-        <div class="zona zona20 pulsacion" (click)="desarrolladorService.seleccionarZona(20);"></div>
-      </div>
+        <!-- Panel Izquiedo Isometrico -->
+        <div class="contenedorPanelLateral izquierda">
+
+            <div class="tituloSeccion">Modo:</div>
+            <div class="selector">
+                <div class="opcion">Normal</div>
+                <div class="opcion seleccionado">Editar</div>
+            </div>
+
+            <div class="tituloSeccion">Zoom:</div>
+            <div class="selector">
+                <div class="opcion ZoomIn" (click)="zoomMapaIsometrico(-0.1)">--</div>
+                <div class="opcion ZoomIn" (click)="zoomMapaIsometrico(-0.01)">-</div>
+                <div class="opcion ZoomIn">{{escalaMapaIsometrico}}</div>
+                <div class="opcion ZoomOut" (click)="zoomMapaIsometrico(0.01)">+</div>
+                <div class="opcion ZoomOut" (click)="zoomMapaIsometrico(0.1)">++</div>
+            </div>
+
+            <div class="tituloSeccion">Posición:</div>
+            <div class="selectorPosicion">
+                <div class="formPosicionX">X:</div>
+                <div class="formPosicionY">Y:</div>
+                <div class="botonIr" (click)="posicionarMapaIsometrico()">Posicionar</div>
+            </div>
+
+            <div class="tituloSeccion">Guardar:</div>
+            <div class="selector">
+                <div class="opcion" (click)="desarrolladorService.guardarInMap()">Guardar</div>
+                <div class="opcion">Cargar</div>
+            </div>
+
+        </div>
+
+        <!-- Panel Derecho Isometrico -->
+        <div class="contenedorPanelLateral derecha">
+
+            <div class="tituloSeccion">Herramienta:</div>
+            <div class="selector">
+                <div class="opcion" [ngClass]="renderizarSelector('add')" (click)="desarrolladorService.seleccionarHerramientaInMap('add')">Add</div>
+                <div class="opcion" [ngClass]="renderizarSelector('eliminar')" (click)="desarrolladorService.seleccionarHerramientaInMap('eliminar')">Eliminar</div>
+            </div>
+
+            <div class="tituloSeccion">Tile:</div>
+            <div class="selector">
+                <div class="tile" (click)="desarrolladorService.abrirSelectorImagen('tile')">
+                    <img class="iconoTile" src="./assets/Mapa/Tiles/{{desarrolladorService.tileSeleccionado}}.png">
+                </div>
+            </div>
+
+            <div class="selector">
+                <div class="opcion" [ngClass]="renderizarSelector('base')" (click)="desarrolladorService.seleccionarHerramientaInMap('base')">Base</div>
+                <div class="opcion" [ngClass]="renderizarSelector('overlay')" (click)="desarrolladorService.seleccionarHerramientaInMap('overlay')">Overlay</div>
+            </div>
+
+        </div> <!-- Fin Panel Derecho Isometrico -->
+    
+        <!-- Fondo Mapa -->
+        <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
+
+            <div class="fogwrapper">
+                <div id="foglayer_01" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div>
+                <div id="foglayer_02" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div>
+                <div id="foglayer_03" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div> 
+            </div> 
+
+            <!-- Mapa Global -->
+            <div *ngIf="desarrolladorService.estadoInmap=='global'" class="contenedorMapaGlobal">
+                <div class="contenedorScroll">
+                </div>
+
+                <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+
+                <div class="contenedorMarcadoresZonas">
+                    <div class="zona zona1 pulsacion" (click)="desarrolladorService.seleccionarZona('Asfaloth');"></div>
+                </div>
+            </div>
+
+
+
+            <!-- Mapa Isometrico -->
+            <div *ngIf="desarrolladorService.estadoInmap=='isometrico'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
+
+            <img class="mapaRegion" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+
+            <div class="wrapper" [style.transform]="'scale(0.3)'">
+
+               <div class="floor">
+
+                  <div class="players">
+                     <!-- player 1 -->
+                     <div class="player blue" data-name="joe">
+                        <div class="right"></div>
+                        <div class="front">
+                           <div class="top"></div>
+                        </div>
+                     </div>
+                     
+                  </div>
+                  <!-- Data Cords are for Future use -->
+                
+                     <div *ngFor="let fila of this.desarrolladorService.region.isometrico;let i = index" class="row">
+                         <div *ngFor="let tile of this.desarrolladorService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" (click)="desarrolladorService.clickTile(i,j)">
+                            <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
+                            <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
+                         </div> 
+                     </div>
+
+                  </div> 
+                </div>
+            </div>
+        </div>
+
     </div> <!-- Final INMAP -->
 
    
@@ -817,9 +919,9 @@
     <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
 
       <div class="contenedorTipoDatos">
-        <img class="icono" src="./assets/Iconos/06.PNG" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.setEstadoDatos('Hechizos')"/>
+        <img class="icono" src="./assets/Iconos/06.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.setEstadoDatos('Hechizos')"/>
         <img class="icono" src="./assets/Iconos/Icono-Diario.png" [ngClass]="renderIconoDatosSeleccionado('Buff')" (click)="desarrolladorService.setEstadoDatos('Buff')"/>
-        <img class="icono" src="./assets/Iconos/05.PNG" [ngClass]="renderIconoDatosSeleccionado('Animaciones')" (click)="desarrolladorService.setEstadoDatos('Animaciones')"/>
+        <img class="icono" src="./assets/Iconos/05.png" [ngClass]="renderIconoDatosSeleccionado('Animaciones')" (click)="desarrolladorService.setEstadoDatos('Animaciones')"/>
         <img class="icono" src="./assets/Iconos/07.png" [ngClass]="renderIconoDatosSeleccionado('Enemigos')" (click)="desarrolladorService.setEstadoDatos('Enemigos')"/>
         <img class="icono" src="./assets/Iconos/Icono-Personaje.png" [ngClass]="renderIconoDatosSeleccionado('Personaje')" (click)="desarrolladorService.setEstadoDatos('Personaje')"/>
         <img class="icono" src="./assets/Iconos/Icono-Equipo.png" [ngClass]="renderIconoDatosSeleccionado('Equipo')" (click)="desarrolladorService.setEstadoDatos('Equipo')"/>
@@ -903,24 +1005,29 @@
 					<input matInput placeholder="Descripción" formControlName="tipo_daño">
 				  </mat-form-field>
 
+				  <mat-form-field appearance="legacy" class="formObjetivo">
+					<mat-label>Animacion ID</mat-label>
+					<input matInput type="number" placeholder="1" formControlName="animacion_id">
+				  </mat-form-field>
+
 				  <mat-form-field appearance="legacy" class="formDañoDir">
 					<mat-label>Daño</mat-label>
-					<input matInput placeholder="Descripción" formControlName="daño_dir">
+					<input matInput type="number" placeholder="Descripción" formControlName="daño_dir">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formHealDir">
 					<mat-label>Heal</mat-label>
-					<input matInput placeholder="Descripción" formControlName="heal_dir">
+					<input matInput type="number" placeholder="Descripción" formControlName="heal_dir">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formEscudoDir">
 					<mat-label>Escudo</mat-label>
-					<input matInput placeholder="Descripción" formControlName="escudo_dir">
+					<input matInput type="number" placeholder="Descripción" formControlName="escudo_dir">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formAmenaza">
 					<mat-label>Mod. Amenaza</mat-label>
-					<input matInput placeholder="Descripción" formControlName="mod_amenaza">
+					<input matInput type="number" placeholder="Descripción" formControlName="mod_amenaza">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formEnergia">
@@ -992,23 +1099,28 @@
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formObjetivo">
+					<mat-label>Animacion ID</mat-label>
+					<input matInput type="number" placeholder="1" formControlName="animacion_id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formObjetivo">
 					<mat-label>Tipo Daño</mat-label>
 					<input matInput placeholder="Descripción" formControlName="tipo">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formAmenaza">
 					<mat-label>Daño T</mat-label>
-					<input matInput placeholder="Descripción" formControlName="daño_t">
+					<input matInput type="number" placeholder="Descripción" formControlName="daño_t">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formEnergia">
 					<mat-label>Heal T</mat-label>
-					<input matInput placeholder="Descripción" formControlName="heal_t">
+					<input matInput type="number" placeholder="Descripción" formControlName="heal_t">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formPoder">
 					<mat-label>Escudo T</mat-label>
-					<input matInput placeholder="Descripción" formControlName="escudo_t">
+					<input matInput type="number" placeholder="Descripción" formControlName="escudo_t">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formStatInc">
@@ -1017,7 +1129,7 @@
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formStatIncInicial">
-					<mat-label>Stat Inc Inial</mat-label>
+					<mat-label>Stat Inc Inicial</mat-label>
 					<input matInput placeholder="Descripción" formControlName="stat_inc_inicial">
 				  </mat-form-field>
 
@@ -1200,7 +1312,7 @@
 			<img (click)="desarrolladorService.mostrarSelectorImagen = false" class="botonCerrar" src="./assets/desarrollador/cerrar.png"/>
 		  <div class="contenedorImagenes">
 			  <div *ngFor="let imagenes of desarrolladorService.imagenes; let i= index" class="imagen">
-				  <img (click)="desarrolladorService.seleccionarImagen(i+1)" src="./assets/Habilidades/Spell/{{imagenes}}.png"/>
+                  <img (click)="desarrolladorService.seleccionarImagen(i+1)" src="./assets/{{desarrolladorService.pathImagenes}}/{{imagenes}}.png"/>
 			  </div>
 		  </div>
 	  </div>
