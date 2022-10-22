@@ -49,7 +49,7 @@
     "nedb": "^1.8.0",
     "ngx-electron": "^1.0.4",
     "ngx-json-viewer": "^2.4.0",
-    "ngx-socket-io": "~3.0.1",
+    "ngx-socket-io": "^3.4.0",
     "node-sass": "^4.13.1",
     "path": "^0.12.7",
     "rxjs": "~6.5.1",
