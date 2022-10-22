@@ -16,7 +16,7 @@
     "electron:darwin": "NODE_ENV=dev electron .",
     "dist": "electron-builder",
     "dist-mac": "electron-packager . --platform=darwin",
-    "electron-build": "ng build --prod && electron .",
+    "electron-build": "ng build --configuration production && electron .",
     "electron-test": "ng serve && electron .",
     "dev": "NODE_ENV=localDev electron.",
     "production": "NODE_ENV=production electron.",
@@ -24,16 +24,16 @@
     "deploy": "NODE_ENV=production electron-builder build --win --mac --publish always"
   },
   "dependencies": {
-    "@angular/animations": "~11.2.14",
+    "@angular/animations": "~12.2.16",
     "@angular/cdk": "~11.2.13",
-    "@angular/common": "~11.2.14",
-    "@angular/compiler": "~11.2.14",
-    "@angular/core": "~11.2.14",
-    "@angular/forms": "~11.2.14",
+    "@angular/common": "~12.2.16",
+    "@angular/compiler": "~12.2.16",
+    "@angular/core": "~12.2.16",
+    "@angular/forms": "~12.2.16",
     "@angular/material": "^11.2.13",
-    "@angular/platform-browser": "~11.2.14",
-    "@angular/platform-browser-dynamic": "~11.2.14",
-    "@angular/router": "~11.2.14",
+    "@angular/platform-browser": "~12.2.16",
+    "@angular/platform-browser-dynamic": "~12.2.16",
+    "@angular/router": "~12.2.16",
     "@types/electron": "^1.6.10",
     "@types/nedb": "^1.8.9",
     "@types/socket.io-client": "^1.4.32",
@@ -55,17 +55,17 @@
     "rxjs": "~6.5.1",
     "socket.io-client": "^2.3.0",
     "xlsx": "^0.17.0",
-    "zone.js": "~0.10.3"
+    "zone.js": "~0.11.4"
   },
   "private": true,
   "devDependencies": {
-    "@angular-devkit/architect": "~0.1102.19",
-    "@angular-devkit/build-angular": "~0.1102.19",
-    "@angular-devkit/core": "~11.2.19",
-    "@angular-devkit/schematics": "~11.2.19",
-    "@angular/cli": "^11.2.19",
-    "@angular/compiler-cli": "~11.2.14",
-    "@angular/language-service": "~11.2.14",
+    "@angular-devkit/architect": "~0.1202.18",
+    "@angular-devkit/build-angular": "~12.2.18",
+    "@angular-devkit/core": "~12.2.18",
+    "@angular-devkit/schematics": "~12.2.18",
+    "@angular/cli": "^12.2.18",
+    "@angular/compiler-cli": "~12.2.16",
+    "@angular/language-service": "~12.2.16",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^8.10.54",
@@ -84,7 +84,7 @@
     "run-script-os": "^1.1.6",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.8"
+    "typescript": "~4.3.5"
   },
   "build": {
     "appId": "Delirium",
@@ -106,5 +106,7 @@
     "node_modules"
   ],
   "postinstall": "electron-builder install-app-deps",
-  "resolutions": {"webpack": "^5.0.0"}
+  "resolutions": {
+    "webpack": "^5.0.0"
+  }
 }
