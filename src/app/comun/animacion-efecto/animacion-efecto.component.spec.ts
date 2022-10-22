@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AnimacionEfectoComponent } from './animacion-efecto.component';
 
@@ -6,7 +6,7 @@ describe('AnimacionEfectoComponent', () => {
   let component: AnimacionEfectoComponent;
   let fixture: ComponentFixture<AnimacionEfectoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AnimacionEfectoComponent ]
     })

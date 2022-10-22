@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MarcoClaseComponent } from './marco-clase.component';
 
@@ -6,7 +6,7 @@ describe('MarcoClaseComponent', () => {
   let component: MarcoClaseComponent;
   let fixture: ComponentFixture<MarcoClaseComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MarcoClaseComponent ]
     })
