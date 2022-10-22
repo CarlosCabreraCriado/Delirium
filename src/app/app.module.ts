@@ -46,6 +46,7 @@ import { SocialComponent } from './comun/social/social.component';
 import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { BotonComponent } from './comun/boton/boton.component';
 import { InMapComponent } from './comun/inmap/inmap.component';
+import { MapaGeneralComponent } from './comun/mapa-general/mapaGeneral.component';
 import { CreditoComponent } from './comun/credito/credito.component';
 import { HeroeComponent } from './comun/heroe/heroe.component';
 import { BarraComponent } from './comun/barra/barra.component';
@@ -95,6 +96,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
 	CrearHeroeComponent,
 	BotonComponent,
 	InMapComponent,
+	MapaGeneralComponent,
 	CreditoComponent,
 	HeroeComponent,
 	BarraComponent,

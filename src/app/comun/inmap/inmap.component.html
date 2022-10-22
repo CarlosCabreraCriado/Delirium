@@ -22,25 +22,18 @@
 
 <div id="contenedorMainWindow">
 
-	<!--   ******************* -->
-	<!--          MAPA         -->
-	<!--   ******************* -->
-
-	<div id="ContenedorMapa">
-		<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
-	</div>
-
-	<!--   ******************* -->
-	<!--      Texto Delirium   -->
-	<!--   ******************* -->
-
-	<img id="textoDelirium" src="../../../assets/General/Texto-Delirium.png"/>
 
 	<!--   ******************* -->
 	<!--        Credito      -->
 	<!--   ******************* -->
 
 	<creditoComponent id="creditoMapa" [gemas]= "100" [monedas]= "200"></creditoComponent>
+
+	<!--   ******************* -->
+	<!--      Tiempo    -->
+	<!--   ******************* -->
+
+	<img src="../../../assets/InMap/Panel Tiempo.png" id="tiempo">
 
 	<!--   ******************* -->
 	<!--      Configuracion    -->
@@ -77,6 +70,14 @@
 
 	</div>
 
+	<!--   ******************* -->
+	<!--          MAPA         -->
+	<!--   ******************* -->
+
+	<div id="ContenedorMapa">
+        <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
+        <mapaGeneralComponent id="mapaGeneralComponent"></mapaGeneralComponent>
+	</div>
 
 </div> <!-- Fin Contenedor Main Window -->
 

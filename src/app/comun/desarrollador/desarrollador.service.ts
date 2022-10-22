@@ -94,7 +94,7 @@ export class DesarrolladorService implements OnInit{
     private regionSeleccionada: string = "";
     private tileSeleccionado: number = 1;
     public herramientaInMap: string = "add";
-    private opcionOverlay: boolean = false;
+    public opcionOverlay: boolean = false;
 
    //Variables de parametros:
 	public salaSeleccionadaId = 0;

@@ -1,0 +1,67 @@
+
+<!--   *********************************** -->
+<!--         Componente Mapa General       -->
+<!--   *********************************** -->
+
+        <!-- Fondo Mapa -->
+        <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
+
+            <div class="fogwrapper">
+                <div id="foglayer_01" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div>
+                <div id="foglayer_02" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div>
+                <div id="foglayer_03" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div> 
+            </div> 
+
+            <!-- Mapa Global -->
+            <div *ngIf="mapaGeneralService.estadoInmap=='global'" class="contenedorMapaGlobal">
+                <div class="contenedorScroll">
+                </div>
+
+                <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+
+                <div class="contenedorMarcadoresZonas">
+                    <div class="zona zona1 pulsacion" (click)="mapaGeneralService.seleccionarZona('Asfaloth');"></div>
+                </div>
+            </div>
+
+            <!-- Mapa Isometrico -->
+            <div *ngIf="mapaGeneralService.estadoInmap=='isometrico'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
+
+            <img class="mapaRegion" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+
+            <div class="wrapper" [style.transform]="'scale(0.3)'">
+
+               <div class="floor">
+
+                  <div class="players">
+                     <!-- player 1 -->
+                     <div class="player blue" data-name="joe">
+                        <div class="right"></div>
+                        <div class="front">
+                           <div class="top"></div>
+                        </div>
+                     </div>
+                     
+                  </div>
+                  <!-- Data Cords are for Future use -->
+                
+                     <div *ngFor="let fila of this.mapaGeneralService.region.isometrico;let i = index" class="row">
+                         <div *ngFor="let tile of this.mapaGeneralService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" (click)="mapaGeneralService.clickTile(i,j)">
+                            <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
+                            <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
+                         </div> 
+                     </div>
+
+                  </div> 
+                </div>
+            </div>
+        </div>
