@@ -73,7 +73,7 @@
     "codelyzer": "^5.0.0",
     "electron": "^10.4.7",
     "electron-builder": "^22.8.1",
-    "electron-packager": "^12.2.0",
+    "electron-packager": "^17.1.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
