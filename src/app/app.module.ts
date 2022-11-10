@@ -16,7 +16,7 @@ import { MatDialogModule} from '@angular/material/dialog';
 //Extras
 //import { NgxElectronModule } from 'ngx-electron';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
-//import { PinchZoomModule } from './comun/ngx-pinch-zoom/public-api';
+import { PinchZoomModule } from './comun/ngx-pinch-zoom/public-api';
 
 //Declaración de componentes: 
 import { IndexComponent } from './comun/index/index.component';
@@ -128,7 +128,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
         FormsModule,
         ReactiveFormsModule,
         MatDialogModule
-        //PinchZoomModule
+        PinchZoomModule
     ],
     providers: [ElectronService],
     bootstrap: [AppComponent]
