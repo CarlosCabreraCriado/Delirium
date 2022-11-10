@@ -30,9 +30,10 @@ export class AppComponent implements OnInit{
   		this.appService.teclaPulsada(event.key);
 	}
 
-  ngOnInit(){
+  async ngOnInit(){
 
-	  this.validacion = this.appService.getValidacion()
+	  this.validacion = await this.appService.getValidacion()
+
 	  //Check reconeccion Socket:
 	  if(this.validacion!={} && this.validacion!= undefined){
 		this.socketService.enviarSocket('validacion', this.validacion);

@@ -2,9 +2,6 @@
 //Módulo principal de la aplicación:
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxElectronModule } from 'ngx-electron';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +12,11 @@ import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule} from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatDialogModule} from '@angular/material/dialog';    
+
+//Extras
+import { NgxElectronModule } from 'ngx-electron';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { PinchZoomModule } from './comun/ngx-pinch-zoom/public-api';
 
 //Declaración de componentes: 
 import { IndexComponent } from './comun/index/index.component';
@@ -60,6 +62,8 @@ import { PanelDiarioComponent } from './comun/panel-diario/panel-diario.componen
 import { PanelTiendaComponent } from './comun/panel-tienda/panel-tienda.component';
 import { ExperienciaComponent } from './comun/experiencia/experiencia.component';
 import { PanelControlComponent } from './comun/panel-control/panel-control.component';
+
+import { ElectronService } from './comun/electronService/public_api';
 
 const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
 //const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {} };
@@ -123,9 +127,10 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
         MatInputModule,
         FormsModule,
         ReactiveFormsModule,
-        MatDialogModule
+        MatDialogModule,
+        PinchZoomModule
     ],
-    providers: [],
+    providers: [ElectronService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

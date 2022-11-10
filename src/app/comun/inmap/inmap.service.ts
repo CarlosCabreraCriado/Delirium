@@ -39,8 +39,11 @@ export class InMapService {
   constructor(private appService: AppService,private socketService:SocketService) { 
 
 		//Suscripcion Socket:
-      	this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
-      		if(data.emisor== this.appService.getValidacion().nombre && this.appService.getValidacion().tipo==data.tipoEmisor){console.log("EVITANDO "+data.peticion);return;}
+      	this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
+
+            var validacion = await this.appService.getValidacion();
+
+      		if(data.emisor== validacion.nombre && data.tipoEmisor == validacion.tipo){console.log("EVITANDO "+data.peticion);return;}
       		switch(data.peticion){
       			case "log":
       				console.log("Peticion: "+data.peticion);
@@ -83,11 +86,11 @@ export class InMapService {
 
 	}
 	
-	cargarPerfil(){
+	async cargarPerfil(){
 		
 		//Comprueba el Logueo:
 		console.log("Obteniendo validacion y perfil...");
-		this.validacion = this.appService.getValidacion();
+		this.validacion = await this.appService.getValidacion();
 		console.log(this.validacion);
 		if(!this.validacion){
 			this.appService.setControl("index");
@@ -96,21 +99,22 @@ export class InMapService {
 
 		//Carga el perfil:
 		this.perfil=this.appService.getPerfil();
+
 	}
 
 	getIDCuenta(){
 		return this.validacion._id;		
 	}
 
-	importarDatosGenerales(){
+	async importarDatosGenerales(){
 		console.log("Importando Datos al servicio Inmap... ")
-		this.heroeStat=this.appService.getHeroesStats();
-		this.heroeHech=this.appService.getHechizos();
-		this.enemigos=this.appService.getEnemigos();
-		this.buff=this.appService.getBuff();
-		this.objetos=this.appService.getObjetos();
-		this.animaciones=this.appService.getAnimaciones();
-		this.parametros=this.appService.getParametros();
+		this.heroeStat= await this.appService.getHeroesStats();
+		this.heroeHech= await this.appService.getHechizos();
+		this.enemigos= await this.appService.getEnemigos();
+		this.buff= await this.appService.getBuff();
+		this.objetos= await this.appService.getObjetos();
+		this.animaciones= await this.appService.getAnimaciones();
+		this.parametros= await this.appService.getParametros();
 	}
 
 	importarHeroeSeleccionado(){

@@ -3,7 +3,7 @@ import { Injectable, EventEmitter, Output} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
-import { ElectronService } from 'ngx-electron';
+import { ElectronService } from './comun/electronService/public_api';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
 import { ConfiguracionComponent } from './comun/configuracion/configuracion.component';
 import { SocialComponent } from './comun/social/social.component';
@@ -16,7 +16,7 @@ import { MatDialog} from '@angular/material/dialog';
 
 export class AppService {
 
-  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public electronService: ElectronService,  private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog) { 
+  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -114,17 +114,22 @@ export class AppService {
     // Observable string sources
     private observarTeclaPulsada = new Subject<string>();
 
+
     // Observable string streams
     observarTeclaPulsada$ = this.observarTeclaPulsada.asObservable();
 
     setToken(token){
-      this.electronService.ipcRenderer.sendSync('setToken',token);
+
+	  console.log("Obteniendo Token: ");
+	  console.log(token);
+
+	  window.electronAPI.setToken(token)
       this.token=token;
       return;
     }
 
-    getToken() {
-      this.token=this.electronService.ipcRenderer.sendSync('getToken');
+    async getToken() {
+      this.token = await window.electronAPI.getToken();
       return this.token;
     }
 
@@ -200,15 +205,19 @@ export class AppService {
 
     setInicio(datosJuego: any){
 
-		if(datosJuego == null){return;}
+	  if(datosJuego == null){return;}
 
       var data= [];
 
       if(this.activarDatosOficiales){
         data= datosJuego.datosOficial;
+        //data= datosJuego;
       }else{
         data= datosJuego.datosDesarrollador;
+        //data= datosJuego;
       }
+
+      console.log(data);
 
       for(var i=0; i <data.length; i++){
         switch(data[i].nombreId){
@@ -249,7 +258,8 @@ export class AppService {
       console.log(this.validacion);
       console.log("Datos de Juego: ");
       console.log(data);
-      this.electronService.ipcRenderer.sendSync('setDatos',datosJuego);
+
+      window.electronAPI.setDatos(data)
 
       return;
     }
@@ -281,9 +291,11 @@ export class AppService {
       this.progresoCarga.emit(val);
     }
 
-    setValidacion(val:any):void{
+    async setValidacion(val:any){
       this.validacion= val;
-      console.log(this.electronService.ipcRenderer.sendSync('setValidacion',this.validacion));
+      console.log("SET VALIDACION")
+      console.log(this.validacion);
+      console.log(await window.electronAPI.setValidacion(this.validacion));
     }
 
 	renderizarCanvasIsometrico(){
@@ -380,7 +392,7 @@ export class AppService {
 
     mostrarDeveloperTool(val:string):void{
       this.mostrarDialogo("Informativo",{contenido: "Abriendo Developer Tool"})
-      this.electronService.ipcRenderer.sendSync('desarrollador');
+      window.electronAPI.openDesarrollador();
     }
 
     mostrarAjustes(val:string):void{
@@ -399,11 +411,14 @@ export class AppService {
        return this.sala;
     }
 
-    getValidacion(){
-       console.log("Validando: ");
-       console.log(this.electronService.ipcRenderer);
+    async getValidacion(){
 
-       this.validacion = this.electronService.ipcRenderer.sendSync('getValidacion');
+       console.log("Obteniendo Validando: ");
+       //console.log(this.electronService.ipcRenderer);
+
+       this.validacion = await window.electronAPI.getValidacion() 
+
+       console.log(this.validacion);
 
        if(this.perfil==undefined){
          console.log("Obteniendo Datos: ");
@@ -411,116 +426,64 @@ export class AppService {
        }
 
        if(this.validacion.nombre===undefined){}
+
        console.log(this.validacion);
        return this.validacion;
     }
 
-    getDatos(clave):void{
+    async getDatos(clave){
       console.log("Accediendo a datos Locales:")
-      this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
+      var datos = await window.electronAPI.getDatos()
+      //this.setInicio(datos);
     }
 
-    getHeroesStats(){
-      if(this.heroeStat===undefined){
-        if(this.activarDatosOficiales){
-          this.heroeStat= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Heroes_Stats");
-        }else{
-          this.heroeStat= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Heroes_Stats");
-        }
-      }
+    async getHeroesStats(){
+      this.heroeStat = await window.electronAPI.getDatosHeroeStat();
       return this.heroeStat;
     }
 
-    getHechizos(){
-      if(this.hechizos===undefined){
-        if(this.activarDatosOficiales){
-          this.hechizos= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Hechizos");
-        }else{
-          this.hechizos= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Hechizos");
-        }
-      }
+    async getHechizos(){
+      this.hechizos = await window.electronAPI.getDatosHeroeHech();
       return this.hechizos;
     }
 
-    getBuff(){
-      if(this.buff===undefined){
-         if(this.activarDatosOficiales){
-          this.buff= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Buff");
-        }else{
-          this.buff= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Buff");
-        }
-       }
+    async getBuff(){
+      this.buff = await window.electronAPI.getDatosBuff();
        return this.buff;
     }
 
-    getEnemigos(){
-      if(this.enemigos===undefined){
-        if(this.activarDatosOficiales){
-          this.enemigos= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Enemigos");
-        }else{
-          this.enemigos= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Enemigos");
-        }
-      }
+    async getEnemigos(){
+      this.enemigos = await window.electronAPI.getDatosEnemigos();
       return this.enemigos;
     }
 
-    getAnimaciones(){
-      if(this.animaciones===undefined){
-        if(this.activarDatosOficiales){
-          this.animaciones= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Animaciones");
-        }else{
-          this.animaciones= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Animaciones");
-        }
-      }
+    async getAnimaciones(){
+      this.animaciones = await window.electronAPI.getDatosAnimaciones();
       return this.animaciones;
     }
 
-    getParametros(){
-      if(this.parametros===undefined){
-        if(this.activarDatosOficiales){
-          this.parametros= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Parametros");
-        }else{
-          this.parametros= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Parametros");
-        }
-      }
+    async getParametros(){
+      this.parametros = await window.electronAPI.getDatosParametros();
       return this.parametros;
     }
 
-    getObjetos(){
-      if(this.objetos==undefined){
-        if(this.activarDatosOficiales){
-          this.objetos= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Objetos");
-        }else{
-          this.objetos= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Objetos");
-        }
-      }
+    async getObjetos(){
+      this.objetos = await window.electronAPI.getDatosObjetos();
       return this.objetos;
     }
 
-    getPerfil(){
-       if(this.perfil===undefined){
-          if(this.activarDatosOficiales){
-            this.perfil= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Perfil");
-          }else{
-            this.perfil= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Perfil");
-          }
-        }
-        return this.perfil;
+    async getPerfil(){
+      this.perfil = await window.electronAPI.getDatosPerfil(); // REVISAR
+      return this.perfil;
     }
 
-    getPersonajes(){
-       if(this.personajes===undefined){
-          if(this.activarDatosOficiales){
-            this.personajes= this.electronService.ipcRenderer.sendSync('getDatos').datosOficial.find(i=> i.nombreId=="Personajes");
-          }else{
-            this.personajes= this.electronService.ipcRenderer.sendSync('getDatos').datosDesarrollador.find(i=> i.nombreId=="Personajes");
-          }
-        }
-        return this.personajes;
+    async getPersonajes(){
+      this.personajes = await window.electronAPI.getDatosPersonajes();
+      return this.personajes;
     }
 
     getDispositivo(){
-      return this.dispositivo;
+        return this.dispositivo;
     }
 
     setDispositivo(dispositivo){
@@ -529,12 +492,12 @@ export class AppService {
     }
 
     openDesarrollador(){
-      this.electronService.ipcRenderer.sendSync('desarrollador');
+        window.electronAPI.openDesarrollador();
       return;
     }
 
     setModelosDatos(){
-      this.electronService.ipcRenderer.sendSync("setModelosDatos",{"oficial":false});
+      window.electronAPI.setModelosDatos({"oficial":false});
     }
 
     abandonarPartida(){
@@ -542,10 +505,11 @@ export class AppService {
       return;
     }
 
-    subirArchivo(objetoArchivo):boolean{
+    async subirArchivo(objetoArchivo){
       var documentos = [];
       documentos.push(objetoArchivo);
-      return this.electronService.ipcRenderer.sendSync("actualizarEstadisticas", documentos);
+      var confirmacion = await window.electronAPI.actualizarEstadisticas(documentos) 
+      return confirmacion;
     }
 
     toggleDatosOficiales(){
@@ -563,10 +527,10 @@ export class AppService {
       //this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
     }
 
-    toggleDatosOficialesDesarrollador(){
+    async toggleDatosOficialesDesarrollador(){
       this.activarDatosOficiales= !this.activarDatosOficiales;
-	  this.electronService.ipcRenderer.sendSync("setModelosDatos",{"oficial":this.activarDatosOficiales})
-      this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
+	  await window.electronAPI.setModelosDatos({"oficial":this.activarDatosOficiales})
+      this.setInicio(await window.electronAPI.getDatos());
     }
 
 

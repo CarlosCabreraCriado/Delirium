@@ -1,8 +1,7 @@
 
 
 import { Component, OnInit } from '@angular/core';
-import {AppService} from '../../app.service'
-import { DeveloperCombateService } from '../developer-combate/developerCombate.service';
+import { AppService} from '../../app.service'
 
 @Component({
   selector: 'app-carga',

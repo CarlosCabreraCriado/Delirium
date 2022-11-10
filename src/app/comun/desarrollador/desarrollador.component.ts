@@ -47,6 +47,10 @@ export class DesarrolladorComponent implements OnInit{
   	private formAnimaciones: FormGroup;
   	private formSubanimacion: FormGroup;
   	private formSonidos: FormGroup;
+  	private formInMapGeneral: FormGroup;
+  	private formInMapTerreno: FormGroup;
+  	private formInMapEventos: FormGroup;
+  	private formInMapMisiones: FormGroup;
 
   	//Campos General:
   	private nombre_General = new FormControl("Primera mazmorra");
@@ -111,7 +115,7 @@ export class DesarrolladorComponent implements OnInit{
 	private sonido_id = new FormControl('0');
 	private evento_next_id = new FormControl('0');
 	
-	//Campor Dialogos:
+	//Campos Dialogos:
 	private dialogo_id = new FormControl('0');
 	private tipo_dialogo = new FormControl('0');
 	private imagen_id = new FormControl('0');
@@ -188,6 +192,28 @@ export class DesarrolladorComponent implements OnInit{
   	private asignar_id_sala = new FormControl('0');
   	private asignar_evento = new FormControl('0');
 
+	//Campos Campos InMap General:
+  	private inMapNombre = new FormControl(0);
+  	private inMapDescripcion = new FormControl('???');
+  	private inMapIndicador = new FormControl('null');
+
+	//Campos Campos InMap Terreno:
+  	private inMapTipoTerreno = new FormControl(0);
+  	private inMapAtravesable = new FormControl('???');
+  	private inMapInspeccionable = new FormControl('0');
+  	private inMapVisitado = new FormControl('0');
+  	private inMapUbicacionEspecial = new FormControl('0');
+
+	//Campos Campos InMap Eventos:
+  	private inMapProbabilidadRandom = new FormControl(0);
+  	private inMapCategoriaRandom = new FormControl('???');
+  	private inMapCheckTrigger = new FormControl('0');
+  	private inMapLootProb = new FormControl('0');
+  	private inMapLootId = new FormControl('0');
+
+	//Campos Campos InMap Misiones:
+  	private inMapCheckMisiones = new FormControl(0);
+
   	@ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
   	@ViewChild('contenedorMensajes',{static: false}) private contenedorMensajes: ElementRef;
   	@ViewChild('canvasIsometrico',{static: false}) private canvasIsometrico: ElementRef;
@@ -202,7 +228,7 @@ export class DesarrolladorComponent implements OnInit{
     	//this.options.mode = 'code'; //set only one mode
 	}
 
-	ngOnInit(){
+	async ngOnInit(){
 		
 		this.desarrolladorService.log("-------------------------------","green");
 		this.desarrolladorService.log("  Iniciando gestor de datos... ","green");
@@ -363,6 +389,37 @@ export class DesarrolladorComponent implements OnInit{
 	   		asignar_evento: this.asignar_evento
 	    });
 
+	//Campos Campos InMap General:
+	    this.formInMapGeneral = this.formBuilder.group({
+	   		asignar_evento: this.asignar_evento,
+  	        inMapNombre: this.inMapNombre, 
+  	        inMapDescripcion: this.inMapDescripcion,
+  	        inMapIndicador: this.inMapDescripcion
+        });
+
+	//Campos Campos InMap Terreno:
+	    this.formInMapTerreno = this.formBuilder.group({
+  	        inMapTipoTerreno: this.inMapTipoTerreno, 
+  	        inMapAtravesable: this.inMapAtravesable,
+            inMapInspeccionable: this.inMapInspeccionable,
+  	        inMapVisitado: this.inMapVisitado, 
+  	        inMapUbicacionEspecial: this.inMapUbicacionEspecial 
+	    });
+
+	//Campos Campos InMap Eventos:
+	    this.formInMapEventos = this.formBuilder.group({
+  	        inMapProbabilidadRandom: this.inMapProbabilidadRandom,
+  	        inMapCategoriaRandom: this.inMapCategoriaRandom,
+  	        inMapCheckTrigger: this.inMapCheckTrigger, 
+  	        inMapLootProb: this.inMapLootProb,
+  	        inMapLootId: this.inMapLootId
+	    });
+
+	//Campos Campos InMap Misiones:
+	    this.formInMapMisiones = this.formBuilder.group({
+  	        inMapCheckMisiones: this.inMapCheckMisiones 
+	    });
+
 		this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe(
 	        (val) => {
 	          switch (val) {
@@ -422,7 +479,7 @@ export class DesarrolladorComponent implements OnInit{
 	        }
       	);
 
-		this.desarrolladorService.inicializarGestor();
+		await this.desarrolladorService.inicializarGestor();
 		this.desarrolladorService.inicializarArchivos();
 
 
@@ -476,6 +533,30 @@ export class DesarrolladorComponent implements OnInit{
 			if(this.desarrolladorService.animacionSeleccionadoIndex+1 && this.desarrolladorService.subanimacionSeleccionadoIndex+1){
 				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]= val;
 			}
+			console.log(val)
+		});
+
+		//Suscripcion de cambios formulario InMapGeneral:
+		this.formInMapGeneral.valueChanges.subscribe((val) =>{
+			this.desarrolladorService.setInMapGeneral(val);
+			console.log(val)
+		});
+
+		//Suscripcion de cambios formulario InMapTerreno:
+		this.formInMapTerreno.valueChanges.subscribe((val) =>{
+			this.desarrolladorService.setInMapTerreno(val);
+			console.log(val)
+		});
+
+		//Suscripcion de cambios formulario InMapEventos:
+		this.formInMapEventos.valueChanges.subscribe((val) =>{
+			this.desarrolladorService.setInMapEventos(val);
+			console.log(val)
+		});
+
+		//Suscripcion de cambios formulario InMapMisiones:
+		this.formInMapMisiones.valueChanges.subscribe((val) =>{
+			this.desarrolladorService.setInMapMisiones(val);
 			console.log(val)
 		});
 
@@ -624,19 +705,19 @@ export class DesarrolladorComponent implements OnInit{
 
     renderizarSelector(opcion:string){
 
-        if(opcion == 'add' && this.desarrolladorService.herramientaInMap == 'add'){
+        if(opcion == 'add' && this.desarrolladorService.opcionesDesarrolloInMap.herramientaInMap == 'add'){
             return "opcion seleccionado";
         }
 
-        if(opcion == 'eliminar' && this.desarrolladorService.herramientaInMap == 'eliminar'){
+        if(opcion == 'eliminar' && this.desarrolladorService.opcionesDesarrolloInMap.herramientaInMap == 'eliminar'){
             return "opcion seleccionado";
         }
 
-        if(opcion == 'base' && !this.desarrolladorService.opcionOverlay){
+        if(opcion == 'base' && !this.desarrolladorService.opcionesDesarrolloInMap.opcionOverlay){
             return "opcion seleccionado";
         }
 
-        if(opcion == 'overlay' && this.desarrolladorService.opcionOverlay){
+        if(opcion == 'overlay' && this.desarrolladorService.opcionesDesarrolloInMap.opcionOverlay){
             return "opcion seleccionado";
         }
 
@@ -698,7 +779,7 @@ export class DesarrolladorComponent implements OnInit{
 			} 
 		}
 
-		for(var i =0; i<this.desarrolladorService.mazmorra.salas.length; i++){
+		for(var i =0; i <this.desarrolladorService.mazmorra.salas.length; i++){
 			if((!this.desarrolladorService.mazmorra.salas[i].mostrarIsometrico) && (elemento.sala==this.desarrolladorService.mazmorra.salas[i].sala_id)){
 				style.display= "none";
 			} 
@@ -718,6 +799,10 @@ export class DesarrolladorComponent implements OnInit{
 
 		return style;
 	}
+
+    copiarTile(tileCopia:any){
+        this.desarrolladorService.seleccionarTile(tileCopia);
+    }
 
 }
 

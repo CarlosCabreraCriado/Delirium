@@ -28,16 +28,16 @@ export class PanelPersonaje implements OnInit {
 
 	constructor(private appService: AppService) {}
 
-	ngOnInit(){
+	async ngOnInit(){
 
 		console.log("Importando Datos de AppService... ")
-		this.heroeStat=this.appService.getHeroesStats();
-		this.heroeHech=this.appService.getHechizos();
-		this.buff=this.appService.getBuff();
-		this.objetos=this.appService.getObjetos();
-		this.perfil=this.appService.getPerfil();
-		this.personajes = this.appService.getPersonajes();
-		this.heroeSeleccionado= this.appService.getHeroeSeleccionado();
+		this.heroeStat= await this.appService.getHeroesStats();
+		this.heroeHech= await this.appService.getHechizos();
+		this.buff= await this.appService.getBuff();
+		this.objetos= await this.appService.getObjetos();
+		this.perfil= await this.appService.getPerfil();
+		this.personajes = await this.appService.getPersonajes();
+		this.heroeSeleccionado= await this.appService.getHeroeSeleccionado();
 
 		//Inicia el renderizado de los sprites de hechizos:
 		this.renderizarImagenHechizos();
@@ -45,7 +45,7 @@ export class PanelPersonaje implements OnInit {
 		//Cargar Descripciones de personaje:
 		console.log(this.personajes)
 		console.log(this.perfil)
-		for(var i= 0; i<this.perfil.heroes.length; i++){ 
+		for(var i= 0; i < this.perfil.heroes.length; i++){ 
 			this.perfil.heroes[i]["descripcion"] = this.personajes["personajes"].find(j=>j.clase==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
 		}
 

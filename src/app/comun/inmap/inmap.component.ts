@@ -23,7 +23,7 @@ export class InMapComponent implements OnInit{
 
 		setTimeout(()=>{    
       		this.appService.mostrarPantallacarga(false);
- 		}, 1000);
+ 		}, 3000);
 
 
 		//Observar Eventos AppService:
@@ -39,16 +39,28 @@ export class InMapComponent implements OnInit{
 
 
 		//Comprueba el Logueo carga el perfil en Servicio InMap:
-		this.inmapService.cargarPerfil();
+		this.inmapService.cargarPerfil().then(() => {
 
-		//Get id Cuenta;
-		this.idCuenta = this.inmapService.getIDCuenta();
+            //Get id Cuenta;
+            console.log("Cargando Cuenta");
+            this.idCuenta = this.inmapService.getIDCuenta();
 
-		//Importar Datos Generales al servicio Inmap:
-		this.inmapService.importarDatosGenerales();	
+        }).then(() => {
 
-		//Cargar Grupo:
-		this.inmapService.cargarGrupo();
+    		//Importar Datos Generales al servicio Inmap:
+            console.log("Importando Datos Generales: ");
+	    	this.inmapService.importarDatosGenerales();	
+
+        }).then(() => {
+
+            //Cargar Grupo:
+            console.log("Cargando Grupo: ");
+            this.inmapService.cargarGrupo();
+
+        });
+
+
+
 	}
 
 	abrirConfiguracion(){

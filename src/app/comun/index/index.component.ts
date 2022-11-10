@@ -87,17 +87,19 @@ export class IndexComponent implements OnInit{
 		this.appService.mostrarCrearCuenta()
 	}
 
-	heroes():void{
+	async heroes(){
+        var validacion = await this.appService.getValidacion();
 		this.appService.mostrarPantallacarga(true);
-		this.appService.getDatos(this.appService.getValidacion().clave);
+		this.appService.getDatos(validacion.clave);
 		this.appService.setControl("heroes");
 		setTimeout(()=>{    
       		this.appService.cambiarUrl("/heroes");
  		}, 2000);
 	}
 
-	crearPartida():void{
-		if(this.appService.getValidacion().tipo!="Host"){
+	async crearPartida(){
+        var validacion = await this.appService.getValidacion() 
+		if(validacion.tipo!="Host"){
 			this.appService.mostrarDialogo("Informativo",{contenido:"Acceso restringido a cuentas Host."});
 			return;
 		}
@@ -115,9 +117,11 @@ export class IndexComponent implements OnInit{
  		}, 2000);
 	}
 
-	unirsePartida():void{
+	async unirsePartida(){
 
-		if(this.appService.getValidacion().tipo!="Cliente"){
+        var validacion = await this.appService.getValidacion();
+
+		if(validacion.tipo!="Cliente"){
 			this.appService.mostrarDialogo("Informativo",{contenido:"Acceso restringido a cuentas Cliente."});
 			return;
 		}

@@ -12,12 +12,10 @@ export class MapaGeneralService {
     //Variables Inmap:
 	public estadoInmap= "global";
     private regionInmap:number = 1;
-    private region: any = {};
+    public region: any = {};
     private coordenadaX: number = 0; 
     private coordenadaY: number = 0; 
     private regionSeleccionada: string = "";
-    private tileSeleccionado: number = 1;
-    public herramientaInMap: string = "add";
     public opcionOverlay: boolean = false;
 
   	constructor(public appService: AppService, private http: HttpClient) { }
@@ -26,12 +24,13 @@ export class MapaGeneralService {
   //    INMAP:
   // ************************************************* 
 
-  seleccionarZona(zona:string){
+  async seleccionarZona(zona:string){
 
         if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;} 
 
 		console.log("Cargando Region: "+zona);
-		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: this.appService.getToken()}).subscribe((data) => {
+        var token = await this.appService.getToken();
+		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).subscribe((data) => {
 			console.log("Región: ");
 			console.log(data);	
 			this.region= data;
@@ -42,47 +41,11 @@ export class MapaGeneralService {
 
   }
 
-  seleccionarHerramientaInMap(herramienta:string){
-      console.log("Cambiando Herramienta: "+herramienta);
-
-      switch(herramienta){
-
-        case "add":
-        case "eliminar":
-            this.herramientaInMap = herramienta;
-        break;
-         
-        case "overlay":
-            this.opcionOverlay = true;
-        break;
-
-        case "base":
-            this.opcionOverlay = false;
-        break;
-      }
-
+  getRegion(){
+      return this.region;
   }
 
-  clickTile(i:number,j:number){
-    console.log("Click: i: "+i+" j: "+j) 
-    switch(this.herramientaInMap){
-        case "add":
-            if(!this.opcionOverlay){
-                this.region.isometrico[i][j].tileImage= this.tileSeleccionado;
-            }else{
-                this.region.isometrico[i][j].tileImageOverlay= this.tileSeleccionado;
-            }
-            break;
-        case "eliminar":
-            if(!this.opcionOverlay){
-                this.region.isometrico[i][j].tileImage=0;
-            }else{
-                this.region.isometrico[i][j].tileImageOverlay=0;
-            }
-            break;
-    }
-                
-  }
+
 
 }
 

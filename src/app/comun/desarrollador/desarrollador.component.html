@@ -124,68 +124,126 @@
     
         <!-- Fondo Mapa -->
         <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
-
-            <div class="fogwrapper">
-                <div id="foglayer_01" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div>
-                <div id="foglayer_02" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div>
-                <div id="foglayer_03" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div> 
-            </div> 
-
-            <!-- Mapa Global -->
-            <div *ngIf="desarrolladorService.estadoInmap=='global'" class="contenedorMapaGlobal">
-                <div class="contenedorScroll">
-                </div>
-
-                <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
-
-                <div class="contenedorMarcadoresZonas">
-                    <div class="zona zona1 pulsacion" (click)="desarrolladorService.seleccionarZona('Asfaloth');"></div>
-                </div>
-            </div>
-
-
-
-            <!-- Mapa Isometrico -->
-            <div *ngIf="desarrolladorService.estadoInmap=='isometrico'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
-
-            <img class="mapaRegion" src="../../../assets/Mapa/Mapa-Mundo.png"/>
-
-            <div class="wrapper" [style.transform]="'scale(0.3)'">
-
-               <div class="floor">
-
-                  <div class="players">
-                     <!-- player 1 -->
-                     <div class="player blue" data-name="joe">
-                        <div class="right"></div>
-                        <div class="front">
-                           <div class="top"></div>
-                        </div>
-                     </div>
-                     
-                  </div>
-                  <!-- Data Cords are for Future use -->
-                
-                     <div *ngFor="let fila of this.desarrolladorService.region.isometrico;let i = index" class="row">
-                         <div *ngFor="let tile of this.desarrolladorService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" (click)="desarrolladorService.clickTile(i,j)">
-                            <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
-                            <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
-                         </div> 
-                     </div>
-
-                  </div> 
-                </div>
-            </div>
+            <mapaGeneralComponent (tileCopiado)="copiarTile($event)" id="mapaGeneralComponent"
+                                  [tileSeleccionado]="desarrolladorService.tileSeleccionado"
+                                  [opcionesDesarrolloInMap]="desarrolladorService.opcionesDesarrolloInMap"></mapaGeneralComponent>
         </div>
+
+    <!--Panel Inferior-->
+    <div id="panelHerramientaInferiorInmap">
+
+        <div class="selector">
+            <div class="opcion" [ngClass]="renderizarSelector('general')" (click)="desarrolladorService.seleccionarHerramientaInMap('general')">General</div>
+            <div class="opcion" [ngClass]="renderizarSelector('terreno')" (click)="desarrolladorService.seleccionarHerramientaInMap('terreno')">Terreno</div>
+            <div class="opcion" [ngClass]="renderizarSelector('eventos')" (click)="desarrolladorService.seleccionarHerramientaInMap('eventos')">Eventos</div>
+            <div class="opcion" [ngClass]="renderizarSelector('misiones')" (click)="desarrolladorService.seleccionarHerramientaInMap('misiones')">Misiones</div>
+        </div>
+
+            <!-- Formulario General-->
+			<form *ngIf="desarrolladorService.opcionPropiedades==='general'" class="formularioGeneral subanimacion" [formGroup]="formInMapGeneral">
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+					<mat-label>Nombre: </mat-label>
+					<input matInput placeholder="Nombre" formControlName="inMapNombre">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formSpriteId">
+					<mat-label>Descripcion: </mat-label>
+					<input matInput  type="text" placeholder="Descripcion" formControlName="inMapDescripcion">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Indicador: </mat-label>
+					<input matInput placeholder="" formControlName="inMapIndicador">
+				  </mat-form-field>
+
+			</form>
+
+            <!-- Formulario Terreno -->
+			<form *ngIf="desarrolladorService.opcionPropiedades==='terreno'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTerreno">
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+					<mat-label>Tipo Terreno: </mat-label>
+					<input matInput placeholder="Tipo terreno" formControlName="inMapTipoTerreno">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formSpriteId">
+					<mat-label>Atravesable: </mat-label>
+					<input matInput placeholder="Atravesable" formControlName="inMapAtravesable">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Inspeccionable: </mat-label>
+					<input matInput placeholder="true" formControlName="inMapInspeccionable">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Visitado: </mat-label>
+					<input matInput placeholder="true" formControlName="inMapVisitado">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Ubicación Especial: </mat-label>
+					<input matInput placeholder="null" formControlName="inMapUbicacionEspecial">
+				  </mat-form-field>
+
+			</form>
+
+            <!-- Formulario Eventos-->
+			<form *ngIf="desarrolladorService.opcionPropiedades==='eventos'"  class="formularioGeneral subanimacion" [formGroup]="formInMapEventos">
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+					<mat-label>Probabilidad Random: </mat-label>
+					<input matInput placeholder="0" formControlName="inMapProbabilidadRandom">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formSpriteId">
+					<mat-label>Categoria Random:</mat-label>
+					<input matInput placeholder="Camino" formControlName="inMapCategoriaRandom">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Check Trigger:</mat-label>
+					<input matInput placeholder="[]" formControlName="inMapCheckTrigger">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Loot Prob:</mat-label>
+					<input matInput placeholder="0" formControlName="inMapLootProb">
+				  </mat-form-field>
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Loot ID:</mat-label>
+					<input matInput placeholder="0" formControlName="inMapLootId">
+				  </mat-form-field>
+
+			</form>
+
+            <!-- Formulario Misiones-->
+			<form *ngIf="desarrolladorService.opcionPropiedades==='misiones'"  class="formularioGeneral subanimacion" [formGroup]="formInMapMisiones">
+
+                <!--Campo-->
+				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+					<mat-label>Check Misiones:</mat-label>
+					<input matInput placeholder="[]" formControlName="inMapCheckMisiones">
+				  </mat-form-field>
+
+			</form>
+    </div> <!-- FIN Panel INMAP Inferior -->
+
 
     </div> <!-- Final INMAP -->
 
@@ -1321,7 +1379,7 @@
 <!-- *************************************************
         CONSOLA
      ************************************************* -->
-  <div id="consola">
+  <div id="consola" *ngIf="desarrolladorService.panel!='inmap'">
     <div class="tituloConsola">
       Consola
     </div> 

@@ -1,7 +1,7 @@
 
 import { Component,Input, ViewChild, ElementRef, AfterViewChecked} from '@angular/core';
-import {LoggerService} from './logger.service';
-import {DeveloperCombateService} from '../developer-combate/developerCombate.service';
+import { LoggerService } from './logger.service';
+import { MazmorraService } from '../mazmorra/mazmorra.service';
 
 @Component({
   selector: 'appLogger',
@@ -21,7 +21,7 @@ export class LoggerComponent {
   public animaciones: any;
   public parametros: any;
 
-  constructor(public loggerService: LoggerService,private developerCombateService: DeveloperCombateService) {}
+  constructor(public loggerService: LoggerService, private mazmorraService: MazmorraService) {}
 
    scrollToBottom(): void {
         try {
@@ -39,7 +39,7 @@ export class LoggerComponent {
   }
 
   getParametros():any{
-    this.parametros= this.developerCombateService.parametros;
+    this.parametros= this.mazmorraService.parametros;
     return this.parametros;
   }
 

@@ -184,7 +184,8 @@ perfilSchema = new Schema({
   objetos_globales: [],
   hechizos: [],
   misiones: [],
-  inmap: []
+  inmap: [],
+  cuentaId: String
 });
 
 //Schema y modelo de Perfil:
@@ -221,6 +222,7 @@ var versionDeliriumServidor = mongoose.model('Delirium', verificarActualizacionS
 
 var clave;
 var validacion = false;
+var cuentaID = "";
 var token="";
 var version="0.0.1";
 var versionDeliriumServidor;
@@ -248,8 +250,12 @@ function createWindow () {
       height: 375,
       fullscreen: false,
       webPreferences: {
-        webSecurity: false,
-        nodeIntegration: true}  
+        webSecurity: true,
+        nodeIntegration: false,
+        preload: path.join(__dirname, 'preload.js'),
+        contextIsolation: true,
+        sandbox: false
+        }  
     })
   }else{
      mainWindow = new BrowserWindow({
@@ -257,8 +263,12 @@ function createWindow () {
       width: 1080,
       height: 720,
       webPreferences: {
-        webSecurity: false,
-        nodeIntegration: true}
+        webSecurity: true,
+        nodeIntegration: false,
+        preload: path.join(__dirname, 'preload.js'),
+        contextIsolation: true,
+        sandbox: false
+        }
     })
   }
 
@@ -296,8 +306,9 @@ function desarrollador() {
     width: 1080, 
     height: 720,
     webPreferences: {
-        webSecurity: false,
-        nodeIntegration: true}
+        webSecurity: true,
+        preload: path.join(__dirname, 'preload.js'),
+        nodeIntegration: false}
     })
   
   if(DEBUG!=="production"){
@@ -338,16 +349,20 @@ app.on('activate', function () {
 })
 
 ipc.on('setModelosDatos', function (event, arg) {
-     
+  actualizarModelos();    
+  event.returnValue = true;
+});
+
+function actualizarModelos(){
+
   // Definir Schemas de datos si es desarrollador:
   if(validacion.privilegios=="Desarrollador"|| validacion.privilegios=="Creador"){
-	  var nombreValidacion = ""
-	  if(arg["oficial"]){
-		 nombreValidacion = "Oficial" 
-	  }else{
-		  nombreValidacion = validacion.nombre;
-	  }
-       
+
+	 var nombreValidacion = ""
+	 nombreValidacion = "Oficial" 
+
+    console.log("Configurando modelo de datos: " + nombreValidacion)
+    console.log("ID Cuenta: " + validacion._id)
 
     //Definicion de modelo segun usuario
     //Modelo heroeStat
@@ -384,15 +399,14 @@ ipc.on('setModelosDatos', function (event, arg) {
     parametrosModel = mongoose.model("parametrosModel", parametrosSchema,nombreValidacion);
   
     //Modelo Perfil
-    perfilModel = mongoose.model("perfilModel", perfilSchema,nombreValidacion);
+    perfilModel = mongoose.model("perfilModel", perfilSchema,"Perfiles");
 
     //Modelo Personajes
     personajesModel = mongoose.model("personajesModel", personajesSchema,nombreValidacion);
 
-  } //Fin de definicion de modelos segun usuario
-        
-  event.returnValue = true;
-});
+  } 
+
+} //Fin de actualización de modelos segun validacion.
 
 ipc.on('comprobarLogin', function (event) {
   event.returnValue = validacion;
@@ -407,7 +421,8 @@ ipc.on('setValidacion', function (event, arg) {
   validacion = arg; 
   console.log("Validacion: ");
   console.log(validacion);
-   
+  cuentaID = String(arg._id);
+  actualizarModelos();
   event.returnValue = validacion;
 });
 
@@ -535,6 +550,13 @@ ipc.on('getDatosPersonajes', function (event, arg) {
       });   
 });
 
+ipc.on('getDatosPerfil', function (event, arg) {
+  perfilModel.find({idCuenta: cuentaID})
+      .then(function(doc) {
+        console.log("Enviando Perfil...");
+        event.returnValue = doc[0]._doc;
+      });   
+});
 
 //*********************************************
 //        Panel de desarrollador

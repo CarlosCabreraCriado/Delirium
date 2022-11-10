@@ -2,42 +2,77 @@
 @import "../../../variables.sass"
 @import "../../../breakpoints.scss"
 
-::ng-deep .contenedorPlantilla
-
 #contenedorMapa
   position: absolute
   height: 100%
   width: 100%
   left: 0%
-  overflow: scroll
+  overflow: hidden
+
+  #mascaraVision
+  
+  #pinch-zoom
+    position: absolute
+    width: 100%
+    height: 100%
+    //background-color: rgba(24,46, 68,0.85)
+    //-webkit-mask-image: url("../../../assets/InMap/mascara.png")
+    //mask-image: url("../../../assets/InMap/mascara.png")
+    //mask-repeat: no-repeat
+    //-webkit-mask-position-x: center
+    //-webkit-mask-position-y: center
+    //mask-size: 70%
 
   .contenedorScroll
     position: absolute
     width: 200% //Cambio upgrade
     height: 200% //Cambio upgrade
 
-  .mapaMundo
+  .contenedorMapaGlobal
     position: absolute
-    //top:50%
-    //left: 50%
-    max-height: 100%
-    max-width: 100%
-    //transform: scale(0.8)
+    width: 100%
+    height: 100%
+    //mask-image: url("../../../assets/InMap/mascara.png")
+
+  .contenedorMascara
+    position: absolute 
+    width: 100%
+    height: 100%
+
+    .mapaMundo
+      position: absolute
+      //top:50%
+      //left: 50%
+      width:100%
+      //max-height: 100%
+      //max-width: 100%
+      //transform: scale(0.8)
 
   .mapaRegion
     position: absolute
-    top: 50% //Cambio Upgrade
-    left: 50%
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    //top: 50% //Cambio Upgrade
+    //left: 50%
     //max-height: 100%
     //max-width: 100%
-    transform: scale(0.8)
 
   .contenedorMarcadoresZonas
     position: absolute
     top: 0
     left: 0
     width: 100%
-    height: 100%
+    padding-top: 65%
+
+    .aspect-ratio
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+
     .pulsacion
       position: absolute
       transform: translateX(-50%) translateY(-50%)
@@ -69,10 +104,11 @@
         animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite
       &:hover:after
         background-color: white
+
     .zona1
       position: absolute
-      top: 91%
-      left: 87%
+      top: 90%  
+      left: 86.5% 
 
   .contenedorMapaIsometrico
     position: absolute
@@ -83,12 +119,18 @@
 
     
   .wrapper 
+      display: flex
       position: absolute
+      width: 100%
+      height: 100%
+      top: -20%
+      left: -6%
+
       //height: fit-content
       //width: fit-content
       //opacity: 0.5
-      top: 1066px
-      left: 2936px
+      //top: 1066px
+      //left: 2936px
 
   .row
     position: relative
@@ -207,6 +249,7 @@
   width: 100%
   -webkit-filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2)
   filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2)
+  pointer-events: none
 
 #foglayer_01, #foglayer_02, #foglayer_03 
   height: 100%

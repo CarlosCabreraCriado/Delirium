@@ -1,13 +1,14 @@
 
 import { Injectable, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { AppService } from '../../app.service';
-import { LoggerService } from '../logger/logger.service'
-import { PausaService } from '../pausa/pausa.service'
-import { EventosService } from '../eventos/eventos.service'
-import { RngService } from '../rng/rng.service'
-import { InterfazService } from '../interfaz/interfaz.service'
+import { LoggerService } from '../logger/logger.service';
+import { PausaService } from '../pausa/pausa.service';
+import { EventosService } from '../eventos/eventos.service';
+import { RngService } from '../rng/rng.service';
+import { InterfazService } from '../interfaz/interfaz.service';
 import { Subject } from 'rxjs';
 import * as cloneDeep from 'lodash/cloneDeep';
+//import { cloneDeep } from 'lodash/cloneDeep';
 import { HttpClient } from "@angular/common/http"
 import { SocketService } from '../socket/socket.service';
 import { Subscription } from "rxjs";
@@ -112,7 +113,7 @@ export class MazmorraService implements OnInit{
 
 		//Suscripcion Socket:
       	this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
-      		if(data.emisor== this.appService.getValidacion().nombre && this.appService.getValidacion().tipo==data.tipoEmisor){console.log("EVITANDO "+data.peticion);return;}
+      		if(data.emisor== this.appService.getValidacion().then((result) => {return result.nombre}) && this.appService.getValidacion().then((result) => {return result.tipo})==data.tipoEmisor){console.log("EVITANDO "+data.peticion);return;}
       		switch(data.peticion){
       			case "log":
       				console.log("Peticion: "+data.peticion);
@@ -586,7 +587,7 @@ export class MazmorraService implements OnInit{
  				heroeIndex: 0
  			};
  		}else{
- 			this.personaje = sala.jugadores.find(j => j.usuario === this.appService.getValidacion().nombre);
+ 			this.personaje = sala.jugadores.find(j => j.usuario === this.appService.getValidacion().then((result) => {return result.nombre}));
 			this.personaje.heroeIndex = sala.jugadores.indexOf(this.personaje);
  		}
 

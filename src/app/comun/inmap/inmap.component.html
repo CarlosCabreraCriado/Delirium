@@ -66,7 +66,7 @@
 
 		<heroeComponent *ngFor="let jugador of this.inmapService.grupo; let i = index" [tipo]="renderizarTipo(jugador)" [renderMazmorra]="{}" [renderHeroe]="{vida: 100}" [pantalla]="'inMap'" [Personaje]="camelize(jugador.heroe.clase)" [Roll]="'DPS'" [Nombre]="jugador.heroe.nombre" [idImagen]="jugador.heroe.id_imagen"[Nivel]="jugador.heroe.nivel" [lider]="false" (click)="clickHeroe(jugador)"  class="panelHeroe"></heroeComponent>
 
-		<heroeComponent *ngIf="this.inmapService.grupo.length<5" [pantalla]="'inMap'" [tipo]="'add'" [Personaje]="''" [Roll]="''" [Nombre]="''" [Nivel]="" [lider]="false" class="panelHeroe"></heroeComponent>
+        <heroeComponent *ngIf="this.inmapService.grupo && this.inmapService.grupo.length<5" [pantalla]="'inMap'" [tipo]="'add'" [Personaje]="''" [Roll]="''" [Nombre]="''" [Nivel]="" [lider]="false" class="panelHeroe"></heroeComponent>
 
 	</div>
 
@@ -86,13 +86,15 @@
 	<!--   ******************* -->
 
 	<div id="ContenedorPaneles">
-		<div class="panel panelPersonaje" *ngIf="pantalla =='Personaje'">
-			<panelPersonajeComponent></panelPersonajeComponent>
-		</div>
+        {{pantalla}}
+		<div class="panel panelPersonaje" *ngIf="this.pantalla == 'Personaje'">
+            <panelPersonajeComponent></panelPersonajeComponent>
+        </div>
 
-		<div class="panel panelPersonaje" *ngIf="pantalla =='Equipo'">
+		<div class="panel panelPersonaje" *ngIf="pantalla == 'Equipo'">
 			<panelEquipoComponent></panelEquipoComponent>
 		</div>
+
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
 			<panelMazmorraComponent></panelMazmorraComponent>
 		</div>
@@ -104,5 +106,6 @@
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Tienda'">
 			<panelTiendaComponent></panelTiendaComponent>
 		</div>
+
 	</div>
 

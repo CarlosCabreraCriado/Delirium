@@ -85,7 +85,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		console.log("PERFIL: ");
 		console.log(this.appService.getPerfil());
 		this.mazmorraService.setDispositivo(this.appService.getDispositivo());
-		this.mazmorraService.validacion = this.appService.getValidacion();
+		this.mazmorraService.validacion = this.appService.getValidacion().then((result) => {return result});
 
 		if(this.appService.control!="mazmorra"){this.appService.setControl("mazmorra")}
 
@@ -161,7 +161,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       			case "comandoPartida":
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Comando: "+data.comando);
-      		    	if(data.emisor == this.appService.getValidacion().nombre){break;}
+      		    	if(data.emisor == this.appService.getValidacion().then((result) => {return result.nombre})){break;}
       		    	switch(data.comando){
 
       		    		case "pasarTurno":

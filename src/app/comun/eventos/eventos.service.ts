@@ -1,10 +1,8 @@
 
 import { Injectable, Input, Output, EventEmitter } from '@angular/core';
-import { DeveloperCombateService } from '../developer-combate/developerCombate.service';
 import { AppService} from '../../app.service'
 import { Eventos } from './eventos.class';
 import { Subject } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'

@@ -3,42 +3,33 @@
 <!--         Componente Mapa General       -->
 <!--   *********************************** -->
 
-        <!-- Fondo Mapa -->
-        <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
 
-            <div class="fogwrapper">
-                <div id="foglayer_01" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div>
-                <div id="foglayer_02" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div>
-                <div id="foglayer_03" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div> 
-            </div> 
+    <!-- Fondo Mapa -->
+    <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
+
+        <!-- <img id="mascaraVision"  src="../../../assets/InMap/mascara.png"/> -->
+
+        <pinch-zoom  id="pinch-zoom" [limitPan]="false" [minPanScale]="1" [limit-zoom]="10">
 
             <!-- Mapa Global -->
             <div *ngIf="mapaGeneralService.estadoInmap=='global'" class="contenedorMapaGlobal">
-                <div class="contenedorScroll">
-                </div>
 
+                <div class="contenedorMascara">
                 <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+                </div>
 
                 <div class="contenedorMarcadoresZonas">
+                    <div class="aspect-ratio">
                     <div class="zona zona1 pulsacion" (click)="mapaGeneralService.seleccionarZona('Asfaloth');"></div>
+                    </div>
                 </div>
+
             </div>
 
             <!-- Mapa Isometrico -->
             <div *ngIf="mapaGeneralService.estadoInmap=='isometrico'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
 
-            <img class="mapaRegion" src="../../../assets/Mapa/Mapa-Mundo.png"/>
-
-            <div class="wrapper" [style.transform]="'scale(0.3)'">
+            <div class="wrapper">
 
                <div class="floor">
 
@@ -55,7 +46,7 @@
                   <!-- Data Cords are for Future use -->
                 
                      <div *ngFor="let fila of this.mapaGeneralService.region.isometrico;let i = index" class="row">
-                         <div *ngFor="let tile of this.mapaGeneralService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" (click)="mapaGeneralService.clickTile(i,j)">
+                         <div *ngFor="let tile of this.mapaGeneralService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" (click)="clickTile(i,j,$event)" (auxclick)="clickTileAux(i,j,$event)" >
                             <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
                             <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
                          </div> 
@@ -64,4 +55,26 @@
                   </div> 
                 </div>
             </div>
-        </div>
+
+            <div class="fogwrapper">
+            </div> 
+
+        </pinch-zoom>
+
+            <div class="fogwrapper">
+                <div id="foglayer_01" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div>
+                <div id="foglayer_02" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div>
+                <div id="foglayer_03" class="fog">
+                  <div class="image01"></div>
+                  <div class="image02"></div>
+                </div> 
+            </div> 
+    </div>
+
+

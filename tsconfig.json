@@ -10,11 +10,22 @@
     "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
-      "../node_modules/@types"
+      "../node_modules/@types",
+      "../src/types"
     ],
     "lib": [
       "es2018",
       "dom"
     ]
-  }
+    
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts"
+  ]
 }

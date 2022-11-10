@@ -10,7 +10,7 @@
 
 # dependencies
 /node_modules
-/node_modules2
+/plantillaComponent
 
 #Mongo DB
 .wt

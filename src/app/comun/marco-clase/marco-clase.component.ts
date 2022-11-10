@@ -1,7 +1,7 @@
 
 import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {trigger,state,style,animate,transition, keyframes} from '@angular/animations';
-import {DeveloperCombateService} from '../developer-combate/developerCombate.service';
+import {MazmorraService} from '../mazmorra/mazmorra.service';
 
 @Component({
   selector: 'appMarcoClase',
@@ -17,7 +17,7 @@ export class MarcoClaseComponent implements OnInit {
 	@Input() heroeIndex: number;
 
 
-  	constructor(private developerCombateService: DeveloperCombateService) { }
+  	constructor(private mazmorraService: MazmorraService) { }
 
   	ngOnInit() {
   		this.heroeClase = this.heroe.clase;
@@ -25,7 +25,7 @@ export class MarcoClaseComponent implements OnInit {
 
     renderIndividual(): any{
       var clase= "";
-      if(this.developerCombateService.getDispositivo()=="Movil"){
+      if(this.mazmorraService.getDispositivo()=="Movil"){
         clase= clase+" Individual"
       }
     return clase;

@@ -4,6 +4,7 @@ import { AppService } from '../../app.service';
 import { HttpClient } from "@angular/common/http";
 import { RenderReticula } from './renderReticula.class';
 import { Subject } from "rxjs";
+import { MapaGeneralService } from '../mapa-general/mapaGeneral.service';
 import * as XLSX from 'xlsx';
 
 @Injectable({
@@ -89,12 +90,17 @@ export class DesarrolladorService implements OnInit{
     //Variables Inmap:
     private regionInmap:number = 1;
     private region: any = {};
-    private coordenadaX: number = 0; 
-    private coordenadaY: number = 0; 
+    public coordenadaX: number = 0; 
+    public coordenadaY: number = 0; 
     private regionSeleccionada: string = "";
     private tileSeleccionado: number = 1;
-    public herramientaInMap: string = "add";
-    public opcionOverlay: boolean = false;
+    private opcionPropiedades: string = "general";
+    public opcionesDesarrolloInMap: any = {
+        opcionOverlay: false,
+        herramientaInMap: "add",
+        tileSeleccionado: 1,
+        regionSeleccionada: ""
+    }
 
    //Variables de parametros:
 	public salaSeleccionadaId = 0;
@@ -126,20 +132,24 @@ export class DesarrolladorService implements OnInit{
   observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
 
 
-  constructor(public appService: AppService, private http: HttpClient)  { 
+  constructor(public appService: AppService, private http: HttpClient, public mapaGeneralService: MapaGeneralService)  { 
   }
 
   ngOnInit(){
 
   }
 
-  inicializarGestor(){
+  async inicializarGestor(){
+
     console.log("INICIANDO HERRAMIENTA DESARROLLADOR");
-    this.validacion= this.appService.getValidacion();
-    this.tipoEnemigos= this.appService.getEnemigos();
-	this.hechizos = this.appService.getHechizos();
-	this.buff = this.appService.getBuff();
-	this.animaciones = this.appService.getAnimaciones();
+    this.validacion= await this.appService.getValidacion();
+    this.tipoEnemigos= await this.appService.getEnemigos();
+	this.hechizos = await this.appService.getHechizos();
+	this.buff = await this.appService.getBuff();
+	this.animaciones = await this.appService.getAnimaciones();
+
+    console.log("Enemigos:")
+    console.log(this.tipoEnemigos)
 
 	this.seleccionarBuff(0)
 	this.seleccionarHechizo(0)
@@ -292,8 +302,8 @@ export class DesarrolladorService implements OnInit{
     return;
   }
 
-  cargarMazmorra(){
-    this.http.post(this.appService.ipRemota+"/deliriumAPI/listaMazmorra",{token: this.appService.getToken()}).subscribe((res) => {
+  async cargarMazmorra(){
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/listaMazmorra",{token: await this.appService.getToken()}).subscribe((res) => {
       if(res){
         console.log("Lista de mazmorras");
         console.log(res);
@@ -327,14 +337,14 @@ export class DesarrolladorService implements OnInit{
     this.mazmorraInicializada= true;
   }
 
-  guardarMazmorra(){  
+  async guardarMazmorra(){  
 
 	//Procesar Guardado de celdas: 
 	this.mazmorra.celdas = this.procesarGuardadoCeldas();
 	
     console.log(this.mazmorra);
 	
-    this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: this.appService.getToken()}).subscribe((res) => {
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: await this.appService.getToken()}).subscribe((res) => {
       if(res){
         console.log("Mazmorra guardada en Base de datos");
 		this.mostrarBotonAceptar= true;
@@ -390,8 +400,8 @@ export class DesarrolladorService implements OnInit{
 		return objetoReticula 
   }
 
-  eliminarMazmorra(){
-    this.http.post(this.appService.ipRemota+"/deliriumAPI/eliminarMazmorra",{mazmorra: this.mazmorra, token: this.appService.getToken()}).subscribe((res) => {
+  async eliminarMazmorra(){
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/eliminarMazmorra",{mazmorra: this.mazmorra, token: await this.appService.getToken()}).subscribe((res) => {
       if(res){
         console.log("Mazmorra eliminada con exito");
       }else{
@@ -1888,14 +1898,15 @@ export class DesarrolladorService implements OnInit{
     this.appService.toggleDatosOficialesDesarrollador();
   }
 
-  reloadDatos(forzarEstadoVer:boolean){
-    this.log("Obteniendo datos (Perfil: "+this.appService.getValidacion().nombre+" + Oficial)","orange");
+  async reloadDatos(forzarEstadoVer:boolean){
+
+    this.log("Obteniendo datos (Perfil: "+this.appService.getValidacion().then((result) => {return result.nombre})+" + Oficial)","orange");
     this.mostrarMensaje= true;
     this.mostrarSpinner= true;
     this.mensaje= "Actualizando Datos..."
 
     var clave = {
-            clave: parseInt(this.appService.getValidacion().clave)
+            clave: parseInt(await this.appService.getValidacion().then((result) => {return result.clave}))
           }
 		  console.log("CLAVEEE: "+clave);
 		  console.log(clave)
@@ -2258,8 +2269,13 @@ export class DesarrolladorService implements OnInit{
 			  this.buff.buff[this.buffSeleccionadoIndex].imagen_id = indexImagen;
 			  break;
             case "tile":
-                this.tileSeleccionado = indexImagen;
+                this.seleccionarTile(indexImagen)
 	  }
+  }
+
+  seleccionarTile(tileIndex: number){
+        this.opcionesDesarrolloInMap.tileSeleccionado = tileIndex;
+        this.tileSeleccionado = this.opcionesDesarrolloInMap.tileSeleccionado;
   }
 
   setEstadoPanelDerecho(estado:string){
@@ -2290,7 +2306,7 @@ export class DesarrolladorService implements OnInit{
 	  this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id = this.hechizos.hechizos[indexEncadenado].id;
   }
 
-  guardarPanelDatos(){  
+  async guardarPanelDatos(){  
 	
 	  console.log("GUARDANDO: ")
 	  
@@ -2298,7 +2314,7 @@ export class DesarrolladorService implements OnInit{
 
 		  case "Hechizos":
 			console.log(this.hechizos)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarHechizos",{hechizos: this.hechizos, token: this.appService.getToken()}).subscribe((res) => {
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarHechizos",{hechizos: this.hechizos, token: await this.appService.getToken()}).subscribe((res) => {
 			  if(res){
 				console.log("Objeto Hechizos guardado con exito");
 				this.mostrarBotonAceptar= true;
@@ -2315,7 +2331,7 @@ export class DesarrolladorService implements OnInit{
 
 		  case "Buff":
 			console.log(this.buff)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarBuff",{buff: this.buff, token: this.appService.getToken()}).subscribe((res) => {
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarBuff",{buff: this.buff, token: await this.appService.getToken()}).subscribe((res) => {
 			  if(res){
 				console.log("Objeto Buff guardado con exito");
 				this.mostrarBotonAceptar= true;
@@ -2332,7 +2348,7 @@ export class DesarrolladorService implements OnInit{
 
 		  case "Animaciones":
 			console.log(this.animaciones)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarAnimaciones",{animaciones: this.animaciones, token: this.appService.getToken()}).subscribe((res) => {
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarAnimaciones",{animaciones: this.animaciones, token: await this.appService.getToken()}).subscribe((res) => {
 			  if(res){
 				console.log("Objeto animaciones guardado con exito");
 				this.mostrarBotonAceptar= true;
@@ -2354,33 +2370,17 @@ export class DesarrolladorService implements OnInit{
   // *************************************************
   //    INMAP:
   // ************************************************* 
-
-  seleccionarZona(zona:string){
-
-        if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;} 
-
-		console.log("Cargando Region: "+zona);
-		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: this.appService.getToken()}).subscribe((data) => {
-			console.log("Región: ");
-			console.log(data);	
-			this.region= data;
-            this.regionSeleccionada = zona;
-            //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
-            this.estadoInmap= "isometrico"      
-        })
-
-  }
   
-  guardarInMap(){  
+  async guardarInMap(){  
 	
 	  console.log("GUARDANDO MAPA: ")
+      this.region = this.mapaGeneralService.getRegion();
       console.log(this.region);
 	  
-	  switch(this.regionSeleccionada){
-
+	  switch(this.region.nombreId){
 		  case "Asfaloth":
 			console.log(this.region)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarRegion",{region: this.region, token: this.appService.getToken()}).subscribe((res) => {
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarRegion",{region: this.region, token:await this.appService.getToken()}).subscribe((res) => {
 			  if(res){
 				console.log("Objeto Region guardado con exito");
 				this.mostrarBotonAceptar= true;
@@ -2400,45 +2400,57 @@ export class DesarrolladorService implements OnInit{
   }
 
   seleccionarHerramientaInMap(herramienta:string){
-      console.log("Cambiando Herramienta: "+herramienta);
 
+      console.log("Cambiando Herramienta: "+herramienta);
       switch(herramienta){
 
         case "add":
         case "eliminar":
-            this.herramientaInMap = herramienta;
+            this.opcionesDesarrolloInMap.herramientaInMap = herramienta;
         break;
          
         case "overlay":
-            this.opcionOverlay = true;
+            this.opcionesDesarrolloInMap.opcionOverlay = true;
         break;
 
         case "base":
-            this.opcionOverlay = false;
+            this.opcionesDesarrolloInMap.opcionOverlay = false;
+        break;
+
+        case "general":
+            this.opcionPropiedades = "general";
+        break;
+
+        case "terreno":
+            this.opcionPropiedades = "terreno";
+        break;
+
+        case "eventos":
+            this.opcionPropiedades = "eventos";
+        break;
+
+        case "misiones":
+            this.opcionPropiedades = "misiones";
         break;
       }
-
   }
 
-  clickTile(i:number,j:number){
-    console.log("Click: i: "+i+" j: "+j) 
-    switch(this.herramientaInMap){
-        case "add":
-            if(!this.opcionOverlay){
-                this.region.isometrico[i][j].tileImage= this.tileSeleccionado;
-            }else{
-                this.region.isometrico[i][j].tileImageOverlay= this.tileSeleccionado;
-            }
-            break;
-        case "eliminar":
-            if(!this.opcionOverlay){
-                this.region.isometrico[i][j].tileImage=0;
-            }else{
-                this.region.isometrico[i][j].tileImageOverlay=0;
-            }
-            break;
-    }
-                
+  //Setter de formularios:
+  setInMapGeneral(val){
+      console.log(val)
+      console.log(this.region)
+    //this.region.isometrico[this.coordenadaX][this.coordenadaY]["nombre"] = val["inMapNombre"]
+    //this.region.isometrico[this.coordenadaX][this.coordenadaY]["descripcion"] = val["inMapDescripcion"]
+    //this.region.isometrico[this.coordenadaX][this.coordenadaY]["indicadorEvento"] = val["inMapIndicador"]
+  }
+
+  setInMapTerreno(val){
+  }
+
+  setInMapEventos(val){
+  }
+  
+  setInMapMisiones(val){
   }
 
 } //FIN EXPORT

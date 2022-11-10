@@ -12,6 +12,7 @@
 // *************************************************
 //     BARRA INICIO
 // *************************************************
+
 #mensaje
   position: absolute
   width: 100%
@@ -114,11 +115,6 @@
   .botonContainer:hover
     color: black
     background-color: white
-
-    #botonInmap
-    #botonMazmorra
-    #botonDatos
-    #botonAssets
 
   .contenedorUsuario
     position: relative
@@ -666,7 +662,6 @@
               margin-top: 2%
               text-align: center
               font-size: 18px
-              .nombreEnemigo
 
               .boton
                 position: relative
@@ -1360,7 +1355,6 @@
                 height: 100%
                 width: 70%
 
-    .imagenBorrar
     .tituloArchivo
       position: relative
       display: flex
@@ -1382,9 +1376,6 @@
     .archivo:hover
       color: black
       background-color: white
-
-  .contenedorCentral
-    form
 
 #visualizadorHechizos
     position: absolute
@@ -1923,6 +1914,12 @@
 
 #panelInmap
 
+  #mapaGeneralComponent
+    position: absolute
+    height: 100%
+    width: 70%
+    left: 15%
+
   .contenedorPanelLateral
     position: absolute
     width: 15% 
@@ -1972,7 +1969,6 @@
           position: relative
           width: 50%
           border: solid 2px black
-    
       
     .boton
       position: relative
@@ -2005,6 +2001,51 @@
         width: 100%
         height: 100%
 
+  #panelHerramientaInferiorInmap
+    position: fixed
+    bottom: 0
+    height: 20%
+    width: 100%
+    background-color: dimgrey
+
+    .selector
+      position: relative
+      display: flex
+      width: 100%
+      height: 10%
+      .opcion
+        position: relative
+        display: flex
+        width: 50%
+        height: 100%
+        line-height: 1.5
+        align-items: center
+        justify-content: center
+        color: white
+        background-color: black
+        &.seleccionado
+          color: black
+          background-color: white
+        &:hover
+          color: black
+          background-color: white
+
+    form
+      position: relative
+      display: flex 
+      height: 100%
+      width: 100%
+      align-items: center
+      justify-content: center
+      text-align: center
+
+      mat-form-field
+        position: relative
+        margin: 20px
+        mat-label
+          color: chartreuse
+        input
+          color: white
 
 // ANIMACIONE:
 

@@ -1,7 +1,8 @@
 
 import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {trigger,state,style,animate,transition, keyframes} from '@angular/animations';
-import {DeveloperCombateService} from '../developer-combate/developerCombate.service';
+
+import {MazmorraService} from '../mazmorra/mazmorra.service';
 
 @Component({
   selector: 'appAnimacionNumero',
@@ -45,11 +46,11 @@ export class AnimacionNumeroComponent implements OnInit, OnChanges {
 	 @Input() heroeIndex: number;
 	 @Input() heroeVida: any;
 
-  constructor(private developerCombateService: DeveloperCombateService) { }
+  constructor(private mazmorraService: MazmorraService) { }
 
   ngOnInit() {
   	//Inicio suscripcion evento progreso Carga
-    	this.developerCombateService.mostrarAnimacionNumero.subscribe(val => {
+    	this.mazmorraService.mostrarAnimacionNumero.subscribe(val => {
       		this.mostrarAnimacion= true;
     	});
   }
