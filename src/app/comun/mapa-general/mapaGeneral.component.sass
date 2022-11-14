@@ -16,12 +16,13 @@
     width: 100%
     height: 100%
     //background-color: rgba(24,46, 68,0.85)
-    //-webkit-mask-image: url("../../../assets/InMap/mascara.png")
-    //mask-image: url("../../../assets/InMap/mascara.png")
-    //mask-repeat: no-repeat
-    //-webkit-mask-position-x: center
-    //-webkit-mask-position-y: center
-    //mask-size: 70%
+    &.niebla
+      -webkit-mask-image: url("../../../assets/InMap/mascara.png")
+      mask-image: url("../../../assets/InMap/mascara.png")
+      mask-repeat: no-repeat
+      -webkit-mask-position-x: center
+      -webkit-mask-position-y: center
+      mask-size: 70%
 
   .contenedorScroll
     position: absolute
@@ -157,6 +158,23 @@
       position: relative
       vertical-align: top
       pointer-events: all
+
+      .marcador
+        position: absolute
+        top: -2px
+        left: -2px
+        width: 50px 
+        height:  50px
+        z-index: 2
+        border: 2px solid red
+        box-sizing: border-box
+        &.seleccionada
+          border: 2px dashed orange
+        &.infranqueable
+          border: 2px solid red
+        &.noDisplay
+          display: none
+        
       .imagenTile
         position: absolute
         bottom: 0

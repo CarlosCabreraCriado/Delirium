@@ -10,6 +10,8 @@ import { HttpClientModule } from "@angular/common/http"
 //Angular material:
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule} from '@angular/material/input';
+import { MatSelectModule} from '@angular/material/select';
+import { MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatDialogModule} from '@angular/material/dialog';    
 
@@ -125,9 +127,11 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {} };
         SocketIoModule.forRoot(config),
         MatFormFieldModule,
         MatInputModule,
+        MatSelectModule,
+        MatCheckboxModule,
         FormsModule,
         ReactiveFormsModule,
-        MatDialogModule
+        MatDialogModule,
         PinchZoomModule
     ],
     providers: [ElectronService],

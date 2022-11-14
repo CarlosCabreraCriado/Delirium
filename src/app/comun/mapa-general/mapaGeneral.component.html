@@ -9,7 +9,7 @@
 
         <!-- <img id="mascaraVision"  src="../../../assets/InMap/mascara.png"/> -->
 
-        <pinch-zoom  id="pinch-zoom" [limitPan]="false" [minPanScale]="1" [limit-zoom]="10">
+        <pinch-zoom  id="pinch-zoom" [ngClass]="{'niebla': mostrarNiebla}" [limitPan]="false" [minPanScale]="1" [limit-zoom]="10">
 
             <!-- Mapa Global -->
             <div *ngIf="mapaGeneralService.estadoInmap=='global'" class="contenedorMapaGlobal">
@@ -46,7 +46,8 @@
                   <!-- Data Cords are for Future use -->
                 
                      <div *ngFor="let fila of this.mapaGeneralService.region.isometrico;let i = index" class="row">
-                         <div *ngFor="let tile of this.mapaGeneralService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" (click)="clickTile(i,j,$event)" (auxclick)="clickTileAux(i,j,$event)" >
+                         <div *ngFor="let tile of this.mapaGeneralService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" [ngClass]="renderTile(i,j)" (click)="clickTile(i,j,$event)" (auxclick)="clickTileAux(i,j,$event)" >
+                            <div [ngClass]="renderTile(i,j)" class="marcador"></div>
                             <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
                             <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
                          </div> 

@@ -193,14 +193,15 @@ export class DesarrolladorComponent implements OnInit{
   	private asignar_evento = new FormControl('0');
 
 	//Campos Campos InMap General:
-  	private inMapNombre = new FormControl(0);
-  	private inMapDescripcion = new FormControl('???');
+  	private inMapNombre = new FormControl('null');
+  	private inMapDescripcion = new FormControl('null');
   	private inMapIndicador = new FormControl('null');
 
 	//Campos Campos InMap Terreno:
-  	private inMapTipoTerreno = new FormControl(0);
-  	private inMapAtravesable = new FormControl('???');
+  	private inMapTipoTerreno = new FormControl('normal');
+  	private inMapAtravesable = new FormControl(true);
   	private inMapInspeccionable = new FormControl('0');
+  	private inMapMensajeInsapeccionable = new FormControl(null);
   	private inMapVisitado = new FormControl('0');
   	private inMapUbicacionEspecial = new FormControl('0');
 
@@ -213,6 +214,13 @@ export class DesarrolladorComponent implements OnInit{
 
 	//Campos Campos InMap Misiones:
   	private inMapCheckMisiones = new FormControl(0);
+
+    //Configuracion MapaGeneral:
+    private mostrarNieblaGuerra = false; 
+    private mostrarInfranqueable = false; 
+
+    //Opciones Selectores:
+    private opcionesInMapIndicador = ["Mision","Evento"]
 
   	@ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
   	@ViewChild('contenedorMensajes',{static: false}) private contenedorMensajes: ElementRef;
@@ -391,10 +399,9 @@ export class DesarrolladorComponent implements OnInit{
 
 	//Campos Campos InMap General:
 	    this.formInMapGeneral = this.formBuilder.group({
-	   		asignar_evento: this.asignar_evento,
   	        inMapNombre: this.inMapNombre, 
   	        inMapDescripcion: this.inMapDescripcion,
-  	        inMapIndicador: this.inMapDescripcion
+  	        inMapIndicador: this.inMapIndicador
         });
 
 	//Campos Campos InMap Terreno:
@@ -402,6 +409,7 @@ export class DesarrolladorComponent implements OnInit{
   	        inMapTipoTerreno: this.inMapTipoTerreno, 
   	        inMapAtravesable: this.inMapAtravesable,
             inMapInspeccionable: this.inMapInspeccionable,
+            inMapMensajeInsapeccionable: this.inMapMensajeInsapeccionable,
   	        inMapVisitado: this.inMapVisitado, 
   	        inMapUbicacionEspecial: this.inMapUbicacionEspecial 
 	    });
@@ -469,6 +477,14 @@ export class DesarrolladorComponent implements OnInit{
 				case "reloadForm":
 				console.log(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex])
 	          		this.formSubanimacion.setValue(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]);
+	          	break;
+
+	          	case "reloadFormTile":
+				case "reloadForm":
+
+                    //this.desarrolladorService.getTile(,j);
+	          		//this.formInMapGeneral.setValue();
+                //
 	          	break;
 
 	          	case "reloadReticula":
@@ -539,25 +555,25 @@ export class DesarrolladorComponent implements OnInit{
 		//Suscripcion de cambios formulario InMapGeneral:
 		this.formInMapGeneral.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.setInMapGeneral(val);
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario InMapTerreno:
 		this.formInMapTerreno.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.setInMapTerreno(val);
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario InMapEventos:
 		this.formInMapEventos.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.setInMapEventos(val);
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario InMapMisiones:
 		this.formInMapMisiones.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.setInMapMisiones(val);
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Crear registro de nombres de enemigos para display de assets:
@@ -567,6 +583,10 @@ export class DesarrolladorComponent implements OnInit{
 			familia= familia.toLowerCase().replace(/ /g,'_').replace(/ñ/g,'n');
 			this.desarrolladorService.tipoEnemigos.enemigos_stats[i].familia= familia;
 		}
+
+        //Inicializar selección Tile:
+        //this.seleccionarTile({x:0,y:0}, true);
+
 		return;
 	}
 
@@ -801,9 +821,59 @@ export class DesarrolladorComponent implements OnInit{
 	}
 
     copiarTile(tileCopia:any){
-        this.desarrolladorService.seleccionarTile(tileCopia);
+        this.desarrolladorService.seleccionarImgTile(tileCopia);
     }
 
+    async seleccionarTile(coordenadas:any){
+
+        //Tile Seleccionado:
+
+        //Guardar formulario de tile seleccionado anterior:
+        if(!coordenadas.ignoraGuardado){
+            await this.desarrolladorService.setTile(coordenadas.xAntigua,coordenadas.yAntigua,this.formInMapGeneral.value,this.formInMapTerreno.value,this.formInMapEventos.value,this.formInMapMisiones.value)
+        }
+
+        //Actualizar fomulario:
+        var valoresFormulario = this.desarrolladorService.getTile(coordenadas.x,coordenadas.y)
+
+	    var formInMapGeneral = {
+  	        inMapNombre: valoresFormulario.nombre, 
+  	        inMapDescripcion: valoresFormulario.descripcion,
+  	        inMapIndicador: valoresFormulario.indicador
+        };
+
+	//Campos Campos InMap Terreno:
+	    var formInMapTerreno = {
+  	        inMapTipoTerreno: valoresFormulario.tipoTerreno, 
+  	        inMapAtravesable: valoresFormulario.atravesable,
+            inMapInspeccionable: valoresFormulario.inspeccionable,
+            inMapMensajeInsapeccionable: valoresFormulario.mensajeInspeccion,
+  	        inMapVisitado: valoresFormulario.visitado, 
+  	        inMapUbicacionEspecial: "" 
+	    };
+
+	//Campos Campos InMap Eventos:
+	    var formInMapEventos = {
+  	        inMapProbabilidadRandom: valoresFormulario.probabilidadEvento,
+  	        inMapCategoriaRandom: valoresFormulario.categoriaEvento,
+  	        inMapCheckTrigger: valoresFormulario.checkEventos, 
+  	        inMapLootProb: "",
+  	        inMapLootId: "" 
+	    };
+
+	//Campos Campos InMap Misiones:
+	    var formInMapMisiones = {
+  	        inMapCheckMisiones: [] 
+	    };
+
+	    this.formInMapGeneral.setValue(formInMapGeneral);
+	    this.formInMapTerreno.setValue(formInMapTerreno);
+	    this.formInMapEventos.setValue(formInMapEventos);
+	    this.formInMapMisiones.setValue(formInMapMisiones);
+        
+        this.desarrolladorService.seleccionarTile(coordenadas.x,coordenadas.y)
+
+    }
 }
 
 

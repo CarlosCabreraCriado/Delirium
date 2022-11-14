@@ -97,6 +97,13 @@
                 <div class="opcion">Cargar</div>
             </div>
 
+            <!-- Opciones de configuracion -->
+			<mat-label>Mostrar Niebla: </mat-label>
+            <mat-checkbox [(ngModel)]="mostrarNieblaGuerra"></mat-checkbox>
+
+			<mat-label>Mostrar Infranqueable: </mat-label>
+            <mat-checkbox [(ngModel)]="mostrarInfranqueable"></mat-checkbox>
+
         </div>
 
         <!-- Panel Derecho Isometrico -->
@@ -111,7 +118,7 @@
             <div class="tituloSeccion">Tile:</div>
             <div class="selector">
                 <div class="tile" (click)="desarrolladorService.abrirSelectorImagen('tile')">
-                    <img class="iconoTile" src="./assets/Mapa/Tiles/{{desarrolladorService.tileSeleccionado}}.png">
+                    <img class="iconoTile" src="./assets/Mapa/Tiles/{{desarrolladorService.tileImgSeleccionado}}.png">
                 </div>
             </div>
 
@@ -124,8 +131,12 @@
     
         <!-- Fondo Mapa -->
         <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
-            <mapaGeneralComponent (tileCopiado)="copiarTile($event)" id="mapaGeneralComponent"
-                                  [tileSeleccionado]="desarrolladorService.tileSeleccionado"
+            <mapaGeneralComponent id="mapaGeneralComponent"
+                                  (tileCopiado)="copiarTile($event)" 
+                                  (tileSeleccionado)="seleccionarTile($event)" 
+                                  [tileImgSeleccionado]="desarrolladorService.tileImgSeleccionado"
+                                  [mostrarInfranqueable]="mostrarInfranqueable"
+                                  [mostrarNiebla]="mostrarNieblaGuerra"
                                   [opcionesDesarrolloInMap]="desarrolladorService.opcionesDesarrolloInMap"></mapaGeneralComponent>
         </div>
 
@@ -143,21 +154,27 @@
 			<form *ngIf="desarrolladorService.opcionPropiedades==='general'" class="formularioGeneral subanimacion" [formGroup]="formInMapGeneral">
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Nombre: </mat-label>
 					<input matInput placeholder="Nombre" formControlName="inMapNombre">
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formSpriteId">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Descripcion: </mat-label>
-					<input matInput  type="text" placeholder="Descripcion" formControlName="inMapDescripcion">
+					<textarea matInput placeholder="Descripcion" formControlName="inMapDescripcion"></textarea>
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formDuracion">
+				  <mat-form-field appearance="fill">
 					<mat-label>Indicador: </mat-label>
-					<input matInput placeholder="" formControlName="inMapIndicador">
+                    <mat-select [formControl]="inMapIndicador">
+                        <mat-option value="null">null</mat-option>
+                        <mat-option value="Ciudad">Ciudad</mat-option>
+                        <mat-option value="Pueblo">Pueblo</mat-option>
+                        <mat-option value="Portal">Portal</mat-option>
+                        <mat-option value="Viaje">Viaje rápido</mat-option>
+                    </mat-select>
 				  </mat-form-field>
 
 			</form>
@@ -166,33 +183,45 @@
 			<form *ngIf="desarrolladorService.opcionPropiedades==='terreno'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTerreno">
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+				  <mat-form-field appearance="fill">
 					<mat-label>Tipo Terreno: </mat-label>
-					<input matInput placeholder="Tipo terreno" formControlName="inMapTipoTerreno">
+                    <mat-select [formControl]="inMapTipoTerreno">
+                        <mat-option value="normal">Normal</mat-option>
+                        <mat-option value="camino">Camino</mat-option>
+                        <mat-option value="pueblo">Pueblo</mat-option>
+                        <mat-option value="ciudad">Ciudad</mat-option>
+                        <mat-option value="montaña">Montaña</mat-option>
+                        <mat-option value="bosque">Bosque</mat-option>
+                        <mat-option value="peligroso">Peligroso</mat-option>
+                    </mat-select>
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formSpriteId">
-					<mat-label>Atravesable: </mat-label>
-					<input matInput placeholder="Atravesable" formControlName="inMapAtravesable">
-				  </mat-form-field>
+				<mat-label>Atravesable: </mat-label>
+                <mat-checkbox formControlName="inMapAtravesable"></mat-checkbox>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formDuracion">
-					<mat-label>Inspeccionable: </mat-label>
-					<input matInput placeholder="true" formControlName="inMapInspeccionable">
-				  </mat-form-field>
+				<mat-label>Inspeccionable: </mat-label>
+                <mat-checkbox formControlName="inMapInspeccionable"></mat-checkbox>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formDuracion">
-					<mat-label>Visitado: </mat-label>
-					<input matInput placeholder="true" formControlName="inMapVisitado">
-				  </mat-form-field>
+				<mat-form-field appearance="legacy">
+					<mat-label>Mensaje Inspección: </mat-label>
+					<textarea matInput placeholder="Mensaje Insp." formControlName="inMapMensajeInsapeccionable"></textarea>
+				</mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formDuracion">
-					<mat-label>Ubicación Especial: </mat-label>
-					<input matInput placeholder="null" formControlName="inMapUbicacionEspecial">
+				  <mat-form-field appearance="fill">
+					<mat-label>Indicador: </mat-label>
+                    <mat-select [formControl]="inMapUbicacionEspecial">
+                        <mat-option value="null">null</mat-option>
+                        <mat-option value="portal">Portal</mat-option>
+                        <mat-option value="herrero">Herrero</mat-option>
+                        <mat-option value="armero">Armero</mat-option>
+                        <mat-option value="instructor">Instructor</mat-option>
+                        <mat-option value="mercado">Mercado</mat-option>
+                        <mat-option value="posada">Posada</mat-option>
+                    </mat-select>
 				  </mat-form-field>
 
 			</form>
@@ -201,31 +230,31 @@
 			<form *ngIf="desarrolladorService.opcionPropiedades==='eventos'"  class="formularioGeneral subanimacion" [formGroup]="formInMapEventos">
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Probabilidad Random: </mat-label>
 					<input matInput placeholder="0" formControlName="inMapProbabilidadRandom">
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formSpriteId">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Categoria Random:</mat-label>
 					<input matInput placeholder="Camino" formControlName="inMapCategoriaRandom">
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formDuracion">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Check Trigger:</mat-label>
 					<input matInput placeholder="[]" formControlName="inMapCheckTrigger">
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formDuracion">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Loot Prob:</mat-label>
 					<input matInput placeholder="0" formControlName="inMapLootProb">
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formDuracion">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Loot ID:</mat-label>
 					<input matInput placeholder="0" formControlName="inMapLootId">
 				  </mat-form-field>
@@ -236,7 +265,7 @@
 			<form *ngIf="desarrolladorService.opcionPropiedades==='misiones'"  class="formularioGeneral subanimacion" [formGroup]="formInMapMisiones">
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+				  <mat-form-field appearance="legacy">
 					<mat-label>Check Misiones:</mat-label>
 					<input matInput placeholder="[]" formControlName="inMapCheckMisiones">
 				  </mat-form-field>

@@ -93,12 +93,12 @@ export class DesarrolladorService implements OnInit{
     public coordenadaX: number = 0; 
     public coordenadaY: number = 0; 
     private regionSeleccionada: string = "";
-    private tileSeleccionado: number = 1;
+    private tileImgSeleccionado: number = 1;
     private opcionPropiedades: string = "general";
     public opcionesDesarrolloInMap: any = {
         opcionOverlay: false,
         herramientaInMap: "add",
-        tileSeleccionado: 1,
+        tileImgSeleccionado: 1,
         regionSeleccionada: ""
     }
 
@@ -573,6 +573,9 @@ export class DesarrolladorService implements OnInit{
   }
 
   getReticula(){return this.renderReticula;}
+  getRegion(){return this.mapaGeneralService.getRegion();}
+  getTile(x:number,y:number){return this.mapaGeneralService.getTile(x,y);}
+  async setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){return this.mapaGeneralService.setTile(x,y,formGeneral,formTerreno,formEventos,formMisiones);}
 
   moverReticula(movimiento){
     console.log("Cambiando Reticula")
@@ -2269,13 +2272,17 @@ export class DesarrolladorService implements OnInit{
 			  this.buff.buff[this.buffSeleccionadoIndex].imagen_id = indexImagen;
 			  break;
             case "tile":
-                this.seleccionarTile(indexImagen)
+                this.seleccionarImgTile(indexImagen)
 	  }
   }
 
-  seleccionarTile(tileIndex: number){
-        this.opcionesDesarrolloInMap.tileSeleccionado = tileIndex;
-        this.tileSeleccionado = this.opcionesDesarrolloInMap.tileSeleccionado;
+  seleccionarTile(x: number, y: number){
+		//this.observarDesarrolladorService.next("reloadFormTile");
+  }
+
+  seleccionarImgTile(tileIndex: number){
+        this.opcionesDesarrolloInMap.tileImgSeleccionado = tileIndex;
+        this.tileImgSeleccionado = this.opcionesDesarrolloInMap.tileImgSeleccionado;
   }
 
   setEstadoPanelDerecho(estado:string){
@@ -2437,8 +2444,7 @@ export class DesarrolladorService implements OnInit{
 
   //Setter de formularios:
   setInMapGeneral(val){
-      console.log(val)
-      console.log(this.region)
+      //console.log(val)
     //this.region.isometrico[this.coordenadaX][this.coordenadaY]["nombre"] = val["inMapNombre"]
     //this.region.isometrico[this.coordenadaX][this.coordenadaY]["descripcion"] = val["inMapDescripcion"]
     //this.region.isometrico[this.coordenadaX][this.coordenadaY]["indicadorEvento"] = val["inMapIndicador"]
