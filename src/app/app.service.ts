@@ -49,7 +49,6 @@ export class AppService {
               console.log("TOKEN: "+this.token)
             }
           },(err) => {
-            console.log(err);
           });
 
         //MODO INICIO AUTOVALIDACION:
@@ -113,7 +112,6 @@ export class AppService {
 
     // Observable string sources
     private observarTeclaPulsada = new Subject<string>();
-
 
     // Observable string streams
     observarTeclaPulsada$ = this.observarTeclaPulsada.asObservable();
