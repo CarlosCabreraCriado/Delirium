@@ -164,14 +164,14 @@ export class DesarrolladorComponent implements OnInit{
     private stat_inc_T_Buff = new FormControl('0');
     private funcion_Buff = new FormControl('');
 
-  	//Campos Animaciones:
+  	//Campos Datos Animaciones:
   	private id_Animaciones = new FormControl('0');
   	private nombre_Animaciones = new FormControl('???');
     private duracion_Animaciones = new FormControl('0');
     private subanimaciones_Animaciones = new FormControl('0');
     private sonidos_Animaciones = new FormControl('0');
 
-	//Campos Subanimacion:
+	//Campos Datos Subanimacion:
   	private id_Subanimacion = new FormControl(0);
   	private nombre_Subanimacion = new FormControl('???');
   	private sprite_id_Subanimacion = new FormControl('0');
@@ -187,6 +187,25 @@ export class DesarrolladorComponent implements OnInit{
     private delay_Subanimacion = new FormControl('0');
     private offsetx_Subanimacion = new FormControl('0');
     private offsety_Subanimacion = new FormControl('0');
+
+	//Campos Datos Eventos:
+  	private id_Evento = new FormControl(0);
+  	private nombre_Evento = new FormControl('???');
+  	private categoria_Evento = new FormControl('?');
+
+	//Campos Datos Eventos (Condición):
+  	private comando_Orden_Condicion = new FormControl('?');
+  	private variable_Orden_Condicion = new FormControl('?');
+  	private operador_Orden_Condicion = new FormControl('?');
+  	private encadenadoFalse_Orden_Condicion = new FormControl(0);
+  	private encadenadoTrue_Orden_Condicion = new FormControl(0);
+	
+	//Campos Datos Eventos (Dialogo):
+  	private comando_Orden_Dialogo = new FormControl('?');
+  	private variable_Orden_Dialogo = new FormControl('?');
+  	private operador_Orden_Dialogo = new FormControl('?');
+  	private encadenadoFalse_Orden_Dialogo = new FormControl(0);
+  	private encadenadoTrue_Orden_Dialogo = new FormControl(0);
 
 	//Campos Asignar Isometrico:
   	private asignar_id_sala = new FormControl('0');

@@ -1001,7 +1001,7 @@
     </div>
      
 <!-- *************************************************
-        PANEL ASSETS
+        PANEL DATOS
      ************************************************* -->
     <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
 
@@ -1011,7 +1011,7 @@
         <img class="icono" src="./assets/Iconos/05.png" [ngClass]="renderIconoDatosSeleccionado('Animaciones')" (click)="desarrolladorService.setEstadoDatos('Animaciones')"/>
         <img class="icono" src="./assets/Iconos/07.png" [ngClass]="renderIconoDatosSeleccionado('Enemigos')" (click)="desarrolladorService.setEstadoDatos('Enemigos')"/>
         <img class="icono" src="./assets/Iconos/Icono-Personaje.png" [ngClass]="renderIconoDatosSeleccionado('Personaje')" (click)="desarrolladorService.setEstadoDatos('Personaje')"/>
-        <img class="icono" src="./assets/Iconos/Icono-Equipo.png" [ngClass]="renderIconoDatosSeleccionado('Equipo')" (click)="desarrolladorService.setEstadoDatos('Equipo')"/>
+        <img class="icono" src="./assets/Iconos/Icono-Equipo.png" [ngClass]="renderIconoDatosSeleccionado('Eventos')" (click)="desarrolladorService.setEstadoDatos('Eventos')"/>
         <img class="icono" src="./assets/Iconos/Icono-Misiones.png" [ngClass]="renderIconoDatosSeleccionado('Misiones')" (click)="desarrolladorService.setEstadoDatos('Misiones')"/>
       </div>
 
@@ -1047,6 +1047,15 @@
 			</div>
 		</div>
 
+		<!-- LISTA EVENTOS -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">Eventos: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+			<div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado('animaciones',i)" class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
+				<div class="nombre">{{animacion.nombre}}</div>
+				<!-- <img class="imagenHechizo" src="./assets/Efectos/{{animacion.sprite_id}}.png">-->
+			</div>
+		</div>
+
 	  </div> <!-- FIN CONTENEDOR LISTA IZQUIERDA -->
 	  
 	  <div class="botonAddLista" (click)="desarrolladorService.addDato()">
@@ -1055,6 +1064,7 @@
 
       <div class="contenedorCentral">
 
+		  <!-- CENTRAL DATOS HECHIZOS -->
         <div id="visualizadorHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">
 			<div class="contenedorImagenHechizo">
 				<img (click)="desarrolladorService.abrirSelectorImagen('hechizo')" class="imagenHechizo" src="./assets/Habilidades/Spell/{{desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].imagen_id}}.png"/>
@@ -1157,6 +1167,7 @@
 			</div>
 			</div> <!-- FIN VISUALIZADOR HECHIZOS -->
 
+			<!-- CENTRAL DATOS BUFF -->
 			<div id="visualizadorBuff" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
 			<div class="contenedorImagen">
 				<img (click)="desarrolladorService.abrirSelectorImagen('buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
@@ -1234,6 +1245,7 @@
 
 			</div>       <!-- FIN VISUALIZACIÓN BUFF -->
 
+			<!-- CENTRAL DATOS ANIMACION -->
 			<div id="visualizadorAnimaciones" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
 			<div class="contenedorImagen">
 				<div (click)="desarrolladorService.abrirSelectorImagen('buff')" class="fondoAnimacion"></div>
@@ -1342,6 +1354,85 @@
 				<div class="botonAdd botonSonidos" (click)="desarrolladorService.addSonido()">Añadir</div>
 
 			</div>       <!-- FIN VISUALIZACIÓN ANIMACIONES -->
+
+			<!-- CENTRAL DATOS EVENTOS -->
+			<div id="visualizadorBuff" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
+			<div class="contenedorImagen">
+				<img (click)="desarrolladorService.abrirSelectorImagen('buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
+			</div>
+			<form  class="formularioGeneral" [formGroup]="formBuff">
+
+				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarBuff()"/>
+
+				  <mat-form-field appearance="legacy" class="formId">
+					<mat-label>ID</mat-label>
+					<input matInput placeholder="ID" formControlName="id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre hechizo</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDescripcion">
+					<mat-label>Descripción</mat-label>
+					<input matInput placeholder="Descripción" formControlName="descripcion">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDistancia">
+					<mat-label>Buff/Debuff</mat-label>
+					<input matInput placeholder="" formControlName="tipo_daño">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formObjetivo">
+					<mat-label>Animacion ID</mat-label>
+					<input matInput type="number" placeholder="1" formControlName="animacion_id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formObjetivo">
+					<mat-label>Tipo Daño</mat-label>
+					<input matInput placeholder="Descripción" formControlName="tipo">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formAmenaza">
+					<mat-label>Daño T</mat-label>
+					<input matInput type="number" placeholder="Descripción" formControlName="daño_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formEnergia">
+					<mat-label>Heal T</mat-label>
+					<input matInput type="number" placeholder="Descripción" formControlName="heal_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formPoder">
+					<mat-label>Escudo T</mat-label>
+					<input matInput type="number" placeholder="Descripción" formControlName="escudo_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatInc">
+					<mat-label>Stat Inc</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatIncInicial">
+					<mat-label>Stat Inc Inicial</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc_inicial">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatIncT">
+					<mat-label>Stat Inc T</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formFuncion">
+					<mat-label>Función</mat-label>
+					<input matInput placeholder="Descripción" formControlName="funcion">
+				  </mat-form-field>
+
+			</form>
+
+			</div>       <!-- FIN VISUALIZACIÓN BUFF -->
+
       </div>
 
 	  <div class="contenedorLateral derecha">
@@ -1379,6 +1470,19 @@
 			<div class="hechizo" (click)="desarrolladorService.eliminarBuffHechizo()">
 				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
 				<div class="nombre">Eliminar sonido</div>
+			</div>
+			<div *ngFor="let sonido of this.desarrolladorService.animaciones.sonidos; let i=index"  class="hechizo" (click)="true">
+				<img class="imagenHechizo" src="./assets/Habilidades/Spell/283.png">
+				<div class="nombre">{{sonido.nombre}}</div>
+			</div>
+		</div>
+
+		<!-- LISTA ORDENES EVENTOS -->
+        <div class="tituloArchivo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">Ordenes Evento:: </div>
+		<div class="listaHechizos"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+			<div class="hechizo" (click)="desarrolladorService.eliminarBuffHechizo()">
+				<img class="imagenHechizo" src="./assets/desarrollador/papelera.svg">
+				<div class="nombre">Eliminar Orden</div>
 			</div>
 			<div *ngFor="let sonido of this.desarrolladorService.animaciones.sonidos; let i=index"  class="hechizo" (click)="true">
 				<img class="imagenHechizo" src="./assets/Habilidades/Spell/283.png">

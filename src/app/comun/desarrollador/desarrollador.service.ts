@@ -17,11 +17,11 @@ export class DesarrolladorService implements OnInit{
 	public validacion: any= {}
 
   //Variables de Estado Paneles Principales:
-	public panel= "inmap";
+	public panel= "datos";
 	public estadoInmap= "global";
 	public estadoMazmorra= "parametros";
 	public estadoParametros= "General";
-	public estadoHerramientaDatos= "Hechizos";
+	public estadoHerramientaDatos= "Eventos";
 	public estadoPanelDatosDerecha= "";
 	public estadoDatos= "subir";
 	public estadoAssets= "";
