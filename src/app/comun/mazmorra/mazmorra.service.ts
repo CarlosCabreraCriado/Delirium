@@ -26,20 +26,22 @@ export class MazmorraService implements OnInit{
 	public db;
 
 	//Variables generales:
-	public validacion:any={};
+	public cuenta:any={};
 	public sala:any = {};
 	public dispositivo= "";
 	public partidaIniciada= false;
 	public perfil:any;
 
 	//Definicion estadisticas generales:
+    public clases: any;
 	public hechizos: any;
-	public heroeStat: any;
 	public enemigos: any;
 	public buff: any;
 	public objetos: any;
 	public animaciones: any;
-	public parametros: any;
+
+	public parametros: any; //Pendiente Decomision
+	public heroeStat: any; //Pendiente Decomision
 
 	//Definicion mazmorra actual:
 	public mazmorra: any;
@@ -113,7 +115,7 @@ export class MazmorraService implements OnInit{
 
 		//Suscripcion Socket:
       	this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
-      		if(data.emisor== this.appService.getValidacion().then((result) => {return result.nombre}) && this.appService.getValidacion().then((result) => {return result.tipo})==data.tipoEmisor){console.log("EVITANDO "+data.peticion);return;}
+      		if(data.emisor== this.appService.getCuenta().then((result) => {return result.nombre}) && this.appService.getCuenta().then((result) => {return result.tipo})==data.tipoEmisor){console.log("EVITANDO "+data.peticion);return;}
       		switch(data.peticion){
       			case "log":
       				console.log("Peticion: "+data.peticion);
@@ -339,7 +341,6 @@ export class MazmorraService implements OnInit{
 			/* *************************************************
 					ROUTER CON RESTRICCION DE HOST
 			************************************************* */
-
 			case "+":
 			this.renderMazmorra.estadoControl.estado="seleccionSala";
 			this.mensajeAccion("Selecciona una sala...",1000);
@@ -420,17 +421,17 @@ export class MazmorraService implements OnInit{
 		}
 
 		if(this.renderMazmorra.turno){}
+
 	}
 
 	/* 	----------------------------------------------
 		IMPORTANCION ESTADISTICAS CON SERVIDOR
  	----------------------------------------------*/
-
  	cargarPartida(sala):any{
  		this.sala = sala;
  		if(this.sala.nombre==undefined){
-			console.log("RECONECTANDO: "+this.validacion.nombre)
-			this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.validacion.nombre});
+			console.log("RECONECTANDO: "+this.cuenta.nombre)
+			this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.cuenta.nombre});
 			return this.renderMazmorra;
 		}
 
@@ -445,119 +446,21 @@ export class MazmorraService implements OnInit{
 
  	//Importa las estadisticas generales desde el servidor:
 	importarEstadisticasGenerales(sala): void{
-		/*
-		console.log("Cargando Estadisticas de heroe...");
-		this.heroeStat = this.electronService.ipcRenderer.sendSync('getDatosHeroeStat');
-		console.log("Estadisticas Heroes: ");
-		console.log(this.heroeStat);
-		this.appService.setProgresoCarga("10%");
 
-		console.log("Cargando hechizos de heroe...");
-		this.hechizos = this.electronService.ipcRenderer.sendSync('getDatosHeroeHech');
-		console.log("Hechizos Heroes: ");
-		console.log(this.hechizos);
-		this.appService.setProgresoCarga("20%");
+        console.log("Importando Estadisticas Generales: ");
 
-		console.log("Cargando estadisticas enemigos...");
-		this.enemigos = this.electronService.ipcRenderer.sendSync('getDatosEnemigos');
-		console.log("Enemigos: ");
-		console.log(this.enemigos);
-		this.appService.setProgresoCarga("30%");
+        this.appService.setProgresoCarga("70%");
 
-		console.log("Cargando estadisticas de buffos... ");
-		this.buff = this.electronService.ipcRenderer.sendSync('getDatosBuff');
-		console.log("Buffos: ");
-		console.log(this.buff);
-		this.appService.setProgresoCarga("40%");
+        //Cargar Datos locales
+        this.clases=this.appService.getClases();
+        this.hechizos=this.appService.getHechizos();
+        this.enemigos=this.appService.getEnemigos();
+        this.buff=this.appService.getBuff();
+        this.objetos=this.appService.getObjetos();
+        this.animaciones=this.appService.getAnimaciones();
 
-		console.log("Cargando estadisticas de objetos... ");
-		this.objetos = this.electronService.ipcRenderer.sendSync('getDatosObjetos');
-		console.log("Objetos: ");
-		console.log(this.objetos);
-		this.appService.setProgresoCarga("50%");
-
-		console.log("Cargando animaciones... ");
-		this.animaciones = this.electronService.ipcRenderer.sendSync('getDatosAnimaciones');
-		console.log("Animaciones: ");
-		console.log(this.animaciones);
-		this.appService.setProgresoCarga("60%");
-
-		console.log("Cargando Parametros... ");
-		this.parametros = this.electronService.ipcRenderer.sendSync('getDatosParametros');
-		console.log("Parametros: ");
-		console.log(this.parametros);
-		this.appService.setProgresoCarga("70%");
-		*/
-
-		//Petición estadisticas de heroe:
-		this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Heroes_Stats"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
-			console.log("Estadisticas Heroes: ");
-			console.log(data);	
-			this.heroeStat= data[0];
-			this.appService.setProgresoCarga("10%");	
-
-		//Petición hechizos de heroe:
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Hechizos"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
-				console.log("Hechizos Heroes: ");
-				console.log(data);	
-				this.hechizos= data[0];
-				this.appService.setProgresoCarga("20%");
-
-		//Petición Estadisticas Enemigos:
-				this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Enemigos"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
-					console.log("Enemigos: ");
-					console.log(data);	
-					this.enemigos= data[0];
-					this.appService.setProgresoCarga("30%");
-
-		//Peticion Estadisticas Buffos:	
-					this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Buff"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
-						console.log("Buffos: ");
-						console.log(data);	
-						this.buff= data[0];
-						this.appService.setProgresoCarga("40%");	
-
-		//Peticion Estadisticas Objetos:
-						this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Objetos"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
-							console.log("Objetos: ");
-							console.log(data);	
-							this.objetos= data[0];
-							this.appService.setProgresoCarga("50%");
-
-		//Peticion Animaciones:
-							this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Animaciones"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
-								console.log("Animaciones: ");
-								console.log(data);	
-								this.animaciones= data[0];
-								this.appService.setProgresoCarga("60%");
-
-		//Peticion parametros:
-								this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatos",{datos: ["Parametros"], oficialStats: this.sala.oficialStats, sala: {nombre: this.sala.nombre, host: this.sala.host}, token: this.appService.getToken()}).subscribe((data) => {
-									console.log("Parametros: ");
-									console.log(data);	
-									this.parametros= data[0];
-									this.appService.setProgresoCarga("70%");
-
-									//Cargar Datos locales
-									if(!this.appService.activarDatosOficiales){
-										this.heroeStat=this.appService.getHeroesStats();
-										this.hechizos=this.appService.getHechizos();
-										this.enemigos=this.appService.getEnemigos();
-										this.buff=this.appService.getBuff();
-										this.objetos=this.appService.getObjetos();
-										this.animaciones=this.appService.getAnimaciones();
-										this.parametros=this.appService.getParametros();
-									}
-
-									//Importar la partida:
-									this.importarPartida(sala);
-								});		
-							});		
-						});	
-					});	
-				});	
-			});
-		});
+        //Importar la partida:
+        this.importarPartida(sala);
 
 	}
 
@@ -581,13 +484,13 @@ export class MazmorraService implements OnInit{
  		console.log(" CONFIGURANDO MAZMORRA");
  		console.log("-------------------------");
 		
- 		if(this.validacion.tipo=="Host"){
+ 		if(this.cuenta.tipo=="Host"){
  			this.personaje = {
- 				nombre: this.validacion.nombre,
+ 				nombre: this.cuenta.nombre,
  				heroeIndex: 0
  			};
  		}else{
- 			this.personaje = sala.jugadores.find(j => j.usuario === this.appService.getValidacion().then((result) => {return result.nombre}));
+ 			this.personaje = sala.jugadores.find(j => j.usuario === this.appService.getCuenta().then((result) => {return result.nombre}));
 			this.personaje.heroeIndex = sala.jugadores.indexOf(this.personaje);
  		}
 
@@ -619,8 +522,8 @@ export class MazmorraService implements OnInit{
 				this.sala = this.appService.getSala();
 
 				if(this.sala.nombre==undefined){
-					console.log("RECONECTANDO: "+this.validacion.nombre)
-					this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.validacion.nombre});
+					console.log("RECONECTANDO: "+this.cuenta.nombre)
+					this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.cuenta.nombre});
 				}
 				
 				

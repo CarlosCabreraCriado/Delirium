@@ -1,0 +1,227 @@
+
+<!--   ******************* -->
+<!--         Plantilla       -->
+<!--   ******************* -->
+
+    <!-- LISTA HECHIZOS -->
+    <panelSelectorComponent *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Equipo'" 
+            [tipo]="'Equipo'"
+            [datos]="desarrolladorService.objetos.equipo"
+            [titulo]="'Equipo'"
+            [botonAdd]="true"
+            [lateral]="'izquierda'"
+            [botonEliminarRelacion]="false"
+            >
+    </panelSelectorComponent>
+
+    <panelSelectorComponent *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Consumible'" 
+            [tipo]="'Consumible'"
+            [datos]="desarrolladorService.objetos.consumible"
+            [titulo]="'Consumibles'"
+            [botonAdd]="true"
+            [lateral]="'izquierda'"
+            [botonEliminarRelacion]="false"
+            >
+    </panelSelectorComponent>
+
+        <!-- CENTRAL DATOS  -->
+        <div id="visualizador">
+
+            <div class="contenedorImagen">
+                <ng-container *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Equipo'">
+                    <img class="imagen" (click)="desarrolladorService.abrirSelectorImagen(desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].pieza)" src="./assets/Items/{{desarrolladorService.formatearNombre(desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].pieza)}}/{{desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].imagen_id}}.png"/>
+                </ng-container>
+                <ng-container *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Consumible'">
+                    <img class="imagen" (click)="desarrolladorService.abrirSelectorImagen(desarrolladorService.objetos.consumible[desarrolladorService.indexObjetoSeleccionado].tipo)" src="./assets/Items/{{desarrolladorService.formatearNombre(desarrolladorService.objetos.consumible[desarrolladorService.indexObjetoSeleccionado].tipo)}}/{{desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].imagen_id}}.png"/>
+                </ng-container>
+            </div>
+
+            <ng-container *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Equipo'">
+			<form  id="formularioGeneral" [formGroup]="formEquipo">
+				  <mat-form-field appearance="legacy"  class="formId">
+					<mat-label>ID</mat-label>
+                    <input matInput disabled value="{{id_Equipo.value}}">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre Equipo</mat-label>
+					<input matInput formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDescripcion">
+					<mat-label>Descripción de Equipo</mat-label>
+					<input matInput formControlName="descripcion">
+				  </mat-form-field>
+
+			</form>
+            </ng-container>
+
+            <ng-container *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Consumible'">
+			<form  id="formularioGeneral" [formGroup]="formConsumible">
+				  <mat-form-field appearance="legacy"  class="formId">
+					<mat-label>ID</mat-label>
+                    <input matInput disabled value="{{id_Consumible.value}}">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre Consumible</mat-label>
+					<input matInput formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDescripcion">
+					<mat-label>Descripción de Consumible</mat-label>
+					<input matInput formControlName="descripcion">
+				  </mat-form-field>
+
+			</form>
+            </ng-container>
+
+            <div id="contenedorInferior">
+
+            <!-- CONTENEDOR DE EQUIPO -->
+            <ng-container *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Equipo'">
+                <div class="tituloSeccion">Propiedades:</div>
+                <form  class="formularioPropiedadesEquipo" [formGroup]="formPropiedadesEquipo">
+                    <div class="selector campo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Tipo</mat-label>
+                        <mat-select formControlName="tipo">
+                            <mat-option value="Ligera">Ligera</mat-option>
+                            <mat-option value="Media">Media</mat-option>
+                            <mat-option value="Pesada">Pesada</mat-option>
+                            <mat-option value="Arma dos manos">2 Manos</mat-option>
+                            <mat-option value="Arma una mano">1 Mano</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="selector campo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Pieza</mat-label>
+                        <mat-select formControlName="pieza">
+                            <mat-option value="Arco">Arco</mat-option>
+                            <mat-option value="Báculo">Báculo</mat-option>
+                            <mat-option value="Botas">Botas</mat-option>
+                            <mat-option value="Casco">Casco</mat-option>
+                            <mat-option value="Daga">Daga</mat-option>
+                            <mat-option value="Escudo">Escudo</mat-option>
+                            <mat-option value="Espada">Espada</mat-option>
+                            <mat-option value="Hacha">Hacha</mat-option>
+                            <mat-option value="Lanza">Lanza</mat-option>
+                            <mat-option value="Miscelaneo">Miscelaneo</mat-option>
+                            <mat-option value="Pantalón">Pantalón</mat-option>
+                            <mat-option value="Pechera">Pechera</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="selector campo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Rareza</mat-label>
+                        <mat-select formControlName="rareza">
+                            <mat-option value="Común">Común</mat-option>
+                            <mat-option value="Poco común">Poco común</mat-option>
+                            <mat-option value="Raro">Raro</mat-option>
+                            <mat-option value="Épico">Épico</mat-option>
+                            <mat-option value="Legendario">Legendario</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="campoCheckBox">
+                    <mat-checkbox  formControlName="vinculadoEquipar">Vinc.Equipar</mat-checkbox>
+                    <mat-checkbox  formControlName="vinculadoRecoger">Vinc.Recoger</mat-checkbox>
+                    </div>
+
+                    <div class="contenedorCampoRelacional campoAnimacion campo">
+                                <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].animacion_id!=null" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
+
+                                <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].animacion_id==null" [ngClass]="renderBotonAddSeleccionado('Buff')" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/add.svg"/>
+                    </div>
+
+                </form>
+
+                <div class="tituloSeccion">Estadisticas Base:</div>
+                <form  class="formularioEstadisticas" [formGroup]="formEstadisticasEquipo">
+                      <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>Armadura</mat-label>
+                        <input matInput type="number" min="0" formControlName="armadura">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>Mag. Resist</mat-label>
+                        <input matInput type="number" min="0" formControlName="resistencia_magica">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>Vitalidad</mat-label>
+                        <input matInput type="number" min="0" formControlName="vitalidad">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>AP</mat-label>
+                        <input matInput type="number" min="0" formControlName="AP">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>AD</mat-label>
+                        <input matInput type="number" min="0" formControlName="AD">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>Critico</mat-label>
+                        <input matInput type="number" min="0" formControlName="critico">
+                      </mat-form-field>
+                </form>
+            </ng-container>
+
+            <!-- CONTENEDOR DE CONSUMIBLE -->
+            <ng-container *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Consumible'">
+                <div class="tituloSeccion">Propiedades:</div>
+
+                <form  class="formularioPropiedadesEquipo" [formGroup]="formPropiedadesConsumible">
+
+                    <div class="selector campo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Tipo</mat-label>
+                        <mat-select formControlName="tipo">
+                            <mat-option value="Miscelaneo">Miscelaneo</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="selector campo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Modo</mat-label>
+                        <mat-select formControlName="modo">
+                            <mat-option value="InMap">InMap</mat-option>
+                            <mat-option value="Mazmorra">Mazmorra</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="selector campo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Rareza</mat-label>
+                        <mat-select formControlName="rareza">
+                            <mat-option value="Común">Común</mat-option>
+                            <mat-option value="Poco común">Poco común</mat-option>
+                            <mat-option value="Raro">Raro</mat-option>
+                            <mat-option value="Épico">Épico</mat-option>
+                            <mat-option value="Legendario">Legendario</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                      <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>Max Stack</mat-label>
+                        <input matInput type="number" min="1" formControlName="max_stack">
+                      </mat-form-field>
+
+                    <div class="contenedorCampoRelacional campoAnimacion campo">
+                                <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].animacion_id!=null" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
+
+                                <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].animacion_id==null" [ngClass]="renderBotonAddSeleccionado('Buff')" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/add.svg"/>
+                    </div>
+                </form>
+
+            </ng-container>
+        </div>
+
+    </div>
+

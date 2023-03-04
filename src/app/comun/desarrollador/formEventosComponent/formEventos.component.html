@@ -1,0 +1,434 @@
+
+<!--   ******************* -->
+<!--       FORM EVENTOS    -->
+<!--   ******************* -->
+
+		<!-- LISTA EVENTOS -->
+      <div class="contenedorLateral izquierda">
+        <div class="titulo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">Eventos: </div>
+		<div class="lista"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+			<div *ngFor="let evento of this.desarrolladorService.eventos.eventos; let i=index" [ngClass]="renderListaSeleccionado('eventos',i)" class="hechizo" (click)="desarrolladorService.seleccionarEvento(i)">
+				<div class="nombre">{{evento.nombre}}</div>
+				<!-- <img class="imagenHechizo" src="./assets/Efectos/{{animacion.sprite_id}}.png">-->
+			</div>
+		</div>
+          <!-- Boton Add -->
+          <div class="botonAddLista" (click)="desarrolladorService.addDato()">
+                Añadir
+            </div>
+	  </div> <!-- FIN CONTENEDOR LISTA IZQUIERDA -->
+
+		<!-- CENTRAL DATOS EVENTOS -->
+        <div id="visualizadorEventos" *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+
+			<form  class="formularioGeneral evento" [formGroup]="formEvento">
+
+					<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarEvento()"/>
+
+				  <mat-form-field appearance="legacy">
+					<mat-label>Nombre Evento</mat-label>
+					<input matInput placeholder="Nombre_Evento" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy">
+					<mat-label>Evento ID</mat-label>
+					<input matInput placeholder="ID" formControlName="id">
+				  </mat-form-field>
+
+			</form>
+
+			<form  class="formularioGeneral orden" [formGroup]="formOrden">
+				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarOrden()"/>
+
+                <div class="contenedorCabeceraOrden">
+				  <mat-form-field appearance="legacy" class="formNombreOrden">
+					<mat-label>Nombre Orden</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formCategoriaOrden">
+					<mat-label>Tipo Orden</mat-label>
+					<input matInput placeholder="null" formControlName="tipo">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formIdOrden">
+					<mat-label>ID Orden</mat-label>
+					<input matInput type="number" formControlName="id">
+				  </mat-form-field>
+                </div>
+			</form>
+
+                  <!-- Parametros de Orden -->
+                  <div  class="contenedorParametrosOrden">
+
+                    <!-- Orden Condición -->
+			        <form *ngIf="desarrolladorService.tipoOrdenSeleccionada=='condicion'" class="formularioGeneral" [formGroup]="formOrdenCondicion">
+                      <div  class="contenedorTipoOrden">
+                          <mat-form-field appearance="legacy" class="formParametro">
+                            <mat-label>Variable</mat-label>
+                            <input matInput placeholder="" formControlName="variable">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Operador</mat-label>
+                            <mat-select [formControl]="operador_Orden_Condicion">
+                                <mat-option value="==">Igual</mat-option>
+                                <mat-option value="<">Menor</mat-option>
+                                <mat-option value=">">Mayor</mat-option>
+                                <mat-option value="!=">Distinto</mat-option>
+                                <mat-option value="<=">Menor igual</mat-option>
+                                <mat-option value=">=">Mayor igual</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formParametro">
+                            <mat-label>Valor Variable</mat-label>
+                            <input matInput placeholder="" formControlName="valorVariable">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Tipo Encadenado True</mat-label>
+                            <mat-select [formControl]="tipoEncadenadoTrue_Orden_Condicion">
+                                <mat-option value="evento">Evento</mat-option>
+                                <mat-option value="orden">Orden</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formParametro">
+                            <mat-label>Encadenado True</mat-label>
+                            <input matInput min="1" placeholder="" formControlName="encadenadoTrue">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Tipo Encadenado False</mat-label>
+                            <mat-select [formControl]="tipoEncadenadoFalse_Orden_Condicion">
+                                <mat-option value="evento">Evento</mat-option>
+                                <mat-option value="orden">Orden</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formParametro">
+                            <mat-label>Encadenado False</mat-label>
+                            <input matInput min="1" placeholder="" type="number" formControlName="encadenadoFalse">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Condición -->
+                    </form>
+
+                    <!-- Orden Variable -->
+			        <form *ngIf="desarrolladorService.tipoOrdenSeleccionada=='variable'" class="formularioGeneral" [formGroup]="formOrdenVariable">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Variable">
+                                <mat-option value="add">add</mat-option>
+                                <mat-option value="remove">remove</mat-option>
+                                <mat-option value="modificar">modificar</mat-option>
+                                <mat-option value="suma">suma</mat-option>
+                                <mat-option value="multiplica">multiplica</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Variable Target</mat-label>
+                            <input matInput placeholder="" formControlName="variableTarget">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Valor Nuevo</mat-label>
+                            <input matInput placeholder="" formControlName="valorNuevo">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Valor Operador</mat-label>
+                            <input matInput placeholder="" type="number" formControlName="valorOperador">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Variable -->
+                    </form>
+
+                    <!-- Orden Misión -->
+			        <form *ngIf="desarrolladorService.tipoOrdenSeleccionada=='mision'" class="formularioGeneral" [formGroup]="formOrdenMision">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Mision">
+                                <mat-option value="add">add</mat-option>
+                                <mat-option value="remove">remove</mat-option>
+                                <mat-option value="completar">completar</mat-option>
+                                <mat-option value="fallido">fallido</mat-option>
+                                <mat-option value="incrementar">incrementar</mat-option>
+                                <mat-option value="disminuir">disminuir</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Misión ID</mat-label>
+                            <input matInput type="number" min="1" placeholder="" formControlName="misionId">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Tarea ID</mat-label>
+                            <input matInput type="number" min="1" placeholder="" formControlName="tareaId">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Misión -->
+                    </form>
+
+                    <!-- Orden Trigger -->
+			        <form *ngIf="desarrolladorService.tipoOrdenSeleccionada=='trigger'" class="formularioGeneral" [formGroup]="formOrdenTrigger">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Trigger">
+                                <mat-option value="add">add</mat-option>
+                                <mat-option value="remove">remove</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Trigger ID</mat-label>
+                            <input matInput type="number" min="1" placeholder="" formControlName="triggerId">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Trigger</mat-label>
+                            <input matInput placeholder="" formControlName="trigger">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Trigger -->
+                    </form>
+
+                    <!-- Orden Diálogo -->
+			        <form  *ngIf="desarrolladorService.tipoOrdenSeleccionada=='dialogo'" class="formularioGeneral" [formGroup]="formOrdenDialogo">
+                      <div  class="contenedorTipoOrden">
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Tipo Diálogo</mat-label>
+                            <input matInput placeholder="" formControlName="tipoDialogo">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Contenido</mat-label>
+                            <input matInput placeholder="" formControlName="contenido">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Opciones</mat-label>
+                            <input matInput placeholder="" formControlName="opciones">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Encadenado ID</mat-label>
+                            <input matInput placeholder="" formControlName="encadenadoId">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Tipo Encadenado</mat-label>
+                            <input matInput placeholder="" formControlName="tipoEncadenado">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Diálogo -->
+                    </form>
+
+                    <!-- Orden Hechizo -->
+			        <form *ngIf="desarrolladorService.tipoOrdenSeleccionada=='hechizo'" class="formularioGeneral " [formGroup]="formOrdenHechizo">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Hechizo">
+                                <mat-option value="lanzar">lanzar</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Hechizo ID</mat-label>
+                            <input matInput placeholder="" type="number" min="1" formControlName="hechizoId">
+                          </mat-form-field>
+
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Objetivo</mat-label>
+                            <mat-select [formControl]="objetivo_Orden_Hechizo">
+                                <mat-option value="all">all</mat-option>
+                                <mat-option value="allHeroes">allHeroes</mat-option>
+                                <mat-option value="allEnemigo">allEnemigo</mat-option>
+                                <mat-option value="objetivoTurno">objetivoTurno</mat-option>
+                                <mat-option value="idEnemigo">idEnemigo</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Heroe Objetivo ID</mat-label>
+                            <input matInput placeholder="" formControlName="heroeObjetivoId">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Enemigo Objetivo ID</mat-label>
+                            <input matInput placeholder="" formControlName="enemigoObjetivoId">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Hechizo -->
+                    </form>
+
+                    <!-- Orden Loot -->
+			        <form *ngIf="desarrolladorService.tipoOrdenSeleccionada=='loot'" class="formularioGeneral " [formGroup]="formOrdenLoot">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Loot">
+                                <mat-option value="generarLoot">Generar</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Objetivo</mat-label>
+                            <mat-select [formControl]="objetivo_Orden_Loot">
+                                <mat-option value="allHeroes">All Heroes</mat-option>
+                                <mat-option value="objetivoTurno">Objetivo Turno</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Oro</mat-label>
+                            <input matInput placeholder="" type="number" min="0" formControlName="oro">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Exp</mat-label>
+                            <input matInput placeholder="" type="number" min="0" formControlName="exp">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Loot -->
+                    </form>
+
+                    <!-- Orden Enemigo -->
+			        <form *ngIf="desarrolladorService.tipoOrdenSeleccionada=='enemigo'" class="formularioGeneral " [formGroup]="formOrdenEnemigo">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Enemigo">
+                                <mat-option value="spawn">Spawn</mat-option>
+                                <mat-option value="remove">Remove</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>ID Enemigo</mat-label>
+                            <input matInput placeholder="" type="number" min="1" formControlName="idEnemigo">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Tipo Enemigo</mat-label>
+                            <input matInput placeholder="" formControlName="tipoEnemigo">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Enemigo -->
+                    </form>
+
+                    <!-- Orden Mazmorra -->
+			        <form  *ngIf="desarrolladorService.tipoOrdenSeleccionada=='mazmorra'" class="formularioGeneral " [formGroup]="formOrdenMazmorra">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Mazmorra">
+                                <mat-option value="iniciar">Iniciar</mat-option>
+                                <mat-option value="finalizar">Finalizar</mat-option>
+                                <mat-option value="openSala">Open Sala</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Mazmorra ID</mat-label>
+                            <input matInput placeholder="" type="number" min="1" formControlName="mazmorraId">
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Sala Open ID</mat-label>
+                            <input matInput placeholder="" type="number" min="1" formControlName="salaOpenId">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Mazmorra -->
+                    </form>
+
+                    <!-- Orden Multimedia -->
+			        <form  *ngIf="desarrolladorService.tipoOrdenSeleccionada=='multimedia'" class="formularioGeneral " [formGroup]="formOrdenMultimedia">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Multimedia">
+                                <mat-option value="start">Start</mat-option>
+                                <mat-option value="stop">Stop</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Tipo Multimedia</mat-label>
+                            <mat-select [formControl]="tipoMultimedia_Orden_Multimedia">
+                                <mat-option value="video">Video</mat-option>
+                                <mat-option value="musica">Musica</mat-option>
+                                <mat-option value="sonido">Sonido</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Nombre Asset</mat-label>
+                            <input matInput placeholder="" formControlName="nombreAsset">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Multimedia -->
+                    </form>
+
+                    <!-- Orden Tiempo -->
+			        <form  *ngIf="desarrolladorService.tipoOrdenSeleccionada=='tiempo'" class="formularioGeneral " [formGroup]="formOrdenTiempo">
+                      <div  class="contenedorTipoOrden">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Comando</mat-label>
+                            <mat-select [formControl]="comando_Orden_Tiempo">
+                                <mat-option value="avanzar">Avanzar</mat-option>
+                                <mat-option value="retroceder">Retroceder</mat-option>
+                                <mat-option value="anochecer">Anochecer</mat-option>
+                                <mat-option value="amanecer">Amanecer</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field appearance="legacy" class="formDuracion">
+                            <mat-label>Dias</mat-label>
+                            <input matInput placeholder="" type="number" min="1" formControlName="dias">
+                          </mat-form-field>
+
+                      </div> <!-- Fin Orden Tiempo -->
+                    </form>
+
+                  </div> <!-- Fin Parametros Orden -->
+
+
+			<!-- Inicio panel Ordenes -->
+			<div class="contenedorSubLista contenedorOrdenes">
+				
+				<div class="tituloSubLista">Ordenes:</div>
+				<div *ngFor="let orden of this.desarrolladorService.eventos.eventos[desarrolladorService.eventoSeleccionadoIndex].ordenes; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('orden',i)" (click)="desarrolladorService.seleccionarOrden(i,orden)">{{orden.nombre}} </div>
+			</div>
+
+		</div> <!-- FIN VISUALIZACIÓN EVENTOS -->
+
+		<!-- LISTA TIPOS ORDENES EVENTOS -->
+	  <div class="contenedorLateral derecha">
+        <div class="titulo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">Ordenes Evento:</div>
+		<div class="lista"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+            <div *ngFor="let orden of this.tiposOrdenes; let i=index"  class="hechizo" (click)="desarrolladorService.addOrden(formatearTipoOrden(orden))">
+                <img class="imagen" src="./assets/desarrollador/{{formatearTipoOrden(orden)}}.png">
+				<div [ngStyle]= "renderizarOrdenSeleccionada(orden)" class="nombre">{{orden}}</div>
+                <img class="imagen" src="./assets/desarrollador/{{formatearTipoOrden(orden)}}.png">
+			</div>
+		</div>
+	  </div> <!-- Fin contenedor lateral derecha -->
+

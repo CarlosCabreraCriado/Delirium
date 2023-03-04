@@ -6,25 +6,26 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getToken: () => ipcRenderer.sendSync('getToken'),
     setToken: (token) => ipcRenderer.send('setToken',token),
 
-	//Gestion de validación:
-    getValidacion: () => ipcRenderer.sendSync('getValidacion'),
-    setValidacion: (validacion) => ipcRenderer.sendSync('setValidacion',validacion),
+	//Gestion de Cuenta:
+    getCuenta: () => ipcRenderer.sendSync('getCuenta'),
+    setCuenta: (cuenta) => ipcRenderer.sendSync('setCuenta',cuenta),
 
 	//Gestión de datos:
-    getDatos: () => ipcRenderer.sendSync('getDatos'),
-    setDatos: (datosJuego) => ipcRenderer.sendSync('setDatos',datosJuego),
-    setModelosDatos: (modelo) => ipcRenderer.sendSync('setModelosDatos',modelo),
-    actualizarEstadisticas: (documentos) => ipcRenderer.sendSync('actualizarEstadisticas',documentos),
-    getDatosHeroeStat: () => ipcRenderer.sendSync('getDatosHeroeStat'),
-    getDatosHeroeHech: () => ipcRenderer.sendSync('getDatosHeroeHech'),
-    getDatosEnemigos: () => ipcRenderer.sendSync('getDatosEnemigos'),
-    getDatosBuff: () => ipcRenderer.sendSync('getDatosBuff'),
+    getPerfil: () => ipcRenderer.sendSync('getPerfil'),
+    setPerfil: (perfil) => ipcRenderer.sendSync('setPerfil',perfil),
+    getDatosJuego: () => ipcRenderer.sendSync('getDatosJuego'),
+    setDatosJuego: (datosJuego) => ipcRenderer.sendSync('setDatosJuego',datosJuego),
+    setEventos: (eventos) => ipcRenderer.sendSync('setEventos',eventos),
+
+    getDatosClases: () => ipcRenderer.sendSync('getDatosClases'),
     getDatosObjetos: () => ipcRenderer.sendSync('getDatosObjetos'),
+    getDatosPerks: () => ipcRenderer.sendSync('getDatosPerks'),
+    getDatosHechizos: () => ipcRenderer.sendSync('getDatosHechizos'),
+    getDatosBuff: () => ipcRenderer.sendSync('getDatosBuff'),
     getDatosAnimaciones: () => ipcRenderer.sendSync('getDatosAnimaciones'),
-    getDatosMazmorras: () => ipcRenderer.sendSync('getDatosMazmorras'),
-    getDatosParametros: () => ipcRenderer.sendSync('getDatosParametros'),
-    getDatosPersonajes: () => ipcRenderer.sendSync('getDatosPersonajes'),
-    getDatosPerfil: () => ipcRenderer.sendSync('getDatosPerfil'),
+    getDatosEnemigos: () => ipcRenderer.sendSync('getDatosEnemigos'),
+    getDatosEventos: () => ipcRenderer.sendSync('getDatosEventos'),
+    getDatosMisiones: () => ipcRenderer.sendSync('getDatosMisiones'),
 
 	//Gestión Desarrollador:
     openDesarrollador: () => ipcRenderer.sendSync('desarrollador')

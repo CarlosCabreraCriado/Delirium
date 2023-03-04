@@ -4,6 +4,7 @@ import { HostListener } from '@angular/core';
 import { AppService } from './app.service';
 import { SocketService } from './comun/socket/socket.service';
 import { Subscription } from "rxjs";
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -20,10 +21,11 @@ export class AppComponent implements OnInit{
 
 	//Declara Suscripcion Evento Socket:
   private socketSubscripcion: Subscription
-  private validacion: any;
+  private appServiceSuscripcion: Subscription
+  private cuenta: any = null;
+  private token: string = null;
 
-  constructor(private appService: AppService,private socketService:SocketService){ }
-  
+  constructor(private appService: AppService,private socketService:SocketService, private location: Location){ }
 
   @HostListener('document:keydown', ['$event'])
   		handleKeyboardEvent(event: KeyboardEvent) { 
@@ -32,26 +34,110 @@ export class AppComponent implements OnInit{
 
   async ngOnInit(){
 
-	  this.validacion = await this.appService.getValidacion()
+      console.log("Path: ")
+      console.log(this.location.path())
 
-	  //Check reconeccion Socket:
-	  if(this.validacion!={} && this.validacion!= undefined){
-		this.socketService.enviarSocket('validacion', this.validacion);
-	  }
+      console.log("Mostrando Carga")
+      this.appService.setProgresoCarga("0");
+      this.appService.mostrarPantallacarga(true);
 
-  //Suscripcion Socket:
-       this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
-         
+	  this.cuenta = await this.appService.getCuenta()
+	  this.token = await this.appService.getToken()
+
+      //ABRIR APP DEVELOPER:
+      if(this.location.path()=="/desarrollador"){
+        this.appService.setEstadoApp("desarrollador");
+
+       //ABRIR APP NORMAL: 
+      }else{
+
+          //RECONECTAR EL SOCKET:
+          if(this.cuenta != null && this.token != null){
+            console.log("RECONECTANDO SOCKET")
+            this.socketService.enviarSocket('validacion', this.cuenta);
+            this.socketService.conectarSocket(this.token);
+
+          //Determinación de estado APP:
+          }else{ 
+            console.log("Cargando INDEX...")
+            this.desconectar()
+          }
+      }
+
+       //Suscripcion AppService:
+       this.appServiceSuscripcion = this.appService.eventoAppService.subscribe((comando) =>{
+
+          switch(comando){
+              case "login":
+                  var token = this.appService.token
+                  console.log("Autentificando Socket: ")
+                  console.log("Token: "+token)
+                  this.socketService.conectarSocket(token);
+                  break;
+          }
+        });
+
+       //Suscripcion Socket (INTERNO):
+       this.socketSubscripcion = this.socketService.emisorEventoSocket.subscribe((data) =>{
           switch(data.peticion){
             case "socketDesconectado":
                 console.log("Error en sincronización de socket: ");
-                this.appService.setValidacion({});
-                this.appService.setControl("");
-                this.appService.cambiarUrl("index");
+                this.desconectar();
                 this.appService.mostrarDialogo("Informativo",{contenido:"Se ha producido un error en la sincronización del socket."});
             break;
           }
-        });
-  }
+       })
 
-}
+       //Suscripcion Socket (SERVER):
+       this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
+            switch(data.peticion){
+                case "socketDesconectado":
+                    console.log("Error en sincronización de socket: ");
+                    this.desconectar();
+                    this.appService.mostrarDialogo("Informativo",{contenido:"Se ha producido un error en la sincronización del socket."});
+                break;
+                case "conectado":
+                    this.socketService.enviarSocket('validacion', this.cuenta);
+                break
+                case "serverEnviaSesion":
+                    console.log("INICIANDO SESION:")
+                    console.log(data.contenido)
+                    this.iniciaSesion(data.contenido)
+                break
+            }//FIN SWITCH
+        });
+  } //FIN ONINIT:
+
+    iniciaSesion(sesion: any){
+        this.appService.setSesion(sesion);
+
+        //Carga el INMAP:
+        if(sesion.estadoSesion=="inmap"){
+            console.log("Cargando INMAP...")
+             this.appService.setEstadoApp("inmap");
+        }
+
+    }
+
+    desconectar(){
+        this.appService.setProgresoCarga("0");
+        this.appService.mostrarPantallacarga(true);
+        this.appService.setCuenta(null)
+        this.appService.setToken(null)
+        this.appService.setControl("index");
+        this.appService.setEstadoApp("index");
+    }
+
+} // FIN CLASS
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+
+@import "../../../variables.sass"
+@import "../../../breakpoints.scss"
+
+::ng-deep .contenedorFrame
+
+.contenedorFrame
+  position: absolute
+  width: 100%
+  height: 100%
+  img
+    position: absolute
+
+  .esquina
+    z-index: 2
+  .barra
+    z-index: 1
+
+  .superior
+    top: 0
+  .inferior
+    bottom: 0
+  .derecha
+    right: 0
+  .izquierda
+    left: 0
+
+.negro
+  background-color: $colorFondo2
+
+.papiro
+  background-image: url("../../../assets/ui/paper/ppr_02.png")
+
+

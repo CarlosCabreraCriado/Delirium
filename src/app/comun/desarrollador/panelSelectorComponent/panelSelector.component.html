@@ -1,0 +1,97 @@
+
+<!--   ******************* -->
+<!--   PANEL LISTA SELECCION -->
+<!--   ******************* -->
+
+      <!-- CONTENEDOR LISTA  -->
+      <div class="contenedorLateral" [ngClass]="renderClaseLateral()">
+          <div class="titulo">{{titulo}}</div>
+
+        <div class="lista" >
+
+            <!-- LISTA HECHIZOS -->
+            <ng-container *ngIf="tipo=='Hechizos'">
+                <div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index" [ngClass]="renderListaSeleccionado('hechizo',i)" class="hechizo" (click)="desarrolladorService.seleccionarHechizo(i)">
+                    <img class="imagen" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
+                    <div class="nombre">{{hechizo.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA BUFF -->
+            <ng-container *ngIf="tipo=='Buff'">
+                <div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index" [ngClass]="renderListaSeleccionado('buff',i)" class="hechizo" (click)="desarrolladorService.seleccionarBuff(i)">
+                    <img class="imagen" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
+                    <div class="nombre">{{buff.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA HECHIZO ENCADENADO -->
+            <ng-container *ngIf="tipo=='Hechizo_Encadenado'">
+                <div *ngIf="botonEliminarRelacion" class="hechizo" (click)="desarrolladorService.eliminarEncadenado()" >
+                    <img class="imagen" src="./assets/desarrollador/papelera.svg">
+                    <div class="nombre">Eliminar Hechizo Encadenado</div>
+                </div>
+                <div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index"  class="hechizo" (click)="desarrolladorService.addEncadenado(i)">
+                    <img class="imagen" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
+                    <div class="nombre">{{hechizo.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA BUFF RELACIONAL-->
+            <ng-container *ngIf="tipo=='Buff_relacionado'">
+                <div class="hechizo" (click)="desarrolladorService.eliminarBuffHechizo()">
+                    <img class="imagen" src="./assets/desarrollador/papelera.svg">
+                    <div class="nombre">Eliminar buff</div>
+                </div>
+                <div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index"  class="hechizo" (click)="desarrolladorService.addBuff(i)">
+                    <img class="imagen" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
+                    <div class="nombre">{{buff.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA ANIMACION RELACIONAL-->
+            <ng-container *ngIf="tipo=='Animacion_relacionada'">
+                <div *ngIf="botonEliminarRelacion" class="hechizo" (click)="desarrolladorService.eliminarAnimacionHechizo()">
+                    <img class="imagen" src="./assets/desarrollador/papelera.svg">
+                    <div class="nombre">Eliminar animación</div>
+                </div>
+                <div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index"  class="hechizo" (click)="desarrolladorService.addAnimacionHechizo(i)">
+                    <img class="imagen" src="./assets/desarrollador/animacion.png">
+                    <div class="nombre">{{animacion.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA HECHIZOS DISPONIBLES -->
+            <ng-container *ngIf="tipo=='Hechizos_Clase'">
+                <div *ngFor="let hechizo of datos; let i=index" [ngClass]="renderListaSeleccionado('hechizo',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
+                    <div class="nombre">{{hechizo.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA OBJETOS -->
+            <ng-container *ngIf="tipo=='Equipo'">
+                <div *ngFor="let objeto of datos; let i=index" (click)="this.desarrolladorService.seleccionarObjeto(i)" [ngClass]="renderListaSeleccionado('hechizo',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png">
+                    <div class="nombre">{{objeto.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA CONSUMIBLE -->
+            <ng-container *ngIf="tipo=='Consumible'">
+                <div *ngFor="let objeto of datos; let i=index" (click)="this.desarrolladorService.seleccionarObjeto(i)" [ngClass]="renderListaSeleccionado('hechizo',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/Items/{{objeto.tipo.toLowerCase()}}/{{objeto.imagen_id}}.png">
+                    <div class="nombre">{{objeto.nombre}}</div>
+                </div>
+            </ng-container>
+
+        </div> <!-- FIN LISTA  -->
+
+        <!-- BOTON ADD -->
+        <div class="botonAddLista" *ngIf="botonAdd" (click)="desarrolladorService.addDato(tipo)">
+            Añadir
+        </div>
+
+      </div> <!-- FIN CONTENEDOR LATERAL  -->
+
+

@@ -18,35 +18,35 @@ export class PanelPersonaje implements OnInit {
 	public imagenHechVertical= [0,0,0,0,0];
 
 	//Definicion estadisticas generales:
-	private heroeHech: any;
-	private heroeStat: any;
-	private buff: any;
-	private objetos: any;
 	private perfil: any
-	private personajes: any
-	private heroeSeleccionado : any = null;
+	private clases: any;
+	private objetos: any;
+	private perks: any;
+	private hechizos: any;
+	private buff: any;
+	private heroeSeleccionado : any = "Sin definir";
 
 	constructor(private appService: AppService) {}
 
 	async ngOnInit(){
 
 		console.log("Importando Datos de AppService... ")
-		this.heroeStat= await this.appService.getHeroesStats();
-		this.heroeHech= await this.appService.getHechizos();
-		this.buff= await this.appService.getBuff();
-		this.objetos= await this.appService.getObjetos();
 		this.perfil= await this.appService.getPerfil();
-		this.personajes = await this.appService.getPersonajes();
+		this.clases= await this.appService.getClases();
+		this.objetos= await this.appService.getObjetos();
+		this.perks= await this.appService.getPerks();
+		this.hechizos= await this.appService.getHechizos();
+		this.buff= await this.appService.getBuff();
 		this.heroeSeleccionado= await this.appService.getHeroeSeleccionado();
 
 		//Inicia el renderizado de los sprites de hechizos:
 		this.renderizarImagenHechizos();
 
 		//Cargar Descripciones de personaje:
-		console.log(this.personajes)
+		console.log(this.clases)
 		console.log(this.perfil)
 		for(var i= 0; i < this.perfil.heroes.length; i++){ 
-			this.perfil.heroes[i]["descripcion"] = this.personajes["personajes"].find(j=>j.clase==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
+			this.perfil.heroes[i]["descripcion"] = this.clases["clases"].find(j=>j.nombre==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
 		}
 
 		console.log("HEROES:")
@@ -67,15 +67,15 @@ export class PanelPersonaje implements OnInit {
 			return;
 		}	
 
-        for(var i=0; i< 5; i++){
-			this.idImagenHechizo[i] = this.heroeHech[this.heroeSeleccionado.clase.toLowerCase()][i].imagen_id;
+        for(var i=0; i < 5; i++){
+			this.idImagenHechizo[i] = this.hechizos.hechizos[i].imagen_id;
 		}
 
 		//Inicializando parametros de visualización de Sprites
 		var indexHorizontal=0;
 		var indexVertical= 0;
 
-        for(var i=0; i< 5; i++){
+        for(var i=0; i < 5; i++){
           indexVertical= Math.floor(this.idImagenHechizo[i]/18);
           indexHorizontal= this.idImagenHechizo[i]-indexVertical*18;
           
@@ -102,7 +102,7 @@ export class PanelPersonaje implements OnInit {
 		this.heroeSeleccionado = this.perfil.heroes[index];
 
 		//Añadir parametros al heroe:
-		this.heroeSeleccionado["descripcion"] = this.personajes["personajes"].find(i=>i.clase==this.heroeSeleccionado.clase.toLowerCase())["descripcion"]
+		this.heroeSeleccionado["descripcion"] = this.clases["clases"].find(i=>i.clase==this.heroeSeleccionado.clase.toLowerCase())["descripcion"]
 
 		this.heroeSeleccionado["idImagen"] = this.perfil.heroes[index].idImagen; 
 

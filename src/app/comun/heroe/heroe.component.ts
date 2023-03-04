@@ -22,6 +22,8 @@ export class HeroeComponent {
 	@Input() pantalla: string; 
 	@Input() seleccionable: boolean;
 
+    private retraido: string= "retraido";
+
 	constructor() {}
 
 	renderizarMarcoHeroe(): string{
@@ -141,6 +143,15 @@ export class HeroeComponent {
 		}
 		return estilo;
 	}
+
+    toggleRetraccion(){
+        if(this.retraido=="expandido"){
+            this.retraido = "retraido" 
+        }else{
+            this.retraido = "expandido" 
+        }
+    }
+
 }
 
 

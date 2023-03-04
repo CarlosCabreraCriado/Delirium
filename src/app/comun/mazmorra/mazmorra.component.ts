@@ -78,14 +78,15 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 /* 	----------------------------------------------
 	SUSCRIPCIONES E IMPORTACION DE OBJETOS A SERVICIO
  	----------------------------------------------*/
-	ngOnInit(){
+	async ngOnInit(){
 
 		this.appService.mostrarPantallacarga(true);
 
 		console.log("PERFIL: ");
-		console.log(this.appService.getPerfil());
+		console.log(await this.appService.getPerfil());
+
 		this.mazmorraService.setDispositivo(this.appService.getDispositivo());
-		this.mazmorraService.validacion = this.appService.getValidacion().then((result) => {return result});
+		this.mazmorraService.cuenta = this.appService.getCuenta().then((result) => {return result});
 
 		if(this.appService.control!="mazmorra"){this.appService.setControl("mazmorra")}
 
@@ -94,7 +95,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
       		if(this.appService.control!="mazmorra"){return;}
       		/*
-      		if(data.emisor == this.appService.getValidacion().nombre && this.mazmorraService.validacion.tipo==data.tipoEmisor){
+      		if(data.emisor == this.appService.getCuenta().nombre && this.mazmorraService.cuenta.tipo==data.tipoEmisor){
       			switch(data.peticion){
 
       				case "unirsePartida":
@@ -161,7 +162,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       			case "comandoPartida":
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Comando: "+data.comando);
-      		    	if(data.emisor == this.appService.getValidacion().then((result) => {return result.nombre})){break;}
+      		    	if(data.emisor == this.appService.getCuenta().then((result) => {return result.nombre})){break;}
       		    	switch(data.comando){
 
       		    		case "pasarTurno":
@@ -208,17 +209,16 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		} 
       	});
 
-
 		//Suscripcion AppService:
 		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe((val) => {
         	switch(val){
         		case "Iniciar":
-        			this.mazmorraService.validacion=this.appService.getValidacion();
+        			this.mazmorraService.cuenta=this.appService.getCuenta();
         			
-        			if(this.mazmorraService.validacion.miembro=="Host"){
-        				//this.socketService.enviarSocket('crearPartida', {nombre: this.mazmorraService.validacion.nombre, clave: this.mazmorraService.validacion.clave});
+        			if(this.mazmorraService.cuenta.miembro=="Host"){
+        				//this.socketService.enviarSocket('crearPartida', {nombre: this.mazmorraService.cuenta.nombre, clave: this.mazmorraService.cuenta.clave});
         			}else{
-        				//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.mazmorraService.validacion.nombre, nombreSala: "Oficial", contenido: this.appService.perfil.heroes[0]});
+        				//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.mazmorraService.cuenta.nombre, nombreSala: "Oficial", contenido: this.appService.perfil.heroes[0]});
         			}
         		break;
 
@@ -269,14 +269,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		console.log("ENVIADO");
       		return this.renderMazmorra;
     	});
-
-
-    	if(!this.appService.debug){
-    		//this.mazmorraService.validacion = this.appService.getValidacion();
-    		//this.renderMazmorra = this.mazmorraService.cargarPartida(this.sala);
-    	}
     	
-    	this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.mazmorraService.validacion.nombre});
+    	this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.mazmorraService.cuenta.nombre});
+
 	}
 
 	ngOnDestroy(){
@@ -311,7 +306,6 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	}
 
 	cambiarPantalla(nombrePantalla:string):void{
-
 		//Realiza el cambio de pantalla:
 		if(this.pantalla == nombrePantalla){
 			this.pantalla = 'Inmap';
@@ -628,7 +622,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
  		this.appService.setControl("");
  		this.mazmorraService.musicaMazmorra.volume= 0;
   		this.mazmorraService.musicaMazmorra.remove();
-		this.appService.cambiarUrl("index");	
+		this.appService.setEstadoApp("index");	
  	}
  	
 	/* 	----------------------------------------------
@@ -639,7 +633,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		this.appService.setControl("");
 		this.mazmorraService.musicaMazmorra.volume= 0;
   		this.mazmorraService.musicaMazmorra.remove();
-		this.appService.cambiarUrl("index");
+		this.appService.setEstadoApp("index");
 	}
 
 	seleccionarHeroe(index):void{

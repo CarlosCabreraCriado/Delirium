@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { AppService } from '../../app.service';
@@ -25,7 +24,6 @@ export class InMapComponent implements OnInit{
       		this.appService.mostrarPantallacarga(false);
  		}, 3000);
 
-
 		//Observar Eventos AppService:
 		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
 			(val) => {
@@ -36,7 +34,6 @@ export class InMapComponent implements OnInit{
 						break;
 				}
 		});
-
 
 		//Comprueba el Logueo carga el perfil en Servicio InMap:
 		this.inmapService.cargarPerfil().then(() => {
@@ -58,10 +55,8 @@ export class InMapComponent implements OnInit{
             this.inmapService.cargarGrupo();
 
         });
-
-
-
 	}
+
 
 	abrirConfiguracion(){
 		this.appService.mostrarConfiguracion("", {})

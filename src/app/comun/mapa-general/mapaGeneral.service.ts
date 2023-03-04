@@ -37,10 +37,10 @@ export class MapaGeneralService {
             this.regionSeleccionada = zona;
             //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
             this.estadoInmap= "isometrico"      
+            this.appService.setEstadoInmap(this.estadoInmap);
 
             //this.regularizarRegion();
         })
-
   }
 
   regularizarRegion(){

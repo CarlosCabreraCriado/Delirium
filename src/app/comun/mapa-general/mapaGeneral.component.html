@@ -3,16 +3,21 @@
 <!--         Componente Mapa General       -->
 <!--   *********************************** -->
 
-
     <!-- Fondo Mapa -->
     <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
 
         <!-- <img id="mascaraVision"  src="../../../assets/InMap/mascara.png"/> -->
 
-        <pinch-zoom  id="pinch-zoom" [ngClass]="{'niebla': mostrarNiebla}" [limitPan]="false" [minPanScale]="1" [limit-zoom]="10">
+        <pinch-zoom #pinchZoom id="pinch-zoom" [ngClass]="{'niebla': mostrarNieblaFija} " 
+            [limitPan]="false" 
+            [minPanScale]="1" 
+            [disableZoomControl]="'disable'"
+            [limit-zoom]="10">
+
+            <div id="marcadorCentro"></div>
 
             <!-- Mapa Global -->
-            <div *ngIf="mapaGeneralService.estadoInmap=='global'" class="contenedorMapaGlobal">
+            <div *ngIf="appService.estadoInmap=='global'" class="contenedorMapaGlobal">
 
                 <div class="contenedorMascara">
                 <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
@@ -20,36 +25,46 @@
 
                 <div class="contenedorMarcadoresZonas">
                     <div class="aspect-ratio">
-                    <div class="zona zona1 pulsacion" (click)="mapaGeneralService.seleccionarZona('Asfaloth');"></div>
+                    <div class="zona zona1 pulsacion" (click)="appService.cargarRegion('Asfaloth');"></div>
                     </div>
                 </div>
 
             </div>
 
             <!-- Mapa Isometrico -->
-            <div *ngIf="mapaGeneralService.estadoInmap=='isometrico'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
+            <div [ngClass]="{'niebla': mostrarNiebla}" *ngIf="appService.estadoInmap=='isometrico'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
 
-            <div class="wrapper">
+                <div class="wrapper" [ngStyle]="{'transform': 'scale('+appService.escalaIsometrico+') translate('+traslacionIsometricoX+'px, '+traslacionIsometricoY+'px)'}">
 
-               <div class="floor">
-
+            <div class="floor" [ngStyle]="{'transform': 'translate('+0+'px, '+0+'px) rotateX(55deg) rotateZ(45deg)'}">
+                <!-- rotateX(55deg) rotateZ(45deg) -->
                   <div class="players">
                      <!-- player 1 -->
-                     <div class="player blue" data-name="joe">
-                        <div class="right"></div>
-                        <div class="front">
-                           <div class="top"></div>
-                        </div>
+                     <div class="player animacionFocus" [ngStyle]="{'transform': 'translate('+(50*appService.radioRenderIsometrico)+'px, '+(50*appService.radioRenderIsometrico)+'px)'}">
                      </div>
-                     
                   </div>
-                  <!-- Data Cords are for Future use -->
+
+                  <div id="flechasMovimiento">
+                     <!-- Flecha NorEste -->
+                     <div class="flecha" (click)="moverPersonaje('NorEste')" *ngIf="direccionMovimientoPermitido[0]"  [ngStyle]="{'transform': 'translate('+(50*(appService.radioRenderIsometrico))+'px, '+(50*(appService.radioRenderIsometrico-1))+'px) rotate(90deg)'}">
+                     </div>
+                     <!-- Flecha NorOeste -->
+                     <div class="flecha" (click)="moverPersonaje('NorOeste')" *ngIf="direccionMovimientoPermitido[3]" [ngStyle]="{'transform': 'translate('+(50*(appService.radioRenderIsometrico-1))+'px, '+(50*appService.radioRenderIsometrico)+'px)'}">
+                     </div>
+                     <!-- Flecha SurEste -->
+                     <div class="flecha" (click)="moverPersonaje('SurEste')" *ngIf="direccionMovimientoPermitido[1]" [ngStyle]="{'transform': 'translate('+(50*(appService.radioRenderIsometrico+1))+'px, '+(50*appService.radioRenderIsometrico)+'px) rotate(180deg)'}">
+                     </div>
+                     <!-- Flecha SurOeste -->
+                     <div class="flecha" (click)="moverPersonaje('SurOeste')" *ngIf="direccionMovimientoPermitido[2]" [ngStyle]="{'transform': 'translate('+(50*appService.radioRenderIsometrico)+'px, '+(50*(appService.radioRenderIsometrico+1))+'px) rotate(-90deg)'}">
+                     </div>
+                  </div>
                 
-                     <div *ngFor="let fila of this.mapaGeneralService.region.isometrico;let i = index" class="row">
-                         <div *ngFor="let tile of this.mapaGeneralService.region.isometrico[i];let j = index" data-cords='[i,j]' class="tile" [ngClass]="renderTile(i,j)" (click)="clickTile(i,j,$event)" (auxclick)="clickTileAux(i,j,$event)" >
-                            <div [ngClass]="renderTile(i,j)" class="marcador"></div>
+                     <div *ngFor="let fila of this.appService.renderIsometrico;let i = index" class="row">
+                         <div *ngFor="let tile of this.appService.renderIsometrico[i];let j = index" data-cords='[tile.coordenadaX,tile.coordenadaY]' class="tile" [ngStyle]="{'height': tileHeight[i]+'px','width': tileWidth[j]+'px'}" [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)" (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >
+                            <div [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" class="marcador"></div>
                             <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
                             <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
+                            <img *ngIf="tile.ubicacionEspecial!=null" class="imagenMarcador" src="assets/Iconos/indicadores/{{renderImagenMarcador(tile.ubicacionEspecial)}}.png"/>
                          </div> 
                      </div>
 

@@ -1,20 +1,25 @@
 
 <!--   ******************* -->
-<!--           Heroe       -->
+<!--       PLACA HEROE     -->
 <!--   ******************* -->
 
-<div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe(indexHeroe)">
+<div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe(indexHeroe)" [ngClass]="retraido">
 
-	<div *ngIf="tipo=='jugador'" class="fondoDetalle">
-		<div class="frameDetalle"></div>
-	</div>
+    <!-- DETALLE -->
+    <div class="contenedorDetalle" [ngClass]="retraido">
+        <div *ngIf="tipo=='jugador'" class="fondoDetalle">
+            <div class="frameDetalle"></div>
+        </div>
 
-	<div *ngIf="tipo=='jugador'" class="nombre Texto3">{{Nombre}}</div>
+        <div *ngIf="tipo=='jugador'" class="nombre Texto3">{{Nombre}}</div>
 
-	<img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
+        <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
 
+
+    </div>
+
+    <!-- FRAME CIRCULO -->
 	<div class="frameCirculo">
-
 		<img  *ngIf="tipo=='jugador'" class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{idImagen}}.png"/>	
 
 		<div *ngIf="tipo=='seleccionar'" class="contenedorIcono seleccionar">
@@ -25,7 +30,7 @@
 			<img class="imagenPersonaje" src="../../../assets/Iconos/Rol-Heal.png"/>	
 		</div>
 
-		<img src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
+        <img (click)="toggleRetraccion()" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
 
 		<div *ngIf="tipo=='jugador'" class="contenedorFrameRol">
 			<img class="iconoRol" src="../../../assets/Iconos/Rol-{{Roll}}.png"/>	
@@ -37,43 +42,13 @@
 			<img class="frameNivel Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 	</div>
+
+        <div *ngIf="tipo=='jugador'" class="contenedorBarras" [ngClass]="retraido" >
+            <barraComponent [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
+            <barraComponent [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+            <!-- <barraComponent [tipo]="'Mana'" class="barra"></barraComponent> -->
+        </div>
 	
-	<div *ngIf="tipo=='jugador'" class="contenedorBarras">
-		<barraComponent [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
-		<barraComponent [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
-		<!-- <barraComponent [tipo]="'Mana'" class="barra"></barraComponent> -->
-	</div>
 
 </div>
-<!--
-			HEROE ANTIGUO 
 
-<div *ngIf="appService.dispositivo!='Movil'" [ngClass]="'nHeroes'+renderMazmorra.heroes.length">
-        <div *ngFor="let heroes of renderMazmorra.heroes; let i = index" class="Panel Heroe" [ngClass]="renderizarMarcoHeroe(i)" (click)="seleccionarHeroe(i);">
-
-            <img src="./assets/Mazmorras/Marco-Heroe.png" class="Marco-Heroe">
-            <div class="Nombre-Heroe Texto2">{{renderMazmorra.heroes[i].nombre}}</div>
-            <div class="contenedorMarcoHeroe">
-                <img *ngIf="!sala.jugadores[i].online" src="./assets/General/disconected.svg" class="desconectado">
-                <img src="./assets/Clases/{{renderMazmorra.heroes[i].clase.split(' ').join('_').toLowerCase()}}.png" class="Imagen-Heroe">
-                <appAnimacionEfecto #animacionEfecto [heroe]="heroes" [heroeAnimacion]="heroes.animacion"></appAnimacionEfecto>
-                <appAnimacionNumero #animacionNumero [heroe]="heroes" [heroeVida]="heroes.vida" [heroeIndex]="i"></appAnimacionNumero>
-                <appMarcoClase #marcoClase [heroe]="heroes" [heroeIndex]="i"></appMarcoClase>
-            </div>
-            <div class="Barras-Vida-Mana-Heroe">
-                <div class="Container-Vida-Heroe">
-                    <div class="Vida-Heroe Texto3" [style.width]="renderMazmorra.heroes[i].vida+'%'">{{renderMazmorra.heroes[i].vida}}%</div>
-                    <div class="Escudo" [style.width]="renderMazmorra.heroes[i].escudo+'%'" [style.marginLeft]="-renderMazmorra.heroes[i].escudo/2+'%'" [style.left]="renderizarEscudoHeroe(i)"></div>
-                </div>
-                <div class="Container-Mana-Heroe">
-                    <div class="Mana-Heroe Texto3" [style.width]="renderMazmorra.heroes[i].recurso+'%'">{{renderMazmorra.heroes[i].recurso}}%</div>
-                </div>
-                <div class="Buffos-DeBuffos-Heroe">
-                
-                    <div *ngFor="let buff of renderMazmorra.heroes[i].buff; let j = index" [ngClass]="renderizarClaseBuffosHeroe(i,j)">{{renderMazmorra.heroes[i].buff[j].duracion}}</div>
-            
-                </div>
-            </div>
-        </div>
-    </div>
--->

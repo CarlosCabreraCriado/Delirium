@@ -24,14 +24,15 @@ export class IndexComponent implements OnInit{
 	public cursor: number;
 	private cursorMin: number= 1;
 	private cursorMax: number= 2;
-	private validacion: any = {};
+	private cuenta: any = {};
 	public procesando: boolean= false;
 	private pantalla: string= "inicio";
 	private errorInicio: string = null;
   	
   	@ViewChild('clave',{static: false}) claveElement:ElementRef; 
+  	@ViewChild('usuario',{static: false}) usuarioElement:ElementRef; 
 
-	ngOnInit(){
+	async ngOnInit(){
 
 		this.logout(); //Logout al cargar pagina 
 
@@ -44,15 +45,21 @@ export class IndexComponent implements OnInit{
         }
       );
 
-		this.validacion= this.appService.getValidacion();
-		console.log(this.validacion);
-		if(this.validacion.nombre==undefined){
-			this.validacion = {
+		this.cuenta= await this.appService.getCuenta();
+		console.log(this.cuenta);
+
+		if(this.cuenta.nombre==undefined){
+			this.cuenta = {
 				nombre: "Sesión no iniciada."
 			};
 		}else{
 			this.appService.claveValida= true;
 		}
+
+		setTimeout(()=>{    
+      		this.appService.mostrarPantallacarga(false);
+ 		}, 3000);
+
 	}
 
 
@@ -60,7 +67,7 @@ export class IndexComponent implements OnInit{
 		
 		if(this.appService.control=="null"){
         	this.appService.setControl("index");
-        	this.appService.cambiarUrl("/index");
+        	this.appService.setEstadoApp("index");
         	return;
       	}
 
@@ -87,62 +94,15 @@ export class IndexComponent implements OnInit{
 		this.appService.mostrarCrearCuenta()
 	}
 
-	async heroes(){
-        var validacion = await this.appService.getValidacion();
-		this.appService.mostrarPantallacarga(true);
-		this.appService.getDatos(validacion.clave);
-		this.appService.setControl("heroes");
-		setTimeout(()=>{    
-      		this.appService.cambiarUrl("/heroes");
- 		}, 2000);
-	}
-
-	async crearPartida(){
-        var validacion = await this.appService.getValidacion() 
-		if(validacion.tipo!="Host"){
-			this.appService.mostrarDialogo("Informativo",{contenido:"Acceso restringido a cuentas Host."});
-			return;
-		}
-
-		if(this.appService.dispositivo!="Desktop"){
-			this.appService.mostrarDialogo("Informativo",{contenido:"Solo disponible desde Desktop"});
-			return;
-		}
-
-		this.appService.mostrarPantallacarga(true);
-		this.appService.setControl("sala");
-		setTimeout(()=>{    
-			this.appService.setProgresoCarga("100");
-      		this.appService.cambiarUrl("/sala");
- 		}, 2000);
-	}
-
-	async unirsePartida(){
-
-        var validacion = await this.appService.getValidacion();
-
-		if(validacion.tipo!="Cliente"){
-			this.appService.mostrarDialogo("Informativo",{contenido:"Acceso restringido a cuentas Cliente."});
-			return;
-		}
-
-		this.appService.mostrarPantallacarga(true);
-		this.appService.setControl("unirsePartida");
-		setTimeout(()=>{    
-			this.appService.setProgresoCarga("100");
-      		this.appService.cambiarUrl("/unirsePartida");
- 		}, 2000);
-	}
-
 	retroceder():void{
 		this.pantalla="inicio";
 	}
 
 	logout():void{
-		this.validacion = {};
-		this.socketService.enviarSocket("logout",this.validacion);
+		this.cuenta = {};
+		this.socketService.enviarSocket("logout",this.cuenta);
 		this.appService.claveValida = false;
-		this.appService.setValidacion(this.validacion);
+		this.appService.setCuenta(this.cuenta);
 		this.appService.setSala({});
 	}
 
@@ -157,35 +117,50 @@ export class IndexComponent implements OnInit{
 	}
 
 	checkClave():void{
-		if(this.appService.claveValida==false){
 
+		if(this.appService.claveValida==false){
 					this.procesando=true;
-					console.log("Comprobando clave: "+ parseInt(this.claveElement.nativeElement.value));
-					var clave = {
-						clave: parseInt(this.claveElement.nativeElement.value)
+					console.log("Comprobando credenciales: ");
+					console.log("Usuario: "+ this.usuarioElement.nativeElement.value);
+					console.log("Password: "+ this.claveElement.nativeElement.value);
+
+					var credenciales = {
+						usuario: this.usuarioElement.nativeElement.value,
+						password: this.claveElement.nativeElement.value
 					}
 
-					this.http.post(this.appService.ipRemota+"/deliriumAPI/validacion",clave).subscribe((data) => {
-						
-						if(data){
-							this.appService.setToken(data["token"]);
-							this.appService.setInicio(data["datos"]);
-							this.validacion= this.appService.getValidacion();
-							if(this.validacion){
-								this.socketService.enviarSocket('validacion', this.validacion);
-								this.appService.getPerfil();
-								this.appService.setModelosDatos();
-								this.appService.claveValida= true;
-								this.errorInicio = null;
-								this.procesando= false;
-								this.appService.mostrarPantallacarga(true);
-								this.appService.setControl("inmap");
-								setTimeout(()=>{    
-									this.appService.setProgresoCarga("100");
-									this.appService.cambiarUrl("/inmap");
-								}, 2000);
-							}
-						}
+					this.http.post(this.appService.ipRemota+"/deliriumAPI/login",credenciales).subscribe((data) => {
+
+                        //Error 
+                        if(!data["success"]){
+						    this.procesando= false;
+						    this.appService.claveValida= false;
+						    this.appService.mostrarDialogo("Error",{contenido:"El usuario o la contraseña no son validos."});
+                        }else{
+
+                            if(data){
+
+                                console.log("DATOS RECIBIDOS")
+                                console.log(data)
+
+                                //Inicialización de datos:
+                                this.appService.setCuenta(data["cuenta"])
+                                this.appService.setToken(data["token"]);
+                                this.appService.setDatosJuego(data["datosJuego"]);
+                                this.appService.setEventos(data["eventos"]);
+                                this.appService.setPerfil(data["perfil"]);
+
+                                this.socketService.enviarSocket('validacion', data["cuenta"]);
+                                
+                                //Retirar Pantalla Carga:
+                                this.appService.claveValida= true;
+                                this.errorInicio = null;
+                                this.procesando= false;
+                                this.appService.mostrarPantallacarga(true);
+                                this.appService.finalizarLogin();
+                            }
+                        }
+
 					},(err) => {
 						console.log(err);
 						this.procesando= false;
@@ -197,6 +172,7 @@ export class IndexComponent implements OnInit{
 					this.claveElement.nativeElement.value = "";
 				}
 	}
+
 }
 
 

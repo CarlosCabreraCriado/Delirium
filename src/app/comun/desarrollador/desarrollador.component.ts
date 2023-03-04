@@ -34,22 +34,20 @@ export class DesarrolladorComponent implements OnInit{
   	//Variables Parametros Enemigos:
   	private mostrarTipoEnemigo: boolean= false;
 
+  	//Variables Parametros Enemigos:
+  	readonly tiposOrdenes = ["Condición","Variable","Misión","Trigger","Diálogo","Hechizo","Loot","Enemigo","Mazmorra","Multimedia","Tiempo"];
+
   	//Formularios
   	private formGeneral: FormGroup;
   	private formSala: FormGroup;
   	private formEnemigos: FormGroup;
-  	private formEventos: FormGroup;
+  	private formEventosMazmorra: FormGroup;
   	private formDialogos: FormGroup;
   	private formAsignarSala: FormGroup;
   	private formAsignarEvento: FormGroup;
-  	private formHechizos: FormGroup;
-  	private formBuff: FormGroup;
-  	private formAnimaciones: FormGroup;
-  	private formSubanimacion: FormGroup;
-  	private formSonidos: FormGroup;
   	private formInMapGeneral: FormGroup;
   	private formInMapTerreno: FormGroup;
-  	private formInMapEventos: FormGroup;
+  	private formInMapTrigger: FormGroup;
   	private formInMapMisiones: FormGroup;
 
   	//Campos General:
@@ -84,8 +82,8 @@ export class DesarrolladorComponent implements OnInit{
     private evento_intervalo_id_Enemigos = new FormControl('0');
     private evento_intervalo_tiempo_Enemigos = new FormControl('0');
 
-	//Campos Eventos:
-	private id_evento = new FormControl('0');
+	//Campos Eventos (MAZMORRA):
+	private id_eventoMazmorra = new FormControl('0');
 	private id_mazmorra = new FormControl('0');
 	private id_sala = new FormControl('0');
 	private tipo_evento = new FormControl('0');
@@ -129,83 +127,6 @@ export class DesarrolladorComponent implements OnInit{
 	private minimo_tiempo = new FormControl('0');
 	private redirect_dialogo_id = new FormControl('0');
 	private next_evento_id = new FormControl('0');
-
-  	//Campos Hechizos:
-  	private id_Hechizos = new FormControl('0');
-  	private nombre_Hechizos = new FormControl('???');
-    private descripcion_Hechizos = new FormControl('????????');
-    private animacion_Hechizos = new FormControl('1');
-    private distancia_Hechizos = new FormControl('1');
-    private objetivo_Hechizos = new FormControl('EU');
-    private tipo_dano_Hechizos = new FormControl('F');
-    private dano_Hechizos = new FormControl('0');
-    private heal_Hechizos = new FormControl('0');
-    private escudo_Hechizos = new FormControl('0');
-    private amenaza_Hechizos = new FormControl('1');
-    private energia_Hechizos = new FormControl('0');
-    private poder_Hechizos = new FormControl('0');
-    private funcion_Hechizos = new FormControl('');
-
-  	//Campos Buff:
-  	private id_Buff = new FormControl('0');
-  	private nombre_Buff = new FormControl('???');
-    private descripcion_Buff = new FormControl('????????');
-    private duracion_Buff = new FormControl('????????');
-    private tipo_dano_Buff = new FormControl('F');
-    private animacion_Buff = new FormControl('1');
-    private dano_Buff = new FormControl('0');
-    private heal_Buff = new FormControl('0');
-    private escudo_Buff = new FormControl('0');
-    private dano_T_Buff = new FormControl('0');
-    private heal_T_Buff = new FormControl('0');
-    private escudo_T_Buff = new FormControl('0');
-    private stat_inc_Buff = new FormControl('0');
-    private stat_inc_inicial_Buff = new FormControl('0');
-    private stat_inc_T_Buff = new FormControl('0');
-    private funcion_Buff = new FormControl('');
-
-  	//Campos Datos Animaciones:
-  	private id_Animaciones = new FormControl('0');
-  	private nombre_Animaciones = new FormControl('???');
-    private duracion_Animaciones = new FormControl('0');
-    private subanimaciones_Animaciones = new FormControl('0');
-    private sonidos_Animaciones = new FormControl('0');
-
-	//Campos Datos Subanimacion:
-  	private id_Subanimacion = new FormControl(0);
-  	private nombre_Subanimacion = new FormControl('???');
-  	private sprite_id_Subanimacion = new FormControl('0');
-    private duracion_Subanimacion = new FormControl('0');
-    private num_frames_Subanimacion = new FormControl('1');
-    private frame_ref_Subanimacion = new FormControl('0');
-
-    private hue_Subanimacion = new FormControl('0');
-    private sepia_Subanimacion = new FormControl('0');
-    private brillo_Subanimacion = new FormControl('0');
-    private saturacion_Subanimacion = new FormControl('0');
-
-    private delay_Subanimacion = new FormControl('0');
-    private offsetx_Subanimacion = new FormControl('0');
-    private offsety_Subanimacion = new FormControl('0');
-
-	//Campos Datos Eventos:
-  	private id_Evento = new FormControl(0);
-  	private nombre_Evento = new FormControl('???');
-  	private categoria_Evento = new FormControl('?');
-
-	//Campos Datos Eventos (Condición):
-  	private comando_Orden_Condicion = new FormControl('?');
-  	private variable_Orden_Condicion = new FormControl('?');
-  	private operador_Orden_Condicion = new FormControl('?');
-  	private encadenadoFalse_Orden_Condicion = new FormControl(0);
-  	private encadenadoTrue_Orden_Condicion = new FormControl(0);
-	
-	//Campos Datos Eventos (Dialogo):
-  	private comando_Orden_Dialogo = new FormControl('?');
-  	private variable_Orden_Dialogo = new FormControl('?');
-  	private operador_Orden_Dialogo = new FormControl('?');
-  	private encadenadoFalse_Orden_Dialogo = new FormControl(0);
-  	private encadenadoTrue_Orden_Dialogo = new FormControl(0);
 
 	//Campos Asignar Isometrico:
   	private asignar_id_sala = new FormControl('0');
@@ -303,79 +224,9 @@ export class DesarrolladorComponent implements OnInit{
         	evento_intervalo_tiempo: this.evento_intervalo_tiempo_Enemigos
 	    });
 
-		//Inicializacion formulario Hechizos:
-	    this.formHechizos = this.formBuilder.group({
-	    	id: this.id_Hechizos,
-	    	nombre: this.nombre_Hechizos,
-        	categoria: "",
-        	tipo: "BASICO",
-        	imagen_id: 0,
-        	nivel: 1,
-        	recurso: this.energia_Hechizos,
-        	poder: this.poder_Hechizos,
-        	acciones: 0,
-        	distancia: this.distancia_Hechizos,
-        	objetivo: this.objetivo_Hechizos,
-        	tipo_daño: this.tipo_dano_Hechizos,
-        	daño_dir: this.dano_Hechizos,
-        	heal_dir: this.heal_Hechizos,
-        	escudo_dir: this.escudo_Hechizos,
-        	mod_amenaza: this.amenaza_Hechizos,
-        	buff_id: 0, 
-        	animacion_id: this.animacion_Hechizos, 
-        	funcion: this.funcion_Hechizos,
-        	hech_encadenado_id: 0, 
-        	descripcion: this.descripcion_Hechizos
-	    });
-
-		//Inicializacion formulario Buff:
-	    this.formBuff = this.formBuilder.group({
-	    	id: this.id_Buff,
-	    	nombre: this.nombre_Buff,
-        	duracion: this.duracion_Buff,
-        	tipo: "BUFF",
-        	imagen_id: 1,
-        	tipo_daño: this.tipo_dano_Buff,
-        	daño_t: this.dano_T_Buff,
-        	heal_t: this.heal_T_Buff,
-        	escudo_t: this.escudo_T_Buff,
-        	stat_inc: this.stat_inc_Buff,
-        	stat_inc_inicial: this.stat_inc_inicial_Buff,
-        	stat_inc_t: this.stat_inc_T_Buff,
-        	animacion_id: this.animacion_Buff, 
-        	funcion: this.funcion_Buff,
-        	descripcion: this.descripcion_Buff
-	    });
-
-		//Inicializacion formulario Animaciones:
-	    this.formAnimaciones = this.formBuilder.group({
-	    	id: this.id_Animaciones,
-	    	nombre: this.nombre_Animaciones,
-        	duracion: this.duracion_Animaciones,
-			subanimaciones: [],
-			sonidos: []
-	    });
-
-		//Inicializacion formulario Subanimación:
-	    this.formSubanimacion = this.formBuilder.group({
-	    	id: this.desarrolladorService.subanimacionSeleccionadoIndex+1,
-	    	nombre: this.nombre_Subanimacion,
-        	duracion: this.duracion_Subanimacion,
-        	sprite_id: this.sprite_id_Subanimacion,
-        	frame_ref: this.frame_ref_Subanimacion,
-        	num_frames: this.num_frames_Subanimacion,
-        	hue_filter: this.hue_Subanimacion,
-        	sepia: this.sepia_Subanimacion,
-        	brillo: this.brillo_Subanimacion,
-        	saturation: this.saturacion_Subanimacion,
-        	delay: this.delay_Subanimacion,
-        	offset_x: this.offsetx_Subanimacion,
-        	offset_y: this.offsety_Subanimacion
-	    });
-
-		//Inicializacion formulario Eventos:
-	    this.formEventos = this.formBuilder.group({
-			id_evento: this.id_evento,
+		//Inicializacion formulario EventosMazmorra:
+	    this.formEventosMazmorra = this.formBuilder.group({
+			id_eventoMazmorra: this.id_eventoMazmorra,
 			id_mazmorra: this.id_mazmorra, 
 			id_sala: this.id_sala,
 			tipo: this.tipo_evento,
@@ -406,6 +257,53 @@ export class DesarrolladorComponent implements OnInit{
 			evento_next_id: this.evento_next_id
 	    });
 
+
+		//Inicializacion formulario Orden Parametros:
+        /*
+	    this.formParametrosOrden = this.formBuilder.group({
+            variable: this.variable_Orden_Parametro,
+            operador: this.operador_Orden_Parametro,
+            valorVariable: this.valorVariable_Orden_Parametro,
+            tipoEncadenadoTrue: this.tipoEncadenadoTrue_Orden_Parametro,
+            encadenadoTrue: this.encadenadoTrue_Orden_Parametro,
+            tipoEncadenadoFalse: this.tipoEncadenadoFalse_Orden_Parametro,
+            encadenadoFalse: this.encadenadoFalse_Orden_Parametro,
+            comando: this.comando_Orden_Parametro,
+            variableTarget: this.variableTarget_Orden_Parametro,
+            valorNuevo: this.valorNuevo_Orden_Parametro,
+            valorOperador: this.valorOperador_Orden_Parametro,
+            tipoDialogo: this.tipoDialogo_Orden_Parametro,
+            contenido: this.contenido_Orden_Parametro,
+            opciones: this.opciones_Orden_Parametro,
+            encadenadoId: this.encadenadoId_Orden_Parametro,
+            tipoEncadenado: this.tipoEncadenado_Orden_Parametro,
+            misionId: this.misionId_Orden_Parametro,
+            tareaId: this.tareaId_Orden_Parametro,
+            triggerId: this.triggerId_Orden_Parametro,
+            trigger: this.trigger_Orden_Parametro,
+            tipoMultimedia: this.tipoMultimedia_Orden_Parametro,
+            nombreAsset: this.nombreAsset_Orden_Parametro,
+            hechizoId: this.heroeObjetivoId_Orden_Parametro,
+            objetivoOrden: this.objetivo_Orden_Parametro,
+            heroeObjetivoId: this.heroeObjetivoId_Orden_Parametro,
+            enemigoObjetivoId: this.enemigoObjetivoId_Orden_Parametro,
+            objetivo: this.objetivo_Orden_Parametro,
+            oro: this.oro_Orden_Parametro,
+            exp: this.exp_Orden_Parametro,
+            generado: this.generado_Objeto_Parametro,
+            objetoId: this.objetoId_Objeto_Parametro,
+            probTipo: this.probTipo_Objeto_Parametro,
+            probRareza: this.probRareza_Objeto_Parametro,
+            nivelMin: this.nivelMin_Objeto_Parametro,
+            nivelMax: this.nivelMax_Objeto_Parametro,
+            idEnemigo: this.idEnemigo_Orden_Parametro,
+            tipoEnemigo: this.tipoEnemigo_Orden_Parametro,
+            dias: this.dias_Orden_Parametro,
+            mazmorraId: this.mazmorraId_Orden_Mazmorra,
+            salaOpenId: this.salaOpenId_Orden_Mazmorra
+        }); 
+        */
+
 		//Inicialización formulario Asignar Sala:
 	    this.formAsignarSala = this.formBuilder.group({
 	   		asignar_id_sala: this.asignar_id_sala
@@ -434,7 +332,7 @@ export class DesarrolladorComponent implements OnInit{
 	    });
 
 	//Campos Campos InMap Eventos:
-	    this.formInMapEventos = this.formBuilder.group({
+	    this.formInMapTrigger = this.formBuilder.group({
   	        inMapProbabilidadRandom: this.inMapProbabilidadRandom,
   	        inMapCategoriaRandom: this.inMapCategoriaRandom,
   	        inMapCheckTrigger: this.inMapCheckTrigger, 
@@ -467,35 +365,9 @@ export class DesarrolladorComponent implements OnInit{
 				
 	          	break;
 				
-	          	case "reloadFormEventos":
+	          	case "reloadFormEventosMazmorra":
 				case "reloadForm":
-	          		this.formEventos.setValue(this.desarrolladorService.mazmorra["eventos"][this.desarrolladorService.mazmorra.eventos.indexOf(this.desarrolladorService.mazmorra.eventos.find(i=> i.id_evento==this.desarrolladorService.eventoSeleccionadoId))]);
-	          	break;
-
-	          	case "reloadFormHechizos":
-				case "reloadForm":
-	          		this.formHechizos.setValue(this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex]);
-	          	break;
-
-	          	case "reloadFormBuff":
-				case "reloadForm":
-	          		this.formBuff.setValue(this.desarrolladorService.buff.buff[this.desarrolladorService.buffSeleccionadoIndex]);
-	          	break;
-
-	          	case "reloadFormAnimaciones":
-				case "reloadForm":
-					console.log(this.formAnimaciones)
-					console.log(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex])
-
-					//this.formAnimaciones.value.duracion = this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].duracion
-
-	          		this.formAnimaciones.setValue(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex]);
-	          	break;
-
-	          	case "reloadFormSubAnimacion":
-				case "reloadForm":
-				console.log(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex])
-	          		this.formSubanimacion.setValue(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]);
+	          		this.formEventosMazmorra.setValue(this.desarrolladorService.mazmorra["eventos"][this.desarrolladorService.mazmorra.eventos.indexOf(this.desarrolladorService.mazmorra.eventos.find(i=> i.id_eventoMazmorra==this.desarrolladorService.eventoSeleccionadoId))]);
 	          	break;
 
 	          	case "reloadFormTile":
@@ -509,6 +381,7 @@ export class DesarrolladorComponent implements OnInit{
 	          	case "reloadReticula":
 	          		 //this.renderReticula = this.desarrolladorService.getReticula();
 	          	break;
+
 	          	
 	          }
 	        }
@@ -539,38 +412,6 @@ export class DesarrolladorComponent implements OnInit{
 			console.log(val)
 		});
 
-		//Suscripcion de dambios formulario Hechizos:
-		this.formHechizos.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.hechizoSeleccionadoIndex+1){
-				this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex]= val;
-			}
-			console.log(val)
-		});
-
-		//Suscripcion de dambios formulario BUFF:
-		this.formBuff.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.buffSeleccionadoIndex+1){
-				this.desarrolladorService.buff.buff[this.desarrolladorService.buffSeleccionadoIndex]= val;
-			}
-			console.log(val)
-		});
-
-		//Suscripcion de dambios formulario Animaciones:
-		this.formAnimaciones.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.animacionSeleccionadoIndex+1){
-				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex]= val;
-			}
-			console.log(val)
-		});
-
-		//Suscripcion de dambios formulario Subanimacion:
-		this.formSubanimacion.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.animacionSeleccionadoIndex+1 && this.desarrolladorService.subanimacionSeleccionadoIndex+1){
-				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]= val;
-			}
-			console.log(val)
-		});
-
 		//Suscripcion de cambios formulario InMapGeneral:
 		this.formInMapGeneral.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.setInMapGeneral(val);
@@ -584,7 +425,7 @@ export class DesarrolladorComponent implements OnInit{
 		});
 
 		//Suscripcion de cambios formulario InMapEventos:
-		this.formInMapEventos.valueChanges.subscribe((val) =>{
+		this.formInMapTrigger.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.setInMapEventos(val);
 			//console.log(val)
 		});
@@ -597,14 +438,18 @@ export class DesarrolladorComponent implements OnInit{
 
 		//Crear registro de nombres de enemigos para display de assets:
 		var familia:string;
-		for (var i = 0; i < this.desarrolladorService.tipoEnemigos.enemigos_stats.length; ++i) {
-			familia= this.desarrolladorService.tipoEnemigos.enemigos_stats[i].familia;
+		for (var i = 0; i < this.desarrolladorService.enemigos.enemigos.length; ++i) {
+			familia= this.desarrolladorService.enemigos.enemigos[i].familia;
 			familia= familia.toLowerCase().replace(/ /g,'_').replace(/ñ/g,'n');
-			this.desarrolladorService.tipoEnemigos.enemigos_stats[i].familia= familia;
+			this.desarrolladorService.enemigos.enemigos[i].familia= familia;
 		}
 
         //Inicializar selección Tile:
         //this.seleccionarTile({x:0,y:0}, true);
+
+		setTimeout(()=>{    
+      		this.appService.mostrarPantallacarga(false);
+ 		}, 3000);
 
 		return;
 	}
@@ -656,6 +501,22 @@ export class DesarrolladorComponent implements OnInit{
 		}
 	}
 
+	renderClaseSeleccionada(claseSeleccionada:string){
+		if(this.desarrolladorService.claseSeleccionada==claseSeleccionada){
+			return "seleccionado"
+		}else{
+			return ""
+		}
+	}
+    
+	renderTipoObjetoSeleccionado(tipoObjetoSeleccionado:string){
+		if(this.desarrolladorService.tipoObjetoSeleccionado==tipoObjetoSeleccionado){
+			return "seleccionado"
+		}else{
+			return ""
+		}
+	}
+
 	renderOpcionDatoSeleccionado(opcionSeleccionado:string){
 		if(this.desarrolladorService.estadoDatos==opcionSeleccionado){
 			return "seleccionado"
@@ -679,6 +540,9 @@ export class DesarrolladorComponent implements OnInit{
 				break;
 			case "animaciones":
 				if(this.desarrolladorService.animacionSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "orden":
+				if(this.desarrolladorService.ordenSeleccionadaIndex==indiceSeleccionado){return "seleccionado"}
 				break;
 		}
 		return "";
@@ -757,6 +621,20 @@ export class DesarrolladorComponent implements OnInit{
         }
 
         if(opcion == 'overlay' && this.desarrolladorService.opcionesDesarrolloInMap.opcionOverlay){
+            return "opcion seleccionado";
+        }
+
+        //Selector Formularios Tiles:
+        if(opcion == 'general' && this.desarrolladorService.opcionPropiedades=="general"){
+            return "opcion seleccionado";
+        }
+        if(opcion == 'terreno' && this.desarrolladorService.opcionPropiedades=="terreno"){
+            return "opcion seleccionado";
+        }
+        if(opcion == 'trigger' && this.desarrolladorService.opcionPropiedades=="trigger"){
+            return "opcion seleccionado";
+        }
+        if(opcion == 'misiones' && this.desarrolladorService.opcionPropiedades=="misiones"){
             return "opcion seleccionado";
         }
 
@@ -849,11 +727,21 @@ export class DesarrolladorComponent implements OnInit{
 
         //Guardar formulario de tile seleccionado anterior:
         if(!coordenadas.ignoraGuardado){
-            await this.desarrolladorService.setTile(coordenadas.xAntigua,coordenadas.yAntigua,this.formInMapGeneral.value,this.formInMapTerreno.value,this.formInMapEventos.value,this.formInMapMisiones.value)
+            await this.desarrolladorService.setTile(coordenadas.xAntigua,coordenadas.yAntigua,this.formInMapGeneral.value,this.formInMapTerreno.value,this.formInMapTrigger.value,this.formInMapMisiones.value)
         }
 
         //Actualizar fomulario:
-        var valoresFormulario = this.desarrolladorService.getTile(coordenadas.x,coordenadas.y)
+        var valoresFormulario = await this.desarrolladorService.getTile(coordenadas.x,coordenadas.y)
+
+        console.log("VALORES:");
+        console.log(valoresFormulario);
+
+        //Cambiar string NULL por valor null:
+        for (const property in valoresFormulario) {
+            if(valoresFormulario[property]=="null"){
+                valoresFormulario[property]=null
+            }
+        }
 
 	    var formInMapGeneral = {
   	        inMapNombre: valoresFormulario.nombre, 
@@ -868,11 +756,11 @@ export class DesarrolladorComponent implements OnInit{
             inMapInspeccionable: valoresFormulario.inspeccionable,
             inMapMensajeInsapeccionable: valoresFormulario.mensajeInspeccion,
   	        inMapVisitado: valoresFormulario.visitado, 
-  	        inMapUbicacionEspecial: "" 
+  	        inMapUbicacionEspecial: valoresFormulario.ubicacionEspecial 
 	    };
 
 	//Campos Campos InMap Eventos:
-	    var formInMapEventos = {
+	    var formInMapTrigger = {
   	        inMapProbabilidadRandom: valoresFormulario.probabilidadEvento,
   	        inMapCategoriaRandom: valoresFormulario.categoriaEvento,
   	        inMapCheckTrigger: valoresFormulario.checkEventos, 
@@ -887,12 +775,15 @@ export class DesarrolladorComponent implements OnInit{
 
 	    this.formInMapGeneral.setValue(formInMapGeneral);
 	    this.formInMapTerreno.setValue(formInMapTerreno);
-	    this.formInMapEventos.setValue(formInMapEventos);
+	    this.formInMapTrigger.setValue(formInMapTrigger);
 	    this.formInMapMisiones.setValue(formInMapMisiones);
         
-        this.desarrolladorService.seleccionarTile(coordenadas.x,coordenadas.y)
+        console.log(this.formInMapTerreno)
 
+        this.desarrolladorService.seleccionarTile(coordenadas.x,coordenadas.y)
     }
+
+
 }
 
 

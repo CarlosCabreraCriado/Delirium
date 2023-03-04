@@ -32,77 +32,50 @@ export class AppService {
          this.dispositivo="Desktop";
       }
 
-      if(this.debug){
-        console.log("*******************");
-        console.log("DEBUG MODE:");
-        console.log("Autovalidacion: "+this.debugAutoValidacion);
-        console.log("*******************");
-
-        //MODO INICIO CUENTA FIJA:
-        if(!this.debugAutoValidacion){
-
-          this.http.post(this.ipRemota+"/deliriumAPI/validacion",{clave: this.debugClave}).subscribe((data) => {
-            if(data){
-              this.token= data["token"];
-              this.setInicio(data["datos"]);
-              this.observarAppService.next("Iniciar");
-              console.log("TOKEN: "+this.token)
-            }
-          },(err) => {
-          });
-
-        //MODO INICIO AUTOVALIDACION:
-        }else{
-          this.http.post(this.ipRemota+"/deliriumAPI/autoValidacion",true).subscribe((data) => {
-            if(data){
-              console.log("ESTADO: ");
-              this.token= data["token"];
-              this.setInicio(data["datos"]);
-              this.observarAppService.next("Iniciar");
-            }
-          },(err) => {
-            console.log(err);
-          });
-        }
-        
-      }//FINAL DEBUG
     }
 
-    //MODO DEBUG:
-    public debug:boolean=false;
-    public debugAutoValidacion:boolean=false;
-    public debugClavesAuto=[1000,2307,2305,2567,9867];
-    public debugClave:number=9867;
     //public ipRemota: string= "http://www.carloscabreracriado.com";
     public ipRemota: string= "http://127.0.0.1:8000";
-    private token: string;
 
     //Variables de configuración:
     public activarDatosOficiales= true;
 
+    //Datos: 
+    private cuenta: any = null
+    public token: string = null;
+
     //Variables de datos:
-    public datosJuego: any;
     public perfil:any;
+    public datosJuego: any;
+    public sesion: any;
+    public region: any;
+    public renderIsometrico: any;
+    public radioRenderIsometrico: number = 6;
+    public escalaIsometrico: number = 3;
 
     //Definicion estadisticas generales:
-    private hechizos: any;
-    private heroeStat: any;
-    private enemigos: any;
-    private buff: any;
+    private clases: any;
     private objetos: any;
+    private perks: any;
+    private hechizos: any;
+    private buff: any;
     private animaciones: any;
-    private parametros: any;
-    private personajes: any;
+    private enemigos: any;
+    private eventos: any;
+    private misiones: any;
 
     public dispositivo: string;
     public version: string = "0.2.3";
     public control:string="null";
     private bloqueo: any= [0,0,0,0];
     private autoDesbloqueo: boolean= true;
-    private validacion: any= false;
     public claveValida: boolean= false;
     private sala: any={};
 	private heroeSeleccionado = null;
+
+    //Estados:
+    public estadoApp = "";
+    public estadoInmap = "global";
 
     // Observable string sources
     private observarAppService = new Subject<string>();
@@ -116,11 +89,13 @@ export class AppService {
     // Observable string streams
     observarTeclaPulsada$ = this.observarTeclaPulsada.asObservable();
 
+    setEstadoApp(estado: string){
+        this.estadoApp = estado;
+    }
+
     setToken(token){
-
-	  console.log("Obteniendo Token: ");
+	  console.log("Guardando Token: ");
 	  console.log(token);
-
 	  window.electronAPI.setToken(token)
       this.token=token;
       return;
@@ -128,7 +103,24 @@ export class AppService {
 
     async getToken() {
       this.token = await window.electronAPI.getToken();
+	  console.log("Recuperando Token... Done");
       return this.token;
+    }
+
+    async setSesion(sesion:any){
+	  console.log("Cargando Sesion: ");
+	  console.log(sesion);
+      this.sesion=sesion;
+      return;
+    }
+
+    setPerfil(perfil: any){
+	  console.log("Guardando Perfil...");
+	  console.log(perfil);
+
+	  window.electronAPI.setPerfil(perfil)
+      this.perfil=perfil;
+      return;
     }
 
     setControl(val:string):void{
@@ -193,7 +185,7 @@ export class AppService {
   		audio.src = "./assets/sounds/tecla.mp3";
   		audio.load();
   		audio.play();
-		}
+	}
 
 	  //Router de tecla
   	teclaPulsada(tecla): void{
@@ -201,75 +193,61 @@ export class AppService {
   		this.observarTeclaPulsada.next(tecla);
   	}
 
-    setInicio(datosJuego: any){
+    finalizarLogin():void{
+      this.eventoAppService.emit("login");
+    }
 
-	  if(datosJuego == null){return;}
+    setDatosJuego(datosJuego: any){
 
-      var data= [];
+	  if(datosJuego == null || datosJuego == undefined){
+          console.log("Se ha producido un error interno (Datos Juego no validos)")
+          return;}
 
-      if(this.activarDatosOficiales){
-        data= datosJuego.datosOficial;
-        //data= datosJuego;
-      }else{
-        data= datosJuego.datosDesarrollador;
-        //data= datosJuego;
-      }
-
-      console.log(data);
-
-      for(var i=0; i <data.length; i++){
-        switch(data[i].nombreId){
-          case "Perfil":
-            this.perfil = data[i];
-          break;
-          case "Claves":
-            this.setValidacion(data[i]);
+      for(var i=0; i <datosJuego.length; i++){
+        switch(datosJuego[i].nombreId){
+          case "Clases":
+            this.clases = datosJuego[i];
           break;
           case "Objetos":
-            this.objetos = data[i];
+            this.objetos = datosJuego[i];
           break;
-          case "Animaciones":
-            this.animaciones = data[i];
-          break;
-          case "Enemigos":
-            this.enemigos = data[i];
-          break;
-          case "Buff":
-            this.buff = data[i];
-          break;
-          case "Heroes_Stats":
-            this.heroeStat = data[i];
+          case "Perks":
+            this.perks = datosJuego[i];
           break;
           case "Hechizos":
-            this.hechizos = data[i];
+            this.hechizos = datosJuego[i];
           break;
-          case "Parametros":
-            this.parametros = data[i];
+          case "Buff":
+            this.buff = datosJuego[i];
           break;
-          case "Personajes":
-            this.personajes = data[i];
+          case "Animaciones":
+            this.animaciones = datosJuego[i];
+          break;
+          case "Enemigos":
+            this.enemigos = datosJuego[i];
+          break;
+          case "Misiones":
+            this.misiones = datosJuego[i];
           break;
         }
       }
 
-      console.log("Sesion Iniciada: ");
-      console.log(this.validacion);
       console.log("Datos de Juego: ");
-      console.log(data);
+      console.log(datosJuego);
 
-      window.electronAPI.setDatos(data)
+      window.electronAPI.setDatosJuego(datosJuego)
 
       return;
+    }
+
+    setEventos(eventos: any){
+        this.eventos = eventos
+        window.electronAPI.setEventos(eventos)
     }
 
 	crearCuenta(correo,usuario,password,password2){
 
 	}
-
-  	cambiarUrl(url): void{
-        console.log("CAMBIANDO A URL: "+url);
-  		this.router.navigateByUrl(url);
-  	}
 
     mostrarPantallacarga(val:boolean):void{
       this.mostrarCarga.emit(val);
@@ -289,11 +267,11 @@ export class AppService {
       this.progresoCarga.emit(val);
     }
 
-    async setValidacion(val:any){
-      this.validacion= val;
-      console.log("SET VALIDACION")
-      console.log(this.validacion);
-      console.log(await window.electronAPI.setValidacion(this.validacion));
+    async setCuenta(val:any){
+      this.cuenta= val;
+      console.log("SET CUENTA")
+      console.log(this.cuenta);
+      console.log(await window.electronAPI.setCuenta(this.cuenta));
     }
 
 	renderizarCanvasIsometrico(){
@@ -304,7 +282,7 @@ export class AppService {
     mostrarDialogo(tipoDialogo:string, config:any):any{
 
       const dialogRef = this.dialog.open(DialogoComponent,{
-          width: "100px",panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+          width: "100px", panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, inputLabel: config.inputLabel}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -357,7 +335,8 @@ export class AppService {
 
 		  if(result === "cerrarSesion") {
 			this.setControl("index");
-			this.cambiarUrl("");
+            this.setCuenta({})
+			this.setEstadoApp("index");
 		  }
 
 		  if(result === "developerTool") {
@@ -385,7 +364,6 @@ export class AppService {
 
     mostrarBugLog(val:string):void{
       this.bugLog.emit(val);
-      this.cambiarUrl("inmap");
     }
 
     mostrarDeveloperTool(val:string):void{
@@ -405,43 +383,60 @@ export class AppService {
       return this.sala;
     }
 
+    setEstadoInmap(estado:string){
+        this.estadoInmap = estado; 
+    }
+
     getPartida(){
        return this.sala;
     }
 
-    async getValidacion(){
+    async getCuenta(){
 
        console.log("Obteniendo Validando: ");
        //console.log(this.electronService.ipcRenderer);
 
-       this.validacion = await window.electronAPI.getValidacion() 
+       this.cuenta = await window.electronAPI.getCuenta() 
 
-       console.log(this.validacion);
+       console.log(this.cuenta);
 
        if(this.perfil==undefined){
          console.log("Obteniendo Datos: ");
-		 this.getDatos(this.validacion.clave)
+		 this.getDatosJuego()
        }
 
-       if(this.validacion.nombre===undefined){}
-
-       console.log(this.validacion);
-       return this.validacion;
+       console.log(this.cuenta);
+       return this.cuenta;
     }
 
-    async getDatos(clave){
+    async getDatosJuego(){
       console.log("Accediendo a datos Locales:")
-      var datos = await window.electronAPI.getDatos()
+      var datos = await window.electronAPI.getDatosJuego()
       //this.setInicio(datos);
     }
 
-    async getHeroesStats(){
-      this.heroeStat = await window.electronAPI.getDatosHeroeStat();
-      return this.heroeStat;
+    async getPerfil(){
+      this.perfil = await window.electronAPI.getPerfil(); // REVISAR
+      return this.perfil;
+    }
+
+    async getClases(){
+      this.hechizos = await window.electronAPI.getDatosClases();
+      return this.hechizos;
+    }
+
+    async getObjetos(){
+      this.objetos = await window.electronAPI.getDatosObjetos();
+      return this.objetos;
+    }
+
+    async getPerks(){
+      this.perks = await window.electronAPI.getDatosPerks();
+      return this.perks;
     }
 
     async getHechizos(){
-      this.hechizos = await window.electronAPI.getDatosHeroeHech();
+      this.hechizos = await window.electronAPI.getDatosHechizos();
       return this.hechizos;
     }
 
@@ -450,34 +445,24 @@ export class AppService {
        return this.buff;
     }
 
-    async getEnemigos(){
-      this.enemigos = await window.electronAPI.getDatosEnemigos();
-      return this.enemigos;
-    }
-
     async getAnimaciones(){
       this.animaciones = await window.electronAPI.getDatosAnimaciones();
       return this.animaciones;
     }
 
-    async getParametros(){
-      this.parametros = await window.electronAPI.getDatosParametros();
-      return this.parametros;
+    async getEnemigos(){
+      this.enemigos = await window.electronAPI.getDatosEnemigos();
+      return this.enemigos;
     }
 
-    async getObjetos(){
-      this.objetos = await window.electronAPI.getDatosObjetos();
-      return this.objetos;
+    async getEventos(){
+      this.eventos = await window.electronAPI.getDatosEventos();
+      return this.eventos;
     }
 
-    async getPerfil(){
-      this.perfil = await window.electronAPI.getDatosPerfil(); // REVISAR
-      return this.perfil;
-    }
-
-    async getPersonajes(){
-      this.personajes = await window.electronAPI.getDatosPersonajes();
-      return this.personajes;
+    async getMisiones(){
+      this.misiones = await window.electronAPI.getDatosMisiones();
+      return this.misiones;
     }
 
     getDispositivo(){
@@ -494,42 +479,110 @@ export class AppService {
       return;
     }
 
-    setModelosDatos(){
-      window.electronAPI.setModelosDatos({"oficial":false});
-    }
-
     abandonarPartida(){
       this.observarAppService.next("AbandonarPartida");
       return;
     }
 
-    async subirArchivo(objetoArchivo){
-      var documentos = [];
-      documentos.push(objetoArchivo);
-      var confirmacion = await window.electronAPI.actualizarEstadisticas(documentos) 
-      return confirmacion;
+    abrirEvento(){
+
+        var objetoEventoDialogo = {
+	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"], 
+	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"], 
+        }
+
+        var objetoEventoNarradorImg = {
+	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"], 
+	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"], 
+        }
+        //this.mostrarDialogo("Mision",objetoEventoNarradorImg);
+        this.eventoAppService.emit("centrarMapa")
     }
 
-    toggleDatosOficiales(){
-      this.activarDatosOficiales= !this.activarDatosOficiales;
+ //*********************************
+ // INMAP
+ //*********************************
+
+  getRegion(){
+      return this.region;
+  }
+
+  getTile(x:number,y:number){
+      return this.region.isometrico[x][y];
+  }
+
+  setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){
       
-      this.setValidacion({});
-      //this.validacion = {};
-      //this.socketService.enviarSocket("logout",this.validacion);
-      this.claveValida = false;
-      this.setSala({});
-      this.setControl("");
-      this.cambiarUrl("index");
-      console.log(this.route.url)
-      this.mostrarDialogo("Informativo",{titulo: "Configuración de datos",contenido: "Configuración de datos cambiada con exito. Vuelva a iniciar sesión para consolidar los cambios. Datos Oficiales: "+this.activarDatosOficiales})
-      //this.setInicio(this.electronService.ipcRenderer.sendSync('getDatos'));
-    }
+      console.log("Setting Tile")
 
-    async toggleDatosOficialesDesarrollador(){
-      this.activarDatosOficiales= !this.activarDatosOficiales;
-	  await window.electronAPI.setModelosDatos({"oficial":this.activarDatosOficiales})
-      this.setInicio(await window.electronAPI.getDatos());
-    }
+        //Fomrulario General:
+        this.region.isometrico[x][y].nombre = formGeneral.inMapNombre
+        this.region.isometrico[x][y].descripcion = formGeneral.inMapDescripcion
+        this.region.isometrico[x][y].indicador = formGeneral.inMapIndicador
+ 
+        //Fomrulario General:
+        this.region.isometrico[x][y].tipoTerreno = formTerreno.inMapTipoTerreno
+        this.region.isometrico[x][y].atravesable = formTerreno.inMapAtravesable
+        this.region.isometrico[x][y].inspeccionable = formTerreno.inMapInspeccionable
+        this.region.isometrico[x][y].mensajeInspeccion = formTerreno.inMapMensajeInsapeccionable
+        this.region.isometrico[x][y].ubicacionEspecial = formTerreno.inMapUbicacionEspecial
+        //this.region.isometrico[x][y].visitado = formTerreno.inMapVisitado
+
+        //Fomrulario Eventos:
+        this.region.isometrico[x][y].categoriaEvento = formEventos.inMapCategoriaRandom
+        this.region.isometrico[x][y].probabilidadEvento = formEventos.inMapProbabilidadRandom
+        this.region.isometrico[x][y].checkEventos = formEventos.inMapCheckTrigger
+
+        //Fomrulario Eventos:
+        this.region.isometrico[x][y].checkMisiones = formMisiones.inMapCheckMisiones
+
+      return true;
+  }
+
+  async cargarRegion(zona:string){
+
+        if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;} 
+
+		console.log("Cargando appService.region: "+zona);
+        var token = await this.getToken();
+		this.http.post(this.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).subscribe((data) => {
+			console.log("Región: ");
+			console.log(data);	
+			this.region= data;
+            //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
+            //Cargar Render Isometrico:
+            this.renderIsometrico = [];
+
+            var radioVision = this.radioRenderIsometrico;
+
+            if(this.estadoApp!="desarrollador"){
+                var coordenadaMinX = this.sesion.inmap.posicion_x - radioVision;
+                var coordenadaMinY = this.sesion.inmap.posicion_y - radioVision;
+                var coordenadaMaxX = this.sesion.inmap.posicion_x + radioVision+1;
+                var coordenadaMaxY = this.sesion.inmap.posicion_y + radioVision+1;
+
+                //Bloqueo de valores de coordenadas:
+                if(coordenadaMinX < 0){ coordenadaMinX = 0; }
+                if(coordenadaMinY < 0){ coordenadaMinY = 0; }
+                if(coordenadaMaxX > this.region.isometrico.length){ coordenadaMaxX = this.region.isometrico.length; }
+                if(coordenadaMaxY > this.region.isometrico.length){ coordenadaMaxY = this.region.isometrico.length; }
+
+                for(var i = coordenadaMinX; i < coordenadaMaxX; i++){
+                    this.renderIsometrico.push(this.region.isometrico[i].slice(coordenadaMinY,coordenadaMaxY))
+                }
+            }else{
+                //Si es el panel de desarrollador:
+                this.renderIsometrico= this.region.isometrico; 
+            }
+            
+            console.log("RENDER ISOMETRICO: ")
+            console.log(this.renderIsometrico)
+
+            this.eventoAppService.emit("cargarIsometrico")
+            this.setEstadoInmap("isometrico");
+            //this.regularizarRegion();
+        })
+  }
 
 
 }

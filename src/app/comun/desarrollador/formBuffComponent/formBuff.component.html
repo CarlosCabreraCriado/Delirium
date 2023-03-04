@@ -1,0 +1,111 @@
+
+<!--   ******************* -->
+<!--         Plantilla       -->
+<!--   ******************* -->
+
+        <!-- LISTA HECHIZOS -->
+        <panelSelectorComponent 
+            [tipo]="'Buff'"
+            [titulo]="'Buff'"
+            [botonAdd]="true"
+            [lateral]="'izquierda'"
+            [botonEliminarRelacion]="false"
+            >
+        </panelSelectorComponent>
+        
+	<!-- CENTRAL DATOS BUFF -->
+	<div id="visualizador" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
+			<div class="contenedorImagen">
+				<img (click)="desarrolladorService.abrirSelectorImagen('Buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
+			</div>
+			<form  class="formularioGeneral" [formGroup]="formBuff">
+
+				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarBuff()"/>
+
+				  <mat-form-field appearance="legacy" class="formId">
+					<mat-label>ID</mat-label>
+					<input matInput placeholder="ID" formControlName="id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre hechizo</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDescripcion">
+					<mat-label>Descripción</mat-label>
+					<input matInput placeholder="Descripción" formControlName="descripcion">
+				  </mat-form-field>
+
+                    <div class="selector formObjetivo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Ventaja/Desventaja</mat-label>
+                        <mat-select value="{{tipo_Buff.value}}">
+                            <mat-option value="Ventaja">Ventaja</mat-option>
+                            <mat-option value="Desventaja">Desventaja</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="selector formTipoDaño">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Tipo Daño</mat-label>
+                        <mat-select value="{{tipo_dano_Buff.value}}">
+                            <mat-option value="Físico">Físico</mat-option>
+                            <mat-option value="Mágico">Mágico</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+
+				  <mat-form-field appearance="legacy" class="formAmenaza">
+					<mat-label>Daño T</mat-label>
+					<input matInput type="number" min="0" placeholder="Descripción" formControlName="daño_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formEnergia">
+					<mat-label>Heal T</mat-label>
+					<input matInput type="number" min="0" placeholder="Descripción" formControlName="heal_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formPoder">
+					<mat-label>Escudo T</mat-label>
+					<input matInput type="number" min="0" placeholder="Descripción" formControlName="escudo_t">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatInc">
+					<mat-label>Stat Inc</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatIncInicial">
+					<mat-label>Stat Inc Inicial</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc_inicial">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formStatIncT">
+					<mat-label>Stat Inc T</mat-label>
+					<input matInput placeholder="Descripción" formControlName="stat_inc_t">
+				  </mat-form-field>
+			</form>
+
+            <div class="contenedorCampoRelacional campoAnimacion">
+                <div class="titulo">Animacion:</div> 
+                    <div >
+                        <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].animacion_id!=null" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
+
+                        <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].animacion_id==null" [ngClass]="renderBotonAddSeleccionado('Animacion')" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/add.svg"/>
+                    </div>
+            </div>
+		</div>       <!-- FIN VISUALIZACIÓN BUFF -->
+
+        <!-- LISTA ANIMACION RELACIONAL -->
+        <panelSelectorComponent *ngIf="desarrolladorService.estadoPanelDatosDerecha=='Animaciones'"
+            [tipo]="'Animacion_relacionada'"
+            [titulo]="'ANIMACION RELACIONADA'"
+            [botonAdd]="false"
+            [lateral]="'derecha'"
+            [botonEliminarRelacion]="false"
+            >
+        </panelSelectorComponent>
+

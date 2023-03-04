@@ -12,10 +12,10 @@ export class CargaComponent implements OnInit {
 
   constructor(private appService: AppService) { }
 
-  public mostrarPantallaCarga: boolean = false;
+  public mostrarPantallaCarga: boolean = true;
   private subtituloCarga: string = "Cargando";
   private progreso:string = "0%";
-  private opacidad:any = 0;
+  private opacidad:any = 1;
 
   ngOnInit() {
 

@@ -1,0 +1,17 @@
+
+<!--   ******************* -->
+<!--    SELECTOR IMAGENES  -->
+<!--   ******************* -->
+
+  <!-- SELECTOR DE IMAGENES -->
+  <div id="SelectorImagenes" *ngIf="desarrolladorService.mostrarSelectorImagen">
+	  <div class="frame">
+		  <div class="titulo">Seleccione una imagen:</div>
+			<img (click)="desarrolladorService.mostrarSelectorImagen = false" class="botonCerrar" src="./assets/desarrollador/cerrar.png"/>
+		  <div class="contenedorImagenes">
+			  <div *ngFor="let imagenes of desarrolladorService.imagenes; let i= index" class="imagen">
+                  <img (click)="desarrolladorService.seleccionarImagen(i+1)" src="./assets/{{desarrolladorService.pathImagenes}}/{{imagenes}}.png"/>
+			  </div>
+		  </div>
+	  </div>
+  </div>

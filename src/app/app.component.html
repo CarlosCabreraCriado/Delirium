@@ -9,4 +9,9 @@
 
 <app-ajustes></app-ajustes>
 
-<router-outlet></router-outlet>
+<app-index *ngIf="appService.estadoApp == 'index'"></app-index>
+<app-inmap *ngIf="appService.estadoApp == 'inmap'"></app-inmap>
+<app-mazmorra *ngIf="appService.estadoApp == 'mazmorra'"></app-mazmorra>
+<app-desarrollador *ngIf="appService.estadoApp == 'desarrollador'"></app-desarrollador>
+
+<!--<router-outlet></router-outlet>-->

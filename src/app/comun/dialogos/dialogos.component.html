@@ -1,8 +1,7 @@
 
-<!--   ******************* -->
-<!--         DIALOGOS      -->
-<!--   ******************* -->
-
+<!--   ************************* -->
+<!--         DIALOGOS ERROR      -->
+<!--   ************************* -->
 
 <div *ngIf="data.tipoDialogo == 'Error'" class= "contenedor">
 
@@ -16,19 +15,24 @@
 
 </div>
 
+<!--   ******************************* -->
+<!--         DIALOGOS INFORMATIVO      -->
+<!--   ******************************* -->
+
 <div *ngIf="data.tipoDialogo == 'Informativo'" class= "contenedor">
 
+    <frameComponent [tipoFondo]="'papiro'"></frameComponent>
 	<h1 class="title Texto2">{{data.titulo}}</h1>
 
 	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
 	
-	<botonComponent mat-button [mat-dialog-close] [texto]="'OK'" [color]="'verde'" class="botonUnico"></botonComponent>
-	
-	<div class="frame"></div>
+	<botonComponent mat-button [mat-dialog-close] [texto]="'OK'" [tipoBoton]="2" [color]="'verde'" class="botonUnico"></botonComponent>
 
 </div>
 
-
+<!--   ******************************** -->
+<!--         DIALOGOS CREAR CUENTA      -->
+<!--   ******************************** -->
 <div *ngIf="data.tipoDialogo == 'CrearCuenta'" class= "contenedor">
 
 	<h1 class="title Texto1 colorTexto">Crear Cuenta:</h1>
@@ -62,6 +66,9 @@
 
 </div>
 
+<!--   *************************************** -->
+<!--         DIALOGOS INFORMATIVO ANTIGUO      -->
+<!--   *************************************** -->
 <div *ngIf="data.tipoDialogo == 'InformativoAntiguo'" class= "contenedor">
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-content>
@@ -72,17 +79,23 @@
     </div>
 </div>
 
+<!--   ******************************** -->
+<!--         DIALOGOS CONFIRMACION      -->
+<!--   ******************************** -->
 <div *ngIf="data.tipoDialogo == 'Confirmacion'" class= "contenedor">
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-content>
       <p>{{data.contenido}}</p>
     </div>
     <div mat-dialog-actions class= "botones">
-      <button mat-button class = "ajustesOpcion OK" (click)="onAcceptClick()" cdkFocusInitial>Accept</button>
-      <button mat-button class = "ajustesOpcion Cancel" [mat-dialog-close]>Cancel</button> 
+	    <botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="botonUnico"></botonComponent>
+	    <botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="botonUnico"></botonComponent>
     </div>
 </div>
 
+<!--   **************************** -->
+<!--         DIALOGOS PENSANDO      -->
+<!--   **************************** -->
 <div *ngIf="data.tipoDialogo == 'Pensando'" class= "contenedor"> 
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-actions class= "botones">
@@ -90,6 +103,9 @@
     </div>
 </div>
 
+<!--   ************************************ -->
+<!--         DIALOGOS INTRODUCIR DATOS      -->
+<!--   ************************************ -->
 <div *ngIf="data.tipoDialogo == 'IntroduccionDatos'" class= "contenedor"> 
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-content>
@@ -103,5 +119,203 @@
       <button mat-button class = "ajustesOpcion Cancel" [mat-dialog-close]>Cancel</button>
       <button mat-button class = "ajustesOpcion OK" [mat-dialog-close]="data.input" cdkFocusInitial>OK</button>
     </div>
+</div>
+
+<!--   ************************************ -->
+<!--         DIALOGOS INTRODUCIR DATOS      -->
+<!--   ************************************ -->
+<div *ngIf="data.tipoDialogo == 'IntroduccionDatos'" class= "contenedor"> 
+    <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
+    <div mat-dialog-content>
+      <p>{{data.contenido}}</p>
+      <mat-form-field>
+        <mat-label>{{data.inputLabel}}</mat-label>
+        <input matInput [(ngModel)]="data.input">
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class= "botones">
+      <button mat-button class = "ajustesOpcion Cancel" [mat-dialog-close]>Cancel</button>
+      <button mat-button class = "ajustesOpcion OK" [mat-dialog-close]="data.input" cdkFocusInitial>OK</button>
+    </div>
+</div>
+
+<!--   ******************************* -->
+<!--      DIALOGO DIALOGO PERSONAJES      -->
+<!--   ******************************* -->
+
+<div id="dialogo" *ngIf="data.tipoDialogo == 'Dialogo'">
+
+    <!-- ContenedorCentral -->
+    <div class="contenedorCentral">
+
+        <!-- TEXTO -->
+        <div class="contenedorTexto">
+            <div class="contenedorTitulo texto">
+                <h1 class="title Texto2">Titulo Dialogo</h1>
+            </div>
+            <div class="textoDialogo texto Texto3"> {{data.contenido}} </div>
+            <frameComponent [tipoFondo]="'papiro'"></frameComponent>
+            <img class="decoracion" src="../../../assets/ui/decor/dcr_04.png"/>
+            <div class="contenedorBandera izquierda">
+                <img src="../../../assets/ui/banners/bn_01_3.png"/>
+                <img src="../../../assets/ui/banners/bn_01_2.png"/>
+            </div>
+        </div>
+
+        <!-- Opciones -->
+        <div class="contenedorOpciones">
+            <div *ngFor="let opcion of data.opciones; let i = index" class="opcion">
+                <botonComponent class="botonOpcion" mat-button [tipoBoton]="2" [texto]="opcion" [vacio]="true" [color]="'rojo'"></botonComponent>
+            </div>
+        </div>
+
+    </div> <!-- Fin contenedor Central -->
+
+    <!-- PERSONAJE 1 -->
+    <div class="contenedorPersonaje primero">
+        <img src="../../../assets/Personajes/npc/01.png"/>
+        <div class="placaNombre">
+            <img src="../../../assets/ui/paper/ppr_05.png"/>
+            <div class="nombrePersonaje Texto2">Personaje 1</div>
+        </div>
+    </div>
+
+    <!-- PERSONAJE 2 -->
+    <div class="contenedorPersonaje segundo">
+        <img class="Flip" src="../../../assets/Personajes/npc/02.png"/>
+        <div class="placaNombre">
+            <img src="../../../assets/ui/paper/ppr_05.png"/>
+            <div class="nombrePersonaje Texto2">Personaje 2</div>
+        </div>
+    </div>
 
 </div>
+
+<!--   ******************************** -->
+<!--         DIALOGO NARRADOR IMG      -->
+<!--   ******************************** -->
+
+<div id="narradorImg" *ngIf="data.tipoDialogo == 'NarradorImg'">
+
+    <!-- ContenedorCentral -->
+    <div class="contenedorCentral">
+        <div class="contenedorDecoracion">
+            <img class="decoracionSuperior" src="../../../assets/ui/decor/dcr_01.png"/>
+        </div>
+        <div class="contenedorImagen">
+            <img src="../../../assets/illustration/11.png"/>
+        </div>
+        <div class="contenedorTexto">
+            <div class="contenedorTitulo">
+                <img class="decoracion izquierda" src="../../../assets/ui/decor/dcr_03.png"/>
+                <h1 class="texto Texto2">{{data.contenido[0]}}</h1>
+                <img class="decoracion derecha" src="../../../assets/ui/decor/dcr_03.png"/>
+            </div>
+            <div class="contenido Texto3">{{data.contenido[1]}}</div>
+        </div>
+
+        <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" class="botonUnico"></botonComponent>
+        <frameComponent [tipoFondo]="'papiro'"></frameComponent>
+    </div> <!-- Fin Contenedor Central -->
+</div>
+
+<!--   ******************************** -->
+<!--         DIALOGO DIAPOSITIVA        -->
+<!--   ******************************** -->
+
+<div id="diapositiva" *ngIf="data.tipoDialogo == 'Diapositiva'">
+
+    <!-- ContenedorCentral -->
+    <div class="contenedorCentral">
+        <div class="contenedorDecoracion">
+            <img class="decoracionSuperior" src="../../../assets/ui/decor/dcr_01.png"/>
+        </div>
+        <div class="contenedorImagen">
+            <img class="imagen" src="../../../assets/illustration/11.png"/>
+        </div>
+        <div class="contenedorTexto">
+            <div class="contenedorTitulo">
+                <img class="decoracion izquierda" src="../../../assets/ui/decor/dcr_03.png"/>
+                <h1 class="texto Texto2">{{data.contenido[0]}}</h1>
+                <img class="decoracion derecha" src="../../../assets/ui/decor/dcr_03.png"/>
+            </div>
+            <div class="contenido Texto3">{{data.contenido[1]}}</div>
+        </div>
+        <div class="contenedorControlSlide">
+           
+            <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_01_3.png">
+
+            <checkboxComponent [seleccionado]="true"></checkboxComponent>
+            <checkboxComponent [seleccionado]="false"></checkboxComponent>
+            <checkboxComponent [seleccionado]="false"></checkboxComponent>
+            <img class="botonSlide" src="../../../assets/ui/buttons/bt_01_3.png">
+
+        </div>
+
+        <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" class="botonUnico"></botonComponent>
+        <frameComponent [tipoFondo]="'papiro'"></frameComponent>
+    </div> <!-- Fin Contenedor Central -->
+</div>
+
+<!--   ******************************** -->
+<!--         DIALOGO Mision        -->
+<!--   ******************************** -->
+
+<div id="mision" *ngIf="data.tipoDialogo == 'Mision'">
+
+    <!-- ContenedorCentral -->
+    <div class="contenedorCentral">
+
+        <div class="contenedorMision">
+
+            <div class="titulo Texto2">Titulo Misión</div>
+
+            <div class="contenido Texto3">{{data.contenido[1]}}</div>
+
+            <div class="tarea">
+                <checkboxComponent [seleccionado]="true"></checkboxComponent>
+                <div class="textoTarea Texto3">Derrota a 3 Demonios</div>
+            </div>
+
+            <div class="tarea">
+                <checkboxComponent [seleccionado]="false"></checkboxComponent>
+                <div class="textoTarea Texto3">Derrota a 3 Demonios</div>
+            </div>
+
+
+
+        </div>
+
+        <div class="contenedorRecompensa">
+           
+            <div class="titulo Texto2">RECOMPENSAS</div>
+
+            <div class="contenedorObjetos">
+                <div class="objeto">
+                    <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_04_3.png">
+                </div>
+                <div class="objeto">
+                    <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_04_3.png">
+                </div>
+                <div class="objeto">
+                    <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_04_3.png">
+                </div>
+                <div class="objeto">
+                    <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_04_3.png">
+                </div>
+                <div class="objeto">
+                    <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_04_3.png">
+                </div>
+            </div>
+
+            <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" class="botonUnico"></botonComponent>
+
+        </div>
+
+        <div class="fondoLibro">
+            <img src="../../../assets/ui/libro/libro.png">
+        </div>
+
+    </div> <!-- Fin Contenedor Central -->
+</div>
+

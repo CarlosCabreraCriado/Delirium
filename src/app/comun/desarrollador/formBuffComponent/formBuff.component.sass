@@ -1,0 +1,291 @@
+
+@import "../../../../variables.sass"
+@import "../../../../breakpoints.scss"
+
+.botonAddLista
+    position: absolute
+    display: flex
+    align-items: center
+    justify-content: center
+    background-color: greenyellow
+    color: black
+    height: 10%
+    width: 100%
+    &:hover
+      background-color: white
+      color: black
+
+.contenedorLateral
+  position: absolute
+  top: 0%
+  height: 86%
+  width: 20%
+  color: white
+  .titulo
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100%
+    text-align: center
+    background-color: rgba(0,0,0,1)
+    height: 15%
+  &.izquierda
+    left: 3%
+  &.derecha
+    right: 3%
+    .lista
+      border: solid 2px greenyellow
+      box-sizing: border-box
+
+  .mat-label
+  .mat-checkbox
+    position: relative
+    width: 100%
+
+  .lista
+      position: relative
+      width: 100%
+      height: 90%
+      overflow-y: scroll
+      overflow-x: hidden
+      .hechizo
+          position: relative
+          display: flex
+          height: 10%
+          width: 100%
+          background-color: rgba(0,0,0,0.5)
+          &:hover
+              background-color: grey
+          &.seleccionado
+              background-color: white
+              color: black
+
+          .imagen
+              position: relative
+              display: inline-block
+              height: 100%
+          .nombre
+              position: relative
+              display: inline-flex
+              justify-content: center
+              align-items: center
+              height: 100%
+              width: 70%
+
+#visualizador
+    position: absolute
+    left: 25%
+    width: 50%
+    height: 100%
+    background-color: rgba(0,0,0,0.5)
+    .contenedorImagen
+      position: absolute
+      top: 2vh
+      left: 2vh
+      width: 10vw
+      height: 10vw
+      border: 2px solid white
+      z-index: 10
+      img
+        position: relative
+        width: 100%
+        height: 100%
+    form
+      position: absolute
+      width: 100%
+      height: 100%
+
+      .selector
+        position: absolute
+        mat-form-field
+          width: 100%
+
+      mat-form-field
+        position: absolute
+        mat-label
+          color: chartreuse
+        input
+          color: white
+
+      .formId
+        right: 10%
+        top: 5%
+        width: 10%
+      .formNombre
+        left: 30%
+        top: 5%
+      .formDescripcion
+        left: 30%
+        top: 20%
+        width: 60%
+      .formDistancia
+        left: 5%
+        top: 35%
+        width: 10%
+      .formObjetivo
+        left: 5%
+        top: 50%
+        width: 10%
+      .formTipoDaño
+        left: 5%
+        top: 65%
+        width: 10%
+      .formAnimacion
+        left: 5%
+        top: 65%
+        width: 15%
+
+      .formDañoDir
+        left: 30%
+        top: 35%
+        width: 10%
+      .formHealDir
+        left: 55%
+        top: 35%
+        width: 10%
+      .formEscudoDir
+        left: 80%
+        top: 35%
+        width: 10%
+
+      .formAmenaza
+        left: 30%
+        top: 50%
+        width: 10%
+      .formEnergia
+        left: 55%
+        top: 50%
+        width: 10%
+      .formPoder
+        left: 80%
+        top: 50%
+        width: 10%
+
+      .formStatInc
+        left: 30%
+        top: 70%
+        width: 10%
+      .formStatIncInicial
+        left: 55%
+        top: 70%
+        width: 10%
+      .formStatIncT
+        left: 80%
+        top: 70%
+        width: 10%
+
+      .formFuncion
+        left: 30%
+        top: 85%
+        width: 30%
+
+    .botonEliminar
+      position: absolute
+      top: 5%
+      width: 5%
+      right: 5%
+      &:hover
+        filter: invert(1)
+
+    .tituloEncadenado
+        position: absolute
+        top: 86%
+        left: 32%
+        color: white
+
+    .contenedorAnimacion
+        position: absolute
+        display: flex
+        top: 80%
+        left: 50%
+        width: 48%
+        height: 15%
+        background-color: grey
+
+        .contenedorImagenAnimacion
+            position: relative
+            .flecha
+                filter: invert(1)
+                transform: rotate(180deg)
+            img
+                position: relative 
+                height: 100%
+                z-index: 10
+                &.seleccionado
+                    border: solid 2px greenyellow
+                    box-sizing: border-box
+            .imagenAddEncadenado
+                &:hover
+                    filter: invert(1)
+    .contenedorEncadenado
+        position: absolute
+        display: flex
+        top: 80%
+        left: 50%
+        width: 48%
+        height: 15%
+        background-color: grey
+
+        .contenedorImagenEncadenado
+            position: relative
+            .flecha
+                filter: invert(1)
+                transform: rotate(180deg)
+            img
+                position: relative 
+                height: 100%
+                z-index: 10
+                &.seleccionado
+                    border: solid 2px greenyellow
+                    box-sizing: border-box
+            .imagenAddEncadenado
+                &:hover
+                    filter: invert(1)
+
+    .tituloBuff
+        position: absolute
+        top: 68%
+        left: 40%
+        color: white
+
+    .contenedorBuff
+        position: absolute
+        display: flex
+        top: 62.5%
+        left: 50%
+        height: 15%
+        width: 0
+        background-color: grey
+
+        .contenedorImagenEncadenado
+            position: relative
+            width: 0
+            .flecha
+                filter: invert(1)
+                transform: rotate(180deg)
+            img
+                position: relative 
+                height: 100%
+                z-index: 10
+                &:hover
+                    filter: invert(1)
+                &.seleccionado
+                    border: solid 2px greenyellow
+                    box-sizing: border-box
+
+.campoAnimacion
+  top: 78% 
+  right: 85%
+  width: 10%
+.contenedorCampoRelacional
+  position: absolute
+  display: flex
+  flex-direction: column
+  align-items: center
+  .titulo
+    color: greenyellow
+  .imagenCampoRelacional
+    width: 100%
+    &:hover
+        filter: invert(1)

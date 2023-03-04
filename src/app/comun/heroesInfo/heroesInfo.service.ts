@@ -36,12 +36,10 @@ export class HeroesInfoService {
   	actualizarDatos(){
   		this.perfil= this.appService.getPerfil();
   		this.heroeHech= this.appService.getHechizos();
-  		this.heroeStat= this.appService.getHeroesStats();
   		this.enemigos= this.appService.getEnemigos();
   		this.buff= this.appService.getBuff();
   		this.objetos= this.appService.getObjetos();
   		this.animaciones= this.appService.getAnimaciones();
-  		this.parametros= this.appService.getParametros();
   	}
 
     

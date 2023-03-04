@@ -3,16 +3,33 @@
 @import "../../../breakpoints.scss"
 
 .contenedorHeroe
-    position: absolute
+    position: relative
     top: 0
     left: 0
     width: 100%
     height: 100%
+    transition: left 1s, width 1s
+    pointer-events: none
 
+    .contenedorDetalle
+      position: relative
+      height: 100%
+      width: 80%
+      transition: left 1s, width 1s
+      &.expandido
+        width: 80%
+        left: 0%
+      &.retraido
+        width: 0%
+        left: 80%
+
+    .frameCirculo
+      pointer-events: all
+      
     .nombre
         position: absolute
         color: white
-        width: 40%
+        width: 60%
         height: 20%
         top: 7%
         left: 16%
@@ -28,10 +45,16 @@
         position: absolute
         display: flex
         flex-direction: column
-        width: 50%
-        right: 40%
+        right: 37%
+        width: 0%
         height: 45%
         top: 30%
+        z-index: 2 
+        transition: width 1s
+        &.expandido
+          width: 53%
+        &.retraido
+          width: 0%
 
         @include media("<=phone")
             width: 55%
@@ -45,7 +68,7 @@
 
     .fondoDetalle
         position: absolute
-        width: 80%
+        width: 100%
         height: 90%
         top: 5%
         left: 0

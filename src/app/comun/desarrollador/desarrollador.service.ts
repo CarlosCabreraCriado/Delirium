@@ -1,11 +1,12 @@
 
-import { Injectable, OnInit} from '@angular/core';
+import { Type,Injectable, OnInit} from '@angular/core';
 import { AppService } from '../../app.service';
 import { HttpClient } from "@angular/common/http";
 import { RenderReticula } from './renderReticula.class';
 import { Subject } from "rxjs";
-import { MapaGeneralService } from '../mapa-general/mapaGeneral.service';
 import * as XLSX from 'xlsx';
+import { TipoDatos } from "./tiposDesarrollador.class"
+import { directorioAssets } from "./propiedadesAssets"
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +15,22 @@ import * as XLSX from 'xlsx';
 export class DesarrolladorService implements OnInit{
 
   //Variables de control:
-	public validacion: any= {}
+	public cuenta: any= {}
 
   //Variables de Estado Paneles Principales:
 	public panel= "datos";
 	public estadoInmap= "global";
 	public estadoMazmorra= "parametros";
 	public estadoParametros= "General";
-	public estadoHerramientaDatos= "Eventos";
+	public estadoHerramientaDatos: TipoDatos= null;
 	public estadoPanelDatosDerecha= "";
 	public estadoDatos= "subir";
 	public estadoAssets= "";
 	public estadoDatosSubir= "subir";
+	public claseSeleccionada= "Guerrero";
+	public indexClaseSeleccionada= 0;
+	public tipoObjetoSeleccionado= "Equipo";
+	public indexObjetoSeleccionado= 0;
 	
   //VARIABLES DE DATOS
 	public archivosExcel: any= [];
@@ -94,7 +99,7 @@ export class DesarrolladorService implements OnInit{
     public coordenadaY: number = 0; 
     private regionSeleccionada: string = "";
     private tileImgSeleccionado: number = 1;
-    private opcionPropiedades: string = "general";
+    public opcionPropiedades: string = "general";
     public opcionesDesarrolloInMap: any = {
         opcionOverlay: false,
         herramientaInMap: "add",
@@ -113,17 +118,27 @@ export class DesarrolladorService implements OnInit{
 	public buffSeleccionadoIndex = 0;
 	public animacionSeleccionadoIndex = 0;
 	public subanimacionSeleccionadoIndex = 0;
+	public eventoSeleccionadoIndex = 0;
+    public tipoOrdenSeleccionada = "Condición";
+	public ordenSeleccionadaIndex = 0;
 	
+
+	public imagenes: any= [];
+	public tipoEnemigoSeleccionado:any;
+	private rotacion=0;
+
 	//CARGA DE DATOS:
-	public tipoEnemigos: any;
+    public clases: any;
+    public objetos: any;
+    public perks: any;
 	public hechizos: any;
 	public buff: any;
 	public animaciones: any;
 	public subanimaciones: any;
 	public sonidos: any;
-	public imagenes: any= [];
-	public tipoEnemigoSeleccionado:any;
-	private rotacion=0;
+	public enemigos: any;
+	public eventos: any;
+	public misiones: any;
 
   // Observable string sources
 	private observarDesarrolladorService = new Subject<string>();
@@ -132,36 +147,60 @@ export class DesarrolladorService implements OnInit{
   observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
 
 
-  constructor(public appService: AppService, private http: HttpClient, public mapaGeneralService: MapaGeneralService)  { 
+  constructor(public appService: AppService, private http: HttpClient)  { 
   }
 
   ngOnInit(){
-
   }
 
   async inicializarGestor(){
 
     console.log("INICIANDO HERRAMIENTA DESARROLLADOR");
-    this.validacion= await this.appService.getValidacion();
-    this.tipoEnemigos= await this.appService.getEnemigos();
+    this.cuenta= await this.appService.getCuenta();
+	this.clases = await this.appService.getClases();
+	this.objetos = await this.appService.getObjetos();
+	this.perks = await this.appService.getPerks();
 	this.hechizos = await this.appService.getHechizos();
 	this.buff = await this.appService.getBuff();
 	this.animaciones = await this.appService.getAnimaciones();
+    this.enemigos= await this.appService.getEnemigos();
+	this.eventos = await this.appService.getEventos();
+	this.misiones = await this.appService.getMisiones();
 
+    console.log("Cuenta:")
+    console.log(this.cuenta)
+    console.log("Clases:")
+    console.log(this.clases)
+    console.log("Objetos:")
+    console.log(this.objetos)
+    console.log("Perks:")
+    console.log(this.perks)
+    console.log("Hechizos:")
+    console.log(this.hechizos)
+    console.log("Buff:")
+    console.log(this.buff)
+    console.log("Animaciones:")
+    console.log(this.animaciones)
     console.log("Enemigos:")
-    console.log(this.tipoEnemigos)
+    console.log(this.enemigos)
+    console.log("Eventos:")
+    console.log(this.eventos)
+    console.log("Misiones:")
+    console.log(this.misiones)
 
 	this.seleccionarBuff(0)
 	this.seleccionarHechizo(0)
 	this.seleccionarAnimacion(0)
 	this.seleccionarSubanimacion(0)
 
+    this.seleccionarClase("Guerrero")
+    this.estadoHerramientaDatos= "Objetos";
+
 	//Inicializar Imagenes:
 	for(var i=1; i <308; i++){
 		this.imagenes.push(i);
 	}
 
-	console.log(this.buff)
   }
 
   inicializarArchivos(){
@@ -492,6 +531,7 @@ export class DesarrolladorService implements OnInit{
       color: "inherit",
       border: Object.assign([],["none", "none", "none", "none"])
     }
+
     var vectorFila = [];
     var numColumnas = this.renderReticula.celdas[0].length;
     var numFilas = this.renderReticula.celdas.length;
@@ -573,9 +613,15 @@ export class DesarrolladorService implements OnInit{
   }
 
   getReticula(){return this.renderReticula;}
-  getRegion(){return this.mapaGeneralService.getRegion();}
-  getTile(x:number,y:number){return this.mapaGeneralService.getTile(x,y);}
-  async setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){return this.mapaGeneralService.setTile(x,y,formGeneral,formTerreno,formEventos,formMisiones);}
+  getRegion(){return this.appService.getRegion();}
+
+  async getTile(x:number,y:number){
+      return this.appService.getTile(x,y);
+  }
+
+  async setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){
+      return this.appService.setTile(x,y,formGeneral,formTerreno,formEventos,formMisiones);
+  }
 
   moverReticula(movimiento){
     console.log("Cambiando Reticula")
@@ -1331,13 +1377,13 @@ export class DesarrolladorService implements OnInit{
 	}
 	if(tipoId==0){console.log("ERROR: No se ha encontrado ningun enemigo con ID: "+enemigoID);return}
 
-    this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoId);
+    this.tipoEnemigoSeleccionado = this.enemigos.enemigos_stats.find(i=> i.id== tipoId);
     this.observarDesarrolladorService.next("reloadFormEnemigo");
     return;
   }
 
   seleccionarTipoEnemigo(tipoEnemigoID: number){
-    this.tipoEnemigoSeleccionado = this.tipoEnemigos.enemigos_stats.find(i=> i.id== tipoEnemigoID);
+    this.tipoEnemigoSeleccionado = this.enemigos.enemigos_stats.find(i=> i.id== tipoEnemigoID);
 
     this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex].tipo_enemigo_id= tipoEnemigoID;
 
@@ -1349,9 +1395,9 @@ export class DesarrolladorService implements OnInit{
     return;
   }
 
-  seleccionarEvento(eventoID: number){
+  seleccionarEventoMazmorra(eventoID: number){
     this.eventoSeleccionadoId = eventoID;
-    this.observarDesarrolladorService.next("reloadFormEventos");
+    this.observarDesarrolladorService.next("reloadFormEventosMazmorra");
 	return;
   }
 
@@ -1480,11 +1526,7 @@ export class DesarrolladorService implements OnInit{
   		this.archivoSeleccionado= archivo;
 
   		switch (archivo) {
-  			case "Heroes_Stats":
-  				this.archivoDato= this.appService.getHeroesStats()
-          this.indexArchivoSeleccionado= 0;
-  				break;
-	
+
   			case "Hechizos":
   				this.archivoDato= this.appService.getHechizos()
           this.indexArchivoSeleccionado= 1;
@@ -1510,20 +1552,11 @@ export class DesarrolladorService implements OnInit{
           this.indexArchivoSeleccionado= 5;
   				break;
 	
-  			case "Parametros":
-  				this.archivoDato= this.appService.getParametros()
-          this.indexArchivoSeleccionado= 6;
-  				break;
-	
   			case "Perfil":
   				this.archivoDato= this.appService.getPerfil()
           this.indexArchivoSeleccionado= 7;
   				break;
 
-        case "Personajes":
-          this.archivoDato= this.appService.getPersonajes()
-          this.indexArchivoSeleccionado= 8;
-          break;  			
   		}
   		return;
   }
@@ -1767,157 +1800,21 @@ export class DesarrolladorService implements OnInit{
       }
   }
 
-  verificarDatos(){
-
-    this.log("***** INICIANDO VERIFICACION ("+this.archivoSeleccionado+") ****** ","aqua");
-
-    var archivoVerificacion= this.archivosExcel[this.indexArchivoSeleccionado].workbook;
-    var nombresHojas= [];
-    var hojasArchivo= [];
-    var cabecerasHojas= [];
-    var worksheet: XLSX.WorkSheet;
-    var objetoArchivo = {};
-    var errorVerificacion= false;
-
-    //Deteccion Hojas:
-    this.log("-----------------------------", "orange")
-    this.log("Detectando Hojas: ", "orange")
-    this.log(archivoVerificacion.SheetNames,"orange");
-    this.log("-----------------------------", "orange")
-
-    //Selección de hojas para Schema:
-    switch(this.archivoSeleccionado){
-      
-      case "Heroes_Stats":
-        nombresHojas= ['GUERRERO','HECHICERO','CAZADOR','LADRON','SACERDOTE']
-      break;
-      case "Hechizos":
-        nombresHojas= ['HECHIZOS']
-      break;
-      case "Enemigos":
-        nombresHojas= ['ENEMIGOS_STATS','ENEMIGOS_HECH','ENEMIGOS_PASIVAS','ENEMIGOS_BUFFOS']
-      break;
-      case "Buff":
-        nombresHojas= ['BUFF']
-      break;
-      case "Objetos":
-        nombresHojas= ['EQUIPO','CONSUMIBLE']
-      break;
-      case "MazmorraSnack":
-        nombresHojas= ['GENERAL','SALAS','ENEMIGOS','EVENTOS','DIALOGOS']
-      break;
-      case "GuardadoSnack":
-        nombresHojas= ['GENERAL','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
-      break;
-      case "MazmorraDummy":
-        nombresHojas= ['GENERAL','SALAS','ENEMIGOS','EVENTOS','DIALOGOS']
-      break;
-      case "GuardadoDummy":
-        nombresHojas= ['GENERAL','HEROES','OBJETOS','OBJETOS_GLOBALES','MISIONES','INMAP']
-      break;
-      case "Animaciones":
-        nombresHojas= ['ANIMACIONES','SONIDOS']
-      break;
-      case "Parametros":
-        nombresHojas= ['PERSONAJES','ATRIBUTOS','ESCALADO']
-      break;
-      case "Perfil":
-        nombresHojas= ['CONFIGURACION','LOGROS','HEROES','OBJETOS','OBJETOS_GLOBALES','HECHIZOS','MISIONES','INMAP']
-      break;
-      case "Personajes":
-        nombresHojas= ['PERSONAJES']
-      break;
-    }
-
-    //Descomposicion de Hojas:
-    for(var i=0; i <nombresHojas.length; i++){
-      try{
-
-        this.log("Obteniendo Hoja: "+nombresHojas[i], "orange")
-
-        worksheet = archivoVerificacion.Sheets[nombresHojas[i]];
-        cabecerasHojas.push(XLSX.utils.sheet_to_json(worksheet, {header: 1,range: 12})[0]);
-
-        //Formateo de columnas:
-        for(var j= 0; j <cabecerasHojas[i].length;j++){
-          cabecerasHojas[i][j]= cabecerasHojas[i][j].toLowerCase();
-          cabecerasHojas[i][j]= cabecerasHojas[i][j].replace(/ /g,"_");
-        }
-  
-        hojasArchivo.push((XLSX.utils.sheet_to_json(worksheet, {header: cabecerasHojas[i],range: 13})));
-      }catch(error){
-        this.log("ERROR obteniendo hoja: "+nombresHojas[i],"red");
-        errorVerificacion=true;
-        console.log(error);
-      }
-    }
-
-    if(errorVerificacion){
-      this.log("**ERROR: Verificacion de "+this.archivoSeleccionado+" no superada","red");
-      this.archivosExcel[this.indexArchivoSeleccionado].error= true;
-    return;}else{
-      this.log("**EXITO: La verificacion se ha superado con exito","green");
-    }
-
-    //CONSTRUCTOR DE ARCHIVO:
-    for(var i=0; i <nombresHojas.length; i++){
-      objetoArchivo[nombresHojas[i].toLowerCase().replace(/ /g,"_")]=hojasArchivo[i];
-    }
-
-    //Incluir nombreID
-    objetoArchivo["nombreId"]= this.archivoSeleccionado;
-
-    console.log("Archivo Verificado: ");
-    console.log(objetoArchivo);
-
-    //Guardando archivo:
-    this.archivosExcel[this.indexArchivoSeleccionado].objetoArchivo= objetoArchivo;
-    this.archivosExcel[this.indexArchivoSeleccionado].verificado= true;
-
-    return;
-  }
-
-  subirArchivo(){
-    this.archivosExcel[this.indexArchivoSeleccionado].estado="subido";
-    this.log("Subiendo archivo...","orange");
-    this.mostrarMensaje= true;
-    this.mostrarSpinner= true;
-    this.mensaje= "Subiendo archivo: "+this.archivoSeleccionado;
-    if(this.appService.subirArchivo(this.archivosExcel[this.indexArchivoSeleccionado].objetoArchivo)){
-      this.log("Archivo subido con exito.","green");
-      this.mostrarMensaje= false;
-      this.reloadDatos(false);
-    }else{
-      this.log("Error en la subida del archivo","red");
-      this.mostrarMensaje= false;
-    }
-  }
-
-  toggleDatosOficiales(){
-    this.archivoSeleccionado="null";
-    this.estadoDatos= "ver";
-    this.archivoDato={}
-    this.log("Datos Oficiales = "+!this.appService.activarDatosOficiales,"orange");
-    this.appService.toggleDatosOficialesDesarrollador();
-  }
-
   async reloadDatos(forzarEstadoVer:boolean){
-
-    this.log("Obteniendo datos (Perfil: "+this.appService.getValidacion().then((result) => {return result.nombre})+" + Oficial)","orange");
+    this.log("Obteniendo datos (Perfil: "+this.appService.getCuenta().then((result) => {return result.nombre})+" + Oficial)","orange");
     this.mostrarMensaje= true;
     this.mostrarSpinner= true;
     this.mensaje= "Actualizando Datos..."
 
-    var clave = {
-            clave: parseInt(await this.appService.getValidacion().then((result) => {return result.clave}))
-          }
-		  console.log("CLAVEEE: "+clave);
-		  console.log(clave)
+    var token = await this.appService.getToken()
+    console.log("Usando token: ",token)
 		  
-    this.http.post(this.appService.ipRemota+"/deliriumAPI/validacion",clave).subscribe((data) => {
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatosJuego",{token: token}).subscribe((data) => {
             
+        console.log("Datos: ")
+        console.log(data)
             if(data){
-				this.appService.setInicio(data["datos"]);
+				this.appService.setDatosJuego(data);
               if(forzarEstadoVer){
                 this.archivoSeleccionado="null";
                 this.estadoDatos= "ver";
@@ -2002,7 +1899,7 @@ export class DesarrolladorService implements OnInit{
 	return;
   }
 
-  eliminarEvento(){
+  eliminarEventoMazmorra(){
 	  
 		//Elimina el evento:
 		this.mazmorra["eventos"].splice(this.mazmorra.eventos.indexOf(this.mazmorra.eventos.find(i=> i.id_evento==this.eventoSeleccionadoId)),1);
@@ -2013,7 +1910,8 @@ export class DesarrolladorService implements OnInit{
 	return;
   }
 
-  setEstadoDatos(estadoDatos:string){
+  setEstadoDatos(estadoDatos:TipoDatos){
+
 	this.estadoHerramientaDatos = estadoDatos; 
 	if(estadoDatos=="Animaciones"){
 		this.setEstadoPanelDerecho('Sonidos');
@@ -2100,7 +1998,18 @@ export class DesarrolladorService implements OnInit{
 					}
 				  ]
 			})
+            break;
+
+            case "Eventos":
+              this.eventos.eventos.push({
+                  "id": this.eventos.eventos.length+1,
+                  "nombre": "Nuevo Evento",
+                  "descripcion": "Descripcion del evento",
+                  "categoria": "null",
+                  "ordenes": []
+              });
 			break;
+
 		}//Fin switch
   }
 
@@ -2154,12 +2063,17 @@ export class DesarrolladorService implements OnInit{
 
 	  this.animacionSeleccionadoIndex= indexAnimacion;
 
-	  console.log(this.animaciones)
 	  this.subanimaciones = this.animaciones.animaciones[indexAnimacion].subanimaciones;
 	  this.sonidos = this.animaciones.animaciones[indexAnimacion].sonidos;
 
 	  //Actualizar Formulario:
 		this.observarDesarrolladorService.next("reloadFormAnimaciones");
+  }
+
+  seleccionarObjeto(indexObjeto:number){
+	  this.indexObjetoSeleccionado= indexObjeto;
+	  //Actualizar Formulario:
+		this.observarDesarrolladorService.next("reloadFormObjetos");
   }
 
   eliminarAnimacion(){
@@ -2234,24 +2148,11 @@ export class DesarrolladorService implements OnInit{
 		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
   }
 
-  abrirSelectorImagen(estado:string){
-	this.estadoSelectorImagen = estado;
+  abrirSelectorImagen(categoria:string){
 
-    var numeroImagenes = 0
-
-    console.log(this.estadoSelectorImagen)
-    
-    switch(this.estadoSelectorImagen){
-        case "hechizo":
-        case "buff":
-            numeroImagenes = 308;
-            this.pathImagenes = "Habilidades/Spell"
-            break;
-        case "tile":
-            numeroImagenes = 216;
-            this.pathImagenes = "Mapa/Tiles"
-            break;
-    }
+	this.estadoSelectorImagen = categoria;
+    var numeroImagenes = directorioAssets.find(i => i.categoria==categoria).numeroImagenes; 
+    this.pathImagenes = directorioAssets.find(i => i.categoria==categoria).path; 
 
     //Inicializar Imagenes:
     this.imagenes= [];
@@ -2369,6 +2270,23 @@ export class DesarrolladorService implements OnInit{
 			  console.log(err);
 			});
 		  break;
+
+		  case "Eventos":
+			console.log(this.eventos)
+			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarEventos",{eventos: this.eventos, token: await this.appService.getToken()}).subscribe((res) => {
+			  if(res){
+				console.log("Objeto eventos guardado con exito");
+				this.mostrarBotonAceptar= true;
+				this.mostrarSpinner= false;
+				this.mensaje= "Datos eventos guardados con exito";
+				this.mostrarMensaje= true;
+			  }else{
+				console.log("Fallo en el guardado");
+			  }
+			},(err) => {
+			  console.log(err);
+			});
+		  break;
 	  }
 
     return;
@@ -2381,7 +2299,7 @@ export class DesarrolladorService implements OnInit{
   async guardarInMap(){  
 	
 	  console.log("GUARDANDO MAPA: ")
-      this.region = this.mapaGeneralService.getRegion();
+      this.region = this.appService.getRegion();
       console.log(this.region);
 	  
 	  switch(this.region.nombreId){
@@ -2432,8 +2350,8 @@ export class DesarrolladorService implements OnInit{
             this.opcionPropiedades = "terreno";
         break;
 
-        case "eventos":
-            this.opcionPropiedades = "eventos";
+        case "trigger":
+            this.opcionPropiedades = "trigger";
         break;
 
         case "misiones":
@@ -2459,6 +2377,229 @@ export class DesarrolladorService implements OnInit{
   setInMapMisiones(val){
   }
 
+  // *************************************************
+  //    EVENTOS:
+  // ************************************************* 
+
+
+  seleccionarOrden(ordenIndex:number){
+      console.log("Seleccionando Orden: " + this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex].nombre);
+      this.ordenSeleccionadaIndex = ordenIndex;
+      this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex].tipo;
+    this.observarDesarrolladorService.next("reloadFormEventos");
+      return;
+  }
+
+  seleccionarTipoOrden(tipoOrden:string){
+      console.log("Seleccionando Tipo Orden: " + tipoOrden);
+      this.tipoOrdenSeleccionada = tipoOrden;
+      return;
+  }
+  
+  seleccionarEvento(eventoIndex: number){
+      this.eventoSeleccionadoIndex = eventoIndex;
+      console.log("Seleccionando Eventos: " + this.eventos.eventos[this.eventoSeleccionadoIndex].nombre);
+        this.observarDesarrolladorService.next("reloadFormEventos");
+	  return;
+  }
+
+  addEvento(){
+      this.eventos.eventos[this.eventoSeleccionadoIndex].push({
+          id: this.eventos.eventos.length,
+          nombre: "Nuevo Evento",
+          descripcio: "Descripcion de evento",
+          categoria: "null",
+          ordenes: []
+      });
+	return;
+  }
+
+  eliminarEvento(){
+    //Elimina el evento seleccionado:
+      this.eventos.eventos.splice(this.eventoSeleccionadoIndex,1);
+      if(this.eventoSeleccionadoIndex>0){
+          this.eventoSeleccionadoIndex -= 1;
+      }
+      this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[0].tipo;
+      this.ordenSeleccionadaIndex = 0;
+      this.observarDesarrolladorService.next("reloadFormEventos");
+  }
+
+  addOrden(tipoOrden: string){
+      //Inicialización de campos de Ordenes:
+      switch(tipoOrden){
+          case "condicion":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  variable: null,
+                  valorVariable: null,
+                  operador: null,
+                  tipoEncadenadoTrue: null,
+                  encadenadoTrue: null,
+                  tipoEncadenadoFalse: null,
+                  encadenadoFalse: null
+              });
+          break;
+          case "variable":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  comando: null,
+                  variableTarget: null,
+                  valorNuevo: null,
+                  valorOperador: null
+              });
+          break;
+          case "mision":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  comando: null,
+                  mision_id: null,
+                  tarea_id: null
+              });
+          break;
+          case "trigger":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  comando: null,
+                  trigger_id: null,
+                  trigger: null
+              });
+          break;
+          case "dialogo":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  tipoDialogo: null,
+                  contenido: null,
+                  opciones: null,
+                  encadenadoId: null,
+                  tipoEncadenado: null
+              });
+          break;
+          case "multimedia":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  comando: null,
+                  tipoMultimedia: null,
+                  nombreAsset: null
+              });
+          break;
+          case "loot":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  comando: null,
+                  objetivo: null,
+                  oro: 0,
+                  exp: 0,
+                  objetos: null,
+              });
+          break;
+          case "enemigo":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  comando: null,
+                  idEnemigo: null,
+                  tipoEnemigo: null
+              });
+          break;
+          case "mazmorra":
+              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  nombre: "Nueva "+tipoOrden,
+                  tipo: tipoOrden,
+                  comando: null,
+                  mazmorraId: null,
+                  salaOpenId: null
+              });
+          break;
+      }
+
+      this.tipoOrdenSeleccionada = tipoOrden;
+      this.ordenSeleccionadaIndex = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length-1;
+      this.observarDesarrolladorService.next("reloadFormEventos");
+
+	return;
+  }
+
+  eliminarOrden(){
+    //Elimina la orden Seleccionada:
+      this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.splice(this.ordenSeleccionadaIndex,1);
+      if(this.ordenSeleccionadaIndex>0){
+          this.ordenSeleccionadaIndex -= 1;
+      }
+      this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex].tipo;
+      this.observarDesarrolladorService.next("reloadFormEventos");
+  }
+
+      
+  seleccionarClase(clase){
+        switch(clase){
+            case "Guerrero":
+		        this.claseSeleccionada=clase;
+                this.indexClaseSeleccionada=0;
+                this.observarDesarrolladorService.next("reloadFormClases");
+                break;
+            case "Hechicero":
+		        this.claseSeleccionada=clase;
+                this.indexClaseSeleccionada=1;
+                this.observarDesarrolladorService.next("reloadFormClases");
+                break;
+            case "Cazador":
+		        this.claseSeleccionada=clase;
+                this.indexClaseSeleccionada=2;
+                this.observarDesarrolladorService.next("reloadFormClases");
+                break;
+            case "Sacerdote":
+		        this.claseSeleccionada=clase;
+                this.indexClaseSeleccionada=3;
+                this.observarDesarrolladorService.next("reloadFormClases");
+                break;
+            case "Ladrón":
+		        this.claseSeleccionada=clase;
+                this.indexClaseSeleccionada=4;
+                this.observarDesarrolladorService.next("reloadFormClases");
+                break;
+        }
+		return;
+}
+
+  seleccionarTipoObjeto(tipoObjeto){
+      this.tipoObjetoSeleccionado = tipoObjeto;
+}
+      
+    formatearNombre(nombre: string): string{
+        return nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+
+    patchObject(patchableObj: Object, obj: Object) {
+      try {
+        for (const [key, value] of Object.entries(obj)) {
+      
+          if (value != null && value != undefined) {
+            (patchableObj as any)[key] = value
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
 } //FIN EXPORT
 
 

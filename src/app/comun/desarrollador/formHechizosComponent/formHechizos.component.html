@@ -1,0 +1,169 @@
+
+<!--   ******************* -->
+<!--      FORM HECHIZOS    -->
+<!--   ******************* -->
+
+        <!-- LISTA HECHIZOS -->
+        <panelSelectorComponent 
+            [tipo]="'Hechizos'"
+            [titulo]="'Hechizos'"
+            [botonAdd]="true"
+            [lateral]="'izquierda'"
+            [botonEliminarRelacion]="false"
+            >
+        </panelSelectorComponent>
+
+        <!-- CENTRAL DATOS HECHIZOS -->
+        <div id="visualizador"*ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'">
+            <div class="contenedorImagen">
+                <img (click)="desarrolladorService.abrirSelectorImagen('Hechizo')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].imagen_id}}.png"/>
+            </div>
+            <form  class="formularioGeneral" [formGroup]="formHechizos">
+
+                <img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarHechizo()"/>
+                  <mat-form-field appearance="legacy" class="formId">
+                    <mat-label>ID</mat-label>
+                    <input matInput placeholder="ID" formControlName="id">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formNombre">
+                    <mat-label>Nombre hechizo</mat-label>
+                    <input matInput placeholder="Nombre" formControlName="nombre">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formDescripcion">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput placeholder="Descripción" formControlName="descripcion">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formDistancia">
+                    <mat-label>Distancia</mat-label>
+                    <input matInput type="number" min="1" placeholder="" formControlName="distancia">
+                  </mat-form-field>
+
+                    <div class="selector formObjetivo">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Target</mat-label>
+                        <mat-select value="{{objetivo_Hechizos.value}}">
+                            <mat-option value="EU">EU</mat-option>
+                            <mat-option value="AU">AU</mat-option>
+                            <mat-option value="AL">AL</mat-option>
+                            <mat-option value="EM">EM</mat-option>
+                            <mat-option value="AM">AM</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="selector formTipoDaño">
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Tipo Daño</mat-label>
+                        <mat-select value="{{tipo_dano_Hechizos.value}}">
+                            <mat-option value="Físico">Físico</mat-option>
+                            <mat-option value="Mágico">Mágico</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                  <!--
+                  <mat-form-field appearance="legacy" class="formObjetivo">
+                    <mat-label>Animacion ID</mat-label>
+                    <input matInput type="number" min="0" placeholder="1" formControlName="animacion_id">
+                  </mat-form-field>
+                  -->
+
+                  <mat-form-field appearance="legacy" class="formDañoDir">
+                    <mat-label>Daño</mat-label>
+                    <input matInput type="number" min="0" placeholder="Daño directo" formControlName="daño_dir">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formHealDir">
+                    <mat-label>Heal</mat-label>
+                    <input matInput type="number" min="0" formControlName="heal_dir">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formEscudoDir">
+                    <mat-label>Escudo</mat-label>
+                    <input matInput type="number" min="0" formControlName="escudo_dir">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formAmenaza">
+                    <mat-label>Mod. Amenaza</mat-label>
+                    <input matInput type="number" min="0" formControlName="mod_amenaza">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formEnergia">
+                    <mat-label>Energía</mat-label>
+                    <input matInput type="number" min="0" formControlName="recurso">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="legacy" class="formPoder">
+                    <mat-label>Poder</mat-label>
+                    <input matInput type="number" min="0" formControlName="poder">
+                  </mat-form-field>
+
+
+
+            </form>
+
+            <div class="tituloBuff">Buff:</div> 
+            <div class="contenedorBuff">
+                <div class="contenedorImagenEncadenado">
+
+                    <img *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].buff_id!=0" (click)="desarrolladorService.setEstadoPanelDerecho('Buff')" class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.renderImagenBuff(this.desarrolladorService.hechizoSeleccionadoIndex)}}.png"/>
+                    <img *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].buff_id==0" [ngClass]="renderBotonAddSeleccionado('Buff')" (click)="desarrolladorService.setEstadoPanelDerecho('Buff')" class="imagenEncadenado" src="./assets/desarrollador/add.svg"/>
+                </div>
+            </div>
+
+            <div class="contenedorCampoRelacional campoAnimacion">
+                <div class="titulo">Animacion:</div> 
+                    <div >
+                        <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].animacion_id!=null" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
+
+                        <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].animacion_id==null" [ngClass]="renderBotonAddSeleccionado('Buff')" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/add.svg"/>
+                    </div>
+            </div>
+
+            <div class="tituloEncadenado">Encadenado:</div> 
+            <div class="contenedorEncadenado">
+                <div class="contenedorImagenEncadenado">
+                    <img class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].imagen_id}}.png"/>
+
+                    <img class="flecha" src="./assets/desarrollador/flecha-izquierda.png"/>
+                    <img *ngIf="desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].hech_encadenado_id!=0" (click)="desarrolladorService.setEstadoPanelDerecho('Hechizos')" class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.renderImagenEncadenado(this.desarrolladorService.hechizoSeleccionadoIndex)}}.png"/>
+                    <img *ngIf="desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].hech_encadenado_id==0" [ngClass]="renderBotonAddSeleccionado('Hechizos')" (click)="desarrolladorService.setEstadoPanelDerecho('Hechizos')" class="imagenAddEncadenado" src="./assets/desarrollador/add.svg"/>
+                </div>
+
+                <!--<div class="botonAddEncadenado">Add</div>   -->
+            </div>
+        </div> <!-- FIN VISUALIZADOR HECHIZOS -->
+
+        <!-- LISTA HECHIZOS -->
+        <panelSelectorComponent *ngIf="desarrolladorService.estadoPanelDatosDerecha=='Hechizos'"
+            [tipo]="'Hechizo_Encadenado'"
+            [titulo]="'HECHIZO ENCADENADO'"
+            [botonAdd]="false"
+            [lateral]="'derecha'"
+            [botonEliminarRelacion]="true"
+            >
+        </panelSelectorComponent>
+
+        <!-- LISTA BUFF RELACIONAL -->
+        <panelSelectorComponent *ngIf="desarrolladorService.estadoPanelDatosDerecha=='Buff'"
+            [tipo]="'Buff_relacionado'"
+            [titulo]="'BUFF RELACIONADO'"
+            [botonAdd]="false"
+            [lateral]="'derecha'"
+            [botonEliminarRelacion]="true"
+            >
+        </panelSelectorComponent>
+
+        <!-- LISTA ANIMACION RELACIONAL -->
+        <panelSelectorComponent *ngIf="desarrolladorService.estadoPanelDatosDerecha=='Animaciones'"
+            [tipo]="'Animacion_relacionada'"
+            [titulo]="'ANIMACION RELACIONADA'"
+            [botonAdd]="false"
+            [lateral]="'derecha'"
+            [botonEliminarRelacion]="false"
+            >
+        </panelSelectorComponent>
+

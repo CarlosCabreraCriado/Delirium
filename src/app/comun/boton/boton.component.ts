@@ -11,6 +11,8 @@ export class BotonComponent {
 
 	@Input() color: string; 
 	@Input() texto: string; 
+	@Input() tipoBoton: number = 1; 
+	@Input() vacio: boolean = false; 
 
 	constructor() {}
 

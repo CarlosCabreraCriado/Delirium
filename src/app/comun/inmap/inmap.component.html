@@ -48,6 +48,16 @@
 	<img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="abrirSocial()"/>
 
 	<!--   ******************* -->
+	<!--      Desarrollador    -->
+	<!--   ******************* -->
+
+	<img id="botonAbrirEvento" src="../../../assets/desarrollador/animacion.png" (click)="appService.abrirEvento()"/>
+
+    <div id="botonPruebas">
+        <div class="animacionFocus"></div>
+    </div>
+
+	<!--   ******************* -->
 	<!--      Panel Control    -->
 	<!--   ******************* -->
 
@@ -64,7 +74,7 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-		<heroeComponent *ngFor="let jugador of this.inmapService.grupo; let i = index" [tipo]="renderizarTipo(jugador)" [renderMazmorra]="{}" [renderHeroe]="{vida: 100}" [pantalla]="'inMap'" [Personaje]="camelize(jugador.heroe.clase)" [Roll]="'DPS'" [Nombre]="jugador.heroe.nombre" [idImagen]="jugador.heroe.id_imagen"[Nivel]="jugador.heroe.nivel" [lider]="false" (click)="clickHeroe(jugador)"  class="panelHeroe"></heroeComponent>
+        <heroeComponent *ngFor="let jugador of this.inmapService.grupo; let i = index" [tipo]="renderizarTipo(jugador)" [renderMazmorra]="{}" [renderHeroe]="{vida: 100}" [pantalla]="'inMap'" [Personaje]="camelize(jugador.heroe.clase)" [Roll]="'DPS'" [Nombre]="jugador.heroe.nombre" [idImagen]="jugador.heroe.id_imagen"[Nivel]="jugador.heroe.nivel" [lider]="false" (click)="clickHeroe(jugador)"  class="panelHeroe"></heroeComponent>
 
         <heroeComponent *ngIf="this.inmapService.grupo && this.inmapService.grupo.length<5" [pantalla]="'inMap'" [tipo]="'add'" [Personaje]="''" [Roll]="''" [Nombre]="''" [Nivel]="" [lider]="false" class="panelHeroe"></heroeComponent>
 
@@ -76,7 +86,13 @@
 
 	<div id="ContenedorMapa">
         <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
-        <mapaGeneralComponent id="mapaGeneralComponent"></mapaGeneralComponent>
+        <mapaGeneralComponent id="mapaGeneralComponent"
+                              (comandoMapaGeneral)="console.log($event)" 
+                              [coordenadas]="appService.sesion.inmap"
+                              [radioRenderIsometrico]="appService.radioRenderIsometrico"
+                              [herramientaInMap]="'InMap'"
+                              [mostrarNiebla]="appService.estadoInmap=='isometrico'">
+        </mapaGeneralComponent>
 	</div>
 
 </div> <!-- Fin Contenedor Main Window -->

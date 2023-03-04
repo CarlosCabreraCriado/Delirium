@@ -22,8 +22,8 @@ export class InMapService {
 	public animaciones: any;
 	public parametros: any;
 
-	//Datos de validacion y perfil:
-	private validacion: any;
+	//Datos de cuenta y perfil:
+	private cuenta: any;
 	private perfil: any;
 
 	//Estados Inmap:
@@ -41,9 +41,9 @@ export class InMapService {
 		//Suscripcion Socket:
       	this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
 
-            var validacion = await this.appService.getValidacion();
+            var cuenta = await this.appService.getCuenta();
 
-      		if(data.emisor== validacion.nombre && data.tipoEmisor == validacion.tipo){console.log("EVITANDO "+data.peticion);return;}
+      		if(data.emisor== cuenta.nombre && data.tipoEmisor == cuenta.tipo){console.log("EVITANDO "+data.peticion);return;}
       		switch(data.peticion){
       			case "log":
       				console.log("Peticion: "+data.peticion);
@@ -77,44 +77,43 @@ export class InMapService {
       		    	this.appService.setSala(this.sala);
       		    	this.socketSubscripcion.unsubscribe();
       		    	this.appService.setControl("mazmorra");
-					this.appService.cambiarUrl("mazmorra");
+					this.appService.setEstadoApp("mazmorra");
       			break;
       		}
       	});
 
-		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.validacion.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
+		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
 
 	}
 	
 	async cargarPerfil(){
 		
 		//Comprueba el Logueo:
-		console.log("Obteniendo validacion y perfil...");
-		this.validacion = await this.appService.getValidacion();
-		console.log(this.validacion);
-		if(!this.validacion){
+		console.log("Obteniendo cuenta y perfil...");
+		this.cuenta = await this.appService.getCuenta();
+		console.log(this.cuenta);
+		if(!this.cuenta){
 			this.appService.setControl("index");
-			this.appService.cambiarUrl("");
+			this.appService.setEstadoApp("index");
 		}
 
 		//Carga el perfil:
-		this.perfil=this.appService.getPerfil();
+		this.perfil= await this.appService.getPerfil();
+        console.log("PERFIL")
+        console.log(this.perfil)
 
 	}
 
 	getIDCuenta(){
-		return this.validacion._id;		
+		return this.cuenta._id;		
 	}
 
 	async importarDatosGenerales(){
 		console.log("Importando Datos al servicio Inmap... ")
-		this.heroeStat= await this.appService.getHeroesStats();
-		this.heroeHech= await this.appService.getHechizos();
 		this.enemigos= await this.appService.getEnemigos();
 		this.buff= await this.appService.getBuff();
 		this.objetos= await this.appService.getObjetos();
 		this.animaciones= await this.appService.getAnimaciones();
-		this.parametros= await this.appService.getParametros();
 	}
 
 	importarHeroeSeleccionado(){
@@ -124,14 +123,23 @@ export class InMapService {
 
 	cargarGrupo(){
 
+        //Auto Seleccion de primer heroe:
+		if(this.heroeSeleccionado == null){
+		    this.appService.setHeroeSeleccionado(this.perfil.heroes[0])
+        }
+
+        this.heroeSeleccionado = this.appService.getHeroeSeleccionado();
+        console.log("Heroe Seleccionado")
+        console.log(this.heroeSeleccionado)
+
 		//Inicializa el grupo:
 		this.grupo = [];
 
 		//Incluye Heroe Propio:
 		if(this.heroeSeleccionado == null){
-			this.grupo.push({ cuentaID: this.validacion._id, heroe: {	clase: "", especializacion: null, id: 0, nivel: 0, nombre: null, num_consumibles: 0, num_objetos_inventario: 0, oro: 0, px: 0 } })
+			this.grupo.push({ cuentaID: this.cuenta._id, heroe: {	clase: "", especializacion: null, id: 0, nivel: 0, nombre: null, num_consumibles: 0, num_objetos_inventario: 0, oro: 0, px: 0 } })
 		}else{
-			this.grupo.push({ cuentaID: this.validacion._id, heroe: this.heroeSeleccionado })
+			this.grupo.push({ cuentaID: this.cuenta._id, heroe: this.heroeSeleccionado })
 		}
 
 		//Forzar Grupo:
@@ -143,12 +151,10 @@ export class InMapService {
 
 		this.grupo.push({ cuentaID: "", heroe: {	clase: "sacerdote", especializacion: "-", id_imagen: 7, id: 1, nivel: 5, nombre: "Puerhorn", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
 
-		
 		this.heroeSeleccionado = {};
 
 		console.log("Grupo: ");
 		console.log(this.grupo);
-
 	}
 
 	iniciarPartida():void{
@@ -224,21 +230,21 @@ export class InMapService {
 				online: false
 			 }
 
-		this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.validacion.nombre,nombreSala: "Developer", contenido: this.heroeSeleccionado});
+		this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: "Developer", contenido: this.heroeSeleccionado});
 
 		console.log("SALA:")
 		console.log(this.sala);
 
 		console.log("Iniciando");
 
-		//this.socketService.enviarSocket('iniciarPartida', {nombre: this.validacion.nombre, clave: this.validacion.clave});
+		//this.socketService.enviarSocket('iniciarPartida', {nombre: this.cuenta.nombre, clave: this.cuenta.clave});
 
 		//Secuencia de inicio:
 
 		this.appService.setSala(this.sala);
 		this.socketSubscripcion.unsubscribe();
 		this.appService.setControl("mazmorra");
-		this.appService.cambiarUrl("mazmorra");
+		this.appService.setEstadoApp("mazmorra");
 
 	}
 

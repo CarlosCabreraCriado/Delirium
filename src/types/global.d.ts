@@ -3,28 +3,50 @@ export interface IElectronAPI {
   getToken: () => Promise<string>,
   setToken: (token:string) => Promise<void>,
 
-  //Gestion de validacion:
-  getValidacion: () => Promise<any>,
-  setValidacion: (any) => Promise<void>,
+  //Gestion de Cuenta:
+  getCuenta: () => Promise<any>,
+  setCuenta: (any) => Promise<void>,
+
+  //Gestion de Perfil:
+  getPerfil: () => Promise<any>,
+  setPerfil: (any) => Promise<void>,
 
   //Gestion de datos:
-  getDatos: () => Promise<any>,
-  setDatos: (datos:any) => Promise<void>,
-  setModelosDatos: (modelo:any) => Promise<void>,
-  actualizarEstadisticas: (datos:any) => Promise<boolean>,
-  getDatosHeroeStat: () => Promise<any>,
-  getDatosHeroeHech: () => Promise<any>,
-  getDatosEnemigos: () => Promise<any>,
-  getDatosBuff: () => Promise<any>,
+  getDatosJuego: () => Promise<any>,
+  setDatosJuego: (datos:any) => Promise<void>,
+  setEventos: (datos:any) => Promise<void>,
+
+  getDatosClases: () => Promise<any>,
   getDatosObjetos: () => Promise<any>,
+  getDatosPerks: () => Promise<any>,
+  getDatosHechizos: () => Promise<any>,
+  getDatosBuff: () => Promise<any>,
   getDatosAnimaciones: () => Promise<any>,
-  getDatosParametros: () => Promise<any>,
-  getDatosPersonajes: () => Promise<any>,
-  getDatosPerfil: () => Promise<any>,
+  getDatosEnemigos: () => Promise<any>,
+  getDatosEventos: () => Promise<any>,
+  getDatosMisiones: () => Promise<any>,
 
   //Gestion de desarrollador:
   openDesarrollador: () => Promise<void>
 }
+
+
+//Tipos Objetos:
+export type TipoEquipo = "Pesada"|"Media"|"Ligera"|"Arma una mano"|"Arma dos manos"|"Escudo";
+export type TipoPieza = "Casco"|"Pechera"|"Pantalón"|"Botas"|"Báculo"|"Arco"|"Daga"|"Espada"|"Hacha"|"Maza"|"Lanza"|"Miscelaneo";
+export type TipoRareza = "Común"|"Poco Común"|"Raro"|"Épico"|"Legendario";
+export type TipoConsumible = "Poción"|"Comida"|"Otro";
+
+//Tipos Hechizos:
+export type TipoDaño = "Físico"|"Mágico";
+export type TipoTarget = "EU"|"AU"|"AL"|"EM"|"AM";
+
+//Tipos Buff:
+export type TipoBuff = "Ventaja"|"Desventaja";
+
+//Tipos Mision:
+export type TipoMision = "Principal"|"Secundaria";
+export type TipoObjetivo = "Cuenta"|"Booleano";
 
 declare global {
   interface Window {

@@ -2,8 +2,7 @@
 @import "../../../variables.sass"
 
 ::ng-deep .fondoDialogo
-    background-color: rgba(black, 0.4)
-
+    background-color: rgba(black, 0.9)
 
 ::ng-deep .generalContainer
   display: flex
@@ -27,18 +26,12 @@
     color: white
     background-color: $colorFondo2
 
-    .frame
+    frameComponent 
         position: absolute
         top: 0 
         left: 0 
-        padding-top: 5%
-        margin-top: -2.5%
-        padding-left: 3%
-        margin-left: -1.5%
         width: 100%
         height: 100%
-        background-image: url("../../../assets/Frames/Frame-Dialogo.png")
-        background-size: 100% 100% 
 
     .title
         margin-top: 20px
@@ -54,14 +47,13 @@
         position: relative
         display: block
         width: 30%
-        margin-top: 20px
+        padding-bottom: 9%
+        margin-top: 10px
         left: 50%
         margin-left: -15%
 
     .colorTexto
         color: $colorTexto
-
-            
 
 ::ng-deep .containerCrearCuenta
   .mat-dialog-container
@@ -119,4 +111,399 @@
             margin-right: 10%
             z-index: 100
             
+
+// MENSAJE DIALOGO:
+#dialogo 
+  position: absolute
+  width: 100%
+  height: 100%
+::ng-deep .Dialogo
+  .mat-dialog-container
+    position: absolute !important
+    width: 100%
+    height: 100%
+    background: none
+    .contenedorPersonaje
+      position: absolute
+      display: flex
+      align-content: flex-start
+      flex-direction: column
+      justify-content: center
+      width: 25%
+      height: 100%
+      &.primero
+        left: 0%
+      &.segundo
+        right: 0%
+      img
+        position: relative
+        width: 100%
+      .placaNombre
+        position: relative
+        width: 100%
+        height: 15%
+        img
+          position: absolute
+          width: 100%
+          height: 100%
+        .nombrePersonaje
+          position: absolute
+          color: black
+          display: flex
+          width: 100%
+          height: 75%
+          align-items: center
+          justify-content: center
+    .contenedorCentral
+      position: absolute
+      display: flex
+      flex-wrap: nowrap
+      align-items: center
+      justify-content: flex-start
+      flex-direction: column
+      width: 50%
+      height: 100%
+      right: 25%
+      .contenedorTexto
+        position: relative
+        display: flex
+        flex-wrap: nowrap
+        flex-direction: column
+        align-items: center
+        width: 100%
+        margin-top: 10%
+        margin-bottom: 5%
+        color: black
+        .texto
+          position: relative
+          z-index: 2
+          margin-left: 5%
+          margin-right: 5%
+          margin-bottom: 3%
+        .contenedorTitulo
+          position: relative
+          z-index: 2
+          width: 90%
+          margin: 20px 0
+          text-align: center
+          background-image: url("../../../assets/ui/paper/ppr_01.png")
+          background-size: 100% 100%
+          h1
+        frameComponent
+          position: absolute
+          z-index: 1
+          width: 100%
+          height: 100%
+          top: 0
+        .decoracion
+          position: absolute
+          height: 20%
+          top: -20%
+        .contenedorBandera
+          position: absolute
+          width: 38%
+          padding-top: 17%
+          top: 30%
+          &.izquierda
+            transform: rotate(90deg)
+            left: 0%
+          &.derecha
+            transform: rotate(-90deg)
+            right: 0%
+          img
+            position: absolute
+            width: 100%
+            height: 100%
+      .contenedorOpciones
+        position: relative
+        display: flex
+        justify-content: center
+        flex-wrap: wrap
+        width: 100%
+        height: 30%
+        .opcion
+          position: relative
+          color: $colorTexto
+          width: 100%
+          margin: 5px 0px
+        
+// MENSAJE NARRADOR IMG:
+#narradorImg 
+  position: absolute
+  width: 100%
+  height: 100%
+::ng-deep .NarradorImg
+  .mat-dialog-container
+    position: absolute !important
+    width: 100%
+    height: 100%
+    background: none
+    div
+      z-index: 2
+    .contenedorCentral
+      position: absolute
+      z-index: 2
+      top: 5%
+      left: 5%
+      width: 90%
+      height: 90%
+      .contenedorImagen
+        position: absolute
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 50%
+        height: 100%
+        -webkit-mask-image: url("../../../assets/mascaras/2.png")
+        mask-image: url("../../../assets/mascaras/2.png")
+        mask-repeat: no-repeat
+        -webkit-mask-position-x: center
+        -webkit-mask-position-y: center
+        mask-size: 100% 90%
+        img
+          position: relative
+          height: 100%
+          max-width: 200%
+          animation-name: paralax
+          animation-duration: 20s
+          animation-iteration-count: infinite
+          animation-direction: alternate
+          animation-timing-function: ease-in-out
+      .contenedorTexto
+        position: absolute
+        display: flex
+        flex-direction: column
+        width: 50%
+        left: 48%
+        height: 75%
+        margin-top: 5%
+        color: black
+        .contenedorTitulo
+          display: flex
+          justify-content: center
+          align-items: center
+          margin: 2% 3%
+          img
+            position: relative
+            width: 20%
+            &.derecha
+              transform: scaleX(-1)
+        .contenido
+          margin: 0% 3%
+      .contenedorDecoracion
+        position: absolute
+        display: flex
+        justify-content: center
+        width: 100%
+        height: 10%
+        top: -7%
+        .decoracionSuperior
+          position: absolute
+          height: 100%
+      botonComponent
+        position: absolute
+        width: 20%
+        height: 10%
+        bottom: 5%
+        right: 5%
+      frameComponent
+        position: absolute
+        z-index: 1
+        width: 100%
+        height: 100%
+        top: 0
+        div
+          z-index: 1
+
+// MENSAJE DIAPOSITIVA:
+#diapositiva 
+  position: absolute
+  width: 100%
+  height: 100%
+::ng-deep .Diapositiva
+  .mat-dialog-container
+    position: absolute !important
+    width: 100%
+    height: 100%
+    background: none
+    div
+      z-index: 2
+    .contenedorCentral
+      position: absolute
+      z-index: 2
+      top: 5%
+      left: 5%
+      width: 90%
+      height: 90%
+      .contenedorImagen
+        position: absolute
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 50%
+        height: 100%
+        .imagen
+          position: relative
+          max-height: 70%
+          max-width: 85%
+          z-index: 2
+          border-image: url("../../../assets/ui/frame/fr_02.png")
+          border-width: 19px
+          border-image-slice: 36 36 36 36
+          border-image-width: 20px 20px 20px 20px
+          border-image-outset: 0px 0px 0px 0px
+          border-image-repeat: stretch stretch
+          border-style: solid
+      .contenedorTexto
+        position: absolute
+        display: flex
+        flex-direction: column
+        width: 50%
+        left: 48%
+        height: 75%
+        margin-top: 5%
+        color: black
+        .contenedorTitulo
+          display: flex
+          justify-content: center
+          align-items: center
+          margin: 2% 3%
+          img
+            position: relative
+            width: 20%
+            &.derecha
+              transform: scaleX(-1)
+        .contenido
+          margin: 0% 3%
+      .contenedorControlSlide
+        position: absolute
+        display: flex
+        height: 7%
+        bottom: 6%
+        width: 70%
+        flex-direction: row
+        flex-wrap: nowrap
+        justify-content: flex-end
+        img
+          position: relative
+          height: 100%
+          margin: 0 2px
+          &.seleccionada
+            background-image: url("../../../assets/ui/check_box/chb_01.png")  
+
+      .contenedorDecoracion
+        position: absolute
+        display: flex
+        justify-content: center
+        width: 100%
+        height: 10%
+        top: -7%
+        .decoracionSuperior
+          position: absolute
+          height: 100%
+      botonComponent
+        position: absolute
+        width: 20%
+        height: 10%
+        bottom: 5%
+        right: 5%
+      frameComponent
+        position: absolute
+        z-index: 1
+        width: 100%
+        height: 100%
+        top: 0
+        div
+          z-index: 1
+
+// MENSAJE DIAPOSITIVA:
+#mision 
+  position: absolute
+  width: 100%
+  height: 100%
+::ng-deep .Mision
+  .mat-dialog-container
+    position: absolute !important
+    width: 100%
+    height: 100%
+    background: none
+    div
+      z-index: 2
+    .contenedorCentral
+      position: absolute
+      z-index: 2
+      top: 0%
+      left: 0%
+      width: 100%
+      height: 100%
+    .fondoLibro
+      position: absolute
+      z-index: 1
+      width: 100%
+      height: 100%
+      top: 0
+      left: 0
+      img
+        position: absolute
+        width: 100%
+        height: 100%
+    .titulo
+      text-align: center
+    .contenedorMision
+      position: absolute
+      width: 37%
+      height: 60%
+      top: 15%
+      left: 10%
+      color: black
+      .tarea
+        position: relative
+        display: flex
+        height: 10%
+        margin: 10px 0
+        align-items: center
+        checkboxComponent
+          position: relative
+          height: 100%
+          margin-left: 5%
+        .textoTarea
+          margin-left: 10px
+    .contenedorRecompensa
+      position: absolute
+      width: 38%
+      height: 60%
+      top: 15%
+      left: 51%
+      color: black
+      .contenedorObjetos
+        position: relative
+        width: 100%
+        display: flex
+        flex-wrap: wrap
+        justify-content: center
+        .objeto
+          position: relative
+          width: 20%
+          margin: 2% 2%
+          img
+            position: relative
+            width: 100%
+
+      botonComponent
+        position: absolute
+        bottom: 0
+        width: 50%
+        height: 10%
+        margin-left: -25%
+        left: 50%
+
+@keyframes paralax
+  from
+    left: 25%
+  to
+    left: -25%
+  
+
+ 
+  
 

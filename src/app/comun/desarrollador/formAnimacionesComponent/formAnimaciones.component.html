@@ -1,0 +1,148 @@
+
+<!--   ******************* -->
+<!--    FORM ANIMACIONES   -->
+<!--   ******************* -->
+
+		<!-- LISTA ANIMACIONES -->
+      <div class="contenedorLateral izquierda">
+        <div class="titulo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">Animaciones: </div>
+		<div class="lista"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
+			<div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado('animaciones',i)" class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
+				<div class="nombre">{{animacion.nombre}}</div>
+				<!-- <img class="imagenHechizo" src="./assets/Efectos/{{animacion.sprite_id}}.png">-->
+			</div>
+            <!-- Boton Add -->
+            <div class="botonAddLista" (click)="desarrolladorService.addDato()">
+                Añadir
+            </div>
+		</div>
+
+	  </div> <!-- FIN CONTENEDOR LISTA IZQUIERDA -->
+
+		<!-- CENTRAL DATOS ANIMACION -->
+		<div id="visualizadorAnimaciones" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
+			<div class="contenedorImagen">
+				<div (click)="desarrolladorService.abrirSelectorImagen('buff')" class="fondoAnimacion"></div>
+
+				<appAnimacionEfecto [loop]="true" [animacion]="desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex]"></appAnimacionEfecto>
+
+			</div>
+
+			<form  class="formularioGeneral" [formGroup]="formAnimaciones">
+
+					<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarAnimacion()"/>
+
+				  <mat-form-field appearance="legacy" class="formId">
+					<mat-label>ID</mat-label>
+					<input matInput placeholder="ID" formControlName="id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNombre">
+					<mat-label>Nombre Animación</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+			</form>
+
+
+			<form  class="formularioGeneral subanimacion" [formGroup]="formSubanimacion">
+
+				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarSubanimacion()"/>
+
+				  <mat-form-field appearance="legacy" class="formNombreSubanimacion">
+					<mat-label>Nombre Subanimación</mat-label>
+					<input matInput placeholder="Nombre" formControlName="nombre">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formSpriteId">
+					<mat-label>Sprite ID</mat-label>
+					<input matInput  type="number" placeholder="Sprite Id" formControlName="sprite_id">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDuracion">
+					<mat-label>Duración</mat-label>
+					<input matInput placeholder="" formControlName="duracion">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formNumFrames">
+					<mat-label>Num Frames</mat-label>
+					<input matInput type="number" placeholder="" formControlName="num_frames">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formFrameRef">
+					<mat-label>Frame Ref</mat-label>
+					<input matInput placeholder="Frame Ref" formControlName="frame_ref">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formHue">
+					<mat-label>HUE</mat-label>
+					<input matInput type="number" placeholder="" formControlName="hue_filter">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formSepia">
+					<mat-label>Sepia</mat-label>
+					<input matInput type="number" placeholder="" formControlName="sepia">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formBrillo">
+					<mat-label>Brillo</mat-label>
+					<input matInput type="number" placeholder="" formControlName="brillo">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formSaturation">
+					<mat-label>Saturación</mat-label>
+					<input matInput type="number" placeholder="" formControlName="saturation">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formDelay">
+					<mat-label>Delay</mat-label>
+					<input matInput type="number" placeholder="" formControlName="delay">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formOffsetX">
+					<mat-label>OffsetX</mat-label>
+					<input matInput type="number" placeholder="" formControlName="offset_x">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formOffsetY">
+					<mat-label>OffsetY</mat-label>
+					<input matInput type="number" placeholder="" formControlName="offset_y">
+				  </mat-form-field>
+			</form>
+
+
+			<!-- Inicio panel subanimacion -->
+			<div class="contenedorSubLista contenedorSubanimacion">
+				
+				<div class="tituloSubLista">Subanimación</div>
+				<div *ngFor="let subanimacion of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].subanimaciones; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('subanimacion',i)" (click)="desarrolladorService.seleccionarSubanimacion(i)">{{subanimacion.nombre}} </div>
+			</div>
+				<div class="botonAdd botonSubanimacion" (click)="desarrolladorService.addSubanimacion()">Añadir</div>
+
+			<!-- Inicio panel Sonidos -->
+			<div class="contenedorSubLista contenedorSonido">
+
+				<div class="tituloSubLista">Sonidos</div>
+				<div *ngFor="let sonido of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].sonidos; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('sonido',i)" (click)="true">{{sonido.nombre}}</div>
+			</div>
+				<div class="botonAdd botonSonidos" (click)="desarrolladorService.addSonido()">Añadir</div>
+
+		</div>       
+        <!-- FIN VISUALIZACIÓN ANIMACIONES -->
+
+
+	<!-- LISTA SONIDOS -->
+	  <div class="contenedorLateral derecha">
+        <div class="titulo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">Sonidos: </div>
+		<div class="lista"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">
+			<div class="hechizo" (click)="desarrolladorService.eliminarBuffHechizo()">
+				<img class="imagen" src="./assets/desarrollador/papelera.svg">
+				<div class="nombre">Eliminar sonido</div>
+			</div>
+			<div *ngFor="let sonido of this.desarrolladorService.animaciones.sonidos; let i=index"  class="hechizo" (click)="true">
+				<img class="imagen" src="./assets/Habilidades/Spell/283.png">
+				<div class="nombre">{{sonido.nombre}}</div>
+			</div>
+		</div>
+	  </div> <!-- Fin contenedor lateral derecha -->
+

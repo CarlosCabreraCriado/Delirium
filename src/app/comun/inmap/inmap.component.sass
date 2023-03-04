@@ -148,6 +148,19 @@
         left: 5%
         height: 6%
 
+    #botonAbrirEvento
+        position: absolute
+        z-index: 5
+        top: 20%
+        left: 5%
+        height: 6%
+
+    #botonPruebas
+        position: absolute
+        z-index: 5
+        top: 30%
+        left: 5%
+
     #contenedorHeroes 
         position: absolute
         z-index: 5
@@ -157,6 +170,7 @@
         top: 0
         width: 25%
         height: 100%
+        pointer-events: none
         @include media("<=desktop")
             width: 32%
         @include media("<=phone")
@@ -166,10 +180,12 @@
 
         .panelHeroe
             position: relative
-            display: block
+            display: flex
+            justify-content: flex-end
             height: 17%
             width: 100%
             margin-top: 2vh
+            pointer-events: none
     
 #ContenedorPaneles
     .panel
