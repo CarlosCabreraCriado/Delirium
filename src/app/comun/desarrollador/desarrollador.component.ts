@@ -28,6 +28,8 @@ export class DesarrolladorComponent implements OnInit{
   	public renderReticula= {} as RenderReticula;
 	private escalaIsometrico: number= 0.5;
 	private escalaMapaIsometrico: number= 3;
+    private coordenadaSeleccionadaX= 0;
+    private coordenadaSeleccionadaY= 0
 
   	private desarrolladorSuscripcion: Subscription = null;
 
@@ -142,18 +144,14 @@ export class DesarrolladorComponent implements OnInit{
   	private inMapAtravesable = new FormControl(true);
   	private inMapInspeccionable = new FormControl('0');
   	private inMapMensajeInsapeccionable = new FormControl(null);
-  	private inMapVisitado = new FormControl('0');
   	private inMapUbicacionEspecial = new FormControl('0');
 
 	//Campos Campos InMap Eventos:
   	private inMapProbabilidadRandom = new FormControl(0);
   	private inMapCategoriaRandom = new FormControl('???');
-  	private inMapCheckTrigger = new FormControl('0');
   	private inMapLootProb = new FormControl('0');
   	private inMapLootId = new FormControl('0');
 
-	//Campos Campos InMap Misiones:
-  	private inMapCheckMisiones = new FormControl(0);
 
     //Configuracion MapaGeneral:
     private mostrarNieblaGuerra = false; 
@@ -327,7 +325,6 @@ export class DesarrolladorComponent implements OnInit{
   	        inMapAtravesable: this.inMapAtravesable,
             inMapInspeccionable: this.inMapInspeccionable,
             inMapMensajeInsapeccionable: this.inMapMensajeInsapeccionable,
-  	        inMapVisitado: this.inMapVisitado, 
   	        inMapUbicacionEspecial: this.inMapUbicacionEspecial 
 	    });
 
@@ -335,14 +332,12 @@ export class DesarrolladorComponent implements OnInit{
 	    this.formInMapTrigger = this.formBuilder.group({
   	        inMapProbabilidadRandom: this.inMapProbabilidadRandom,
   	        inMapCategoriaRandom: this.inMapCategoriaRandom,
-  	        inMapCheckTrigger: this.inMapCheckTrigger, 
   	        inMapLootProb: this.inMapLootProb,
   	        inMapLootId: this.inMapLootId
 	    });
 
 	//Campos Campos InMap Misiones:
 	    this.formInMapMisiones = this.formBuilder.group({
-  	        inMapCheckMisiones: this.inMapCheckMisiones 
 	    });
 
 		this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe(
@@ -360,9 +355,7 @@ export class DesarrolladorComponent implements OnInit{
 
 	          	case "reloadFormEnemigo":
 				case "reloadForm":
-
-	          		this.formEnemigos.setValue(this.desarrolladorService.mazmorra["salas"][this.desarrolladorService.enemigoSeleccionadoSalaIndex].enemigos[this.desarrolladorService.enemigoSeleccionadoIndex]);
-				
+	          		//this.formEnemigos.setValue(this.desarrolladorService.mazmorra["salas"][this.desarrolladorService.enemigoSeleccionadoSalaIndex].enemigos[this.desarrolladorService.enemigoSeleccionadoIndex]);
 	          	break;
 				
 	          	case "reloadFormEventosMazmorra":
@@ -449,6 +442,7 @@ export class DesarrolladorComponent implements OnInit{
 
 		setTimeout(()=>{    
       		this.appService.mostrarPantallacarga(false);
+            this.desarrolladorService.abrirTrigger("inmap",{})
  		}, 3000);
 
 		return;
@@ -729,9 +723,12 @@ export class DesarrolladorComponent implements OnInit{
         if(!coordenadas.ignoraGuardado){
             await this.desarrolladorService.setTile(coordenadas.xAntigua,coordenadas.yAntigua,this.formInMapGeneral.value,this.formInMapTerreno.value,this.formInMapTrigger.value,this.formInMapMisiones.value)
         }
+        //Asigna Coordenadas Seleccionada: 
+        this.coordenadaSeleccionadaX= coordenadas.x;
+        this.coordenadaSeleccionadaY= coordenadas.y;
 
         //Actualizar fomulario:
-        var valoresFormulario = await this.desarrolladorService.getTile(coordenadas.x,coordenadas.y)
+        var valoresFormulario = await this.desarrolladorService.getTile(coordenadas["x"],coordenadas["y"])
 
         console.log("VALORES:");
         console.log(valoresFormulario);
@@ -755,7 +752,6 @@ export class DesarrolladorComponent implements OnInit{
   	        inMapAtravesable: valoresFormulario.atravesable,
             inMapInspeccionable: valoresFormulario.inspeccionable,
             inMapMensajeInsapeccionable: valoresFormulario.mensajeInspeccion,
-  	        inMapVisitado: valoresFormulario.visitado, 
   	        inMapUbicacionEspecial: valoresFormulario.ubicacionEspecial 
 	    };
 
@@ -763,14 +759,12 @@ export class DesarrolladorComponent implements OnInit{
 	    var formInMapTrigger = {
   	        inMapProbabilidadRandom: valoresFormulario.probabilidadEvento,
   	        inMapCategoriaRandom: valoresFormulario.categoriaEvento,
-  	        inMapCheckTrigger: valoresFormulario.checkEventos, 
   	        inMapLootProb: "",
   	        inMapLootId: "" 
 	    };
 
 	//Campos Campos InMap Misiones:
 	    var formInMapMisiones = {
-  	        inMapCheckMisiones: [] 
 	    };
 
 	    this.formInMapGeneral.setValue(formInMapGeneral);
@@ -780,7 +774,27 @@ export class DesarrolladorComponent implements OnInit{
         
         console.log(this.formInMapTerreno)
 
-        this.desarrolladorService.seleccionarTile(coordenadas.x,coordenadas.y)
+    }
+    
+    async abrirTrigger(tipo: string){
+        //Carga los triggers en función del tipo:
+        var trigger = {}
+        var tile = {}
+
+        switch(tipo){
+            case "inmap-evento":
+                tile = await this.desarrolladorService.getTile(this.coordenadaSeleccionadaX,this.coordenadaSeleccionadaY)
+                trigger= tile["triggersInMapEventos"]
+                break;
+            case "inmap-mision":
+                tile = await this.desarrolladorService.getTile(this.coordenadaSeleccionadaX,this.coordenadaSeleccionadaY)
+                trigger= tile["triggersInMapMision"]
+                break;
+        }
+
+        //Abre el dialogo de Gestion de Triggers:
+        this.desarrolladorService.abrirTrigger(tipo,trigger);
+
     }
 
 

@@ -81,7 +81,7 @@ export const directorioAssets = [
             numeroImagenes: 22
 	},
     {
-            categoria: "Animales",
+            categoria: "Animal",
             path: "Enemigos/animales",
             numeroImagenes: 20
 	},
@@ -91,7 +91,7 @@ export const directorioAssets = [
             numeroImagenes: 10
 	},
     {
-            categoria: "Demonios",
+            categoria: "Demonio",
             path: "Enemigos/demonio",
             numeroImagenes: 10
 	},

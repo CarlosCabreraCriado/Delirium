@@ -62,7 +62,7 @@
             </ng-container>
 
             <!-- LISTA HECHIZOS DISPONIBLES -->
-            <ng-container *ngIf="tipo=='Hechizos_Clase'">
+            <ng-container *ngIf="tipo=='Hechizos_Disponibles'">
                 <div *ngFor="let hechizo of datos; let i=index" [ngClass]="renderListaSeleccionado('hechizo',i)" class="hechizo" >
                     <img class="imagen" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
                     <div class="nombre">{{hechizo.nombre}}</div>
@@ -82,6 +82,30 @@
                 <div *ngFor="let objeto of datos; let i=index" (click)="this.desarrolladorService.seleccionarObjeto(i)" [ngClass]="renderListaSeleccionado('hechizo',i)" class="hechizo" >
                     <img class="imagen" src="./assets/Items/{{objeto.tipo.toLowerCase()}}/{{objeto.imagen_id}}.png">
                     <div class="nombre">{{objeto.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA ENEMIGOS -->
+            <ng-container *ngIf="tipo=='Enemigos'">
+                <div *ngFor="let enemigo of datos; let i=index" (click)="this.desarrolladorService.seleccionarEnemigo(i)" [ngClass]="renderListaSeleccionado('enemigos',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/Enemigos/{{enemigo.familia.toLowerCase()}}/{{enemigo.imagen_id}}.png">
+                    <div class="nombre">{{enemigo.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA MISIONES -->
+            <ng-container *ngIf="tipo=='Misiones'">
+                <div *ngFor="let mision of datos; let i=index" (click)="this.desarrolladorService.seleccionarMision(i)" [ngClass]="renderListaSeleccionado('misiones',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/desarrollador/mision.png">
+                    <div class="nombre">{{mision.titulo}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA OBJETIVOS -->
+            <ng-container *ngIf="tipo=='Objetivos'">
+                <div *ngFor="let objetivo of datos; let i=index" (click)="this.desarrolladorService.seleccionarObjetivoMision(i)" [ngClass]="renderListaSeleccionado('objetivo',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/desarrollador/mision.png">
+                    <div class="nombre">{{objetivo.texto}}</div>
                 </div>
             </ng-container>
 

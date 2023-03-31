@@ -29,6 +29,9 @@ export class PanelSelectorComponent {
 			case "hechizo":
 				if(this.desarrolladorService.hechizoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
 				break;
+			case "enemigo":
+				if(this.desarrolladorService.enemigoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
 		}
 		return "";
 	}
@@ -36,8 +39,13 @@ export class PanelSelectorComponent {
         if(this.lateral == "izquierda"){
             return "contenedorLateral izquierda"
         }else{
-            return "contenedorLateral derecha"
+            if(this.lateral == "derecha"){
+                return "contenedorLateral derecha"
+            }else{
+                return "contenedorLateral libre"
+            }
         }
+            
     }
 
     formatearNombre(nombre: string): string{

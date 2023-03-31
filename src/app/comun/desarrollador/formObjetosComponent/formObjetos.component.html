@@ -32,7 +32,7 @@
                     <img class="imagen" (click)="desarrolladorService.abrirSelectorImagen(desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].pieza)" src="./assets/Items/{{desarrolladorService.formatearNombre(desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].pieza)}}/{{desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].imagen_id}}.png"/>
                 </ng-container>
                 <ng-container *ngIf="this.desarrolladorService.tipoObjetoSeleccionado=='Consumible'">
-                    <img class="imagen" (click)="desarrolladorService.abrirSelectorImagen(desarrolladorService.objetos.consumible[desarrolladorService.indexObjetoSeleccionado].tipo)" src="./assets/Items/{{desarrolladorService.formatearNombre(desarrolladorService.objetos.consumible[desarrolladorService.indexObjetoSeleccionado].tipo)}}/{{desarrolladorService.objetos.equipo[desarrolladorService.indexObjetoSeleccionado].imagen_id}}.png"/>
+                    <img class="imagen" (click)="desarrolladorService.abrirSelectorImagen(desarrolladorService.objetos.consumible[desarrolladorService.indexObjetoSeleccionado].tipo)" src="./assets/Items/{{desarrolladorService.formatearNombre(desarrolladorService.objetos.consumible[desarrolladorService.indexObjetoSeleccionado].tipo)}}/{{desarrolladorService.objetos.consumible[desarrolladorService.indexObjetoSeleccionado].imagen_id}}.png"/>
                 </ng-container>
             </div>
 

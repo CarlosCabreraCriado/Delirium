@@ -1,0 +1,238 @@
+
+<!--   ************************* -->
+<!--       Gestión Triggers      -->
+<!--   ************************* -->
+
+<div class= "contenedor">
+
+    <h1 class="title Texto2">Gestión Triggers</h1>
+
+        <!-- LISTA HECHIZOS -->
+        <div class="contenedorListaTriggers">
+            <panelSelectorComponent 
+                [tipo]="'Hechizos'"
+                [titulo]="'Hechizos'"
+                [botonAdd]="true"
+                [lateral]="'libre'"
+                [botonEliminarRelacion]="false"
+                >
+            </panelSelectorComponent>
+        </div>
+
+    <mat-stepper class="mat-app-background darkMode triggerStepper" orientation="vertical" [linear]="false" #stepper>
+
+      <mat-step [stepControl]="formActivador">
+        <form [formGroup]="formActivador">
+          <ng-template matStepLabel>Activador</ng-template>
+            <div class="contenedorDual">
+              <mat-form-field class="campo" appearance="legacy">
+                <mat-label>Activador</mat-label>
+                <mat-select value="'entrarCasilla'">
+                    <mat-option value="entrarCasilla">Entrar Casilla</mat-option>
+                    <mat-option value="cambioVariable">Cambio Variable</mat-option>
+                    <mat-option value="enemigoEliminado">Enemigo Eliminado</mat-option>
+                    <mat-option value="subirNivel">subirNivel</mat-option>
+                    <mat-option value="iniciarMazmorra">Inicial Mazmorra</mat-option>
+                    <mat-option value="finalizarMazmorra">Finalizar Mazmorra</mat-option>
+                    <mat-option value="completarMision">Completar Misión</mat-option>
+                    <mat-option value="pasoTurno">pasoTurno</mat-option>
+                    <mat-option value="lanzarHechizo">Lanzar Hechizo</mat-option>
+                    <mat-option value="movimiento">Movimiento</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="campo" appearance="fill">
+                <mat-label>Identificador</mat-label>
+                <input matInput formControlName="identificador" required>
+              </mat-form-field>
+            </div>
+        </form>
+      </mat-step>
+
+      <!-- CONDICIÓN INICIAL -->
+      <mat-step [stepControl]="formCondicionInicial">
+        <form [formGroup]="formCondicionInicial">
+            <ng-template matStepLabel>Condición Inicial</ng-template>
+
+            <div class="campoCheckBox">
+                <mat-checkbox  formControlName="activado">Activado</mat-checkbox>
+            </div>
+
+            <div class="contenedorOperacion">
+            <mat-form-field class="campo" appearance="fill">
+                <mat-label>Variable</mat-label>
+                <input matInput formControlName="variable" [required]="activado">
+            </mat-form-field>
+
+            <mat-form-field class="campo" appearance="legacy">
+                <mat-label>Operador</mat-label>
+                <mat-select value="'entrarCasilla'">
+                    <mat-option value="=">=</mat-option>
+                    <mat-option value="!=">!=</mat-option>
+                    <mat-option value="menor">Menor</mat-option>
+                    <mat-option value="menorIgual">Menor-Igual</mat-option>
+                    <mat-option value="mayor">Mayor</mat-option>
+                    <mat-option value="mayorIgual">Mayor-Igual</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="campo" appearance="fill">
+                <mat-label>Valor Comparado</mat-label>
+                <input matInput formControlName="valorComparado" [required]="activado">
+            </mat-form-field>
+            </div>
+
+            <div class="contenedorDual">
+            <mat-form-field class="campo" appearance="fill">
+                <mat-label>Comando Check</mat-label>
+                <input matInput formControlName="comandoCheck" [required]="activado">
+            </mat-form-field>
+
+            <mat-form-field  class="campo" appearance="fill">
+                <mat-label>Valor Check</mat-label>
+                <input matInput formControlName="valorCheck" [required]="activado">
+            </mat-form-field>
+            </div>
+
+        </form>
+      </mat-step>
+
+      <!-- OPERACIÓN PRE -->
+      <mat-step [stepControl]="formOperadorPre">
+        <form [formGroup]="formOperadorPre">
+            <ng-template matStepLabel>Operador Contador PRE</ng-template>
+
+            <div class="campoCheckBox">
+                <mat-checkbox  formControlName="activado">Activado</mat-checkbox>
+            </div>
+
+            <div class="contenedorDual">
+            <mat-form-field  class="campo" appearance="legacy">
+                <mat-label>Comando Pre</mat-label>
+                <mat-select value="'addVar'">
+                    <mat-option value="addVar">Add Variable</mat-option>
+                    <mat-option value="removeVar">Elim. Variable</mat-option>
+                    <mat-option value="modificarVar">Mod. Variable</mat-option>
+                    <mat-option value="suma">Suma</mat-option>
+                    <mat-option value="resta">Resta</mat-option>
+                    <mat-option value="multiplica">Multiplica</mat-option>
+                    <mat-option value="divide">Divide</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field  class="campo" appearance="fill">
+                <mat-label>Valor Operacion PRE</mat-label>
+                <input matInput formControlName="valorOperacionPre" [required]="activado">
+            </mat-form-field>
+            </div>
+
+        </form>
+      </mat-step>
+
+      <!--  CONTADOR -->
+      <mat-step [stepControl]="formContador">
+        <form [formGroup]="formContador">
+            <ng-template matStepLabel>Contador</ng-template>
+
+            <div class="campo campoCheckBox">
+                <mat-checkbox  formControlName="activado">Activado</mat-checkbox>
+            </div>
+
+            <div class="contenedorOperacion">
+            <mat-form-field class="campo" appearance="fill">
+                <mat-label>Variable</mat-label>
+                <input matInput formControlName="variable" [required]="activado">
+            </mat-form-field>
+
+            <mat-form-field class="campo" appearance="legacy">
+                <mat-label>Operador</mat-label>
+                <mat-select value="'entrarCasilla'">
+                    <mat-option value="=">=</mat-option>
+                    <mat-option value="!=">!=</mat-option>
+                    <mat-option value="menor">Menor</mat-option>
+                    <mat-option value="menorIgual">Menor-Igual</mat-option>
+                    <mat-option value="mayor">Mayor</mat-option>
+                    <mat-option value="mayorIgual">Mayor-Igual</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field  class="campo" appearance="fill">
+                <mat-label>Valor Comparado</mat-label>
+                <input matInput formControlName="valorComparado" [required]="activado">
+            </mat-form-field>
+            </div>
+
+            <div class="contenedorCondiciones">
+            <div class="contenedorCondicion">
+            <h3>Condición True </h3>
+            <div formGroupName="condicionTrue">
+                <mat-form-field  class="campo" appearance="legacy">
+                    <mat-label>Comando True</mat-label>
+                    <mat-select value="'addVar'">
+                        <mat-option value="addVar">Add Variable</mat-option>
+                        <mat-option value="removeVar">Elim. Variable</mat-option>
+                        <mat-option value="modificarVar">Mod. Variable</mat-option>
+                        <mat-option value="suma">Suma</mat-option>
+                        <mat-option value="resta">Resta</mat-option>
+                        <mat-option value="multiplica">Multiplica</mat-option>
+                        <mat-option value="divide">Divide</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field  class="campo" appearance="fill">
+                    <mat-label>Valor Operacion True</mat-label>
+                    <input matInput formControlName="valorOperacion" [required]="activado">
+                </mat-form-field>
+            </div>
+            </div>
+
+            <div class="contenedorCondicion">
+            <h3>Condición False</h3>
+            <div formGroupName="condicionFalse">
+                <mat-form-field  class="campo" appearance="legacy">
+                    <mat-label>Comando False</mat-label>
+                    <mat-select value="'addVar'">
+                        <mat-option value="addVar">Add Variable</mat-option>
+                        <mat-option value="removeVar">Elim. Variable</mat-option>
+                        <mat-option value="modificarVar">Mod. Variable</mat-option>
+                        <mat-option value="suma">Suma</mat-option>
+                        <mat-option value="resta">Resta</mat-option>
+                        <mat-option value="multiplica">Multiplica</mat-option>
+                        <mat-option value="divide">Divide</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field  class="campo" appearance="fill">
+                    <mat-label>Valor Operacion False</mat-label>
+                    <input matInput formControlName="valorOperacion" [required]="activado">
+                </mat-form-field>
+            </div>
+            </div>
+            </div>
+
+        </form>
+      </mat-step>
+
+      <!--  EVENTO TRIGGER -->
+      <mat-step [stepControl]="formTriggerEvento">
+        <form [formGroup]="formTriggerEvento">
+            <ng-template matStepLabel>Trigger Evento</ng-template>
+
+            <div class="contenedorDual">
+            <mat-form-field  class="campo" appearance="fill">
+                <mat-label>Evento Trigger True</mat-label>
+                <input matInput type="number"  min="0" formControlName="eventoTriggerTrue">
+            </mat-form-field>
+
+            <mat-form-field  class="campo" appearance="fill">
+                <mat-label>Evento Trigger False</mat-label>
+                <input matInput type="number"  min="0" formControlName="eventoTriggerFalse">
+            </mat-form-field>
+            </div>
+
+        </form>
+      </mat-step>
+    </mat-stepper>
+    
+    <botonComponent mat-button [mat-dialog-close] [texto]="'Guardar'" [tipoBoton]="2" [color]="'verde'" class="botonUnico botonGuardar" (click)="guardarTrigger()"></botonComponent>
+	<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [tipoBoton]="2" [color]="'rojo'" class="botonUnico botonCancelar" (click)="cancelarTrigger()"></botonComponent>
+</div>
+

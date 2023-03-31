@@ -243,33 +243,31 @@
 				  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy">
-					<mat-label>Check Trigger:</mat-label>
-					<input matInput placeholder="[]" formControlName="inMapCheckTrigger">
-				  </mat-form-field>
+                <div class="contenedorCampoRelacional campoAnimacion campo">
+                    <img class="imagenCampoRelacional" (click)="abrirTrigger('inmap-evento')" src="./assets/desarrollador/trigger.png"/>
+                </div>
 
-                <!--Campo-->
+                <!--Campo
 				  <mat-form-field appearance="legacy">
 					<mat-label>Loot Prob:</mat-label>
 					<input matInput placeholder="0" formControlName="inMapLootProb">
 				  </mat-form-field>
 
-                <!--Campo-->
 				  <mat-form-field appearance="legacy">
 					<mat-label>Loot ID:</mat-label>
 					<input matInput placeholder="0" formControlName="inMapLootId">
 				  </mat-form-field>
+                    -->
 
 			</form>
 
             <!-- Formulario Misiones-->
-			<form *ngIf="desarrolladorService.opcionPropiedades==='misiones'"  class="formularioGeneral subanimacion" [formGroup]="formInMapMisiones">
+			<form *ngIf="desarrolladorService.opcionPropiedades==='misiones'"  class="formularioGeneral subanimacion" >
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy">
-					<mat-label>Check Misiones:</mat-label>
-					<input matInput placeholder="[]" formControlName="inMapCheckMisiones">
-				  </mat-form-field>
+                <div class="contenedorCampoRelacional campoAnimacion campo">
+                    <img class="imagenCampoRelacional" (click)="abrirTrigger('inmap-mision')" src="./assets/desarrollador/mision.png"/>
+                </div>
 
 			</form>
     </div> <!-- FIN Panel INMAP Inferior -->

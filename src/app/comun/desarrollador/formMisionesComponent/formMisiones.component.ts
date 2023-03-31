@@ -1,5 +1,8 @@
 
-import { Component , Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { DesarrolladorService } from '../desarrollador.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'formMisionesComponent',
@@ -7,14 +10,164 @@ import { Component , Input } from '@angular/core';
   styleUrls: ['./formMisiones.component.sass']
 })
 
+
 export class FormMisionesComponent {
 
-	@Input() texto: string; 
+    //Suscripciones:
+  	private desarrolladorSuscripcion: Subscription = null;
 
-	constructor() {}
+    //Variables de estado:
+    private opcionSeleccionada = "Propiedades";
+    private selectorOpcion = ["","",""];
+    private hechizosDisponibles = [];
+
+    //Form Group:
+  	private formMision: FormGroup;
+  	private formPropiedades: FormGroup;
+  	private formObjetivos: FormGroup;
+  	private formRecompensas: FormGroup;
+
+  	//Campos Datos Enemigo:
+  	private id_Mision = new FormControl(0);
+  	private nombre_Mision = new FormControl('???');
+    private descripcion_Mision = new FormControl('???');
+    private tipo_Mision = new FormControl('Gnoll');
+
+    private nivel_recomendado = new FormControl(1);
+    private capitulo = new FormControl(0);
+    private epigrafe = new FormControl(0);
+
+    private id_Objetivo = new FormControl(0);
+    private texto_Objetivo= new FormControl("???");
+    private tipo_Objetivo = new FormControl("Booleano");
+    private cuentaMax_Objetivo = new FormControl(1);
+    private requerido_Objetivo = new FormControl(true);
+
+    private oro = new FormControl(10);
+    private exp= new FormControl(100);
+    private oro_repeticion_mod = new FormControl(0.5);
+    private exp_repeticion_mod = new FormControl(0.5);
+
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+
+	async ngOnInit(){
+
+		//Inicializacion formulario Clase:
+	    this.formMision = this.formBuilder.group({
+	    	id: this.id_Mision,
+	    	titulo: this.nombre_Mision,
+	    	descripcion: this.descripcion_Mision,
+        	tipo: this.tipo_Mision,
+			recompensas: {},
+			objetivos: []
+	    });
+
+		//Inicializacion formulario Propiedades Mision:
+	    this.formPropiedades = this.formBuilder.group({
+	    	nivel_recomendado: this.nivel_recomendado,
+	    	capitulo: this.capitulo,
+	    	epigrafe: this.epigrafe
+	    });
+
+		//Inicializacion formulario Objetivos:
+	    this.formObjetivos = this.formBuilder.group({
+            id: this.id_Objetivo,
+            texto: this.texto_Objetivo,
+            tipo: this.tipo_Objetivo,
+            cuentaMax: this.cuentaMax_Objetivo,
+            requerido: this.requerido_Objetivo
+	    });
+
+		//Inicializacion formulario Recompensas:
+	    this.formRecompensas = this.formBuilder.group({
+            oro: this.oro,
+            exp: this.exp,
+            oro_repeticion_mod: this.oro_repeticion_mod,
+            exp_repeticion_mod: this.exp_repeticion_mod
+	    });
+
+		//Suscripcion de Recarga Formulario:
+		this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe(
+	        (val) => {
+	            switch (val) {
+                    case "reloadFormMisiones":
+                    case "reloadForm":
+                        this.reloadForm();
+                    break;
+                }
+            }) // Fin Suscripcion
+            
+		//Suscripcion de cambios formulario Mision:
+		this.formMision.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.misionSeleccionadaIndex+1){
+			    this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].titulo = val.titulo;
+			    this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].descripcion = val.descripcion;
+			    this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].tipo = val.tipo;
+			}
+			console.log(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex])
+		});
+
+		//Suscripcion de cambios Propiedades:
+		this.formPropiedades.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.misionSeleccionadaIndex+1){
+			    this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].escalado= val
+			}
+			console.log(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex])
+		});
+
+		//Suscripcion de cambios formulario Objetivos:
+		this.formObjetivos.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.misionSeleccionadaIndex+1){
+			    this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].objetivos[this.desarrolladorService.objetivoMisionSeleccionadoIndex] = val
+			}
+			console.log(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex])
+		});
+
+		//Suscripcion de cambios Recompensas:
+		this.formRecompensas.valueChanges.subscribe((val) =>{
+			if(this.desarrolladorService.misionSeleccionadaIndex+1){
+			    this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].recompensas= val
+			}
+			console.log(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex])
+		});
+
+        //Selecciona Opcion Por defecto: 
+        this.seleccionarOpcion(this.opcionSeleccionada);
+
+        //Selecciona Opcion Por defecto: 
+        this.desarrolladorService.seleccionarObjetivoMision(this.desarrolladorService.objetivoMisionSeleccionadoIndex);
+
+        //Cargar: 
+        this.reloadForm();
+
+    } //FIN ONINIT
+
+    reloadForm(){
+        console.log("Recargando formulario")
+        this.formMision.patchValue(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex]);
+        this.formPropiedades.patchValue(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex]);
+        this.formObjetivos.patchValue(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].objetivos[this.desarrolladorService.objetivoMisionSeleccionadoIndex]);
+        this.formRecompensas.patchValue(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex].recompensas);
+    }
+
+    seleccionarOpcion(opcion: string){
+        this.opcionSeleccionada = opcion;
+        this.selectorOpcion = ["","",""];
+        switch(opcion){
+            case "Propiedades":
+                this.selectorOpcion[0]="seleccionado";
+                break;
+            case "Objetivos":
+                this.selectorOpcion[1]="seleccionado";
+                break;
+            case "Recompensas":
+                this.selectorOpcion[2]="seleccionado";
+                break;
+        }
+    }
+
 
 }
-
 
 
 

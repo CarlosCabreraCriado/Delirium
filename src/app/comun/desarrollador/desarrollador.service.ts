@@ -7,6 +7,9 @@ import { Subject } from "rxjs";
 import * as XLSX from 'xlsx';
 import { TipoDatos } from "./tiposDesarrollador.class"
 import { directorioAssets } from "./propiedadesAssets"
+import { datosDefecto } from "./datosDefecto"
+import { TriggerComponent } from './triggerComponent/trigger.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 
 @Injectable({
   providedIn: 'root'
@@ -15,82 +18,82 @@ import { directorioAssets } from "./propiedadesAssets"
 export class DesarrolladorService implements OnInit{
 
   //Variables de control:
-	public cuenta: any= {}
+    public cuenta: any= {}
 
   //Variables de Estado Paneles Principales:
-	public panel= "datos";
-	public estadoInmap= "global";
-	public estadoMazmorra= "parametros";
-	public estadoParametros= "General";
-	public estadoHerramientaDatos: TipoDatos= null;
-	public estadoPanelDatosDerecha= "";
-	public estadoDatos= "subir";
-	public estadoAssets= "";
-	public estadoDatosSubir= "subir";
-	public claseSeleccionada= "Guerrero";
-	public indexClaseSeleccionada= 0;
-	public tipoObjetoSeleccionado= "Equipo";
-	public indexObjetoSeleccionado= 0;
-	
+    public panel= "inmap";
+    public estadoInmap= "global";
+    public estadoMazmorra= "parametros";
+    public estadoParametros= "General";
+    public estadoHerramientaDatos: TipoDatos= null;
+    public estadoPanelDatosDerecha= "";
+    public estadoDatos= "subir";
+    public estadoAssets= "";
+    public estadoDatosSubir= "subir";
+    public claseSeleccionada= "Guerrero";
+    public indexClaseSeleccionada= 0;
+    public tipoObjetoSeleccionado= "Equipo";
+    public indexObjetoSeleccionado= 0;
+    
   //VARIABLES DE DATOS
-	public archivosExcel: any= [];
-	public archivoDato: any;
-	public archivoDatoProvisional: any;
+    public archivosExcel: any= [];
+    public archivoDato: any;
+    public archivoDatoProvisional: any;
 
-	public archivoSeleccionado="Heroes_Stats";
-	public indexArchivoSeleccionado= 0;
-	public archivoSeleccionadoProvisional= "Null";
+    public archivoSeleccionado="Heroes_Stats";
+    public indexArchivoSeleccionado= 0;
+    public archivoSeleccionadoProvisional= "Null";
 
   //Mensajes:
-	public mostrarMensaje= false;
-	public mostrarSpinner= true;
-	public mostrarBotonAceptar= false;
-	public mensaje= "Actualizando Datos..."
+    public mostrarMensaje= false;
+    public mostrarSpinner= true;
+    public mostrarBotonAceptar= false;
+    public mensaje= "Actualizando Datos..."
 
-	//Selector de imagenes:
-	public mostrarSelectorImagen= false;
-	public estadoSelectorImagen= "";
+    //Selector de imagenes:
+    public mostrarSelectorImagen= false;
+    public estadoSelectorImagen= "";
     private pathImagenes = "Habilidades/Spell";
     
   //Logger Consola
-	public logger=[];
-	private loggerColor=[];
+    public logger=[];
+    private loggerColor=[];
 
   //Variables Mazmorra
-	public mazmorra:any = {};
-	public listaMazmorra:any= [];
-	public mostrarCargarMazmorra= false;
-	
-	private mazmorraInicializada= false;
-	private mazmorraNombreId= "";
-	private renderReticula= {}  as RenderReticula;
-	private numFilasIni= 27;
-	private numColumnasIni= 37;
-	private margenReticula= 6;
-	private cuentaIndexPieza= 0;
-	
-	private activarLimiteReticula: boolean = false;
-	private limiteReticulaXMin:number = 0;
-	private limiteReticulaXMax: number = 19;
-	
-	private limiteReticulaYMin: number = 0;
-	private limiteReticulaYMax: number = 11;
-	
-	private visorNumFilaIni:number = 14;
-	private visorNumColumnaIni: number= 24;
-	
-	private visorFila;
-	private visorColumna; 
+    public mazmorra:any = {};
+    public listaMazmorra:any= [];
+    public mostrarCargarMazmorra= false;
+    
+    private mazmorraInicializada= false;
+    private mazmorraNombreId= "";
+    private renderReticula= {}  as RenderReticula;
+    private numFilasIni= 27;
+    private numColumnasIni= 37;
+    private margenReticula= 6;
+    private cuentaIndexPieza= 0;
+    
+    private activarLimiteReticula: boolean = false;
+    private limiteReticulaXMin:number = 0;
+    private limiteReticulaXMax: number = 19;
+    
+    private limiteReticulaYMin: number = 0;
+    private limiteReticulaYMax: number = 11;
+    
+    private visorNumFilaIni:number = 14;
+    private visorNumColumnaIni: number= 24;
+    
+    private visorFila;
+    private visorColumna; 
 
   //Variables Mazmorra Isometrico
-	public mostrarIsometrico = false;
-	public isometrico: any = null; 
-	public mostrarGrid= true
-	public mostrarDecorado = true;
-	public mostrarSalaNula = true;
+    public mostrarIsometrico = false;
+    public isometrico: any = null; 
+    public mostrarGrid= true
+    public mostrarDecorado = true;
+    public mostrarSalaNula = true;
 
-	public mostrarPanelAsignarSala = false;
-	public mostrarPanelAsignarEvento = false;
+    public mostrarPanelAsignarSala = false;
+    public mostrarPanelAsignarEvento = false;
 
     //Variables Inmap:
     private regionInmap:number = 1;
@@ -99,7 +102,7 @@ export class DesarrolladorService implements OnInit{
     public coordenadaY: number = 0; 
     private regionSeleccionada: string = "";
     private tileImgSeleccionado: number = 1;
-    public opcionPropiedades: string = "general";
+    public opcionPropiedades: string = "trigger";
     public opcionesDesarrolloInMap: any = {
         opcionOverlay: false,
         herramientaInMap: "add",
@@ -108,46 +111,47 @@ export class DesarrolladorService implements OnInit{
     }
 
    //Variables de parametros:
-	public salaSeleccionadaId = 0;
-	public enemigoSeleccionadoId = 0;
-	public enemigoSeleccionadoSalaIndex = 0;
-	public enemigoSeleccionadoIndex = 0;
-	public eventoSeleccionadoId = 0;
+    public salaSeleccionadaId = 0;
+    public enemigoSeleccionadoId = 0;
+    public enemigoSeleccionadoSalaIndex = 0;
+    public eventoSeleccionadoId = 0;
 
-	public hechizoSeleccionadoIndex = 0;
-	public buffSeleccionadoIndex = 0;
-	public animacionSeleccionadoIndex = 0;
-	public subanimacionSeleccionadoIndex = 0;
-	public eventoSeleccionadoIndex = 0;
+    public hechizoSeleccionadoIndex = 0;
+    public buffSeleccionadoIndex = 0;
+    public animacionSeleccionadoIndex = 0;
+    public subanimacionSeleccionadoIndex = 0;
+    public enemigoSeleccionadoIndex = 0;
+    public eventoSeleccionadoIndex = 0;
     public tipoOrdenSeleccionada = "Condición";
-	public ordenSeleccionadaIndex = 0;
-	
+    public ordenSeleccionadaIndex = 0;
+    public misionSeleccionadaIndex = 0;
+    public objetivoMisionSeleccionadoIndex = 0;
 
-	public imagenes: any= [];
-	public tipoEnemigoSeleccionado:any;
-	private rotacion=0;
+    public imagenes: any= [];
+    public tipoEnemigoSeleccionado:any;
+    private rotacion=0;
 
-	//CARGA DE DATOS:
+    //CARGA DE DATOS:
     public clases: any;
     public objetos: any;
     public perks: any;
-	public hechizos: any;
-	public buff: any;
-	public animaciones: any;
-	public subanimaciones: any;
-	public sonidos: any;
-	public enemigos: any;
-	public eventos: any;
-	public misiones: any;
+    public hechizos: any;
+    public buff: any;
+    public animaciones: any;
+    public subanimaciones: any;
+    public sonidos: any;
+    public enemigos: any;
+    public eventos: any;
+    public misiones: any;
 
   // Observable string sources
-	private observarDesarrolladorService = new Subject<string>();
+    private observarDesarrolladorService = new Subject<string>();
 
   // Observable string streams
   observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
 
 
-  constructor(public appService: AppService, private http: HttpClient)  { 
+  constructor(public appService: AppService, private http: HttpClient, private dialog: MatDialog)  { 
   }
 
   ngOnInit(){
@@ -157,15 +161,15 @@ export class DesarrolladorService implements OnInit{
 
     console.log("INICIANDO HERRAMIENTA DESARROLLADOR");
     this.cuenta= await this.appService.getCuenta();
-	this.clases = await this.appService.getClases();
-	this.objetos = await this.appService.getObjetos();
-	this.perks = await this.appService.getPerks();
-	this.hechizos = await this.appService.getHechizos();
-	this.buff = await this.appService.getBuff();
-	this.animaciones = await this.appService.getAnimaciones();
+    this.clases = await this.appService.getClases();
+    this.objetos = await this.appService.getObjetos();
+    this.perks = await this.appService.getPerks();
+    this.hechizos = await this.appService.getHechizos();
+    this.buff = await this.appService.getBuff();
+    this.animaciones = await this.appService.getAnimaciones();
     this.enemigos= await this.appService.getEnemigos();
-	this.eventos = await this.appService.getEventos();
-	this.misiones = await this.appService.getMisiones();
+    this.eventos = await this.appService.getEventos();
+    this.misiones = await this.appService.getMisiones();
 
     console.log("Cuenta:")
     console.log(this.cuenta)
@@ -188,18 +192,20 @@ export class DesarrolladorService implements OnInit{
     console.log("Misiones:")
     console.log(this.misiones)
 
-	this.seleccionarBuff(0)
-	this.seleccionarHechizo(0)
-	this.seleccionarAnimacion(0)
-	this.seleccionarSubanimacion(0)
-
     this.seleccionarClase("Guerrero")
-    this.estadoHerramientaDatos= "Objetos";
+    this.seleccionarBuff(0)
+    this.seleccionarHechizo(0)
+    this.seleccionarEnemigo(0)
+    this.seleccionarEvento(0)
+    this.seleccionarAnimacion(0)
+    this.seleccionarSubanimacion(0)
 
-	//Inicializar Imagenes:
-	for(var i=1; i <308; i++){
-		this.imagenes.push(i);
-	}
+    this.estadoHerramientaDatos= "Misiones";
+
+    //Inicializar Imagenes:
+    for(var i=1; i <308; i++){
+        this.imagenes.push(i);
+    }
 
   }
 
@@ -227,7 +233,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   setPanel(panel):void{
-  	this.panel= panel;
+    this.panel= panel;
   }
 
   inicializarIsometricoMapa(){
@@ -358,13 +364,13 @@ export class DesarrolladorService implements OnInit{
 
   seleccionarMazmorra(index){
 
-	//Cargar Mazmorra:
+    //Cargar Mazmorra:
     this.mazmorra= this.listaMazmorra[index];
-	
-	//Inicializar variables de control Builder:
-	for(var i=0; i <this.mazmorra.salas.length; i++){
-		this.mazmorra.salas[i].mostrarIsometrico = true;
-	}
+    
+    //Inicializar variables de control Builder:
+    for(var i=0; i <this.mazmorra.salas.length; i++){
+        this.mazmorra.salas[i].mostrarIsometrico = true;
+    }
 
     this.visorFila= [];
     this.visorColumna=[];
@@ -378,18 +384,18 @@ export class DesarrolladorService implements OnInit{
 
   async guardarMazmorra(){  
 
-	//Procesar Guardado de celdas: 
-	this.mazmorra.celdas = this.procesarGuardadoCeldas();
-	
+    //Procesar Guardado de celdas: 
+    this.mazmorra.celdas = this.procesarGuardadoCeldas();
+    
     console.log(this.mazmorra);
-	
+    
     this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: await this.appService.getToken()}).subscribe((res) => {
       if(res){
         console.log("Mazmorra guardada en Base de datos");
-		this.mostrarBotonAceptar= true;
-		this.mostrarSpinner= false;
-		this.mensaje= "Mazmorra guardada con exito";
-		this.mostrarMensaje= true;
+        this.mostrarBotonAceptar= true;
+        this.mostrarSpinner= false;
+        this.mensaje= "Mazmorra guardada con exito";
+        this.mostrarMensaje= true;
       }else{
         console.log("Fallo en el guardado");
       }
@@ -401,42 +407,42 @@ export class DesarrolladorService implements OnInit{
   }
 
   procesarGuardadoCeldas(){
-		var objetoReticula = Object.assign([],this.renderReticula.celdas)
+        var objetoReticula = Object.assign([],this.renderReticula.celdas)
 
-		//Procesar Celdas: 
-		//Procesado eje X:
-		var flagBorrado = true; 
-		for(var i=0; i <objetoReticula.length; i++){ 
-			flagBorrado= true;
-			for(var j=0; j <objetoReticula[i].length; j++){ if(objetoReticula[i][j].pieza!= "none"){
-					flagBorrado= false;
-				}
-			}
+        //Procesar Celdas: 
+        //Procesado eje X:
+        var flagBorrado = true; 
+        for(var i=0; i <objetoReticula.length; i++){ 
+            flagBorrado= true;
+            for(var j=0; j <objetoReticula[i].length; j++){ if(objetoReticula[i][j].pieza!= "none"){
+                    flagBorrado= false;
+                }
+            }
 
-			if(flagBorrado){
-				objetoReticula.splice(i,1);
-				i--;
-			}
-		}
+            if(flagBorrado){
+                objetoReticula.splice(i,1);
+                i--;
+            }
+        }
 
-		//Procesar Eje Y: 
-		for(var i=0; i <objetoReticula[0].length; i++){ 
-			flagBorrado= true;
-			for(var j=0; j <objetoReticula.length; j++){
-			   if(objetoReticula[j][i].pieza!= "none"){
-					flagBorrado= false;
-				}
-			}
+        //Procesar Eje Y: 
+        for(var i=0; i <objetoReticula[0].length; i++){ 
+            flagBorrado= true;
+            for(var j=0; j <objetoReticula.length; j++){
+               if(objetoReticula[j][i].pieza!= "none"){
+                    flagBorrado= false;
+                }
+            }
 
-			if(flagBorrado){
-				for(var j=0; j <objetoReticula.length; j++){
-					objetoReticula[j].splice(i,1);
-				}
-				i--;
-			}
-		}
+            if(flagBorrado){
+                for(var j=0; j <objetoReticula.length; j++){
+                    objetoReticula[j].splice(i,1);
+                }
+                i--;
+            }
+        }
 
-		return objetoReticula 
+        return objetoReticula 
   }
 
   async eliminarMazmorra(){
@@ -696,26 +702,26 @@ export class DesarrolladorService implements OnInit{
   toggleIsometrico(){
     this.mostrarIsometrico= !this.mostrarIsometrico;
 
-	if(this.mostrarIsometrico){
-		this.estadoMazmorra="isometrico";
-	}else{
-		this.estadoMazmorra="seleccionar"
-	}
+    if(this.mostrarIsometrico){
+        this.estadoMazmorra="isometrico";
+    }else{
+        this.estadoMazmorra="seleccionar"
+    }
 
-	console.log("Isometrico: "+this.mostrarIsometrico);
+    console.log("Isometrico: "+this.mostrarIsometrico);
     return;
   }
 
   toggleVerCapaIsometrico(capa: string){
-	  switch(capa){
-		  case "grid":
-			this.mostrarGrid = !this.mostrarGrid;
-			  break;
-		  case "decorado":
-			this.mostrarDecorado = !this.mostrarDecorado;
-			  break;
-	  }
-	return;
+      switch(capa){
+          case "grid":
+            this.mostrarGrid = !this.mostrarGrid;
+              break;
+          case "decorado":
+            this.mostrarDecorado = !this.mostrarDecorado;
+              break;
+      }
+    return;
   }
 
   zoomIn(){
@@ -1316,14 +1322,14 @@ export class DesarrolladorService implements OnInit{
         break;
 
       case "parametros":
-		
+        
         this.log("Herramienta: "+herramienta,"green");
         this.renderReticula.estado="parametros";
-		if(this.estadoMazmorra=="parametros"){
-			this.estadoMazmorra= "";	
-		}else{
-			this.estadoMazmorra= "parametros";
-		}
+        if(this.estadoMazmorra=="parametros"){
+            this.estadoMazmorra= "";    
+        }else{
+            this.estadoMazmorra= "parametros";
+        }
         this.renderReticula.comando= "";
         break;
       
@@ -1333,7 +1339,7 @@ export class DesarrolladorService implements OnInit{
         this.estadoMazmorra= "isometrico";
         this.renderReticula.comando= "";
         break;
-		
+        
       default:
         this.log("Herramienta no valida: "+herramienta,"red");
         this.renderReticula.estado=""
@@ -1359,23 +1365,23 @@ export class DesarrolladorService implements OnInit{
     this.observarDesarrolladorService.next("reloadFormSala");
   }
 
-  seleccionarEnemigo(enemigoID: number){
+  seleccionarEnemigoMazmorra(enemigoID: number){
     this.enemigoSeleccionadoId = enemigoID;
-	var tipoId= 0;
-	
-	//Buscar ID Enemigo:
-	for(var i = 0; i <this.mazmorra.salas.length; i++){
-		for(var j = 0; j <this.mazmorra.salas[i].enemigos.length; j++){
-			if(this.mazmorra.salas[i].enemigos[j].enemigo_id == enemigoID){
-				tipoId = this.mazmorra.salas[i].enemigos[j].tipo_enemigo_id;
-				this.enemigoSeleccionadoSalaIndex = i;
-				this.enemigoSeleccionadoIndex = j;
-				break;
-			}
-		}
-		if(tipoId!=0){break;}
-	}
-	if(tipoId==0){console.log("ERROR: No se ha encontrado ningun enemigo con ID: "+enemigoID);return}
+    var tipoId= 0;
+    
+    //Buscar ID Enemigo:
+    for(var i = 0; i <this.mazmorra.salas.length; i++){
+        for(var j = 0; j <this.mazmorra.salas[i].enemigos.length; j++){
+            if(this.mazmorra.salas[i].enemigos[j].enemigo_id == enemigoID){
+                tipoId = this.mazmorra.salas[i].enemigos[j].tipo_enemigo_id;
+                this.enemigoSeleccionadoSalaIndex = i;
+                this.enemigoSeleccionadoIndex = j;
+                break;
+            }
+        }
+        if(tipoId!=0){break;}
+    }
+    if(tipoId==0){console.log("ERROR: No se ha encontrado ningun enemigo con ID: "+enemigoID);return}
 
     this.tipoEnemigoSeleccionado = this.enemigos.enemigos_stats.find(i=> i.id== tipoId);
     this.observarDesarrolladorService.next("reloadFormEnemigo");
@@ -1398,7 +1404,7 @@ export class DesarrolladorService implements OnInit{
   seleccionarEventoMazmorra(eventoID: number){
     this.eventoSeleccionadoId = eventoID;
     this.observarDesarrolladorService.next("reloadFormEventosMazmorra");
-	return;
+    return;
   }
 
   crearSala(){
@@ -1418,7 +1424,7 @@ export class DesarrolladorService implements OnInit{
       descripcion: "",
       evento_inicial_id: 0,
       evento_final_id: 0,
-	  mostrarIsometrico: true
+      mostrarIsometrico: true
     });
 
     this.seleccionarSala(cuentaID);
@@ -1428,13 +1434,13 @@ export class DesarrolladorService implements OnInit{
 
     //Check ID de salas: (Se asigan un ID que este disponible)
     var cuentaID = 1;
-	var idOcupados = [];
+    var idOcupados = [];
 
-	for(var i = 0;i <this.mazmorra.salas.length;i++){
-		for(var j = 0;j <this.mazmorra.salas[i].enemigos.length;j++){
-			idOcupados.push(parseInt(this.mazmorra.salas[i].enemigos[j].enemigo_id));
-		}
-	}
+    for(var i = 0;i <this.mazmorra.salas.length;i++){
+        for(var j = 0;j <this.mazmorra.salas[i].enemigos.length;j++){
+            idOcupados.push(parseInt(this.mazmorra.salas[i].enemigos[j].enemigo_id));
+        }
+    }
 
     while((idOcupados.indexOf(cuentaID))!=-1){
       cuentaID++;
@@ -1459,7 +1465,7 @@ export class DesarrolladorService implements OnInit{
       evento_intervalo_tiempo: 0
     });
 
-    this.seleccionarEnemigo(cuentaID);
+    this.seleccionarEnemigoMazmorra(cuentaID);
     this.seleccionarTipoEnemigo(1);
   }
 
@@ -1477,35 +1483,35 @@ export class DesarrolladorService implements OnInit{
     var nombreEvento= "Evento "+cuentaID;
 
     this.mazmorra.eventos.push({
-			id_evento: cuentaID,
-			id_mazmorra: 0, 
-			id_sala: 0,
-			tipo: 0,
-			codigo: 0,
-			rng: 0, 
-			rng_fallo_evento_id: 0, 
-			buff: 0,
-			insta_buff: 0,
-			objetivo_buff: 0,
-			loot_id: 0,
-			loot_prob: 0,
-			objetivo_loot: 0,
-			dialogo_id: 0,
-			objetivo_dialogo: 0,
-			spawn_enemigo_id: 0,
-			set_evento_watcher: 0,
-			remove_evento_watcher: 0,
-			evento_watcher_id: 0,
-			expire_watcher_id: 0,
-			intervalo_trigger_watcher: 0,
-			variable_trigger_watcher: 0,
-			add_variable: 0,
-			elimina_variable: 0,
-			if_condicion_variable: 0,
-			if_falso_evento_id: 0,
-			cinematica_id: 0,
-			sonido_id: 0,
-			evento_next_id: 0 
+            id_evento: cuentaID,
+            id_mazmorra: 0, 
+            id_sala: 0,
+            tipo: 0,
+            codigo: 0,
+            rng: 0, 
+            rng_fallo_evento_id: 0, 
+            buff: 0,
+            insta_buff: 0,
+            objetivo_buff: 0,
+            loot_id: 0,
+            loot_prob: 0,
+            objetivo_loot: 0,
+            dialogo_id: 0,
+            objetivo_dialogo: 0,
+            spawn_enemigo_id: 0,
+            set_evento_watcher: 0,
+            remove_evento_watcher: 0,
+            evento_watcher_id: 0,
+            expire_watcher_id: 0,
+            intervalo_trigger_watcher: 0,
+            variable_trigger_watcher: 0,
+            add_variable: 0,
+            elimina_variable: 0,
+            if_condicion_variable: 0,
+            if_falso_evento_id: 0,
+            cinematica_id: 0,
+            sonido_id: 0,
+            evento_next_id: 0 
     });
 
     this.seleccionarEvento(cuentaID);
@@ -1513,52 +1519,52 @@ export class DesarrolladorService implements OnInit{
 
 
 //*************************************************
-//		PANEL DATOS:
+//      PANEL DATOS:
 //************************************************* 
 
-	seleccionarAccionDato(opcion:string):void{
-  		this.estadoDatos= opcion;
-  		return;
-	}
+    seleccionarAccionDato(opcion:string):void{
+        this.estadoDatos= opcion;
+        return;
+    }
 
   //Funcion activa cuando se hace click en un archivo del panel de archivos:
-	seleccionarArchivoDato(archivo: string):void{
-  		this.archivoSeleccionado= archivo;
+    seleccionarArchivoDato(archivo: string):void{
+        this.archivoSeleccionado= archivo;
 
-  		switch (archivo) {
+        switch (archivo) {
 
-  			case "Hechizos":
-  				this.archivoDato= this.appService.getHechizos()
+            case "Hechizos":
+                this.archivoDato= this.appService.getHechizos()
           this.indexArchivoSeleccionado= 1;
-  				break;
-	
-  			case "Enemigos":
-  				this.archivoDato= this.appService.getEnemigos()
+                break;
+    
+            case "Enemigos":
+                this.archivoDato= this.appService.getEnemigos()
           this.indexArchivoSeleccionado= 2;
-  				break;
-	
-  			case "Buff":
-  				this.archivoDato= this.appService.getBuff()
+                break;
+    
+            case "Buff":
+                this.archivoDato= this.appService.getBuff()
           this.indexArchivoSeleccionado= 3;
-  				break;
-	
-  			case "Objetos":
-  				this.archivoDato= this.appService.getObjetos()
+                break;
+    
+            case "Objetos":
+                this.archivoDato= this.appService.getObjetos()
           this.indexArchivoSeleccionado= 4;
-  				break;
-	
-  			case "Animaciones":
-  				this.archivoDato= this.appService.getAnimaciones()
+                break;
+    
+            case "Animaciones":
+                this.archivoDato= this.appService.getAnimaciones()
           this.indexArchivoSeleccionado= 5;
-  				break;
-	
-  			case "Perfil":
-  				this.archivoDato= this.appService.getPerfil()
+                break;
+    
+            case "Perfil":
+                this.archivoDato= this.appService.getPerfil()
           this.indexArchivoSeleccionado= 7;
-  				break;
+                break;
 
-  		}
-  		return;
+        }
+        return;
   }
 
   cancelarArchivo(){
@@ -1571,9 +1577,9 @@ export class DesarrolladorService implements OnInit{
   }
 
   modificarDatos(change):void{
-		this.archivoDatoProvisional = change;
-		this.archivoSeleccionadoProvisional = this.archivoSeleccionado;
-	}
+        this.archivoDatoProvisional = change;
+        this.archivoSeleccionadoProvisional = this.archivoSeleccionado;
+    }
 
   cambiarEstadisticas(path){
 
@@ -1776,26 +1782,26 @@ export class DesarrolladorService implements OnInit{
         
         this.log("Cargando Archivo Isometrico...","lightblue");
         var obj = JSON.parse(e.target.result);
-		
-		delete obj.MapSave["-xmlns:xsd"]
-		delete obj.MapSave["-xmlns:xsi"]
+        
+        delete obj.MapSave["-xmlns:xsd"]
+        delete obj.MapSave["-xmlns:xsi"]
 
-		for(var i= 0; i <obj.MapSave.Placeables.Placeable.length; i++){
-			delete obj.MapSave.Placeables.Placeable[i].Credits
-			obj.MapSave.Placeables.Placeable[i].oculto = false;
-			obj.MapSave.Placeables.Placeable[i].sala = 0;
-			obj.MapSave.Placeables.Placeable[i].evento = 0;
-			obj.MapSave.Placeables.Placeable[i].seleccionado = false;
-			if(obj.MapSave.Placeables.Placeable[i].Name=="Floor Grid"){
-				obj.MapSave.Placeables.Placeable[i].tipo = "grid";
-			}else{
-				obj.MapSave.Placeables.Placeable[i].tipo = "decorado";
-			}
-		}
+        for(var i= 0; i <obj.MapSave.Placeables.Placeable.length; i++){
+            delete obj.MapSave.Placeables.Placeable[i].Credits
+            obj.MapSave.Placeables.Placeable[i].oculto = false;
+            obj.MapSave.Placeables.Placeable[i].sala = 0;
+            obj.MapSave.Placeables.Placeable[i].evento = 0;
+            obj.MapSave.Placeables.Placeable[i].seleccionado = false;
+            if(obj.MapSave.Placeables.Placeable[i].Name=="Floor Grid"){
+                obj.MapSave.Placeables.Placeable[i].tipo = "grid";
+            }else{
+                obj.MapSave.Placeables.Placeable[i].tipo = "decorado";
+            }
+        }
 
-		this.mazmorra.isometrico = Object.assign({}, obj);
-		console.log(this.mazmorra)
-		console.log("Mapa Isometrico: ");	
+        this.mazmorra.isometrico = Object.assign({}, obj);
+        console.log(this.mazmorra)
+        console.log("Mapa Isometrico: ");   
         console.log(obj);
       }
   }
@@ -1808,13 +1814,13 @@ export class DesarrolladorService implements OnInit{
 
     var token = await this.appService.getToken()
     console.log("Usando token: ",token)
-		  
+          
     this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatosJuego",{token: token}).subscribe((data) => {
             
         console.log("Datos: ")
         console.log(data)
             if(data){
-				this.appService.setDatosJuego(data);
+                this.appService.setDatosJuego(data);
               if(forzarEstadoVer){
                 this.archivoSeleccionado="null";
                 this.estadoDatos= "ver";
@@ -1830,329 +1836,350 @@ export class DesarrolladorService implements OnInit{
   }
 
   seleccionarElementoIsometrico(indexElemento: number){
-		this.mazmorra.isometrico.MapSave.Placeables.Placeable[indexElemento].seleccionado = !this.mazmorra.isometrico.MapSave.Placeables.Placeable[indexElemento].seleccionado;
-	return;
+        this.mazmorra.isometrico.MapSave.Placeables.Placeable[indexElemento].seleccionado = !this.mazmorra.isometrico.MapSave.Placeables.Placeable[indexElemento].seleccionado;
+    return;
   }
 
   asignarSala(idSala: number){
-	  //Verificar Sala;
-	  var salaValida= false; 
-	  for(var i=0; i <this.mazmorra.salas.length; i++){
-		  if(this.mazmorra.salas[i].sala_id == idSala){
-			  salaValida = true;
-		  }
-	  }
+      //Verificar Sala;
+      var salaValida= false; 
+      for(var i=0; i <this.mazmorra.salas.length; i++){
+          if(this.mazmorra.salas[i].sala_id == idSala){
+              salaValida = true;
+          }
+      }
 
-	  if(!salaValida && idSala!=0){
-		  this.mostrarPanelAsignarSala= true;
-		  this.mensaje= "Id Sala Invalido"
-		  this.mostrarMensaje= true;
-		  this.mostrarSpinner= false;
-		  this.mostrarBotonAceptar= true;
-		  console.log("Error: id_sala invalido"+idSala);
-		  return;
-	  }
+      if(!salaValida && idSala!=0){
+          this.mostrarPanelAsignarSala= true;
+          this.mensaje= "Id Sala Invalido"
+          this.mostrarMensaje= true;
+          this.mostrarSpinner= false;
+          this.mostrarBotonAceptar= true;
+          console.log("Error: id_sala invalido"+idSala);
+          return;
+      }
 
-	  //Asignando ID SALA;
-	  for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
-		  if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
-			this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala = idSala;
-			this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
-		  }
-	  }	  
+      //Asignando ID SALA;
+      for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+          if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+            this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala = idSala;
+            this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+          }
+      }   
 
-	  this.mostrarPanelAsignarSala= false;
-	  this.mensaje = "Selección asignada"
-	  this.mostrarMensaje= true;
-	  this.mostrarSpinner= false;
-	  this.mostrarBotonAceptar= true;
-	  console.log("Sala Asignada: "+idSala);
-	  
-  	return;
+      this.mostrarPanelAsignarSala= false;
+      this.mensaje = "Selección asignada"
+      this.mostrarMensaje= true;
+      this.mostrarSpinner= false;
+      this.mostrarBotonAceptar= true;
+      console.log("Sala Asignada: "+idSala);
+      
+    return;
   }
 
   eliminarSala(salaSeleccionadaId: number){
-	  
-		//Elimina elemento sala del Array de salas:
-		this.mazmorra["salas"].splice(this.mazmorra.salas.indexOf(this.mazmorra.salas.find(i=> i.sala_id==this.salaSeleccionadaId)),1);
-		//Quita asignación de sala a elementos de sala eliminada:
-		for(var i= 0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length;i++){
-			if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala==this.salaSeleccionadaId){
-				this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala= 0;
-			}
-		}
-		
-		//Deselecciona la sala seleccionada:
-		this.salaSeleccionadaId=0;
+      
+        //Elimina elemento sala del Array de salas:
+        this.mazmorra["salas"].splice(this.mazmorra.salas.indexOf(this.mazmorra.salas.find(i=> i.sala_id==this.salaSeleccionadaId)),1);
+        //Quita asignación de sala a elementos de sala eliminada:
+        for(var i= 0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length;i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala==this.salaSeleccionadaId){
+                this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala= 0;
+            }
+        }
+        
+        //Deselecciona la sala seleccionada:
+        this.salaSeleccionadaId=0;
 
-	return;
+    return;
   }
   
-  eliminarEnemigo(){
-	  
-		//Elimina elemento sala del Array de salas:
-		this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex]["enemigos"].splice(this.enemigoSeleccionadoIndex,1);
+  eliminarEnemigoMazmorra(){
+      
+        //Elimina elemento sala del Array de salas:
+        this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex]["enemigos"].splice(this.enemigoSeleccionadoIndex,1);
 
-		//Deselecciona la sala seleccionada:
-		this.enemigoSeleccionadoId=0;
+        //Deselecciona la sala seleccionada:
+        this.enemigoSeleccionadoId=0;
 
-	return;
+    return;
   }
 
   eliminarEventoMazmorra(){
-	  
-		//Elimina el evento:
-		this.mazmorra["eventos"].splice(this.mazmorra.eventos.indexOf(this.mazmorra.eventos.find(i=> i.id_evento==this.eventoSeleccionadoId)),1);
+      
+        //Elimina el evento:
+        this.mazmorra["eventos"].splice(this.mazmorra.eventos.indexOf(this.mazmorra.eventos.find(i=> i.id_evento==this.eventoSeleccionadoId)),1);
 
-		//Deselecciona la sala seleccionada:
-		this.eventoSeleccionadoId=0;
+        //Deselecciona la sala seleccionada:
+        this.eventoSeleccionadoId=0;
 
-	return;
+    return;
   }
 
   setEstadoDatos(estadoDatos:TipoDatos){
 
-	this.estadoHerramientaDatos = estadoDatos; 
-	if(estadoDatos=="Animaciones"){
-		this.setEstadoPanelDerecho('Sonidos');
-	}else{
-		this.setEstadoPanelDerecho("")
-	}
-	return;
+    this.estadoHerramientaDatos = estadoDatos; 
+    switch(estadoDatos){
+        case "Enemigos":
+            this.seleccionarEnemigo(this.enemigoSeleccionadoIndex)
+            break;
+    }
+    if(estadoDatos=="Animaciones"){
+        this.setEstadoPanelDerecho('Sonidos');
+    }else{
+        this.setEstadoPanelDerecho("")
+    }
+    return;
   }
 
   addDato(){
-	  switch(this.estadoHerramientaDatos){
-		  case "Hechizos":
-				this.hechizos.hechizos.push({
-					"id": this.hechizos.hechizos.length+1,
-					"nombre": "Hechizo "+(this.hechizos.hechizos.length+1),
-					"categoria": "-",
-					"tipo": "BASICO",
-					"imagen_id": 229,
-					"nivel": 1,
-					"recurso": 0,
-					"poder": 0,
-					"acciones": 1,
-					"distancia": 1,
-					"objetivo": "EU",
-					"tipo_daño": "F",
-					"daño_dir": 0,
-					"heal_dir": 0,
-					"escudo_dir": 0,
-					"mod_amenaza": 1,
-					"buff_id": 0,
-					"animacion_id": 1,
-					"funcion": "-",
-					"hech_encadenado_id": 0,
-					"descripcion": "Descripcion del hechizo "+(this.hechizos.hechizos.length+1)
-				})
-			  break;
-			case "Buff":
-				this.buff.buff.push({
-				"id": this.buff.buff.length+1,
-				"nombre": "Buffo "+(this.buff.buff.length+1),
-				"duracion": 1,
-				"tipo": "BUFF",
-				"imagen_id": 152,
-				"tipo_daño": "-",
-				"daño_t": 0,
-				"heal_t": 20,
-				"escudo_t": 0,
-				"stat_inc": 0,
-				"stat_inc_inicial": 0,
-				"stat_inc_t": 0,
-				"animacion_id": 0,
-				"funcion": "-",
-				"descripcion": "Descripcion de buff"+(this.buff.buff.length+1)
-			})
-			break;
+      switch(this.estadoHerramientaDatos){
+            case "Hechizos":
+                this.hechizos.hechizos.push(Object.assign({},datosDefecto.hechizos));
+                this.hechizos.hechizos.at(-1)["id"]= this.hechizos.hechizos.length;
+                this.hechizos.hechizos.at(-1)["nombre"]= "Hechizo "+this.hechizos.hechizos.length;
+                console.log(this.hechizos.hechizos)
+            break;
 
-			case "Animaciones":
-				this.animaciones.animaciones.push({
-				  "id": this.animaciones.animaciones.length+1,
-				  "nombre": "Animación "+(this.animaciones.animaciones.length+1),
-				  "duracion": "1",
-				  "sonidos": [
-					{
-					  "sonido_id": 1,
-					  "nombre": "Sonido 1",
-					  "delay": 0
-					}
-				  ],
-				  "subanimaciones": [
-					{
-					  "id": 1,
-					  "sprite_id": 1,
-					  "nombre": "SubAnimacion 1",
-					  "hue_filter": 0,
-					  "sepia": 0,
-					  "saturation": 0,
-					  "brillo": 0,
-					  "frame_ref": 5,
-					  "num_frames": 6,
-					  "duracion": "1",
-					  "delay": "0",
-					  "offset_x": 0,
-					  "offset_y": 0
-					}
-				  ]
-			})
+            case "Buff":
+                this.buff.buff.push(Object.assign({},datosDefecto.buff));
+                this.buff.buff.at(-1)["id"]= this.buff.buff.length;
+                this.buff.buff.at(-1)["nombre"]= "Buff "+this.buff.buff.length;
+            break;
+
+            case "Animaciones":
+                this.animaciones.animaciones.push(Object.assign({},datosDefecto.animaciones));
+                this.animaciones.animaciones.at(-1)["id"]= this.animaciones.animaciones.length;
+                this.animaciones.animaciones.at(-1)["nombre"]= "Animacion "+this.animaciones.animaciones.length;
+            break;
+
+            case "Enemigos":
+                this.enemigos.enemigos.push(Object.assign({},datosDefecto.enemigos));
+                this.enemigos.enemigos.at(-1)["id"]= this.enemigos.enemigos.length;
+                this.enemigos.enemigos.at(-1)["nombre"]= "Enemigos "+this.enemigos.enemigos.length;
             break;
 
             case "Eventos":
-              this.eventos.eventos.push({
-                  "id": this.eventos.eventos.length+1,
-                  "nombre": "Nuevo Evento",
-                  "descripcion": "Descripcion del evento",
-                  "categoria": "null",
-                  "ordenes": []
-              });
-			break;
+                this.eventos.eventos.push(Object.assign({},datosDefecto.eventos));
+                this.eventos.eventos.at(-1)["id"]= this.eventos.eventos.length;
+                this.eventos.eventos.at(-1)["nombre"]= "Evento "+this.eventos.eventos.length;
+            break;
 
-		}//Fin switch
+            case "Misiones":
+                this.misiones.misiones.push(Object.assign({},datosDefecto.misiones));
+                this.misiones.misiones.at(-1)["id"]= this.misiones.misiones.length;
+                this.misiones.misiones.at(-1)["nombre"]= "Mision "+this.misiones.misiones.length;
+            break;
+
+            case "Objetos":
+                switch(this.tipoObjetoSeleccionado){
+                    case "Equipo":
+                        this.objetos.equipo.push(Object.assign({},datosDefecto.equipo));
+                        this.objetos.equipo.at(-1)["id"]= this.objetos.equipo.length;
+                        this.objetos.equipo.at(-1)["nombre"]= "Equipo "+this.objetos.equipo.length;
+                        break;
+                    case "Consumible":
+                        this.objetos.consumible.push(Object.assign({},datosDefecto.consumible));
+                        this.objetos.consumible.at(-1)["id"]= this.objetos.consumible.length;
+                        this.objetos.consumible.at(-1)["nombre"]= "Consumible "+this.objetos.consumible.length;
+                        break;
+                }
+            break;
+        }//Fin switch
   }
 
   seleccionarHechizo(indexHechizo:number){
-	  this.hechizoSeleccionadoIndex= indexHechizo;
+      this.hechizoSeleccionadoIndex= indexHechizo;
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormHechizos");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormHechizos");
   }
 
   eliminarHechizo(){
 
-	  console.log("Eliminando Hechizo:"+this.hechizoSeleccionadoIndex)
-	  this.hechizos.hechizos.splice(this.hechizoSeleccionadoIndex,1)
+      console.log("Eliminando Hechizo:"+this.hechizoSeleccionadoIndex)
+      this.hechizos.hechizos.splice(this.hechizoSeleccionadoIndex,1)
 
-	  //Cambia el indice de seleccion:
-	  if(this.hechizoSeleccionadoIndex>0){
-		this.hechizoSeleccionadoIndex= this.hechizoSeleccionadoIndex-1;
-	  }else{
-		  this.hechizoSeleccionadoIndex = 0;
-	  }
+      //Cambia el indice de seleccion:
+      if(this.hechizoSeleccionadoIndex>0){
+        this.hechizoSeleccionadoIndex= this.hechizoSeleccionadoIndex-1;
+      }else{
+          this.hechizoSeleccionadoIndex = 0;
+      }
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormHechizos");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormHechizos");
   }
 
   seleccionarBuff(indexBuff:number){
-	  this.buffSeleccionadoIndex= indexBuff;
+      this.buffSeleccionadoIndex= indexBuff;
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormBuff");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormBuff");
   }
   
   eliminarBuff(){
 
-	  console.log("Eliminando Buff:")
-	  this.buff.buff.splice(this.buffSeleccionadoIndex,1)
+      console.log("Eliminando Buff:")
+      this.buff.buff.splice(this.buffSeleccionadoIndex,1)
 
-	  //Cambia el indice de seleccion:
-	  if(this.buffSeleccionadoIndex>0){
-		this.buffSeleccionadoIndex= this.buffSeleccionadoIndex-1;
-	  }else{
-		  this.buffSeleccionadoIndex = 0;
-	  }
+      //Cambia el indice de seleccion:
+      if(this.buffSeleccionadoIndex>0){
+        this.buffSeleccionadoIndex= this.buffSeleccionadoIndex-1;
+      }else{
+          this.buffSeleccionadoIndex = 0;
+      }
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormBuff");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormBuff");
+  }
+
+  seleccionarEnemigo(indexEnemigo:number){
+      this.enemigoSeleccionadoIndex= indexEnemigo;
+      var familia = this.enemigos.enemigos[this.enemigoSeleccionadoIndex].familia;
+      this.pathImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==familia.toLowerCase()).path; 
+
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormEnemigo");
+  }
+  
+  eliminarEnemigo(){
+
+      console.log("Eliminando Enemigo:")
+      this.enemigos.enemigos.splice(this.enemigoSeleccionadoIndex,1)
+
+      //Cambia el indice de seleccion:
+      if(this.enemigoSeleccionadoIndex>0){
+        this.enemigoSeleccionadoIndex= this.enemigoSeleccionadoIndex-1;
+      }else{
+          this.enemigoSeleccionadoIndex = 0;
+      }
+
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormEnemigo");
   }
 
   seleccionarAnimacion(indexAnimacion:number){
 
-	  this.animacionSeleccionadoIndex= indexAnimacion;
+      this.animacionSeleccionadoIndex= indexAnimacion;
 
-	  this.subanimaciones = this.animaciones.animaciones[indexAnimacion].subanimaciones;
-	  this.sonidos = this.animaciones.animaciones[indexAnimacion].sonidos;
+      this.subanimaciones = this.animaciones.animaciones[indexAnimacion].subanimaciones;
+      this.sonidos = this.animaciones.animaciones[indexAnimacion].sonidos;
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormAnimaciones");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormAnimaciones");
   }
 
   seleccionarObjeto(indexObjeto:number){
-	  this.indexObjetoSeleccionado= indexObjeto;
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormObjetos");
+      this.indexObjetoSeleccionado= indexObjeto;
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormObjetos");
   }
 
   eliminarAnimacion(){
 
-	  console.log("Eliminando Animacion:"+this.animacionSeleccionadoIndex)
-	  this.animaciones.animaciones.splice(this.animacionSeleccionadoIndex,1)
+      console.log("Eliminando Animacion:"+this.animacionSeleccionadoIndex)
+      this.animaciones.animaciones.splice(this.animacionSeleccionadoIndex,1)
 
-	  //Cambia el indice de seleccion:
-	  if(this.animacionSeleccionadoIndex>0){
-		this.animacionSeleccionadoIndex= this.animacionSeleccionadoIndex-1;
-	  }else{
-		  this.animacionSeleccionadoIndex = 0;
-	  }
+      //Cambia el indice de seleccion:
+      if(this.animacionSeleccionadoIndex>0){
+        this.animacionSeleccionadoIndex= this.animacionSeleccionadoIndex-1;
+      }else{
+          this.animacionSeleccionadoIndex = 0;
+      }
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormAnimaciones");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormAnimaciones");
   }
 
   seleccionarSubanimacion(indexSubAnimacion:number){
 
-	  this.subanimacionSeleccionadoIndex= indexSubAnimacion;
+      this.subanimacionSeleccionadoIndex= indexSubAnimacion;
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormSubAnimacion");
   }
 
   addSubanimacion(){
 
-	  var indexSubanimacion = this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length
+      var indexSubanimacion = this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length
 
-	  this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.push({
-		  id: this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length,
-		  nombre: "Subanimacion "+(indexSubanimacion+1),
-		  sprite_id: 0,
-		  duracion: 1,
-		  num_frames: 1,
-		  frame_ref: 1,
-		  hue_filter: 0,
-		  sepia: 0,
-		  brillo: 0,
-		  delay: 0,
-		  offset_x: 0,
-		  offset_y: 0,
-		  saturation: 0
-	  })
+      this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.push({
+          id: this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length,
+          nombre: "Subanimacion "+(indexSubanimacion+1),
+          sprite_id: 0,
+          duracion: 1,
+          num_frames: 1,
+          frame_ref: 1,
+          hue_filter: 0,
+          sepia: 0,
+          brillo: 0,
+          delay: 0,
+          offset_x: 0,
+          offset_y: 0,
+          saturation: 0
+      })
 
-	  this.subanimacionSeleccionadoIndex= indexSubanimacion;
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+      this.subanimacionSeleccionadoIndex= indexSubanimacion;
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormSubAnimacion");
   }
 
   eliminarSubanimacion(){
 
-	  var indexSubanimacion = this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length
+      var indexSubanimacion = this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length
 
-	  //Evita la eliminación si es el ultimo elemento:
-	  if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length <=1){
-	  	return;
-	  }
+      //Evita la eliminación si es el ultimo elemento:
+      if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.length <=1){
+        return;
+      }
 
-	  this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.splice(this.subanimacionSeleccionadoIndex,1)
+      this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.splice(this.subanimacionSeleccionadoIndex,1)
 
-	  //Cambia el indice de seleccion:
-	  
-	  if(this.subanimacionSeleccionadoIndex>0){
-		this.subanimacionSeleccionadoIndex= this.subanimacionSeleccionadoIndex-1;
-	  }else{
-		  this.subanimacionSeleccionadoIndex = 0;
-	  }
+      //Cambia el indice de seleccion:
+      
+      if(this.subanimacionSeleccionadoIndex>0){
+        this.subanimacionSeleccionadoIndex= this.subanimacionSeleccionadoIndex-1;
+      }else{
+          this.subanimacionSeleccionadoIndex = 0;
+      }
 
-	  //Actualizar Formulario:
-		this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+  }
+
+  seleccionarMision(indexMision:number){
+      this.misionSeleccionadaIndex= indexMision;
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormEnemigo");
+  }
+  
+  eliminarMision(){
+      console.log("Eliminando Mision:")
+      this.misiones.misiones.splice(this.misionSeleccionadaIndex,1)
+
+      //Cambia el indice de seleccion:
+      if(this.misionSeleccionadaIndex>0){
+        this.misionSeleccionadaIndex= this.misionSeleccionadaIndex-1;
+      }else{
+          this.misionSeleccionadaIndex = 0;
+      }
+      //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormMisiones");
+  }
+
+  seleccionarObjetivoMision(objetivoMisionIndex:number){
+      console.log("Seleccionando Objetivo Mision: " + this.misiones.misiones[this.misionSeleccionadaIndex].objetivos[objetivoMisionIndex].texto);
+      this.objetivoMisionSeleccionadoIndex = objetivoMisionIndex;
+      this.observarDesarrolladorService.next("reloadFormMisiones");
+      return;
   }
 
   abrirSelectorImagen(categoria:string){
-
-	this.estadoSelectorImagen = categoria;
-    var numeroImagenes = directorioAssets.find(i => i.categoria==categoria).numeroImagenes; 
-    this.pathImagenes = directorioAssets.find(i => i.categoria==categoria).path; 
+    console.log(categoria)
+    this.estadoSelectorImagen = categoria.toLowerCase();
+    var numeroImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==categoria.toLowerCase()).numeroImagenes; 
+    this.pathImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==categoria.toLowerCase()).path; 
 
     //Inicializar Imagenes:
     this.imagenes= [];
@@ -2165,20 +2192,16 @@ export class DesarrolladorService implements OnInit{
   }
   
   seleccionarImagen(indexImagen:number){
-	  switch(this.estadoSelectorImagen){
-		  case "hechizo":
-			  this.hechizos.hechizos[this.hechizoSeleccionadoIndex].imagen_id = indexImagen;
-			  break;
-		  case "buff":
-			  this.buff.buff[this.buffSeleccionadoIndex].imagen_id = indexImagen;
-			  break;
+      switch(this.estadoSelectorImagen){
+          case "hechizo":
+              this.hechizos.hechizos[this.hechizoSeleccionadoIndex].imagen_id = indexImagen;
+              break;
+          case "buff":
+              this.buff.buff[this.buffSeleccionadoIndex].imagen_id = indexImagen;
+              break;
             case "tile":
                 this.seleccionarImgTile(indexImagen)
-	  }
-  }
-
-  seleccionarTile(x: number, y: number){
-		//this.observarDesarrolladorService.next("reloadFormTile");
+      }
   }
 
   seleccionarImgTile(tileIndex: number){
@@ -2187,107 +2210,107 @@ export class DesarrolladorService implements OnInit{
   }
 
   setEstadoPanelDerecho(estado:string){
-	  this.estadoPanelDatosDerecha = estado;
+      this.estadoPanelDatosDerecha = estado;
   }
 
   addBuff(indexBuff:number){
-	  this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id = this.buff.buff[indexBuff].id;
+      this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id = this.buff.buff[indexBuff].id;
   }
 
   renderImagenBuff(indexHechizo:number){
-	return this.buff.buff.find(i=> i.id == this.hechizos.hechizos[indexHechizo].buff_id).imagen_id;
+    return this.buff.buff.find(i=> i.id == this.hechizos.hechizos[indexHechizo].buff_id).imagen_id;
   }
  
   renderImagenEncadenado(indexHechizo:number){
-	return this.hechizos.hechizos.find(i=> i.id == this.hechizos.hechizos[indexHechizo].hech_encadenado_id).imagen_id;
+    return this.hechizos.hechizos.find(i=> i.id == this.hechizos.hechizos[indexHechizo].hech_encadenado_id).imagen_id;
   }
 
   eliminarEncadenado(){
-	this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id=0;
+    this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id=0;
   }
 
   eliminarBuffHechizo(){
-	this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id=0;
+    this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id=0;
   }
   
   addEncadenado(indexEncadenado:number){
-	  this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id = this.hechizos.hechizos[indexEncadenado].id;
+      this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id = this.hechizos.hechizos[indexEncadenado].id;
   }
 
   async guardarPanelDatos(){  
-	
-	  console.log("GUARDANDO: ")
-	  
-	  switch(this.estadoHerramientaDatos){
+    
+      console.log("GUARDANDO: ")
+      
+      switch(this.estadoHerramientaDatos){
 
-		  case "Hechizos":
-			console.log(this.hechizos)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarHechizos",{hechizos: this.hechizos, token: await this.appService.getToken()}).subscribe((res) => {
-			  if(res){
-				console.log("Objeto Hechizos guardado con exito");
-				this.mostrarBotonAceptar= true;
-				this.mostrarSpinner= false;
-				this.mensaje= "Datos guardados con exito";
-				this.mostrarMensaje= true;
-			  }else{
-				console.log("Fallo en el guardado");
-			  }
-			},(err) => {
-			  console.log(err);
-			});
-		  break;
+          case "Hechizos":
+            console.log(this.hechizos)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarHechizos",{hechizos: this.hechizos, token: await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto Hechizos guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos guardados con exito";
+                this.mostrarMensaje= true;
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
 
-		  case "Buff":
-			console.log(this.buff)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarBuff",{buff: this.buff, token: await this.appService.getToken()}).subscribe((res) => {
-			  if(res){
-				console.log("Objeto Buff guardado con exito");
-				this.mostrarBotonAceptar= true;
-				this.mostrarSpinner= false;
-				this.mensaje= "Datos Buff con exito";
-				this.mostrarMensaje= true;
-			  }else{
-				console.log("Fallo en el guardado");
-			  }
-			},(err) => {
-			  console.log(err);
-			});
-		  break;
+          case "Buff":
+            console.log(this.buff)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarBuff",{buff: this.buff, token: await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto Buff guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos Buff con exito";
+                this.mostrarMensaje= true;
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
 
-		  case "Animaciones":
-			console.log(this.animaciones)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarAnimaciones",{animaciones: this.animaciones, token: await this.appService.getToken()}).subscribe((res) => {
-			  if(res){
-				console.log("Objeto animaciones guardado con exito");
-				this.mostrarBotonAceptar= true;
-				this.mostrarSpinner= false;
-				this.mensaje= "Datos animaciones con exito";
-				this.mostrarMensaje= true;
-			  }else{
-				console.log("Fallo en el guardado");
-			  }
-			},(err) => {
-			  console.log(err);
-			});
-		  break;
+          case "Animaciones":
+            console.log(this.animaciones)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarAnimaciones",{animaciones: this.animaciones, token: await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto animaciones guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos animaciones con exito";
+                this.mostrarMensaje= true;
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
 
-		  case "Eventos":
-			console.log(this.eventos)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarEventos",{eventos: this.eventos, token: await this.appService.getToken()}).subscribe((res) => {
-			  if(res){
-				console.log("Objeto eventos guardado con exito");
-				this.mostrarBotonAceptar= true;
-				this.mostrarSpinner= false;
-				this.mensaje= "Datos eventos guardados con exito";
-				this.mostrarMensaje= true;
-			  }else{
-				console.log("Fallo en el guardado");
-			  }
-			},(err) => {
-			  console.log(err);
-			});
-		  break;
-	  }
+          case "Eventos":
+            console.log(this.eventos)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarEventos",{eventos: this.eventos, token: await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto eventos guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos eventos guardados con exito";
+                this.mostrarMensaje= true;
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
+      }
 
     return;
   }
@@ -2297,29 +2320,29 @@ export class DesarrolladorService implements OnInit{
   // ************************************************* 
   
   async guardarInMap(){  
-	
-	  console.log("GUARDANDO MAPA: ")
+    
+      console.log("GUARDANDO MAPA: ")
       this.region = this.appService.getRegion();
       console.log(this.region);
-	  
-	  switch(this.region.nombreId){
-		  case "Asfaloth":
-			console.log(this.region)
-			this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarRegion",{region: this.region, token:await this.appService.getToken()}).subscribe((res) => {
-			  if(res){
-				console.log("Objeto Region guardado con exito");
-				this.mostrarBotonAceptar= true;
-				this.mostrarSpinner= false;
-				this.mensaje= "Datos guardados con exito";
-				this.mostrarMensaje= true;
-			  }else{
-				console.log("Fallo en el guardado");
-			  }
-			},(err) => {
-			  console.log(err);
-			});
-		  break;
-	  } //End Switch
+      
+      switch(this.region.nombreId){
+          case "Asfaloth":
+            console.log(this.region)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarRegion",{region: this.region, token:await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto Region guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos guardados con exito";
+                this.mostrarMensaje= true;
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
+      } //End Switch
 
     return;
   }
@@ -2400,7 +2423,7 @@ export class DesarrolladorService implements OnInit{
       this.eventoSeleccionadoIndex = eventoIndex;
       console.log("Seleccionando Eventos: " + this.eventos.eventos[this.eventoSeleccionadoIndex].nombre);
         this.observarDesarrolladorService.next("reloadFormEventos");
-	  return;
+      return;
   }
 
   addEvento(){
@@ -2411,7 +2434,7 @@ export class DesarrolladorService implements OnInit{
           categoria: "null",
           ordenes: []
       });
-	return;
+    return;
   }
 
   eliminarEvento(){
@@ -2533,7 +2556,7 @@ export class DesarrolladorService implements OnInit{
       this.ordenSeleccionadaIndex = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length-1;
       this.observarDesarrolladorService.next("reloadFormEventos");
 
-	return;
+    return;
   }
 
   eliminarOrden(){
@@ -2550,32 +2573,32 @@ export class DesarrolladorService implements OnInit{
   seleccionarClase(clase){
         switch(clase){
             case "Guerrero":
-		        this.claseSeleccionada=clase;
+                this.claseSeleccionada=clase;
                 this.indexClaseSeleccionada=0;
                 this.observarDesarrolladorService.next("reloadFormClases");
                 break;
             case "Hechicero":
-		        this.claseSeleccionada=clase;
+                this.claseSeleccionada=clase;
                 this.indexClaseSeleccionada=1;
                 this.observarDesarrolladorService.next("reloadFormClases");
                 break;
             case "Cazador":
-		        this.claseSeleccionada=clase;
+                this.claseSeleccionada=clase;
                 this.indexClaseSeleccionada=2;
                 this.observarDesarrolladorService.next("reloadFormClases");
                 break;
             case "Sacerdote":
-		        this.claseSeleccionada=clase;
+                this.claseSeleccionada=clase;
                 this.indexClaseSeleccionada=3;
                 this.observarDesarrolladorService.next("reloadFormClases");
                 break;
             case "Ladrón":
-		        this.claseSeleccionada=clase;
+                this.claseSeleccionada=clase;
                 this.indexClaseSeleccionada=4;
                 this.observarDesarrolladorService.next("reloadFormClases");
                 break;
         }
-		return;
+        return;
 }
 
   seleccionarTipoObjeto(tipoObjeto){
@@ -2583,7 +2606,8 @@ export class DesarrolladorService implements OnInit{
 }
       
     formatearNombre(nombre: string): string{
-        return nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        var nombreNuevo = nombre
+        return nombreNuevo.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     }
 
 
@@ -2598,6 +2622,20 @@ export class DesarrolladorService implements OnInit{
       } catch (error) {
         console.log(error);
       }
+    }
+   
+    abrirTrigger(tipo:string, triggers: any){
+
+      const dialogRef = this.dialog.open(TriggerComponent,{
+          width: "100px", panelClass: ["trigger", "generalContainer"],backdropClass: "fondoDialogo", disableClose:false, data: triggers 
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('Fin del dialogo trigger');
+          console.log(result)
+        });
+        return;
+
     }
   
 } //FIN EXPORT

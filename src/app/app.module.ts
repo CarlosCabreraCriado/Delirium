@@ -14,7 +14,7 @@ import { MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatDialogModule} from '@angular/material/dialog';    
-
+import { MatStepperModule} from '@angular/material/stepper';
 //Extras
 //import { NgxElectronModule } from 'ngx-electron';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
@@ -74,6 +74,7 @@ import { FormObjetosComponent } from './comun/desarrollador/formObjetosComponent
 import { FormPerksComponent } from './comun/desarrollador/formPerksComponent/formPerks.component';
 import { SelectorImagenesComponent } from './comun/desarrollador/selectorImagenerComponent/selectorImagenes.component';
 import { PanelSelectorComponent } from './comun/desarrollador/panelSelectorComponent/panelSelector.component';
+import { TriggerComponent } from './comun/desarrollador/triggerComponent/trigger.component';
 
 //Componentes Backend:
 import { ElectronService } from './comun/electronService/public_api';
@@ -135,7 +136,8 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {autoCon
         FormObjetosComponent,
         FormPerksComponent,
         SelectorImagenesComponent,
-        PanelSelectorComponent
+        PanelSelectorComponent,
+        TriggerComponent
     ],
     imports: [
         BrowserModule,
@@ -151,7 +153,8 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {autoCon
         MatCheckboxModule,
         FormsModule,
         ReactiveFormsModule,
-        MatDialogModule
+        MatDialogModule,
+        MatStepperModule
     ],
     providers: [ElectronService],
     bootstrap: [AppComponent]

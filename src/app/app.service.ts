@@ -531,10 +531,10 @@ export class AppService {
         //Fomrulario Eventos:
         this.region.isometrico[x][y].categoriaEvento = formEventos.inMapCategoriaRandom
         this.region.isometrico[x][y].probabilidadEvento = formEventos.inMapProbabilidadRandom
-        this.region.isometrico[x][y].checkEventos = formEventos.inMapCheckTrigger
+        //this.region.isometrico[x][y].checkEventos = formEventos.inMapCheckTrigger
 
-        //Fomrulario Eventos:
-        this.region.isometrico[x][y].checkMisiones = formMisiones.inMapCheckMisiones
+        //Fomrulario Misiones:
+        //this.region.isometrico[x][y].checkMisiones = formMisiones.inMapCheckMisiones
 
       return true;
   }
@@ -578,12 +578,36 @@ export class AppService {
             console.log("RENDER ISOMETRICO: ")
             console.log(this.renderIsometrico)
 
+            //REALIZA UNA REGULARIZACION: 
+            //this.regularizarRegion();
+
             this.eventoAppService.emit("cargarIsometrico")
             this.setEstadoInmap("isometrico");
-            //this.regularizarRegion();
         })
   }
 
+    camellCase(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    regularizarRegion(){
+            console.log("REGULARIZANDO RENDER ISOMETRICO")
+
+            //Iteración por todos los tiles del render: 
+            var longitudX = this.region.isometrico[0].length;
+            var longitudY = this.region.isometrico.length;
+            for( var i = 0; i < longitudX; i++){
+                for( var j = 0; j < longitudY; j++){
+                    delete this.region.isometrico[i][j].tileBase; 
+                    delete this.region.isometrico[i][j].visitado; 
+                    delete this.region.isometrico[i][j].tileId; 
+                    delete this.region.isometrico[i][j].cogerMisionId; 
+                }
+            }
+
+            console.log(this.renderIsometrico)
+        
+    }
 
 }
 
