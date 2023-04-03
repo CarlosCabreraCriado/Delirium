@@ -6,20 +6,24 @@
 <div class= "contenedor">
 
     <h1 class="title Texto2">Gestión Triggers</h1>
+    <img class="botonEliminar" *ngIf="triggers.length!=0" src="./assets/desarrollador/papelera.svg" (click)="eliminarTrigger()"/>
 
         <!-- LISTA HECHIZOS -->
         <div class="contenedorListaTriggers">
             <panelSelectorComponent 
-                [tipo]="'Hechizos'"
-                [titulo]="'Hechizos'"
+                [tipo]="'Triggers'"
+                [titulo]="'Triggers'"
                 [botonAdd]="true"
                 [lateral]="'libre'"
+                [datos]= "triggers"
                 [botonEliminarRelacion]="false"
+                (selector)="seleccionarTrigger($event)"
+                (addElementoEmitter)="addTrigger()"
                 >
             </panelSelectorComponent>
         </div>
 
-    <mat-stepper class="mat-app-background darkMode triggerStepper" orientation="vertical" [linear]="false" #stepper>
+    <mat-stepper *ngIf="triggerActivo" class="mat-app-background darkMode triggerStepper" orientation="vertical" [linear]="false" #stepper>
 
       <mat-step [stepControl]="formActivador">
         <form [formGroup]="formActivador">
@@ -27,7 +31,7 @@
             <div class="contenedorDual">
               <mat-form-field class="campo" appearance="legacy">
                 <mat-label>Activador</mat-label>
-                <mat-select value="'entrarCasilla'">
+                <mat-select formControlName="activador">
                     <mat-option value="entrarCasilla">Entrar Casilla</mat-option>
                     <mat-option value="cambioVariable">Cambio Variable</mat-option>
                     <mat-option value="enemigoEliminado">Enemigo Eliminado</mat-option>
@@ -66,7 +70,7 @@
 
             <mat-form-field class="campo" appearance="legacy">
                 <mat-label>Operador</mat-label>
-                <mat-select value="'entrarCasilla'">
+                <mat-select formControlName="operador">
                     <mat-option value="=">=</mat-option>
                     <mat-option value="!=">!=</mat-option>
                     <mat-option value="menor">Menor</mat-option>
@@ -109,7 +113,7 @@
             <div class="contenedorDual">
             <mat-form-field  class="campo" appearance="legacy">
                 <mat-label>Comando Pre</mat-label>
-                <mat-select value="'addVar'">
+                <mat-select formControlName="comandoPre">
                     <mat-option value="addVar">Add Variable</mat-option>
                     <mat-option value="removeVar">Elim. Variable</mat-option>
                     <mat-option value="modificarVar">Mod. Variable</mat-option>
@@ -146,7 +150,7 @@
 
             <mat-form-field class="campo" appearance="legacy">
                 <mat-label>Operador</mat-label>
-                <mat-select value="'entrarCasilla'">
+                <mat-select formControlName="operador">
                     <mat-option value="=">=</mat-option>
                     <mat-option value="!=">!=</mat-option>
                     <mat-option value="menor">Menor</mat-option>
@@ -168,7 +172,7 @@
             <div formGroupName="condicionTrue">
                 <mat-form-field  class="campo" appearance="legacy">
                     <mat-label>Comando True</mat-label>
-                    <mat-select value="'addVar'">
+                    <mat-select formControlName="comando">
                         <mat-option value="addVar">Add Variable</mat-option>
                         <mat-option value="removeVar">Elim. Variable</mat-option>
                         <mat-option value="modificarVar">Mod. Variable</mat-option>
@@ -190,7 +194,7 @@
             <div formGroupName="condicionFalse">
                 <mat-form-field  class="campo" appearance="legacy">
                     <mat-label>Comando False</mat-label>
-                    <mat-select value="'addVar'">
+                    <mat-select formControlName="comando">
                         <mat-option value="addVar">Add Variable</mat-option>
                         <mat-option value="removeVar">Elim. Variable</mat-option>
                         <mat-option value="modificarVar">Mod. Variable</mat-option>

@@ -2632,7 +2632,21 @@ export class DesarrolladorService implements OnInit{
 
         dialogRef.afterClosed().subscribe(result => {
           console.log('Fin del dialogo trigger');
+          if(!result){ return }
+
+          console.log("Guardando Trigger: ")
           console.log(result)
+
+          switch(tipo){
+              case "inmap-evento":
+                  this.appService.region.isometrico[this.coordenadaX,this.coordenadaY].triggersInMapEventos = result;
+
+                  break
+              case "inmap-mision":
+                  this.appService.region.isometrico[this.coordenadaX,this.coordenadaY].triggersInMapMisiones = result;
+                  break
+          }
+
         });
         return;
 

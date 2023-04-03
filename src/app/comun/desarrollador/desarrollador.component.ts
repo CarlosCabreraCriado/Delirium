@@ -438,11 +438,11 @@ export class DesarrolladorComponent implements OnInit{
 		}
 
         //Inicializar selección Tile:
-        //this.seleccionarTile({x:0,y:0}, true);
+        //this.seleccionarTile({x:0,y:0});
 
 		setTimeout(()=>{    
       		this.appService.mostrarPantallacarga(false);
-            this.desarrolladorService.abrirTrigger("inmap",{})
+            //this.desarrolladorService.abrirTrigger("inmap",{})
  		}, 3000);
 
 		return;
@@ -777,6 +777,7 @@ export class DesarrolladorComponent implements OnInit{
     }
     
     async abrirTrigger(tipo: string){
+
         //Carga los triggers en función del tipo:
         var trigger = {}
         var tile = {}
@@ -788,7 +789,7 @@ export class DesarrolladorComponent implements OnInit{
                 break;
             case "inmap-mision":
                 tile = await this.desarrolladorService.getTile(this.coordenadaSeleccionadaX,this.coordenadaSeleccionadaY)
-                trigger= tile["triggersInMapMision"]
+                trigger= tile["triggersInMapMisiones"]
                 break;
         }
 

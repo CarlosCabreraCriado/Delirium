@@ -109,10 +109,17 @@
                 </div>
             </ng-container>
 
+            <!-- LISTA TRIGGERS -->
+            <ng-container *ngIf="tipo=='Triggers'">
+                <div *ngFor="let trigger of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado('trigger',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/desarrollador/trigger.png">
+                    <div class="nombre">{{trigger.identificador}}</div>
+                </div>
+            </ng-container>
         </div> <!-- FIN LISTA  -->
 
         <!-- BOTON ADD -->
-        <div class="botonAddLista" *ngIf="botonAdd" (click)="desarrolladorService.addDato(tipo)">
+        <div class="botonAddLista" *ngIf="botonAdd" (click)="addElemento(tipo)">
             Añadir
         </div>
 

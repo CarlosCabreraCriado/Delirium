@@ -9,6 +9,11 @@ export interface DialogData {
   data: any;
 }
 
+type Selector = {
+    tipo: string,
+    index: number
+}
+
 @Component({
   selector: 'triggerComponent',
   templateUrl: './trigger.component.html',
@@ -18,7 +23,9 @@ export interface DialogData {
 export class TriggerComponent {
 
     private confirmation: boolean = false;
+    private triggers: any = [];
     private triggerActivo: any = {};
+    private indexTriggerSeleccionado = 0;
 
     //Form Group:
   	private formActivador: FormGroup;
@@ -61,6 +68,12 @@ export class TriggerComponent {
     constructor(public dialogRef: MatDialogRef<TriggerComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private formBuilder: FormBuilder) { }
 
 	async ngOnInit(){
+
+        //Inicializacíón de los Trigger:
+        this.triggers = this.data;
+        console.log("Abriendo Triggers: ")
+        console.log(this.triggers)
+
 
 		//Inicializacion formulario Activador:
 	    this.formActivador = this.formBuilder.group({
@@ -109,23 +122,20 @@ export class TriggerComponent {
 
 		//Suscripcion de cambios formulario Activador:
 		this.formActivador.valueChanges.subscribe((val) =>{
-            this.triggerActivo["activador"]= {
-                activador: val.activador,
-                identificador: val.identificador
-            }
-			console.log(this.triggerActivo)
-		});
+            this.triggerActivo["activador"]= val.activador;
+            this.triggerActivo["identificador"]= val.identificador;
+        });
 
 		//Suscripcion de cambios formulario Condición Inicial:
 		this.formCondicionInicial.valueChanges.subscribe((val) =>{
             this.triggerActivo["condicionInicial"]= {
+                activado: val.activado,
                 variable: val.variable,
                 operador: val.operador,
                 valorComparado: val.valorComparado,
                 comandoCheck: val.comandoCheck,
                 valorCheck: val.valorCheck
             }
-			console.log(this.triggerActivo)
 		});
 
 		//Suscripcion de cambios formulario Operador PRE:
@@ -135,7 +145,6 @@ export class TriggerComponent {
                 comandoPre: val.comandoPre,
                 valorOperacionPre: val.valorOperacionPre
             }
-			console.log(this.triggerActivo)
 		});
 
 		//Suscripcion de cambios formulario Operador PRE:
@@ -155,18 +164,41 @@ export class TriggerComponent {
                     valorOperacion: val.condicionFalse.valorOperacion
                 }
             }
-			console.log(this.triggerActivo)
 		});
+
+		//Suscripcion de cambios formulario Evento Trigger:
+		this.formTriggerEvento.valueChanges.subscribe((val) =>{
+            console.log(val)
+            this.triggerActivo["triggerEvento"]= {
+                eventoTriggerTrue: val.eventoTriggerTrue,
+                eventoTriggerFalse: val.eventoTriggerFalse
+            }
+		});
+
+        //Seleccionar Primer Trigger:
+        if(this.triggers.length == 0){
+            this.triggerActivo = null;
+            this.indexTriggerSeleccionado = -1;
+        }else{
+            this.triggerActivo = this.triggers[0];
+            this.indexTriggerSeleccionado = 0;
+            this.reloadForm();
+        }
 
     }//Fin OnInit
 
     reloadForm(){
         console.log("Recargando formulario")
-        this.formActivador.patchValue(this.triggerActivo["activador"]);
+        console.log(this.triggerActivo)
+
+        this.formActivador.patchValue({
+            activador: this.triggerActivo["activador"],
+            identificador: this.triggerActivo["identificador"],
+        });
         this.formCondicionInicial.patchValue(this.triggerActivo["condicionInicial"]);
         this.formOperadorPre.patchValue(this.triggerActivo["operadorPre"]);
         this.formContador.patchValue(this.triggerActivo["contador"]);
-        this.formTriggerEvento.patchValue(this.triggerActivo["eventoTrigger"]);
+        this.formTriggerEvento.patchValue(this.triggerActivo["triggerEvento"]);
     }
 
     onAcceptClick(): void {
@@ -176,9 +208,83 @@ export class TriggerComponent {
 
     guardarTrigger(){
         console.log("Guardando Trigger...")
+        this.dialogRef.close(this.triggers);
     }
     cancelarTrigger(){
         console.log("Cancelando Trigger...")
+        this.dialogRef.close(false);
+    }
+
+    seleccionarTrigger(event: Selector){
+        console.log("Trigger Seleccionado: ")
+
+        //Guarda la seleccion anterior si el activo no es null.
+        if(this.triggerActivo){
+            console.log("Guardando Trigger Antiguo: "+this.indexTriggerSeleccionado)
+            this.triggers[this.indexTriggerSeleccionado] = Object.assign({},this.triggerActivo);
+        }
+
+        this.indexTriggerSeleccionado = event.index;
+        this.triggerActivo = this.triggers[event.index];
+
+        console.log("TRIGGERS: ")
+        console.log(this.triggers);
+        this.reloadForm();
+    }
+
+    addTrigger(){
+        console.log(this.triggers)
+        this.triggers.push({
+            activador: null,
+            identificador: "Nuevo Trigger", 
+            condicionInicial: {
+                activado: false,
+                variable: null,
+                operador: null,
+                valorComparado: null,
+                comandoCheck: null,
+                valorCheck: null 
+            },
+            operadorPre: {
+                activado: false, 
+                comandoPre: null, 
+                valorOperacionPre: null
+            },
+            contador: {
+                activado: false,
+                variable: null, 
+                operador: null, 
+                valorComparado: null,
+                condicionTrue: {
+                    comando: null,
+                    valorOperacion: null 
+                },
+                condicionFalse: {
+                    comando: null,
+                    valorOperacion: null 
+                }
+            },
+            triggerEvento: {
+                eventoTriggerTrue: null, 
+                eventoTriggerFalse: null 
+            }
+        }) //Fin Push
+
+        var selector = {
+            tipo: "Triggers",
+            index: this.triggers.length-1
+        }
+
+        //Seleccionar El Nuevo Trigger:
+        this.seleccionarTrigger(selector);
+
+    }//Fin AddTrigger
+
+    eliminarTrigger(){
+        console.log("Eliminando Trigger: " + this.indexTriggerSeleccionado)
+        this.triggers.splice(this.indexTriggerSeleccionado,1);
+        this.indexTriggerSeleccionado = -1;
+        this.triggerActivo = null 
     }
 
 }
