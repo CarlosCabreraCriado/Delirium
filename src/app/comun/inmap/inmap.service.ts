@@ -10,9 +10,6 @@ import { SocketService } from '../socket/socket.service';
 
 export class InMapService {
 
-	//Declara Suscripcion Evento Socket:
-    private socketSubscripcion: Subscription
-
 	//Definicion estadisticas generales:
 	public heroeHech: any;
 	public heroeStat: any;
@@ -38,49 +35,7 @@ export class InMapService {
 
   constructor(private appService: AppService,private socketService:SocketService) { 
 
-		//Suscripcion Socket:
-      	this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
-
-            var cuenta = await this.appService.getCuenta();
-
-      		if(data.emisor== cuenta.nombre && data.tipoEmisor == cuenta.tipo){console.log("EVITANDO "+data.peticion);return;}
-      		switch(data.peticion){
-      			case "log":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      			break;
-      			
-      			case "estadoSala":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      		    	this.sala = data.contenido;
-      		    	console.log("SALA: ")
-      		    	console.log(this.sala);
-      		    	
-      			break;
-				
-      			case "cerrarSala":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      		    	//this.appService.setSala(this.sala);
-      		    	//console.log(this.sala); 	
-      			break;
-
-      			case "iniciarPartida":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      		    	this.sala = data.contenido;
-      		    	this.appService.setSala(this.sala);
-      		    	this.socketSubscripcion.unsubscribe();
-      		    	this.appService.setControl("mazmorra");
-					this.appService.setEstadoApp("mazmorra");
-      			break;
-      		}
-      	});
+        console.log("INICIANDO INMAP SERVICE");
 
 		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
 
@@ -155,68 +110,16 @@ export class InMapService {
 
 		console.log("Grupo: ");
 		console.log(this.grupo);
+
 	}
 
-	iniciarPartida():void{
+	iniciarPartida(nombreIdMazmorra: string):void{
+
+        //INICIANDO MAZMORRA:
+        this.appService.iniciarMazmorra(nombreIdMazmorra);
 
 		//Inicio de Sala:
-		/*this.sala= {
-			nombre: "Developer",
-			jugadores: [
-			{
-				clase: "picaro",
-				especializacion: "-",
-				id: 4,
-				nivel: 10,
-				nombre: "Nandelt",
-				num_consumibles: 0,
-				num_objetos_inventario: 0,
-				oro: 0,
-				px: 0,
-				usuario: "Iván",
-				online: false
-			},
-			{
-				clase: "guerrero",
-				especializacion: "-",
-				id: 1,
-				nivel: 10,
-				nombre: "Vrutus",
-				num_consumibles: 0,
-				num_objetos_inventario: 0,
-				oro: 0,
-				px: 0,
-				usuario: "Victor",
-				online: false
-			},
-			{
-				clase: "sacerdote",
-				especializacion: "-",
-				id: 3,
-				nivel: 10,
-				nombre: "Hive",
-				num_consumibles: 0,
-				num_objetos_inventario: 0,
-				oro: 0,
-				px: 0,
-				usuario: "Eduardo",
-				online: false
-			},
-			{
-				clase: "hechicero",
-				especializacion: "-",
-				id: 2,
-				nivel: 10,
-				nombre: "Mediv",
-				num_consumibles: 0,
-				num_objetos_inventario: 0,
-				oro: 0,
-				px: 0,
-				usuario: "Carlos",
-				online: false
-			 }]
-		}*/    
-			this.heroeSeleccionado= {
+			/*this.heroeSeleccionado= {
 				clase: "hechicero",
 				especializacion: "-",
 				id: 2,
@@ -229,22 +132,12 @@ export class InMapService {
 				usuario: "Carlos",
 				online: false
 			 }
+             */
 
-		this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: "Developer", contenido: this.heroeSeleccionado});
-
-		console.log("SALA:")
-		console.log(this.sala);
-
-		console.log("Iniciando");
-
+        //GESTION DE SOCKET:
+		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: "Developer", contenido: this.heroeSeleccionado});
 		//this.socketService.enviarSocket('iniciarPartida', {nombre: this.cuenta.nombre, clave: this.cuenta.clave});
 
-		//Secuencia de inicio:
-
-		this.appService.setSala(this.sala);
-		this.socketSubscripcion.unsubscribe();
-		this.appService.setControl("mazmorra");
-		this.appService.setEstadoApp("mazmorra");
 
 	}
 

@@ -38,7 +38,6 @@ var token= null;
 var perfil = null;
 var datosJuego=null;
 
-
 var heroeStat = null; //Pendiente Decomision
 var personajes = null; //Pendiente Decomision
 var parametros = null; //Pendiente Decomision
@@ -52,6 +51,8 @@ var animaciones = null;
 var enemigos = null;
 var eventos = null;
 var misiones = null;
+var mazmorra = null;
+var parametros = null;
 
 var version="0.0.1";
 var versionDeliriumServidor;
@@ -257,6 +258,9 @@ ipc.on('setDatosJuego', function (event, arg) {
       case "Misiones":
        misiones = datosJuego[i];
       break;
+      case "Parametros":
+        parametros = datosJuego[i];
+      break;
     }
   }
    
@@ -281,7 +285,6 @@ ipc.on('getDatosJuego', function (event, activarDatosOficial) {
 ipc.on('getDatosHeroeStat', function (event, arg) {
     event.returnValue = heroeStat;
 });
-
 
 ipc.on('getDatosPersonajes', function (event, arg) {
     event.returnValue = personajes;
@@ -325,6 +328,14 @@ ipc.on('getDatosEventos', function (event, arg) {
 
 ipc.on('getDatosMisiones', function (event, arg) {
     event.returnValue = misiones;
+});
+
+ipc.on('getDatosParametros', function (event, arg) {
+    event.returnValue = parametros;
+});
+
+ipc.on('getMazmorra', function (event, arg) {
+    event.returnValue = mazmorra;
 });
 
 //*********************************************

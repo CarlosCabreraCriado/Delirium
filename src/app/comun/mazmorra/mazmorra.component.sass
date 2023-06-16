@@ -182,6 +182,7 @@
     top: 10%
     left: 5%
     height: 6%
+    z-index: 10
 
 #creditoMapa
     position: absolute
@@ -1107,10 +1108,17 @@ $highlightObjetivoColor: red
 
 //MAPA MAZMORRA
 
+#pinch-zoom
+  position: absolute
+  width: 100%
+  height: 100%
+  mix-blend-mode: multiply
+
 #contenedorMapaMazmorra
   .contenedorIsometrico
     position: absolute
     overflow: scroll
+    mix-blend-mode: multiply
     top: 0
     left: 0
     width: 100% 

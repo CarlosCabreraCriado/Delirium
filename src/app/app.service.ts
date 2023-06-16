@@ -49,6 +49,7 @@ export class AppService {
     public datosJuego: any;
     public sesion: any;
     public region: any;
+    public mazmorra: any;
     public renderIsometrico: any;
     public radioRenderIsometrico: number = 6;
     public escalaIsometrico: number = 3;
@@ -63,6 +64,7 @@ export class AppService {
     private enemigos: any;
     private eventos: any;
     private misiones: any;
+    private parametros: any;
 
     public dispositivo: string;
     public version: string = "0.2.3";
@@ -229,6 +231,9 @@ export class AppService {
           case "Misiones":
             this.misiones = datosJuego[i];
           break;
+          case "Parametros":
+            this.parametros = datosJuego[i];
+          break;
         }
       }
 
@@ -244,6 +249,14 @@ export class AppService {
         this.eventos = eventos
         window.electronAPI.setEventos(eventos)
     }
+
+	setMazmorra(mazmorra: any){
+        //Actualizar datos:
+		this.mazmorra = mazmorra;
+
+
+		return;
+	}
 
 	crearCuenta(correo,usuario,password,password2){
 
@@ -465,6 +478,19 @@ export class AppService {
       return this.misiones;
     }
 
+    async getParametros(){
+      this.parametros = await window.electronAPI.getDatosParametros();
+      return this.parametros;
+    }
+
+    async getMazmorra(){
+      return this.mazmorra;
+    }
+    
+    getSesion(){
+        return this.sesion;
+    }
+
     getDispositivo(){
         return this.dispositivo;
     }
@@ -608,6 +634,48 @@ export class AppService {
             console.log(this.renderIsometrico)
         
     }
+
+    async iniciarMazmorra(nombreIdMazmorra: string){
+        //INICIANDO MAZMORRA:
+        console.log("Iniciando Mazmorra: "+nombreIdMazmorra);
+
+
+        //CARGANDO MAZMORRA:
+        var token = await this.getToken();
+		this.http.post(this.ipRemota+"/deliriumAPI/cargarMazmorra",{nombreMazmorra: nombreIdMazmorra, token: token}).subscribe((data) => {
+
+            if(data){
+                //INICIANDO MAZMORRA:
+                this.setMazmorra(data);
+                console.log("MAZMORRA CARGADA: ");
+                console.log(this.mazmorra);
+
+                //Actualiza Sesión:
+                this.sesion.estadoSesion = "mazmorra";
+                this.sesion.render.mazmorra.nombreIdMazmorra = this.mazmorra.nombreId;
+
+                //Cambia de componente:
+                this.setControl("mazmorra");
+                this.setEstadoApp("mazmorra");
+
+            }else{
+                console.error("NO SE HA PODIDO CARGAR LA MAZMORRA: "+nombreIdMazmorra);
+            }
+
+        });
+
+       //this.mazmorra = await window.electronAPI.getMazmorra(nombreIdMazmorra); 
+
+        // 1) Cambio de estados AppService:
+		//this.setSala(this.sala);
+    }
+
+    abandonarMazmorra(){
+        this.setMazmorra({});
+        this.setControl("inmap");
+        this.setEstadoApp("inmap");
+    }
+
 
 }
 

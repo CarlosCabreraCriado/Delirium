@@ -25,6 +25,7 @@ export interface IElectronAPI {
   getDatosEnemigos: () => Promise<any>,
   getDatosEventos: () => Promise<any>,
   getDatosMisiones: () => Promise<any>,
+  getDatosParametros: () => Promise<any>,
 
   //Gestion de desarrollador:
   openDesarrollador: () => Promise<void>

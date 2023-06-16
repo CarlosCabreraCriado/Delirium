@@ -16,6 +16,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getDatosJuego: () => ipcRenderer.sendSync('getDatosJuego'),
     setDatosJuego: (datosJuego) => ipcRenderer.sendSync('setDatosJuego',datosJuego),
     setEventos: (eventos) => ipcRenderer.sendSync('setEventos',eventos),
+    getMazmorra: () => ipcRenderer.sendSync('getMazmorra'),
+    setMazmorra: (nombreIdMazmorra) => ipcRenderer.sendSync('setMazmorra',nombreIdMazmorra),
 
     getDatosClases: () => ipcRenderer.sendSync('getDatosClases'),
     getDatosObjetos: () => ipcRenderer.sendSync('getDatosObjetos'),
@@ -26,6 +28,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getDatosEnemigos: () => ipcRenderer.sendSync('getDatosEnemigos'),
     getDatosEventos: () => ipcRenderer.sendSync('getDatosEventos'),
     getDatosMisiones: () => ipcRenderer.sendSync('getDatosMisiones'),
+    getDatosParametros: () => ipcRenderer.sendSync('getDatosParametros'),
 
 	//Gestión Desarrollador:
     openDesarrollador: () => ipcRenderer.sendSync('desarrollador')

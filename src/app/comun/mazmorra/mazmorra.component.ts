@@ -14,6 +14,7 @@ import { RngComponent} from '../rng/rng.component'
 import { InterfazService} from '../interfaz/interfaz.service'
 import { SocketService} from '../socket/socket.service'
 import { HeroesInfoService} from '../heroesInfo/heroesInfo.service'
+import { PinchZoomComponent } from '../../comun/pinch-zoom/pinch-zoom.component';
 
 @Directive({selector: 'AppAnimacionNumero'})
 class AppAnimacionNumero {
@@ -33,6 +34,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
   	@ViewChild('canvasIsometrico',{static: false}) canvasIsometrico: ElementRef;
+  	@ViewChild('pinchZoom',{static: false}) private pinchZoom: PinchZoomComponent;
 
 	//Declara Suscripción para imput de teclado:
 	private tecla: string;
@@ -82,11 +84,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 		this.appService.mostrarPantallacarga(true);
 
-		console.log("PERFIL: ");
-		console.log(await this.appService.getPerfil());
-
 		this.mazmorraService.setDispositivo(this.appService.getDispositivo());
 		this.mazmorraService.cuenta = this.appService.getCuenta().then((result) => {return result});
+
+        this.mazmorraService.iniciarMazmorra();
 
 		if(this.appService.control!="mazmorra"){this.appService.setControl("mazmorra")}
 
@@ -147,7 +148,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    	this.sala = data.contenido;
       		    	this.appService.setSala(this.sala);
       		    	this.mazmorraService.sala= this.sala;
-      		    	this.renderMazmorra = this.mazmorraService.cargarPartida(this.sala);
+      		    	//this.renderMazmorra = this.mazmorraService.cargarPartida(this.sala);
       		    	this.mazmorraService.sincronizar=false;  	
       			break;
 
@@ -275,6 +276,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	}
 
 	ngOnDestroy(){
+        console.log("Destruyendo Componente Mazmorra")
 		this.loggerSuscripcion.unsubscribe();
  		this.socketSubscripcion.unsubscribe();
  		this.eventosSuscripcion.unsubscribe();
@@ -676,8 +678,8 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		//console.log("Posicion Max X: "+ posicionMax_x);
 		//console.log("Posicion Max Y: "+ posicionMax_y);
 
+        /*
 		this.estiloIsometrico = {
-
 			"width": ""+(posicionMax_x*1.8)+"px",
 			"height": ""+(posicionMax_y*1)+"px",
 			"margin-left": ""+(posicionMax_x/2)+"px",
@@ -685,10 +687,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 			"margin-right": ""+(posicionMax_x/2)+"px",
 			"margin-bottom": ""+(posicionMax_y/2)+"px"
 		}
+        */
 
 		//Centrar el isometrico:
-		this.canvasIsometrico.nativeElement.scrollTop = posicionMax_y/2 
-		this.canvasIsometrico.nativeElement.scrollLeft = posicionMax_x/2 
+		//this.canvasIsometrico.nativeElement.scrollTop = posicionMax_y/2 
+		//this.canvasIsometrico.nativeElement.scrollLeft = posicionMax_x/2 
 
 	}
 	

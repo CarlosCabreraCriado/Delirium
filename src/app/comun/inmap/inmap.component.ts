@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit  } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { InMapService } from './inmap.service';
 import { Subscription } from "rxjs";
+import { SocketService } from '../socket/socket.service';
 
 @Component({
   selector: 'app-inmap',
@@ -12,10 +14,15 @@ import { Subscription } from "rxjs";
 
 export class InMapComponent implements OnInit{
 
-	constructor(private dialog: MatDialog, public appService: AppService, private inmapService: InMapService) { }
+	constructor(private dialog: MatDialog, public appService: AppService, private inmapService: InMapService, private socketService:SocketService) { }
+
 
 	private pantalla: string = "Inmap";
 	private idCuenta: string;
+
+	//Declara Suscripcion Evento Socket:
+    private socketSubscripcion: Subscription = null;
+	//Declara Suscripcion Evento AppService:
 	private appServiceSuscripcion: Subscription = null;
 
 	ngOnInit(){
@@ -34,6 +41,50 @@ export class InMapComponent implements OnInit{
 						break;
 				}
 		});
+
+		//Suscripcion Socket:
+      	this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
+
+            var cuenta = await this.appService.getCuenta();
+
+      		if(data.emisor== cuenta.nombre && data.tipoEmisor == cuenta.tipo){console.log("EVITANDO "+data.peticion);return;}
+      		switch(data.peticion){
+      			case "log":
+      				console.log("Peticion: "+data.peticion);
+      		    	console.log("Contenido: ");
+      		    	console.log(data.contenido);
+      			break;
+      			
+      			case "estadoSala":
+      				console.log("Peticion: "+data.peticion);
+      		    	console.log("Contenido: ");
+      		    	console.log(data.contenido);
+      		    	//this.sala = data.contenido;
+      		    	console.log("SALA: ")
+      		    	//console.log(this.sala);
+      		    	
+      			break;
+				
+      			case "cerrarSala":
+      				console.log("Peticion: "+data.peticion);
+      		    	console.log("Contenido: ");
+      		    	console.log(data.contenido);
+      		    	//this.appService.setSala(this.sala);
+      		    	//console.log(this.sala); 	
+      			break;
+
+      			case "iniciarPartida":
+      				console.log("Peticion: "+data.peticion);
+      		    	console.log("Contenido: ");
+      		    	console.log(data.contenido);
+      		    	//this.sala = data.contenido;
+      		    	//this.appService.setSala(this.sala);
+      		    	//this.socketSubscripcion.unsubscribe();
+      		    	//this.appService.setControl("mazmorra");
+					//this.appService.setEstadoApp("mazmorra");
+      			break;
+      		}
+      	});
 
 		//Comprueba el Logueo carga el perfil en Servicio InMap:
 		this.inmapService.cargarPerfil().then(() => {
@@ -57,6 +108,10 @@ export class InMapComponent implements OnInit{
         });
 	}
 
+	ngOnDestroy(){
+        console.log("Destruyendo INMAP");
+        this.appServiceSuscripcion.unsubscribe;
+	}
 
 	abrirConfiguracion(){
 		this.appService.mostrarConfiguracion("", {})
@@ -76,8 +131,9 @@ export class InMapComponent implements OnInit{
 
 		//Si se pulsa el centro accede a mazmorra:
 		if(comando=="centro"){
-			this.inmapService.iniciarPartida();	
+			this.inmapService.iniciarPartida("MazmorraSnack");	
 		}
+
 	}
 
 	cambiarPantalla(nombrePantalla:string):void{
