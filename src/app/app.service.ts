@@ -293,7 +293,6 @@ export class AppService {
 	}
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
-
       const dialogRef = this.dialog.open(DialogoComponent,{
           width: "100px", panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, inputLabel: config.inputLabel}
         });
@@ -306,7 +305,6 @@ export class AppService {
     }
 
     mostrarCrearCuenta():any{
-
       const dialogRef = this.dialog.open(DialogoComponent,{
           width: "100px", panelClass: ["containerCrearCuenta", "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "CrearCuenta"}
         });

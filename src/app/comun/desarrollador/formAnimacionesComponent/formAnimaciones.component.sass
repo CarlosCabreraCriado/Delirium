@@ -163,6 +163,15 @@
         left: 60%
         top: 45%
         width: 10%
+
+      .formRotate
+        left: 30%
+        top: 60%
+        width: 10%
+      .formScale
+        left: 45%
+        top: 60%
+        width: 10%
     
     .contenedorSubLista
       position: absolute
@@ -170,6 +179,7 @@
       height: 20%
       left: 2%
       background-color: grey
+      overflow-y: scroll
       &.contenedorSubanimacion
         top: 40%
       &.contenedorOrdenes
@@ -221,6 +231,18 @@
       top: 5%
       width: 5%
       right: 5%
+      &:hover
+        filter: invert(1)
+
+    .botonMute
+      position: absolute
+      top: 5%
+      width: 5%
+      right: 28%
+      &.muteado
+        filter: invert(1)
+        &:hover
+          filter: invert(0)
       &:hover
         filter: invert(1)
 

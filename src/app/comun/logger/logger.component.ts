@@ -11,6 +11,7 @@ import { MazmorraService } from '../mazmorra/mazmorra.service';
 export class LoggerComponent {
 
 	@Input() renderMazmorra: any;
+	@Input() sesion: any;
 	@ViewChild('contenedorMensajes',{static: false}) private contenedorMensajes: ElementRef;
 
   public heroeHech: any;

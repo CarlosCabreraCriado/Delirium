@@ -16,12 +16,12 @@ export const datosDefecto = {
         "daño_dir": 0,
         "heal_dir": 0,
         "escudo_dir": 0,
-        "daño_esc_AD": 0,
-        "daño_esc_AP": 0,
-        "heal_esc_AD": 0,
+        "daño_esc_ad": 0,
+        "daño_esc_ap": 0,
+        "heal_esc_ad": 0,
         "heal_esc_AP": 0,
-        "escudo_esc_AD": 0,
-        "escudo_esc_AP": 0,
+        "escudo_esc_ad": 0,
+        "escudo_esc_ap": 0,
         "mod_amenaza": 1,
         "buff_id": 0,
         "animacion_id": 1,
@@ -38,12 +38,12 @@ export const datosDefecto = {
         "daño_t": 0,
         "heal_t": 20,
         "escudo_t": 0,
-        "daño_esc_AD": 0,
-        "daño_esc_AP": 0,
-        "heal_esc_AD": 0,
-        "heal_esc_AP": 0,
-        "escudo_esc_AD": 0,
-        "escudo_esc_AP": 0,
+        "daño_esc_ad": 0,
+        "daño_esc_ap": 0,
+        "heal_esc_ad": 0,
+        "heal_esc_ap": 0,
+        "escudo_esc_ad": 0,
+        "escudo_esc_ap": 0,
         "stat_inc": 0,
         "stat_inc_inicial": 0,
         "stat_inc_t": 0,
@@ -76,7 +76,9 @@ export const datosDefecto = {
                 "duracion": "1",
                 "delay": "0",
                 "offset_x": 0,
-                "offset_y": 0
+                "offset_y": 0,
+                "rotate": 0,
+                "scale": 0
             }
           ]
     },
@@ -95,16 +97,18 @@ export const datosDefecto = {
             "armadura": 0,
             "vitalidad": 30,
             "resistencia_magica": 1,
-            "AD": 1,
-            "AP": 1,
+            "pa": 1,
+            "ap": 1,
+            "ad": 1,
             "critico": 1
         },
         "escalado": {
             "armadura_esc": 1,
             "vitalidad_esc": 1,
             "resistencia_magica_esc": 1,
-            "AD_esc": 1,
-            "AP_esc": 1,
+            "pa_esc": 1,
+            "ad_esc": 1,
+            "ap_esc": 1,
             "critico_esc": 1
         },
         "hechizos": [1,2,3],
@@ -170,39 +174,39 @@ export const datosDefecto = {
         },
     equipo: {
         "buffo_pasivo": 0,
-        "descripcion": "Armadura pesada",
+        "descripcion": "???",
         "estadisticas": {
-            "armadura": 9,
-            "resistencia_magica": 9,
-            "vitalidad": 7,
-            "AP": 6,
-            "AD": 1,
-            "critico": 1
+            "armadura": 0,
+            "resistencia_magica": 0,
+            "vitalidad": 0,
+            "AP": 0,
+            "AD": 0,
+            "critico": 0
         },
         "id": 1,
         "imagen_id": 1,
         "modificador": 0,
-        "nombre": "Pechera Rudimentaria Pesada",
+        "nombre": "???",
         "pieza": "Pechera",
         "rareza": "Común",
         "vinculadoEquipar": true,
         "vinculadoRecoger": true,
         "unico": true,
-        "perk_id": 1,
+        "perk_id": 0,
         "tipo": "Pesada"
     },
 
     consumible: {
         "buff_id": 1,
-        "descripcion": "Restarura 100pv",
+        "descripcion": "???",
         "id": 1,
-        "nombre": "Pocion de vida",
+        "nombre": "???",
         "max_stack": 3,
         "rareza": "Común",
         "modo": "Mazmorra",
         "tipo": "Miscelaneo",
         "imagen_id": 73
-    },
+    }
 } //Fin Datos Defento
 
 

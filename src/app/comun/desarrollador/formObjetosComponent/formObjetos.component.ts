@@ -116,42 +116,42 @@ export class FormObjetosComponent {
             
 		//Suscripcion de cambios formulario Equipo:
 		this.formEquipo.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.indexObjetoSeleccionado+1){
-                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado],val)
+			if(this.desarrolladorService.indexEquipoSeleccionado+1){
+                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado],val)
 			}
-			console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado])
+			//console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado])
 		});
 
 		//Suscripcion de cambios Estadisticas Equipo:
 		this.formEstadisticasEquipo.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.indexObjetoSeleccionado+1){
-                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado].estadisticas,val)
+			if(this.desarrolladorService.indexEquipoSeleccionado+1){
+                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado].estadisticas,val)
 			}
-			console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado])
+			//console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado])
 		});
 
 		//Suscripcion de cambios Propiedades Equipo:
 		this.formPropiedadesEquipo.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.indexObjetoSeleccionado+1){
-                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado],val)
+			if(this.desarrolladorService.indexEquipoSeleccionado+1){
+                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado],val)
 			}
-			console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado])
+			//console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado])
 		});
 
 		//Suscripcion de cambios formulario Consumible:
 		this.formConsumible.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.indexObjetoSeleccionado+1){
-                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexObjetoSeleccionado],val)
+			if(this.desarrolladorService.indexConsumibleSeleccionado+1){
+                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado],val)
 			}
-			console.log(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexObjetoSeleccionado])
+			//console.log(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
 		});
 
 		//Suscripcion de cambios Propiedades Consumible:
 		this.formPropiedadesConsumible.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.indexObjetoSeleccionado+1){
-                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexObjetoSeleccionado],val)
+			if(this.desarrolladorService.indexConsumibleSeleccionado+1){
+                this.desarrolladorService.patchObject(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado],val)
 			}
-			console.log(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexObjetoSeleccionado])
+			//console.log(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
 		});
 
         //Cargar  : 
@@ -160,15 +160,25 @@ export class FormObjetosComponent {
     } //FIN ONINIT
 
     reloadForm(){
+
         console.log("Recargando formulario")
-        this.formEquipo.patchValue(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado]);
+        if(this.desarrolladorService.tipoObjetoSeleccionado=="Equipo"){
+            console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado])
+        }
+        if(this.desarrolladorService.tipoObjetoSeleccionado=="Consumible"){
+            console.log(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
+        }
 
-        this.formEstadisticasEquipo.setValue(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexObjetoSeleccionado].estadisticas);
+        this.formEquipo.patchValue(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado]);
 
-        this.formConsumible.patchValue(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexObjetoSeleccionado])
+        this.formPropiedadesEquipo.patchValue(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado]);
+
+        this.formEstadisticasEquipo.setValue(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado].estadisticas);
+
+        this.formConsumible.patchValue(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
+
+        this.formPropiedadesConsumible.patchValue(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
     }
-
-
 
 }
 

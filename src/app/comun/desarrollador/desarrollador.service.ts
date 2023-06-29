@@ -21,7 +21,7 @@ export class DesarrolladorService implements OnInit{
     public cuenta: any= {}
 
   //Variables de Estado Paneles Principales:
-    public panel= "inmap";
+    public panel= "datos";
     public estadoInmap= "global";
     public estadoMazmorra= "parametros";
     public estadoParametros= "General";
@@ -33,7 +33,8 @@ export class DesarrolladorService implements OnInit{
     public claseSeleccionada= "Guerrero";
     public indexClaseSeleccionada= 0;
     public tipoObjetoSeleccionado= "Equipo";
-    public indexObjetoSeleccionado= 0;
+    public indexEquipoSeleccionado= 0;
+    public indexConsumibleSeleccionado= 0;
     
   //VARIABLES DE DATOS
     public archivosExcel: any= [];
@@ -120,6 +121,7 @@ export class DesarrolladorService implements OnInit{
     public buffSeleccionadoIndex = 0;
     public animacionSeleccionadoIndex = 0;
     public subanimacionSeleccionadoIndex = 0;
+    public sonidoSeleccionadoIndex = 0;
     public enemigoSeleccionadoIndex = 0;
     public eventoSeleccionadoIndex = 0;
     public tipoOrdenSeleccionada = "Condición";
@@ -143,6 +145,9 @@ export class DesarrolladorService implements OnInit{
     public enemigos: any;
     public eventos: any;
     public misiones: any;
+
+    //Efectos:
+	private efectoSonido = new Audio();
 
   // Observable string sources
     private observarDesarrolladorService = new Subject<string>();
@@ -200,7 +205,9 @@ export class DesarrolladorService implements OnInit{
     this.seleccionarAnimacion(0)
     this.seleccionarSubanimacion(0)
 
-    this.estadoHerramientaDatos= "Misiones";
+    //Inicializacion de valores paneles:
+    this.panel= "datos";
+    this.estadoHerramientaDatos= "Enemigos";
 
     //Inicializar Imagenes:
     for(var i=1; i <308; i++){
@@ -1807,6 +1814,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   async reloadDatos(forzarEstadoVer:boolean){
+
     this.log("Obteniendo datos (Perfil: "+this.appService.getCuenta().then((result) => {return result.nombre})+" + Oficial)","orange");
     this.mostrarMensaje= true;
     this.mostrarSpinner= true;
@@ -1919,6 +1927,7 @@ export class DesarrolladorService implements OnInit{
   setEstadoDatos(estadoDatos:TipoDatos){
 
     this.estadoHerramientaDatos = estadoDatos; 
+
     switch(estadoDatos){
         case "Enemigos":
             this.seleccionarEnemigo(this.enemigoSeleccionadoIndex)
@@ -2011,6 +2020,40 @@ export class DesarrolladorService implements OnInit{
         this.observarDesarrolladorService.next("reloadFormHechizos");
   }
 
+  addAnimacionHechizo(indexAnimacion:number){
+      var animacionId = this.animaciones.animaciones[indexAnimacion].id;  
+      this.hechizos.hechizos[this.hechizoSeleccionadoIndex].animacion_id = animacionId;
+  }
+
+  addAnimacionBuff(indexAnimacion:number){
+      var animacionId = this.animaciones.animaciones[indexAnimacion].id;  
+      this.buff.buff[this.buffSeleccionadoIndex].animacion_id = animacionId;
+  }
+
+  addSonido(){
+      var sonido = this.animaciones.sonidos[0];  
+      if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos.length <= 0){
+        this.sonidoSeleccionadoIndex=-1;
+      }
+      this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos.push(sonido);
+      this.sonidoSeleccionadoIndex++;
+  }
+
+  asignarSonidoAnimacion(indexSonido:number){
+      var sonido = this.animaciones.sonidos[indexSonido];  
+      this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos[this.sonidoSeleccionadoIndex]=sonido;
+  		this.efectoSonido.src = "./assets/sounds/"+sonido.id+"."+sonido.extension;
+  		this.efectoSonido.load();
+  		this.efectoSonido.play();
+  		this.efectoSonido.volume= 1;
+  }
+
+  eliminarSonidoAnimacion(){
+      if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos.length <= 0){return}
+      this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos.splice(this.sonidoSeleccionadoIndex,1);
+      if(this.sonidoSeleccionadoIndex!=0){this.sonidoSeleccionadoIndex--;}
+  }
+
   seleccionarBuff(indexBuff:number){
       this.buffSeleccionadoIndex= indexBuff;
 
@@ -2066,12 +2109,23 @@ export class DesarrolladorService implements OnInit{
       this.subanimaciones = this.animaciones.animaciones[indexAnimacion].subanimaciones;
       this.sonidos = this.animaciones.animaciones[indexAnimacion].sonidos;
 
+      this.subanimacionSeleccionadoIndex= 0;
+
       //Actualizar Formulario:
+        this.observarDesarrolladorService.next("reloadFormSubAnimacion");
         this.observarDesarrolladorService.next("reloadFormAnimaciones");
   }
 
   seleccionarObjeto(indexObjeto:number){
-      this.indexObjetoSeleccionado= indexObjeto;
+
+      if(this.tipoObjetoSeleccionado == "Equipo"){
+          this.indexEquipoSeleccionado = indexObjeto;
+      }
+
+      if(this.tipoObjetoSeleccionado == "Consumible"){
+          this.indexConsumibleSeleccionado = indexObjeto;
+      }
+
       //Actualizar Formulario:
         this.observarDesarrolladorService.next("reloadFormObjetos");
   }
@@ -2093,11 +2147,13 @@ export class DesarrolladorService implements OnInit{
   }
 
   seleccionarSubanimacion(indexSubAnimacion:number){
-
       this.subanimacionSeleccionadoIndex= indexSubAnimacion;
 
       //Actualizar Formulario:
         this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+  }
+  seleccionarSonido(indexSonido:number){
+      this.sonidoSeleccionadoIndex= indexSonido;
   }
 
   addSubanimacion(){
@@ -2192,7 +2248,30 @@ export class DesarrolladorService implements OnInit{
   }
   
   seleccionarImagen(indexImagen:number){
+
+      console.log(this.estadoSelectorImagen)
+      console.log(this.tipoObjetoSeleccionado)
+
       switch(this.estadoSelectorImagen){
+          case "arco":
+          case "báculo":
+          case "botas":
+          case "casco":
+          case "daga":
+          case "escudo":
+          case "espada":
+          case "hacha":
+          case "lanza":
+          case "pantalón":
+          case "pechera":
+          case "miscelaneo":
+              if(this.tipoObjetoSeleccionado=="Equipo"){
+                    this.objetos.equipo[this.indexEquipoSeleccionado].imagen_id = indexImagen;
+                }
+              if(this.tipoObjetoSeleccionado=="Consumible"){
+                    this.objetos.consumible[this.indexConsumibleSeleccionado].imagen_id = indexImagen;
+                }
+              break;
           case "hechizo":
               this.hechizos.hechizos[this.hechizoSeleccionadoIndex].imagen_id = indexImagen;
               break;
@@ -2202,7 +2281,8 @@ export class DesarrolladorService implements OnInit{
             case "tile":
                 this.seleccionarImgTile(indexImagen)
       }
-  }
+      this.mostrarSelectorImagen=false;
+  }//Fin SeleccionarImagen
 
   seleccionarImgTile(tileIndex: number){
         this.opcionesDesarrolloInMap.tileImgSeleccionado = tileIndex;
@@ -2239,9 +2319,26 @@ export class DesarrolladorService implements OnInit{
 
   async guardarPanelDatos(){  
     
-      console.log("GUARDANDO: ")
+      console.log("GUARDANDO: "+this.estadoHerramientaDatos)
       
       switch(this.estadoHerramientaDatos){
+
+          case "Objetos":
+            console.log(this.objetos)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarObjetos",{objetos: this.objetos, token: await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto 'Objetos' guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos guardados con exito";
+                this.reloadDatos(true);
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
 
           case "Hechizos":
             console.log(this.hechizos)
@@ -2251,7 +2348,7 @@ export class DesarrolladorService implements OnInit{
                 this.mostrarBotonAceptar= true;
                 this.mostrarSpinner= false;
                 this.mensaje= "Datos guardados con exito";
-                this.mostrarMensaje= true;
+                this.reloadDatos(true);
               }else{
                 console.log("Fallo en el guardado");
               }
@@ -2268,7 +2365,7 @@ export class DesarrolladorService implements OnInit{
                 this.mostrarBotonAceptar= true;
                 this.mostrarSpinner= false;
                 this.mensaje= "Datos Buff con exito";
-                this.mostrarMensaje= true;
+                this.reloadDatos(true);
               }else{
                 console.log("Fallo en el guardado");
               }
@@ -2285,7 +2382,24 @@ export class DesarrolladorService implements OnInit{
                 this.mostrarBotonAceptar= true;
                 this.mostrarSpinner= false;
                 this.mensaje= "Datos animaciones con exito";
-                this.mostrarMensaje= true;
+                this.reloadDatos(true);
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
+
+          case "Enemigos":
+            console.log(this.enemigos)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarEnemigos",{enemigos: this.enemigos, token: await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto Enemigos guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos guardados con exito";
+                this.reloadDatos(true);
               }else{
                 console.log("Fallo en el guardado");
               }
@@ -2302,7 +2416,7 @@ export class DesarrolladorService implements OnInit{
                 this.mostrarBotonAceptar= true;
                 this.mostrarSpinner= false;
                 this.mensaje= "Datos eventos guardados con exito";
-                this.mostrarMensaje= true;
+                this.reloadDatos(true);
               }else{
                 console.log("Fallo en el guardado");
               }
@@ -2649,7 +2763,6 @@ export class DesarrolladorService implements OnInit{
 
         });
         return;
-
     }
   
 } //FIN EXPORT

@@ -19,12 +19,11 @@ export class EnemigoComponent {
 	renderizarEstiloBuffosEnemigos(buff:any):any{
 		
 		var estilo={}
-		var  indexVertical= Math.floor(buff.icon_id/10);
-        var  indexHorizontal= buff.icon_id-indexVertical*10;
 
 		estilo={
-			'background':'url(./assets/Habilidades/Spell/'+buff.icon_id+'.png) 100% 100%',
-			'background-size': '100% 100%'
+			'background':'url(./assets/Habilidades/Spell/'+buff.imagen_id+'.png) 100% 100%',
+			'background-size': '100% 100%',
+			'height': '100%'
 		}
 		return estilo;
 	}

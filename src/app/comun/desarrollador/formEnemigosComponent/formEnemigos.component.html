@@ -32,7 +32,7 @@
                 <img class="imagen" (click)="desarrolladorService.abrirSelectorImagen(desarrolladorService.enemigos.enemigos[desarrolladorService.enemigoSeleccionadoIndex].familia)" src="./assets/{{desarrolladorService.pathImagenes}}/{{desarrolladorService.enemigos.enemigos[desarrolladorService.enemigoSeleccionadoIndex].imagen_id}}.png"/>
             </div>
 
-			<form  id="formularioGeneral" [formGroup]="formEnemigo">
+			<form  id="formularioGeneral" class="form" [formGroup]="formEnemigo">
 				  <mat-form-field appearance="legacy"  class="formId">
 					<mat-label>ID</mat-label>
                     <input matInput disabled value="{{id_Enemigo.value}}">
@@ -65,13 +65,14 @@
             <div id="contenedorInferior">
 
                 <div class="selector selectorTalento">
-                    <div class="opcion seleccionado">Estadisticas</div>
-                    <div class="opcion">Propiedades</div>
-                    <div class="opcion">Acciones</div>
+                    <div class="opcion" [ngClass]="{'seleccionado': opcionSeleccionada=='estadisticas'}" (click)="opcionSeleccionada='estadisticas'">Estadisticas</div>
+                    <div class="opcion"[ngClass]="{'seleccionado': opcionSeleccionada=='propiedades'}"(click)="opcionSeleccionada='propiedades'">Propiedades</div>
+                    <div class="opcion"[ngClass]="{'seleccionado': opcionSeleccionada=='acciones'}"(click)="opcionSeleccionada='acciones'">Acciones</div>
                 </div>
 
+                <ng-container *ngIf="opcionSeleccionada=='estadisticas'">
                 <div class="tituloSeccion">Estadisticas Base:</div>
-                <form  id="formularioEstadisticas" [formGroup]="formEstadisticas">
+                <form class="form" id="formularioEstadisticas" [formGroup]="formEstadisticas">
                       <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>Armadura</mat-label>
                         <input matInput type="number" min="0" formControlName="armadura">
@@ -85,12 +86,16 @@
                         <input matInput type="number" min="0" formControlName="vitalidad">
                       </mat-form-field>
                       <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>PA</mat-label>
+                        <input matInput type="number" min="0" formControlName="pa">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>AP</mat-label>
-                        <input matInput type="number" min="0" formControlName="AP">
+                        <input matInput type="number" min="0" formControlName="ap">
                       </mat-form-field>
                       <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>AD</mat-label>
-                        <input matInput type="number" min="0" formControlName="AD">
+                        <input matInput type="number" min="0" formControlName="ad">
                       </mat-form-field>
                       <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>Critico</mat-label>
@@ -99,7 +104,7 @@
                 </form>
 
                 <div class="tituloSeccion">Escalado:</div>
-                <form  id="formularioEstadisticas" [formGroup]="formEscalado">
+                <form  class="form"id="formularioEstadisticas" [formGroup]="formEscalado">
                       <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>Armadura_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="armadura_esc">
@@ -113,19 +118,101 @@
                         <input matInput type="number" min="0" formControlName="vitalidad_esc">
                       </mat-form-field>
                       <mat-form-field appearance="legacy"  class="campo">
+                        <mat-label>PA_ESC</mat-label>
+                        <input matInput type="number" min="0" formControlName="pa_esc">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>AP_ESC</mat-label>
-                        <input matInput type="number" min="0" formControlName="AP_esc">
+                        <input matInput type="number" min="0" formControlName="ap_esc">
                       </mat-form-field>
                       <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>AD_ESC</mat-label>
-                        <input matInput type="number" min="0" formControlName="AD_esc">
+                        <input matInput type="number" min="0" formControlName="ad_esc">
                       </mat-form-field>
                       <mat-form-field appearance="legacy"  class="campo">
                         <mat-label>Critico_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="critico_esc">
                       </mat-form-field>
                 </form>
-            </div>
+                </ng-container>
 
+                <ng-container *ngIf="opcionSeleccionada=='acciones'">
+
+                <!-- Inicio Lista Acciones -->
+                <div class="contenedorSubLista contenedorSonido">
+
+                    <div class="tituloSubLista">Acciones</div>
+                    <div *ngFor="let accion of this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones; let i=index"  class="elemento" [ngClass]="{'seleccionado': accionSeleccionadaIndex==i}" (click)="seleccionarAccion(i)">{{accion.nombre}}</div>
+                </div>
+                <div class="botonAdd botonAccion" (click)="addAccion()">Añadir</div>
+
+                <form  id="formularioAcciones" [formGroup]="formAcciones">
+                      <mat-form-field appearance="legacy"  class="campo campo1">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo2">
+                        <mat-label>Texto</mat-label>
+                        <input matInput formControlName="texto">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo3">
+                        <mat-label>Tipo</mat-label>
+                        <input matInput formControlName="tipo">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo4">
+                        <mat-label>Objetivo</mat-label>
+                        <input matInput formControlName="tipoObjetivo">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo5">
+                        <mat-label>Movimiento</mat-label>
+                        <input matInput type="number" min="0" formControlName="movimiento">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo6">
+                        <mat-label>Alcance</mat-label>
+                        <input matInput type="number" min="0" formControlName="alcance">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo7">
+                        <mat-label>Hechizo ID</mat-label>
+                        <input matInput type="number" min="0" formControlName="hechizo_id">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo8">
+                        <mat-label>Energia</mat-label>
+                        <input matInput type="number" min="0" max="100" formControlName="energia">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo9">
+                        <mat-label>Probabilidad</mat-label>
+                        <input matInput type="number" min="0" formControlName="probabilidad">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo10">
+                        <mat-label>Comportamiento</mat-label>
+                        <input matInput formControlName="comportamiento">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo11">
+                        <mat-label>Inicial</mat-label>
+                        <input matInput formControlName="inicial">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo12">
+                        <mat-label>Habilitadar ID</mat-label>
+                        <input matInput type="number" min="0" formControlName="habilitarAccion">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo13">
+                        <mat-label>Deshabilitar ID</mat-label>
+                        <input matInput type="number" min="0" formControlName="deshabilitarAccion">
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy"  class="campo campo14">
+                        <mat-label>Habilitada</mat-label>
+                        <input matInput formControlName="habilitada">
+                      </mat-form-field>
+
+                </form>
+                </ng-container>
 
         </div>
+        
+
+
+
+
+
+
+

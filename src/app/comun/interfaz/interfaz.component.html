@@ -1,7 +1,6 @@
 
 
 
-
 <div *ngIf="interfazService.mostrarInterfaz" id="contenedorInterfaz">
 	<div class="fondoNegro"></div>
 
@@ -10,7 +9,7 @@
 		 ************************************************* -->
 
 <div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
-<div class= "contenedor">
+<div class= "contenedor borde1">
 
 	<h1 class="title Texto2">Hechizos</h1>
 	<hr class="divisor"/>
@@ -72,7 +71,7 @@
 				Interfaz Movimiento 
 		 ************************************************* -->
 
-	<div  id="contenedorInterfazMovimiento" *ngIf="interfazService.pantallaInterfaz=='movimiento'">
+	<div  id="contenedorInterfazMovimiento" class="borde1" *ngIf="interfazService.pantallaInterfaz=='movimiento'">
 		<div class="tituloInterfaz Texto2">Cantidad de movimiento: </div>
 
         <div class="contenedorSeleccionValor">
@@ -100,5 +99,49 @@
 		<div class="frame"></div>
 	</div>
 
+	<!-- *************************************************
+				Interfaz ACCIONES ENEMIGO 
+		 ************************************************* -->
+
+	<div  id="contenedorInterfazAccionesEnemigo" class="borde1" *ngIf="interfazService.pantallaInterfaz=='AccionesEnemigo'">
+
+		<div class="titulo Texto1">Activación Movimiento</div>
+        <hr class="divisor"/>
+
+        <div class="contenedorMovimiento">
+
+            <div class="texto">
+                El enemigo quiere atacar a Doomcrash
+            </div>
+
+            <div class="enemigo">
+            </div>
+
+            <div class="valor">
+                <div class="contenedorAtributo movimiento">
+                    <img class="icono" src="./assets/Iconos/Icono-Movimiento.png"/>
+                    <div class="valor Texto1">4</div>
+                    <div class="frameAtributo"></div>
+                </div>
+            </div>
+
+            <div class="flecha">
+            </div>
+
+            <div class="heroe">
+            </div>
+
+            <div class="botones">
+                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'Moverse'" [vacio]="false" [color]="'verde'"></botonComponent>
+            </div>
+
+        </div> <!-- FIN ACCION - MOVIMIENTO -->
+
+	</div>
+
 </div>
  
+
+
+
+

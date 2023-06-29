@@ -21,28 +21,32 @@ export class FormAnimacionesComponent {
   	private formSubanimacion: FormGroup;
 
   	//Campos Datos Animaciones:
-  	private id_Animaciones = new FormControl('0');
+  	private id_Animaciones = new FormControl(0);
   	private nombre_Animaciones = new FormControl('???');
-    private duracion_Animaciones = new FormControl('0');
-    private subanimaciones_Animaciones = new FormControl('0');
-    private sonidos_Animaciones = new FormControl('0');
+    private duracion_Animaciones = new FormControl(0);
+    private subanimaciones_Animaciones = new FormControl(0);
+    private sonidos_Animaciones = new FormControl(0);
 
 	//Campos Datos Subanimacion:
   	private id_Subanimacion = new FormControl(0);
   	private nombre_Subanimacion = new FormControl('???');
-  	private sprite_id_Subanimacion = new FormControl('0');
-    private duracion_Subanimacion = new FormControl('0');
-    private num_frames_Subanimacion = new FormControl('1');
-    private frame_ref_Subanimacion = new FormControl('0');
+  	private sprite_id_Subanimacion = new FormControl(0);
+    private duracion_Subanimacion = new FormControl(0);
+    private num_frames_Subanimacion = new FormControl(1);
+    private frame_ref_Subanimacion = new FormControl(0);
 
-    private hue_Subanimacion = new FormControl('0');
-    private sepia_Subanimacion = new FormControl('0');
-    private brillo_Subanimacion = new FormControl('0');
-    private saturacion_Subanimacion = new FormControl('0');
+    private hue_Subanimacion = new FormControl(0);
+    private sepia_Subanimacion = new FormControl(0);
+    private brillo_Subanimacion = new FormControl(0);
+    private saturacion_Subanimacion = new FormControl(0);
 
-    private delay_Subanimacion = new FormControl('0');
-    private offsetx_Subanimacion = new FormControl('0');
-    private offsety_Subanimacion = new FormControl('0');
+    private delay_Subanimacion = new FormControl(0);
+    private offsetx_Subanimacion = new FormControl(0);
+    private offsety_Subanimacion = new FormControl(0);
+    private rotate_Subanimacion = new FormControl(0);
+    private scale_Subanimacion = new FormControl(0);
+
+    private mute = true;
 
 	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
 
@@ -70,6 +74,8 @@ export class FormAnimacionesComponent {
         	brillo: this.brillo_Subanimacion,
         	saturation: this.saturacion_Subanimacion,
         	delay: this.delay_Subanimacion,
+        	rotate: this.rotate_Subanimacion,
+        	scale: this.scale_Subanimacion,
         	offset_x: this.offsetx_Subanimacion,
         	offset_y: this.offsety_Subanimacion
 	    });
@@ -112,12 +118,26 @@ export class FormAnimacionesComponent {
 			console.log(val)
 		});
 
+        //Inicializa la animacion:
+        this.desarrolladorService.seleccionarAnimacion(this.desarrolladorService.animacionSeleccionadoIndex)
+        this.desarrolladorService.seleccionarSubanimacion(this.desarrolladorService.subanimacionSeleccionadoIndex)
+
     } //Fin OnInit
 
 	renderListaSeleccionado(opcionSeleccionado:string,indiceSeleccionado:number){
 		switch(opcionSeleccionado){
 			case "animaciones":
 				if(this.desarrolladorService.animacionSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "sonido":
+				if(this.desarrolladorService.sonidoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "subanimacion":
+				if(this.desarrolladorService.subanimacionSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "listaSonidos":
+                var sonidoId = this.desarrolladorService.animaciones.sonidos[indiceSeleccionado].id;
+				if(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].sonidos[this.desarrolladorService.sonidoSeleccionadoIndex].id==sonidoId){return "seleccionado"}
 				break;
 		}
 		return "";

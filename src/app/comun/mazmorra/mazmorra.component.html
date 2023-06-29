@@ -63,7 +63,7 @@
         <!--     LOOGER            -->
         <!--   ******************* -->
        
-<appLogger [renderMazmorra]="renderMazmorra"></appLogger>
+<appLogger [renderMazmorra]="renderMazmorra" [sesion]="mazmorraService.sesion"></appLogger>
 
 	<!--   ******************* -->
 	<!--        Credito      -->
@@ -81,7 +81,11 @@
 	<!--      Social    -->
 	<!--   ******************* -->
 
+    <!--
 	<img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="this.appService.abandonarMazmorra()"/>
+    -->
+	<img id="iconoSocial" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarEnemigo(0)"/>
+
 
 		<!--   ******************* -->
 		<!--        Experiencia    -->

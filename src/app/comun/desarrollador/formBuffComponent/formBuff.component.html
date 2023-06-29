@@ -57,36 +57,89 @@
                       </mat-form-field>
                     </div>
 
+                  <div class="formTriple daño">
+                      <mat-form-field appearance="legacy" class="pa">
+                        <mat-label>Daño</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_t">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="legacy" class="ad">
+                        <mat-label>AD</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_esc_AD">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="legacy" class="ap">
+                        <mat-label>AP</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_esc_AP">
+                      </mat-form-field>
+                  </div>
+
+                  <div class="formTriple heal">
+                      <mat-form-field appearance="legacy" class="pa">
+                        <mat-label>Heal</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="heal_t">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="legacy" class="ad">
+                        <mat-label>AD</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Heal directo" formControlName="heal_esc_AD">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="legacy" class="ap">
+                        <mat-label>AP</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="heal_esc_AP">
+                      </mat-form-field>
+                  </div>
+
+                  <div class="formTriple escudo">
+                      <mat-form-field appearance="legacy" class="pa">
+                        <mat-label>Escudo</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Escudo directo" formControlName="escudo_t">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="legacy" class="ad">
+                        <mat-label>AD</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="escudo_esc_AD">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="legacy" class="ap">
+                        <mat-label>AP</mat-label>
+                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="escudo_esc_AP">
+                      </mat-form-field>
+                  </div>
 
 				  <mat-form-field appearance="legacy" class="formAmenaza">
-					<mat-label>Daño T</mat-label>
-					<input matInput type="number" min="0" placeholder="Descripción" formControlName="daño_t">
+					<mat-label>Duración</mat-label>
+					<input matInput placeholder="Schema" formControlName="duracion">
 				  </mat-form-field>
 
+                  <!--
 				  <mat-form-field appearance="legacy" class="formEnergia">
 					<mat-label>Heal T</mat-label>
-					<input matInput type="number" min="0" placeholder="Descripción" formControlName="heal_t">
+					<input matInput placeholder="Schema" formControlName="heal_t">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formPoder">
 					<mat-label>Escudo T</mat-label>
-					<input matInput type="number" min="0" placeholder="Descripción" formControlName="escudo_t">
+					<input matInput placeholder="Schema" formControlName="escudo_t">
 				  </mat-form-field>
+                  -->
 
 				  <mat-form-field appearance="legacy" class="formStatInc">
 					<mat-label>Stat Inc</mat-label>
-					<input matInput placeholder="Descripción" formControlName="stat_inc">
+					<input matInput placeholder="Schema" formControlName="stat_inc">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formStatIncInicial">
 					<mat-label>Stat Inc Inicial</mat-label>
-					<input matInput placeholder="Descripción" formControlName="stat_inc_inicial">
+					<input matInput placeholder="Schema" formControlName="stat_inc_inicial">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formStatIncT">
 					<mat-label>Stat Inc T</mat-label>
-					<input matInput placeholder="Descripción" formControlName="stat_inc_t">
+					<input matInput placeholder="Schema" formControlName="stat_inc_t">
 				  </mat-form-field>
+
 			</form>
 
             <div class="contenedorCampoRelacional campoAnimacion">
@@ -101,7 +154,7 @@
 
         <!-- LISTA ANIMACION RELACIONAL -->
         <panelSelectorComponent *ngIf="desarrolladorService.estadoPanelDatosDerecha=='Animaciones'"
-            [tipo]="'Animacion_relacionada'"
+            [tipo]="'Animacion_relacionada_buff'"
             [titulo]="'ANIMACION RELACIONADA'"
             [botonAdd]="false"
             [lateral]="'derecha'"

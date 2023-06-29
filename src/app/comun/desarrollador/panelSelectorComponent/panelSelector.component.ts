@@ -38,11 +38,31 @@ export class PanelSelectorComponent {
 
 	renderListaSeleccionado(opcionSeleccionado:string,indiceSeleccionado:number){
 		switch(opcionSeleccionado){
+			case "equipo":
+				if(this.desarrolladorService.indexEquipoSeleccionado==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "consumible":
+				if(this.desarrolladorService.indexConsumibleSeleccionado==indiceSeleccionado){return "seleccionado"}
+				break;
 			case "hechizo":
 				if(this.desarrolladorService.hechizoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
 				break;
-			case "enemigo":
+			case "animacionHechizo":
+                var animacionId = this.desarrolladorService.animaciones.animaciones[indiceSeleccionado].id;
+				if(this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex].animacion_id==animacionId){return "seleccionado"}
+				break;
+			case "buff":
+				if(this.desarrolladorService.buffSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "animacionBuff":
+                var animacionId = this.desarrolladorService.animaciones.animaciones[indiceSeleccionado].id;
+				if(this.desarrolladorService.buff.buff[this.desarrolladorService.buffSeleccionadoIndex].animacion_id==animacionId){return "seleccionado"}
+				break;
+			case "enemigos":
 				if(this.desarrolladorService.enemigoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
+			case "misiones":
+				if(this.desarrolladorService.misionSeleccionadaIndex==indiceSeleccionado){return "seleccionado"}
 				break;
 			case "trigger":
 				if(this.indexSeleccionado==indiceSeleccionado){return "seleccionado"}

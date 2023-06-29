@@ -138,10 +138,45 @@
         top: 80%
         width: 15%
 
-      .formDañoDir
+      .daño
+        position: absolute
         left: 30%
         top: 35%
-        width: 10%
+        width: 20%
+        height: 10%
+        background-color: rgba(255,0,0,0.3) 
+
+      .heal
+        position: absolute
+        left: 52.5%
+        top: 35%
+        width: 20%
+        height: 10%
+        background-color: rgba(0,255,0,0.3) 
+
+      .escudo
+        position: absolute
+        left: 75%
+        top: 35%
+        width: 20%
+        height: 10%
+        background-color: rgba(255,255,255,0.3) 
+
+      .formTriple
+        display: grid
+        grid-template-columns: repeat(3, 1fr)
+        grid-column-gap: 15px
+        grid-template-rows: 1fr
+        .pa
+          width: 100%
+          grid-area: 1 / 1 / 2 / 2
+        .ad
+          width: 100%
+          grid-area: 1 / 2 / 2 / 3
+        .ap
+          width: 100%
+          grid-area: 1 / 3 / 2 / 4
+
       .formHealDir
         left: 55%
         top: 35%

@@ -93,7 +93,6 @@ export class MazmorraService implements OnInit{
     private socketSubscripcion: Subscription
 	
 	musicaMazmorraPlay(): void{
-  		
   		this.musicaMazmorra.src = "./assets/musica/musica-mazmorra.mp3";
   		this.musicaMazmorra.load();
   		this.musicaMazmorra.volume= 0;
@@ -164,7 +163,7 @@ export class MazmorraService implements OnInit{
 		//Router del Logger:
 		if(this.sesion.render.estadoControl.estado=="looger"){	
 			if(tecla=="Enter"){
-				this.loggerService.procesarComando(this.sesion.render);
+				this.loggerService.procesarComando(this.sesion.render,this.sesion);
 			}else{
 				this.loggerService.addComando(tecla);
 			}
@@ -376,7 +375,6 @@ export class MazmorraService implements OnInit{
 				case "5":
 				case "6":
 				this.cambiarSala(parseInt(tecla));
-				this.cambiarSala(parseInt(tecla));
 				this.sesion.render.salaActual=parseInt(tecla);
 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.sesion.render});
 				this.mensajeAccion("Cambiando Sala...",2000);
@@ -402,6 +400,7 @@ export class MazmorraService implements OnInit{
 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "sincronizacion", contenido: this.sesion.render});
 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: {}});
 				this.lanzarHechizo();
+                
 				return;
 			}
 
@@ -504,15 +503,14 @@ export class MazmorraService implements OnInit{
  		}
 
  		//Calcular estadisticas Heroes:
- 		for (var i = 0; i < this.sesion.render.numHeroes; i++) {
- 			this.calcularEstadisticas(true,this.sesion.render.heroes[i]);
+ 		for (var i = 0; i < this.sesion.jugadores.length; i++) {
+ 			this.calcularEstadisticas("heroe",i);
  		}
 
  		//Calcular estadisticas Enemigos:
  		for (var i = 0; i < this.sesion.render.enemigos.length; i++) {
- 			this.calcularEstadisticas(false,this.sesion.render.enemigos[i]);
+ 			this.calcularEstadisticas("enemigo",i);
  		}
-       */
 
  		//Inicializa turno:
  		this.sesion.render.registroTurno= [];
@@ -525,7 +523,7 @@ export class MazmorraService implements OnInit{
  		this.sesion.render.estadisticas= [];
  		for(var i=0; i < this.sesion.render.numHeroes; i++){
  			this.sesion.render.estadisticas[i]={
- 				dano: [],
+ 				daño: [],
  				heal: [],
  				escudo: [],
  				agro: []
@@ -534,7 +532,7 @@ export class MazmorraService implements OnInit{
 
  		//Agregar nuevo registro de analisis:
  		for(var i=0; i <this.sesion.render.numHeroes;i++){
- 			this.sesion.render.estadisticas[i].dano.push(0);
+ 			this.sesion.render.estadisticas[i].daño.push(0);
  			this.sesion.render.estadisticas[i].heal.push(0);
  			this.sesion.render.estadisticas[i].escudo.push(0);
  			this.sesion.render.estadisticas[i].agro.push(0);
@@ -571,6 +569,7 @@ export class MazmorraService implements OnInit{
 		//Inicializar Canvas Isometrico:
 		this.appService.renderizarCanvasIsometrico();
 
+        this.activarEnemigo(0)
     } //Fin Inicializar Mazmorra:
 
     /*
@@ -952,7 +951,7 @@ export class MazmorraService implements OnInit{
 
  		//Agregar nuevo registro de analisis:
  		for(var i=0; i <this.sesion.render.numHeroes;i++){
- 			this.sesion.render.estadisticas[i].dano.push(0);
+ 			this.sesion.render.estadisticas[i].daño.push(0);
  			this.sesion.render.estadisticas[i].heal.push(0);
  			this.sesion.render.estadisticas[i].escudo.push(0);
  			this.sesion.render.estadisticas[i].agro.push(0);
@@ -1139,6 +1138,7 @@ export class MazmorraService implements OnInit{
 				familia: this.enemigos.find(k => k.id === enemigoAdd.enemigo_id).familia.toLowerCase(),
  				turno: false,
  				vida: 100,
+ 				puntosVida: 100,
  				escudo: 0,
  				agro: [],
  				buff:[],
@@ -1205,23 +1205,24 @@ export class MazmorraService implements OnInit{
  				nombre: enemigosAdd[i].nombre,
  				enemigo_id: enemigosAdd[i].enemigo_id,
 				tipo_enemigo_id: enemigosAdd[i].tipo_enemigo_id,
+				nivel: enemigosAdd[i].nivel,
 				familia: this.enemigos.find(k => k.id === enemigosAdd[i].enemigo_id).familia.toLowerCase(),
  				turno: false,
  				vida: 100,
+ 				puntosVida: 1,
  				escudo: 0,
  				agro: [],
  				buff:[],
  				estadisticas: {
  					armadura: 0,
 					vitalidad: 0,
-					fuerza: 0,
-					intelecto: 0,
-					precision: 0,
-					ferocidad: 0,
-					general: 0
+					resistenciaMagica: 0,
+					ap: 0,
+					ad: 0,
+					critico: 0,
  				},
  				objetivo: false,
- 				acciones: 2,
+ 				acciones: this.enemigos.find(k => k.id === enemigosAdd[i].enemigo_id).acciones,
  				objetivoAuxiliar: false,
  				hechizos: this.enemigos.find(k => k.id === enemigosAdd[i].enemigo_id).hechizos_id,
 				mostrarAnimacion: false,
@@ -1244,7 +1245,7 @@ export class MazmorraService implements OnInit{
 
  		//Calcular estadisticas Enemigos:
  		for (var i = 0; i < this.sesion.render.enemigos.length; i++) {
- 			this.calcularEstadisticas(false,this.sesion.render.enemigos[i]);
+ 			this.calcularEstadisticas("enemigo",i);
  		}
 
  		console.log(this.sesion.render.enemigos);
@@ -1252,64 +1253,112 @@ export class MazmorraService implements OnInit{
  	}
 
  	//Calcular Estadisticas:
- 	calcularEstadisticas(esHeroe:boolean,caster:any):void{
+    
+ 	calcularEstadisticas(caster:string, indexCaster:number):void{
  		
- 		if(esHeroe){
- 			//var clase= caster.clase.toLowerCase().charAt(0).toUpperCase() + caster.clase.toLowerCase().slice(1);
- 			//var clase= caster.clase.toUpperCase();
- 			var clase= caster.clase.toLowerCase();
- 			if(clase=="Mago_de_sangre" || clase=="Mago de sangre"){clase="mago_de_sangre"}
- 			var especializacion = "NO_SPEC";
- 			var estadisticasEquipo= 0;
- 			var nivel_spec = 10;
+        if(caster!="heroe"&& caster!="enemigo"){console.error("Error de argumento en 'calcularEstadisticas'");return;}
+        
+        var nivel;
+        var estadisticas = {
+                vidaMaxima: 0,
+                pa: 0,
+                ad: 0,
+                ap: 0,
+                armadura: 0,
+                critico: 0,
+                resistenciaMagica: 0,
+                vitalidad: 0
+        }
 
- 			//Calculo de estadistica general y modificadores:
- 			var modificadorVitalidad = 0;
- 			var modificadorFuerza = 0;
- 			var modificadorIntelecto = 0;
- 			var modificadorAgilidad = 0;
- 			var modificadorPrecision = 0;
- 			var modificadorFerocidad = 0;
- 			var modificadorTotal = 0;
+        //---------------------
+        //  CALCULO HEROE
+        //---------------------
+ 		if(caster=="heroe"){
 
- 			//estadisticasEquipo= caster.estadisticas.general;
- 			estadisticasEquipo= 0;
+            nivel = this.sesion.jugadores[indexCaster].personaje.nivel;
 
- 			//Calcula estadisticas HEROE:
- 			if(this.sesion.render.nivel_equipo <nivel_spec){
- 				caster.estadisticas.armadura= 0;
- 				console.log(clase);
-                console.log("PARAMETROS")
-				console.log(this.parametros)
- 				caster.estadisticas.vitalidad= this.parametros.personajes.find(i => i.clase==clase).vitalidad_base + (estadisticasEquipo + this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo) * this.parametros.personajes.find(i => i.clase==clase).mod_vitalidad / this.parametros.personajes.find(i => i.clase==clase).suma_mod;
- 				caster.estadisticas.fuerza= this.parametros.personajes.find(i => i.clase==clase).fuerza_base + (estadisticasEquipo + this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo) * this.parametros.personajes.find(i => i.clase==clase).mod_fuerza / this.parametros.personajes.find(i => i.clase==clase).suma_mod;
- 				caster.estadisticas.intelecto= this.parametros.personajes.find(i => i.clase==clase).intelecto_base + (estadisticasEquipo + this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo) * this.parametros.personajes.find(i => i.clase==clase).mod_intelecto / this.parametros.personajes.find(i => i.clase==clase).suma_mod;
- 				caster.estadisticas.agilidad= this.parametros.personajes.find(i => i.clase==clase).agilidad_base + (estadisticasEquipo + this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo) * this.parametros.personajes.find(i => i.clase==clase).mod_aguilidad / this.parametros.personajes.find(i => i.clase==clase).suma_mod;
- 				caster.estadisticas.precision= this.parametros.personajes.find(i => i.clase==clase).precision_base + (estadisticasEquipo + this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo) * this.parametros.personajes.find(i => i.clase==clase).mod_precision / this.parametros.personajes.find(i => i.clase==clase).suma_mod;
- 				caster.estadisticas.ferocidad= this.parametros.personajes.find(i => i.clase==clase).ferocidad_base + (estadisticasEquipo + this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo) * this.parametros.personajes.find(i => i.clase==clase).mod_ferocidad / this.parametros.personajes.find(i => i.clase==clase).suma_mod;
- 				caster.estadisticas.general= caster.estadisticas.vitalidad+caster.estadisticas.fuerza+caster.estadisticas.intelecto+caster.estadisticas.agilidad+caster.estadisticas.ferocidad+caster.estadisticas.precision+caster.estadisticas.armadura;
+ 			//Calcula estadisticas BASE HEROE:
+            estadisticas.pa = this.parametros.heroes.base.pa + nivel * this.parametros.heroes.escalado.pa
+            estadisticas.ad = this.parametros.heroes.base.ad + nivel * this.parametros.heroes.escalado.ad
+            estadisticas.ap = this.parametros.heroes.base.ap + nivel * this.parametros.heroes.escalado.ap
+            estadisticas.critico = this.parametros.heroes.base.critico + nivel * this.parametros.heroes.escalado.critico
 
- 			}else{
- 				caster.estadisticas.armadura= 0;
- 				caster.estadisticas.vitalidad= this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).vitalidadBase +(estadisticasEquipo + this.parametros.escalado[0].esc_stats*nivel_spec*this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").modificadorVitalidad/this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").sumaModificador)+(estadisticasEquipo * this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo-nivel_spec) * this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).modificadorVitalidad / this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).sumaModificador;
- 				caster.estadisticas.fuerza= this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).fuerzaBase +(estadisticasEquipo + this.parametros.escalado[0].esc_stats*nivel_spec*this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").modificadorFuerza/this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").sumaModificador)+(estadisticasEquipo * this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo-nivel_spec) * this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).modificadorFuerza / this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).sumaModificador;
- 				caster.estadisticas.intelecto= this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).intelectoBase +(estadisticasEquipo + this.parametros.escalado[0].esc_stats*nivel_spec*this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").modificadorIntelecto/this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").sumaModificador)+(estadisticasEquipo * this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo-nivel_spec) * this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).modificadorIntelecto / this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).sumaModificador;
- 				caster.estadisticas.agilidad= this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).agilidadBase +(estadisticasEquipo + this.parametros.escalado[0].esc_stats*nivel_spec*this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").modificadorAgilidad/this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").sumaModificador)+(estadisticasEquipo * this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo-nivel_spec) * this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).modificadorAgilidad / this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).sumaModificador;
- 				caster.estadisticas.precision= this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).precisionBase +(estadisticasEquipo + this.parametros.escalado[0].esc_stats*nivel_spec*this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").modificadorPrecision/this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").sumaModificador)+(estadisticasEquipo * this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo-nivel_spec) * this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).modificadorPrecision / this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).sumaModificador;
- 				caster.estadisticas.ferocidad= this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).ferocidadBase +(estadisticasEquipo + this.parametros.escalado[0].esc_stats*nivel_spec*this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").modificadorFerocidad/this.parametros["parametros"+clase].find(i => i.especializacion=="NO_SPEC").sumaModificador)+(estadisticasEquipo * this.parametros.escalado[0].esc_stats * this.sesion.render.nivel_equipo-nivel_spec) * this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).modificadorAgilidad / this.parametros["parametros"+clase].find(i => i.especializacion==especializacion).sumaModificador;
- 				caster.estadisticas.general= caster.estadisticas.vitalidad+caster.estadisticas.fuerza+caster.estadisticas.intelecto+caster.estadisticas.agilidad+caster.estadisticas.ferocidad+caster.estadisticas.precision+caster.estadisticas.armadura;
- 			}
+            estadisticas.armadura = this.parametros.heroes.base.armadura + nivel * this.parametros.heroes.escalado.armadura
+            estadisticas.vitalidad = this.parametros.heroes.base.vitalidad + nivel * this.parametros.heroes.escalado.vitalidad
+            estadisticas.resistenciaMagica = this.parametros.heroes.base.resistenciaMagica + nivel * this.parametros.heroes.escalado.resistenciaMagica
+
+            //Añadir estadisticas de objetos equipados:
+            for(var i = 0; i < this.sesion.jugadores[indexCaster].personaje.objetos.equipado.length; i++){
+                estadisticas.pa = estadisticas.pa + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.PA
+                estadisticas.ad = estadisticas.ad + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.AD
+                estadisticas.ap = estadisticas.ap + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.AP
+                estadisticas.critico = estadisticas.critico + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.critico
+
+                estadisticas.armadura = estadisticas.armadura + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.armadura
+                estadisticas.vitalidad = estadisticas.vitalidad + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.vitalidad
+                estadisticas.resistenciaMagica = estadisticas.resistenciaMagica + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.resistencia_magica
+            }
+
+            //Calculo de la vida Maxima (HEROE):
+
+            //RANGOS ARMADURA:
+            var armaduraMaxPercent = this.parametros.armaduraMax;
+            var armaduraMinPercent = this.parametros.armaduraMin;
+            var armMin = this.parametros.heroes.base["armadura"]+(nivel*this.parametros.heroes.escalado["armadura"]);
+            var armMax = armMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado) 
+
+            //RANGOS VITALIDAD:
+            var vitMin = this.parametros.heroes.base["vitalidad"]+(nivel*this.parametros.heroes.escalado["vitalidad"]);
+            var vitMax = vitMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado) 
+
+            var vidaBase = this.parametros.ratioVitalidadBase * vitMin;
+            var vidaAdicional = (vidaBase*(armaduraMinPercent-armaduraMaxPercent)*((estadisticas.vitalidad-vitMin)/(vitMax-vitMin)))/((armaduraMaxPercent-armaduraMinPercent)*(((estadisticas.vitalidad-vitMin)/(vitMax-vitMin))+((estadisticas.armadura-armMin)-(armMax-armMin)))+armaduraMinPercent-1);
+            estadisticas.vidaMaxima = vidaBase+vidaAdicional;
+
+            //Copiar estadisticas en RENDER:
+            this.sesion.render.heroes[indexCaster].estadisticas = estadisticas;
  		
- 		}else{
+ 		}
+
+        //---------------------
+        //  CALCULO ENEMIGO
+        //---------------------
+        if(caster=="enemigo"){
 
  			//Calcula estadisticas ENEMIGO:
- 			caster.estadisticas.armadura= this.enemigos.find(j => j.id === caster.enemigo_id).estadisticas.armadura;
- 			caster.estadisticas.vitalidad= this.enemigos.find(j => j.id === caster.enemigo_id).estadisticas.vitalidad;
- 			caster.estadisticas.fuerza= this.enemigos.find(j => j.id === caster.enemigo_id).estadisticas.fuerza;
- 			caster.estadisticas.intelecto= this.enemigos.find(j => j.id === caster.enemigo_id).estadisticas.intelecto;
- 			caster.estadisticas.precision= this.enemigos.find(j => j.id === caster.enemigo_id).estadisticas.precision;
- 			caster.estadisticas.ferocidad= this.enemigos.find(j => j.id === caster.enemigo_id).estadisticas.ferocidad;
+            var indexTipoEnemigo = this.enemigos.findIndex(j => j.id === this.sesion.render.enemigos[indexCaster].enemigo_id);
+
+            nivel = Number(this.sesion.render.enemigos[indexCaster].nivel);
+
+            estadisticas.pa = this.enemigos[indexTipoEnemigo].estadisticas.pa + nivel * this.enemigos[indexTipoEnemigo].escalado.pa_esc;
+            estadisticas.ad = this.enemigos[indexTipoEnemigo].estadisticas.ad + nivel * this.enemigos[indexTipoEnemigo].escalado.ad_esc;
+            estadisticas.ap = this.enemigos[indexTipoEnemigo].estadisticas.ap + nivel * this.enemigos[indexTipoEnemigo].escalado.ap_esc;
+            estadisticas.critico = this.enemigos[indexTipoEnemigo].estadisticas.critico + nivel * this.enemigos[indexTipoEnemigo].escalado.critico_esc;
+
+            estadisticas.armadura = this.enemigos[indexTipoEnemigo].estadisticas.armadura + nivel * this.enemigos[indexTipoEnemigo].escalado.armadura_esc;
+            estadisticas.vitalidad = this.enemigos[indexTipoEnemigo].estadisticas.vitalidad + nivel * this.enemigos[indexTipoEnemigo].escalado.vitalidad_esc;
+            estadisticas.resistenciaMagica = this.enemigos[indexTipoEnemigo].estadisticas.resistenciaMagica + nivel * this.enemigos[indexTipoEnemigo].escalado.resistenciaMagica_esc;
+
+            //Calculo de la vida Máxima (ENEMIGO):
+            var armaduraMaxPercent = this.parametros.armaduraMax;
+            var armaduraMinPercent = this.parametros.armaduraMin;
+            var armMin = this.parametros.enemigos.base["armadura"]+ (nivel * this.parametros.enemigos.escalado["armadura"]);
+            var armMax = armMin + this.parametros.enemigos.baseRango + (nivel * this.parametros.enemigos.escaladoRango); 
+
+            //RANGOS VITALIDAD:
+            var vitMin = this.parametros.enemigos.base["vitalidad"]+ (nivel * this.parametros.enemigos.escalado["vitalidad"]);
+            var vitMax = vitMin + this.parametros.enemigos.baseRango + (nivel * this.parametros.enemigos.escaladoRango); 
+
+            var vidaBase = this.parametros.ratioVitalidadBase * vitMin;
+            var vidaAdicional = (vidaBase*(armaduraMinPercent-armaduraMaxPercent)*((estadisticas.vitalidad-vitMin)/(vitMax-vitMin)))/((armaduraMaxPercent-armaduraMinPercent)*(((estadisticas.vitalidad-vitMin)/(vitMax-vitMin))+((estadisticas.armadura-armMin)-(armMax-armMin)))+armaduraMinPercent-1);
+
+            
+            estadisticas.vidaMaxima = vidaBase+vidaAdicional;
+
+            //Copiar estadisticas en RENDER:
+            this.sesion.render.enemigos[indexCaster].estadisticas = estadisticas;
  		}	
+
  	}
 
 	/* 	----------------------------------------------
@@ -1548,7 +1597,10 @@ export class MazmorraService implements OnInit{
 	/* 	----------------------------------------------
 			GESTION DE HECHIZOS
  	----------------------------------------------*/
- 	//Verifica si el hechizo se puede comenzar:
+
+    //------------------------
+    // 1) VERIFICAR CASTEO
+    //-----------------------
  	verificarCasteo(numHechizo:number):boolean{
  		var resultado= true;
 
@@ -1613,7 +1665,9 @@ export class MazmorraService implements OnInit{
  		return resultado
  	}
 
- 	//Lanzar Hechizo sobre los objetivos selecionados (Genera una aplización de hechizo por objetivo):
+    //------------------------
+    // 2) LANZAR HECHIZO 
+    //-----------------------
  	lanzarHechizo():void{
 
  		//Reinicia el contador de lanzamiento de hechizo:
@@ -1628,10 +1682,18 @@ export class MazmorraService implements OnInit{
  		var caster;
  		var esHeroe = false;
  		var esEnemigo = false;
+
+ 		var tipoCaster: "heroe"|"enemigo";
+ 		var indexCaster = -1;
+        var indexHechizo = -1;
+
  		for(var i=0; i <this.sesion.render.heroes.length; i++){
  			if(this.sesion.render.heroes[i].turno){
  				esHeroe= true;
+                indexCaster = i;
+                tipoCaster = "heroe";
  				caster= this.sesion.render.heroes[i];
+                indexHechizo = this.hechizos.findIndex(j => j.id==this.sesion.render.estadoControl.hechizo);
   				break;
  			}
  		}
@@ -1639,114 +1701,66 @@ export class MazmorraService implements OnInit{
  		for(var i=0; i <this.sesion.render.enemigos.length; i++){
  			if(this.sesion.render.enemigos[i].turno){
  				esEnemigo= true;
+                indexCaster = i;
+                tipoCaster = "enemigo";
  				caster= this.sesion.render.enemigos[i];
+                indexHechizo = this.hechizos.findIndex(j => j.id==this.sesion.render.enemigos[indexCaster].hechizos_id);
  				break;
  			}
  		}
- 		console.log(caster);
+
  		//------------------------------------
- 		//Declara las propiedades del hechizo:
+ 		// 1) Obtiene propiedades del Hechizo:
  		//------------------------------------
- 		var hechizo = {
- 				id: 0,
- 				nombre: "null",
- 				tipo: "0",
- 				recurso: 0,
- 				acciones: 0,
- 				poder: 0,
- 				dano_dir: 0,
- 				heal_dir: 0,
- 				escudo_dir: 0,
-				buff_id: 0,
-				funcion: 0,
-				objetivo: 0,
-				animacion: 0,
-				hechizo_encadenado_id: 0
+ 		var hechizo={
+ 				id: this.hechizos[indexHechizo].id,
+ 				nombre: this.hechizos[indexHechizo].nombre,
+ 				tipo: this.hechizos[indexHechizo].tipo_daño,
+ 				recurso: this.hechizos[indexHechizo].recurso,
+ 				poder: this.hechizos[indexHechizo].poder,
+ 				acciones: this.hechizos[indexHechizo].acciones,
+
+ 				daño_dir: this.hechizos[indexHechizo].daño_dir,
+ 				daño_esc_AD: this.hechizos[indexHechizo].daño_esc_AD,
+ 				daño_esc_AP: this.hechizos[indexHechizo].daño_esc_AP,
+ 				heal_dir: this.hechizos[indexHechizo].heal_dir,
+ 				heal_esc_AD: this.hechizos[indexHechizo].heal_esc_AD,
+ 				heal_esc_AP: this.hechizos[indexHechizo].heal_esc_AP,
+ 				escudo_dir: this.hechizos[indexHechizo].escudo_dir,
+ 				escudo_esc_AD: this.hechizos[indexHechizo].escudo_esc_AD,
+ 				escudo_esc_AP: this.hechizos[indexHechizo].escudo_esc_AP,
+ 				mod_amenaza: this.hechizos[indexHechizo].mod_amenaza,
+				buff_id: this.hechizos[indexHechizo].buff_id,
+				funcion: this.hechizos[indexHechizo].funcion,
+				objetivo: this.hechizos[indexHechizo].objetivo,
+				animacion: this.hechizos[indexHechizo].animacion_id,
+                tipoCaster: tipoCaster,
+                nivelCaster: this.sesion.jugadores[indexCaster].personaje.nivel,
+                indexCaster: indexCaster,
+				triggerHechizo: this.hechizos[indexHechizo].triggerHechizo,
+				hechizo_encadenado_id: this.hechizos[indexHechizo].hech_encadenado_id
  		}
 
- 		//Si el caster es heroe:
- 		if(esHeroe){
- 			hechizo={
- 				id: this.hechizos[this.sesion.render.estadoControl.hechizo-1].id,
- 				nombre: this.hechizos[this.sesion.render.estadoControl.hechizo-1].nombre,
- 				tipo: this.hechizos[this.sesion.render.estadoControl.hechizo-1].tipo_daño,
- 				recurso: this.hechizos[this.sesion.render.estadoControl.hechizo-1].recurso,
- 				poder: this.hechizos[this.sesion.render.estadoControl.hechizo-1].poder,
- 				acciones: this.hechizos[this.sesion.render.estadoControl.hechizo-1].acciones,
- 				dano_dir: this.hechizos[this.sesion.render.estadoControl.hechizo-1].daño_dir,
- 				heal_dir: this.hechizos[this.sesion.render.estadoControl.hechizo-1].heal_dir,
- 				escudo_dir: this.hechizos[this.sesion.render.estadoControl.hechizo-1].escudo_dir,
-				buff_id: this.hechizos[this.sesion.render.estadoControl.hechizo-1].buff_id,
-				funcion: this.hechizos[this.sesion.render.estadoControl.hechizo-1].funcion,
-				objetivo: this.hechizos[this.sesion.render.estadoControl.hechizo-1].objetivo,
-				animacion: this.hechizos[this.sesion.render.estadoControl.hechizo-1].animacion_id,
-				hechizo_encadenado_id: this.hechizos[this.sesion.render.estadoControl.hechizo-1].hech_encadenado_id
- 			}
-
- 		console.log("Lanzando hechizo:");
- 		console.log(hechizo);
  		console.log("RNG: ");
  		console.log(this.sesion.render.estadoControl.rng);
 
- 		//Si el caster es enemigo:
- 		}else if(esEnemigo){
- 			hechizo={
- 				id: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).id,
- 				nombre: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).nombre,
- 				tipo: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).tipo,
- 				recurso:this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).recurso,
- 				poder: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).poder,
- 				acciones: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).acciones,
- 				dano_dir: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).daño_dir,
- 				heal_dir: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).heal_dir,
- 				escudo_dir: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).escudo_dir,
-				buff_id: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).buff_id,
-				funcion: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).funcion,
-				objetivo: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).objetivo,
-				animacion: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).animacion_id,
-				hechizo_encadenado_id: this.enemigos.enemigos_hech.find(i => i.id==caster.hechizos).hechizo_encadenado_id
- 			}
- 			
  		console.log("Lanzando hechizo:");
  		console.log(hechizo);
- 		
-
- 		}else{
- 			console.log("Error: Caster no identificado");
- 			return;
- 		}
 
  		//---------------------------------------------------------------
- 		// Consumo del recurso del hechizo:
+ 		//  2) Verifica y consume recurso del hechizo:
  		//----------------------------------------------------------------
-
  		if(esHeroe){
- 			this.sesion.render.heroes.find(i => i.nombre == caster.nombre).recurso -= hechizo.recurso;
- 			this.sesion.render.heroes.find(i => i.nombre == caster.nombre).recursoEspecial -= hechizo.poder;
+            //Verifica si hay suficiente:
  			this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia -= hechizo.recurso;
 
  			if(caster.recurso>100){
  				caster.recurso= 100;
  			}
-
  		}
 
  		//---------------------------------------------------------------
- 		// Consumo de acciones:
- 		//---------------------------------------------------------------
-
- 		if(esHeroe){
- 			this.sesion.render.heroes.find(i => i.nombre == caster.nombre).acciones -= hechizo.acciones;
- 		}
-
- 		//---------------------------------------------------------------
- 		// Se aplican modificadores al hechizo: (Modificacion por stats)
- 		//----------------------------------------------------------------
-
- 		//hechizo = this.aplicarModificadoresHechizo(hechizo);
-
- 		//---------------------------------------------------------------
- 		// Iteramos efectos en los objetivos:
+ 		// Obtenemos los Objetivos del Hechizo:
  		//----------------------------------------------------------------
  		var objetivosEnemigos=[];
  		var objetivosHeroes=[];
@@ -1800,510 +1814,122 @@ export class MazmorraService implements OnInit{
  		this.loggerService.log("--- HECHIZO ("+hechizo.nombre+")--- ","lightblue");
 
  		//Aplicamos el hechizo en los objetivos:
- 		this.aplicarHechizos(hechizo,objetivosEnemigos,objetivosHeroes);
+ 		this.aplicarHechizos(tipoCaster, indexCaster, hechizo, objetivosEnemigos, objetivosHeroes);
+
  	}
 
  	//Aplica de forma iterativa el hechizo sobre los objetivos:
- 	aplicarHechizos(hechizo: any, objetivoEnemigos: any, objetivoHeroes: any):void{
+    //------------------------
+    // 3) APLICAR HECHIZO 
+    //-----------------------
+ 	aplicarHechizos(tipoCaster: "heroe"|"enemigo",indexCaster:number,hechizo: any, objetivoEnemigos: any, objetivoHeroes: any):void{
  		
- 		//Añadir cuanta aplicacion hechizo:
+ 		//Añadir cuenta aplicacion hechizo:
  		this.cuentaAplicacionHechizo++;
+
+ 		//Condicion de desbloqueo (No encontrar hechizos por aplicar):
+ 		var desbloqueo=true;
 
  		//Guarda una copia del hechizo original para relanzamientos:
  		var hechizoOriginal= Object.assign({},hechizo);
 
  		console.log("Aplicando Hechizo: "+hechizo.nombre);
- 
- 		//Condicion de desbloqueo (No encontrar hechizos por aplicar):
- 		var desbloqueo=true;
 
- 		//Detecta quien es el caster (Heroes/Enemigo):
- 		var esHeroe = false;
- 		var esEnemigo = false;
- 		var caster;
- 		var casterIndice;
- 		var parametroSeleccionado;
-
- 		for(var i=0; i <this.sesion.render.heroes.length; i++){
- 			if(this.sesion.render.heroes[i].turno){
- 				esHeroe= true;
- 				caster= this.sesion.render.heroes[i];
- 				casterIndice= i;
-  				break;
- 			}
- 		}
-
- 		for(var i=0; i <this.sesion.render.enemigos.length; i++){
- 			if(this.sesion.render.enemigos[i].turno){
- 				esEnemigo= true;
- 				caster= this.sesion.render.enemigos[i];
- 				casterIndice= i;
- 				break;
- 			}
- 		}
-
- 		//HECHIZO SOBRE ENEMIGO:
-
- 		//Efectua hechizo sobre un enemigo:
+        //Identificacion de Objetivo:
+        var tipoObjetivo;
+        var indexObjetivo;
+        var objetivo;
+        var caster = tipoCaster+"s";
+        
  		if(objetivoEnemigos.length>0){
+            tipoObjetivo = "enemigo";
+            objetivo = "enemigos";
+            indexObjetivo= objetivoEnemigos.slice(-1);
+        }else if(objetivoEnemigos.length>0){
+            tipoObjetivo = "heroe";
+            objetivo = "heroes";
+            indexObjetivo= objetivoHeroes.slice(-1);
+        }
 
- 			//Logger:
- 			this.loggerService.log("*** "+caster.nombre+ " --> "+this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].nombre,"pink");
- 			if(hechizo.buff_id!=0){
- 				this.loggerService.log("Aplicando BUFF/DEBUFF (ID: "+hechizo.buff_id+")...","yellow");
- 			}
+        //-----------------------------------------
+        // (RECURSIVO) EJECUCIÓN SOBRE UN OBJETIVO 
+        //-----------------------------------------
+        if(objetivo){
 
- 			//Realiza animacion:
- 			this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].animacion= this.animaciones.find(i => i.id== hechizo.animacion);
+        //LOGGER:
+ 		this.loggerService.log("*** "+this.sesion.render[caster][indexCaster].nombre+ " --> "+this.sesion.render[objetivo][indexObjetivo].nombre,"pink");
 
-			var objetivoProvisional = objetivoEnemigos[objetivoEnemigos.length-1];
-			this.sesion.render.enemigos[objetivoProvisional].mostrarAnimacion= true;
-			setTimeout(()=>{  
-				this.sesion.render.enemigos[objetivoProvisional].mostrarAnimacion= false;
-			}, 1000*(this.sesion.render.enemigos[objetivoProvisional].animacion.duracion));	
+        //---------------------------
+        // 1)  INICIA ANIMACION:
+        //---------------------------
+        var animacion = this.animaciones.find(i => i.id== hechizo.animacion);
+        if(typeof animacion == "undefined"){
+            console.warn("No se puede reproducir la animación porque no se encuentra el id asociado")
+        }else{ 
 
+            //Activa Animacion:
+            this.sesion.render[objetivo][indexObjetivo].animacion= animacion;
+            this.sesion.render[objetivo][indexObjetivo].mostrarAnimacion= true;
 
- 			//Modificar de potencia del hechizo de salida:
- 			if(esHeroe){
- 				hechizo= this.modificacionHechizoSalidaHeroe(caster,hechizo);
- 			}
- 			if(esEnemigo){
- 				hechizo= this.modificacionHechizoSalidaEnemigo(caster,hechizo);
- 			}
+            //Desactivar Animacion:
+            var indexObjetivoProvisional = indexObjetivo;
+            var objetivoProvisional = objetivo;
+            setTimeout(()=>{  
+                this.sesion.render[objetivoProvisional][indexObjetivoProvisional].mostrarAnimacion= false;
+            }, 1000*(this.sesion.render[objetivo][indexObjetivoProvisional].animacion.duracion));	
+        }//Fin Animacion
 
- 			//Modificación de los atributos
- 			hechizo = this.modificacionHechizoEntradaEnemigo(objetivoEnemigos[objetivoEnemigos.length-1],hechizo);
+        //---------------------------
+        // 2) MODIFICACIÓN DE SALIDA:
+        //---------------------------
+        hechizo =  this.modificacionHechizoSalida(tipoCaster,indexCaster,hechizo)
 
- 			//Aplicacion de Buffos:
- 			if(hechizo.buff_id!=0){
- 				if(esHeroe){
- 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.push({
- 						id: hechizo.buff_id,
-						duracion: this.buff.find(i => i.id==hechizo.buff_id).duracion,
-						tipo: this.buff.find(i => i.id==hechizo.buff_id).tipo,
-						tipo2: this.buff.find(i => i.id==hechizo.buff_id).tipo2,
-						stat_inc: this.buff.find(i => i.id==hechizo.buff_id).stat_inc,
-						dano_t: this.buff.find(i => i.id==hechizo.buff_id).daño_t,
-						heal_t: this.buff.find(i => i.id==hechizo.buff_id).heal_t,
-						escudo_t: this.buff.find(i => i.id==hechizo.buff_id).escudo_t,
-						icon_id: this.buff.find(i => i.id==hechizo.buff_id).imagen_id,
-						rng: this.sesion.render.estadoControl.rng,
-						origen: "0"
-	 				});
-	 			}else{
-	 				this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.push({
- 						id: hechizo.buff_id,
-						duracion: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).duracion,
-						tipo: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo,
-						tipo2: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo2,
-						stat_inc: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).stat_inc,
-						dano_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).daño_t,
-						heal_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).heal_t,
-						escudo_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).escudo_t,
-						icon_id: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).icon_id,
-						rng: this.sesion.render.estadoControl.rng,
-						origen: "0"
-	 				});
-	 			}
- 				
+        //---------------------------
+        // 3) MODIFICACIÓN DE ENTRADA:
+        //---------------------------
+        hechizo = this.modificacionHechizoEntrada(tipoObjetivo,indexObjetivo,hechizo);
 
- 				//Asocia el origen del buffo:
- 				if(esHeroe){
- 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff[this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1].origen = "H"+casterIndice;
- 				}else if(esEnemigo){
- 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff[this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1].origen = "E"+casterIndice;
- 				}
- 				//Modificar de potencia del Buff segun el caster:
- 				if(esHeroe){
- 					this.modificacionBuffSalidaHeroeEnemigo(caster,objetivoEnemigos[objetivoEnemigos.length-1],this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1);
- 				}
- 				if(esEnemigo){
- 					this.modificacionBuffSalidaEnemigoEnemigo(caster,objetivoEnemigos[objetivoEnemigos.length-1],this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1);
- 				}
+        //-------------------------
+        // 4) ADD BUFF 
+        //-------------------------
+        var buff = this.addBuffHechizo(tipoCaster,indexObjetivo,hechizo);
+        this.sesion.render[objetivo][indexObjetivo].buff.push(buff)
 
- 				//Coloca efecto de stat increase:
- 				var ultimoBuff = this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff[this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1];
+        //-------------------------
+        // 5) PROCESADO FUNCIONES 
+        //-------------------------
+        this.ejecutarFuncionHechizo(hechizo.funcion,hechizo,objetivoEnemigos,objetivoHeroes);
 
- 				if(ultimoBuff.stat_inc!=0){
- 					var vectorInstrucciones = ultimoBuff.stat_inc.split("+");
- 					var primerTipoStat;
- 					var segundoTipoStat;
- 					var operador;
- 					var valorStat;
+        //-------------------------
+        // 6) APLICACION FINAL 
+        //-------------------------
+ 		this.aplicarHechizosFinal(tipoObjetivo,objetivoEnemigos[objetivoEnemigos.length-1],hechizo);
 
- 					for(var i=0; i <vectorInstrucciones.length;i++){
- 						console.log("Analizando la primera Instrucción: ");
- 						console.log(vectorInstrucciones[i]);
+        //---------------------------------------
+        // 7) ELIMINACION ELEMENTO LISTA OBJETIVO 
+        //---------------------------------------
+        switch(tipoObjetivo){
+            case "heroe":
+ 		        objetivoHeroes.splice(objetivoHeroes.length-1, 1);
+            break;
+            case "enemigo":
+ 		        objetivoEnemigos.splice(objetivoEnemigos.length-1, 1);
+            break;
+        }
 
- 						primerTipoStat= vectorInstrucciones[i].slice(0,2);
- 						operador=null;
- 						segundoTipoStat=null;
- 						valorStat= vectorInstrucciones[i].slice(2);
+        }//EJECUCIÓN SOBRE UN OBJETIVO 
 
- 						if(vectorInstrucciones[i].slice(-1)=="%"){
- 							operador="%";
- 							valorStat= vectorInstrucciones[i].slice(2,-1);
- 						}
-
- 						if(vectorInstrucciones[i].slice(-1)=="/"){
- 							operador="/";
- 							segundoTipoStat= vectorInstrucciones[i].slice(-3,-1);
- 							valorStat= vectorInstrucciones[i].slice(2,-3);
- 						}
-
- 						var estadisticasEnemigo= {
-	 						vidaTotal: (this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib),
-	 						vida: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida,
-	 						puntosVida: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida * (this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100,
-	 						vidaFaltante: (this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)-( this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida * (this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100),
-	 						vitalidad: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["vitalidad"],
-	 						fuerza: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["fuerza"],
-	 						intelecto: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["intelecto"],
-	 						agilidad: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["agilidad"],
-	 						precision: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["precision"],
-	 						ferocidad: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["ferocidad"],
-	 						armadura: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["armadura"],
-	 						general: this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["general"],
-	 						agro: 0,
-	 					}
-	 					
-
-	 					for(var j=0; j <2;j++){
-	 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
-	 						switch(parametroSeleccionado){
-		 						case "VT":
-		 							if(j==0){primerTipoStat= "vitalidad"}else{segundoTipoStat= "vitalidad"};
-		 						break;
-		 						case "FU":
-		 							if(j==0){primerTipoStat= "fuerza"}else{segundoTipoStat= "fuerza"};
-		 						break;
-		 						case "IN":
-		 							if(j==0){primerTipoStat= "intelecto"}else{segundoTipoStat= "fuerza"};
-		 						break;
-		 						case "GI":
-		 							if(j==0){primerTipoStat= "agilidad"}else{segundoTipoStat= "agilidad"};
-		 						break;
-		 						case "PR":
-		 							if(j==0){primerTipoStat= "precision"}else{segundoTipoStat= "precision"};
-		 						break;
-		 						case "FE":
-		 							if(j==0){primerTipoStat= "ferocidad"}else{segundoTipoStat= "ferocidad"};
-		 						break;
-		 						case "AR":
-		 							if(j==0){primerTipoStat= "armadura"}else{segundoTipoStat= "armadura"};
-		 						break;
-		 						case "VI":
-		 							if(j==0){primerTipoStat= "puntosVida"}else{segundoTipoStat= "puntosVida"};
-		 						break;
-		 						case "MN":
-		 							if(j==0){primerTipoStat= "recurso"}else{segundoTipoStat= "recurso"};
-		 						break;
-		 						case "AG":
-		 							if(j==0){primerTipoStat= "agro"}else{segundoTipoStat= "agro"};
-		 						break;
-		 						case "PO":
-		 							if(j==0){primerTipoStat= "poder"}else{segundoTipoStat= "poder"};
-		 						break;
-		 						case "GE":
-		 							if(j==0){primerTipoStat= "general"}else{segundoTipoStat= "general"};
-		 						break;
-		 						case "VF":
-		 							if(j==0){primerTipoStat= "vidaFaltante"}else{segundoTipoStat= "vidaFaltante"};
-		 						break;
-		 						case "MF":
-		 							if(j==0){primerTipoStat= "manaFaltante"}else{segundoTipoStat= "manaFaltante"};
-		 						break;
-		 						case "TH":
-		 							if(j==0){primerTipoStat= "vidaTotal"}else{segundoTipoStat= "vidaTotal"};
-		 						break;
-		 						case "TM":
-		 							if(j==0){primerTipoStat= "manaTotal"}else{segundoTipoStat= "manaTotal"};
-		 						break;
-		 					}
-	 					}
-
-	 					//Modificar valores:
-
-	 					//Operador Nulo
-	 					if(operador==null){
-	 						estadisticasEnemigo[primerTipoStat] += parseFloat(valorStat);
-	 					}
-	
-	 					//Operador %
-	 					if(operador=="%"){
-	 						estadisticasEnemigo[primerTipoStat] += estadisticasEnemigo[primerTipoStat]*parseFloat(valorStat);
-	 					}
-	
-	 					//Operador /
-	 					if(operador=="/"){
-	 						estadisticasEnemigo[primerTipoStat] += estadisticasEnemigo[segundoTipoStat]*parseFloat(valorStat);
-	 					}
-
-	 					//Devolver los valores modificados:
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["vitalidad"] = estadisticasEnemigo.vitalidad;
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["fuerza"] = estadisticasEnemigo.fuerza;
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["intelecto"] = estadisticasEnemigo.intelecto;
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["agilidad"] = estadisticasEnemigo.agilidad;
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["precision"] = estadisticasEnemigo.precision;
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["ferocidad"] = estadisticasEnemigo.ferocidad;
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["armadura"] = estadisticasEnemigo.armadura;
-	 					this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].estadisticas["general"] = estadisticasEnemigo.general;
-	 					if(primerTipoStat=="puntosVida"){
-	 						this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].vida = estadisticasEnemigo.puntosVida/estadisticasEnemigo.vidaTotal*100;
-	 					}
-	 					
-	 				}
- 				}
-
- 				//Aplica modificador de ENTRADA del buffo sobre el ENEMIGO:
- 				this.modificacionBuffEntradaEnemigo(objetivoEnemigos[objetivoEnemigos.length-1],this.sesion.render.enemigos[objetivoEnemigos[objetivoEnemigos.length-1]].buff.length-1);
- 			}
-
- 			//Ejecutar funciones de hechizo:
- 			this.ejecutarFuncionHechizo(hechizo.funcion,hechizo,objetivoEnemigos,objetivoHeroes);
-
- 			//Aplicar hechizo final al objetivo:
- 			this.aplicarHechizosFinalEnemigo(objetivoEnemigos[objetivoEnemigos.length-1],hechizo,caster);
-
- 			//Eliminar objetivo del array:
- 			objetivoEnemigos.splice(objetivoEnemigos.length-1, 1);
-
- 		//HECHIZO SOBRE HEROE:
-
- 		//Efectua hechizos sobre un Heroe:
- 		}else if(objetivoHeroes.length>0){
-
- 			//Logger:
- 			this.loggerService.log("*** "+caster.nombre+ " --> "+this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].nombre,"pink");
- 			if(hechizo.buff_id!=0){
- 				this.loggerService.log("Aplicando BUFF/DEBUFF (ID: "+hechizo.buff_id+")...","yellow");
- 			}
- 			//Realiza animacion:
- 			this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].animacion= hechizo.animacion;
-
- 			//Modificar de potencia del hechizo de salida:
- 			if(esHeroe){
- 				this.modificacionHechizoSalidaHeroe(caster,hechizo);
- 			}
- 			if(esEnemigo){
- 				this.modificacionHechizoSalidaEnemigo(caster,hechizo);
- 			}
-
- 			//Modificación de potencia del hechizo de Entrada:
- 			hechizo= this.modificacionHechizoEntradaHeroe(objetivoHeroes[objetivoHeroes.length-1],hechizo);
-
- 			//Aplicacion de Buffos:
- 			if(hechizo.buff_id!=0){
-
- 				if(esHeroe){
- 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.push({
- 						id: hechizo.buff_id,
-						duracion: this.buff.find(i => i.id==hechizo.buff_id).duracion,
-						tipo: this.buff.find(i => i.id==hechizo.buff_id).tipo,
-						tipo2: this.buff.find(i => i.id==hechizo.buff_id).tipo2,
-						stat_inc: this.buff.find(i => i.id==hechizo.buff_id).stat_inc,
-						dano_t: this.buff.find(i => i.id==hechizo.buff_id).daño_t,
-						heal_t: this.buff.find(i => i.id==hechizo.buff_id).heal_t,
-						escudo_t: this.buff.find(i => i.id==hechizo.buff_id).escudo_t,
-						icon_id: this.buff.find(i => i.id==hechizo.buff_id).icon_id,
-						rng: this.sesion.render.estadoControl.rng,
-						origen: "0"
-	 				});
-	 			}else{
-	 				this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.push({
- 						id: hechizo.buff_id,
-						duracion: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).duracion,
-						tipo: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo,
-						tipo2: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).tipo2,
-						stat_inc: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).stat_inc,
-						dano_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).daño_t,
-						heal_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).heal_t,
-						escudo_t: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).escudo_t,
-						icon_id: this.enemigos.enemigos_buffos.find(i => i.id==hechizo.buff_id).icon_id,
-						rng: this.sesion.render.estadoControl.rng,
-						origen: "0"
-	 				});
-	 			}
-
-
- 				//Asocia el origen del buffo:
- 				if(esHeroe){
- 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff[this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1].origen = "H"+casterIndice;
- 				}else if(esEnemigo){
- 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff[this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1].origen = "E"+casterIndice;
- 				}
-
- 				//Modificar de potencia del Buff segun el caster:
- 				if(esHeroe){
- 					this.modificacionBuffSalidaHeroeHeroe(caster,objetivoHeroes[objetivoHeroes.length-1],this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1);
- 				}
- 				if(esEnemigo){
- 					this.modificacionBuffSalidaEnemigoHeroe(caster,objetivoHeroes[objetivoHeroes.length-1],this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1);
- 				}
-
- 				//Coloca efecto de stat increase:
- 				var ultimoBuff = this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff[this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1];
- 				if(ultimoBuff.stat_inc!=0){
- 					var vectorInstrucciones = ultimoBuff.stat_inc.split("+");
- 					var primerTipoStat;
- 					var segundoTipoStat;
- 					var operador;
- 					var valorStat;
-
- 					for(var i=0; i <vectorInstrucciones.length;i++){
- 						console.log("Analizando la primera Instrucción: ");
- 						console.log(vectorInstrucciones[i]);
-
- 						primerTipoStat= vectorInstrucciones[i].slice(0,2);
- 						operador=null;
- 						segundoTipoStat=null;
- 						valorStat= vectorInstrucciones[i].slice(2);
-
- 						if(vectorInstrucciones[i].slice(-1)=="%"){
- 							operador="%";
- 							valorStat= vectorInstrucciones[i].slice(2,-1);
- 						}
-
- 						if(vectorInstrucciones[i].slice(-1)=="/"){
- 							operador="/";
- 							segundoTipoStat= vectorInstrucciones[i].slice(-3,-1);
- 							valorStat= vectorInstrucciones[i].slice(2,-3);
- 						}
-
- 						var estadisticasHeroe= {
-	 						vidaTotal: (this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib),
-	 						manaTotal: 100,
-	 						vida: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida,
-	 						puntosVida: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida * (this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100,
-	 						mana: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso,
-	 						puntosMana: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso,
-	 						vidaFaltante: (this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)-( this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida * (this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas.vitalidad*this.parametros.atributos[0].vitalidad_atrib)/100),
-	 						manaFaltante: 100 - this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso,
-	 						vitalidad: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["vitalidad"],
-	 						fuerza: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["fuerza"],
-	 						intelecto: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["intelecto"],
-	 						agilidad: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["agilidad"],
-	 						precision: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["precision"],
-	 						ferocidad: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["ferocidad"],
-	 						armadura: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["armadura"],
-	 						general: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["general"],
-	 						poder: this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].recursoEspecial,
-	 						agro: 0,
-	 					}
-	 					
-	 					for(var j=0; j <2;j++){
-	 						if(j==0){parametroSeleccionado= primerTipoStat}else{parametroSeleccionado= segundoTipoStat};
-	 						switch(parametroSeleccionado){
-		 						case "VT":
-		 							if(j==0){primerTipoStat= "vitalidad"}else{segundoTipoStat= "vitalidad"};
-		 						break;
-		 						case "FU":
-		 							if(j==0){primerTipoStat= "fuerza"}else{segundoTipoStat= "fuerza"};
-		 						break;
-		 						case "IN":
-		 							if(j==0){primerTipoStat= "intelecto"}else{segundoTipoStat= "fuerza"};
-		 						break;
-		 						case "GI":
-		 							if(j==0){primerTipoStat= "agilidad"}else{segundoTipoStat= "agilidad"};
-		 						break;
-		 						case "PR":
-		 							if(j==0){primerTipoStat= "precision"}else{segundoTipoStat= "precision"};
-		 						break;
-		 						case "FE":
-		 							if(j==0){primerTipoStat= "ferocidad"}else{segundoTipoStat= "ferocidad"};
-		 						break;
-		 						case "AR":
-		 							if(j==0){primerTipoStat= "armadura"}else{segundoTipoStat= "armadura"};
-		 						break;
-		 						case "VI":
-		 							if(j==0){primerTipoStat= "puntosVida"}else{segundoTipoStat= "puntosVida"};
-		 						break;
-		 						case "MN":
-		 							if(j==0){primerTipoStat= "recurso"}else{segundoTipoStat= "recurso"};
-		 						break;
-		 						case "AG":
-		 							if(j==0){primerTipoStat= "agro"}else{segundoTipoStat= "agro"};
-		 						break;
-		 						case "PO":
-		 							if(j==0){primerTipoStat= "poder"}else{segundoTipoStat= "poder"};
-		 						break;
-		 						case "GE":
-		 							if(j==0){primerTipoStat= "general"}else{segundoTipoStat= "general"};
-		 						break;
-		 						case "VF":
-		 							if(j==0){primerTipoStat= "vidaFaltante"}else{segundoTipoStat= "vidaFaltante"};
-		 						break;
-		 						case "MF":
-		 							if(j==0){primerTipoStat= "manaFaltante"}else{segundoTipoStat= "manaFaltante"};
-		 						break;
-		 						case "TH":
-		 							if(j==0){primerTipoStat= "vidaTotal"}else{segundoTipoStat= "vidaTotal"};
-		 						break;
-		 						case "TM":
-		 							if(j==0){primerTipoStat= "manaTotal"}else{segundoTipoStat= "manaTotal"};
-		 						break;
-		 					}
-	 					}
-
-	 					//Modificar valores:
-
-	 					//Operador Nulo
-	 					if(operador==null){
-	 						estadisticasHeroe[primerTipoStat] += parseFloat(valorStat);
-	 					}
-	
-	 					//Operador %
-	 					if(operador=="%"){
-	 						estadisticasHeroe[primerTipoStat] += estadisticasHeroe[primerTipoStat]*parseFloat(valorStat);
-	 					}
-	
-	 					//Operador /
-	 					if(operador=="/"){
-	 						estadisticasHeroe[primerTipoStat] += estadisticasHeroe[segundoTipoStat]*parseFloat(valorStat);
-	 					}
-
-	 					//Devolver los valores modificados:
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["vitalidad"] = estadisticasHeroe.vitalidad;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["fuerza"] = estadisticasHeroe.fuerza;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["intelecto"] = estadisticasHeroe.intelecto;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["agilidad"] = estadisticasHeroe.agilidad;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["precision"] = estadisticasHeroe.precision;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["ferocidad"] = estadisticasHeroe.ferocidad;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["armadura"] = estadisticasHeroe.armadura;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].estadisticas["general"] = estadisticasHeroe.general;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].recurso = estadisticasHeroe.mana;
-	 					this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].recursoEspecial = estadisticasHeroe.poder;
-	 					if(primerTipoStat=="puntosVida"){
-	 						this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].vida = estadisticasHeroe.puntosVida/estadisticasHeroe.vidaTotal*100;
-	 					}
-	 					
-	 				}
- 				}
- 		
- 				//Aplica modificador de ENTRADA del buffo sobre el HEROE:
- 				this.modificacionBuffEntradaHeroe(objetivoHeroes[objetivoHeroes.length-1],this.sesion.render.heroes[objetivoHeroes[objetivoHeroes.length-1]].buff.length-1);
- 			}
-
- 			//Ejecutar funciones de hechizo:
- 			this.ejecutarFuncionHechizo(hechizo.funcion,hechizo,objetivoEnemigos,objetivoHeroes);
-
- 			//Aplicar hechizo final al objetivo:
- 			this.aplicarHechizosFinalHeroe(objetivoHeroes[objetivoHeroes.length-1],hechizo);
-
- 			//Eliminar objetivo del array:
- 			objetivoHeroes.splice(objetivoHeroes.length-1, 1);
- 		}
- 		console.log("HECHIZOO");
+ 		console.log("HECHIZO LANZADO:");
  		console.log(hechizo);
 
  		//Verifica si quedan objetivos por efectuar y relanza el hechizo:
  		if(objetivoEnemigos.length>0){
  			setTimeout(()=>{    
-      			this.aplicarHechizos(hechizoOriginal, objetivoEnemigos, objetivoHeroes);
+      			this.aplicarHechizos(tipoCaster, indexCaster, hechizoOriginal, objetivoEnemigos, objetivoHeroes);
  			}, this.velocidadHechizo);
  		}else if(objetivoHeroes.length>0){
  			setTimeout(()=>{    
-      			this.aplicarHechizos(hechizoOriginal, objetivoEnemigos, objetivoHeroes);
+      			this.aplicarHechizos(tipoCaster, indexCaster, hechizoOriginal, objetivoEnemigos, objetivoHeroes);
  			}, this.velocidadHechizo);
  		}else{
  			setTimeout(()=>{
@@ -2331,240 +1957,252 @@ export class MazmorraService implements OnInit{
  			}, this.velocidadHechizo);
  			return;
  		}
- 	}
+ 	} //FIN APLICAT HECHIZOS
 
- 	//Aplica modificaciones de SALIDA a los efectos de HECHIZOS casteados por HEROES:
- 	modificacionHechizoSalidaHeroe(caster,hechizo):any{
+    //------------------------
+    // MODIFICACIONES SALIDA
+    //-----------------------
+    modificacionHechizoSalida(tipoCaster:"enemigo"|"heroe",indexCaster:number,hechizo:any):any{
 
- 		//Si es tipo FISICO:
- 		if(hechizo.tipo=="F"){
- 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza) * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza) * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza) * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 		}
+        if(tipoCaster!="heroe" && tipoCaster!="enemigo"){console.error("tipoCaster no valido: "+tipoCaster);return}
 
- 		//Si es tipo MAGICO:
-		if(hechizo.tipo=="M"){
- 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto) * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto)  * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto)  * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 		}
+        //CREA DATOS DE SALIDA:
+        hechizo["daño_salida"]= 0;
+        hechizo["heal_salida"]= 0;
+        hechizo["escudo_salida"]= 0;
 
- 		//Si es tipo DISTANCIA:
- 		if(hechizo.tipo=="D"){
- 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad)  * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad)  * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad)  * this.evaluarRNG(this.sesion.render.estadoControl.rng);
- 		}
-
- 		//Logger:
- 		this.loggerService.log("------ SALIDA ------- ","teal");
- 		if(hechizo.dano_dir>0){
- 			this.loggerService.log("-----> Daño: "+ hechizo.dano_dir,"orangered");
- 		}
- 		if(hechizo.heal_dir>0){
- 			this.loggerService.log("-----> Heal: "+hechizo.heal_dir,"lawngreen");
- 		}
- 		if(hechizo.escudo_dir>0){
- 			this.loggerService.log("-----> Escudo: "+hechizo.escudo_dir);
- 		}
- 		return hechizo;
- 	}
-
- 	//Aplica modificaciones de SALIDA a los efectos de HECHIZOS casteados por ENEMIGOS:
- 	modificacionHechizoSalidaEnemigo(caster,hechizo):any{
- 		console.log(hechizo);
- 		//Si es tipo FISICO:
- 		if(hechizo.tipo=="F"){
- 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
- 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
- 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*caster.estadisticas.fuerza);
- 		}
-
- 		//Si es tipo MAGICO:
-		if(hechizo.tipo=="M"){
- 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
- 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
- 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*caster.estadisticas.intelecto);
- 		}
-
- 		//Si es tipo DISTANCIA:
- 		if(hechizo.tipo=="D"){
- 			hechizo.dano_dir = hechizo.dano_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
- 			hechizo.heal_dir = hechizo.heal_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
- 			hechizo.escudo_dir = hechizo.escudo_dir*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*caster.estadisticas.agilidad);
- 		}
+        //Modificaciones por tipoCaster:
+        switch(tipoCaster){
+            case "heroe":
+                hechizo["daño_salida"]= (hechizo.daño_dir*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (hechizo.daño_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(hechizo.daño_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
+                hechizo["heal_salida"]= (hechizo.heal_dir*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (hechizo.heal_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(hechizo.heal_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
+                hechizo["escudo_salida"]= (hechizo.escudo_dir*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (hechizo.escudo_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(hechizo.escudo_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
+                break;
+            case "enemigo":
+                hechizo["daño_salida"]= (hechizo.daño_dir*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (hechizo.daño_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(hechizo.daño_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
+                hechizo["heal_salida"]= (hechizo.heal_dir*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (hechizo.heal_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(hechizo.heal_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
+                hechizo["escudo_salida"]= (hechizo.escudo_dir*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (hechizo.escudo_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(hechizo.escudo_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
+                break;
+        }
 
  		//Logger:
  		this.loggerService.log("------ SALIDA ------- ","teal");
- 		if(hechizo.dano_dir>0){
- 			this.loggerService.log("-----> Daño: "+ hechizo.dano_dir,"orangered");
+ 		if(hechizo.daño_salida>0){
+ 			this.loggerService.log("-----> Daño: "+ hechizo["daño_salida"],"orangered");
  		}
- 		if(hechizo.heal_dir>0){
- 			this.loggerService.log("-----> Heal: "+hechizo.heal_dir,"lawngreen");
+ 		if(hechizo.heal_salida>0){
+ 			this.loggerService.log("-----> Heal: "+hechizo["heal_salida"],"lawngreen");
  		}
- 		if(hechizo.escudo_dir>0){
- 			this.loggerService.log("-----> Escudo: "+hechizo.escudo_dir);
- 		}
-
- 		return hechizo;
- 	}
-
- 	//Aplica modificaciones de ENTRADA a los efectos de HECHIZOS sobre HEROES:
- 	modificacionHechizoEntradaHeroe(indiceHeroe,hechizo):any{
-
- 		//Aplicacion de armadura:
- 		hechizo.dano_dir= hechizo.dano_dir * (1-this.sesion.render.heroes[indiceHeroe].estadisticas.armadura/100);
- 		return hechizo;
- 	}
-
- 	//Aplica modificaciones de ENTRADA a los efectos de HECHIZOS sobre ENEMIGOS:
- 	modificacionHechizoEntradaEnemigo(indiceEnemigo,hechizo):any{
-
- 		//Aplicacion de armadura:
- 		hechizo.dano_dir= hechizo.dano_dir * (1-this.sesion.render.enemigos[indiceEnemigo].estadisticas.armadura/100);
-
- 		return hechizo;
- 	}
-
- 	//Aplicar hechizo resultante sobre el HEROE:
- 	aplicarHechizosFinalHeroe(indiceHeroe,hechizo):any{
- 		
- 		//Verificación del caster:
- 		var esHeroe = false;
- 		var indiceHeroeCaster = -1;
- 		for(var i=0; i <this.sesion.render.heroes.length; i++){
- 			if(this.sesion.render.heroes[i].turno){
- 				esHeroe= true;
- 				indiceHeroeCaster= i;
-  				break;
- 			}
+ 		if(hechizo.escudo_salida>0){
+ 			this.loggerService.log("-----> Escudo: "+hechizo["escudo_salida"]);
  		}
 
- 		//Calculo Vida Total del objetivo:
- 		var vidaTotalObjetivo = this.parametros.atributos[0].vitalidad_atrib*this.sesion.render.heroes[indiceHeroe].estadisticas.vitalidad;
+        return hechizo;
+    }
 
- 		//Añadir Escudos:
- 		this.sesion.render.heroes[indiceHeroe].escudo += (hechizo.escudo_dir/vidaTotalObjetivo*100);
+    modificacionBuffSalida(tipoCaster:string,indexCaster:number,buff:any):any{
 
- 		//Añadir Vida:
- 		this.sesion.render.heroes[indiceHeroe].vida += (hechizo.heal_dir/vidaTotalObjetivo*100);
+        //CREA DATOS DE SALIDA:
+        buff["daño_t_salida"]= 0;
+        buff["heal_t_salida"]= 0;
+        buff["escudo_t_salida"]= 0;
 
- 		//Efectuar Daños:
- 		this.sesion.render.heroes[indiceHeroe].vida -= (hechizo.dano_dir/vidaTotalObjetivo*100);
-
- 		//Redondeo de vida:
- 		this.sesion.render.heroes[indiceHeroe].vida = Math.round(this.sesion.render.heroes[indiceHeroe].vida * 100) / 100;
-
- 		//Mantener rango de vida:
- 		if(this.sesion.render.heroes[indiceHeroe].vida <=0){
- 			this.sesion.render.heroes[indiceHeroe].vida= 0;
- 		}
- 		if(this.sesion.render.heroes[indiceHeroe].vida>100){
- 			this.sesion.render.heroes[indiceHeroe].vida= 100;
- 		}
-		//Mantener rango de recurso:
- 		if(this.sesion.render.heroes[indiceHeroe].recurso>100){
- 			this.sesion.render.heroes[indiceHeroe].recurso= 100;
- 		}
-
- 		//Reset critico:
- 		this.sesion.render.estadoControl.critico=false;
+        //Modificaciones por tipoCaster:
+        switch(tipoCaster){
+            case "heroe":
+                buff["daño_t_salida"]= (buff.daño_t*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (buff.daño_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(buff.daño_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
+                buff["heal_t_salida"]= (buff.heal_t*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (buff.heal_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(buff.heal_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
+                buff["escudo_t_salida"]= (buff.escudo_t*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (buff.escudo_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(buff.escudo_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
+                break;
+            case "enemigo":
+                buff["daño_t_salida"]= (buff.daño_t*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (buff.daño_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(buff.daño_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
+                buff["heal_t_salida"]= (buff.heal_t*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (buff.heal_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(buff.heal_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
+                buff["escudo_t_salida"]= (buff.escudo_t*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (buff.escudo_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(buff.escudo_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
+                break;
+        }
 
  		//Logger:
- 		this.loggerService.log("------ ENTRADA------- ","teal");
- 		if(hechizo.dano_dir>0){
- 			this.loggerService.log("-----> Daño: "+ hechizo.dano_dir,"orangered");
+ 		this.loggerService.log("------ SALIDA ------- ","teal");
+ 		if(buff.daño_t_salida>0){
+ 			this.loggerService.log("-----> Daño: "+ buff["daño_t_salida"],"orangered");
  		}
- 		if(hechizo.heal_dir>0){
- 			this.loggerService.log("-----> Heal: "+hechizo.heal_dir,"lawngreen");
- 			if(esHeroe){
- 				this.sesion.render.estadisticas[indiceHeroeCaster].heal[this.sesion.render.estadisticas[indiceHeroeCaster].heal.length-1] += hechizo.heal_dir;
- 			}
+ 		if(buff.heal_t_salida>0){
+ 			this.loggerService.log("-----> Heal: "+buff["heal_t_salida"],"lawngreen");
  		}
- 		if(hechizo.escudo_dir>0){
- 			this.loggerService.log("-----> Escudo: "+hechizo.escudo_dir);
- 			if(esHeroe){
- 				this.sesion.render.estadisticas[indiceHeroeCaster].escudo[this.sesion.render.estadisticas[indiceHeroeCaster].escudo.length-1] += hechizo.escudo_dir;
- 			}
- 		}	
- 	}
+ 		if(buff.escudo_t_salida>0){
+ 			this.loggerService.log("-----> Escudo: "+buff["escudo_t_salida"]);
+ 		}
 
- 	//Aplicar hechizo resultante sobre el ENEMIGO:
- 	aplicarHechizosFinalEnemigo(indiceEnemigo,hechizo,caster):any{
+        return buff;
+    }
+
+    //------------------------
+    // MODIFICACIONES ENTRADA
+    //-----------------------
+    modificacionHechizoEntrada(objetivo:"enemigo"|"heroe",indexObjetivo:number,hechizo:any):any{
+
+        var armaduraMaxPercent = this.parametros.armaduraMax;
+        var armaduraMinPercent = this.parametros.armaduraMin;
+        var armadura = 0;
+        var min = 0;
+        var max = 0;
+
+        switch(objetivo){
+
+            //(CUALQUIERA) --> HEROE
+            case "heroe":
+                armadura = this.sesion.render.heroes[indexObjetivo].estadisticas.armadura;
+                min = this.parametros.heroes.base["armadura"]+(hechizo.nivelCaster*this.parametros.heroes.escalado["armadura"]);
+                max = min + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ hechizo.nivelCaster * this.parametros.objetos.escalado) 
+                break;
+
+            //(CUALQUIERA) --> ENEMIGO
+            case "enemigo":
+                armadura = this.sesion.render.enemigos[indexObjetivo].estadisticas.armadura;
+                min = this.parametros.enemigos.base["armadura"]+ (hechizo.nivelCaster * this.parametros.enemigos.escalado["armadura"]);
+                max = min + this.parametros.enemigos.baseRango + (hechizo.nivelCaster * this.parametros.enemigos.escaladoRango); 
+                break;
+        }
+
+        var reduccionArmadura = armaduraMinPercent + ((armadura-min)/(max-min))*(armaduraMaxPercent-armaduraMinPercent)
+
+        hechizo["daño_bloqueado"] = hechizo["daño_salida"] * (reduccionArmadura);
+        hechizo["daño_entrante"] = hechizo["daño_salida"] * (1-reduccionArmadura);
+        hechizo["heal_entrante"] = hechizo["heal_salida"];
+        hechizo["escudo_entrante"] = hechizo["escudo_salida"];
+
+        if(hechizo["daño_entrante"] || hechizo["heal_entrante"] ||  hechizo["escudo_entrante"]){
+ 		    this.loggerService.log("------ ENTRADA ------- ","teal");
+        }
+        if(hechizo["daño_entrante"]){
+ 		    this.loggerService.log("-----> Daño Entrante: "+ hechizo["daño_entrante"]+" ("+hechizo["daño_bloqueado"]+" Bloqueado)","orangered");
+        }
+        if(hechizo["heal_entrante"]){
+ 		    this.loggerService.log("-----> Heal Entrante: "+ hechizo["heal_entrante"],"orangered");
+        }
+        if(hechizo["escudo_entrante"]){
+ 		    this.loggerService.log("-----> Escudo Entrante: "+ hechizo["escudo_entrante"],"orangered");
+        }
+        return hechizo;
+
+    }
+
+    modificacionBuffEntrada(objetivo:"enemigo"|"heroe",indexObjetivo:number,buff:any):any{
+
+        var armaduraMaxPercent = this.parametros.armaduraMax;
+        var armaduraMinPercent = this.parametros.armaduraMin;
+        var armadura = 0;
+        var min = 0;
+        var max = 0;
+
+        switch(objetivo){
+
+            //(CUALQUIERA) --> HEROE
+            case "heroe":
+                armadura = this.sesion.render.heroes[indexObjetivo].estadisticas.armadura;
+                min = this.parametros.heroes.base["armadura"]+(buff.nivelCaster*this.parametros.heroes.escalado["armadura"]);
+                max = min + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ buff.nivelCaster * this.parametros.objetos.escalado) 
+                break;
+
+            //(CUALQUIERA) --> ENEMIGO
+            case "enemigo":
+                armadura = this.sesion.render.enemigos[indexObjetivo].estadisticas.armadura;
+                min = this.parametros.enemigos.base["armadura"]+ (buff.nivelCaster * this.parametros.enemigos.escalado["armadura"]);
+                max = min + this.parametros.enemigos.baseRango + (buff.nivelCaster * this.parametros.enemigos.escaladoRango); 
+                break;
+        }
+
+        var reduccionArmadura = armaduraMinPercent + ((armadura-min)/(max-min))*(armaduraMaxPercent-armaduraMinPercent)
+
+        buff["daño_t_bloqueado"] = buff["daño_t_salida"] * (reduccionArmadura);
+        buff["daño_t_entrante"] = buff["daño_t_salida"] * (1-reduccionArmadura);
+        buff["heal_t_entrante"] = buff["heal_t_salida"];
+        buff["escudo_t_entrante"] = buff["escudo_t_salida"];
+
+ 		this.loggerService.log("------ ENTRADA ------- ","teal");
+ 		this.loggerService.log("-----> Daño_T Entrante: "+ buff["daño_t_entrante"]+" ("+buff["daño_t_bloqueado"]+" Bloqueado)","orangered");
+        return buff;
+
+    }
+
+    //---------------------------
+    // APLICACION FINAL (HECHIZO)
+    //---------------------------
+ 	aplicarHechizosFinal(tipoObjetivo:"heroe"|"enemigo",indexObjetivo:number,hechizo:any):any{
+
+        console.log("APLICANDO HECHIZO FINAL: ")
+        console.log(hechizo)
  		
  		//Verificación del caster:
- 		var esHeroe = false;
- 		var indiceHeroeCaster = -1;
- 		for(var i=0; i <this.sesion.render.heroes.length; i++){
- 			if(this.sesion.render.heroes[i].turno){
- 				esHeroe= true;
- 				indiceHeroeCaster= i;
-  				break;
- 			}
- 		}
+ 		var indexCaster = hechizo.indexCaster;
+ 		var tipoCaster = hechizo.tipoCaster;
+        var objetivo = tipoObjetivo+"s";
  		
  		//Calculo Vida Total del objetivo:
- 		var vidaTotalObjetivo = this.parametros.atributos[0].vitalidad_atrib*this.sesion.render.enemigos[indiceEnemigo].estadisticas.vitalidad;
+ 		var vidaTotalObjetivo = this.sesion.render[objetivo][indexCaster].estadisticas.vidaMaxima;
 
  		//Añadir Escudos:
- 		this.sesion.render.enemigos[indiceEnemigo].escudo += (hechizo.escudo_dir/vidaTotalObjetivo*100);
-
+ 		this.sesion.render[objetivo][indexCaster].escudo += (hechizo.escudo_entrante / vidaTotalObjetivo*100);
+        
  		//Añadir Vida:
- 		this.sesion.render.enemigos[indiceEnemigo].vida += (hechizo.heal_dir/vidaTotalObjetivo*100);
+ 		this.sesion.render[objetivo][indexCaster].vida += (hechizo.heal_entrante/vidaTotalObjetivo*100);
 
  		//Efectuar Daños:
- 		this.sesion.render.enemigos[indiceEnemigo].vida -= (hechizo.dano_dir/vidaTotalObjetivo*100);
+ 		this.sesion.render[objetivo][indexCaster].vida -= (hechizo.daño_entrante/vidaTotalObjetivo*100);
 
  		//AplicarAgro:
- 		this.sesion.render.enemigos[indiceEnemigo].agro[indiceHeroeCaster] += hechizo.dano_dir;
+ 		//this.sesion.render[objetivo][indexCaster].agro[indiceHeroeCaster] += hechizo.daño_dir;
 
  		//Redondeo de vida:
- 		this.sesion.render.enemigos[indiceEnemigo].vida = Math.round(this.sesion.render.enemigos[indiceEnemigo].vida * 100) / 100;
+ 		this.sesion.render[objetivo][indexCaster].vida = Math.round(this.sesion.render[objetivo][indexCaster].vida * 100) / 100;
 
  		//Mantener rango de vida:
- 		if(this.sesion.render.enemigos[indiceEnemigo].vida>100){
- 			this.sesion.render.enemigos[indiceEnemigo].vida= 100;
+ 		if(this.sesion.render[objetivo][indexCaster].vida>100){
+ 			this.sesion.render[objetivo][indexCaster].vida= 100;
  		}
 
  		//Reset critico:
  		this.sesion.render.estadoControl.critico=false;
 
- 		//Comprueba si tiene dadiva:
- 		if(caster.buff.find(i => i.id==17)){
- 			this.sesion.render.heroes[caster.buff.find(i => i.id==17).origen.slice(1)].recursoEspecial += hechizo.dano_dir*0.7;
- 			if(this.sesion.render.heroes[caster.buff.find(i => i.id==17).origen.slice(1)].recursoEspecial>=100){
- 				this.sesion.render.heroes[caster.buff.find(i => i.id==17).origen.slice(1)].recursoEspecial=100;
+ 		//LOGGER && ANALITICS
+ 		this.loggerService.log("------ ENTRADA ------- ","teal");
+ 		if(hechizo.daño_entrante>0){
+ 			this.loggerService.log("-----> Daño: "+ hechizo.daño_entrante,"orangered");
+ 			if(tipoCaster=="heroe"){
+ 				this.sesion.render.estadisticas[indexCaster].daño[this.sesion.render.estadisticas[indexCaster].daño.length-1] += hechizo.daño_entrante;
  			}
- 			console.log("Energia Generada: "+hechizo.dano_dir*0.7);
  		}
 
- 		//LOGGER && ANALITICS
- 		this.loggerService.log("------ ENTRADA------- ","teal");
- 		if(hechizo.dano_dir>0){
- 			this.loggerService.log("-----> Daño: "+ hechizo.dano_dir,"orangered");
- 			if(esHeroe){
- 				this.sesion.render.estadisticas[indiceHeroeCaster].dano[this.sesion.render.estadisticas[indiceHeroeCaster].dano.length-1] += hechizo.dano_dir;
+ 		if(hechizo.heal_entrante>0){
+ 			this.loggerService.log("-----> Heal: "+hechizo.heal_entrante,"lawngreen");
+ 			if(tipoCaster=="heroe"){
+ 				this.sesion.render.estadisticas[indexCaster].heal[this.sesion.render.estadisticas[indexCaster].heal.length-1] += hechizo.heal_entrante;
  			}
  		}
- 		if(hechizo.heal_dir>0){
- 			this.loggerService.log("-----> Heal: "+hechizo.heal_dir,"lawngreen");
- 		}
- 		if(hechizo.escudo_dir>0){
- 			this.loggerService.log("-----> Escudo: "+hechizo.escudo_dir);
+
+ 		if(hechizo.escudo_entrante>0){
+ 			this.loggerService.log("-----> Escudo: "+hechizo.escudo_entrante);
+ 			if(tipoCaster=="heroe"){
+ 				this.sesion.render.estadisticas[indexCaster].escudo[this.sesion.render.estadisticas[indexCaster].escudo.length-1] += hechizo.escudo_entrante;
+ 			}
  		}
 
  		//Elimina al enemigo si esta muerto:
- 		if(this.sesion.render.enemigos[indiceEnemigo].vida <=0){
- 			this.sesion.render.enemigos[indiceEnemigo].vida= 0;
- 			this.enemigoMuerto(indiceEnemigo);
- 			console.log("Enemigo Muerto: "+indiceEnemigo);
- 			//Logger:
- 			this.loggerService.log("Enemigo Muerto:"+ indiceEnemigo);
- 		}
+        if(tipoObjetivo=="enemigo"){
+            if(this.sesion.render.enemigos[indexCaster].vida <=0){
+                this.sesion.render.enemigos[indexCaster].vida= 0;
+                this.enemigoMuerto(indexCaster);
+                console.log("Enemigo Muerto: "+indexCaster);
+                //Logger:
+                this.loggerService.log("Enemigo Muerto:"+ indexCaster);
+            }
+        }
+
  	}
 
- 	//Ejecutar funciones de hechizo:
+    //-------------------------------
+    // FUNCION HECHIZO  
+    //-------------------------------
  	ejecutarFuncionHechizo(funcion: string, hechizo: any, objetivoEnemigos: any, objetivoHeroes:any): void{
 
  		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
@@ -2671,11 +2309,61 @@ export class MazmorraService implements OnInit{
  		}
  	}
 
+    //-------------------------------
+    // FUNCION BUFF  
+    //-------------------------------
+ 	ejecutarFuncionBuffEnemigo(funcion,indiceEnemigo,Buff): void{
+
+ 		//Ejecuto acciones en función de la función:
+ 		switch(funcion){
+ 			case "GenerarEsencia":
+ 				var indice;
+ 				indice= parseInt(Buff.origen.slice(1));
+ 				this.sesion.render.heroes[indice].recursoEspecial++;
+ 			break
+ 		}
+ 	}
+
 	/* 	----------------------------------------------
 			GESTION DE BUFFOS
  	----------------------------------------------*/
 
- 	//Inicia la secuencia de aplicación de buffos: (previo) --> aplicarBuffos();
+    //-------------------------------
+    //ADD BUFF LANZADO POR HECHIZO  
+    //-------------------------------
+    addBuffHechizo(tipoObjetivo: "heroe"|"enemigo",indexObjetivo: number,hechizo:any):any{
+
+        //Aplicacion de Buffos:
+        if(!hechizo.buff_id){return hechizo;}
+
+ 		this.loggerService.log("Aplicando BUFF/DEBUFF (ID: "+hechizo.buff_id+")...","yellow");
+        var buff = this.buff.find(i => i.id==hechizo.buff_id)
+        buff["rng"]= this.sesion.render.estadoControl.rng;
+        buff["nivelCaster"]= hechizo.nivelCaster;   
+        buff["tipoCaster"]= hechizo.tipoCaster;   
+        buff["indexCaster"]= hechizo.indexCaster;
+
+        //--------------------------------
+        // 1) MODIFICACIÓN DE SALIDA BUFF
+        //--------------------------------
+        buff = this.modificacionBuffSalida(hechizo.tipoCaster,hechizo.indexCaster,buff);
+        
+        //--------------------------------
+        // 2) MODIFICACIÓN DE ENTRADA BUFF
+        //--------------------------------
+        buff = this.modificacionBuffEntrada(tipoObjetivo,indexObjetivo,buff)
+
+        //--------------------------------
+        // 3) APLICAR STAT INCREASE
+        //--------------------------------
+
+        return buff;
+
+    } //FIN ADD BUFF POR HECHIZO
+
+    //-------------------------------
+    // LANZAR BUFF   
+    //-------------------------------
  	lanzarBuffos():void{
  		
  		//Bloquea los inputs:
@@ -2709,7 +2397,9 @@ export class MazmorraService implements OnInit{
  		this.aplicarBuffos(aplicarBuffos);
  	}
 
- 	//Aplica de forma iterativa los Buffos:
+    //-------------------------------
+    // APLICAR BUFF   
+    //-------------------------------
  	aplicarBuffos(aplicarBuffos: any):void{
 
  		//Condicion de desbloqueo (No encontrar buffos por aplicar):
@@ -2839,118 +2529,10 @@ export class MazmorraService implements OnInit{
  		}
  	}
 
- 	//Aplica modificador de SALIDA de HEROE a HEROE:
- 	modificacionBuffSalidaHeroeHeroe(casterHeroe,indiceHeroeObjetivo,indiceBuff):void{
- 		//Si es tipo FISICO:
- 		if(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 		}
-
- 		//Si es tipo MAGICO:
-		if(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 		}
-
- 		//Si es tipo DISTANCIA:
- 		if(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="D"){
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad);// * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t);
- 		}
- 	}
-
- 	//Aplica modificador de SALIDA de HEROE a ENEMIGO:
- 	modificacionBuffSalidaHeroeEnemigo(casterHeroe,indiceEnemigoObjetivo,indiceBuff):void{
- 		
- 		//Si es tipo FISICO:
- 		if(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza);  //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterHeroe.estadisticas.fuerza); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 		}
-
- 		//Si es tipo MAGICO:
-		if(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterHeroe.estadisticas.intelecto); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 		}
-
- 		//Si es tipo DISTANCIA:
- 		if(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="D"){
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*this.parametros.escalado[0].escalar_vida*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*this.parametros.escalado[0].escalar_vida*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*this.parametros.escalado[0].escalar_vida*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterHeroe.estadisticas.agilidad); //* this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 		}
- 		console.log("Daño recibido Buff: "+this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t);
- 		return;
- 	}
-
- 	//Aplica modificador de SALIDA de ENEMIGO a HEROE:
- 	modificacionBuffSalidaEnemigoHeroe(casterEnemigo,indiceHeroeObjetivo,indiceBuff):void{
- 		//Si es tipo FISICO:
- 		if(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 		}
-
- 		//Si es tipo MAGICO:
-		if(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 		}
-
- 		//Si es tipo DISTANCIA:
- 		if(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].tipo=="D"){
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad); // * this.evaluarRNG(this.sesion.render.heroes[indiceHeroeObjetivo].buff[indiceBuff].rng);
- 		}
- 	}
-
- 	//Aplica modificador de SALIDA de ENEMIGO a ENEMIGO:
- 	modificacionBuffSalidaEnemigoEnemigo(casterEnemigo,indiceEnemigoObjetivo,indiceBuff):void{
- 		//Si es tipo FISICO:
- 		if(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="F"){
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[2].fuerza_atrib*casterEnemigo.estadisticas.fuerza);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 		}
-
- 		//Si es tipo MAGICO:
-		if(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="M"){
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[3].intelecto_atrib*casterEnemigo.estadisticas.intelecto);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 		}
-
- 		//Si es tipo DISTANCIA:
- 		if(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].tipo=="D"){
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].dano_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].heal_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 			this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t = this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].escudo_t*(1+this.parametros.escalado[0].esc_hech*this.sesion.render.nivel_equipo) * (1+this.parametros.atributos[4].agilidad_atrib*casterEnemigo.estadisticas.agilidad);// * this.evaluarRNG(this.sesion.render.enemigos[indiceEnemigoObjetivo].buff[indiceBuff].rng);
- 		}
- 	}
-
- 	//Aplica modificador de ENTRADA a los HEROES por accion de BUFF:
- 	modificacionBuffEntradaHeroe(indiceHeroe,indiceBuff):void{
- 		//Aplicacion de armadura:
- 		this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].dano_t= this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].dano_t * (1-this.sesion.render.heroes[indiceHeroe].estadisticas.armadura/100);
- 	}
-
- 	//Aplica modificador de ENTRADA a los ENEMIGOS por accion de BUFF:
- 	modificacionBuffEntradaEnemigo(indiceEnemigo,indiceBuff):void{
- 		//Aplicacion de armadura:
- 		this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t= this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t * (1-this.sesion.render.enemigos[indiceEnemigo].estadisticas.armadura/100);
- 	}
-
- 	//Aplica efectos FINALES BUFF al HEROE:
+    //---------------------------
+    // APLICACION FINAL (BUFF)
+    //---------------------------
+ 	//Aplica efectos FINAL BUFF al HEROE:
  	aplicaBuffFinalHeroe(indiceHeroe,indiceBuff):void{
 
  		//Calculo Vida Total del objetivo:
@@ -2991,6 +2573,7 @@ export class MazmorraService implements OnInit{
  				this.sesion.render.estadisticas[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))].heal[this.sesion.render.estadisticas[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))].heal.length-1] += this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].heal_t;
  			}
  		}
+ 				//this.sesion.render.estadisticas[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))].daño[this.sesion.render.estadisticas[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))].daño.length-1]+= this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].daño_t_entrante;
  		if(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].escudo_t>0){
  			this.loggerService.log("-----> Escudo: "+this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].escudo_t);
  			if(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(0,1)=="H"){
@@ -2999,25 +2582,30 @@ export class MazmorraService implements OnInit{
  		}
  	}
 
- 	//Aplica efectos FINALES BUFF al ENEMIGO:
+ 	//Aplica efectos FINAL BUFF al ENEMIGO:
  	aplicaBuffFinalEnemigo(indiceEnemigo,indiceBuff):void{
 
+        var buff = this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff]; 
+
  		//Calculo Vida Total del objetivo:
- 		var vidaTotalObjetivo = this.parametros.atributos[0].vitalidad_atrib*this.sesion.render.enemigos[indiceEnemigo].estadisticas.vitalidad;
+ 		var vidaTotalObjetivo = this.sesion.render.enemigos[indiceEnemigo].estadisticas.vidaMaxima;
+        console.warn(vidaTotalObjetivo)
 
  		//Añadir Escudos:
- 		this.sesion.render.enemigos[indiceEnemigo].escudo += (this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].escudo_t/vidaTotalObjetivo*100);
+ 		this.sesion.render.enemigos[indiceEnemigo].escudo += (this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].escudo_t_entrante/vidaTotalObjetivo*100);
 
  		//Añadir Vida:
- 		this.sesion.render.enemigos[indiceEnemigo].vida += (this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].heal_t/vidaTotalObjetivo*100);
+ 		this.sesion.render.enemigos[indiceEnemigo].vida += (this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].heal_t_entrante/vidaTotalObjetivo*100);
 
  		//Efectuar Daños:
- 		this.sesion.render.enemigos[indiceEnemigo].vida -= (this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t/vidaTotalObjetivo*100);
+ 		this.sesion.render.enemigos[indiceEnemigo].vida -= (this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].daño_t_entrante/vidaTotalObjetivo*100);
 
- 		//AplicarAgro:
+ 		//Aplicar Agro:
+        /*
  		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(0,1)=="H"){
- 			this.sesion.render.enemigos[indiceEnemigo].agro[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))] += this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t;
+ 			this.sesion.render.enemigos[indiceEnemigo].agro[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))] += this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].daño_t;
  		}
+        */
 
  		//Redondeo de vida:
  		this.sesion.render.enemigos[indiceEnemigo].vida = Math.round(this.sesion.render.enemigos[indiceEnemigo].vida * 100) / 100;
@@ -3027,30 +2615,27 @@ export class MazmorraService implements OnInit{
  			this.sesion.render.enemigos[indiceEnemigo].vida= 100;
  		}
 
- 		//Comprueba si el origen del buff tiene dadiva y aplica efectos:
- 		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(0,1)=="H"){
- 			if(this.sesion.render.heroes[this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1)].buff.find(i => i.id==17)){
- 				this.sesion.render.heroes[this.sesion.render.heroes[this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1)].buff.find(i => i.id==17).origen.slice(1)].recursoEspecial += this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t*0.7;
- 				if(this.sesion.render.heroes[this.sesion.render.heroes[this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1)].buff.find(i => i.id==17).origen.slice(1)].recursoEspecial>=100){
- 					this.sesion.render.heroes[this.sesion.render.heroes[this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1)].buff.find(i => i.id==17).origen.slice(1)].recursoEspecial=100;
- 				}
- 				console.log("Energia Generada: "+this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t*0.7);
+ 		//LOGGER:
+ 		this.loggerService.log("------ BUFF/DEBUFF (ID: "+buff.id+", Objetivo: "+this.sesion.render.enemigos[indiceEnemigo].nombre+") ------- ","violet");
+
+        //LOG DAÑO
+ 		if(buff.daño_t_entrante>0){
+ 			this.loggerService.log("-----> Daño (Buffo): "+ this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].daño_t_entrante,"orangered");
+
+            //Guardar en estadisticas de daño:
+ 			if(buff.tipoCaster=="heroe"){
+                this.sesion.render.estadisticas[buff.indexCaster].daño[this.sesion.render.estadisticas[buff.indexCaster].daño.length-1]+= buff.daño_t_entrante;
  			}
  		}
 
- 		//Logger:
- 		this.loggerService.log("------ BUFF/DEBUFF (ID: "+this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].id+", Objetivo: "+this.sesion.render.enemigos[indiceEnemigo].nombre+") ------- ","violet");
- 		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t>0){
- 			this.loggerService.log("-----> Daño: "+ this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t,"orangered");
- 			if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(0,1)=="H"){
- 				this.sesion.render.estadisticas[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))].dano[this.sesion.render.estadisticas[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))].dano.length-1]+= this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].dano_t;
- 			}
+        //LOG HEAL
+ 		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].heal_t_entrante>0){
+ 			this.loggerService.log("-----> Heal (Buffo): "+this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].heal_t_entrante,"lawngreen");
  		}
- 		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].heal_t>0){
- 			this.loggerService.log("-----> Heal: "+this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].heal_t,"lawngreen");
- 		}
- 		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].escudo_t>0){
- 			this.loggerService.log("-----> Escudo: "+this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].escudo_t);
+
+        //LOG ESCUDO
+ 		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].escudo_t_entrante>0){
+ 			this.loggerService.log("-----> Escudo (Buffo): "+this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].escudo_t_entrante);
  		}
 
  		//Evaluar enemigo muerto:
@@ -3061,6 +2646,9 @@ export class MazmorraService implements OnInit{
  		}
  	}
 
+    //-------------------------------
+    // FUNCION BUFF  
+    //-------------------------------
  	//Ejecutar FUNCION de BUFF sobre HEROE: 
  	ejecutarFuncionBuffHeroe(funcion,indiceHeroe,Buff): void{
 
@@ -3071,19 +2659,9 @@ export class MazmorraService implements OnInit{
  		}
  	}
 
- 	//Ejecutar FUNCION de BUFF sobre ENEMIGO:
- 	ejecutarFuncionBuffEnemigo(funcion,indiceEnemigo,Buff): void{
-
- 		//Ejecuto acciones en función de la función:
- 		switch(funcion){
- 			case "GenerarEsencia":
- 				var indice;
- 				indice= parseInt(Buff.origen.slice(1));
- 				this.sesion.render.heroes[indice].recursoEspecial++;
- 			break
- 		}
- 	}
-
+    //-------------------------------
+    // ELIMINAR BUFF   
+    //-------------------------------
  	eliminarBuffEnemigo(indiceEnemigo,indiceBuff):void{
  		if(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].duracion == 0){
 
@@ -3380,8 +2958,10 @@ export class MazmorraService implements OnInit{
  	----------------------------------------------*/
 
  	loggerObs(comando):void{
+
  		console.log("Evento Logger: "+comando.comando);
  		console.log("Valor: "+comando.valor);
+
 
  		switch(comando.comando){
  			case "activar evento":
@@ -3413,19 +2993,11 @@ export class MazmorraService implements OnInit{
  			case "add enemigo":
  				this.addEnemigo(comando.valor);
  				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.sesion.render});
- 				this.sesion.render.estadoControl.estado="seleccionAccion";
  			break;
 
  			case "eliminar enemigo":
  				this.enemigoMuerto(comando.valor-1);
  				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.sesion.render});
- 				this.sesion.render.estadoControl.estado="seleccionAccion";
- 			break;
-
- 			case "eliminar enemigo":
- 				this.enemigoMuerto(comando.valor);
- 				this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.sesion.render});
- 				this.sesion.render.estadoControl.estado="seleccionAccion";
  			break;
 
  			case "restringir accion false":
@@ -3440,6 +3012,13 @@ export class MazmorraService implements OnInit{
  				this.socketService.enviarSocket("resetMazmorra",{peticion: "resetMazmorra", comando: "resetMazmorra", contenido: this.sala.nombre});
  			break;
  		}
+
+        //Si toggle Logger:
+        if(comando.toggle){
+            this.loggerService.toggleLogger();
+ 			this.sesion.render.estadoControl.estado="seleccionAccion";
+        }
+
  	}
 
  	/* 	----------------------------------------------
@@ -3563,26 +3142,32 @@ export class MazmorraService implements OnInit{
  	routerInterfaz(pantalla): void{
  		switch(pantalla){
  			case "elegirHechizo":
- 			//this.sesion.render.estadoControl.estado="eligiendoHechizo";
- 			this.interfazService.setHeroesHech(this.hechizos);
-			console.log(this.perfil)
-			console.log(this.hechizos)
-
-			var hechizosEquipadosID = [0,0,0,0,0];
-			var hechizosEquipadosImagenID = [0,0,0,0,0];
-
-			//Rellenar vector de imagenes de hechizos:
-
-				for(var i=0; i <this.perfil["hechizos"].length;i++){
-					if(this.perfil.hechizos[i]["nombre_personaje"].toLowerCase()==this.personaje.nombre.toLowerCase()){
-						if(this.perfil.hechizos[i]["slot"]>0 && this.perfil.hechizos[i]["equipado"]=="true"){
-							hechizosEquipadosID[this.perfil.hechizos[i]["slot"]-1]= this.perfil.hechizos[i]["hechizo_id"];
-							hechizosEquipadosImagenID[this.perfil.hechizos[i]["slot"]-1]= this.hechizos.find(j => j.id == this.perfil.hechizos[i]["hechizo_id"])["imagen_id"];
-						}
-					}
-				}
-
+                //this.sesion.render.estadoControl.estado="eligiendoHechizo";
+                
+                //Inicializar interfazService con datos de hechizos:
+                this.interfazService.setHeroesHech(this.hechizos);
  				this.interfazService.setEnemigos(this.enemigos);
+
+                //Detecta de quien es el turno:
+                var indexHeroeTurno = -1;
+                for(var i = 0; i < this.sesion.render.heroes.length; i++){
+                    if(this.sesion.render.heroes[i].turno){
+                        indexHeroeTurno = i;
+                        break;
+                    }
+                }
+
+                //SI ERROR
+                if(indexHeroeTurno < 0 || indexHeroeTurno > 4){ console.error("Turno de heroe no encontrado en 'routerInterfaz' (elegirHechizo)"); return; }
+
+                //Rellenar vector de imagenes de hechizos:
+                var hechizosEquipadosID = this.sesion.jugadores[indexHeroeTurno].personaje.hechizos.equipados
+                var hechizosEquipadosImagenID = [0,0,0,0,0];
+
+                for(var i=0; i < hechizosEquipadosID.length; i++){
+                    hechizosEquipadosImagenID[i]= this.hechizos.find(j => j.id == hechizosEquipadosID[i])["imagen_id"];
+                }
+
  				this.interfazService.activarInterfazHechizos(hechizosEquipadosID, hechizosEquipadosImagenID);
  				console.log(pantalla)
  			break;
@@ -3603,7 +3188,12 @@ export class MazmorraService implements OnInit{
  		return;
  	}
 
+    activarEnemigo(indexEnemigoActivado:number){
+        this.interfazService.activarInterfazAccionesEnemigo(this.sesion.render.enemigos,this.sesion.render.heroes);
+    }
+
 }
+
 
 
 

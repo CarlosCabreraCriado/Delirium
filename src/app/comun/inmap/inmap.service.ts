@@ -111,6 +111,9 @@ export class InMapService {
 		console.log("Grupo: ");
 		console.log(this.grupo);
 
+        //REDIRIGIR A MAZMORRA:
+		this.iniciarPartida("MazmorraSnack");	
+
 	}
 
 	iniciarPartida(nombreIdMazmorra: string):void{

@@ -30,6 +30,10 @@ export class InterfazService {
 	private enemigos: any;
 	private renderMazmorra: any;
 
+    //ACCIONES ENEMIGO:
+    private renderEnemigos: any;
+    private renderHeroes: any;
+
 	// Observable string sources
 	private observarInterfaz = new Subject<any>();
 
@@ -37,52 +41,6 @@ export class InterfazService {
 	observarInterfaz$ = this.observarInterfaz.asObservable();
 
 	constructor() { }
-
-	//FUNCIÓN RENDER DE SPRITE:
-	/*
-    renderImagenHech(){
-
-      //Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
-      var caster;
-      var esHeroe = false;
-      var esEnemigo = false;
-      var indexHorizontal=0;
-      var indexVertical= 0;
-
-      for(var i=0; i<this.renderMazmorra.heroes.length; i++){
-        if(this.renderMazmorra.heroes[i].turno){
-          esHeroe= true;
-          caster= this.renderMazmorra.heroes[i];
-          break;
-         }
-      }
-
-      for(var i=0; i<this.renderMazmorra.enemigos.length; i++){
-        if(this.renderMazmorra.enemigos[i].turno){
-          esEnemigo= true;
-          caster= this.renderMazmorra.enemigos[i];
-          break;
-        }
-      }
-
-      if(esHeroe){
-
-        for(var i=0; i< 5; i++){
-          indexVertical= Math.floor(this.heroesHech[caster.clase.toLowerCase()][i+1].imagen_id/18);
-          indexHorizontal= this.heroesHech[caster.clase.toLowerCase()][i+1].imagen_id-indexVertical*18;
-
-          console.log(indexHorizontal+","+indexVertical);
-          
-          this.imagenHechHorizontal[i]= 0.4+5.84*indexHorizontal;
-          this.imagenHechVertical[i]= 19.8*indexVertical;
-        }
-
-      }else{
-        //RENDER PARA ENEMIGOS:
-      }
-      return;
-    }
-	*/
 
     setPantallaInterfaz(val):void{
       this.pantallaInterfaz= val;
@@ -106,6 +64,12 @@ export class InterfazService {
 
     getPantallaInterfaz():any{
       return this.pantallaInterfaz;
+    }
+
+    activarInterfazAccionesEnemigo(renderEnemigos:any, renderHeroes:any):void{
+	  this.pantallaInterfaz= "AccionesEnemigo";
+      this.mostrarInterfaz = true;
+	  return;
     }
 
     activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID):void{
@@ -156,5 +120,6 @@ export class InterfazService {
       this.desactivarInterfaz();
       return;
     }
+
 }
 

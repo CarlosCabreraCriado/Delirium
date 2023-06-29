@@ -60,6 +60,7 @@ import { PanelTiendaComponent } from './comun/panel-tienda/panel-tienda.componen
 import { ExperienciaComponent } from './comun/experiencia/experiencia.component';
 import { PanelControlComponent } from './comun/panel-control/panel-control.component';
 import { PinchZoomComponent } from './comun/pinch-zoom/pinch-zoom.component';
+import { AtributoComponent } from './comun/atributo/atributo.component';
 
 //Componentes de Desarrollo:
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
@@ -137,7 +138,8 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {autoCon
         FormPerksComponent,
         SelectorImagenesComponent,
         PanelSelectorComponent,
-        TriggerComponent
+        TriggerComponent,
+        AtributoComponent
     ],
     imports: [
         BrowserModule,

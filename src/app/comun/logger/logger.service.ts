@@ -24,6 +24,7 @@ export class LoggerService {
     observarLogger$ = this.observarLogger.asObservable();
 
 	@Output() obtenerRender: EventEmitter<void> = new EventEmitter();
+	@Output() obtenerSesion: EventEmitter<void> = new EventEmitter();
 
   constructor() { 
 
@@ -57,7 +58,7 @@ export class LoggerService {
  		}
  	}
 
- 	procesarComando(renderMazmorra){
+ 	procesarComando(renderMazmorra,sesion){
 
  		//Estado Logger DEFAULT
  		if(this.estadoLogger=="default"){
@@ -70,6 +71,7 @@ export class LoggerService {
  				case "help":
  					this.log("clear: limpia el logger");
  					this.log("render: devuelve el objeto de render actual (Estado de la partida)");
+ 					this.log("sesion: devuelve el objeto de sesion actual (Estado de la partida)");
  					this.log("reset: resetea la mazmorra (Reset a valor definido por server)");
  					this.log("registro analisis: Muestra el registro de estadisticas de la partida");
  					this.log("---------------------------------------------------------------------------------------------------");
@@ -107,11 +109,15 @@ export class LoggerService {
  					console.log(renderMazmorra);
  				break;
 
+ 				case "sesion":
+ 					this.log("Sesión: "+JSON.stringify(sesion));
+ 					console.log(sesion);
+ 				break;
+
  				case "reset":
  					this.log("Reseteando Mazmorra...");
- 					this.observarLogger.next({comando: "reset",valor: {}});
+ 					this.observarLogger.next({comando: "reset",valor: {}, toggle:true});
  					this.estadoLogger="default";
- 					this.toggleLogger();
  				break;
 
  				case "console enemigos":
@@ -282,7 +288,7 @@ export class LoggerService {
  				//****************************************
 
  				case "heal medio pt":
- 				var healMedioPt=[];//HOLA PENE
+ 				var healMedioPt=[];
  					for(var i=0; i<renderMazmorra.heroes.length; i++){
  						healMedioPt[i]= 0;
  						for(var j=0; j<renderMazmorra.estadisticas[i].heal.length; j++){
@@ -504,30 +510,26 @@ export class LoggerService {
 
  		//Estado Logger ADD ENEMIGO:
  		if(this.estadoLogger=="add enemigo"){
- 			this.observarLogger.next({comando: "add enemigo",valor: this.comando});
+ 			this.observarLogger.next({comando: "add enemigo",valor: this.comando,toggle: true});
  			this.estadoLogger="default";
- 			this.toggleLogger();
  		}
 
  		//Estado Logger Eliminar ENEMIGO:
  		if(this.estadoLogger=="eliminar enemigo"){
- 			this.observarLogger.next({comando: "eliminar enemigo",valor: this.comando});
+ 			this.observarLogger.next({comando: "eliminar enemigo",valor: this.comando,toggle: true});
  			this.estadoLogger="default";
- 			this.toggleLogger();
  		}
 
  		//Estado Logger ADD SALA:
  		if(this.estadoLogger=="add sala"){
- 			this.observarLogger.next({comando: "cambiar sala",valor: this.comando});
+ 			this.observarLogger.next({comando: "cambiar sala",valor: this.comando,toggle: true});
  			this.estadoLogger="default";
- 			this.toggleLogger();
  		}
 
  		//Estado Logger ACTIVAR EVENTO:
  		if(this.estadoLogger=="evento"){
- 			this.observarLogger.next({comando: "activar evento",valor: this.comando});
+ 			this.observarLogger.next({comando: "activar evento",valor: this.comando,toggle: true});
  			this.estadoLogger="default";
- 			this.toggleLogger();
  		}
  		
  		this.comando="";	

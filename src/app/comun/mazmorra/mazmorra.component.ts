@@ -92,7 +92,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		if(this.appService.control!="mazmorra"){this.appService.setControl("mazmorra")}
 
 		//Suscripcion Socket:
-		this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
+		this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async (data) => {
 
       		if(this.appService.control!="mazmorra"){return;}
       		/*
@@ -196,6 +196,15 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    			console.log(data.contenido);
       		    			this.renderMazmorra = data.contenido;
       		    			this.mazmorraService.setRenderMazmorra(data.contenido);
+      		    			this.mazmorraService.mensajeAccion("Sincronizando...",2000);
+      		    		break;
+
+      		    		case "forzarSincronizacionSesion":
+      		    			console.log("Forzando Sincronizando: ");
+      		    			console.log(data.contenido);
+      		    			this.renderMazmorra = data.contenido;
+      		    			await this.appService.setSesion(data.contenido);
+      		    			this.mazmorraService.iniciarMazmorra();
       		    			this.mazmorraService.mensajeAccion("Sincronizando...",2000);
       		    		break;
 
