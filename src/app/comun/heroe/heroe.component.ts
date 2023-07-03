@@ -9,20 +9,18 @@ import { Component , Input } from '@angular/core';
 
 export class HeroeComponent {
 
-	@Input() Personaje: string; 
-	@Input() tipo: string; 
-	@Input() Roll: string; 
-	@Input() Nivel: string; 
-	@Input() Nombre: string; 
-	@Input() lider: boolean; 
-	@Input() idImagen: number; 
-	@Input() renderHeroe: any; 
-	@Input() indexHeroe: number; 
+    //Datos:
 	@Input() renderMazmorra: any; 
-	@Input() pantalla: string; 
-	@Input() seleccionable: boolean;
+	@Input() renderHeroe: any; 
 
-    private retraido: string= "retraido";
+    //Opciones:
+	@Input() marcador: string = "DPS"; 
+	@Input() lider: boolean = false; 
+	@Input() seleccionable: boolean = false;
+	@Input() desplegable: boolean = false;
+	@Input() pantalla: string = "mazmorra"; 
+
+    private estadoDesplegado: boolean= false;
 
 	constructor() {}
 
@@ -30,14 +28,14 @@ export class HeroeComponent {
 
 		if(this.pantalla == "inMap"){ return;}
 
-		var clases = "Heroe-"+(this.indexHeroe+1);
+		var clases = "";
 
 		if(this.seleccionable){
 			clases = clases + " seleccionable";
 		}
 
 		//Renderiza marco de turno:
-		if(this.renderMazmorra.heroes[this.indexHeroe].turno){
+		if(this.renderHeroe.turno){
 			clases = clases + " animate__animated animate__infinite animate__pulse";
 		}
 
@@ -60,7 +58,7 @@ export class HeroeComponent {
 
 
 		//Renderiza Marco de objetivoAuxiliar:
-		if(this.renderMazmorra.heroes[this.indexHeroe].objetivoAuxiliar){
+		if(this.renderHeroe.objetivoAuxiliar){
 			if(this.renderMazmorra.estadoControl.tipoObjetivo=="AM"){
 				clases = clases + " ObjetivoAuxiliarAliado";
 			}
@@ -80,7 +78,7 @@ export class HeroeComponent {
 		}
 
 		//Renderiza Marco de objetivo:
-		if(this.renderMazmorra.heroes[this.indexHeroe].objetivo){
+		if(this.renderHeroe.objetivo){
 			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EU"){
 				clases = clases + " ObjetivoEnemigo";
 			}
@@ -108,10 +106,10 @@ export class HeroeComponent {
 	renderizarEscudoHeroe(): string{
 		var left= 0;
 		//Si el escudo cabe en la vida que falta
-		if(100-this.renderMazmorra.heroes[this.indexHeroe].vida >= this.renderMazmorra.heroes[this.indexHeroe].escudo){
-			left= this.renderMazmorra.heroes[this.indexHeroe].vida + (this.renderMazmorra.heroes[this.indexHeroe].escudo/2);
+		if(100-this.renderHeroe.vida >= this.renderHeroe.escudo){
+			left= this.renderHeroe.vida + (this.renderHeroe.escudo/2);
 		}else{
-			left= 100 - (this.renderMazmorra.heroes[this.indexHeroe].escudo/2);
+			left= 100 - (this.renderHeroe.escudo/2);
 		}
 		
 		return left+"%";
@@ -121,12 +119,12 @@ export class HeroeComponent {
 		var clases;
 
 		//Renderiza buffo o debuffo:
-		if(this.renderMazmorra.heroes[this.indexHeroe].buff[j].tipo2== "DEBUF"){
+		if(this.renderHeroe.buff[j].tipo2== "DEBUF"){
 			clases = "DeBuffo-Heroe";
 		}
 
 		//Renderiza buffo o debuffo:
-		if(this.renderMazmorra.heroes[this.indexHeroe].buff[j].tipo2== "BUFF"){
+		if(this.renderHeroe.buff[j].tipo2== "BUFF"){
 			clases = "Buffo-Heroe";
 		}
 		return clases;
@@ -144,13 +142,6 @@ export class HeroeComponent {
 		return estilo;
 	}
 
-    toggleRetraccion(){
-        if(this.retraido=="expandido"){
-            this.retraido = "retraido" 
-        }else{
-            this.retraido = "expandido" 
-        }
-    }
 
 }
 

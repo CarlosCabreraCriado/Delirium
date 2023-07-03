@@ -23,9 +23,11 @@ export class InMapService {
 	private cuenta: any;
 	private perfil: any;
 
+    //Importar Sesion:
+	private sesion: any;
+
 	//Estados Inmap:
 	public heroeSeleccionado: any;	
-	public grupo: any;
 
 	//Variables de sala:
 	private sala:any={
@@ -76,7 +78,7 @@ export class InMapService {
 	}
 
 
-	cargarGrupo(){
+	async iniciarInMap(){
 
         //Auto Seleccion de primer heroe:
 		if(this.heroeSeleccionado == null){
@@ -84,35 +86,18 @@ export class InMapService {
         }
 
         this.heroeSeleccionado = this.appService.getHeroeSeleccionado();
+
         console.log("Heroe Seleccionado")
         console.log(this.heroeSeleccionado)
 
+
+        //CARGAR DATOS:
+        this.sesion= await this.appService.getSesion();
+
 		//Inicializa el grupo:
-		this.grupo = [];
-
-		//Incluye Heroe Propio:
-		if(this.heroeSeleccionado == null){
-			this.grupo.push({ cuentaID: this.cuenta._id, heroe: {	clase: "", especializacion: null, id: 0, nivel: 0, nombre: null, num_consumibles: 0, num_objetos_inventario: 0, oro: 0, px: 0 } })
-		}else{
-			this.grupo.push({ cuentaID: this.cuenta._id, heroe: this.heroeSeleccionado })
-		}
-
-		//Forzar Grupo:
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "hechicero", especializacion: "-", id_imagen: 1, id: 1, nivel: 5, nombre: "Hive", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
-
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "cazador", especializacion: "-", id_imagen: 5, id: 1, nivel: 5, nombre: "Nandelt", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
-
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "ladron", especializacion: "-", id_imagen: 9, id: 1, nivel: 5, nombre: "Doomcrash", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
-
-		this.grupo.push({ cuentaID: "", heroe: {	clase: "sacerdote", especializacion: "-", id_imagen: 7, id: 1, nivel: 5, nombre: "Puerhorn", num_consumibles: 0, num_objetos_inventario: 0, oro: 10, px: 0 } })
-
-		this.heroeSeleccionado = {};
-
-		console.log("Grupo: ");
-		console.log(this.grupo);
 
         //REDIRIGIR A MAZMORRA:
-		this.iniciarPartida("MazmorraSnack");	
+		//this.iniciarPartida("MazmorraSnack");	
 
 	}
 

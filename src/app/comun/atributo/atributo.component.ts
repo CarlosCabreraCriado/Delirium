@@ -9,7 +9,8 @@ import { Component , Input } from '@angular/core';
 
 export class AtributoComponent {
 
-	@Input() tipoAtributo: string; 
+	@Input() tipo: string = "alcance"; 
+	@Input() valor: number = 0; 
 
 	constructor() {}
 

@@ -5,50 +5,45 @@
 
 <div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe(indexHeroe)" [ngClass]="retraido">
 
-    <!-- DETALLE -->
-    <div class="contenedorDetalle" [ngClass]="retraido">
-        <div *ngIf="tipo=='jugador'" class="fondoDetalle">
-            <div class="frameDetalle"></div>
-        </div>
-
-        <div *ngIf="tipo=='jugador'" class="nombre Texto3">{{Nombre}}</div>
-
-        <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
-
-
-    </div>
-
     <!-- FRAME CIRCULO -->
-	<div class="frameCirculo">
-		<img  *ngIf="tipo=='jugador'" class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{idImagen}}.png"/>	
+	<div class="frameCirculo" >
+		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>	
 
-		<div *ngIf="tipo=='seleccionar'" class="contenedorIcono seleccionar">
-			<img class="imagenSeleccionarHeroe" src="../../../assets/Iconos/Icono-Heroe.png"/>	
-		</div>
+        <img (click)="estadoDesplegado = !estadoDesplegado"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
 
-		<div *ngIf="tipo=='add'" class="contenedorIcono add">
-			<img class="imagenPersonaje" src="../../../assets/Iconos/Rol-Heal.png"/>	
-		</div>
-
-        <img (click)="toggleRetraccion()" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
-
-		<div *ngIf="tipo=='jugador'" class="contenedorFrameRol">
-			<img class="iconoRol" src="../../../assets/Iconos/Rol-{{Roll}}.png"/>	
+		<div class="contenedorFrameRol">
+			<img class="iconoRol" src="../../../assets/Iconos/Rol-{{marcador}}.png"/>	
 			<img class="frameRol Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 
-		<div *ngIf="tipo=='jugador'" class="contenedorFrameNivel">
-			<div class="nivel Texto2">{{Nivel}}</div>	
+		<div class="contenedorFrameNivel">
+			<div class="nivel Texto2">{{renderHeroe.nivel}}</div>	
 			<img class="frameNivel Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
-	</div>
 
-        <div *ngIf="tipo=='jugador'" class="contenedorBarras" [ngClass]="retraido" >
-            <barraComponent [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
-            <barraComponent [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
-            <!-- <barraComponent [tipo]="'Mana'" class="barra"></barraComponent> -->
-        </div>
+        <appAnimacionEfecto *ngIf="renderHeroe.mostrarAnimacion" #animacionEfecto [loop]="false" [animacion]="renderHeroe.animacion"></appAnimacionEfecto>
+
+        <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.vida"></appAnimacionNumero>
+
+	</div>
 	
+    <!-- DETALLE -->
+    <div class="wrapperDesplegable">
+        <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado && desplegable}">
+            <div class="fondoDetalle">
+                <div class="frameDetalle"></div>
+            </div>
+
+            <div class="nombre Texto3">{{renderHeroe.nombre}}</div>
+
+            <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
+            <!-- BARRAS -->
+            <div class="contenedorBarras">
+                <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
+                <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+            </div> 
+        </div>
+    </div>
 
 </div>
 

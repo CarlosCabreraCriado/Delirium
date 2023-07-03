@@ -293,6 +293,7 @@ export class AppService {
 	}
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
+        
       const dialogRef = this.dialog.open(DialogoComponent,{
           width: "100px", panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, inputLabel: config.inputLabel}
         });
@@ -337,7 +338,7 @@ export class AppService {
     mostrarConfiguracion(tipoDialogo:string, config:any):any{
 
       const dialogConfiguracion = this.dialog.open(ConfiguracionComponent,{
-          width: "100px",panelClass: [tipoDialogo, "contenedorConfiguracion"],backdropClass: "fondoConfiguracion", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+          width: "100px", panelClass: [tipoDialogo, "contenedorConfiguracion"], backdropClass: "fondoConfiguracion", disableClose: true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
         });
 
         dialogConfiguracion.afterClosed().subscribe(result => {

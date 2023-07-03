@@ -105,34 +105,71 @@
 
 	<div  id="contenedorInterfazAccionesEnemigo" class="borde1" *ngIf="interfazService.pantallaInterfaz=='AccionesEnemigo'">
 
-		<div class="titulo Texto1">Activación Movimiento</div>
+		<img class="badgeAccion" src="./assets/Iconos/07.png"/>
+		<div class="titulo Texto1">Activación de Enemigo</div>
         <hr class="divisor"/>
 
-        <div class="contenedorMovimiento">
+        <div *ngIf="this.interfazService.tipoAccion == 'movimiento'"class="contenedorMovimiento">
 
-            <div class="texto">
+            <div class="texto Texto2">
+                El enemigo quiere moverse hacia Doomcrash
+            </div>
+
+            <div class="enemigo">
+                <enemigoComponent [indexEnemigo]="0" [renderMazmorra]="this.interfazService.renderMazmorra" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
+            </div>
+
+            <div class="valor">
+                <atributoComponent [tipo]="'movimiento'" [valor]="this.interfazService.valorAccion"></atributoComponent>
+            </div>
+
+            <div class="flecha">
+			    <img class="cuerpo" src="./assets/ui/icons/cuerpo-flecha.png"/>
+			    <img class="cabeza" src="./assets/ui/icons/cabeza-flecha.png"/>
+            </div>
+
+            <div class="heroe">
+                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [seleccionable]="false"  class="panelHeroe" ></heroeComponent>
+            </div>
+
+            <div class="botones">
+                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'MOVERSE'" [vacio]="false" [color]="'verde'" (click)="this.interfazService.accion('mover')"></botonComponent>
+                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'Adyascente'" [vacio]="false" [color]="'rojo'" (click)="this.interfazService.accion('adyascente')"></botonComponent>
+            </div>
+
+        </div> <!-- FIN ACCION - MOVIMIENTO -->
+
+        <div *ngIf="this.interfazService.tipoAccion == 'ataque'"class="contenedorAtaque">
+
+            <div class="texto Texto2">
                 El enemigo quiere atacar a Doomcrash
             </div>
 
             <div class="enemigo">
+                <enemigoComponent [indexEnemigo]="0" [renderMazmorra]="this.interfazService.renderMazmorra" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
             </div>
 
-            <div class="valor">
-                <div class="contenedorAtributo movimiento">
-                    <img class="icono" src="./assets/Iconos/Icono-Movimiento.png"/>
-                    <div class="valor Texto1">4</div>
-                    <div class="frameAtributo"></div>
+            <div class="hechizo">
+                <div class="wrapper">
+                    <img class="flecha" src="./assets/ui/icons/Icon_07.png"/>
+                    <div class="contenedorHechizo borde1">
+                        <img class="imagenHechizo" src="./assets/Habilidades/Spell/17.png"/>
+                    </div>
+                    <img class="flecha" src="./assets/ui/icons/Icon_07.png"/>
                 </div>
             </div>
 
-            <div class="flecha">
+            <div class="valor">
+                <atributoComponent [tipo]="'alcance'" [valor]="this.interfazService.valorAccion"></atributoComponent>
             </div>
 
             <div class="heroe">
+                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]"  class="panelHeroe" ></heroeComponent>
             </div>
 
             <div class="botones">
-                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'Moverse'" [vacio]="false" [color]="'verde'"></botonComponent>
+                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'ATACAR'" [vacio]="false" [color]="'verde'" (click)="this.interfazService.accion('atacar')"></botonComponent>
+                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'Sin rango'" [vacio]="false" [color]="'rojo'" (click)="this.interfazService.accion('sinRango')"></botonComponent>
             </div>
 
         </div> <!-- FIN ACCION - MOVIMIENTO -->

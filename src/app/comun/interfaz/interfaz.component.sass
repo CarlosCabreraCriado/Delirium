@@ -229,11 +229,17 @@
     color: $colorTexto
     width: 50vw
     height: 45vh
-    top: 50% 
+    top: 45% 
     left: 50%
     padding: 20px
     transform: translate(-50%, -50%)
 
+    .badgeAccion
+      position: absolute
+      width: 20%
+      left: 50%
+      margin-left: -10%
+      top: -25%
     .titulo
       text-align: center
 
@@ -249,15 +255,32 @@
       .texto
         position: relative
         grid-area: 1 / 1 / 2 / 7 
+        display: flex
+        justify-content: center
+        align-items: center
       .enemigo 
         position: relative
         grid-area: 2 / 1 / 4 / 3 
+        display: flex
+        justify-content: center
       .valor
         position: relative
         grid-area: 2 / 3 / 3 / 5 
       .flecha
         position: relative
         grid-area: 3 / 3 / 4 / 5 
+        
+        .cuerpo
+          position: absolute
+          height: 70%
+          width: 50%
+          left: 11%
+        .cabeza
+          position: absolute
+          height: 70%
+          width: 20%
+          left: 60%
+
       .heroe
         position: relative
         grid-area: 2 / 5 / 4 / 7 
@@ -265,9 +288,9 @@
         position: relative
         grid-area: 4 / 1 / 5 / 7 
         display: flex
-        justify-content: center
+        justify-content: space-around 
         .boton
-          position: absolute
+          position: relative
           width: 30%
           height: 80%
 
@@ -305,7 +328,100 @@
       &.movimiento
         left: 5%
 
+    //CONTENEDOR ACCION - ATAQUE
+    .contenedorAtaque
+      display: grid
+      grid-template-columns: repeat(6, 1fr)
+      grid-template-rows: repeat(4, 1fr)
+      grid-column-gap: 15px
+      grid-row-gap: 15px
+      width: 100%
+      height: 85%
 
+      .texto
+        position: relative
+        grid-area: 1 / 1 / 2 / 7 
+        display: flex
+        justify-content: center
+        align-items: center
+      .enemigo 
+        position: relative
+        grid-area: 2 / 1 / 4 / 3 
+        display: flex
+        justify-content: center
+
+      .hechizo
+        position: relative
+        grid-area: 2 / 3 / 3 / 5 
+        .wrapper
+          position: absolute
+          width: 100%
+          height: 100%
+          display: flex
+          align-items: center
+          justify-content: space-around
+          
+          .flecha
+            position: relative
+            height: 60%
+          .contenedorHechizo
+            position: relative
+            height: 100%
+            aspect-ratio: 1
+            .imagenHechizo
+              position: absolute
+              height: 100%
+
+      .valor
+        position: relative
+        grid-area: 3 / 3 / 4 / 5 
+
+      .heroe
+        position: relative
+        grid-area: 2 / 5 / 4 / 7 
+      .botones
+        position: relative
+        grid-area: 4 / 1 / 5 / 7 
+        display: flex
+        justify-content: space-around 
+        .boton
+          position: relative
+          width: 30%
+          height: 80%
+
+    .contenedorAtributo
+      position: absolute
+      width: 40%
+      height: 15%
+      top: 55%
+      .icono
+        position: absolute
+        height: 80%
+        top: 10%
+        right: 10%
+      .valor
+        position: absolute
+        top: 0
+        left: 0
+        text-align: center
+        height: 100%
+        width: 50%
+      .frameAtributo
+          position: absolute
+          top: 0 
+          left: 0 
+          padding-top: 5%
+          margin-top: -2.5%
+          padding-left: 3%
+          margin-left: -1.5%
+          width: 100%
+          height: 100%
+          background-image: url("../../../assets/Frames/Frame-atributo.png")
+          background-size: 100% 100% 
+      &.energia
+        right: 5%
+      &.movimiento
+        left: 5%
 
 
 

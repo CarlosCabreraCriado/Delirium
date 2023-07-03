@@ -4,4 +4,14 @@
 <!--   ******************* -->
 
 <div class="contenedorAtributo">
+    <div class="valor Texto1">{{valor}}</div>
+    <img *ngIf="tipo=='movimiento'" class="icono" src="./assets/Iconos/Icono-Movimiento.png"/>
+    <img *ngIf="tipo=='energia'" class="icono" src="./assets/Iconos/Icono-Energia-Stat.png"/>
+    <img *ngIf="tipo=='ap'" class="icono" src="./assets/Iconos/Icono-Dano-Magico.png"/>
+    <img *ngIf="tipo=='ad'" class="icono" src="./assets/Iconos/Icono-Dano-Fisico.png"/>
+    <img *ngIf="tipo=='armadura'" class="icono" src="./assets/Iconos/Icono-Armadura.png"/>
+    <img *ngIf="tipo=='vitalidad'" class="icono" src="./assets/Iconos/Icono-Vitalidad.png"/>
+    <img *ngIf="tipo=='oro'" class="icono" src="./assets/Iconos/Icono-Moneda.png"/>
+    <img *ngIf="tipo=='alcance'" style="filter: invert(1)" class="icono" src="./assets/Iconos/alcance.png"/>
+    <div class="frameAtributo"></div>
 </div>

@@ -3,13 +3,13 @@
 <!--         DIALOGOS ERROR      -->
 <!--   ************************* -->
 
-<div *ngIf="data.tipoDialogo == 'Error'" class= "contenedor">
+<div *ngIf="data.tipoDialogo == 'Error'" class= "contenedor FondoPapiro borde1">
 
 	<h1 class="title Texto2">Error</h1>
 
 	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
 	
-	<botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="botonUnico"></botonComponent>
+	<botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [tipoBoton]="2" [color]="'rojo'" class="botonUnico"></botonComponent>
 	
 	<div class="frame"></div>
 
@@ -19,14 +19,17 @@
 <!--         DIALOGOS INFORMATIVO      -->
 <!--   ******************************* -->
 
-<div *ngIf="data.tipoDialogo == 'Informativo'" class= "contenedor">
+<div id="informativo" *ngIf="data.tipoDialogo == 'Informativo'" class= "contenedor FondoPapiro borde1">
 
-    <frameComponent [tipoFondo]="'papiro'"></frameComponent>
-	<h1 class="title Texto2">{{data.titulo}}</h1>
+    <div class="wrapper">
+        <h1 class="title Texto2">{{data.titulo}}</h1>
 
-	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
-	
-	<botonComponent mat-button [mat-dialog-close] [texto]="'OK'" [tipoBoton]="2" [color]="'verde'" class="botonUnico"></botonComponent>
+        <div class="textoDialogo Texto3"> {{data.contenido}} </div>
+        
+        <botonComponent mat-button [mat-dialog-close] [texto]="'OK'" [tipoBoton]="2" [color]="'verde'" class="botonUnico"></botonComponent>
+    </div>
+
+    <!--<frameComponent [tipoFondo]="'papiro'"></frameComponent>-->
 
 </div>
 
@@ -82,15 +85,16 @@
 <!--   ******************************** -->
 <!--         DIALOGOS CONFIRMACION      -->
 <!--   ******************************** -->
-<div *ngIf="data.tipoDialogo == 'Confirmacion'" class= "contenedor">
-    <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
-    <div mat-dialog-content>
-      <p>{{data.contenido}}</p>
+<div id="confirmacion" *ngIf="data.tipoDialogo == 'Confirmacion'" class= "contenedor FondoPapiro borde1">
+    <div class="wrapper">
+        <h1 class= "titulo" >{{data.titulo}}</h1>
+        <div class="Texto3"> {{data.contenido}} </div>
+        <div class="botones">
+            <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Confirmar'" [color]="'verde'" class="boton"></botonComponent>
+            <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+        </div>
     </div>
-    <div mat-dialog-actions class= "botones">
-	    <botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="botonUnico"></botonComponent>
-	    <botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="botonUnico"></botonComponent>
-    </div>
+
 </div>
 
 <!--   **************************** -->
@@ -281,8 +285,6 @@
                 <checkboxComponent [seleccionado]="false"></checkboxComponent>
                 <div class="textoTarea Texto3">Derrota a 3 Demonios</div>
             </div>
-
-
 
         </div>
 

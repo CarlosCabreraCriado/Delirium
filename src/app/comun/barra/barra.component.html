@@ -10,7 +10,7 @@
 		<img class="frameBarra" src="../../../assets/Frames/Frame-Barra-Heroe.png"/>
 	</div>	
 
-	<div class="contenedorCirculo" [ngClass]="tipo">
+	<div class="contenedorCirculo" [ngClass]="tipo" *ngIf="badge">
 		<img class="frameCirculo" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		<img class="iconoTipoBarra" src="../../../assets/Iconos/Icono-{{tipo}}.png"/>
 	</div>	

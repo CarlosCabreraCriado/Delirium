@@ -2,17 +2,22 @@
 @import "../../../variables.sass"
 @import "../../../breakpoints.scss"
 
+:host
+  position: absolute
+  height: 100%
+  aspect-ratio: 1
+  
 .contenedorEnemigo
   position: absolute
   width: 100%
   height: 100%
   z-index: 6
-  background-color: $colorFondo1
 
   .contenedorImagen
-    position: absolute
+    position: relative
     height: 100%
-    width: 40%
+    aspect-ratio: 1
+    background-color: $colorFondo1
     .imagenEnemigo
       position: absolute
       height: 100%
@@ -25,11 +30,25 @@
         background-image: url("../../../assets/Frames/Frame-Enemigo.png")
         background-size: 100% 100% 
     
+  .wrapperDesplegable
+    position: absolute
+    top: 0
+    left: 100%
+    height: 100%
+    width: 150%
+    overflow: hidden
+
   .contenedorDetalle
     position: absolute
-    left: 40%
+    background-color: $colorFondo1
+    top: 0
+    left: -100%
     height: 100%
-    width: 60%
+    width: 100%
+    transition: 1s
+    &.desplegado
+      left: 0
+      transition: 1s
 
     .frameDetalle
         position: absolute
@@ -43,6 +62,7 @@
       width: 100%
       text-align: center
       color: white
+      margin-top: 15px
     .barra
       position: absolute
       width: 80%

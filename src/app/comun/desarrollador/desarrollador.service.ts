@@ -355,7 +355,8 @@ export class DesarrolladorService implements OnInit{
   }
 
   async cargarMazmorra(){
-    this.http.post(this.appService.ipRemota+"/deliriumAPI/listaMazmorra",{token: await this.appService.getToken()}).subscribe((res) => {
+    var token = await this.appService.getToken();
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/listaMazmorra",{token: token}).subscribe((res) => {
       if(res){
         console.log("Lista de mazmorras");
         console.log(res);

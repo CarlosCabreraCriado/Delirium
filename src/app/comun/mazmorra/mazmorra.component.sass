@@ -13,7 +13,10 @@
 
 @import '../../../breakpoints.scss'
 @import '../../../variables.sass'
-
+:host
+  position: absolute
+  width: 100vw
+  height: 100vh
 #pause 
   color: white 
   #generalPauseContainer 
@@ -183,6 +186,12 @@
     left: 32%
     height: 4%
     z-index: 10
+#iconoSocial2
+    position: absolute
+    top: 3%
+    left: 42%
+    height: 4%
+    z-index: 10
 
 #creditoMapa
     position: absolute
@@ -209,22 +218,12 @@
     flex-direction: column
     right: 1%
     top: 0
-    width: 25%
     height: 100%
     z-index: 6
-
-    @include media("<=desktop")
-        width: 32%
-    @include media("<=phone")
-        width: 27%
-    @include media("<=smphone")
-        width: 30%
-
     .panelHeroe
         position: relative
         display: block
         height: 17%
-        width: 100%
         margin-top: 2vh
 
 #contenedorEnemigos 
@@ -233,21 +232,12 @@
     flex-direction: column
     left: 1%
     top: 10%
-    width: 15%
     height: 70%
-
-    @include media("<=desktop")
-        width: 22%
-    @include media("<=phone")
-        width: 17%
-    @include media("<=smphone")
-        width: 20%
-
+    gap: 10px
     .panelEnemigo
         position: relative
         display: block
-        height: 14.15%
-        width: 100%
+        max-height: 20%
         margin-bottom: 3%
 
 //------------------------------Enemigos-------------------------

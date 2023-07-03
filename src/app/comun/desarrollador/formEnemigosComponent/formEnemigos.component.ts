@@ -208,7 +208,7 @@ export class FormEnemigosComponent {
         var cantidadAcciones= acciones.length
         for(var i = 0; i < cantidadAcciones; i++){
             if(acciones[i].id >= nuevoId){
-                    nuevoId = acciones[i]+1;
+                    nuevoId = acciones[i].id+1;
             } 
         }
 

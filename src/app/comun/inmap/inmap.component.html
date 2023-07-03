@@ -73,9 +73,7 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-        <heroeComponent *ngFor="let jugador of this.inmapService.grupo; let i = index" [tipo]="renderizarTipo(jugador)" [renderMazmorra]="{}" [renderHeroe]="{vida: 100}" [pantalla]="'inMap'" [Personaje]="camelize(jugador.heroe.clase)" [Roll]="'DPS'" [Nombre]="jugador.heroe.nombre" [idImagen]="jugador.heroe.id_imagen"[Nivel]="jugador.heroe.nivel" [lider]="false" (click)="clickHeroe(jugador)"  class="panelHeroe"></heroeComponent>
-
-        <heroeComponent *ngIf="this.inmapService.grupo && this.inmapService.grupo.length<5" [pantalla]="'inMap'" [tipo]="'add'" [Personaje]="''" [Roll]="''" [Nombre]="''" [Nivel]="" [lider]="false" class="panelHeroe"></heroeComponent>
+        <heroeComponent *ngFor="let heroe of this.inmapService.sesion.render.heroes; let i = index" [renderMazmorra]="this.inmapService.sesion.render" [desplegable]="true" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
 
 	</div>
 
@@ -121,6 +119,5 @@
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Tienda'">
 			<panelTiendaComponent></panelTiendaComponent>
 		</div>
-
 	</div>
 

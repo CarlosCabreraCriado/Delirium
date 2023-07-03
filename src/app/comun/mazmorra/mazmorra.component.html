@@ -85,6 +85,7 @@
 	<img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="this.appService.abandonarMazmorra()"/>
     -->
 	<img id="iconoSocial" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarEnemigo(0)"/>
+	<img id="iconoSocial2" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarDialogo()"/>
 
 
 		<!--   ******************* -->
@@ -142,7 +143,7 @@
 	<div id="contenedorHeroes">
 
         <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-		<heroeComponent *ngFor="let heroe of this.mazmorraService.sesion.render.heroes; let i = index" [tipo]="'jugador'" [indexHeroe]="i"[Personaje]="camelize(heroe.clase)" [Roll]="'DPS'" [Nombre]="heroe.nombre" [idImagen]="heroe.id_imagen"[Nivel]="heroe.nivel" [lider]="false" [renderMazmorra]="this.mazmorraService.sesion.render" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
+		<heroeComponent *ngFor="let heroe of this.mazmorraService.sesion.render.heroes; let i = index" [desplegable]="true" [renderMazmorra]="this.mazmorraService.sesion.render" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
         </ng-container>
 
 	</div>
@@ -153,7 +154,7 @@
 
 	<div id="contenedorEnemigos">
         <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-		<enemigoComponent *ngFor="let enemigo of this.mazmorraService.sesion.render.enemigos; let i = index" [indexEnemigo]="i" [renderMazmorra]="this.mazmorraService.sesion.render" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
+            <enemigoComponent *ngFor="let enemigo of this.mazmorraService.sesion.render.enemigos; let i = index" [desplegable]="true" [indexEnemigo]="i" [renderMazmorra]="this.mazmorraService.sesion.render" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
         </ng-container>
 	</div>
 

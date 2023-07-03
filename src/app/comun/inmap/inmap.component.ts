@@ -37,7 +37,7 @@ export class InMapComponent implements OnInit{
 				switch(val){
 					case "actualizarHeroeSeleccionado":
 						this.inmapService.importarHeroeSeleccionado();
-						this.inmapService.cargarGrupo();
+						this.inmapService.iniciarInMap();
 						break;
 				}
 		});
@@ -103,7 +103,7 @@ export class InMapComponent implements OnInit{
 
             //Cargar Grupo:
             console.log("Cargando Grupo: ");
-            this.inmapService.cargarGrupo();
+            this.inmapService.iniciarInMap();
 
         });
 	}
@@ -151,27 +151,6 @@ export class InMapComponent implements OnInit{
  		return texto.toLowerCase().charAt(0).toUpperCase() + texto.toLowerCase().slice(1);
 	}
 
-	renderizarTipo(jugador:any){
-
-		//Si no hay heroe seleccionado:
-		if(jugador.heroe.nombre==null ){
-			if(jugador.cuentaID==this.idCuenta){
-				return "seleccionar";
-			}
-		}
-		return "jugador";
-	}
-
-	clickHeroe(jugador:any){
-
-		switch(this.renderizarTipo(jugador)){
-			case "seleccionar":
-				this.cambiarPantalla("Personaje");
-				break;
-			
-		}
-		return;
-	}
 }
 
 

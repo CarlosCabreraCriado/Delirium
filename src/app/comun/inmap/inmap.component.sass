@@ -1,6 +1,11 @@
 @import '../../../breakpoints.scss'
 @import '../../../variables.sass'
 
+:host
+  position: absolute
+  width: 100vw
+  height: 100vh
+
 // DISEÑO DE FONDO:
 #fondo
     position: absolute
@@ -163,20 +168,17 @@
 
     #contenedorHeroes 
         position: absolute
-        z-index: 5
         display: flex
         flex-direction: column
         right: 1%
         top: 0
-        width: 25%
         height: 100%
-        pointer-events: none
-        @include media("<=desktop")
-            width: 32%
-        @include media("<=phone")
-            width: 27%
-        @include media("<=smphone")
-            width: 30%
+        z-index: 6
+        .panelHeroe
+            position: relative
+            display: block
+            height: 17%
+            margin-top: 2vh
 
         .panelHeroe
             position: relative

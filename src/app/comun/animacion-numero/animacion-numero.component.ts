@@ -12,19 +12,21 @@ import {MazmorraService} from '../mazmorra/mazmorra.service';
     trigger('animacionNumero', [
       // ...
       state('inicio', style({
+      	top: "0%",
         opacity: 1
       })),
 
       state('fin', style({
-      	top: "-110%",
+      	top: "0%",
     	opacity: 0
       })),
 
       transition('inicio => fin', [
-        animate('1s', keyframes([
-    			style({ opacity: 1 , offset: 0}),
-    			style({ opacity: 1 ,top: "-100%", offset: 0.5}),
-    			style({ opacity: 0 ,top: "-110%", offset: 1})
+        animate('3s', keyframes([
+    			style({ opacity: 0 ,top: "0%", offset: 0}),
+    			style({ opacity: 1 ,top: "0%", offset: 0.2}),
+    			style({ opacity: 1 ,top: "0%", offset: 0.8}),
+    			style({ opacity: 0 ,top: "0%", offset: 1})
   		]))
       ]),
 

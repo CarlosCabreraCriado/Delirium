@@ -13,6 +13,7 @@ export class EnemigoComponent {
 	@Input() renderMazmorra: any; 
 	@Input() indexEnemigo: number; 
 	@Input() seleccionable: boolean;
+	@Input() desplegable: boolean = false;
 
 	constructor() {}
 
