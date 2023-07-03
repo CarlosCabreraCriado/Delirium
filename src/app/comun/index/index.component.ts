@@ -45,9 +45,8 @@ export class IndexComponent implements OnInit{
         }
       );
 
-      console.log("HOLAAA")
-		//this.cuenta= await this.appService.getCuenta();
-      //
+		this.cuenta= await this.appService.getCuenta();
+      
       this.cuenta = {}
 
 		console.log(this.cuenta);

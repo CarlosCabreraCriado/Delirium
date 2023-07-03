@@ -18,6 +18,7 @@ import { MatStepperModule} from '@angular/material/stepper';
 //Extras
 //import { NgxElectronModule } from 'ngx-electron';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 //Declaración de componentes: 
 import { IndexComponent } from './comun/index/index.component';
@@ -80,7 +81,11 @@ import { TriggerComponent } from './comun/desarrollador/triggerComponent/trigger
 //Componentes Backend:
 import { ElectronService } from './comun/electronService/public_api';
 
-const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {autoConnect: false} };
+const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', 
+    options: {
+        autoConnect: false
+    } 
+};
 //const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {autoConnect: false} };
 
 //Declaración del módulo:
@@ -145,6 +150,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {autoCon
         BrowserModule,
         AppRoutingModule,
         //NgxElectronModule,
+        IonicStorageModule.forRoot(),
         BrowserAnimationsModule,
         HttpClientModule,
         NgJsonEditorModule,
@@ -158,7 +164,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: {autoCon
         MatDialogModule,
         MatStepperModule
     ],
-    providers: [ElectronService],
+    providers: [ElectronService,],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

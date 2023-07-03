@@ -1,5 +1,7 @@
 {
   "name": "Delirium",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

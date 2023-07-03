@@ -9,6 +9,7 @@ import { ConfiguracionComponent } from './comun/configuracion/configuracion.comp
 import { SocialComponent } from './comun/social/social.component';
 import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { MatDialog} from '@angular/material/dialog';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ import { MatDialog} from '@angular/material/dialog';
 
 export class AppService {
 
-  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog) { 
+  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -32,6 +33,11 @@ export class AppService {
          this.dispositivo="Desktop";
       }
 
+      this.dispositivo="Movil";
+
+      //Inicializa Storage:
+      this.initStorage()
+
     }
 
     //public ipRemota: string= "http://www.carloscabreracriado.com";
@@ -43,6 +49,7 @@ export class AppService {
     //Datos: 
     private cuenta: any = null
     public token: string = null;
+    private _storage: Storage | null = null;
 
     //Variables de datos:
     public perfil:any;
@@ -67,6 +74,7 @@ export class AppService {
     private parametros: any;
 
     public dispositivo: string;
+    public movil: boolean = true;
     public version: string = "0.2.3";
     public control:string="null";
     private bloqueo: any= [0,0,0,0];
@@ -95,17 +103,35 @@ export class AppService {
         this.estadoApp = estado;
     }
 
+    //STORAGE:
+    
+    async initStorage(){
+        const storage = await this.storage.create();
+        this._storage = storage;
+    }
+
+    public set(key: string, value: any) {
+        this._storage?.set(key, value);
+    }
+
     setToken(token){
 	  console.log("Guardando Token: ");
 	  console.log(token);
-	  //window.electronAPI.setToken(token)
+      if(this.movil){
+          this.set("token",token)
+      }else{
+	    window.electronAPI.setToken(token)
+      }
       this.token=token;
       return;
     }
 
     async getToken() {
-      //this.token = await window.electronAPI.getToken();
-        this.token = null
+      if(this.movil){
+        this.token=  await this.storage.get("token")
+      }else{
+        this.token = await window.electronAPI.getToken();
+      }
 	  console.log("Recuperando Token... Done");
       return this.token;
     }
@@ -121,7 +147,11 @@ export class AppService {
 	  console.log("Guardando Perfil...");
 	  console.log(perfil);
 
-	  window.electronAPI.setPerfil(perfil)
+      if(this.movil){
+          this.set("perfil",perfil)
+      }else{
+	    window.electronAPI.setToken(perfil)
+      }
       this.perfil=perfil;
       return;
     }
@@ -210,30 +240,39 @@ export class AppService {
         switch(datosJuego[i].nombreId){
           case "Clases":
             this.clases = datosJuego[i];
+            if(this.movil){this.set("clases",this.clases)}
           break;
           case "Objetos":
             this.objetos = datosJuego[i];
+            if(this.movil){this.set("objetos",this.objetos)}
           break;
           case "Perks":
             this.perks = datosJuego[i];
+            if(this.movil){this.set("perks",this.perks)}
           break;
           case "Hechizos":
             this.hechizos = datosJuego[i];
+            if(this.movil){this.set("hechizos",this.hechizos)}
           break;
           case "Buff":
             this.buff = datosJuego[i];
+            if(this.movil){this.set("buff",this.buff)}
           break;
           case "Animaciones":
             this.animaciones = datosJuego[i];
+            if(this.movil){this.set("animaciones",this.animaciones)}
           break;
           case "Enemigos":
             this.enemigos = datosJuego[i];
+            if(this.movil){this.set("enemigos",this.enemigos)}
           break;
           case "Misiones":
             this.misiones = datosJuego[i];
+            if(this.movil){this.set("misiones",this.misiones)}
           break;
           case "Parametros":
             this.parametros = datosJuego[i];
+            if(this.movil){this.set("parametros",this.parametros)}
           break;
         }
       }
@@ -241,26 +280,29 @@ export class AppService {
       console.log("Datos de Juego: ");
       console.log(datosJuego);
 
-      window.electronAPI.setDatosJuego(datosJuego)
+      if(!this.movil){
+	    window.electronAPI.setDatosJuego(datosJuego)
+      }
 
       return;
     }
 
     setEventos(eventos: any){
-        this.eventos = eventos
-        window.electronAPI.setEventos(eventos)
+        this.eventos = eventos;
+        if(this.movil){
+            this.set("eventos",this.eventos)
+        }else{
+            window.electronAPI.setEventos(eventos)
+        }
     }
 
 	setMazmorra(mazmorra: any){
         //Actualizar datos:
 		this.mazmorra = mazmorra;
-
-
 		return;
 	}
 
 	crearCuenta(correo,usuario,password,password2){
-
 	}
 
     mostrarPantallacarga(val:boolean):void{
@@ -285,7 +327,12 @@ export class AppService {
       this.cuenta= val;
       console.log("SET CUENTA")
       console.log(this.cuenta);
-      console.log(await window.electronAPI.setCuenta(this.cuenta));
+        if(this.movil){
+            this.set("cuenta",this.cuenta)
+        }else{
+            console.log(await window.electronAPI.setCuenta(this.cuenta));
+        }
+
     }
 
 	renderizarCanvasIsometrico(){
@@ -409,8 +456,11 @@ export class AppService {
        console.log("Obteniendo Validando: ");
        //console.log(this.electronService.ipcRenderer);
 
-       //this.cuenta = await window.electronAPI.getCuenta() 
-       this.cuenta = {}
+        if(this.movil){
+            this.cuenta = await this.storage.get("cuenta");
+        }else{
+            this.cuenta = await window.electronAPI.getCuenta() 
+        }
 
        console.log(this.cuenta);
 
@@ -425,62 +475,106 @@ export class AppService {
 
     async getDatosJuego(){
       console.log("Accediendo a datos Locales:")
-      var datos = await window.electronAPI.getDatosJuego()
+      //var datos = await window.electronAPI.getDatosJuego()
       //this.setInicio(datos);
     }
 
     async getPerfil(){
-      this.perfil = await window.electronAPI.getPerfil(); // REVISAR
+        if(this.movil){
+            this.perfil = await this.storage.get("perfil");
+        }else{
+            this.perfil = await window.electronAPI.getPerfil(); // REVISAR
+        }
       return this.perfil;
     }
 
     async getClases(){
-      this.hechizos = await window.electronAPI.getDatosClases();
+        if(this.movil){
+            this.perfil = await this.storage.get("clases");
+        }else{
+            this.hechizos = await window.electronAPI.getDatosClases();
+        }
       return this.hechizos;
     }
 
     async getObjetos(){
-      this.objetos = await window.electronAPI.getDatosObjetos();
+        if(this.movil){
+            this.perfil = await this.storage.get("objetos");
+        }else{
+            this.objetos = await window.electronAPI.getDatosObjetos();
+        }
       return this.objetos;
     }
 
     async getPerks(){
-      this.perks = await window.electronAPI.getDatosPerks();
+        if(this.movil){
+            this.perfil = await this.storage.get("perks");
+        }else{
+            this.perks = await window.electronAPI.getDatosPerks();
+        }
       return this.perks;
     }
 
     async getHechizos(){
-      this.hechizos = await window.electronAPI.getDatosHechizos();
+        if(this.movil){
+            this.perfil = await this.storage.get("hechizos");
+        }else{
+            this.hechizos = await window.electronAPI.getDatosHechizos();
+        }
       return this.hechizos;
     }
 
     async getBuff(){
-      this.buff = await window.electronAPI.getDatosBuff();
+        if(this.movil){
+            this.perfil = await this.storage.get("buff");
+        }else{
+            this.buff = await window.electronAPI.getDatosBuff();
+        }
        return this.buff;
     }
 
     async getAnimaciones(){
-      this.animaciones = await window.electronAPI.getDatosAnimaciones();
+        if(this.movil){
+            this.perfil = await this.storage.get("animaciones");
+        }else{
+            this.animaciones = await window.electronAPI.getDatosAnimaciones();
+        }
       return this.animaciones;
     }
 
     async getEnemigos(){
-      this.enemigos = await window.electronAPI.getDatosEnemigos();
+        if(this.movil){
+            this.perfil = await this.storage.get("enemigos");
+        }else{
+            this.enemigos = await window.electronAPI.getDatosEnemigos();
+        }
       return this.enemigos;
     }
 
     async getEventos(){
-      this.eventos = await window.electronAPI.getDatosEventos();
+        if(this.movil){
+            this.perfil = await this.storage.get("eventos");
+        }else{
+            this.eventos = await window.electronAPI.getDatosEventos();
+        }
       return this.eventos;
     }
 
     async getMisiones(){
-      this.misiones = await window.electronAPI.getDatosMisiones();
+        if(this.movil){
+            this.perfil = await this.storage.get("misiones");
+        }else{
+            this.misiones = await window.electronAPI.getDatosMisiones();
+        }
       return this.misiones;
     }
 
     async getParametros(){
-      this.parametros = await window.electronAPI.getDatosParametros();
+        if(this.movil){
+            this.perfil = await this.storage.get("parametros");
+        }else{
+            this.parametros = await window.electronAPI.getDatosParametros();
+        }
       return this.parametros;
     }
 

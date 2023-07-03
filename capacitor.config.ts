@@ -1,9 +1,9 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
+  appId: 'io.ionic.starter',
   appName: 'Delirium',
-  webDir: 'delirium',
+  webDir: './delirium',
   server: {
     androidScheme: 'https'
   }
