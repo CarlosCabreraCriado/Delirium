@@ -25,12 +25,12 @@
   },
   "dependencies": {
     "@angular/animations": "^14.3.0",
-    "@angular/cdk": "^13.3.9",
+    "@angular/cdk": "^14.2.7",
     "@angular/common": "^14.3.0",
     "@angular/compiler": "^14.3.0",
     "@angular/core": "^14.3.0",
     "@angular/forms": "^14.3.0",
-    "@angular/material": "^13.3.9",
+    "@angular/material": "^14.2.7",
     "@angular/platform-browser": "^14.3.0",
     "@angular/platform-browser-dynamic": "^14.3.0",
     "@angular/router": "^14.3.0",
@@ -47,17 +47,26 @@
     "mongoose": "^5.13.4",
     "nedb": "^1.8.0",
     "ngx-json-viewer": "^2.4.0",
-    "ngx-socket-io": "4.2.0",
+    "ngx-socket-io": "4.3.0",
     "node-sass": "^7.0.3",
     "path": "^0.12.7",
     "rxjs": "^7.4.0",
     "socket.io-client": "^2.3.0",
     "xlsx": "^0.17.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+
+    "@capacitor/app": "5.0.5",
+    "@capacitor/core": "5.1.0",
+    "@capacitor/haptics": "5.0.5",
+    "@capacitor/keyboard": "5.0.5",
+    "@capacitor/status-bar": "5.0.5",
+    "@ionic/angular": "^7.0.0",
+    "ionicons": "^7.0.0"
   },
   "private": true,
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^13.1.0",
+
+    "@angular-builders/custom-webpack": "14.1.0",
     "@angular-devkit/architect": "^0.1402.12",
     "@angular-devkit/build-angular": "^14.2.12",
     "@angular-devkit/core": "^14.2.12",
@@ -65,6 +74,7 @@
     "@angular/cli": "^14.2.12",
     "@angular/compiler-cli": "^14.3.0",
     "@angular/language-service": "^14.3.0",
+
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "16.11.68",
@@ -84,7 +94,10 @@
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
     "typescript": "~4.6.4",
-    "webpack": "^5.74.0"
+    "webpack": "^5.74.0",
+
+    "@capacitor/cli": "5.1.0",
+    "@ionic/angular-toolkit": "^9.0.0"
   },
   "build": {
     "appId": "Delirium",
