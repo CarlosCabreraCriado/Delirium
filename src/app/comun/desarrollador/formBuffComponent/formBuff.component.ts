@@ -1,6 +1,6 @@
 
 import { Component , Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -16,26 +16,26 @@ export class FormBuffComponent {
   	private desarrolladorSuscripcion: Subscription = null;
 
     //Group Form:
-  	private formBuff: FormGroup;
+  	private formBuff: UntypedFormGroup;
 
   	//Campos Buff:
-  	private id_Buff = new FormControl(0);
-  	private nombre_Buff = new FormControl('???');
-    private descripcion_Buff = new FormControl('????????');
-    private duracion_Buff = new FormControl(1)
-    private animacion_Buff = new FormControl(1);
+  	private id_Buff = new UntypedFormControl(0);
+  	private nombre_Buff = new UntypedFormControl('???');
+    private descripcion_Buff = new UntypedFormControl('????????');
+    private duracion_Buff = new UntypedFormControl(1)
+    private animacion_Buff = new UntypedFormControl(1);
 
-    private tipo_Buff = new FormControl('Ventaja');
-    private tipo_dano_Buff = new FormControl('Físico');
+    private tipo_Buff = new UntypedFormControl('Ventaja');
+    private tipo_dano_Buff = new UntypedFormControl('Físico');
 
-    private dano_T_Buff = new FormControl('0');
-    private heal_T_Buff = new FormControl('0');
-    private escudo_T_Buff = new FormControl('0');
-    private stat_inc_Buff = new FormControl('0');
-    private stat_inc_inicial_Buff = new FormControl('0');
-    private stat_inc_T_Buff = new FormControl('0');
+    private dano_T_Buff = new UntypedFormControl('0');
+    private heal_T_Buff = new UntypedFormControl('0');
+    private escudo_T_Buff = new UntypedFormControl('0');
+    private stat_inc_Buff = new UntypedFormControl('0');
+    private stat_inc_inicial_Buff = new UntypedFormControl('0');
+    private stat_inc_T_Buff = new UntypedFormControl('0');
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

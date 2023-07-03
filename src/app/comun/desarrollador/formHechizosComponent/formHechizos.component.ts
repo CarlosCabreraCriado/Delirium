@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -16,32 +16,32 @@ export class FormHechizosComponent {
   	private desarrolladorSuscripcion: Subscription = null;
 
     //Form Group:
-  	private formHechizos: FormGroup;
+  	private formHechizos: UntypedFormGroup;
 
   	//Campos Hechizos:
-  	private id_Hechizos = new FormControl(0);
-  	private nombre_Hechizos = new FormControl('???');
-    private descripcion_Hechizos = new FormControl('????????');
-    private animacion_Hechizos = new FormControl(1);
-    private distancia_Hechizos = new FormControl(1);
-    private objetivo_Hechizos = new FormControl('EU');
-    private tipo_dano_Hechizos = new FormControl('Físico');
+  	private id_Hechizos = new UntypedFormControl(0);
+  	private nombre_Hechizos = new UntypedFormControl('???');
+    private descripcion_Hechizos = new UntypedFormControl('????????');
+    private animacion_Hechizos = new UntypedFormControl(1);
+    private distancia_Hechizos = new UntypedFormControl(1);
+    private objetivo_Hechizos = new UntypedFormControl('EU');
+    private tipo_dano_Hechizos = new UntypedFormControl('Físico');
 
-    private dano_Hechizos = new FormControl(0);
-    private heal_Hechizos = new FormControl(0);
-    private escudo_Hechizos = new FormControl(0);
-    private amenaza_Hechizos = new FormControl(1);
-    private energia_Hechizos = new FormControl(0);
-    private poder_Hechizos = new FormControl(0);
+    private dano_Hechizos = new UntypedFormControl(0);
+    private heal_Hechizos = new UntypedFormControl(0);
+    private escudo_Hechizos = new UntypedFormControl(0);
+    private amenaza_Hechizos = new UntypedFormControl(1);
+    private energia_Hechizos = new UntypedFormControl(0);
+    private poder_Hechizos = new UntypedFormControl(0);
 
-    private esc_dano_AD_Hechizos = new FormControl(0);
-    private esc_dano_AP_Hechizos = new FormControl(0);
-    private esc_heal_AD_Hechizos = new FormControl(0);
-    private esc_heal_AP_Hechizos = new FormControl(0);
-    private esc_escudo_AD_Hechizos = new FormControl(0);
-    private esc_escudo_AP_Hechizos = new FormControl(0);
+    private esc_dano_AD_Hechizos = new UntypedFormControl(0);
+    private esc_dano_AP_Hechizos = new UntypedFormControl(0);
+    private esc_heal_AD_Hechizos = new UntypedFormControl(0);
+    private esc_heal_AP_Hechizos = new UntypedFormControl(0);
+    private esc_escudo_AD_Hechizos = new UntypedFormControl(0);
+    private esc_escudo_AP_Hechizos = new UntypedFormControl(0);
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

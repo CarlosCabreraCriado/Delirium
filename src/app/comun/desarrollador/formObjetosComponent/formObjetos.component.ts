@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -20,40 +20,40 @@ export class FormObjetosComponent {
     private hechizosDisponibles = [];
 
     //Form Group:
-  	private formEquipo: FormGroup;
-  	private formPropiedadesEquipo: FormGroup;
-  	private formEstadisticasEquipo: FormGroup;
-  	private formConsumible: FormGroup;
-  	private formPropiedadesConsumible: FormGroup;
+  	private formEquipo: UntypedFormGroup;
+  	private formPropiedadesEquipo: UntypedFormGroup;
+  	private formEstadisticasEquipo: UntypedFormGroup;
+  	private formConsumible: UntypedFormGroup;
+  	private formPropiedadesConsumible: UntypedFormGroup;
 
   	//Campos Datos Equipo:
-  	private id_Equipo = new FormControl(0);
-  	private nombre_Equipo = new FormControl('???');
-    private descripcion_Equipo = new FormControl('???');
-    private tipo_Equipo = new FormControl('Ligera');
-    private pieza_Equipo = new FormControl('Pechera');
-    private rareza_Equipo = new FormControl('Común');
-    private vinculadoEquipar_Equipo = new FormControl(true);
-    private vinculadoRecoger_Equipo = new FormControl(true);
+  	private id_Equipo = new UntypedFormControl(0);
+  	private nombre_Equipo = new UntypedFormControl('???');
+    private descripcion_Equipo = new UntypedFormControl('???');
+    private tipo_Equipo = new UntypedFormControl('Ligera');
+    private pieza_Equipo = new UntypedFormControl('Pechera');
+    private rareza_Equipo = new UntypedFormControl('Común');
+    private vinculadoEquipar_Equipo = new UntypedFormControl(true);
+    private vinculadoRecoger_Equipo = new UntypedFormControl(true);
 
   	//Campos Datos Estadisticas Equipo:
-    private armadura = new FormControl(0);
-    private resistencia_magica = new FormControl(0);
-    private vitalidad = new FormControl(0);
-    private AP = new FormControl(0);
-    private AD = new FormControl(0);
-    private critico = new FormControl(0);
+    private armadura = new UntypedFormControl(0);
+    private resistencia_magica = new UntypedFormControl(0);
+    private vitalidad = new UntypedFormControl(0);
+    private AP = new UntypedFormControl(0);
+    private AD = new UntypedFormControl(0);
+    private critico = new UntypedFormControl(0);
 
   	//Campos Datos Equipo:
-  	private id_Consumible = new FormControl(0);
-  	private nombre_Consumible = new FormControl('???');
-    private descripcion_Consumible = new FormControl('???');
-    private tipo_Consumible = new FormControl('Miscelaneo');
-    private maxStack_Consumible = new FormControl(1);
-    private rareza_Consumible = new FormControl('Común');
-    private modo_Consumible = new FormControl('Mazmorra');
+  	private id_Consumible = new UntypedFormControl(0);
+  	private nombre_Consumible = new UntypedFormControl('???');
+    private descripcion_Consumible = new UntypedFormControl('???');
+    private tipo_Consumible = new UntypedFormControl('Miscelaneo');
+    private maxStack_Consumible = new UntypedFormControl(1);
+    private rareza_Consumible = new UntypedFormControl('Común');
+    private modo_Consumible = new UntypedFormControl('Mazmorra');
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

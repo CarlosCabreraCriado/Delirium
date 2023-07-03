@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -21,50 +21,50 @@ export class FormEnemigosComponent {
     private hechizosDisponibles = [];
 
     //Form Group:
-  	private formEnemigo: FormGroup;
-  	private formEstadisticas: FormGroup;
-  	private formEscalado: FormGroup;
-  	private formAcciones: FormGroup;
+  	private formEnemigo: UntypedFormGroup;
+  	private formEstadisticas: UntypedFormGroup;
+  	private formEscalado: UntypedFormGroup;
+  	private formAcciones: UntypedFormGroup;
 
   	//Campos Datos Enemigo:
-  	private id_Enemigo = new FormControl(0);
-  	private nombre_Enemigo = new FormControl('???');
-    private descripcion_Enemigo = new FormControl('???');
-    private familia_Enemigo = new FormControl('Gnoll');
+  	private id_Enemigo = new UntypedFormControl(0);
+  	private nombre_Enemigo = new UntypedFormControl('???');
+    private descripcion_Enemigo = new UntypedFormControl('???');
+    private familia_Enemigo = new UntypedFormControl('Gnoll');
 
-    private armadura = new FormControl(0);
-    private resistencia_magica = new FormControl(0);
-    private vitalidad = new FormControl(0);
-    private PA = new FormControl(0);
-    private AP = new FormControl(0);
-    private AD = new FormControl(0);
-    private critico = new FormControl(0);
+    private armadura = new UntypedFormControl(0);
+    private resistencia_magica = new UntypedFormControl(0);
+    private vitalidad = new UntypedFormControl(0);
+    private PA = new UntypedFormControl(0);
+    private AP = new UntypedFormControl(0);
+    private AD = new UntypedFormControl(0);
+    private critico = new UntypedFormControl(0);
 
-    private armadura_esc = new FormControl(0);
-    private resistencia_magica_esc= new FormControl(0);
-    private vitalidad_esc = new FormControl(0);
-    private PA_esc = new FormControl(0);
-    private AP_esc = new FormControl(0);
-    private AD_esc = new FormControl(0);
-    private critico_esc = new FormControl(0);
+    private armadura_esc = new UntypedFormControl(0);
+    private resistencia_magica_esc= new UntypedFormControl(0);
+    private vitalidad_esc = new UntypedFormControl(0);
+    private PA_esc = new UntypedFormControl(0);
+    private AP_esc = new UntypedFormControl(0);
+    private AD_esc = new UntypedFormControl(0);
+    private critico_esc = new UntypedFormControl(0);
 
-    private id_accion = new FormControl(0);
-  	private nombre_accion = new FormControl('???');
-  	private tipoObjetivo_accion = new FormControl('???');
-    private probabilidad_accion = new FormControl(1);
-    private energia_accion = new FormControl(50);
-    private movimiento_accion = new FormControl(4);
-    private alcance_accion = new FormControl(4);
-  	private texto_accion = new FormControl('???');
-  	private comportamiento_accion = new FormControl('???');
-  	private tipo_accion = new FormControl('movimiento');
-  	private habilitada_accion = new FormControl(true);
-    private habilitarAccion_accion = new FormControl(0);
-    private deshabilitarAccion_accion = new FormControl(0);
-    private inicial_accion = new FormControl(false);
-    private hechizo_id_accion = new FormControl(0);
+    private id_accion = new UntypedFormControl(0);
+  	private nombre_accion = new UntypedFormControl('???');
+  	private tipoObjetivo_accion = new UntypedFormControl('???');
+    private probabilidad_accion = new UntypedFormControl(1);
+    private energia_accion = new UntypedFormControl(50);
+    private movimiento_accion = new UntypedFormControl(4);
+    private alcance_accion = new UntypedFormControl(4);
+  	private texto_accion = new UntypedFormControl('???');
+  	private comportamiento_accion = new UntypedFormControl('???');
+  	private tipo_accion = new UntypedFormControl('movimiento');
+  	private habilitada_accion = new UntypedFormControl(true);
+    private habilitarAccion_accion = new UntypedFormControl(0);
+    private deshabilitarAccion_accion = new UntypedFormControl(0);
+    private inicial_accion = new UntypedFormControl(false);
+    private hechizo_id_accion = new UntypedFormControl(0);
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

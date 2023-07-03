@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -20,32 +20,32 @@ export class FormClasesComponent {
     private hechizosDisponibles = [];
 
     //Form Group:
-  	private formClase: FormGroup;
-  	private formEstadisticas: FormGroup;
-  	private formEscalado: FormGroup;
+  	private formClase: UntypedFormGroup;
+  	private formEstadisticas: UntypedFormGroup;
+  	private formEscalado: UntypedFormGroup;
 
   	//Campos Datos Clase:
-  	private id_Clase = new FormControl(0);
-  	private nombre_Clase = new FormControl('???');
-    private descripcion_Clase = new FormControl('???');
-    private tipoArmadura_Clase = new FormControl('Ligera');
-    private energiaMovimiento_Clase = new FormControl(0);
+  	private id_Clase = new UntypedFormControl(0);
+  	private nombre_Clase = new UntypedFormControl('???');
+    private descripcion_Clase = new UntypedFormControl('???');
+    private tipoArmadura_Clase = new UntypedFormControl('Ligera');
+    private energiaMovimiento_Clase = new UntypedFormControl(0);
 
-    private armadura = new FormControl(0);
-    private resistencia_magica = new FormControl(0);
-    private vitalidad = new FormControl(0);
-    private AP = new FormControl(0);
-    private AD = new FormControl(0);
-    private critico = new FormControl(0);
+    private armadura = new UntypedFormControl(0);
+    private resistencia_magica = new UntypedFormControl(0);
+    private vitalidad = new UntypedFormControl(0);
+    private AP = new UntypedFormControl(0);
+    private AD = new UntypedFormControl(0);
+    private critico = new UntypedFormControl(0);
 
-    private armadura_esc = new FormControl(0);
-    private resistencia_magica_esc= new FormControl(0);
-    private vitalidad_esc = new FormControl(0);
-    private AP_esc = new FormControl(0);
-    private AD_esc = new FormControl(0);
-    private critico_esc = new FormControl(0);
+    private armadura_esc = new UntypedFormControl(0);
+    private resistencia_magica_esc= new UntypedFormControl(0);
+    private vitalidad_esc = new UntypedFormControl(0);
+    private AP_esc = new UntypedFormControl(0);
+    private AD_esc = new UntypedFormControl(0);
+    private critico_esc = new UntypedFormControl(0);
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

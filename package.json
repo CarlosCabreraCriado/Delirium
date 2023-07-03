@@ -24,17 +24,16 @@
     "deploy": "NODE_ENV=production electron-builder build --win --mac --publish always"
   },
   "dependencies": {
-    "@angular/animations": "~13.3.11",
-    "@angular/cdk": "~13.3.9",
-    "@angular/common": "~13.3.11",
-    "@angular/compiler": "~13.3.11",
-    "@angular/core": "~13.3.11",
-    "@angular/forms": "~13.3.11",
+    "@angular/animations": "^14.3.0",
+    "@angular/cdk": "^13.3.9",
+    "@angular/common": "^14.3.0",
+    "@angular/compiler": "^14.3.0",
+    "@angular/core": "^14.3.0",
+    "@angular/forms": "^14.3.0",
     "@angular/material": "^13.3.9",
-    "@angular/platform-browser": "~13.3.11",
-    "@angular/platform-browser-dynamic": "~13.3.11",
-    "@angular/router": "~13.3.11",
-
+    "@angular/platform-browser": "^14.3.0",
+    "@angular/platform-browser-dynamic": "^14.3.0",
+    "@angular/router": "^14.3.0",
     "@types/nedb": "^1.8.9",
     "@types/socket.io-client": "^1.4.32",
     "ang-jsoneditor": "^1.9.1",
@@ -55,19 +54,17 @@
     "socket.io-client": "^2.3.0",
     "xlsx": "^0.17.0",
     "zone.js": "~0.11.4"
-  
   },
   "private": true,
   "devDependencies": {
     "@angular-builders/custom-webpack": "^13.1.0",
-    "@angular-devkit/architect": "~0.1303.9",
-    "@angular-devkit/build-angular": "~13.3.9",
-    "@angular-devkit/core": "~13.3.9",
-    "@angular-devkit/schematics": "~13.3.9",
-    "@angular/cli": "^13.3.9",
-    "@angular/compiler-cli": "~13.3.11",
-    "@angular/language-service": "~13.3.11",
-
+    "@angular-devkit/architect": "^0.1402.12",
+    "@angular-devkit/build-angular": "^14.2.12",
+    "@angular-devkit/core": "^14.2.12",
+    "@angular-devkit/schematics": "^14.2.12",
+    "@angular/cli": "^14.2.12",
+    "@angular/compiler-cli": "^14.3.0",
+    "@angular/language-service": "^14.3.0",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "16.11.68",
@@ -88,8 +85,6 @@
     "tslint": "~6.1.0",
     "typescript": "~4.6.4",
     "webpack": "^5.74.0"
-
-  
   },
   "build": {
     "appId": "Delirium",

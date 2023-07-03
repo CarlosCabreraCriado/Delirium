@@ -1,7 +1,7 @@
 
 
 import { Component , Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -19,120 +19,120 @@ export class FormEventosComponent {
   	readonly tiposOrdenes = ["Condición","Variable","Misión","Trigger","Diálogo","Hechizo","Loot","Enemigo","Mazmorra","Multimedia","Tiempo"];
 
     //Form Group:
-  	private formEvento: FormGroup;
-  	private formOrden: FormGroup;
-  	private formParametrosOrden: FormGroup;
-  	private formOrdenCondicion: FormGroup;
-  	private formOrdenVariable: FormGroup;
-  	private formOrdenMision: FormGroup;
-  	private formOrdenTrigger: FormGroup;
-  	private formOrdenDialogo: FormGroup;
-  	private formOrdenMultimedia: FormGroup;
-  	private formOrdenHechizo: FormGroup;
-  	private formOrdenLoot: FormGroup;
-  	private formOrdenLootObjeto: FormGroup;
-  	private formOrdenEnemigo: FormGroup;
-  	private formOrdenTiempo: FormGroup;
-  	private formOrdenMazmorra: FormGroup;
+  	private formEvento: UntypedFormGroup;
+  	private formOrden: UntypedFormGroup;
+  	private formParametrosOrden: UntypedFormGroup;
+  	private formOrdenCondicion: UntypedFormGroup;
+  	private formOrdenVariable: UntypedFormGroup;
+  	private formOrdenMision: UntypedFormGroup;
+  	private formOrdenTrigger: UntypedFormGroup;
+  	private formOrdenDialogo: UntypedFormGroup;
+  	private formOrdenMultimedia: UntypedFormGroup;
+  	private formOrdenHechizo: UntypedFormGroup;
+  	private formOrdenLoot: UntypedFormGroup;
+  	private formOrdenLootObjeto: UntypedFormGroup;
+  	private formOrdenEnemigo: UntypedFormGroup;
+  	private formOrdenTiempo: UntypedFormGroup;
+  	private formOrdenMazmorra: UntypedFormGroup;
 
 	//Campos Datos Eventos:
-  	private id_Evento = new FormControl({value: 0,disabled:true});
-  	private nombre_Evento = new FormControl('???');
-  	private categoria_Evento = new FormControl('?');
+  	private id_Evento = new UntypedFormControl({value: 0,disabled:true});
+  	private nombre_Evento = new UntypedFormControl('???');
+  	private categoria_Evento = new UntypedFormControl('?');
 
 	//Campos Datos Orden:
-  	private id_Orden = new FormControl({value: 0,disabled:true});
-  	private nombre_Orden = new FormControl('???');
-  	private tipo_Orden = new FormControl({value: null, disabled: true});
+  	private id_Orden = new UntypedFormControl({value: 0,disabled:true});
+  	private nombre_Orden = new UntypedFormControl('???');
+  	private tipo_Orden = new UntypedFormControl({value: null, disabled: true});
 
-  	private variable_Orden_Parametro = new FormControl('?');
+  	private variable_Orden_Parametro = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Condición):
-  	private id_Orden_Condicion = new FormControl('?');
-  	private variable_Orden_Condicion = new FormControl('?');
-  	private valorVariable_Orden_Condicion = new FormControl('?');
-  	private operador_Orden_Condicion = new FormControl('Igual');
-  	private tipoEncadenadoTrue_Orden_Condicion = new FormControl('?');
-  	private encadenadoTrue_Orden_Condicion = new FormControl(0);
-  	private tipoEncadenadoFalse_Orden_Condicion = new FormControl('?');
-  	private encadenadoFalse_Orden_Condicion = new FormControl(0);
+  	private id_Orden_Condicion = new UntypedFormControl('?');
+  	private variable_Orden_Condicion = new UntypedFormControl('?');
+  	private valorVariable_Orden_Condicion = new UntypedFormControl('?');
+  	private operador_Orden_Condicion = new UntypedFormControl('Igual');
+  	private tipoEncadenadoTrue_Orden_Condicion = new UntypedFormControl('?');
+  	private encadenadoTrue_Orden_Condicion = new UntypedFormControl(0);
+  	private tipoEncadenadoFalse_Orden_Condicion = new UntypedFormControl('?');
+  	private encadenadoFalse_Orden_Condicion = new UntypedFormControl(0);
 	
 	//Campos Datos Eventos (Variable):
-  	private id_Orden_Variable = new FormControl('?');
-  	private comando_Orden_Variable = new FormControl('?');
-  	private variableTarget_Orden_Variable = new FormControl('?');
-  	private valorNuevo_Orden_Variable = new FormControl('?');
-  	private valorOperador_Orden_Variable = new FormControl('?');
+  	private id_Orden_Variable = new UntypedFormControl('?');
+  	private comando_Orden_Variable = new UntypedFormControl('?');
+  	private variableTarget_Orden_Variable = new UntypedFormControl('?');
+  	private valorNuevo_Orden_Variable = new UntypedFormControl('?');
+  	private valorOperador_Orden_Variable = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Dialogo):
-  	private id_Orden_Dialogo = new FormControl('?');
-  	private tipoDialogo_Orden_Dialogo = new FormControl('?');
-  	private contenido_Orden_Dialogo = new FormControl('?');
-  	private opciones_Orden_Dialogo = new FormControl('?');
-  	private encadenadoId_Orden_Dialogo = new FormControl(0);
-  	private tipoEncadenado_Orden_Dialogo = new FormControl(0);
+  	private id_Orden_Dialogo = new UntypedFormControl('?');
+  	private tipoDialogo_Orden_Dialogo = new UntypedFormControl('?');
+  	private contenido_Orden_Dialogo = new UntypedFormControl('?');
+  	private opciones_Orden_Dialogo = new UntypedFormControl('?');
+  	private encadenadoId_Orden_Dialogo = new UntypedFormControl(0);
+  	private tipoEncadenado_Orden_Dialogo = new UntypedFormControl(0);
 
 	//Campos Datos Eventos (Mision):
-  	private id_Orden_Mision = new FormControl('?');
-  	private comando_Orden_Mision = new FormControl('?');
-  	private misionId_Orden_Mision = new FormControl('?');
-  	private tareaId_Orden_Mision = new FormControl('?');
-  	private valorOperador_Orden_Mision = new FormControl('?');
+  	private id_Orden_Mision = new UntypedFormControl('?');
+  	private comando_Orden_Mision = new UntypedFormControl('?');
+  	private misionId_Orden_Mision = new UntypedFormControl('?');
+  	private tareaId_Orden_Mision = new UntypedFormControl('?');
+  	private valorOperador_Orden_Mision = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Trigger):
-  	private id_Orden_Trigger = new FormControl('?');
-  	private comando_Orden_Trigger = new FormControl('?');
-  	private triggerId_Orden_Trigger = new FormControl('?');
-  	private trigger_Orden_Trigger = new FormControl('?');
+  	private id_Orden_Trigger = new UntypedFormControl('?');
+  	private comando_Orden_Trigger = new UntypedFormControl('?');
+  	private triggerId_Orden_Trigger = new UntypedFormControl('?');
+  	private trigger_Orden_Trigger = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Multimedia):
-  	private id_Orden_Multimedia = new FormControl('?');
-  	private comando_Orden_Multimedia = new FormControl('?');
-  	private tipoMultimedia_Orden_Multimedia = new FormControl('?');
-  	private nombreAsset_Orden_Multimedia = new FormControl('?');
+  	private id_Orden_Multimedia = new UntypedFormControl('?');
+  	private comando_Orden_Multimedia = new UntypedFormControl('?');
+  	private tipoMultimedia_Orden_Multimedia = new UntypedFormControl('?');
+  	private nombreAsset_Orden_Multimedia = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Hechizo):
-  	private id_Orden_Hechizo = new FormControl('?');
-  	private comando_Orden_Hechizo = new FormControl('?');
-  	private hechizoId_Orden_Hechizo = new FormControl('?');
-  	private objetivo_Orden_Hechizo = new FormControl('?');
-  	private heroeObjetivoId_Orden_Hechizo = new FormControl('?');
-  	private enemigoObjetivoId_Orden_Hechizo = new FormControl('?');
+  	private id_Orden_Hechizo = new UntypedFormControl('?');
+  	private comando_Orden_Hechizo = new UntypedFormControl('?');
+  	private hechizoId_Orden_Hechizo = new UntypedFormControl('?');
+  	private objetivo_Orden_Hechizo = new UntypedFormControl('?');
+  	private heroeObjetivoId_Orden_Hechizo = new UntypedFormControl('?');
+  	private enemigoObjetivoId_Orden_Hechizo = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Loot):
-  	private id_Orden_Loot = new FormControl('?');
-  	private comando_Orden_Loot = new FormControl('?');
-  	private objetivo_Orden_Loot = new FormControl('?');
-  	private oro_Orden_Loot = new FormControl('?');
-  	private exp_Orden_Loot = new FormControl('?');
+  	private id_Orden_Loot = new UntypedFormControl('?');
+  	private comando_Orden_Loot = new UntypedFormControl('?');
+  	private objetivo_Orden_Loot = new UntypedFormControl('?');
+  	private oro_Orden_Loot = new UntypedFormControl('?');
+  	private exp_Orden_Loot = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Loot - Objeto):
-  	private generado_Objeto_Loot = new FormControl('?');
-  	private objetoId_Objeto_Loot = new FormControl(0);
-  	private probTipo_Objeto_Loot = new FormControl('?');
-  	private probRareza_Objeto_Loot = new FormControl(0);
-  	private nivelMax_Objeto_Loot = new FormControl(0);
-  	private nivelMin_Objeto_Loot = new FormControl(0);
+  	private generado_Objeto_Loot = new UntypedFormControl('?');
+  	private objetoId_Objeto_Loot = new UntypedFormControl(0);
+  	private probTipo_Objeto_Loot = new UntypedFormControl('?');
+  	private probRareza_Objeto_Loot = new UntypedFormControl(0);
+  	private nivelMax_Objeto_Loot = new UntypedFormControl(0);
+  	private nivelMin_Objeto_Loot = new UntypedFormControl(0);
 
 	//Campos Datos Eventos (Enemigo):
-  	private id_Orden_Enemigo = new FormControl('?');
-  	private comando_Orden_Enemigo = new FormControl('?');
-  	private idEnemigo_Orden_Enemigo = new FormControl('?');
-  	private tipoEnemigo_Orden_Enemigo = new FormControl('?');
+  	private id_Orden_Enemigo = new UntypedFormControl('?');
+  	private comando_Orden_Enemigo = new UntypedFormControl('?');
+  	private idEnemigo_Orden_Enemigo = new UntypedFormControl('?');
+  	private tipoEnemigo_Orden_Enemigo = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Tiempo):
-  	private id_Orden_Tiempo = new FormControl('?');
-  	private comando_Orden_Tiempo = new FormControl('?');
-  	private dias_Orden_Tiempo = new FormControl('?');
+  	private id_Orden_Tiempo = new UntypedFormControl('?');
+  	private comando_Orden_Tiempo = new UntypedFormControl('?');
+  	private dias_Orden_Tiempo = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Mazmorra):
-  	private id_Orden_Mazmorra = new FormControl('?');
-  	private comando_Orden_Mazmorra = new FormControl('?');
-  	private mazmorraId_Orden_Mazmorra = new FormControl('?');
-  	private salaOpenId_Orden_Mazmorra = new FormControl(0);
+  	private id_Orden_Mazmorra = new UntypedFormControl('?');
+  	private comando_Orden_Mazmorra = new UntypedFormControl('?');
+  	private mazmorraId_Orden_Mazmorra = new UntypedFormControl('?');
+  	private salaOpenId_Orden_Mazmorra = new UntypedFormControl(0);
 
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

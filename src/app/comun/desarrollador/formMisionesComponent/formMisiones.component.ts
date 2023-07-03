@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -22,33 +22,33 @@ export class FormMisionesComponent {
     private hechizosDisponibles = [];
 
     //Form Group:
-  	private formMision: FormGroup;
-  	private formPropiedades: FormGroup;
-  	private formObjetivos: FormGroup;
-  	private formRecompensas: FormGroup;
+  	private formMision: UntypedFormGroup;
+  	private formPropiedades: UntypedFormGroup;
+  	private formObjetivos: UntypedFormGroup;
+  	private formRecompensas: UntypedFormGroup;
 
   	//Campos Datos Enemigo:
-  	private id_Mision = new FormControl(0);
-  	private nombre_Mision = new FormControl('???');
-    private descripcion_Mision = new FormControl('???');
-    private tipo_Mision = new FormControl('Gnoll');
+  	private id_Mision = new UntypedFormControl(0);
+  	private nombre_Mision = new UntypedFormControl('???');
+    private descripcion_Mision = new UntypedFormControl('???');
+    private tipo_Mision = new UntypedFormControl('Gnoll');
 
-    private nivel_recomendado = new FormControl(1);
-    private capitulo = new FormControl(0);
-    private epigrafe = new FormControl(0);
+    private nivel_recomendado = new UntypedFormControl(1);
+    private capitulo = new UntypedFormControl(0);
+    private epigrafe = new UntypedFormControl(0);
 
-    private id_Objetivo = new FormControl(0);
-    private texto_Objetivo= new FormControl("???");
-    private tipo_Objetivo = new FormControl("Booleano");
-    private cuentaMax_Objetivo = new FormControl(1);
-    private requerido_Objetivo = new FormControl(true);
+    private id_Objetivo = new UntypedFormControl(0);
+    private texto_Objetivo= new UntypedFormControl("???");
+    private tipo_Objetivo = new UntypedFormControl("Booleano");
+    private cuentaMax_Objetivo = new UntypedFormControl(1);
+    private requerido_Objetivo = new UntypedFormControl(true);
 
-    private oro = new FormControl(10);
-    private exp= new FormControl(100);
-    private oro_repeticion_mod = new FormControl(0.5);
-    private exp_repeticion_mod = new FormControl(0.5);
+    private oro = new UntypedFormControl(10);
+    private exp= new UntypedFormControl(100);
+    private oro_repeticion_mod = new UntypedFormControl(0.5);
+    private exp_repeticion_mod = new UntypedFormControl(0.5);
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

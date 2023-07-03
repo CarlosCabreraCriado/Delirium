@@ -5,7 +5,7 @@ import { AppService } from '../../app.service';
 import { DesarrolladorService } from './desarrollador.service';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { RenderReticula } from './renderReticula.class'
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { Subscription } from "rxjs";
 
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,117 +40,117 @@ export class DesarrolladorComponent implements OnInit{
   	readonly tiposOrdenes = ["Condición","Variable","Misión","Trigger","Diálogo","Hechizo","Loot","Enemigo","Mazmorra","Multimedia","Tiempo"];
 
   	//Formularios
-  	private formGeneral: FormGroup;
-  	private formSala: FormGroup;
-  	private formEnemigos: FormGroup;
-  	private formEventosMazmorra: FormGroup;
-  	private formDialogos: FormGroup;
-  	private formAsignarSala: FormGroup;
-  	private formAsignarEvento: FormGroup;
-  	private formInMapGeneral: FormGroup;
-  	private formInMapTerreno: FormGroup;
-  	private formInMapTrigger: FormGroup;
-  	private formInMapMisiones: FormGroup;
+  	private formGeneral: UntypedFormGroup;
+  	private formSala: UntypedFormGroup;
+  	private formEnemigos: UntypedFormGroup;
+  	private formEventosMazmorra: UntypedFormGroup;
+  	private formDialogos: UntypedFormGroup;
+  	private formAsignarSala: UntypedFormGroup;
+  	private formAsignarEvento: UntypedFormGroup;
+  	private formInMapGeneral: UntypedFormGroup;
+  	private formInMapTerreno: UntypedFormGroup;
+  	private formInMapTrigger: UntypedFormGroup;
+  	private formInMapMisiones: UntypedFormGroup;
 
   	//Campos General:
-  	private nombre_General = new FormControl("Primera mazmorra");
-  	private descripcion_General = new FormControl('Mazmorra de ejemplo');
-  	private imagen_id_General = new FormControl('0');
-  	private nivel_General = new FormControl('0');
-  	private evento_start_id_General = new FormControl('0');
-  	private evento_finish_id_General = new FormControl('0');
-  	private loot_finish_id_General = new FormControl('0');
+  	private nombre_General = new UntypedFormControl("Primera mazmorra");
+  	private descripcion_General = new UntypedFormControl('Mazmorra de ejemplo');
+  	private imagen_id_General = new UntypedFormControl('0');
+  	private nivel_General = new UntypedFormControl('0');
+  	private evento_start_id_General = new UntypedFormControl('0');
+  	private evento_finish_id_General = new UntypedFormControl('0');
+  	private loot_finish_id_General = new UntypedFormControl('0');
 
   	//Campos Sala:
-  	private sala_id_Sala = new FormControl('0');
-  	private nombre_Sala = new FormControl('Sala');
-  	private descripcion_Sala = new FormControl('Sala de ejemplo');
-  	private evento_inicial_id_Sala = new FormControl('0');
-  	private evento_final_id_Sala = new FormControl('0');
-  	private mostrarIsometricoSala = new FormControl(true);
+  	private sala_id_Sala = new UntypedFormControl('0');
+  	private nombre_Sala = new UntypedFormControl('Sala');
+  	private descripcion_Sala = new UntypedFormControl('Sala de ejemplo');
+  	private evento_inicial_id_Sala = new UntypedFormControl('0');
+  	private evento_final_id_Sala = new UntypedFormControl('0');
+  	private mostrarIsometricoSala = new UntypedFormControl(true);
 
   	//Campos Enemigos:
-  	private enemigo_id_Enemigos = new FormControl('0');
-  	private tipo_enemigo_id_Enemigos = new FormControl('1');
-    private num_sala_Enemigos = new FormControl('0');
-    private nombre_Enemigos = new FormControl('Enemigo');
-    private imagen_id_Enemigos = new FormControl('0');
-    private nivel_Enemigos = new FormControl('0');
-    private loot_id_Enemigos = new FormControl('0');
-    private loot_prob_Enemigos = new FormControl('0');
-    private buffo_perma_id_Enemigos = new FormControl('0');
-    private evento_muerte_id_Enemigos = new FormControl('0');
-    private evento_spawn_id_Enemigos = new FormControl('0');
-    private evento_intervalo_id_Enemigos = new FormControl('0');
-    private evento_intervalo_tiempo_Enemigos = new FormControl('0');
+  	private enemigo_id_Enemigos = new UntypedFormControl('0');
+  	private tipo_enemigo_id_Enemigos = new UntypedFormControl('1');
+    private num_sala_Enemigos = new UntypedFormControl('0');
+    private nombre_Enemigos = new UntypedFormControl('Enemigo');
+    private imagen_id_Enemigos = new UntypedFormControl('0');
+    private nivel_Enemigos = new UntypedFormControl('0');
+    private loot_id_Enemigos = new UntypedFormControl('0');
+    private loot_prob_Enemigos = new UntypedFormControl('0');
+    private buffo_perma_id_Enemigos = new UntypedFormControl('0');
+    private evento_muerte_id_Enemigos = new UntypedFormControl('0');
+    private evento_spawn_id_Enemigos = new UntypedFormControl('0');
+    private evento_intervalo_id_Enemigos = new UntypedFormControl('0');
+    private evento_intervalo_tiempo_Enemigos = new UntypedFormControl('0');
 
 	//Campos Eventos (MAZMORRA):
-	private id_eventoMazmorra = new FormControl('0');
-	private id_mazmorra = new FormControl('0');
-	private id_sala = new FormControl('0');
-	private tipo_evento = new FormControl('0');
-	private codigo = new FormControl('0');
-	private rng = new FormControl('0');
-	private rng_fallo_evento_id = new FormControl('0');
-	private buff = new FormControl('0');
-	private insta_buff = new FormControl('0');
-	private objetivo_buff = new FormControl('0');
-	private loot_id = new FormControl('0');
-	private loot_prob = new FormControl('0');
-	private objetivo_loot = new FormControl('0');
-	private dialogo_evento_id = new FormControl('0');
-	private objetivo_dialogo = new FormControl('0');
-	private spawn_enemigo_id = new FormControl('0');
-	private set_evento_watcher = new FormControl('0');
-	private remove_evento_watcher = new FormControl('0');
-	private evento_watcher_id = new FormControl('0');
-	private expire_watcher_id = new FormControl('0');
-	private intervalo_trigger_watcher = new FormControl('0');
-	private variable_trigger_watcher = new FormControl('0');
-	private add_variable = new FormControl('0');
-	private elimina_variable = new FormControl('0');
-	private if_condicion_variable = new FormControl('0');
-	private if_falso_evento_id = new FormControl('0');
-	private cinematica_id = new FormControl('0');
-	private sonido_id = new FormControl('0');
-	private evento_next_id = new FormControl('0');
+	private id_eventoMazmorra = new UntypedFormControl('0');
+	private id_mazmorra = new UntypedFormControl('0');
+	private id_sala = new UntypedFormControl('0');
+	private tipo_evento = new UntypedFormControl('0');
+	private codigo = new UntypedFormControl('0');
+	private rng = new UntypedFormControl('0');
+	private rng_fallo_evento_id = new UntypedFormControl('0');
+	private buff = new UntypedFormControl('0');
+	private insta_buff = new UntypedFormControl('0');
+	private objetivo_buff = new UntypedFormControl('0');
+	private loot_id = new UntypedFormControl('0');
+	private loot_prob = new UntypedFormControl('0');
+	private objetivo_loot = new UntypedFormControl('0');
+	private dialogo_evento_id = new UntypedFormControl('0');
+	private objetivo_dialogo = new UntypedFormControl('0');
+	private spawn_enemigo_id = new UntypedFormControl('0');
+	private set_evento_watcher = new UntypedFormControl('0');
+	private remove_evento_watcher = new UntypedFormControl('0');
+	private evento_watcher_id = new UntypedFormControl('0');
+	private expire_watcher_id = new UntypedFormControl('0');
+	private intervalo_trigger_watcher = new UntypedFormControl('0');
+	private variable_trigger_watcher = new UntypedFormControl('0');
+	private add_variable = new UntypedFormControl('0');
+	private elimina_variable = new UntypedFormControl('0');
+	private if_condicion_variable = new UntypedFormControl('0');
+	private if_falso_evento_id = new UntypedFormControl('0');
+	private cinematica_id = new UntypedFormControl('0');
+	private sonido_id = new UntypedFormControl('0');
+	private evento_next_id = new UntypedFormControl('0');
 	
 	//Campos Dialogos:
-	private dialogo_id = new FormControl('0');
-	private tipo_dialogo = new FormControl('0');
-	private imagen_id = new FormControl('0');
-	private texto1 = new FormControl('0');
-	private texto2 = new FormControl('0');
-	private texto3 = new FormControl('0');
-	private texto_elegir = new FormControl('0');
-	private eleccion_evento_id = new FormControl('0');
-	private timeout = new FormControl('0');
-	private evento_timeout_id = new FormControl('0');
-	private minimo_tiempo = new FormControl('0');
-	private redirect_dialogo_id = new FormControl('0');
-	private next_evento_id = new FormControl('0');
+	private dialogo_id = new UntypedFormControl('0');
+	private tipo_dialogo = new UntypedFormControl('0');
+	private imagen_id = new UntypedFormControl('0');
+	private texto1 = new UntypedFormControl('0');
+	private texto2 = new UntypedFormControl('0');
+	private texto3 = new UntypedFormControl('0');
+	private texto_elegir = new UntypedFormControl('0');
+	private eleccion_evento_id = new UntypedFormControl('0');
+	private timeout = new UntypedFormControl('0');
+	private evento_timeout_id = new UntypedFormControl('0');
+	private minimo_tiempo = new UntypedFormControl('0');
+	private redirect_dialogo_id = new UntypedFormControl('0');
+	private next_evento_id = new UntypedFormControl('0');
 
 	//Campos Asignar Isometrico:
-  	private asignar_id_sala = new FormControl('0');
-  	private asignar_evento = new FormControl('0');
+  	private asignar_id_sala = new UntypedFormControl('0');
+  	private asignar_evento = new UntypedFormControl('0');
 
 	//Campos Campos InMap General:
-  	private inMapNombre = new FormControl('null');
-  	private inMapDescripcion = new FormControl('null');
-  	private inMapIndicador = new FormControl('null');
+  	private inMapNombre = new UntypedFormControl('null');
+  	private inMapDescripcion = new UntypedFormControl('null');
+  	private inMapIndicador = new UntypedFormControl('null');
 
 	//Campos Campos InMap Terreno:
-  	private inMapTipoTerreno = new FormControl('normal');
-  	private inMapAtravesable = new FormControl(true);
-  	private inMapInspeccionable = new FormControl('0');
-  	private inMapMensajeInsapeccionable = new FormControl(null);
-  	private inMapUbicacionEspecial = new FormControl('0');
+  	private inMapTipoTerreno = new UntypedFormControl('normal');
+  	private inMapAtravesable = new UntypedFormControl(true);
+  	private inMapInspeccionable = new UntypedFormControl('0');
+  	private inMapMensajeInsapeccionable = new UntypedFormControl(null);
+  	private inMapUbicacionEspecial = new UntypedFormControl('0');
 
 	//Campos Campos InMap Eventos:
-  	private inMapProbabilidadRandom = new FormControl(0);
-  	private inMapCategoriaRandom = new FormControl('???');
-  	private inMapLootProb = new FormControl('0');
-  	private inMapLootId = new FormControl('0');
+  	private inMapProbabilidadRandom = new UntypedFormControl(0);
+  	private inMapCategoriaRandom = new UntypedFormControl('???');
+  	private inMapLootProb = new UntypedFormControl('0');
+  	private inMapLootId = new UntypedFormControl('0');
 
 
     //Configuracion MapaGeneral:
@@ -165,7 +165,7 @@ export class DesarrolladorComponent implements OnInit{
   	@ViewChild('canvasIsometrico',{static: false}) private canvasIsometrico: ElementRef;
   	@ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
 
-	constructor(public appService: AppService, public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) { 
+	constructor(public appService: AppService, public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) { 
 
 		this.editorVerOptions = new JsonEditorOptions()
 		this.editorModificarOptions = new JsonEditorOptions()

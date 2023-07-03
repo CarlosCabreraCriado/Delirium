@@ -1,7 +1,7 @@
 
 
 import { Component , Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -17,38 +17,38 @@ export class FormAnimacionesComponent {
   	private desarrolladorSuscripcion: Subscription = null;
 
     //Form Group:
-  	private formAnimaciones: FormGroup;
-  	private formSubanimacion: FormGroup;
+  	private formAnimaciones: UntypedFormGroup;
+  	private formSubanimacion: UntypedFormGroup;
 
   	//Campos Datos Animaciones:
-  	private id_Animaciones = new FormControl(0);
-  	private nombre_Animaciones = new FormControl('???');
-    private duracion_Animaciones = new FormControl(0);
-    private subanimaciones_Animaciones = new FormControl(0);
-    private sonidos_Animaciones = new FormControl(0);
+  	private id_Animaciones = new UntypedFormControl(0);
+  	private nombre_Animaciones = new UntypedFormControl('???');
+    private duracion_Animaciones = new UntypedFormControl(0);
+    private subanimaciones_Animaciones = new UntypedFormControl(0);
+    private sonidos_Animaciones = new UntypedFormControl(0);
 
 	//Campos Datos Subanimacion:
-  	private id_Subanimacion = new FormControl(0);
-  	private nombre_Subanimacion = new FormControl('???');
-  	private sprite_id_Subanimacion = new FormControl(0);
-    private duracion_Subanimacion = new FormControl(0);
-    private num_frames_Subanimacion = new FormControl(1);
-    private frame_ref_Subanimacion = new FormControl(0);
+  	private id_Subanimacion = new UntypedFormControl(0);
+  	private nombre_Subanimacion = new UntypedFormControl('???');
+  	private sprite_id_Subanimacion = new UntypedFormControl(0);
+    private duracion_Subanimacion = new UntypedFormControl(0);
+    private num_frames_Subanimacion = new UntypedFormControl(1);
+    private frame_ref_Subanimacion = new UntypedFormControl(0);
 
-    private hue_Subanimacion = new FormControl(0);
-    private sepia_Subanimacion = new FormControl(0);
-    private brillo_Subanimacion = new FormControl(0);
-    private saturacion_Subanimacion = new FormControl(0);
+    private hue_Subanimacion = new UntypedFormControl(0);
+    private sepia_Subanimacion = new UntypedFormControl(0);
+    private brillo_Subanimacion = new UntypedFormControl(0);
+    private saturacion_Subanimacion = new UntypedFormControl(0);
 
-    private delay_Subanimacion = new FormControl(0);
-    private offsetx_Subanimacion = new FormControl(0);
-    private offsety_Subanimacion = new FormControl(0);
-    private rotate_Subanimacion = new FormControl(0);
-    private scale_Subanimacion = new FormControl(0);
+    private delay_Subanimacion = new UntypedFormControl(0);
+    private offsetx_Subanimacion = new UntypedFormControl(0);
+    private offsety_Subanimacion = new UntypedFormControl(0);
+    private rotate_Subanimacion = new UntypedFormControl(0);
+    private scale_Subanimacion = new UntypedFormControl(0);
 
     private mute = true;
 
-	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: FormBuilder) {}
+	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
 	async ngOnInit(){
 

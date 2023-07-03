@@ -1,7 +1,7 @@
 
 import { Component , Inject, ViewChild,  ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
-import {FormBuilder, Validators, FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, Validators, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';
 
 export interface DialogData {
@@ -28,44 +28,44 @@ export class TriggerComponent {
     private indexTriggerSeleccionado = 0;
 
     //Form Group:
-  	private formActivador: FormGroup;
-  	private formCondicionInicial: FormGroup;
-  	private formOperadorPre: FormGroup;
-  	private formContador: FormGroup;
-  	private formTriggerEvento: FormGroup;
+  	private formActivador: UntypedFormGroup;
+  	private formCondicionInicial: UntypedFormGroup;
+  	private formOperadorPre: UntypedFormGroup;
+  	private formContador: UntypedFormGroup;
+  	private formTriggerEvento: UntypedFormGroup;
 
     //Campos Activador:
-    private activador = new FormControl('???');
-    private identificador = new FormControl('???');
+    private activador = new UntypedFormControl('???');
+    private identificador = new UntypedFormControl('???');
 
     //Campos Condicion Inicial:
-    private activadoCondicionInicial = new FormControl(false);
-    private variableCondicionInicial = new FormControl('variable')
-    private operadorCondicionInicial = new FormControl('=')
-    private valorComparadoCondicionInicial = new FormControl('')
-    private comandoCheckCondicionInicial = new FormControl('')
-    private valorCheckCondicionInicial = new FormControl('')
+    private activadoCondicionInicial = new UntypedFormControl(false);
+    private variableCondicionInicial = new UntypedFormControl('variable')
+    private operadorCondicionInicial = new UntypedFormControl('=')
+    private valorComparadoCondicionInicial = new UntypedFormControl('')
+    private comandoCheckCondicionInicial = new UntypedFormControl('')
+    private valorCheckCondicionInicial = new UntypedFormControl('')
 
     //Campos Operador PRE:
-    private activadoOperadorPre = new FormControl(false);
-    private comandoOperadorPre = new FormControl('addVar')
-    private valorOperacionPre = new FormControl('')
+    private activadoOperadorPre = new UntypedFormControl(false);
+    private comandoOperadorPre = new UntypedFormControl('addVar')
+    private valorOperacionPre = new UntypedFormControl('')
 
     //Campos Contador:
-    private activadoContador = new FormControl(false);
-    private variableContador = new FormControl('variable')
-    private operadorContador = new FormControl('=')
-    private valorComparadoContador = new FormControl('')
-    private comandoTrueContador = new FormControl('addVar')
-    private valorOperacionTrueContador = new FormControl('variable')
-    private comandoFalseContador = new FormControl('addVar')
-    private valorOperacionFalseContador = new FormControl('variable')
+    private activadoContador = new UntypedFormControl(false);
+    private variableContador = new UntypedFormControl('variable')
+    private operadorContador = new UntypedFormControl('=')
+    private valorComparadoContador = new UntypedFormControl('')
+    private comandoTrueContador = new UntypedFormControl('addVar')
+    private valorOperacionTrueContador = new UntypedFormControl('variable')
+    private comandoFalseContador = new UntypedFormControl('addVar')
+    private valorOperacionFalseContador = new UntypedFormControl('variable')
 
     //Campos Evento Trigger:
-    private eventoTriggerTrue = new FormControl(0);
-    private eventoTriggerFalse = new FormControl(0)
+    private eventoTriggerTrue = new UntypedFormControl(0);
+    private eventoTriggerFalse = new UntypedFormControl(0)
 
-    constructor(public dialogRef: MatDialogRef<TriggerComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private formBuilder: FormBuilder) { }
+    constructor(public dialogRef: MatDialogRef<TriggerComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private formBuilder: UntypedFormBuilder) { }
 
 	async ngOnInit(){
 
