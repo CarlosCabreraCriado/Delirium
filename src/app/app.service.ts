@@ -98,13 +98,14 @@ export class AppService {
     setToken(token){
 	  console.log("Guardando Token: ");
 	  console.log(token);
-	  window.electronAPI.setToken(token)
+	  //window.electronAPI.setToken(token)
       this.token=token;
       return;
     }
 
     async getToken() {
-      this.token = await window.electronAPI.getToken();
+      //this.token = await window.electronAPI.getToken();
+        this.token = null
 	  console.log("Recuperando Token... Done");
       return this.token;
     }
@@ -408,7 +409,8 @@ export class AppService {
        console.log("Obteniendo Validando: ");
        //console.log(this.electronService.ipcRenderer);
 
-       this.cuenta = await window.electronAPI.getCuenta() 
+       //this.cuenta = await window.electronAPI.getCuenta() 
+       this.cuenta = {}
 
        console.log(this.cuenta);
 

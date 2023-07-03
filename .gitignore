@@ -8,6 +8,11 @@
 /Diseño
 /Delirium-darwin-x64
 
+/electron
+/ios
+/angular
+/android
+
 # dependencies
 /node_modules
 /plantillaComponent

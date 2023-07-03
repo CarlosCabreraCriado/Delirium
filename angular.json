@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "deliriumAngular": {
+    "app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -75,18 +75,18 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "deliriumAngular:build"
+            "browserTarget": "app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "deliriumAngular:build:production"
+              "browserTarget": "app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "deliriumAngular:build"
+            "browserTarget": "app:build"
           }
         },
         "test": {

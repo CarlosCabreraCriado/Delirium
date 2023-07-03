@@ -45,7 +45,11 @@ export class IndexComponent implements OnInit{
         }
       );
 
-		this.cuenta= await this.appService.getCuenta();
+      console.log("HOLAAA")
+		//this.cuenta= await this.appService.getCuenta();
+      //
+      this.cuenta = {}
+
 		console.log(this.cuenta);
 
 		if(this.cuenta.nombre==undefined){
