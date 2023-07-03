@@ -34,6 +34,7 @@
     "@angular/platform-browser": "~13.3.11",
     "@angular/platform-browser-dynamic": "~13.3.11",
     "@angular/router": "~13.3.11",
+
     "@types/nedb": "^1.8.9",
     "@types/socket.io-client": "^1.4.32",
     "ang-jsoneditor": "^1.9.1",
@@ -47,7 +48,6 @@
     "mongoose": "^5.13.4",
     "nedb": "^1.8.0",
     "ngx-json-viewer": "^2.4.0",
-    "ngx-pinch-zoom-13": "^2.5.6",
     "ngx-socket-io": "4.2.0",
     "node-sass": "^7.0.3",
     "path": "^0.12.7",
@@ -55,6 +55,7 @@
     "socket.io-client": "^2.3.0",
     "xlsx": "^0.17.0",
     "zone.js": "~0.11.4"
+  
   },
   "private": true,
   "devDependencies": {
@@ -66,6 +67,7 @@
     "@angular/cli": "^13.3.9",
     "@angular/compiler-cli": "~13.3.11",
     "@angular/language-service": "~13.3.11",
+
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "16.11.68",
@@ -86,6 +88,8 @@
     "tslint": "~6.1.0",
     "typescript": "~4.6.4",
     "webpack": "^5.74.0"
+
+  
   },
   "build": {
     "appId": "Delirium",

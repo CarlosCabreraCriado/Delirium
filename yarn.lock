@@ -210,7 +210,7 @@
   "resolved" "https://registry.npmjs.org/@angular/compiler/-/compiler-9.0.0.tgz"
   "version" "9.0.0"
 
-"@angular/core@*", "@angular/core@^13.0.0", "@angular/core@^13.0.0 || ^14.0.0-0", "@angular/core@>=5.0.0", "@angular/core@>=8.0.0", "@angular/core@~13.3.11", "@angular/core@13.3.11":
+"@angular/core@*", "@angular/core@^13.0.0", "@angular/core@^13.0.0 || ^14.0.0-0", "@angular/core@>=5.0.0", "@angular/core@~13.3.11", "@angular/core@13.3.11":
   "integrity" "sha512-9BmE2CxyV0g+AkBeuc8IwjSOiJ8Y+kptXnqD/J8EAFT3B0/fLGVnjFdZC6Sev9L0SNZb6qdzebpfIOLqbUjReQ=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-13.3.11.tgz"
   "version" "13.3.11"
@@ -4103,7 +4103,7 @@
   "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.284.tgz"
   "version" "1.4.284"
 
-"electron@>=6.0.10", "electron@21.0.1":
+"electron@21.0.1":
   "integrity" "sha512-jLVSLakd0fO2GPnW4xXQrI93R464jeFb2ISngqRP3wpwH96XqeANkuAYLAr9TVhfQMCIWnuPROBZ+NU7nuk0WA=="
   "resolved" "https://registry.npmjs.org/electron/-/electron-21.0.1.tgz"
   "version" "21.0.1"
@@ -6838,13 +6838,6 @@
   "resolved" "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   "version" "2.6.2"
 
-"ngx-electron@2.2.0":
-  "integrity" "sha512-Yl7Dsnvp97k0XpIuiB54X7Ij2+zU5x0pCAYnN//VZ9tF7c6S3//OZ9dN9Et7p/zIjCV3Hg9vyw68dPJEZGk+LQ=="
-  "resolved" "https://registry.npmjs.org/ngx-electron/-/ngx-electron-2.2.0.tgz"
-  "version" "2.2.0"
-  dependencies:
-    "tslib" "^1.9.0"
-
 "ngx-json-viewer@^2.4.0":
   "integrity" "sha512-26QmLp+0ds90aFug3KbSIwqtmQgCcJYFNNNcmcZHgPRj75nhKzbo4ceKxkhWmY5auKZClVO0HTZSs5bBhgb1Bw=="
   "resolved" "https://registry.npmjs.org/ngx-json-viewer/-/ngx-json-viewer-2.4.0.tgz"
@@ -8330,7 +8323,7 @@
   "resolved" "https://registry.npmjs.org/run-script-os/-/run-script-os-1.1.6.tgz"
   "version" "1.1.6"
 
-"rxjs@^6.5.3 || ^7.4.0", "rxjs@^7.0.0", "rxjs@^7.2.0", "rxjs@^7.4.0", "rxjs@>=5.5.2", "rxjs@>=6.3.0":
+"rxjs@^6.5.3 || ^7.4.0", "rxjs@^7.0.0", "rxjs@^7.2.0", "rxjs@^7.4.0", "rxjs@>=5.5.2":
   "integrity" "sha512-z9MzKh/UcOqB3i20H6rtrlaE/CgjLOvheWK/9ILrbhROGTweAi1BaFsTT9FbwZi5Trr1qNRs+MXkhmR06awzQA=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-7.5.7.tgz"
   "version" "7.5.7"
