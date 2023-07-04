@@ -20,6 +20,7 @@ import { MatStepperModule} from '@angular/material/stepper';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
+
 //Declaración de componentes: 
 import { IndexComponent } from './comun/index/index.component';
 import { MazmorraComponent } from './comun/mazmorra/mazmorra.component';
@@ -81,6 +82,8 @@ import { TriggerComponent } from './comun/desarrollador/triggerComponent/trigger
 //Componentes Backend:
 import { ElectronService } from './comun/electronService/public_api';
 import { environment } from '../environments/environment'
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
+
 
 //const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: { autoConnect: false } };
 const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect: false} };
@@ -160,8 +163,9 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         ReactiveFormsModule,
         MatDialogModule,
         MatStepperModule
+
     ],
-    providers: [ElectronService,],
+    providers: [ScreenOrientation,ElectronService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
