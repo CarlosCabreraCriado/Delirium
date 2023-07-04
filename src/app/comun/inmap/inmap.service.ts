@@ -39,6 +39,8 @@ export class InMapService {
 
         console.log("INICIANDO INMAP SERVICE");
 
+        this.sesion= this.appService.getSesion();
+
 		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
 
 	}
@@ -93,6 +95,7 @@ export class InMapService {
 
         //CARGAR DATOS:
         this.sesion= await this.appService.getSesion();
+        console.warn(this.sesion);
 
 		//Inicializa el grupo:
 
