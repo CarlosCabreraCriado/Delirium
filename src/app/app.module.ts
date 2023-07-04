@@ -81,12 +81,8 @@ import { TriggerComponent } from './comun/desarrollador/triggerComponent/trigger
 //Componentes Backend:
 import { ElectronService } from './comun/electronService/public_api';
 
-const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', 
-    options: {
-        autoConnect: false
-    } 
-};
-//const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {autoConnect: false} };
+//const config: SocketIoConfig = { url: 'http://127.0.0.1:8000', options: { autoConnect: false } };
+const config: SocketIoConfig = { url: 'http://www.carloscabreracriado.com', options: {autoConnect: false} };
 
 //Declaración del módulo:
 @NgModule({

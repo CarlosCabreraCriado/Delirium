@@ -40,8 +40,8 @@ export class AppService {
 
     }
 
-    //public ipRemota: string= "http://www.carloscabreracriado.com";
-    public ipRemota: string= "http://127.0.0.1:8000";
+    public ipRemota: string= "http://www.carloscabreracriado.com";
+    //public ipRemota: string= "http://127.0.0.1:8000";
 
     //Variables de configuración:
     public activarDatosOficiales= true;

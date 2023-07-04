@@ -47,7 +47,7 @@ export class IndexComponent implements OnInit{
 
 		this.cuenta= await this.appService.getCuenta();
       
-      this.cuenta = {}
+        this.cuenta = {}
 
 		console.log(this.cuenta);
 

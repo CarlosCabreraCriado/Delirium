@@ -41,6 +41,8 @@ export class AppComponent implements OnInit{
       this.appService.setProgresoCarga("0");
       this.appService.mostrarPantallacarga(true);
 
+      //await this.appService.inicializarStorage();
+
 	  this.cuenta = await this.appService.getCuenta()
 	  this.token = await this.appService.getToken()
 
