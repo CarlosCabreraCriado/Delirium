@@ -11,8 +11,8 @@ export class PanelEquipoComponent {
 
 	@Input() texto: string; 
 
-	private zindexBolsa: number= 20
-	private zindexBanco: number= 10
+	public zindexBolsa: number= 20
+	public zindexBanco: number= 10
 
 	constructor() {}
 

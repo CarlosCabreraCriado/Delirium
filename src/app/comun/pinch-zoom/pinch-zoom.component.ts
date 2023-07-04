@@ -316,5 +316,15 @@ export class PinchZoomComponent implements OnDestroy {
         this.pinchZoom.updateInitialValues();
     }
 
+    moverMapaMundo(region: string) {
+        switch(region){
+            case "region1": 
+                this.pinchZoom.setZoom({scale: 3, center:[656,387]})
+                break;
+        }
+        this.pinchZoom.transformElement(1000);
+        this.pinchZoom.updateInitialValues();
+    }
+
 
 }

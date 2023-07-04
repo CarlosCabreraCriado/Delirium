@@ -1,5 +1,6 @@
 
 @import "../../../variables.sass"
+@import "../../../breakpoints.scss"
 
 ::ng-deep .fondoDialogo
     background-color: rgba(black, 0.7)
@@ -38,11 +39,17 @@
         margin-top: 20px
         width: 100%
         text-align: center
+        @include media("<=phone")
+          margin-top: 10px
+
 
     .textoDialogo
         margin-top: 20px
+        margin-bottom: 0px
         width: 100%
         text-align: center
+        @include media("<=phone")
+          margin-top: 10px
 
     .botonUnico
         position: relative

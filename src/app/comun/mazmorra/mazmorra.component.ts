@@ -30,7 +30,7 @@ class AppAnimacionNumero {
 })
 
 export class MazmorraComponent implements OnInit,AfterViewInit{
-	constructor(private mazmorraService: MazmorraService, private appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
+	constructor(public mazmorraService: MazmorraService, private appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
 	
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
   	@ViewChild('canvasIsometrico',{static: false}) canvasIsometrico: ElementRef;
@@ -63,7 +63,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 	//Variables Internas:
 	private mostrarPantallaCarga:boolean = true;
-	private pantalla: string = "Inmap";
+	public pantalla: string = "Inmap";
 	private idCuenta: string;
 
 	//Variables Renderizado:

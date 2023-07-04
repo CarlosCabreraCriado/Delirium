@@ -10,7 +10,7 @@ import { AppService} from '../../app.service'
 
 export class PausaComponent implements OnInit {
 
-  constructor(private appService:AppService, private pausaService:PausaService) { }
+  constructor(public appService:AppService, public pausaService:PausaService) { }
 
   private mostrarPausaConfirmar:boolean=false;
   private mostrarPausaGeneral:boolean=true;

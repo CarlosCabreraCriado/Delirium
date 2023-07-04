@@ -17,18 +17,18 @@ export class FormMisionesComponent {
   	private desarrolladorSuscripcion: Subscription = null;
 
     //Variables de estado:
-    private opcionSeleccionada = "Propiedades";
-    private selectorOpcion = ["","",""];
+    public opcionSeleccionada = "Propiedades";
+    public selectorOpcion = ["","",""];
     private hechizosDisponibles = [];
 
     //Form Group:
-  	private formMision: UntypedFormGroup;
+  	public formMision: UntypedFormGroup;
   	private formPropiedades: UntypedFormGroup;
   	private formObjetivos: UntypedFormGroup;
   	private formRecompensas: UntypedFormGroup;
 
   	//Campos Datos Enemigo:
-  	private id_Mision = new UntypedFormControl(0);
+  	public id_Mision = new UntypedFormControl(0);
   	private nombre_Mision = new UntypedFormControl('???');
     private descripcion_Mision = new UntypedFormControl('???');
     private tipo_Mision = new UntypedFormControl('Gnoll');

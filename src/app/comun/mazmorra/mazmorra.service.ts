@@ -45,7 +45,7 @@ export class MazmorraService implements OnInit{
 	//Definicion mazmorra actual:
 	public mazmorra: any;
 	public guardado: any;
-	private mostrarMazmorra: boolean = false;
+	public mostrarMazmorra: boolean = false;
 
 	//Definicion de autoguardados:
 	public autoGuardado = {} as RenderMazmorra;

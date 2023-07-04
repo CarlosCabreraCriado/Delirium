@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PinchZoomComponent } from './pinch-zoom.component';
+//import { PinchZoomComponent } from './pinch-zoom.component';
 
 @NgModule({
     declarations: [
-        PinchZoomComponent
+        //PinchZoomComponent
     ],
     imports: [
         CommonModule
     ],
     exports: [
-        PinchZoomComponent
+        //PinchZoomComponent
     ],
     providers: [
 
@@ -19,7 +19,7 @@ import { PinchZoomComponent } from './pinch-zoom.component';
         
     ],
     entryComponents: [
-        PinchZoomComponent
+        //PinchZoomComponent
     ]
 })
 export class PinchZoomModule { }

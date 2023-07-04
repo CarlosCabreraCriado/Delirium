@@ -23,8 +23,8 @@ type Selector = {
 export class TriggerComponent {
 
     private confirmation: boolean = false;
-    private triggers: any = [];
-    private triggerActivo: any = {};
+    public triggers: any = [];
+    public triggerActivo: any = {};
     private indexTriggerSeleccionado = 0;
 
     //Form Group:

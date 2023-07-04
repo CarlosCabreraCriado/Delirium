@@ -54,7 +54,7 @@ export class DesarrolladorService implements OnInit{
     //Selector de imagenes:
     public mostrarSelectorImagen= false;
     public estadoSelectorImagen= "";
-    private pathImagenes = "Habilidades/Spell";
+    public pathImagenes = "Habilidades/Spell";
     
   //Logger Consola
     public logger=[];
@@ -63,9 +63,9 @@ export class DesarrolladorService implements OnInit{
   //Variables Mazmorra
     public mazmorra:any = {};
     public listaMazmorra:any= [];
-    public mostrarCargarMazmorra= false;
+    public mostrarCargarMazmorra = false;
     
-    private mazmorraInicializada= false;
+    public mazmorraInicializada = false;
     private mazmorraNombreId= "";
     private renderReticula= {}  as RenderReticula;
     private numFilasIni= 27;

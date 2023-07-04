@@ -22,7 +22,7 @@ export class CrearHeroeComponent {
 	private claseSeleccionada = "guerrero";
 	private generoSeleccionado = "masculino";
 	private nombre = "";
-	private idImagen = 3;
+	public imagenId = 3;
 
 	constructor(public dialogRef: MatDialogRef<CrearHeroeComponent>, @Inject(MAT_DIALOG_DATA) public data: CrearHeroeData) { }
 
@@ -35,24 +35,24 @@ export class CrearHeroeComponent {
 
 		switch(this.claseSeleccionada){
 			case "guerrero":
-				this.idImagen= 3;
+				this.imagenId= 3;
 				break
 			case "hechicero":
-				this.idImagen= 1;
+				this.imagenId= 1;
 				break
 			case "sacerdote":
-				this.idImagen= 7;
+				this.imagenId= 7;
 				break
 			case "cazador":
-				this.idImagen= 5;
+				this.imagenId= 5;
 				break
 			case "picaro":
-				this.idImagen= 9;
+				this.imagenId= 9;
 				break
 		}
 
 		if(this.generoSeleccionado=="femenino"){
-			this.idImagen++;
+			this.imagenId++;
 		}
 
 	}

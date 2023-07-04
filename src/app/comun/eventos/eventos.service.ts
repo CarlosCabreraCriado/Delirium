@@ -16,7 +16,7 @@ export class EventosService {
 	public codigo: number = 1;
 	public personaje1: string = "narrador";
 	public personaje2: string = "ingeniera";
-	private mostrarEvento:boolean= false;
+	public mostrarEvento:boolean= false;
 	private estado:string="default";
 
 	// Observable string sources

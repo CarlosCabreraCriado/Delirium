@@ -16,18 +16,18 @@ export class FormEnemigosComponent {
   	private desarrolladorSuscripcion: Subscription = null;
 
     //Variables de estado:
-    private opcionSeleccionada: "estadisticas"|"propiedades"|"acciones" = "acciones";
-    private accionSeleccionadaIndex = 0; 
-    private hechizosDisponibles = [];
+    public opcionSeleccionada: "estadisticas"|"propiedades"|"acciones" = "acciones";
+    public accionSeleccionadaIndex = 0; 
+    public hechizosDisponibles = [];
 
     //Form Group:
-  	private formEnemigo: UntypedFormGroup;
-  	private formEstadisticas: UntypedFormGroup;
-  	private formEscalado: UntypedFormGroup;
-  	private formAcciones: UntypedFormGroup;
+  	public formEnemigo: UntypedFormGroup;
+  	public formEstadisticas: UntypedFormGroup;
+  	public formEscalado: UntypedFormGroup;
+  	public formAcciones: UntypedFormGroup;
 
   	//Campos Datos Enemigo:
-  	private id_Enemigo = new UntypedFormControl(0);
+  	public id_Enemigo = new UntypedFormControl(0);
   	private nombre_Enemigo = new UntypedFormControl('???');
     private descripcion_Enemigo = new UntypedFormControl('???');
     private familia_Enemigo = new UntypedFormControl('Gnoll');

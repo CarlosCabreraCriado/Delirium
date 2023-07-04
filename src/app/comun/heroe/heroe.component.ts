@@ -20,7 +20,7 @@ export class HeroeComponent {
 	@Input() desplegable: boolean = false;
 	@Input() pantalla: string = "mazmorra"; 
 
-    private estadoDesplegado: boolean= false;
+    public estadoDesplegado: boolean= false;
 
 	constructor() {}
 

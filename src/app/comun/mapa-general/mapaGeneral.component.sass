@@ -45,21 +45,14 @@
     width: 100%
     height: 100%
 
-    &.niebla
-      -webkit-mask-image: url("../../../assets/InMap/mascara.png")
-      mask-image: url("../../../assets/InMap/mascara.png")
-      mask-repeat: no-repeat
-      -webkit-mask-position-x: center
-      -webkit-mask-position-y: center
-      mask-size: 100%
-
     .niebla
       -webkit-mask-image: url("../../../assets/InMap/mascara.png")
       mask-image: url("../../../assets/InMap/mascara.png")
       mask-repeat: no-repeat
-      -webkit-mask-position-x: center 
-      -webkit-mask-position-y: center
-      mask-size: 100%
+      -webkit-mask-position-x: 47%
+      -webkit-mask-position-y: 47%
+      mask-size: 50%
+
 
   .contenedorScroll
     position: absolute
@@ -68,21 +61,25 @@
 
   .contenedorMapaGlobal
     position: absolute
+    display: flex
+    align-items: center
+    justify-content: center
     width: 100%
     height: 100%
     //mask-image: url("../../../assets/InMap/mascara.png")
 
   .contenedorMascara
     position: absolute 
-    width: 100%
-    height: 100%
+    width: auto 
+    height: auto 
+    display: flex
 
     .mapaMundo
-      position: absolute
+      position: relative
       //top:50%
       //left: 50%
-      width:100%
-      //max-height: 100%
+      max-width: 80vw
+      max-height: 90vh 
       //max-width: 100%
       //transform: scale(0.8)
 
@@ -102,51 +99,15 @@
     top: 0
     left: 0
     width: 100%
-    padding-top: 65%
+    height: 100%
 
-    .aspect-ratio
+    .marcador
       position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
-
-    .pulsacion
-      position: absolute
-      transform: translateX(-50%) translateY(-50%)
-      width: 20px
-      height: 20px
-      &:before 
-        content: ''
-        position: relative
-        display: block
-        width: 300%
-        height: 300%
-        box-sizing: border-box
-        margin-left: -100%
-        margin-top: -100%
-        border-radius: 45px
-        background-color: white
-        animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite
-      &:after 
-        content: ''
-        position: absolute
-        left: 0
-        top: 0
-        display: block
-        width: 100%
-        height: 100%
-        background-color: dimgray
-        border-radius: 10px
-        box-shadow: 0 0 8px rgba(0,0,0,.3)
-        animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite
-      &:hover:after
-        background-color: white
-
+      width: 2%
+      
     .zona1
-      position: absolute
-      top: 90%  
-      left: 86.5% 
+      top: 87%  
+      left: 85.5% 
 
   .contenedorMapaIsometrico
     position: absolute

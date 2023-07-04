@@ -198,6 +198,7 @@ export class IvyPinch {
     }
 
     handleDoubleTap = (event: any) => {
+        console.log(event)
         this.toggleZoom(event);
         return;
     }
@@ -331,10 +332,10 @@ export class IvyPinch {
         if (this.moveX > 0) {
             this.moveX = 0;
         }
-
+        //ELIMINAR LIMIT PAN:
         if (img) {
-            this.limitPanY();
-            this.limitPanX();
+            //this.limitPanY();
+            //this.limitPanX();
         }
         if (img && this.scale < 1) {
             if (this.moveX < this.element.offsetWidth * (1 - this.scale)) {

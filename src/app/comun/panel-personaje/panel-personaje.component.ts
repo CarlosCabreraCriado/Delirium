@@ -10,8 +10,8 @@ import { AppService } from '../../app.service';
 
 export class PanelPersonaje implements OnInit {
 
-	private pantalla = "General";
-	private mostrarSeleccionHeroe = false;
+	public pantalla = "General";
+	public mostrarSeleccionHeroe = false;
 
 	public idImagenHechizo= [5,1,2,3,4];
 	public imagenHechHorizontal= [0,0,0,0,0];
@@ -24,7 +24,7 @@ export class PanelPersonaje implements OnInit {
 	private perks: any;
 	private hechizos: any;
 	private buff: any;
-	private heroeSeleccionado : any = "Sin definir";
+	public heroeSeleccionado : any = "Sin definir";
 
 	constructor(private appService: AppService) {}
 

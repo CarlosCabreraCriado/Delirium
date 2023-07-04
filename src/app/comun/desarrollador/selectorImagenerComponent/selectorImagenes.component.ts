@@ -1,5 +1,6 @@
 
 import { Component , Input } from '@angular/core';
+import { DesarrolladorService } from '../desarrollador.service';
 
 @Component({
   selector: 'selectorImagenesComponent',
@@ -11,7 +12,7 @@ export class SelectorImagenesComponent {
 
 	@Input() texto: string; 
 
-	constructor() {}
+	constructor(public desarrolladorService: DesarrolladorService) {}
 
 }
 

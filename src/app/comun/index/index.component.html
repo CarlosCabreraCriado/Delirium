@@ -1,63 +1,48 @@
 
 <!-- Diseño Fondo --> 
 
+<!--
 <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="video-fondo" id="video-fondo" oncanplay="this.muted=true" loop poster="assets/General/Fondo-Papiro.png">
   <source src="assets/videos/video-fondo.mp4" type="video/mp4"/>
 </video> 
+-->
 
 <img src="assets/General/Fondo-Papiro.png" class="Fondo-papiro" alt="Fondo-papiro">
 
 <!-- Pantalla de Inicio --> 
 <div id="ContenedorInicio" class="ContenedorInicio visible">
-
-  <div id="contenedorIconos">
-    <img src="assets/General/gear.png" class="icono ajustes" alt="Icono Bug" (click)="appService.mostrarAjustes('');">
-    <img src="assets/General/bug.png" class="icono tool" alt="Icono Bug" (click)="appService.mostrarBugLog('');">
-    <img src="assets/General/tool.png" class="icono developer" alt="Icono Bug" (click)="appService.mostrarDeveloperTool('');">
-  </div>
   
   <div id="contenedorLogo"> 
     <img class="Logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo"> 
   </div>
 
-  <div class="contenedorInicioSesion">
-	  <div class="marcoInicioSesion"></div>
+
+  <div class="contenedorInicioSesion borde1 sombra">
 	  <div class="Texto2 bloque textoIniciarSesion">Inicar sesión</div>
 	  <hr class="Texto2 bloque separador">
-	  <div class="Texto2 bloque textoUsuario">Usuario:</div>
-	  <div class="Texto2 bloque input inputUsuario">
-		  <input #usuario type="text" class="Texto2"/>
-	  </div>
-	  <div class="Texto2 bloque textoContraseña">Contraseña:</div>
-	  <div class="Texto2 bloque input inputContraseña">
-		  <input #clave type="password" class="Texto2"/>
-	  </div>
-	  <botonComponent *ngIf="!procesando" class="contenedorBoton" [color]="'violeta'" [texto]="'Iniciar'" (click)="checkClave();"></botonComponent>
-      <div *ngIf="procesando" class="lds-dual-ring"></div>
+
+      <div class="wrapperInterior">
+          <div *ngIf="!procesando" class="wrapperCampo"> 
+            <div class="Texto2 bloque texto">Usuario:</div>
+            <div class="Texto2 bloque input">
+              <input #usuario type="text" class="Texto2"/>
+            </div>
+          </div>
+
+          <div *ngIf="!procesando" class="wrapperCampo"> 
+              <div class="Texto2 bloque texto">Contraseña:</div>
+              <div class="Texto2 bloque input">
+                  <input #clave type="password" class="Texto2"/>
+              </div>
+          </div>
+          <botonComponent *ngIf="!procesando" class="contenedorBoton" [tipoBoton]="2" [color]="'violeta'" [texto]="'Iniciar'" (click)="checkClave();"></botonComponent>
+          <div *ngIf="procesando" class="lds-dual-ring"></div>
+      </div>
   </div>
 
   <div id="botonCrearCuenta" class="Texto2" (click)="mostrarCrearCuenta()">
 	Crear Cuenta
   </div>
-
-  <!--
-    <div *ngIf="!appService.claveValida" id="contenedorVerificacion" class="visible">
-
-      <form id="formularioClave" class="Texto1" *ngIf="!appService.claveValida && !procesando">
-         Introduzca su clave:<br>
-         <div id="error" class="Texto2" *ngIf="errorInicio">{{errorInicio}}</div>
-         <input #clave id="clave" class="inputClave Texto2" type="password" name="clave"  autofocus><br/>
-         
-         <button id="botonSubmit"  class="Texto2" (click)="$event.preventDefault(); checkClave();">
-           <img src="assets/General/boton2.png" id="botonAcceso">
-         </button>
-         
-      </form>
-      
-      <div *ngIf="procesando" class="lds-dual-ring"></div>
-
-    </div>
-  -->
 
  </div>
  
