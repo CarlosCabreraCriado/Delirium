@@ -1,7 +1,9 @@
+
+
 $breakpoints: (
   "smphone": 576px,
-  "phone": 768px,
-  "tablet": 1336px,
+  "phone": 1000px,
+  "tablet": 1680px,
   "desktop": 1680px
 ) !default;
 
@@ -21,6 +23,7 @@ $breakpoints: (
 ///		)
 ///	);
 ///
+//
 $media-expressions: (
   "screen": "screen",
   "print": "print",
@@ -63,7 +66,7 @@ $unit-intervals: (
   "em": 0.01,
   "rem": 0.1
 ) !default;
-///
+
 /// Generates a media query based on a list of conditions
 ///
 /// @author Eduardo Boucas
@@ -88,6 +91,7 @@ $unit-intervals: (
 /// @example scss - Mixing everything
 ///  @include media(">=350px", "<tablet", "retina3x") { }
 ///
+//
 @mixin media($conditions...) {
   @for $i from 1 through length($conditions) {
     $conditions: set-nth(
@@ -327,3 +331,4 @@ $unit-intervals: (
 
   @return $number * nth($units, $index);
 }
+

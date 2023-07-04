@@ -16,20 +16,20 @@ export class FormClasesComponent {
   	private desarrolladorSuscripcion: Subscription = null;
 
     //Variables de estado:
-    private opcionSeleccionada = "Estadisticas";
-    private hechizosDisponibles = [];
+    public opcionSeleccionada = "Estadisticas";
+    public hechizosDisponibles = [];
 
     //Form Group:
-  	private formClase: UntypedFormGroup;
-  	private formEstadisticas: UntypedFormGroup;
-  	private formEscalado: UntypedFormGroup;
+  	public formClase: UntypedFormGroup;
+  	public formEstadisticas: UntypedFormGroup;
+  	public formEscalado: UntypedFormGroup;
 
   	//Campos Datos Clase:
-  	private id_Clase = new UntypedFormControl(0);
-  	private nombre_Clase = new UntypedFormControl('???');
-    private descripcion_Clase = new UntypedFormControl('???');
-    private tipoArmadura_Clase = new UntypedFormControl('Ligera');
-    private energiaMovimiento_Clase = new UntypedFormControl(0);
+  	public id_Clase = new UntypedFormControl(0);
+  	public nombre_Clase = new UntypedFormControl('???');
+    public descripcion_Clase = new UntypedFormControl('???');
+    public tipoArmadura_Clase = new UntypedFormControl('Ligera');
+    public energiaMovimiento_Clase = new UntypedFormControl(0);
 
     private armadura = new UntypedFormControl(0);
     private resistencia_magica = new UntypedFormControl(0);

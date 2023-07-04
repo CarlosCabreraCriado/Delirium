@@ -44,17 +44,15 @@
 	<!--      Social    -->
 	<!--   ******************* -->
 
+    <!--
 	<img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="abrirSocial()"/>
+    -->
 
 	<!--   ******************* -->
 	<!--      Desarrollador    -->
 	<!--   ******************* -->
 
-	<img id="botonAbrirEvento" src="../../../assets/desarrollador/animacion.png" (click)="appService.abrirEvento()"/>
-
-    <div id="botonPruebas">
-        <div class="animacionFocus"></div>
-    </div>
+	<img id="botonAbrirEvento" src="../../../assets/desarrollador/animacion.png" (click)="appService.centrarRegion()"/>
 
 	<!--   ******************* -->
 	<!--      Panel Control    -->
@@ -84,7 +82,7 @@
 	<div id="ContenedorMapa">
         <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
         <mapaGeneralComponent id="mapaGeneralComponent"
-                              (comandoMapaGeneral)="console.log($event)" 
+                              (comandoMapaGeneral)="comandoPanelGeneral($event)" 
                               [coordenadas]="appService.sesion.inmap"
                               [radioRenderIsometrico]="appService.radioRenderIsometrico"
                               [herramientaInMap]="'InMap'"

@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
   private cuenta: any = null;
   private token: string = null;
 
-  constructor(private appService: AppService,private socketService:SocketService, private location: Location){ }
+  constructor(public appService: AppService,private socketService:SocketService, private location: Location){ }
 
   @HostListener('document:keydown', ['$event'])
   		handleKeyboardEvent(event: KeyboardEvent) { 

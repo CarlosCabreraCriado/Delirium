@@ -15,6 +15,8 @@ export class EnemigoComponent {
 	@Input() seleccionable: boolean;
 	@Input() desplegable: boolean = false;
 
+    public estadoDesplegado: boolean= false;
+
 	constructor() {}
 
 	renderizarEstiloBuffosEnemigos(buff:any):any{

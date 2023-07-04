@@ -1,19 +1,24 @@
 {
   "name": "Delirium",
   "main": "main.js",
-  "version": "0.3.0",
-  "description": "Juego de rol de mesa",
+  "version": "0.4.0",
+  "description": "Juego de mesa RPG",
   "author": "Carlos Cabrera",
   "license": "MIT",
   "scripts": {
+
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --configuration=electron-dev",
+    "start-prod": "ng serve --configuration=electron-prod",
+
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+
     "electron": "run-script-os",
     "electron:win32": "SET NODE_ENV=dev&& electron .",
     "electron:darwin": "NODE_ENV=dev electron .",
+
     "dist": "electron-builder",
     "dist-mac": "electron-packager . --platform=darwin",
     "electron-build": "ng build --configuration production && electron .",

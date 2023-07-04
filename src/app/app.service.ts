@@ -10,6 +10,7 @@ import { SocialComponent } from './comun/social/social.component';
 import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { MatDialog} from '@angular/material/dialog';
 import { Storage } from '@ionic/storage-angular';
+import { environment } from '../environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -23,25 +24,28 @@ export class AppService {
       console.log(navigator.userAgent);
 
       if(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|CriOS/i.test(navigator.userAgent)){
-         console.log("MODO MOVIL")
          this.dispositivo="Movil";
       } else if (/iPad|Mobile|mobile/i.test(navigator.userAgent)){
-         console.log("MODO TABLET")
          this.dispositivo="Tablet";
       }else{
-         console.log("MODO DESKTOP")
          this.dispositivo="Desktop";
       }
 
-      this.dispositivo="Movil";
+      //Variables de entorno:
+      this.ipRemota =  environment.dominio
+      this.ionic = environment.ionic
+      console.warn("ENTORNO: ") 
+      console.warn("IP REMOTA: ", environment.dominio) 
+      console.warn("IONIC: ", environment.ionic) 
+      console.warn("DISPOSITIVO: ", this.dispositivo) 
 
       //Inicializa Storage:
       this.initStorage()
-
     }
 
-    public ipRemota: string= "https://www.carloscabreracriado.com";
-    //public ipRemota: string= "http://127.0.0.1:8000";
+    //Variables de entorno:
+    public ipRemota: string= "";
+    private ionic: boolean= true; 
 
     //Variables de configuración:
     public activarDatosOficiales= true;
@@ -59,7 +63,7 @@ export class AppService {
     public mazmorra: any;
     public renderIsometrico: any;
     public radioRenderIsometrico: number = 6;
-    public escalaIsometrico: number = 3;
+    public escalaIsometrico: number = 1;
 
     //Definicion estadisticas generales:
     private clases: any;
@@ -117,7 +121,7 @@ export class AppService {
     setToken(token){
 	  console.log("Guardando Token: ");
 	  console.log(token);
-      if(this.movil){
+      if(this.ionic){
           this.set("token",token)
       }else{
 	    window.electronAPI.setToken(token)
@@ -127,7 +131,7 @@ export class AppService {
     }
 
     async getToken() {
-      if(this.movil){
+      if(this.ionic){
         this.token=  await this.storage.get("token")
       }else{
         this.token = await window.electronAPI.getToken();
@@ -147,10 +151,10 @@ export class AppService {
 	  console.log("Guardando Perfil...");
 	  console.log(perfil);
 
-      if(this.movil){
+      if(this.ionic){
           this.set("perfil",perfil)
       }else{
-	    window.electronAPI.setToken(perfil)
+	    window.electronAPI.setPerfil(perfil)
       }
       this.perfil=perfil;
       return;
@@ -240,39 +244,39 @@ export class AppService {
         switch(datosJuego[i].nombreId){
           case "Clases":
             this.clases = datosJuego[i];
-            if(this.movil){this.set("clases",this.clases)}
+            if(this.ionic){this.set("clases",this.clases)}
           break;
           case "Objetos":
             this.objetos = datosJuego[i];
-            if(this.movil){this.set("objetos",this.objetos)}
+            if(this.ionic){this.set("objetos",this.objetos)}
           break;
           case "Perks":
             this.perks = datosJuego[i];
-            if(this.movil){this.set("perks",this.perks)}
+            if(this.ionic){this.set("perks",this.perks)}
           break;
           case "Hechizos":
             this.hechizos = datosJuego[i];
-            if(this.movil){this.set("hechizos",this.hechizos)}
+            if(this.ionic){this.set("hechizos",this.hechizos)}
           break;
           case "Buff":
             this.buff = datosJuego[i];
-            if(this.movil){this.set("buff",this.buff)}
+            if(this.ionic){this.set("buff",this.buff)}
           break;
           case "Animaciones":
             this.animaciones = datosJuego[i];
-            if(this.movil){this.set("animaciones",this.animaciones)}
+            if(this.ionic){this.set("animaciones",this.animaciones)}
           break;
           case "Enemigos":
             this.enemigos = datosJuego[i];
-            if(this.movil){this.set("enemigos",this.enemigos)}
+            if(this.ionic){this.set("enemigos",this.enemigos)}
           break;
           case "Misiones":
             this.misiones = datosJuego[i];
-            if(this.movil){this.set("misiones",this.misiones)}
+            if(this.ionic){this.set("misiones",this.misiones)}
           break;
           case "Parametros":
             this.parametros = datosJuego[i];
-            if(this.movil){this.set("parametros",this.parametros)}
+            if(this.ionic){this.set("parametros",this.parametros)}
           break;
         }
       }
@@ -280,7 +284,7 @@ export class AppService {
       console.log("Datos de Juego: ");
       console.log(datosJuego);
 
-      if(!this.movil){
+      if(!this.ionic){
 	    window.electronAPI.setDatosJuego(datosJuego)
       }
 
@@ -289,7 +293,7 @@ export class AppService {
 
     setEventos(eventos: any){
         this.eventos = eventos;
-        if(this.movil){
+        if(this.ionic){
             this.set("eventos",this.eventos)
         }else{
             window.electronAPI.setEventos(eventos)
@@ -327,7 +331,7 @@ export class AppService {
       this.cuenta= val;
       console.log("SET CUENTA")
       console.log(this.cuenta);
-        if(this.movil){
+        if(this.ionic){
             this.set("cuenta",this.cuenta)
         }else{
             console.log(await window.electronAPI.setCuenta(this.cuenta));
@@ -456,7 +460,7 @@ export class AppService {
        console.log("Obteniendo Validando: ");
        //console.log(this.electronService.ipcRenderer);
 
-        if(this.movil){
+        if(this.ionic){
             this.cuenta = await this.storage.get("cuenta");
         }else{
             this.cuenta = await window.electronAPI.getCuenta() 
@@ -480,7 +484,7 @@ export class AppService {
     }
 
     async getPerfil(){
-        if(this.movil){
+        if(this.ionic){
             this.perfil = await this.storage.get("perfil");
         }else{
             this.perfil = await window.electronAPI.getPerfil(); // REVISAR
@@ -489,17 +493,17 @@ export class AppService {
     }
 
     async getClases(){
-        if(this.movil){
-            this.perfil = await this.storage.get("clases");
+        if(this.ionic){
+            this.clases = await this.storage.get("clases");
         }else{
-            this.hechizos = await window.electronAPI.getDatosClases();
+            this.clases = await window.electronAPI.getDatosClases();
         }
-      return this.hechizos;
+      return this.clases;
     }
 
     async getObjetos(){
-        if(this.movil){
-            this.perfil = await this.storage.get("objetos");
+        if(this.ionic){
+            this.objetos = await this.storage.get("objetos");
         }else{
             this.objetos = await window.electronAPI.getDatosObjetos();
         }
@@ -507,8 +511,8 @@ export class AppService {
     }
 
     async getPerks(){
-        if(this.movil){
-            this.perfil = await this.storage.get("perks");
+        if(this.ionic){
+            this.perks = await this.storage.get("perks");
         }else{
             this.perks = await window.electronAPI.getDatosPerks();
         }
@@ -516,8 +520,8 @@ export class AppService {
     }
 
     async getHechizos(){
-        if(this.movil){
-            this.perfil = await this.storage.get("hechizos");
+        if(this.ionic){
+            this.hechizos = await this.storage.get("hechizos");
         }else{
             this.hechizos = await window.electronAPI.getDatosHechizos();
         }
@@ -525,8 +529,8 @@ export class AppService {
     }
 
     async getBuff(){
-        if(this.movil){
-            this.perfil = await this.storage.get("buff");
+        if(this.ionic){
+            this.buff = await this.storage.get("buff");
         }else{
             this.buff = await window.electronAPI.getDatosBuff();
         }
@@ -534,8 +538,8 @@ export class AppService {
     }
 
     async getAnimaciones(){
-        if(this.movil){
-            this.perfil = await this.storage.get("animaciones");
+        if(this.ionic){
+            this.animaciones = await this.storage.get("animaciones");
         }else{
             this.animaciones = await window.electronAPI.getDatosAnimaciones();
         }
@@ -543,8 +547,8 @@ export class AppService {
     }
 
     async getEnemigos(){
-        if(this.movil){
-            this.perfil = await this.storage.get("enemigos");
+        if(this.ionic){
+            this.enemigos = await this.storage.get("enemigos");
         }else{
             this.enemigos = await window.electronAPI.getDatosEnemigos();
         }
@@ -552,8 +556,8 @@ export class AppService {
     }
 
     async getEventos(){
-        if(this.movil){
-            this.perfil = await this.storage.get("eventos");
+        if(this.ionic){
+            this.eventos = await this.storage.get("eventos");
         }else{
             this.eventos = await window.electronAPI.getDatosEventos();
         }
@@ -561,8 +565,8 @@ export class AppService {
     }
 
     async getMisiones(){
-        if(this.movil){
-            this.perfil = await this.storage.get("misiones");
+        if(this.ionic){
+            this.misiones = await this.storage.get("misiones");
         }else{
             this.misiones = await window.electronAPI.getDatosMisiones();
         }
@@ -570,8 +574,8 @@ export class AppService {
     }
 
     async getParametros(){
-        if(this.movil){
-            this.perfil = await this.storage.get("parametros");
+        if(this.ionic){
+            this.parametros = await this.storage.get("parametros");
         }else{
             this.parametros = await window.electronAPI.getDatosParametros();
         }
@@ -616,8 +620,13 @@ export class AppService {
 	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"], 
 	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"], 
         }
+
         //this.mostrarDialogo("Mision",objetoEventoNarradorImg);
-        this.eventoAppService.emit("centrarMapa")
+
+    }
+
+    centrarRegion(){
+        this.eventoAppService.emit("region1")
     }
 
  //*********************************

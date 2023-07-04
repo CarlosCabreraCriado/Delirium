@@ -46,6 +46,7 @@ export class MapaGeneralComponent implements OnInit {
 	@Input() mostrarNiebla: boolean = true;
 	@Input() mostrarNieblaFija: boolean = false;
 	@Input() mostrarInfranqueable: boolean;
+	@Input() mostrarCentro: boolean = false;
 
 	@Input() coordenadas: Coordenadas = null;
 	@Input() radioRenderIsometrico: number;
@@ -74,6 +75,12 @@ export class MapaGeneralComponent implements OnInit {
                   console.log("CENTRANDO: ")
                   console.log(this.pinchZoom)
                   this.pinchZoom.centrarIsometrico()
+                  break;
+              case "region1":
+                  console.log("CENTRANDO REGION 1...")
+                  console.log(this.pinchZoom)
+                  //this.pinchZoom.centrarIsometrico()
+                  this.pinchZoom.moverMapaMundo("region1");
                   break;
               case "cargarIsometrico":
                   this.inicializarIsometrico();

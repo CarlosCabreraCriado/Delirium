@@ -14,10 +14,10 @@ import { SocketService } from '../socket/socket.service';
 
 export class InMapComponent implements OnInit{
 
-	constructor(private dialog: MatDialog, public appService: AppService, private inmapService: InMapService, private socketService:SocketService) { }
+	constructor(private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) { }
 
 
-	private pantalla: string = "Inmap";
+	public pantalla: string = "Inmap";
 	private idCuenta: string;
 
 	//Declara Suscripcion Evento Socket:
@@ -100,9 +100,8 @@ export class InMapComponent implements OnInit{
 	    	this.inmapService.importarDatosGenerales();	
 
         }).then(() => {
-
             //Cargar Grupo:
-            console.log("Cargando Grupo: ");
+            console.log("Iniciando Inmap: ");
             this.inmapService.iniciarInMap();
 
         });
@@ -128,16 +127,13 @@ export class InMapComponent implements OnInit{
 	}
 
 	comandoPanelControl(comando:any){
-
 		//Si se pulsa el centro accede a mazmorra:
 		if(comando=="centro"){
 			this.inmapService.iniciarPartida("MazmorraSnack");	
 		}
-
 	}
 
 	cambiarPantalla(nombrePantalla:string):void{
-
 		//Realiza el cambio de pantalla:
 		if(this.pantalla == nombrePantalla){
 			this.pantalla = 'Inmap';

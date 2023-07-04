@@ -48,6 +48,7 @@
 
 		</div>
 
+        <!-- INTERNO -->
 	<div id="contenedorPanelInterno">
 		<div class="fondoPanelInterior"></div>
 
@@ -81,85 +82,7 @@
 		</div> <!-- Cierre de panel General -->
 
 		<!-- PANEL HABILIDADES -->
-		<div *ngIf="pantalla=='Habilidades' && heroeSeleccionado!=null" class="contenedorHabilidades">
-			
-			<div class="contenedorPasiva">
-				<div class="titulo Texto1">Pasiva</div>
-				<div class="contenedorHabilidad">
-					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[0]+'% '+imagenHechVertical[0]+'%','background-size': '1800%'}"/>
-					<div class="contenedorTexto">
-						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][0].nombre}}</div>
-						<div class="texto Texto4"> 
-							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][0].descripcion}}
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="contenedorHechizos">
-
-				<div class="titulo Texto1">Habilidades</div>
-				<!-- HECHIZO 1 -->	
-				<div class="contenedorHabilidad">
-					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[1]+'% '+imagenHechVertical[1]+'%','background-size': '1800%'}"/>
-					<div class="contenedorTexto">
-						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][1].nombre}}</div>
-						<div class="texto Texto4"> 
-							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][1].descripcion}}
-						</div>
-					</div>
-				</div>
-
-				<!-- HECHIZO 2 -->	
-				<div class="contenedorHabilidad">
-					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[2]+'% '+imagenHechVertical[2]+'%','background-size': '1800%'}"/>
-					<div class="contenedorTexto">
-						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][2].nombre}}</div>
-						<div class="texto Texto4">  
-							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][2].descripcion}}
-						</div>
-					</div>
-				</div>
-
-				<!-- HECHIZO 3 -->	
-				<div class="contenedorHabilidad">
-					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[3]+'% '+imagenHechVertical[3]+'%','background-size': '1800%'}"/>
-					<div class="contenedorTexto">
-						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][3].nombre}}</div>
-						<div class="texto Texto4">  
-							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][3].descripcion}}
-						</div>
-					</div>
-				</div>
-
-				
-				<!-- HECHIZO 4 -->	
-				<div class="contenedorHabilidad">
-                    <img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/1.png) '}"/>
-					<div class="contenedorTexto">
-						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].nombre}}</div>
-						<div class="texto Texto4"> 
-						   	{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].descripcion}}
-						</div>
-					</div>
-				</div>
-
-				<!-- HECHIZO 5 -->	
-				<!--
-				<div class="contenedorHabilidad">
-					<img class="imagenHabilidad" [ngStyle]="{'background':'url(./assets/Habilidades/Hechizos1.png) '+imagenHechHorizontal[5]+'% '+imagenHechVertical[5]+'%','background-size': '1800%'}"/>
-					<div class="contenedorTexto">
-						<div class="titulo Texto3">{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].nombre}}</div>
-						<div class="texto Texto4">  
-							{{heroeHech[heroeSeleccionado['clase'].toLowerCase()][4].descripcion}}
-						</div>
-					</div>
-				</div>
-				-->
-
-			</div>	
-
-		</div>
+		
 
 	</div>
 

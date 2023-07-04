@@ -12,7 +12,7 @@ export class InterfazComponent implements OnInit {
 
 	@Input() renderMazmorra: any;
 
-  constructor(private interfazService: InterfazService) { }
+  constructor(public interfazService: InterfazService) { }
 
 
   ngOnInit() {

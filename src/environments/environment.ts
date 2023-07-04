@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  ionic: true,
+  dominio: "http://127.0.0.1:8000"
 };
 
 /*

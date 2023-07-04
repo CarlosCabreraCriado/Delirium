@@ -24,7 +24,7 @@ export class InMapService {
 	private perfil: any;
 
     //Importar Sesion:
-	private sesion: any;
+	public sesion: any;
 
 	//Estados Inmap:
 	public heroeSeleccionado: any;	
@@ -58,6 +58,7 @@ export class InMapService {
 
 		//Carga el perfil:
 		this.perfil= await this.appService.getPerfil();
+
         console.log("PERFIL")
         console.log(this.perfil)
 

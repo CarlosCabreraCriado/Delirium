@@ -14,18 +14,15 @@
             [disableZoomControl]="'disable'"
             [limit-zoom]="10">
 
-            <div id="marcadorCentro"></div>
+            <div *ngIf="mostrarCentro" id="marcadorCentro"></div>
 
             <!-- Mapa Global -->
             <div *ngIf="appService.estadoInmap=='global'" class="contenedorMapaGlobal">
 
                 <div class="contenedorMascara">
-                <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
-                </div>
-
-                <div class="contenedorMarcadoresZonas">
-                    <div class="aspect-ratio">
-                    <div class="zona zona1 pulsacion" (click)="appService.cargarRegion('Asfaloth');"></div>
+                    <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+                    <div class="contenedorMarcadoresZonas">
+                        <img class="marcador zona1 animate__animated animate__infinite animate__pulse" src="../../../assets/Mapa/indicador.png" (click)="appService.cargarRegion('Asfaloth')">
                     </div>
                 </div>
 

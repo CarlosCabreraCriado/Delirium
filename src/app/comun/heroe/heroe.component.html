@@ -3,7 +3,7 @@
 <!--       PLACA HEROE     -->
 <!--   ******************* -->
 
-<div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe(indexHeroe)" [ngClass]="retraido">
+<div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe()">
 
     <!-- FRAME CIRCULO -->
 	<div class="frameCirculo" >
@@ -34,7 +34,7 @@
                 <div class="frameDetalle"></div>
             </div>
 
-            <div class="nombre Texto3">{{renderHeroe.nombre}}</div>
+            <div class="nombre Texto4">{{renderHeroe.nombre}}</div>
 
             <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
             <!-- BARRAS -->
