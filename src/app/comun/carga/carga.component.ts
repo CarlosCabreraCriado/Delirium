@@ -15,7 +15,7 @@ export class CargaComponent implements OnInit {
   public mostrarPantallaCarga: boolean = true;
   private subtituloCarga: string = "Cargando";
   private progreso:string = "0%";
-  private opacidad:any = 1;
+  public opacidad:any = 1;
 
   ngOnInit() {
 

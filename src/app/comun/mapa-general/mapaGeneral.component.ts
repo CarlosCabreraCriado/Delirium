@@ -66,29 +66,50 @@ export class MapaGeneralComponent implements OnInit {
 
   ngOnInit(){
 
-
-
        //Suscripcion AppService:
        this.appServiceSuscripcion = this.appService.eventoAppService.subscribe((comando) =>{
           switch(comando){
+
               case "centrarMapa":
-                  console.log("CENTRANDO: ")
-                  console.log(this.pinchZoom)
-                  this.pinchZoom.centrarIsometrico()
+                    console.log("Centrando Mapa Global...")
+                    //this.pinchZoom.pinchZoom.centeringImage();
+                    this.pinchZoom.pinchZoom.moveX = 0 
+                    this.pinchZoom.pinchZoom.moveY = 0 
+                    this.pinchZoom.pinchZoom.scale= 1
+                    //this.pinchZoom.pinchZoom.setZoom({scale: 1, center:[0,0]})
                   break;
+
+              case "centrarIsometrico":
+                    console.log("Centrando Isometrico...")
+                    this.pinchZoom.pinchZoom.centeringImage();
+
+                    this.pinchZoom.pinchZoom.moveX = 0 
+                    this.pinchZoom.pinchZoom.moveY = 0 
+                  break;
+
               case "region1":
                   console.log("CENTRANDO REGION 1...")
-                  console.log(this.pinchZoom)
-                  //this.pinchZoom.centrarIsometrico()
-                  this.pinchZoom.moverMapaMundo("region1");
+                  //this.pinchZoom.pinchZoom.moveX = 656 
+                  //this.pinchZoom.pinchZoom.moveY = 387 
+                  //this.pinchZoom.pinchZoom.scale= 3
+                    if(this.pinchZoom.pinchZoom.scale==1){
+                        this.pinchZoom.pinchZoom.setZoom({scale: 3, center:[656,387]})
+                    }else{
+                        this.pinchZoom.pinchZoom.moveX = 0 
+                        this.pinchZoom.pinchZoom.moveY = 0 
+                        this.pinchZoom.pinchZoom.scale= 1
+                    }
                   break;
-              case "cargarIsometrico":
+
+              case "inicializarIsometrico":
                   this.inicializarIsometrico();
                   break;
-          }
+            }
+            this.pinchZoom.pinchZoom.transformElement(1000);
+            this.pinchZoom.pinchZoom.updateInitialValues();
         });
 
-  }
+  }//Fin OnInit
 
   inicializarIsometrico(){
       //Inicializar RENDER:
@@ -100,6 +121,8 @@ export class MapaGeneralComponent implements OnInit {
   }
 
   clickTile(i:number,j:number,event: any){
+      if(!this.desarrollo){return}
+
     console.log("Click: i: "+i+" j: "+j) 
     console.log("TILE:")
     console.log(this.appService.region.isometrico[i][j])

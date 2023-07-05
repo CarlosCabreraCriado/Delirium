@@ -297,34 +297,5 @@ export class PinchZoomComponent implements OnDestroy {
         return {...defaultProperties, ..._defaultComponentProperties};
     }
 
-    //*****************************
-    //  FUNCIONES PROPIAS
-    //*****************************
-    
-    centrar() {
-        console.log("Centrando:")
-        this.pinchZoom.centeringImage();
-        this.pinchZoom.transformElement(1000);
-        this.pinchZoom.updateInitialValues();
-    }
-
-    centrarIsometrico() {
-        console.log("Centrando Isometrico: ")
-        this.pinchZoom.moveX = -51
-        this.pinchZoom.moveY = -102
-        this.pinchZoom.transformElement(1000);
-        this.pinchZoom.updateInitialValues();
-    }
-
-    moverMapaMundo(region: string) {
-        switch(region){
-            case "region1": 
-                this.pinchZoom.setZoom({scale: 3, center:[656,387]})
-                break;
-        }
-        this.pinchZoom.transformElement(1000);
-        this.pinchZoom.updateInitialValues();
-    }
-
 
 }

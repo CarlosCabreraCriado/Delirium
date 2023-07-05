@@ -1,5 +1,5 @@
 
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { InMapService } from './inmap.service';
@@ -12,13 +12,14 @@ import { SocketService } from '../socket/socket.service';
   styleUrls: ['./inmap.component.sass']
 })
 
-export class InMapComponent implements OnInit{
+export class InMapComponent implements OnInit {
 
 	constructor(private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) { }
 
 
 	public pantalla: string = "Inmap";
 	private idCuenta: string;
+    public estadoInMap: string = "global";
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription = null;
@@ -27,9 +28,7 @@ export class InMapComponent implements OnInit{
 
 	ngOnInit(){
 
-		setTimeout(()=>{    
-      		this.appService.mostrarPantallacarga(false);
- 		}, 3000);
+       console.warn("INICIANDO INMAP") 
 
 		//Observar Eventos AppService:
 		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
@@ -146,6 +145,17 @@ export class InMapComponent implements OnInit{
 	camelize(texto: string){
  		return texto.toLowerCase().charAt(0).toUpperCase() + texto.toLowerCase().slice(1);
 	}
+
+    toggleInMap(){
+        this.estadoInMap = this.appService.estadoInMap;
+        if(this.estadoInMap=="global"){
+            this.appService.cargarRegion("Asfaloth");
+            this.estadoInMap = "region";
+        }else{
+            this.appService.setEstadoInMap("global");
+            this.estadoInMap = "global";
+        }
+    }
 
 }
 

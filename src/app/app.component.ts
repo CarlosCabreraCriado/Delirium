@@ -38,13 +38,16 @@ export class AppComponent implements OnInit{
       console.log(this.location.path())
 
       console.log("Mostrando Carga")
-      this.appService.setProgresoCarga("0");
       this.appService.mostrarPantallacarga(true);
 
       //await this.appService.inicializarStorage();
 
 	  this.cuenta = await this.appService.getCuenta()
 	  this.token = await this.appService.getToken()
+
+      //Inicializando Heroe Seleccionado:
+      this.appService.setHeroeSeleccionado(0)
+    
 
       //ABRIR APP DEVELOPER:
       if(this.location.path()=="/desarrollador"){
@@ -62,7 +65,8 @@ export class AppComponent implements OnInit{
           //Determinación de estado APP:
           }else{ 
             console.log("Cargando INDEX...")
-            this.desconectar()
+            this.desconectarSocket()
+            this.appService.logout();
           }
       }
 
@@ -76,7 +80,12 @@ export class AppComponent implements OnInit{
                   console.log("Token: "+token)
                   this.socketService.conectarSocket(token);
                   break;
-          }
+              case "logout":
+                  console.log("Desconectando Socket: ")
+                  this.desconectarSocket();
+                  break;
+            }
+          
         });
 
        //Suscripcion Socket (INTERNO):
@@ -84,7 +93,8 @@ export class AppComponent implements OnInit{
           switch(data.peticion){
             case "socketDesconectado":
                 console.log("Error en sincronización de socket: ");
-                this.desconectar();
+                this.desconectarSocket();
+                this.appService.logout();
                 this.appService.mostrarDialogo("Informativo",{contenido:"Se ha producido un error en la sincronización del socket."});
             break;
           }
@@ -95,7 +105,8 @@ export class AppComponent implements OnInit{
             switch(data.peticion){
                 case "socketDesconectado":
                     console.log("Error en sincronización de socket: ");
-                    this.desconectar();
+                    this.desconectarSocket();
+                    this.appService.logout();
                     this.appService.mostrarDialogo("Informativo",{contenido:"Se ha producido un error en la sincronización del socket."});
                 break;
                 case "conectado":
@@ -118,16 +129,12 @@ export class AppComponent implements OnInit{
             console.log("Cargando INMAP...")
              this.appService.setEstadoApp("inmap");
         }
+             //this.appService.iniciarMazmorra("MazmorraSnack");
 
     }
 
-    desconectar(){
-        this.appService.setProgresoCarga("0");
-        this.appService.mostrarPantallacarga(true);
-        this.appService.setCuenta(null)
-        this.appService.setToken(null)
-        this.appService.setControl("index");
-        this.appService.setEstadoApp("index");
+    desconectarSocket(){
+        this.socketService.desconectar();
     }
 
 } // FIN CLASS

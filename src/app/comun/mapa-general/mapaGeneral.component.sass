@@ -2,6 +2,39 @@
 @import "../../../variables.sass"
 @import "../../../breakpoints.scss"
 
+#fondoMar
+  position: absolute
+  width: 100%
+  height: 100%
+  background-color: $colorFondo
+  .mar
+    position: absolute
+    display: block
+    opacity: 0.4
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+
+#nubes
+  position: absolute
+  height: 100%
+  width: 100%
+  background-image: url(../../../assets/mapa/nubes.jpg)
+  animation: movimientoBackground 50s infinite 
+
+#contenedorMapa
+  mask: url(../../../assets/mascaras/transicion_horizontal.png)
+  transition: mask-position steps(17) 1s
+  mask-size: 100% 1800%
+  mask-position: 0% 100%
+  
+  &.mostrarNubes
+    -webkit-mask: url(../../../assets/mascaras/transicion_horizontal.png)
+    mask-size: 100% 1800%
+    mask-position: 100% 0%
+    transition: mask-position steps(17) 1s
+
 #contenedorMapa
   position: absolute
   height: 100%
@@ -524,5 +557,18 @@
     transform: scale3d(1, 1, 1) rotateZ(-45deg) rotateX(0deg) rotateY(-55deg)
   50%
     transform: scale3d(1.05, 1.05, 1.05) rotateZ(-45deg) rotateX(0deg) rotateY(-55deg)
+
+@keyframes movimientoBackground 
+  0%, 100%
+    background-position: 0%
+  50%
+    background-position: 50%
+
+@keyframes mask-play
+  from
+    mask-position: 100% 0%
+  to
+    mask-position: 0% 100% 
+ 
 
 

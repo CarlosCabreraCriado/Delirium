@@ -3,10 +3,21 @@
 <!--         Componente Mapa General       -->
 <!--   *********************************** -->
 
-    <!-- Fondo Mapa -->
-    <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
+    <!-- NUBES FONDO -->
+    <div id="nubes">
 
-        <!-- <img id="mascaraVision"  src="../../../assets/InMap/mascara.png"/> -->
+    </div>
+
+    <!-- Fondo Mapa -->
+    <div id="mascaraNubes">
+    </div>
+
+    <div id="contenedorMapa" [ngClass]="{'mostrarNubes': appService.cargandoMapa}" #canvasMapa class="bordeDesarrollador">
+
+        <!-- Fondo Mapa -->
+        <div id="fondoMar">
+            <img class="mar" src="./assets/General/Fondo-Papiro.png"/>
+        </div>
 
         <pinch-zoom #pinchZoom id="pinch-zoom" [ngClass]="{'niebla': mostrarNieblaFija} " 
             [limitPan]="false" 
@@ -17,7 +28,7 @@
             <div *ngIf="mostrarCentro" id="marcadorCentro"></div>
 
             <!-- Mapa Global -->
-            <div *ngIf="appService.estadoInmap=='global'" class="contenedorMapaGlobal">
+            <div *ngIf="appService.estadoInMap=='global'" class="contenedorMapaGlobal">
 
                 <div class="contenedorMascara">
                     <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
@@ -29,7 +40,7 @@
             </div>
 
             <!-- Mapa Isometrico -->
-            <div [ngClass]="{'niebla': mostrarNiebla}" *ngIf="appService.estadoInmap=='isometrico'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
+            <div [ngClass]="{'niebla': mostrarNiebla}" *ngIf="appService.estadoInMap=='region'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
 
                 <div class="wrapper" [ngStyle]="{'transform': 'scale('+appService.escalaIsometrico+') translate('+traslacionIsometricoX+'px, '+traslacionIsometricoY+'px)'}">
 
@@ -89,5 +100,6 @@
                 </div> 
             </div> 
     </div>
+
 
 

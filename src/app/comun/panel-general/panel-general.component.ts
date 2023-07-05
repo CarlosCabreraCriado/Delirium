@@ -15,7 +15,14 @@ export class PanelGeneralComponent {
 
 	constructor() {}
 	
+    public pantalla = null; 
+
 	cambiarPantalla(pantalla:string){
+        if(this.pantalla==pantalla){
+            this.pantalla = null
+        }else{
+            this.pantalla = pantalla;
+        }
 		this.comandoPanelGeneral.next(pantalla);
 	}
 

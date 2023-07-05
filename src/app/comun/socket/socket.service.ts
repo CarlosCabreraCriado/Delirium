@@ -71,5 +71,9 @@ export class SocketService {
       this.socket.emit(evento,data);
     }
 
+    desconectar(){
+      this.socket.disconnect();
+    }
+
 }
 

@@ -3,7 +3,7 @@
 <!--      Configuración    -->
 <!--   ******************* -->
 
-<div class= "contenedor">
+<div class= "contenedor borde1">
 
 	<h1 class="title Texto2">Configuración</h1>
 
@@ -21,19 +21,25 @@
 		
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
-			<div class="opcionesGenerales Texto3">Versión: 0.2.3</div>
-			<div class="botonCerrarSesion Texto3" [mat-dialog-close]="'cerrarSesion'">Cerrar Sesión</div>
-			<div class="botonDeveloperTool Texto3" [mat-dialog-close]="'developerTool'">Developer Tool</div>
+
+			<div class="opcion">Versión: 0.2.3</div>
+
+			<div class="opcion">
+		    <botonComponent mat-button [mat-dialog-close]="'Developer Tool'" [texto]="'Developer Tool'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+            </div>
+
+			<div class="opcion">
+		    <botonComponent mat-button [mat-dialog-close]="'cerrarSesion'" [texto]="'Cerrar Sesión'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+            </div>
+
 		</div>
 
 	</div>
 	
 	<div class="contenedorBotones">
-		<botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [color]="'verde'" class="boton"></botonComponent>
-		<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+		<botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [tipoBoton]="2" [color]="'verde'" class="boton"></botonComponent>
+		<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [tipoBoton]="2" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
-	
-	<div class="frame"></div>
 
 </div>
 

@@ -30,7 +30,7 @@ class AppAnimacionNumero {
 })
 
 export class MazmorraComponent implements OnInit,AfterViewInit{
-	constructor(public mazmorraService: MazmorraService, private appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
+	constructor(public mazmorraService: MazmorraService, public appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
 	
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
   	@ViewChild('canvasIsometrico',{static: false}) canvasIsometrico: ElementRef;
@@ -56,7 +56,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 	//Declara Estado para eventos de Servicio Combate:
 	private estado: string;
-	private estadoSuscripcion: Subscription;
+	private subscripcionMazmorra: Subscription;
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription;
@@ -269,6 +269,15 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         	this.mazmorraService.interfazObs(val);
         });
 
+		//suscripcion MazmorraService:
+        this.subscripcionMazmorra = this.mazmorraService.subscripcionMazmorra.subscribe((val) => {
+            switch(val){
+                case "mazmorraIniciada":
+                    this.centrarMazmorra();
+                    break;
+            }
+        });
+
       	//Inicio suscripcion evento progreso Carga
     	this.mazmorraService.cargarAutoGuardado.subscribe(autoGuardado => {
       		this.renderMazmorra = this.mazmorraService.getRenderMazmorra();
@@ -282,6 +291,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     	
     	this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.mazmorraService.cuenta.nombre});
 
+        this.centrarMazmorra();
 	}
 
 	ngOnDestroy(){
@@ -757,6 +767,16 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 		return style;
 	}
+
+    centrarMazmorra(){
+        console.log("Centrando")
+        this.pinchZoom.pinchZoom.moveX = -233
+        this.pinchZoom.pinchZoom.moveY = -504
+        this.pinchZoom.pinchZoom.scale = 1
+        this.pinchZoom.pinchZoom.transformElement(1000);
+        this.pinchZoom.pinchZoom.updateInitialValues();
+    }
+
 }
 
 

@@ -28,6 +28,7 @@ export class InMapService {
 
 	//Estados Inmap:
 	public heroeSeleccionado: any;	
+    public estadoInmap = "global";
 
 	//Variables de sala:
 	private sala:any={
@@ -104,6 +105,10 @@ export class InMapService {
 		//this.iniciarPartida("MazmorraSnack");	
 
 	}
+
+    toggleInMap(){
+        
+    }
 
 	iniciarPartida(nombreIdMazmorra: string):void{
 

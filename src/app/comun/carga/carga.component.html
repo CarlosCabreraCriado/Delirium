@@ -1,6 +1,6 @@
 
 
-<div *ngIf="mostrarPantallaCarga" id="PantallaCarga" [style.opacity]="opacidad">
+<div [ngClass]="{'visible': mostrarPantallaCarga, 'oculta': !mostrarPantallaCarga}" id="PantallaCarga" [style.opacity]="opacidad">
     <div class="wrapper">
 	    <img class="logo animacionCarga" src="../../../assets/General/Icono-Delirium2.png"> 
     </div>

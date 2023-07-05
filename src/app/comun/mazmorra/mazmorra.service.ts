@@ -105,6 +105,9 @@ export class MazmorraService implements OnInit{
 	//Emision de eventos
 	@Output() mostrarAnimacionNumero: EventEmitter<any> = new EventEmitter();
 
+	//Emision de eventos
+	@Output() subscripcionMazmorra: EventEmitter<string> = new EventEmitter();
+
   	constructor(private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) { 
 
 	}
@@ -568,6 +571,9 @@ export class MazmorraService implements OnInit{
 
 		//Inicializar Canvas Isometrico:
 		this.appService.renderizarCanvasIsometrico();
+
+        //Centrar Vista Mazmorra:
+        this.subscripcionMazmorra.emit("mazmorraIniciada");
 
     } //Fin Inicializar Mazmorra:
 

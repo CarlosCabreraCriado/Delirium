@@ -10,7 +10,7 @@ import { AppService } from '../../app.service';
 export class MapaGeneralService {
 
     //Variables Inmap:
-	public estadoInmap= "global";
+	public estadoInMap= "global";
     private regionInmap:number = 1;
     public region: any = {};
     private coordenadaX: number = 0; 
@@ -36,8 +36,8 @@ export class MapaGeneralService {
 			this.region= data;
             this.regionSeleccionada = zona;
             //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
-            this.estadoInmap= "isometrico"      
-            this.appService.setEstadoInmap(this.estadoInmap);
+            this.estadoInMap= "isometrico"      
+            this.appService.setEstadoInMap(this.estadoInMap);
 
             //this.regularizarRegion();
         })

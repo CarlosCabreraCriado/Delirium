@@ -15,6 +15,17 @@
 
 <panelGeneralComponent id="PanelGeneral" (comandoPanelGeneral)="comandoPanelGeneral($event)"></panelGeneralComponent>
 
+	<!--   ******************* -->
+	<!--      Tiempo    -->
+	<!--   ******************* -->
+
+    <div id="tiempo">
+	    <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
+	    <botonComponent mat-button (click)="appService.centrarMapa()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
+	    <botonComponent *ngIf="estadoInMap=='global'" mat-button (click)="toggleInMap()" [texto]="'Región'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+	    <botonComponent *ngIf="estadoInMap=='region'" mat-button (click)="toggleInMap()" [texto]="'Global'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+    </div>
+
 <!--   ************************** -->
 <!--    CONTENEDOR MAIN WINDOW    -->
 <!--   ************************** -->
@@ -28,11 +39,6 @@
 
 	<creditoComponent id="creditoMapa" [gemas]= "100" [monedas]= "200"></creditoComponent>
 
-	<!--   ******************* -->
-	<!--      Tiempo    -->
-	<!--   ******************* -->
-
-	<img src="../../../assets/InMap/Panel Tiempo.png" id="tiempo">
 
 	<!--   ******************* -->
 	<!--      Configuracion    -->
@@ -52,7 +58,9 @@
 	<!--      Desarrollador    -->
 	<!--   ******************* -->
 
+    <!--
 	<img id="botonAbrirEvento" src="../../../assets/desarrollador/animacion.png" (click)="appService.centrarRegion()"/>
+    -->
 
 	<!--   ******************* -->
 	<!--      Panel Control    -->
@@ -86,7 +94,7 @@
                               [coordenadas]="appService.sesion.inmap"
                               [radioRenderIsometrico]="appService.radioRenderIsometrico"
                               [herramientaInMap]="'InMap'"
-                              [mostrarNiebla]="appService.estadoInmap=='isometrico'">
+                              [mostrarNiebla]="appService.estadoInMap=='region'">
         </mapaGeneralComponent>
 	</div>
 

@@ -4,6 +4,7 @@
 <!--   ******************* -->
 
 <div class="contenedorPanelEquipo">
+
 	<div class="fondoPanel"></div>
 	<div class="fondoPestana"></div>
 
@@ -20,24 +21,22 @@
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Armadura.png">
 					<div class="textoEstadisticas Texto3">
-						<div class="nombre">Armadura </div>
-						<div class="valor">10 </div>
+                            Armadura
+                            <br>10
 					</div>
 				</div>
-					
+
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Vitalidad.png">
 					<div class="textoEstadisticas Texto3">
-						<div class="nombre">Vitalidad </div>
-						<div class="valor">10 </div>
+                            Resist. Mágica <br>10 
 					</div>
 				</div>
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Curacion.png">
 					<div class="textoEstadisticas Texto3">
-						<div class="nombre">Curación </div>
-						<div class="valor">10 </div>
+                            Vitalidad <br>10 
 					</div>
 				</div>	
 			</div>	
@@ -47,35 +46,54 @@
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
 					<div class="textoEstadisticas Texto3">
-						<div class="nombre">Daño Físico </div>
-						<div class="valor">10 </div>
+                            Daño Físico <br>10 
 					</div>
 				</div>
 					
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Magico.png">
 					<div class="textoEstadisticas Texto3">
-						<div class="nombre">Daño Mágico </div>
-						<div class="valor">10 </div>
+                            Daño Mágico <br>10 
 					</div>
 				</div>
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Energia-Stat.png">
 					<div class="textoEstadisticas Texto3">
-						<div class="nombre">Energía </div>
-						<div class="valor">10 </div>
+                            Crítico <br>10 
 					</div>
 				</div>	
 
 			</div>	
 		</div>
 
-		<div class="titulo Texto1">Efectos</div>
+		<div class="titulo Texto1">Inventario</div>
 
-		<div class="contenedorEfectos Texto2">
-			No hay efectos activos
-		</div>
+        <!-- CONTENEDOR INVENTARIO -->
+		<div id="contenedorInventario2" class="Texto2">
+
+            <!-- LISTA INVENTARIO DRAG AND DROP -->
+            <div id="listaInventario" #dropListContainer class="listaInventario" cdkDropListGroup>
+
+                <div class="contenedorImagen" *ngFor="let objeto of inventario; let i = index" [cdkDropListData]="i" cdkDropList>
+                        <img 
+                            cdkDrag 
+                            [cdkDragData]="i"
+                            (cdkDragEntered)="dragEntered($event)"
+                            (cdkDragMoved)="dragMoved($event)"
+                            (cdkDragDropped)="dragDropped($event)"
+                            class="imagen" src="../../../assets/Items/miscelaneo/{{objeto}}.png"/> 
+                        <img *cdkDragPreview class="imagen" src="../../../assets/Items/miscelaneo/{{objeto}}.png"/> 
+
+                </div>
+            </div>
+
+            <!-- GRID -->
+            <div id="contenedorReticula">
+                <div class="celda" *ngFor="let celda of [].constructor(10)"></div>
+            </div>
+
+        </div> <!-- Fin contenedor Inventario -->
 
 	</div>
 
@@ -87,35 +105,46 @@
 
 		<div class="contenedorEquipo">
 
-			<div class="columna Izquierda">
+			<div class="casco">
 				<div class="reticulaPequena">
 					<img src="../../../assets/Items/casco/3.png"/> 
 					<div class="frameItem"></div>
 				</div>
+			</div>
+
+			<div class="pechera">
 				<div class="reticulaPequena">
 					<img src="../../../assets/Items/pechera/2.png"/> 
 					<div class="frameItem"></div>
 				</div>
+			</div>
+
+			<div class="arma1">
 				<div class="reticulaGrande">
 					<img src="../../../assets/Items/espada/4.png"/> 
 					<div class="frameItem"></div>
 				</div>
 			</div>	
 
-			<img class="imagenPersonaje" src="../../../assets/Paneles/Equipo/Maniqui.png"/>
+			<div class="heroe">
+			    <img class="imagenPersonaje" src="../../../assets/Paneles/Equipo/Maniqui.png"/>
+			</div>	
 
-			<div class="columna Derecha">
-
+			<div class="pantalon">
 				<div class="reticulaPequena Derecha">
 					<img src="../../../assets/Items/pantalon/2.png"/> 
 					<div class="frameItem"></div>
 				</div>
+			</div>	
 
+			<div class="botas">
 				<div class="reticulaPequena Derecha">
 					<img src="../../../assets/Items/botas/2.png"/> 
 					<div class="frameItem"></div>
 				</div>
+			</div>	
 
+			<div class="arma2">
 				<div class="reticulaGrande">
 					<img src="../../../assets/Items/escudo/2.png"/> 
 					<div class="frameItem"></div>

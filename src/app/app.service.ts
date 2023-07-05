@@ -11,7 +11,6 @@ import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { MatDialog} from '@angular/material/dialog';
 import { Storage } from '@ionic/storage-angular';
 import { environment } from '../environments/environment'
-
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 
@@ -21,7 +20,7 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/n
 
 export class AppService {
 
-  	constructor( private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) { 
+  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -37,13 +36,10 @@ export class AppService {
       //Variables de entorno:
       this.ipRemota =  environment.dominio
       this.ionic = environment.ionic
-
       console.warn("ENTORNO: ") 
       console.warn("IP REMOTA: ", environment.dominio) 
       console.warn("IONIC: ", environment.ionic) 
       console.warn("DISPOSITIVO: ", this.dispositivo) 
-
-      if(this.ionic){this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);}
 
       //Inicializa Storage:
       this.initStorage()
@@ -95,7 +91,8 @@ export class AppService {
 
     //Estados:
     public estadoApp = "";
-    public estadoInmap = "global";
+    public estadoInMap = "global";
+    public cargandoMapa:boolean = false;
 
     // Observable string sources
     private observarAppService = new Subject<string>();
@@ -110,7 +107,15 @@ export class AppService {
     observarTeclaPulsada$ = this.observarTeclaPulsada.asObservable();
 
     setEstadoApp(estado: string){
-        this.estadoApp = estado;
+
+      	this.mostrarPantallacarga(true);
+		setTimeout(()=>{    
+            this.estadoApp = estado;
+ 		}, 1000);
+		setTimeout(()=>{    
+      		this.mostrarPantallacarga(false);
+ 		}, 4000);
+
     }
 
     //STORAGE:
@@ -404,9 +409,7 @@ export class AppService {
           console.log(result)
 
 		  if(result === "cerrarSesion") {
-			this.setControl("index");
-            this.setCuenta({})
-			this.setEstadoApp("index");
+              this.logout();
 		  }
 
 		  if(result === "developerTool") {
@@ -417,6 +420,22 @@ export class AppService {
 
         return;
     }
+
+    logout(){
+        this.mostrarPantallacarga(true);
+
+		setTimeout(()=>{    
+            this.setToken(null)
+            this.setPerfil(null)
+            this.setCuenta(null)
+            //this.setSesion(null)
+            this.observarAppService.next("logout");
+            this.setControl("index");
+            this.setEstadoApp("index");
+ 		}, 1000);
+    }
+        
+        
 
     mostrarSocial(tipoDialogo:string, config:any):any{
 
@@ -453,8 +472,18 @@ export class AppService {
       return this.sala;
     }
 
-    setEstadoInmap(estado:string){
-        this.estadoInmap = estado; 
+    setEstadoInMap(estado:string){
+        // Pone Nube -1s-> Cambia Mapa -1s-> CentraMapa -1s-> Quita Nubes
+        this.cargandoMapa = true;
+		setTimeout(()=>{    
+            this.estadoInMap = estado; 
+		    setTimeout(()=>{    
+                this.eventoAppService.emit("centrarMapa")
+		        setTimeout(()=>{    
+                    this.cargandoMapa = false; 
+                },1000)
+            },1000)
+        },1000)
     }
 
     getPartida(){
@@ -631,8 +660,12 @@ export class AppService {
 
     }
 
-    centrarRegion(){
-        this.eventoAppService.emit("region1")
+    centrarMapa(){
+        if(this.estadoInMap =="global"){
+            this.eventoAppService.emit("region1")
+        }else{
+            this.eventoAppService.emit("centrarMapa")
+        }
     }
 
  //*********************************
@@ -677,10 +710,11 @@ export class AppService {
 
   async cargarRegion(zona:string){
 
+        this.cargandoMapa = true;
+        var token = await this.getToken();
         if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;} 
 
 		console.log("Cargando appService.region: "+zona);
-        var token = await this.getToken();
 		this.http.post(this.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).subscribe((data) => {
 			console.log("Región: ");
 			console.log(data);	
@@ -717,8 +751,9 @@ export class AppService {
             //REALIZA UNA REGULARIZACION: 
             //this.regularizarRegion();
 
-            this.eventoAppService.emit("cargarIsometrico")
-            this.setEstadoInmap("isometrico");
+            this.eventoAppService.emit("inicializarIsometrico")
+            this.setEstadoInMap("region");
+
         })
   }
 
@@ -778,6 +813,10 @@ export class AppService {
 
         // 1) Cambio de estados AppService:
 		//this.setSala(this.sala);
+    }
+
+    verInMap(){
+        this.setEstadoApp("inmap");
     }
 
     abandonarMazmorra(){

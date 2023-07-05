@@ -47,14 +47,15 @@ export class IndexComponent implements OnInit{
 
 		this.cuenta= await this.appService.getCuenta();
       
-        this.cuenta = {}
+        //this.cuenta = {}
 
 		console.log(this.cuenta);
 
-		if(this.cuenta.nombre==undefined){
+		if(this.cuenta==null || this.cuenta.nombre==undefined){
 			this.cuenta = {
 				nombre: "Sesión no iniciada."
 			};
+            this.appService.setSesion(null)
 		}else{
 			this.appService.claveValida= true;
 		}
@@ -159,7 +160,6 @@ export class IndexComponent implements OnInit{
                                 this.appService.claveValida= true;
                                 this.errorInicio = null;
                                 this.procesando= false;
-                                this.appService.mostrarPantallacarga(true);
                                 this.appService.finalizarLogin();
                             }
                         }
