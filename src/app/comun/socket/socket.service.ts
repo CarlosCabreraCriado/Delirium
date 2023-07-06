@@ -27,7 +27,7 @@ export class SocketService {
         this.socket.ioSocket.on('connect_error', err =>{
             console.log("ERROR DE CONEXION SOCKET")
             console.log(err)
-            //this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
+            this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
         });
 
         //Conection Fallida:

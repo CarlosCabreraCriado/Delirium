@@ -20,7 +20,7 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/n
 
 export class AppService {
 
-  	constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) { 
+  	constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) { 
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -39,7 +39,9 @@ export class AppService {
       console.warn("ENTORNO: ") 
       console.warn("IP REMOTA: ", environment.dominio) 
       console.warn("IONIC: ", environment.ionic) 
-      console.warn("DISPOSITIVO: ", this.dispositivo) 
+      console.warn("DISPOSITIVO: ", this.dispositivo)
+
+        if(this.ionic){this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);}
 
       //Inicializa Storage:
       this.initStorage()
