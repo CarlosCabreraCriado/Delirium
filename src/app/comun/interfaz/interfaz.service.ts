@@ -8,27 +8,35 @@ import { Subject } from 'rxjs';
 
 export class InterfazService {
 
-	//GENERAL:
-	public mostrarInterfaz: boolean= false;
-	private pantallaInterfaz: string= "Hechizos";
+    //GENERAL:
+    public mostrarInterfaz: boolean= false;
+    private pantallaInterfaz: string= "Hechizos";
 
-	//HECHIZOS:
-	private hechizos:any;
-	private hechizosEquipadosImagenID = [0,0,0,0,0];
-	private hechizosEquipadosID = [0,0,0,0,0];
-	private indexHechizoSeleccionado = 0;
-	public imagenHechHorizontal= [0,0,0,0,0];
-	public imagenHechVertical= [0,0,0,0,0];
+    //HECHIZOS:
+    private hechizos:any;
+    private hechizosEquipadosImagenID = [0,0,0,0,0];
+    private hechizosEquipadosID = [0,0,0,0,0];
+    public indexHechizoSeleccionado = null;
+    public imagenHechHorizontal= [0,0,0,0,0];
+    public imagenHechVertical= [0,0,0,0,0];
+    public hechizosEquipadosEnergia = [0,0,0,0,0];
+    public energiaHechizo: number = 0;
+    public hechizoEquipados: any = null;
 
-	//MOVIMIENTO:
-	private costeMovimiento: number = 0;
+    //MOVIMIENTO:
+    private costePorMovimiento: number = 5;
+    private puntosMovimiento: number = 3;
+    private energiaMovimiento: number = 15;
+    private energiaDisponible: number = 0;
 
-	//RNG
-	private valorTirada:any = 0;
+    //RNG
+    private valorTirada:any = 0;
+    public critico:boolean = false;
+    private noCritico:boolean = false;
 
-	//MAZMORRA:
-	private enemigos: any;
-	private renderMazmorra: any;
+    //MAZMORRA:
+    private enemigos: any;
+    private renderMazmorra: any;
 
     //ACCIONES ENEMIGO:
     private tipoAccion: string = "ataque";
@@ -46,16 +54,17 @@ export class InterfazService {
     private esAdyascente = false;
     private tieneAlcance = false;
 
-	// Observable string sources
-	private observarInterfaz = new Subject<any>();
+    // Observable string sources
+    private observarInterfaz = new Subject<any>();
 
-	// Observable string streams
-	observarInterfaz$ = this.observarInterfaz.asObservable();
+    // Observable string streams
+    observarInterfaz$ = this.observarInterfaz.asObservable();
 
-	constructor() { }
+    constructor() { }
 
     setPantallaInterfaz(val):void{
-      this.pantallaInterfaz= val;
+        this.pantallaInterfaz= val;
+        this.mostrarInterfaz = true;
       return;
     }
 
@@ -235,42 +244,82 @@ export class InterfazService {
           return Math.floor(Math.random() * max);
     }
 
-    activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID):void{
-	  this.pantallaInterfaz= "Hechizos";
-      this.mostrarInterfaz = true;
-	  this.hechizosEquipadosImagenID = hechizosEquipadosImagenID;
-	  this.hechizosEquipadosID = hechizosEquipadosID;
-	  return;
+    activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID, hechizosEquipadosEnergia, energiaDisponible, hechizoEquipados):void{
+        this.hechizoEquipados = hechizoEquipados;
+        this.energiaDisponible = energiaDisponible;
+        this.hechizosEquipadosImagenID = hechizosEquipadosImagenID;
+        this.hechizosEquipadosID = hechizosEquipadosID;
+        this.hechizosEquipadosEnergia = hechizosEquipadosEnergia;
+        this.pantallaInterfaz= "Hechizos";
+        this.mostrarInterfaz = true;
+        return;
     }
 
-    activarInterfazMovimiento(costeMovimiento:number):void{
-		this.pantallaInterfaz= "movimiento";
-		this.mostrarInterfaz = true;
-		return;
+    activarInterfazMovimiento(costeMovimiento:number,energiaDisponible:number):void{
+        this.costePorMovimiento = costeMovimiento;
+        this.energiaDisponible = energiaDisponible;
+        this.pantallaInterfaz= "movimiento";
+        this.mostrarInterfaz = true;
+        return;
+    }
+
+    activarInterfazRNG():void{
+        this.pantallaInterfaz= "fortuna";
+        this.mostrarInterfaz = true;
+        return;
+    }
+
+    finalizarFortuna(resultadoFortuna:string):void{
+        this.iniciarCritico(); 
+        this.mostrarInterfaz = true;
+        return;
+    }
+
+    iniciarCritico():void{
+        this.pantallaInterfaz= "critico";
+        setTimeout(()=>{
+            if(Math.random() < 0.5){
+                this.critico = true;
+            }else{
+                this.noCritico = true;
+            }
+            setTimeout(()=> {
+                this.observarInterfaz.next({comando: "lanzarHechizo",valor: this.critico});
+                this.critico= false;
+                this.noCritico= false;
+                this.desactivarInterfaz();
+            },3000)
+        },1000)
     }
 
     desactivarInterfaz():void{
       this.mostrarInterfaz = false;
-      this.pantallaInterfaz="Hechizos";
-	  return;
+      return;
     }
 
     cancelarHechizo(){
        this.observarInterfaz.next({comando: "cancelar",valor: "cancelar"});
        this.desactivarInterfaz();
-	   return;
+       return;
     }
     
+    realizarMovimiento(){
+       this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento});
+       this.desactivarInterfaz();
+       return;
+    }
+
     cancelarMovimiento(){
        this.observarInterfaz.next({comando: "cancelar",valor: "cancelar"});
        this.desactivarInterfaz();
-	   return;
+       return;
     }
 
     cancelar(){
+       this.indexHechizoSeleccionado = null;
        this.observarInterfaz.next({comando: "cancelar",valor: "cancelar"});
        this.desactivarInterfaz();
-	   return;
+       return;
     }
 
     setInterfaz(interfaz):void{
@@ -278,16 +327,29 @@ export class InterfazService {
       return;
     }
 
+    selectHechizo(indexHechizo:number){
+        this.energiaHechizo = this.hechizosEquipadosEnergia[indexHechizo-1];
+    }
+
     seleccionarHechizo(numHechizo):void{
-		this.indexHechizoSeleccionado = numHechizo-1;
-		this.observarInterfaz.next({comando: "seleccionarHechizo",valor: this.hechizosEquipadosID[this.indexHechizoSeleccionado]});
-		return;
+        this.indexHechizoSeleccionado = numHechizo-1;
+        this.observarInterfaz.next({comando: "seleccionarHechizo",valor: this.hechizosEquipadosID[this.indexHechizoSeleccionado]});
+        return;
     }
 
     lanzarHechizo():void{
-      this.observarInterfaz.next({comando: "lanzarHechizo",valor: ""});
-      this.desactivarInterfaz();
+      this.observarInterfaz.next({comando: "checkFortuna",valor: ""});
+      //this.desactivarInterfaz();
       return;
+    }
+
+    modificarMovimiento(cantidad){
+        this.puntosMovimiento += cantidad;
+        this.energiaMovimiento = this.puntosMovimiento * this.costePorMovimiento;
+        if(this.puntosMovimiento <= 0){
+            this.puntosMovimiento = 0;
+            this.energiaMovimiento = 0;
+        }
     }
 
 }

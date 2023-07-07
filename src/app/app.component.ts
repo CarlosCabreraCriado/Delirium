@@ -127,7 +127,7 @@ export class AppComponent implements OnInit{
         //Carga el INMAP:
         if(sesion.estadoSesion=="inmap"){
             console.log("Cargando INMAP...")
-             this.appService.setEstadoApp("inmap");
+            this.appService.setEstadoApp("inmap");
         }
              //this.appService.iniciarMazmorra("MazmorraSnack");
 

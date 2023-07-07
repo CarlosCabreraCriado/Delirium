@@ -110,10 +110,13 @@ export class AppService {
 
     setEstadoApp(estado: string){
 
+        console.log("ENTRANDO")
       	this.mostrarPantallacarga(true);
+
 		setTimeout(()=>{    
             this.estadoApp = estado;
  		}, 1000);
+
 		setTimeout(()=>{    
       		this.mostrarPantallacarga(false);
  		}, 4000);
@@ -825,6 +828,10 @@ export class AppService {
         this.setMazmorra({});
         this.setControl("inmap");
         this.setEstadoApp("inmap");
+    }
+
+    funcionDesarrollo(){
+        this.mostrarDialogo("Informativo",{titulo:"Prueba de dialogo",contenido: "Abriendo Developer Tool"})
     }
 
 

@@ -1,13 +1,7 @@
 
 
-<div *ngIf="appService.dispositivo == 'Desktop'">
-	<div *ngIf="rngService.mostrarRng" id="contenedorRNG">
-		<div class="tituloRNG"> Tirada de potenciación: </div>
-		<div class="valorRNG">{{rngService.valorTirada}}</div>
-	</div>
-</div>
 
-<div *ngIf="appService.dispositivo != 'Desktop'">
+<div>
 	<div *ngIf="rngService.mostrarRng" id="contenedorRNGmovil">
 		<div class="tituloRNG"> Tirada de potenciación: {{appService.dispositivo}}</div>
 		<div class="contenedorDigitos">

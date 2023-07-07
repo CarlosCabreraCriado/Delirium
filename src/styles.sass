@@ -140,6 +140,10 @@ $path-width: 5px
 $colorPrincipal: #ffff00 
 $colorSecundario: #ff8d40 
 
+.botonDeshabilitado
+  filter: grayscale(1)
+  pointer-events: none
+
 .animacionFocus 
   width: 100% 
   height: 100% 
@@ -172,6 +176,17 @@ $colorSecundario: #ff8d40
     box-sizing: border-box
     box-shadow: inset 0 0 $path-width $path-width
     animation: AnimacionFocus $anime-time linear infinite
+
+.shaderElectrico 
+  background-size: 4000% 100%
+  background-image: url("../../../assets/Efectos/37.png")
+  -webkit-animation: shader 2s steps(39) infinite
+
+@keyframes shader 
+  0%
+    background-position: 0%
+  100% 
+    background-position: 100%
 
 @keyframes AnimacionFocus 
   0%, 100% 

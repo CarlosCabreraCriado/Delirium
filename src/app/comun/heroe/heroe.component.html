@@ -6,7 +6,8 @@
 <div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe()">
 
     <!-- FRAME CIRCULO -->
-	<div class="frameCirculo" >
+    <div class="frameCirculo">
+    <div class="frameAnimacionesFrame" [ngClass]="{'shaderElectrico': renderHeroe.turno}"></div>
 		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>	
 
         <img (click)="estadoDesplegado = !estadoDesplegado"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
@@ -39,8 +40,11 @@
             <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
             <!-- BARRAS -->
             <div class="contenedorBarras">
-                <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
-                <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+                <div class="wrapperBarras">
+                    <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
+                    <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+                </div>
+                <div class="separadorMarco"></div>
             </div> 
         </div>
     </div>

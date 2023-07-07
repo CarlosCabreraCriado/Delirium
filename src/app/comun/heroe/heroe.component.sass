@@ -63,6 +63,7 @@
             padding-top: 30%
             background-color: $colorFondo1
             border-radius: 100%
+            z-index: 4
             .frameRol
                 position: absolute
                 top: 0
@@ -83,6 +84,7 @@
             padding-top: 30%
             background-color: $colorFondo1
             border-radius: 100%
+            z-index: 4
             .frameNivel
                 position: absolute
                 top: 0
@@ -100,7 +102,7 @@
       top: 0
       right: 50%
       height: 100%
-      width: 150%
+      width: 15vw 
       overflow: hidden
       z-index: 1 
 
@@ -136,26 +138,33 @@
     .contenedorBarras
         position: absolute
         display: flex
-        flex-direction: column
-        right: 27%
-        width: 60%
-        height: 45%
-        top: 30%
+        flex-direction: row
+        justify-content: flex-end
+        align-items: center
+        width: 100%
+        height: 100%
         z-index: 2 
         &.expandido
           width: 53%
         &.retraido
           width: 0%
+        .separadorMarco
+          position: relative
+          display: inline-block
+          height: 100%
+          aspect-ratio: 0.4
 
-        @include media("<=phone")
-            width: 55%
-            right: 35%
-
-        .barra
-            position: relative
-            width: 100%
-            height: 30%
-            margin-bottom: 1%
+        .wrapperBarras
+          position: relative
+          display: inline-flex
+          flex-direction: column
+          width: 60%
+          height: 45%
+          .barra
+              position: relative
+              width: 100%
+              height: 30%
+              margin-bottom: 1%
 
     .fondoDetalle
         position: absolute
@@ -180,13 +189,16 @@
 $highlightTurnoColor: lightgray
 $highlightObjetivoColor: red
 
-.Turno 
-  background: $highlightTurnoColor
-  animation: highlightTurno
-  animation-duration: 1s
-  animation-iteration-count: infinite
-  animation-direction: alternate 
-
+.frameAnimacionesFrame
+    position: absolute
+    height: 120%
+    top: -10%
+    left: -10%
+    border-radius: 0 
+    aspect-ratio: 1
+    pointer-events: none
+    z-index: 3 
+      
 .seleccionable
   z-index: 21
 

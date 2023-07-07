@@ -29,14 +29,20 @@
 //************************************************* -->
 
 #contenedorInterfazHechizos
+    position: relative
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100% 
+    height: 100% 
 
     .contenedor
         position: absolute
         width: 90%
-        height: 40%
-        top: 25%
+        height: 80%
         color: $colorTexto
         background-color: $colorFondo2
+        top: 5vh
 
         .title
             margin-top: 20px
@@ -76,6 +82,9 @@
 
             .contenedorHechizos
                 position: relative
+                display: flex
+                justify-content: center
+                align-content: center
                 margin-top: 2vh
                 width: 100% 
                 height: 11vw
@@ -101,6 +110,25 @@
                         width: 100%
                         height: 100%
 
+            .contenedorAtributo
+                position: relative
+                display: flex
+                justify-content: center
+                align-content: center
+                margin-top: 1vh
+                width: 100% 
+                .atributo
+                    position: relative
+                    display: inline-block
+                    text-align: center
+                    line-height: 1em 
+                    height: 5vh
+                    width: 10vw
+                    margin-right: 1.5vw
+                    margin-left: 1.5vw
+                    overflow: hidden
+                    background-size: 1800%
+
                 .botonCerrarSesion
                     position: absolute
                     bottom: 10%
@@ -115,9 +143,10 @@
         .contenedorBotones
             position: absolute
             display: flex
+            justify-content: space-around
             width: 100%
-            height: 10%
-            bottom: 10%
+            height: 15%
+            bottom: 5%
 
             .boton
                 position: relative
@@ -125,7 +154,6 @@
                 color: white
                 height: 100%
                 width: 20%
-                margin: 0 15%
                 line-height: 5vw
 
 
@@ -138,23 +166,9 @@
     background-color: $colorFondo2 
     color: $colorTexto
     width: 30vw
-    height: 40vh
-    top: 20vh 
-    left: 25vw
-
-
-    .frame
-        position: absolute
-        top: 0 
-        left: 0 
-        padding-top: 5%
-        margin-top: -2.5%
-        padding-left: 3%
-        margin-left: -1.5%
-        width: 100%
-        height: 100%
-        background-image: url("../../../assets/Frames/Frame-Dialogo.png")
-        background-size: 100% 100% 
+    height: 60vh
+    top: 15vh 
+    left: 35vw
 
     .hechizo
         position: relative
@@ -175,50 +189,294 @@
             width: 100%
             height: 100%
 
-    .contenedorEnergia
+    .atributo
       position: absolute
-      width: 40%
+      bottom: 25%
       height: 15%
-      left: 50%
-      margin-left: -20%
-      top: 60%
-      .icono
-        position: absolute
-        height: 80%
-        top: 10%
-        right: 10%
-      .valor
-        position: absolute
-        top: 0
-        left: 0
-        text-align: center
-        height: 100%
-        width: 50%
-      .frameAtributo
-          position: absolute
-          top: 0 
-          left: 0 
-          padding-top: 5%
-          margin-top: -2.5%
-          padding-left: 3%
-          margin-left: -1.5%
-          width: 100%
-          height: 100%
-          background-image: url("../../../assets/Frames/Frame-atributo.png")
-          background-size: 100% 100% 
+      width: 50%
+      left: 25%
 
     .contenedorBotones
         position: absolute
-        width: 30vw
-        bottom: 0
-    
+        display: flex
+        flex-direction: row
+        justify-content: space-around
+        align-content: center
+        width: 100%
+        height: 15%
+        bottom: 5% 
+
         .boton
             position: relative
-            display: inline-flex
-            width: 15vw
-            text-align: center
+            width: 40% 
+            height: 100%
 
+//*************************************************
+//          Interfaz MOVIMIENTO:
+//************************************************* -->
 
+#contenedorInterfazMovimiento
+    position: absolute
+    background-color: $colorFondo2 
+    color: $colorTexto
+    width: 50vw
+    height: 70vh
+    top: 45% 
+    left: 50%
+    padding: 10px
+    transform: translate(-50%, -50%)
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    grid-template-rows: 0.5fr 1fr repeat(2, 0.5fr)
+    grid-column-gap: 0px
+    grid-row-gap: 5px
+
+    .titulo
+      position: relative
+      grid-area: 1 / 1 / 2 / 4 
+      display: flex
+      justify-content: center
+      align-items: center
+    .restar
+      position: relative
+      grid-area: 2 / 1 / 3 / 2 
+      display: flex
+      justify-content: center
+      align-items: center
+      .textoResta
+        font-size: 25vh 
+        line-height: 1em
+        &:active
+          color: white
+    .icono
+      position: relative
+      grid-area: 2 / 2 / 3 / 3 
+      display: flex
+      justify-content: center
+      align-items: center
+      .badgeMovimiento
+        position: relative
+        max-height: 100%
+        max-width: 100%
+        aspect-ratio: 1 
+    .sumar
+      position: relative
+      grid-area: 2 / 3 / 3 / 4 
+      display: flex
+      justify-content: center
+      align-items: center
+      .textoSuma
+        font-size: 25vh 
+        line-height: 1em
+        &:active
+          color: white
+    .contenedorAtributos
+      position: relative
+      grid-area: 3 / 1 / 4 / 4 
+      display: flex
+      justify-content: space-around
+      align-items: center
+      .atributo
+        position: relative
+        width: 40%
+        height: 100%
+    .contenedorBotones
+      position: relative
+      grid-area: 4 / 1 / 5 / 4 
+      display: flex
+      justify-content: space-around
+      align-items: center
+      .boton
+        position: relative
+        width: 40%
+        height: 100%
+
+//*************************************************
+//          Interfaz FORTUNA:
+//************************************************* -->
+
+#contenedorInterfazFortuna
+    position: absolute
+    background-color: $colorFondo2 
+    color: $colorTexto
+    width: 50vw
+    height: 70vh
+    top: 45% 
+    left: 50%
+    padding: 10px
+    transform: translate(-50%, -50%)
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    grid-template-rows: 0.5fr 1fr repeat(2, 0.5fr)
+    grid-column-gap: 0px
+    grid-row-gap: 5px
+
+    .titulo
+      position: relative
+      grid-area: 1 / 1 / 2 / 4 
+      display: flex
+      justify-content: center
+      align-items: center
+
+    .fallo
+      position: relative
+      grid-area: 2 / 1 / 3 / 2 
+      display: flex
+      justify-content: center
+      align-items: center
+      .badge
+        position: relative
+        max-height: 100%
+        max-width: 100%
+        aspect-ratio: 1 
+      .textoResta
+        font-size: 25vh 
+        line-height: 1em
+        &:active
+          color: white
+
+    .normal
+      position: relative
+      grid-area: 2 / 2 / 3 / 3 
+      display: flex
+      justify-content: center
+      align-items: center
+      .badge
+        position: relative
+        max-height: 100%
+        max-width: 100%
+        aspect-ratio: 1 
+
+    .fortuna
+      position: relative
+      grid-area: 2 / 3 / 3 / 4 
+      display: flex
+      justify-content: center
+      align-items: center
+      .badge
+        position: relative
+        max-height: 100%
+        max-width: 100%
+        aspect-ratio: 1 
+      .textoSuma
+        font-size: 25vh 
+        line-height: 1em
+        &:active
+          color: white
+
+    .contenedorAtributos
+      position: relative
+      grid-area: 3 / 1 / 4 / 4 
+      display: flex
+      justify-content: space-around
+      align-items: center
+      .atributo
+        position: relative
+        width: 40%
+        height: 100%
+    .contenedorBotones
+      position: relative
+      grid-area: 4 / 1 / 5 / 4 
+      display: flex
+      justify-content: space-around
+      align-items: center
+      .boton
+        position: relative
+        width: 40%
+        height: 100%
+
+//*************************************************
+//          Interfaz CRITICO:
+//************************************************* -->
+
+#contenedorInterfazCritico
+    position: absolute
+    color: $colorTexto
+    width: 50vw
+    height: 70vh
+    top: 45% 
+    left: 50%
+    padding: 10px
+    transform: translate(-50%, -50%)
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    grid-template-rows: 0.5fr 1fr repeat(2, 0.5fr)
+    grid-column-gap: 0px
+    grid-row-gap: 5px
+
+    .titulo
+      position: relative
+      grid-area: 1 / 1 / 2 / 4 
+      display: flex
+      justify-content: center
+      align-items: center
+
+    .fallo
+      position: relative
+      grid-area: 2 / 1 / 3 / 2 
+      display: flex
+      justify-content: center
+      align-items: center
+      .badge
+        position: relative
+        max-height: 100%
+        max-width: 100%
+        aspect-ratio: 1 
+      .textoResta
+        font-size: 25vh 
+        line-height: 1em
+        &:active
+          color: white
+
+    .normal
+      position: relative
+      grid-area: 2 / 2 / 3 / 3 
+      display: flex
+      justify-content: center
+      align-items: center
+      .badge
+        position: relative
+        max-height: 100%
+        max-width: 100%
+        aspect-ratio: 1 
+
+    .fortuna
+      position: relative
+      grid-area: 2 / 3 / 3 / 4 
+      display: flex
+      justify-content: center
+      align-items: center
+      .badge
+        position: relative
+        max-height: 100%
+        max-width: 100%
+        aspect-ratio: 1 
+      .textoSuma
+        font-size: 25vh 
+        line-height: 1em
+        &:active
+          color: white
+
+    .contenedorAtributos
+      position: relative
+      grid-area: 3 / 1 / 4 / 4 
+      display: flex
+      justify-content: space-around
+      align-items: center
+      .atributo
+        position: relative
+        width: 40%
+        height: 100%
+    .contenedorBotones
+      position: relative
+      grid-area: 4 / 1 / 5 / 4 
+      display: flex
+      justify-content: space-around
+      align-items: center
+      .boton
+        position: relative
+        width: 40%
+        height: 100%
 //*************************************************
 //          Interfaz ACCIONES ENEMIGO:
 //************************************************* -->
@@ -423,6 +681,73 @@
       &.movimiento
         left: 5%
 
+
+#coin 
+  position: relative
+  margin: 0 auto
+  width: 100px
+  height: 100px
+  cursor: pointer
+
+#coin div 
+  width: 100%
+  height: 100%
+  -webkit-border-radius: 50%
+     -moz-border-radius: 50%
+          border-radius: 50%
+  -webkit-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4)
+     -moz-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4)
+          box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4)
+
+.side-a 
+  background-image: url("../../../assets/Iconos/Icono-Equipo.png")
+  background-size: 100%
+
+.side-b 
+  background-image: url("../../../assets/Iconos/fondo-badge.png")
+  background-size: 100%
+
+//********************
+//  ANIMACIÓN CRÍTICO
+//********************
+#coin 
+  transition: -webkit-transform 1s ease-in
+  -webkit-transform-style: preserve-3d
+
+#coin div 
+  position: absolute
+  -webkit-backface-visibility: hidden
+
+.side-a 
+  z-index: 100
+
+.side-b 
+  -webkit-transform: rotateY(-180deg)
+
+#coin.noCritico 
+  -webkit-animation: flipHeads 3s ease-out forwards
+  -moz-animation: flipHeads 3s ease-out forwards
+  -o-animation: flipHeads 3s ease-out forwards
+  animation: flipHeads 3s ease-out forwards
+
+#coin.critico 
+  -webkit-animation: flipTails 3s ease-out forwards
+  -moz-animation: flipTails 3s ease-out forwards
+  -o-animation: flipTails 3s ease-out forwards
+  animation: flipTails 3s ease-out forwards
+
+
+@keyframes flipHeads 
+  from  
+    transform: rotateY(0) 
+  to  
+    transform: rotateY(1800deg) 
+
+@keyframes flipTails 
+  from  
+    transform: rotateY(0) 
+  to  
+    transform: rotateY(1980deg) 
 
 
 

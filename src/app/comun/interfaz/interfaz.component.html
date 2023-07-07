@@ -1,6 +1,4 @@
 
-
-
 <div *ngIf="interfazService.mostrarInterfaz" id="contenedorInterfaz">
 	<div class="fondoNegro"></div>
 
@@ -11,7 +9,7 @@
 <div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
 <div class= "contenedor borde1">
 
-	<h1 class="title Texto2">Hechizos</h1>
+	<h1 class="title Texto1">Lanzar Hechizos</h1>
 	<hr class="divisor"/>
 
 	<div class="contenedorPestanas">
@@ -26,19 +24,27 @@
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
 		<div class="contenedorHechizos">
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">1</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}">2</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}">3</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}">4</div>
-			<div class="hechizo hechizo1 Texto1" (click)="interfazService.seleccionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}">5</div>
+            <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==1}" (click)="seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}"></div>
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==2}"(click)="seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}"></div>
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==3}"(click)="seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}"></div>
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==4}"(click)="seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}"></div>
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==5}"(click)="seleccionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}"></div>
+		</div>
+		<div class="contenedorAtributo">
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.hechizosEquipadosEnergia[0]"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.hechizosEquipadosEnergia[1]"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.hechizosEquipadosEnergia[2]"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.hechizosEquipadosEnergia[3]"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.hechizosEquipadosEnergia[4]"></atributoComponent>
 		</div>
 		</div>
 
 	</div>
 	
 	<div class="contenedorBotones">
-		<botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [color]="'verde'" class="boton"></botonComponent>
-		<botonComponent mat-button (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+        <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || hechizoSeleccionadoIndex == null }" [tipoBoton]="2" (click)="lanzarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>
+            <atributoComponent class="boton" [tipo]="'energia'" [valor]="interfazService.energiaDisponible"></atributoComponent>
+		<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
 	
 	<div class="frame"></div>
@@ -49,22 +55,17 @@
 				Interfaz Objetivo 
 		 ************************************************* -->
 
-	<div  id="contenedorInterfazObjetivo" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo' || interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
+	<div  id="contenedorInterfazObjetivo" class="borde1" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo' || interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
 		<div class="tituloInterfaz Texto1">Seleccionar objetivo:  </div>
 
 		<div class="hechizo hechizo1 Texto1" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[interfazService.indexHechizoSeleccionado]+'.png) ','background-size': '100%'}"></div>
 
-		<div class="contenedorEnergia">
-			<img class="icono" src="./assets/Iconos/Icono-Energia-Stat.png"/>
-			<div class="valor Texto1">20</div>
-			<div class="frameAtributo"></div>
-		</div>
+            <atributoComponent class="atributo" [tipo]="'alcance'" [valor]="interfazService.hechizoEquipados[interfazService.indexHechizoSeleccionado].distancia"></atributoComponent>
 
 		<div class="contenedorBotones">
-			<botonComponent mat-button (click)="interfazService.lanzarHechizo()" [texto]="'Lanzar'" [color]="'verde'" class="boton"></botonComponent>
-			<botonComponent mat-button (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+            <botonComponent mat-button (click)="interfazService.lanzarHechizo()" [tipoBoton]="2" [texto]="'Lanzar'" [color]="'verde'" class="boton"></botonComponent>
+			<botonComponent mat-button (click)="interfazService.cancelarHechizo()" [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
-		<div class="frame"></div>
 	</div>
 
 	<!-- *************************************************
@@ -72,31 +73,98 @@
 		 ************************************************* -->
 
 	<div  id="contenedorInterfazMovimiento" class="borde1" *ngIf="interfazService.pantallaInterfaz=='movimiento'">
-		<div class="tituloInterfaz Texto2">Cantidad de movimiento: </div>
-
-        <div class="contenedorSeleccionValor">
-            <div class="botonCambiarValor Texto1">-</div>	
-            <img class="iconoMovimiento" src="./assets/Iconos/09.png"/>
-            <div class="botonCambiarValor Texto1">+</div>	
+        
+		<div class="titulo Texto1">
+            Tirada de Fortuna
         </div>
 
-		<div class="contenedorAtributo movimiento">
-			<img class="icono" src="./assets/Iconos/Icono-Movimiento.png"/>
-			<div class="valor Texto1">4</div>
-			<div class="frameAtributo"></div>
-		</div>
+        <div class="fallo">
+            <div class="textoResta"(click)="interfazService.modificarMovimiento(-1)">-</div>	
+        </div>
 
-		<div class="contenedorAtributo energia">
-			<img class="icono" src="./assets/Iconos/Icono-Energia-Stat.png"/>
-			<div class="valor Texto1">20</div>
-			<div class="frameAtributo"></div>
+        <div class="normal">
+            <img class="badgeMovimiento" src="./assets/Iconos/09.png"/>
+        </div>
+
+        <div class="afortunado">
+            <div class="textoSuma" (click)="interfazService.modificarMovimiento(1)">+</div>	
+        </div>
+
+		<div class="contenedorAtributos">
+            <atributoComponent class="atributo" [tipo]="'movimiento'" [valor]="interfazService.puntosMovimiento"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.energiaMovimiento"></atributoComponent>
 		</div>
 
 		<div class="contenedorBotones">
-			<botonComponent mat-button (click)="interfazService.realizarMovimiento()" [texto]="'Moverse'" [color]="'verde'" class="boton"></botonComponent>
-			<botonComponent mat-button (click)="interfazService.cancelarMovimiento()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.realizarMovimiento()" [texto]="'Moverse'" [color]="'verde'" class="boton" [ngClass]="{'botonDeshabilitado': interfazService.energiaMovimiento > interfazService.energiaDisponible}"></botonComponent>
+			<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.cancelarMovimiento()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+	    </div>
+
 	</div>
-		<div class="frame"></div>
+
+	<!-- *************************************************
+				Interfaz Fortuna 
+		 ************************************************* -->
+
+	<div id="contenedorInterfazFortuna" class="borde1" *ngIf="interfazService.pantallaInterfaz=='fortuna'">
+        
+		<div class="titulo Texto1">
+            Tirada de Fortuna:
+        </div>
+
+        <div class="fallo">
+            <img class="badge" src="./assets/Iconos/indicadores/011.png"/>
+        </div>
+
+        <div class="normal">
+            <img class="badge" src="./assets/Iconos/indicadores/008.png"/>
+        </div>
+
+        <div class="fortuna">
+            <img class="badge" src="./assets/Iconos/indicadores/014.png"/>
+        </div>
+
+		<div class="contenedorAtributos">
+            <atributoComponent class="atributo" [tipo]="'dado'" [valor]="' < 2 '"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'dado'" [valor]="' 2 - 4 '"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'dado'" [valor]="' > 4 '"></atributoComponent>
+		</div>
+
+		<div class="contenedorBotones">
+            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarFortuna('fallo')" [texto]="'Fallo'" [color]="'rojo'" class="boton"></botonComponent>
+			<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarFortuna('normal')" [texto]="'Normal'" [color]="'naranja'" class="boton"></botonComponent>
+            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarFortuna('fortuna')" [texto]="'Fortuna'" [color]="'verde'" class="boton"></botonComponent>
+	    </div>
+
+	</div>
+
+	<!-- *************************************************
+				Interfaz CRITICO 
+		 ************************************************* -->
+
+	<div id="contenedorInterfazCritico" *ngIf="interfazService.pantallaInterfaz=='critico'">
+        
+		<div class="titulo Texto1">
+            Probabilidad de crítico:
+        </div>
+
+        <div class="fallo">
+        </div>
+
+        <div class="normal">
+            <div id="coin" [ngClass]="{'critico': interfazService.critico, 'noCritico': interfazService.noCritico}">
+                <div class="side-a"></div>
+                <div class="side-b"></div>
+            </div>
+        </div>
+
+        <div class="fortuna">
+        </div>
+
+		<div class="contenedorAtributos">
+            <atributoComponent class="atributo" [tipo]="'critico'" [valor]="'10%'"></atributoComponent>
+		</div>
+
 	</div>
 
 	<!-- *************************************************
