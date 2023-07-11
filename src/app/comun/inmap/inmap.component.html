@@ -79,7 +79,7 @@
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-        <heroeComponent *ngFor="let heroe of this.inmapService.sesion.render.heroes; let i = index" [renderMazmorra]="this.inmapService.sesion.render" [] [desplegable]="true" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
+        <heroeComponent *ngFor="let heroe of this.inmapService.sesion.render.heroes; let i = index" [renderMazmorra]="this.inmapService.sesion.render" [desplegable]="true" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
 
 	</div>
 
@@ -90,7 +90,7 @@
 	<div id="ContenedorMapa">
         <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
         <mapaGeneralComponent id="mapaGeneralComponent"
-                              (comandoMapaGeneral)="comandoPanelGeneral($event)" 
+                              (comandoMapaGeneral)="comandoPanelGeneral($event)"
                               [coordenadas]="appService.sesion.inmap"
                               [radioRenderIsometrico]="appService.radioRenderIsometrico"
                               [herramientaInMap]="'InMap'"
@@ -117,7 +117,7 @@
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
 			<panelMazmorraComponent></panelMazmorraComponent>
 		</div>
-		
+
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Diario'">
 			<panelDiarioComponent></panelDiarioComponent>
 		</div>

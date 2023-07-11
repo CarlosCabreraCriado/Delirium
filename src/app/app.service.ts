@@ -20,7 +20,7 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/n
 
 export class AppService {
 
-  	constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) { 
+  	constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -36,9 +36,9 @@ export class AppService {
       //Variables de entorno:
       this.ipRemota =  environment.dominio
       this.ionic = environment.ionic
-      console.warn("ENTORNO: ") 
-      console.warn("IP REMOTA: ", environment.dominio) 
-      console.warn("IONIC: ", environment.ionic) 
+      console.warn("ENTORNO: ")
+      console.warn("IP REMOTA: ", environment.dominio)
+      console.warn("IONIC: ", environment.ionic)
       console.warn("DISPOSITIVO: ", this.dispositivo)
 
         if(this.ionic){this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);}
@@ -49,12 +49,12 @@ export class AppService {
 
     //Variables de entorno:
     public ipRemota: string= "";
-    private ionic: boolean= true; 
+    private ionic: boolean= true;
 
     //Variables de configuración:
     public activarDatosOficiales= true;
 
-    //Datos: 
+    //Datos:
     private cuenta: any = null
     public token: string = null;
     private _storage: Storage | null = null;
@@ -111,20 +111,22 @@ export class AppService {
     setEstadoApp(estado: string){
 
         console.log("ENTRANDO")
-      	this.mostrarPantallacarga(true);
-
-		setTimeout(()=>{    
+      	this.mostrarPantallacarga(false);
+        this.estadoApp = estado;
+/*
+		setTimeout(()=>{
             this.estadoApp = estado;
  		}, 1000);
 
-		setTimeout(()=>{    
+		setTimeout(()=>{
       		this.mostrarPantallacarga(false);
  		}, 4000);
+    */
 
     }
 
     //STORAGE:
-    
+
     async initStorage(){
         const storage = await this.storage.create();
         this._storage = storage;
@@ -177,7 +179,7 @@ export class AppService {
     }
 
     setControl(val:string):void{
-    
+
       switch(val){
         case "bloqueoMensaje":
         this.bloqueo[0]=1;
@@ -211,7 +213,7 @@ export class AppService {
          flagCambio = false;
        }
      }
- 
+
      if(flagCambio){
        switch(val){
          case "desbloqueoMensaje":
@@ -361,7 +363,7 @@ export class AppService {
 	}
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
-        
+
       const dialogRef = this.dialog.open(DialogoComponent,{
           width: "100px", panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, inputLabel: config.inputLabel}
         });
@@ -429,7 +431,7 @@ export class AppService {
     logout(){
         this.mostrarPantallacarga(true);
 
-		setTimeout(()=>{    
+		setTimeout(()=>{
             this.setToken(null)
             this.setPerfil(null)
             this.setCuenta(null)
@@ -439,8 +441,8 @@ export class AppService {
             this.setEstadoApp("index");
  		}, 1000);
     }
-        
-        
+
+
 
     mostrarSocial(tipoDialogo:string, config:any):any{
 
@@ -480,12 +482,12 @@ export class AppService {
     setEstadoInMap(estado:string){
         // Pone Nube -1s-> Cambia Mapa -1s-> CentraMapa -1s-> Quita Nubes
         this.cargandoMapa = true;
-		setTimeout(()=>{    
-            this.estadoInMap = estado; 
-		    setTimeout(()=>{    
+		setTimeout(()=>{
+            this.estadoInMap = estado;
+		    setTimeout(()=>{
                 this.eventoAppService.emit("centrarMapa")
-		        setTimeout(()=>{    
-                    this.cargandoMapa = false; 
+		        setTimeout(()=>{
+                    this.cargandoMapa = false;
                 },1000)
             },1000)
         },1000)
@@ -503,7 +505,7 @@ export class AppService {
         if(this.ionic){
             this.cuenta = await this.storage.get("cuenta");
         }else{
-            this.cuenta = await window.electronAPI.getCuenta() 
+            this.cuenta = await window.electronAPI.getCuenta()
         }
 
        console.log(this.cuenta);
@@ -625,7 +627,7 @@ export class AppService {
     async getMazmorra(){
       return this.mazmorra;
     }
-    
+
     getSesion(){
         return this.sesion;
     }
@@ -652,13 +654,13 @@ export class AppService {
     abrirEvento(){
 
         var objetoEventoDialogo = {
-	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"], 
-	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"], 
+	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"],
+	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"],
         }
 
         var objetoEventoNarradorImg = {
-	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"], 
-	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"], 
+	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"],
+	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"],
         }
 
         //this.mostrarDialogo("Mision",objetoEventoNarradorImg);
@@ -686,14 +688,14 @@ export class AppService {
   }
 
   setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){
-      
+
       console.log("Setting Tile")
 
         //Fomrulario General:
         this.region.isometrico[x][y].nombre = formGeneral.inMapNombre
         this.region.isometrico[x][y].descripcion = formGeneral.inMapDescripcion
         this.region.isometrico[x][y].indicador = formGeneral.inMapIndicador
- 
+
         //Fomrulario General:
         this.region.isometrico[x][y].tipoTerreno = formTerreno.inMapTipoTerreno
         this.region.isometrico[x][y].atravesable = formTerreno.inMapAtravesable
@@ -717,12 +719,12 @@ export class AppService {
 
         this.cargandoMapa = true;
         var token = await this.getToken();
-        if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;} 
+        if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;}
 
 		console.log("Cargando appService.region: "+zona);
 		this.http.post(this.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).subscribe((data) => {
 			console.log("Región: ");
-			console.log(data);	
+			console.log(data);
 			this.region= data;
             //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
             //Cargar Render Isometrico:
@@ -747,13 +749,13 @@ export class AppService {
                 }
             }else{
                 //Si es el panel de desarrollador:
-                this.renderIsometrico= this.region.isometrico; 
+                this.renderIsometrico= this.region.isometrico;
             }
-            
+
             console.log("RENDER ISOMETRICO: ")
             console.log(this.renderIsometrico)
 
-            //REALIZA UNA REGULARIZACION: 
+            //REALIZA UNA REGULARIZACION:
             //this.regularizarRegion();
 
             this.eventoAppService.emit("inicializarIsometrico")
@@ -769,20 +771,20 @@ export class AppService {
     regularizarRegion(){
             console.log("REGULARIZANDO RENDER ISOMETRICO")
 
-            //Iteración por todos los tiles del render: 
+            //Iteración por todos los tiles del render:
             var longitudX = this.region.isometrico[0].length;
             var longitudY = this.region.isometrico.length;
             for( var i = 0; i < longitudX; i++){
                 for( var j = 0; j < longitudY; j++){
-                    delete this.region.isometrico[i][j].tileBase; 
-                    delete this.region.isometrico[i][j].visitado; 
-                    delete this.region.isometrico[i][j].tileId; 
-                    delete this.region.isometrico[i][j].cogerMisionId; 
+                    delete this.region.isometrico[i][j].tileBase;
+                    delete this.region.isometrico[i][j].visitado;
+                    delete this.region.isometrico[i][j].tileId;
+                    delete this.region.isometrico[i][j].cogerMisionId;
                 }
             }
 
             console.log(this.renderIsometrico)
-        
+
     }
 
     async iniciarMazmorra(nombreIdMazmorra: string){
@@ -814,7 +816,7 @@ export class AppService {
 
         });
 
-       //this.mazmorra = await window.electronAPI.getMazmorra(nombreIdMazmorra); 
+       //this.mazmorra = await window.electronAPI.getMazmorra(nombreIdMazmorra);
 
         // 1) Cambio de estados AppService:
 		//this.setSala(this.sala);

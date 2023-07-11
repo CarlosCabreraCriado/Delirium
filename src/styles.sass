@@ -21,7 +21,7 @@ $angular-warn: mat.define-palette(mat.$red-palette)
 
 $angular-dark-theme: mat.define-dark-theme( ( color: ( primary: $angular-primary, accent: $angular-accent, warn: $angular-warn,),))
 
-.darkMode 
+.darkMode
   @include mat.all-component-colors($angular-dark-theme)
 
 html
@@ -92,7 +92,7 @@ body
 .Flip
     -webkit-transform: scaleX(-1)
     transform: scaleX(-1)
- 
+
 .divisor
   background: #f3b95c
   height: 2px
@@ -130,26 +130,26 @@ body
 
 #botonPruebas
   position: absolute
-  width: 10vh 
-  height: 10vh 
+  width: 10vh
+  height: 10vh
   top: 30%
   left: 5%
 
 $anime-time: 2s
-$path-width: 5px 
-$colorPrincipal: #ffff00 
-$colorSecundario: #ff8d40 
+$path-width: 5px
+$colorPrincipal: #ffff00
+$colorSecundario: #ff8d40
 
 .botonDeshabilitado
   filter: grayscale(1)
   pointer-events: none
 
-.animacionFocus 
-  width: 100% 
-  height: 100% 
+.animacionFocus
+  width: 100%
+  height: 100%
   margin: auto
   box-sizing: border-box
-  color: $colorPrincipal 
+  color: $colorPrincipal
   box-shadow: inset 0 0 $path-width $path-width rgba($colorSecundario, .5)
 
   &::before
@@ -165,7 +165,7 @@ $colorSecundario: #ff8d40
     animation: AnimacionFocus $anime-time linear infinite
     animation-delay: $anime-time * -.5
 
-  &::after 
+  &::after
     position: absolute
     content: ''
     top: 0
@@ -175,40 +175,40 @@ $colorSecundario: #ff8d40
     z-index: 10
     box-sizing: border-box
     box-shadow: inset 0 0 $path-width $path-width
-    animation: AnimacionFocus $anime-time linear infinite
+    animation: AnimacionFcus $anime-time linear infinite
 
-.shaderElectrico 
+.shaderElectrico
   background-size: 4000% 100%
-  background-image: url("../../../assets/Efectos/37.png")
+  background-image: url("./assets/Efectos/37.png")
   -webkit-animation: shader 2s steps(39) infinite
 
-@keyframes shader 
+@keyframes shader
   0%
     background-position: 0%
-  100% 
+  100%
     background-position: 100%
 
-@keyframes AnimacionFocus 
-  0%, 100% 
+@keyframes AnimacionFocus
+  0%, 100%
     clip-path: polygon(0% 0%, $path-width  0%, $path-width 100%, 0% 100%)
-  25% 
+  25%
     clip-path: polygon(0%  calc(100% - $path-width), 100% calc(100% - $path-width), 100% 100%, 0% 100%)
-  50% 
+  50%
     clip-path: polygon(calc(100% - $path-width) 0%, 100% 0%, 100% 100%, calc(100% - $path-width) 100%)
-  75% 
+  75%
     clip-path: polygon(0% 0%, 100% 0%, 100% $path-width, 0% $path-width)
 
 
 // Base de formatos:
 
 /* Extra small devices (phones, 600px and down) */
-//@media only screen and (max-width: 600px) {} 
+//@media only screen and (max-width: 600px) {}
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
-//@media only screen and (min-width: 600px) {} 
+//@media only screen and (min-width: 600px) {}
 
 /* Medium devices (landscape tablets, 768px and up) */
-//@media only screen and (min-width: 768px) {} 
+//@media only screen and (min-width: 768px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
 //@media only screen and (min-width: 992px) {}

@@ -103,7 +103,7 @@ export class InterfazService {
         //----------------------------------
         // SELECCIÓN DE OBJETIVO
         // ---------------------------------
-        
+
         if(typeof this.objetivoDefinido === "undefined"){
             //Determina Objetivo Segun Agro:
             var indexObjetivo = 0;
@@ -111,7 +111,7 @@ export class InterfazService {
             for(var i = 1; i < this.renderHeroes.length; i++){
                if(this.renderEnemigos[indexEnemigoActivado].agro[i] >this.renderEnemigos[indexEnemigoActivado].agro[i-1]){
                    flagIgual = false;
-                   indexObjetivo = i; 
+                   indexObjetivo = i;
                //Detecta si son distintos:
                }else if(this.renderEnemigos[indexEnemigoActivado].agro[i] != this.renderEnemigos[indexEnemigoActivado].agro[i-1]){
                    flagIgual = false;
@@ -143,17 +143,17 @@ export class InterfazService {
             flagCumple=true;
 
             //Si MOVIO no volverá a MOVER:
-            if(this.ultimaAccion == "mover" && 
+            if(this.ultimaAccion == "mover" &&
                this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].tipo =="movimiento"){
                 flagCumple=false;
             }
             //Si ES ADYASCENTE no volverá a MOVER:
-            if(this.esAdyascente == true && 
+            if(this.esAdyascente == true &&
                this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].tipo =="movimiento"){
                 flagCumple=false;
             }
             //Si no tuvo RANGO no volverá a ATACAR:
-            if(this.ultimaAccion == "sinRango" && 
+            if(this.ultimaAccion == "sinRango" &&
                this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].tipo =="ataque"){
                 flagCumple=false;
             }
@@ -165,6 +165,7 @@ export class InterfazService {
 
         if(iteracion >= 100){
             console.warn("SALIDA POR ITERACIÓN")
+            this.observarInterfaz.next({comando: "finalizarActivacionEnemigo",valor: ""});
             this.finalizarActivacion();
             return;
         }
@@ -176,7 +177,7 @@ export class InterfazService {
             this.finalizarActivacion();
             return;
         }
-        
+
         //----------------------------------
         // EJECUCION DE ACCIÓN
         // ---------------------------------
@@ -187,7 +188,7 @@ export class InterfazService {
             break;
             case "ataque":
                 var indexHechizo= this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_id;
-                this.tieneAlcance = true; 
+                this.tieneAlcance = true;
                 this.valorAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].alcance;
             break;
         }
@@ -270,7 +271,7 @@ export class InterfazService {
     }
 
     finalizarFortuna(resultadoFortuna:string):void{
-        this.iniciarCritico(); 
+        this.iniciarCritico();
         this.mostrarInterfaz = true;
         return;
     }
@@ -302,7 +303,7 @@ export class InterfazService {
        this.desactivarInterfaz();
        return;
     }
-    
+
     realizarMovimiento(){
        this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento});
        this.desactivarInterfaz();
