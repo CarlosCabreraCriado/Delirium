@@ -55,6 +55,7 @@ export class InterfazService {
     private energiaAccion = 100;
     private esAdyascente = false;
     private tieneAlcance = false;
+    public  hechizoEnemigoImagenId:number = 0;
 
     // Observable string sources
     private observarInterfaz = new Subject<any>();
@@ -189,6 +190,7 @@ export class InterfazService {
             break;
             case "ataque":
                 var indexHechizo= this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_id;
+                this.hechizoEnemigoImagenId= this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_imagen_id;
                 this.tieneAlcance = true;
                 this.valorAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].alcance;
             break;

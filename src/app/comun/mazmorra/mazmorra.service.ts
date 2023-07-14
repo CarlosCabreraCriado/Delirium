@@ -3370,7 +3370,7 @@ export class MazmorraService implements OnInit{
     activarEnemigo(indexEnemigoActivado:number){
 
       //Evita la activación si no le toca la activación al heroe:
-      if(this.heroeIndex!=this.sesion.render.indexActivacionEnemigo){return}
+      if(this.heroeIndex!=this.sesion.render.indexActivacionEnemigo && !this.permitirMultiControl){return}
 
         console.warn("Activando Enemigos: ",indexEnemigoActivado,"(Index)",this.sesion.render.indexActivacionEnemigo,"(IndexActivacion)");
         if(this.sesion.render.enemigos[indexEnemigoActivado]){
@@ -3465,8 +3465,8 @@ export class MazmorraService implements OnInit{
     //EVENTO 6: Inspeccionar Mesa
     if(idEvento==6){
        const dialogo = this.appService.mostrarDialogo("Dialogo",
-        { titulo: "¿Quieres inspeccionar la mesa?",
-          contenido: "Para poder inspeccionar tienes que estar adyascente al objeto",
+        { titulo: "Mesa del estudio",
+          contenido: "Inspeccionas la mesa y bajo los papeles encuentras un gran llave de hierro forjado.",
           personajeIzquierda: {
             mostrar: true,
             tipo: "heroes",

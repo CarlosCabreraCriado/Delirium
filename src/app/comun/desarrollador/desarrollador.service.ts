@@ -2426,6 +2426,23 @@ export class DesarrolladorService implements OnInit{
             });
           break;
 
+          case "Clases":
+            console.log(this.clases)
+            this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarClases",{clases: this.clases, token: await this.appService.getToken()}).subscribe((res) => {
+              if(res){
+                console.log("Objeto Clases guardado con exito");
+                this.mostrarBotonAceptar= true;
+                this.mostrarSpinner= false;
+                this.mensaje= "Datos guardados con exito";
+                this.reloadDatos(true);
+              }else{
+                console.log("Fallo en el guardado");
+              }
+            },(err) => {
+              console.log(err);
+            });
+          break;
+
           case "Eventos":
             console.log(this.eventos)
             this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarEventos",{eventos: this.eventos, token: await this.appService.getToken()}).subscribe((res) => {

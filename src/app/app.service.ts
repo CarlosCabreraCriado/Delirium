@@ -111,17 +111,17 @@ export class AppService {
     setEstadoApp(estado: string){
 
         console.log("ENTRANDO")
-      	this.mostrarPantallacarga(false);
-        this.estadoApp = estado;
-/*
-		setTimeout(()=>{
-            this.estadoApp = estado;
- 		}, 1000);
+      	//this.mostrarPantallacarga(false);
+        //this.estadoApp = estado;
+      	this.mostrarPantallacarga(true);
 
-		setTimeout(()=>{
-      		this.mostrarPantallacarga(false);
- 		}, 4000);
-    */
+        setTimeout(()=>{
+                this.estadoApp = estado;
+        }, 1000);
+
+        setTimeout(()=>{
+              this.mostrarPantallacarga(false);
+        }, 4000);
 
     }
 
@@ -800,9 +800,10 @@ export class AppService {
     }
 
     async iniciarMazmorra(nombreIdMazmorra: string){
+
         //INICIANDO MAZMORRA:
         console.log("Iniciando Mazmorra: "+nombreIdMazmorra);
-
+      	this.mostrarPantallacarga(true);
 
         //CARGANDO MAZMORRA:
         var token = await this.getToken();

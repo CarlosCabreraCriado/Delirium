@@ -17,7 +17,7 @@ export class FormEnemigosComponent {
 
     //Variables de estado:
     public opcionSeleccionada: "estadisticas"|"propiedades"|"acciones" = "acciones";
-    public accionSeleccionadaIndex = 0; 
+    public accionSeleccionadaIndex = 0;
     public hechizosDisponibles = [];
 
     //Form Group:
@@ -115,6 +115,7 @@ export class FormEnemigosComponent {
             habilitada: this.habilitada_accion,
             habilitarAccion: this.habilitarAccion_accion,
             deshabilitarAccion: this.deshabilitarAccion_accion,
+            hechizo_imagen_id: 1,
             hechizo_id: this.hechizo_id_accion,
             inicial: this.inicial_accion
 	    });
@@ -130,7 +131,7 @@ export class FormEnemigosComponent {
                     break;
                 }
             }) // Fin Suscripcion
-            
+
 		//Suscripcion de cambios formulario Enemigo:
 		this.formEnemigo.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.enemigoSeleccionadoIndex+1){
@@ -160,15 +161,20 @@ export class FormEnemigosComponent {
 		//Suscripcion de cambios formulario Acciones:
 		this.formAcciones.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.enemigoSeleccionadoIndex+1){
+          if(val["hechizo_id"]>0){
+            val["hechizo_imagen_id"]=this.desarrolladorService.hechizos.hechizos.find(i => i.id==val["hechizo_id"]).imagen_id;
+          }else{
+            val["hechizo_imagen_id"]=0;
+          }
 			    this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones[this.accionSeleccionadaIndex]= val
 			}
 			console.log(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex])
 		});
 
-        //Cargar Hechizos Disponibles: 
+        //Cargar Hechizos Disponibles:
         this.cargarHechizosDisponibles();
 
-        //Cargar: 
+        //Cargar:
         this.reloadForm();
 
     }//FIN ONINIT
@@ -209,7 +215,7 @@ export class FormEnemigosComponent {
         for(var i = 0; i < cantidadAcciones; i++){
             if(acciones[i].id >= nuevoId){
                     nuevoId = acciones[i].id+1;
-            } 
+            }
         }
 
         this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones.push({
@@ -227,7 +233,7 @@ export class FormEnemigosComponent {
             habilitarAccion: 0,
             deshabilitarAccion: 0,
             hechizo_id: 0,
-            inicial: false 
+            inicial: false
         });
 
         this.accionSeleccionadaIndex = cantidadAcciones;
