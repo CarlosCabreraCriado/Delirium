@@ -28,9 +28,18 @@ export class FormBuffComponent {
     private tipo_Buff = new UntypedFormControl('Ventaja');
     private tipo_dano_Buff = new UntypedFormControl('Físico');
 
-    private dano_T_Buff = new UntypedFormControl('0');
-    private heal_T_Buff = new UntypedFormControl('0');
-    private escudo_T_Buff = new UntypedFormControl('0');
+    private dano_T_Buff = new UntypedFormControl(0);
+    private dano_esc_AD_T_Buff = new UntypedFormControl(0);
+    private dano_esc_AP_T_Buff = new UntypedFormControl(0);
+
+    private heal_T_Buff = new UntypedFormControl(0);
+    private heal_esc_AD_T_Buff = new UntypedFormControl(0);
+    private heal_esc_AP_T_Buff = new UntypedFormControl(0);
+
+    private escudo_T_Buff = new UntypedFormControl(0);
+    private escudo_esc_AD_T_Buff = new UntypedFormControl(0);
+    private escudo_esc_AP_T_Buff = new UntypedFormControl(0);
+
     private stat_inc_Buff = new UntypedFormControl('0');
     private stat_inc_inicial_Buff = new UntypedFormControl('0');
     private stat_inc_T_Buff = new UntypedFormControl('0');
@@ -46,24 +55,26 @@ export class FormBuffComponent {
         	duracion: this.duracion_Buff,
         	descripcion: this.descripcion_Buff,
         	imagen_id: 1,
-        	animacion_id: this.animacion_Buff, 
+        	animacion_id: this.animacion_Buff,
         	tipo: "Ventaja",
         	tipo_daño: this.tipo_dano_Buff,
 
         	daño_t: this.dano_T_Buff,
+          daño_esc_AP: this.dano_esc_AP_T_Buff,
+          daño_esc_AD: this.dano_esc_AD_T_Buff,
+
         	heal_t: this.heal_T_Buff,
+          heal_esc_AP: this.heal_esc_AP_T_Buff,
+          heal_esc_AD: this.heal_esc_AD_T_Buff,
+
         	escudo_t: this.escudo_T_Buff,
+          escudo_esc_AP: this.escudo_esc_AP_T_Buff,
+          escudo_esc_AD: this.escudo_esc_AD_T_Buff,
 
         	stat_inc: this.stat_inc_Buff,
         	stat_inc_inicial: this.stat_inc_inicial_Buff,
         	stat_inc_t: this.stat_inc_T_Buff,
 
-            daño_esc_AP: 0,
-            daño_esc_AD: 0,
-            heal_esc_AP: 0,
-            heal_esc_AD: 0,
-            escudo_esc_AP: 0,
-            escudo_esc_AD: 0,
             visible: true,
             triggersBuff: []
 	    });

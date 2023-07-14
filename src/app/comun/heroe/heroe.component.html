@@ -8,17 +8,22 @@
     <!-- FRAME CIRCULO -->
     <div class="frameCirculo">
     <div class="frameAnimacionesFrame" [ngClass]="{'shaderElectrico': renderHeroe.turno}"></div>
-		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>	
+		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>
 
-        <img (click)="estadoDesplegado = !estadoDesplegado"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>	
+        <img (click)="estadoDesplegado = !estadoDesplegado"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 
 		<div class="contenedorFrameRol">
-			<img class="iconoRol" src="../../../assets/Iconos/Rol-{{marcador}}.png"/>	
+      <!--<img class="iconoRol" src="../../../assets/Iconos/Rol-{{marcador}}.png"/>-->
+			<div *ngIf="renderHeroe.clase=='Hechicero'" class="icono azul"></div>
+			<div *ngIf="renderHeroe.clase=='Guerrero'" class="icono rojo"></div>
+			<div *ngIf="renderHeroe.clase=='Cazador'" class="icono verde"></div>
+      <div *ngIf="renderHeroe.clase=='Ladrón'" class="icono negro"></div>
+			<div *ngIf="renderHeroe.clase=='Sacerdote'" class="icono blanco"></div>
 			<img class="frameRol Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 
 		<div class="contenedorFrameNivel">
-			<div class="nivel Texto2">{{renderHeroe.nivel}}</div>	
+			<div class="nivel Texto2">{{renderHeroe.nivel}}</div>
 			<img class="frameNivel Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 
@@ -27,7 +32,7 @@
         <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.vida"></appAnimacionNumero>
 
 	</div>
-	
+
     <!-- DETALLE -->
     <div class="wrapperDesplegable">
         <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado && desplegable}">
@@ -37,7 +42,7 @@
 
             <div class="nombre Texto4">{{renderHeroe.nombre}}</div>
 
-            <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>	
+            <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>
             <!-- BARRAS -->
             <div class="contenedorBarras">
                 <div class="wrapperBarras">
@@ -45,7 +50,16 @@
                     <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
                 </div>
                 <div class="separadorMarco"></div>
-            </div> 
+            </div>
+
+            <!-- Buff -->
+            <div id="contenedorBuffos">
+                <div *ngFor="let buff of renderHeroe.buff; let j = index"  class="buffo">
+                  <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{renderHeroe.buff[j].imagen_id}}.png">
+                    <div class="contadorDuracion">{{renderHeroe.buff[j].duracion}}</div>
+                </div>
+            </div>
+
         </div>
     </div>
 

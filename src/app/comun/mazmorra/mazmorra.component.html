@@ -33,7 +33,7 @@
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
 			<panelMazmorraComponent></panelMazmorraComponent>
 		</div>
-		
+
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Diario'">
 			<panelDiarioComponent></panelDiarioComponent>
 		</div>
@@ -62,7 +62,7 @@
         <!--   ******************* -->
         <!--     LOOGER            -->
         <!--   ******************* -->
-       
+
 <appLogger [renderMazmorra]="renderMazmorra" [sesion]="mazmorraService.sesion"></appLogger>
 
 	<!--   ******************* -->
@@ -99,7 +99,7 @@
 		<!--   ******************* -->
 
 <experienciaComponent id="experiencia"></experienciaComponent>
-        
+
         <!--   ******************* -->
         <!--     INTERFAZ PANEL         -->
         <!--   ******************* -->
@@ -128,7 +128,7 @@
 	<!--      Panel Control    -->
 	<!--   ******************* -->
 
-	<panelControlComponent [tipo]="'mazmorra'" (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"></panelControlComponent>
+  <panelControlComponent [tipo]="'mazmorra'" [habilitar]="mazmorraService.esTurnoPropio || mazmorraService.permitirMultiControl" (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"></panelControlComponent>
 
 
 <!-- *************************************************
@@ -159,7 +159,7 @@
 
 	<div id="contenedorEnemigos">
         <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-            <enemigoComponent *ngFor="let enemigo of this.mazmorraService.sesion.render.enemigos; let i = index" [desplegable]="true" [indexEnemigo]="i" [renderMazmorra]="this.mazmorraService.sesion.render" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
+            <enemigoComponent *ngFor="let enemigo of this.mazmorraService.sesion.render.enemigos; let i = index" [desplegable]="false" [indexEnemigo]="i" [renderMazmorra]="this.mazmorraService.sesion.render" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
         </ng-container>
 	</div>
 
@@ -169,9 +169,9 @@
 
 	 <div id="contenedorMapaMazmorra">
 
-        <pinch-zoom #pinchZoom id="pinch-zoom" 
-            [limitPan]="false" 
-            [minPanScale]="1" 
+        <pinch-zoom #pinchZoom id="pinch-zoom"
+            [limitPan]="false"
+            [minPanScale]="1"
             [disableZoomControl]="'disable'"
             [limit-zoom]="10">
           <!-- Contenedor Isometrico -->
@@ -180,7 +180,7 @@
               <div  class="canvasIsometrico" [ngStyle]= "this.estiloIsometrico">
 
                 <div *ngIf="this.mazmorraService.mostrarMazmorra">
-                <div *ngFor="let elementoIsometrico of this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="true" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
+                <div *ngFor="let elementoIsometrico of this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="clickElemento(elementoIsometrico)" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
                     <img class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
 
                 </div>
@@ -192,5 +192,5 @@
     </div>
 
 </div>
-        
-        
+
+

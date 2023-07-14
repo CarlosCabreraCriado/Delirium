@@ -28,7 +28,7 @@ export class InMapComponent implements OnInit {
 
 	ngOnInit(){
 
-       console.warn("INICIANDO INMAP") 
+       console.warn("INICIANDO INMAP")
 
 		//Observar Eventos AppService:
 		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
@@ -53,7 +53,7 @@ export class InMapComponent implements OnInit {
       		    	console.log("Contenido: ");
       		    	console.log(data.contenido);
       			break;
-      			
+
       			case "estadoSala":
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Contenido: ");
@@ -61,15 +61,15 @@ export class InMapComponent implements OnInit {
       		    	//this.sala = data.contenido;
       		    	console.log("SALA: ")
       		    	//console.log(this.sala);
-      		    	
+
       			break;
-				
+
       			case "cerrarSala":
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Contenido: ");
       		    	console.log(data.contenido);
       		    	//this.appService.setSala(this.sala);
-      		    	//console.log(this.sala); 	
+      		    	//console.log(this.sala);
       			break;
 
       			case "iniciarPartida":
@@ -96,7 +96,7 @@ export class InMapComponent implements OnInit {
 
     		//Importar Datos Generales al servicio Inmap:
             console.log("Importando Datos Generales: ");
-	    	this.inmapService.importarDatosGenerales();	
+	    	this.inmapService.importarDatosGenerales();
 
         }).then(() => {
             //Cargar Grupo:
@@ -128,7 +128,7 @@ export class InMapComponent implements OnInit {
 	comandoPanelControl(comando:any){
 		//Si se pulsa el centro accede a mazmorra:
 		if(comando=="centro"){
-			this.inmapService.iniciarPartida("MazmorraSnack");	
+      this.appService.iniciarMazmorra("Bastion");
 		}
 	}
 

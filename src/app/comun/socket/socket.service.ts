@@ -60,7 +60,7 @@ export class SocketService {
     //****************************
     //    Metodos
     //****************************
-    
+
     conectarSocket(token:string){
         console.log("Enviando Token: "+token)
         this.socket.ioSocket['auth'] = { token: token }
@@ -68,6 +68,7 @@ export class SocketService {
     }
 
     enviarSocket(evento,data){
+      console.warn("ENVIANDO: ",data)
       this.socket.emit(evento,data);
     }
 

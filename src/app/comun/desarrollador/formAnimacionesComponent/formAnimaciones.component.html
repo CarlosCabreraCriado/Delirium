@@ -34,7 +34,7 @@
 
 				  <mat-form-field appearance="legacy" class="formId">
 					<mat-label>ID</mat-label>
-					<input matInput placeholder="ID" formControlName="id">
+					<input matInput placeholder="ID" type="number" formControlName="id">
 				  </mat-form-field>
 
                   <img class="botonMute" src="./assets/desarrollador/mute.png" [ngClass]="{'muteado':mute}" (click)="mute= !mute"/>
@@ -125,7 +125,7 @@
 
 			<!-- Inicio panel subanimacion -->
 			<div class="contenedorSubLista contenedorSubanimacion">
-				
+
 				<div class="tituloSubLista">Subanimación</div>
 				<div *ngFor="let subanimacion of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].subanimaciones; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('subanimacion',i)" (click)="desarrolladorService.seleccionarSubanimacion(i)">{{subanimacion.nombre}} </div>
 			</div>
@@ -138,8 +138,8 @@
 				<div *ngFor="let sonido of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].sonidos; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('sonido',i)" (click)="desarrolladorService.seleccionarSonido(i)">{{sonido.nombre}}</div>
 			</div>
 			<div class="botonAdd botonSonidos" (click)="desarrolladorService.addSonido()">Añadir</div>
-                
-		</div>       
+
+		</div>
         <!-- FIN VISUALIZACIÓN ANIMACIONES -->
 
 

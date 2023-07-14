@@ -27,7 +27,7 @@ export class InMapService {
 	public sesion: any;
 
 	//Estados Inmap:
-	public heroeSeleccionado: any;	
+	public heroeSeleccionado: any;
     public estadoInmap = "global";
 
 	//Variables de sala:
@@ -36,7 +36,7 @@ export class InMapService {
 		jugadores: [{}]
 	};
 
-  constructor(private appService: AppService,private socketService:SocketService) { 
+  constructor(private appService: AppService,private socketService:SocketService) {
 
         console.log("INICIANDO INMAP SERVICE");
 
@@ -45,9 +45,9 @@ export class InMapService {
 		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
 
 	}
-	
+
 	async cargarPerfil(){
-		
+
 		//Comprueba el Logueo:
 		console.log("Obteniendo cuenta y perfil...");
 		this.cuenta = await this.appService.getCuenta();
@@ -66,7 +66,7 @@ export class InMapService {
 	}
 
 	getIDCuenta(){
-		return this.cuenta._id;		
+		return this.cuenta._id;
 	}
 
 	async importarDatosGenerales(){
@@ -101,41 +101,19 @@ export class InMapService {
 
 		//Inicializa el grupo:
 
-        //REDIRIGIR A MAZMORRA:
-		//this.iniciarPartida("MazmorraSnack");	
+    //REDIRIGIR A MAZMORRA:
+		//this.iniciarPartida("Bastion");
 
 	}
 
     toggleInMap(){
-        
+
     }
 
 	iniciarPartida(nombreIdMazmorra: string):void{
-
         //INICIANDO MAZMORRA:
-        this.appService.iniciarMazmorra(nombreIdMazmorra);
-
-		//Inicio de Sala:
-			/*this.heroeSeleccionado= {
-				clase: "hechicero",
-				especializacion: "-",
-				id: 2,
-				nivel: 10,
-				nombre: "Mediv",
-				num_consumibles: 0,
-				num_objetos_inventario: 0,
-				oro: 0,
-				px: 0,
-				usuario: "Carlos",
-				online: false
-			 }
-             */
-
-        //GESTION DE SOCKET:
-		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: "Developer", contenido: this.heroeSeleccionado});
-		//this.socketService.enviarSocket('iniciarPartida', {nombre: this.cuenta.nombre, clave: this.cuenta.clave});
-
-
+    console.warn("INICIANDO...",nombreIdMazmorra)
+    this.appService.iniciarMazmorra(nombreIdMazmorra);
 	}
 
 }

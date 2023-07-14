@@ -13,6 +13,7 @@
     height: 100%
     transition: left 1s, width 1s
     pointer-events: none
+    z-index: 6
 
     .frameCirculo
         position: relative
@@ -23,8 +24,8 @@
         aspect-ratio: 1
         background-color: $colorFondo1
         border-radius: 100%
-        z-index: 2 
-        img 
+        z-index: 2
+        img
             position: relative
             display: block
             height: 100%
@@ -39,16 +40,16 @@
             justify-content: center
             align-items: center
             top: 0
-            left: 0 
+            left: 0
             height: 100%
             width: 100%
             clip-path: circle(45% at center)
             &.seleccionar
                 background-color: $colorFondo1
-            
+
             &.add
                 background-image: url("../../../assets/Background/Fondo-Add-Jugador.png")
-                background-size: 100% 100% 
+                background-size: 100% 100%
                 img
                     filter: brightness(10)
             img
@@ -76,6 +77,26 @@
                 transform: translate(-50%,-50%)
                 width: 50%
                 height: 50%
+            .icono
+                position: absolute
+                display: block
+                top: 50%
+                left: 50%
+                transform: translate(-50%,-50%)
+                width: 50%
+                height: 50%
+                border-radius: 100%
+                &.azul
+                  background: blue
+                &.rojo
+                  background: red
+                &.verde
+                  background: green
+                &.negro
+                  background: black
+                &.blanco
+                  background: white
+
         .contenedorFrameNivel
             position: absolute
             bottom: 0
@@ -102,9 +123,9 @@
       top: 0
       right: 50%
       height: 100%
-      width: 15vw 
+      width: 15vw
       overflow: hidden
-      z-index: 1 
+      z-index: 1
 
     .contenedorDetalle
       position: absolute
@@ -119,7 +140,7 @@
 
     .frameCirculo
       pointer-events: all
-      
+
     .nombre
         position: absolute
         color: white
@@ -143,7 +164,7 @@
         align-items: center
         width: 100%
         height: 100%
-        z-index: 2 
+        z-index: 2
         &.expandido
           width: 53%
         &.retraido
@@ -172,15 +193,41 @@
         height: 100%
         left: 0
         background-image: url("../../../assets/Background/Fondo-Heroe.png")
-        background-size: 100% 100% 
+        background-size: 100% 100%
 
         .frameDetalle
             position: absolute
             width: 100%
             height: 100%
             background-image: url("../../../assets/Frames/Frame-Heroe-Detalle.png")
-            background-size: 100% 100% 
+            background-size: 100% 100%
 
+#contenedorBuffos
+  position: absolute
+  bottom: 12%
+  height: 25%
+  width: 60%
+  left: 13%
+  display: flex
+  flex-direction: row
+  justify-content: center
+  .buffo
+    position: relative
+    height: 100%
+    aspect-ratio: 1
+    .contadorDuracion
+      position: absolute
+      top: 0
+      left: 0
+      height: 100%
+      width: 100%
+      color: white
+    .imagenBuff
+      position: absolute
+      top: 0
+      left: 0
+      height: 100%
+      width: 100%
 
 
 //------------------------------------------------------------------
@@ -194,85 +241,85 @@ $highlightObjetivoColor: red
     height: 120%
     top: -10%
     left: -10%
-    border-radius: 0 
+    border-radius: 0
     aspect-ratio: 1
     pointer-events: none
-    z-index: 3 
-      
+    z-index: 3
+
 .seleccionable
-  z-index: 21
+  z-index: 21 !important
 
-.Offline 
+.Offline
   background-color: gold
-   
 
-@keyframes highlightTurno 
-  0% 
-    background: $highlightTurnoColor 
-  100% 
-    background: rgba(211, 211, 211, 0)  
 
-.ObjetivoEnemigo 
+@keyframes highlightTurno
+  0%
+    background: $highlightTurnoColor
+  100%
+    background: rgba(211, 211, 211, 0)
+
+.ObjetivoEnemigo
   border-color: red
   border-style: ridge
   animation: highlightObjetivoEnemigo
   animation-duration: 1s
   animation-iteration-count: infinite
-  animation-direction: alternate 
+  animation-direction: alternate
 
-.ObjetivoAuxiliarEnemigo 
+.ObjetivoAuxiliarEnemigo
   border-color: orange
   border-style: dashed
   animation: highlightObjetivoEnemigoAuxiliar
   animation-duration: 1s
   animation-iteration-count: infinite
-  animation-direction: alternate 
+  animation-direction: alternate
 
-.ObjetivoAuxiliarEnemigo.ObjetivoEnemigo 
+.ObjetivoAuxiliarEnemigo.ObjetivoEnemigo
   border-color: orange red
   border-style: dashed ridge
   animation-duration: 1s
   animation-iteration-count: infinite
-  animation-direction: alternate 
+  animation-direction: alternate
 
-.ObjetivoAliado 
+.ObjetivoAliado
   border-color: green
   border-style: ridge
   animation: highlightObjetivoAliado
   animation-duration: 1s
   animation-iteration-count: infinite
-  animation-direction: alternate 
+  animation-direction: alternate
 
-.ObjetivoAuxiliarAliado 
+.ObjetivoAuxiliarAliado
   border-color: green
   border-style: dashed
   animation: highlightObjetivoAliado
   animation-duration: 1s
   animation-iteration-count: infinite
-  animation-direction: alternate 
+  animation-direction: alternate
 
-.ObjetivoAuxiliarAliado.ObjetivoAliado 
+.ObjetivoAuxiliarAliado.ObjetivoAliado
   border-color: lightblue green
   border-style: dashed ridge
   animation-duration: 1s
   animation-iteration-count: infinite
-  animation-direction: alternate 
+  animation-direction: alternate
 
 
-@keyframes highlightObjetivoEnemigo 
-  0% 
-    border-color: red 
-  100% 
-    border-color: rgba(255, 0, 0, 0.2)  
+@keyframes highlightObjetivoEnemigo
+  0%
+    border-color: red
+  100%
+    border-color: rgba(255, 0, 0, 0.2)
 
-@keyframes highlightObjetivoAliado 
-  0% 
-    border-color: green 
-  100% 
-    border-color: rgba(0, 255, 0, 0.2)  
-    
+@keyframes highlightObjetivoAliado
+  0%
+    border-color: green
+  100%
+    border-color: rgba(0, 255, 0, 0.2)
 
-// .animacionNumero 
+
+// .animacionNumero
 //   position: absolute
 //   font-size: 100px
 //   background-size: 100%
@@ -281,38 +328,38 @@ $highlightObjetivoColor: red
 //   width: 100%
 //   padding-top: 37.62%
 //   z-index: 10
-//   opacity: 0 
+//   opacity: 0
 
-// .animacionNumero.activo 
+// .animacionNumero.activo
 //   animation: animacionNumero
 //   animation-duration: 1.5s
 //   animation-fill-mode: none
-//   opacity: 0 
+//   opacity: 0
 
-// @keyframes animacionNumero 
-//   0% 
-//     opacity: 1 
-//   50% 
+// @keyframes animacionNumero
+//   0%
+//     opacity: 1
+//   50%
 //     top: -110%
-//     opacity: 1 
-//   100% 
+//     opacity: 1
+//   100%
 //     top: -110%
-//     opacity: 0  
+//     opacity: 0
 
 
 .ocultar
   opacity: 0 !important
 
-.oculto 
-  display: none 
+.oculto
+  display: none
 
-.visible 
-  display: inline 
-            
-
+.visible
+  display: inline
 
 
-        
+
+
+
 
 
 

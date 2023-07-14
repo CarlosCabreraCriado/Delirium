@@ -63,16 +63,16 @@ export class FormHechizosComponent {
         	heal_dir: this.heal_Hechizos,
         	escudo_dir: this.escudo_Hechizos,
         	mod_amenaza: this.amenaza_Hechizos,
-        	buff_id: null, 
-        	animacion_id: this.animacion_Hechizos, 
-        	hech_encadenado_id: null, 
+        	buff_id: null,
+        	animacion_id: this.animacion_Hechizos,
+        	hech_encadenado_id: null,
         	daño_esc_AP: this.esc_dano_AP_Hechizos,
-        	daño_esc_AD: this.esc_dano_AD_Hechizos, 
+        	daño_esc_AD: this.esc_dano_AD_Hechizos,
         	heal_esc_AP: this.esc_heal_AP_Hechizos,
-        	heal_esc_AD: this.esc_heal_AD_Hechizos, 
+        	heal_esc_AD: this.esc_heal_AD_Hechizos,
         	escudo_esc_AP: this.esc_escudo_AP_Hechizos,
-        	escudo_esc_AD: this.esc_escudo_AD_Hechizos, 
-            triggersHechizo: [] 
+        	escudo_esc_AD: this.esc_escudo_AD_Hechizos,
+            triggersHechizo: []
 	    });
 
 		//Suscripcion de Recarga Formulario:

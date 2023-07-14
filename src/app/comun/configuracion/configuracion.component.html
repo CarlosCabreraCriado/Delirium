@@ -18,15 +18,24 @@
 	<hr class="divisor"/>
 
 	<div class="contenedorOpciones">
-		
+
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
 
-			<div class="opcion">Versión: 0.2.3</div>
 
 			<div class="opcion">
 		    <botonComponent mat-button [mat-dialog-close]="'Developer Tool'" [texto]="'Developer Tool'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
-            </div>
+      </div>
+
+      <div class="opcion">Versión: 0.2.3 ({{data.contenido}})</div>
+
+			<div class="opcion">
+		    <botonComponent mat-button [mat-dialog-close]="'MultiControl'" [texto]="'MultiControl'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+      </div>
+
+			<div class="opcion">
+		    <botonComponent mat-button [mat-dialog-close]="'ForzarSync'" [texto]="'ForzarSync'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+      </div>
 
 			<div class="opcion">
 		    <botonComponent mat-button [mat-dialog-close]="'cerrarSesion'" [texto]="'Cerrar Sesión'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
@@ -35,7 +44,7 @@
 		</div>
 
 	</div>
-	
+
 	<div class="contenedorBotones">
 		<botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [tipoBoton]="2" [color]="'verde'" class="boton"></botonComponent>
 		<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [tipoBoton]="2" [color]="'rojo'" class="boton"></botonComponent>

@@ -226,6 +226,11 @@ export class AppService {
      }
      this.control=val;
      console.log("CONTROL: "+this.control);
+     if(this.control == "mazmorra"){
+		    this.observarAppService.next("controlMazmorraTrue");
+     }else{
+		    this.observarAppService.next("controlMazmorraFalse");
+     }
     }
 
     //Emision de eventos:
@@ -363,9 +368,8 @@ export class AppService {
 	}
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
-
       const dialogRef = this.dialog.open(DialogoComponent,{
-          width: "100px", panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, inputLabel: config.inputLabel}
+          width: "100px", panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, personajeDerecha: config.personajeDerecha, personajeIzquierda: config.personajeIzquierda, inputLabel: config.inputLabel}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -419,8 +423,16 @@ export class AppService {
               this.logout();
 		  }
 
-		  if(result === "developerTool") {
+		  if(result === "Developer Tool") {
 			  this.mostrarDeveloperTool("")
+		  }
+
+		  if(result === "ForzarSync") {
+		    this.observarAppService.next("ForzarSync");
+		  }
+
+		  if(result === "MultiControl") {
+		    this.observarAppService.next("MultiControl");
 		  }
 
         });
@@ -508,7 +520,7 @@ export class AppService {
             this.cuenta = await window.electronAPI.getCuenta()
         }
 
-       console.log(this.cuenta);
+       //console.log(this.cuenta);
 
        if(this.perfil==undefined){
          console.log("Obteniendo Datos: ");

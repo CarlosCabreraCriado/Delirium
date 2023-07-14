@@ -11,6 +11,7 @@ export class InterfazService {
     //GENERAL:
     public mostrarInterfaz: boolean= false;
     private pantallaInterfaz: string= "Hechizos";
+    private bloquearInterfaz: boolean= true;
 
     //HECHIZOS:
     private hechizos:any;
@@ -22,6 +23,7 @@ export class InterfazService {
     public hechizosEquipadosEnergia = [0,0,0,0,0];
     public energiaHechizo: number = 0;
     public hechizoEquipados: any = null;
+    public objetivoSeleccionado: boolean = false;
 
     //MOVIMIENTO:
     private costePorMovimiento: number = 5;
@@ -91,7 +93,7 @@ export class InterfazService {
 
         //Acciones:
         console.log("Iniciando Acciones: ");
-        console.log(renderEnemigos[indexEnemigoActivado].acciones);
+        console.log(renderEnemigos[indexEnemigoActivado]);
 
         //Inicializacion:
         this.pantallaInterfaz= "AccionesEnemigo";
@@ -165,7 +167,6 @@ export class InterfazService {
 
         if(iteracion >= 100){
             console.warn("SALIDA POR ITERACIÓN")
-            this.observarInterfaz.next({comando: "finalizarActivacionEnemigo",valor: ""});
             this.finalizarActivacion();
             return;
         }
@@ -234,11 +235,13 @@ export class InterfazService {
     }
 
     finalizarActivacion(){
+        this.ultimaAccion = undefined;
         this.energiaAccion = 100;
         this.primeraAcctivacion = true;
         this.esAdyascente = false;
         this.tieneAlcance = false;
         this.desactivarInterfaz();
+        this.observarInterfaz.next({comando: "finalizarActivacionEnemigo",valor: ""});
     }
 
     getRandomInt(max) {
@@ -338,10 +341,19 @@ export class InterfazService {
         return;
     }
 
+    setObjetivoSeleccionado(val: boolean){
+      this.objetivoSeleccionado= val;
+    }
+
     lanzarHechizo():void{
+      this.setObjetivoSeleccionado(false)
       this.observarInterfaz.next({comando: "checkFortuna",valor: ""});
       //this.desactivarInterfaz();
       return;
+    }
+
+    setBloquearInterfaz(val:boolean){
+      this.bloquearInterfaz = val;
     }
 
     modificarMovimiento(cantidad){

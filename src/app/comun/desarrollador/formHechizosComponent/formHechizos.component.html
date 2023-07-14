@@ -4,7 +4,7 @@
 <!--   ******************* -->
 
         <!-- LISTA HECHIZOS -->
-        <panelSelectorComponent 
+        <panelSelectorComponent
             [tipo]="'Hechizos'"
             [titulo]="'Hechizos'"
             [botonAdd]="true"
@@ -45,11 +45,13 @@
                       <mat-form-field appearance="legacy">
                         <mat-label>Target</mat-label>
                         <mat-select value="{{objetivo_Hechizos.value}}">
-                            <mat-option value="EU">EU</mat-option>
-                            <mat-option value="AU">AU</mat-option>
-                            <mat-option value="AL">AL</mat-option>
-                            <mat-option value="EM">EM</mat-option>
-                            <mat-option value="AM">AM</mat-option>
+                            <mat-option value="EU">Enemigo Unico</mat-option>
+                            <mat-option value="AU">Aliado Unico</mat-option>
+                            <mat-option value="AL">Self</mat-option>
+                            <mat-option value="EM">Enemigo Mult</mat-option>
+                            <mat-option value="AM">Aliado Mult</mat-option>
+                            <mat-option value="AA">All Alies</mat-option>
+                            <mat-option value="AE">All Enemies</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
@@ -139,7 +141,7 @@
 
             </form>
 
-            <div class="tituloBuff">Buff:</div> 
+            <div class="tituloBuff">Buff:</div>
             <div class="contenedorBuff">
                 <div class="contenedorImagenEncadenado">
 
@@ -149,7 +151,7 @@
             </div>
 
             <div class="contenedorCampoRelacional campoAnimacion">
-                <div class="titulo">Animacion:</div> 
+                <div class="titulo">Animacion:</div>
                     <div >
                         <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].animacion_id!=null" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
 
@@ -157,7 +159,7 @@
                     </div>
             </div>
 
-            <div class="tituloEncadenado">Encadenado:</div> 
+            <div class="tituloEncadenado">Encadenado:</div>
             <div class="contenedorEncadenado">
                 <div class="contenedorImagenEncadenado">
                     <img class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].imagen_id}}.png"/>

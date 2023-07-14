@@ -114,7 +114,7 @@ export class DesarrolladorComponent implements OnInit{
 	private cinematica_id = new UntypedFormControl('0');
 	private sonido_id = new UntypedFormControl('0');
 	private evento_next_id = new UntypedFormControl('0');
-	
+
 	//Campos Dialogos:
 	private dialogo_id = new UntypedFormControl('0');
 	private tipo_dialogo = new UntypedFormControl('0');
@@ -154,8 +154,8 @@ export class DesarrolladorComponent implements OnInit{
 
 
     //Configuracion MapaGeneral:
-    private mostrarNieblaGuerra = false; 
-    private mostrarInfranqueable = false; 
+    private mostrarNieblaGuerra = false;
+    private mostrarInfranqueable = false;
 
     //Opciones Selectores:
     private opcionesInMapIndicador = ["Mision","Evento"]
@@ -165,7 +165,7 @@ export class DesarrolladorComponent implements OnInit{
   	@ViewChild('canvasIsometrico',{static: false}) private canvasIsometrico: ElementRef;
   	@ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
 
-	constructor(public appService: AppService, public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) { 
+	constructor(public appService: AppService, public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {
 
 		this.editorVerOptions = new JsonEditorOptions()
 		this.editorModificarOptions = new JsonEditorOptions()
@@ -175,7 +175,7 @@ export class DesarrolladorComponent implements OnInit{
 	}
 
 	async ngOnInit(){
-		
+
 		this.desarrolladorService.log("-------------------------------","green");
 		this.desarrolladorService.log("  Iniciando gestor de datos... ","green");
 		this.desarrolladorService.log("-------------------------------","green");
@@ -204,7 +204,7 @@ export class DesarrolladorComponent implements OnInit{
 	    	evento_final_id: this.evento_final_id_Sala,
 			mostrarIsometrico: this.mostrarIsometricoSala
 	    });
-		
+
 		//Inicializacion formulario Enemigos:
 	    this.formEnemigos = this.formBuilder.group({
 	    	enemigo_id: this.enemigo_id_Enemigos,
@@ -225,12 +225,12 @@ export class DesarrolladorComponent implements OnInit{
 		//Inicializacion formulario EventosMazmorra:
 	    this.formEventosMazmorra = this.formBuilder.group({
 			id_eventoMazmorra: this.id_eventoMazmorra,
-			id_mazmorra: this.id_mazmorra, 
+			id_mazmorra: this.id_mazmorra,
 			id_sala: this.id_sala,
 			tipo: this.tipo_evento,
 			codigo: this.codigo,
-			rng: this.rng, 
-			rng_fallo_evento_id: this.rng_fallo_evento_id, 
+			rng: this.rng,
+			rng_fallo_evento_id: this.rng_fallo_evento_id,
 			buff: this.buff,
 			insta_buff: this.insta_buff,
 			objetivo_buff: this.objetivo_buff,
@@ -299,7 +299,7 @@ export class DesarrolladorComponent implements OnInit{
             dias: this.dias_Orden_Parametro,
             mazmorraId: this.mazmorraId_Orden_Mazmorra,
             salaOpenId: this.salaOpenId_Orden_Mazmorra
-        }); 
+        });
         */
 
 		//Inicialización formulario Asignar Sala:
@@ -314,18 +314,18 @@ export class DesarrolladorComponent implements OnInit{
 
 	//Campos Campos InMap General:
 	    this.formInMapGeneral = this.formBuilder.group({
-  	        inMapNombre: this.inMapNombre, 
+  	        inMapNombre: this.inMapNombre,
   	        inMapDescripcion: this.inMapDescripcion,
   	        inMapIndicador: this.inMapIndicador
         });
 
 	//Campos Campos InMap Terreno:
 	    this.formInMapTerreno = this.formBuilder.group({
-  	        inMapTipoTerreno: this.inMapTipoTerreno, 
+  	        inMapTipoTerreno: this.inMapTipoTerreno,
   	        inMapAtravesable: this.inMapAtravesable,
             inMapInspeccionable: this.inMapInspeccionable,
             inMapMensajeInsapeccionable: this.inMapMensajeInsapeccionable,
-  	        inMapUbicacionEspecial: this.inMapUbicacionEspecial 
+  	        inMapUbicacionEspecial: this.inMapUbicacionEspecial
 	    });
 
 	//Campos Campos InMap Eventos:
@@ -357,7 +357,7 @@ export class DesarrolladorComponent implements OnInit{
 				case "reloadForm":
 	          		//this.formEnemigos.setValue(this.desarrolladorService.mazmorra["salas"][this.desarrolladorService.enemigoSeleccionadoSalaIndex].enemigos[this.desarrolladorService.enemigoSeleccionadoIndex]);
 	          	break;
-				
+
 	          	case "reloadFormEventosMazmorra":
 				case "reloadForm":
 	          		this.formEventosMazmorra.setValue(this.desarrolladorService.mazmorra["eventos"][this.desarrolladorService.mazmorra.eventos.indexOf(this.desarrolladorService.mazmorra.eventos.find(i=> i.id_eventoMazmorra==this.desarrolladorService.eventoSeleccionadoId))]);
@@ -375,7 +375,7 @@ export class DesarrolladorComponent implements OnInit{
 	          		 //this.renderReticula = this.desarrolladorService.getReticula();
 	          	break;
 
-	          	
+
 	          }
 	        }
       	);
@@ -440,7 +440,7 @@ export class DesarrolladorComponent implements OnInit{
         //Inicializar selección Tile:
         //this.seleccionarTile({x:0,y:0});
 
-		setTimeout(()=>{    
+		setTimeout(()=>{
       		this.appService.mostrarPantallacarga(false);
             //this.desarrolladorService.abrirTrigger("inmap",{})
  		}, 3000);
@@ -448,15 +448,15 @@ export class DesarrolladorComponent implements OnInit{
 		return;
 	}
 
-	ngAfterViewChecked() {        
+	ngAfterViewChecked() {
 
-        //this.scrollToBottom();      
+        //this.scrollToBottom();
 
         //Centrado de mapa:
 		//this.canvasMapa.nativeElement.scrollTop = 300
 		//this.canvasMapa.nativeElement.scrollLeft = 500
 
-    } 
+    }
 
 	/*
 	subirArchivo(archivoInput: any){
@@ -468,7 +468,7 @@ export class DesarrolladorComponent implements OnInit{
 	scrollToBottom(): void {
         try {
             this.contenedorMensajes.nativeElement.scrollTop = this.contenedorMensajes.nativeElement.scrollHeight;
-        } catch(err) { }                 
+        } catch(err) { }
     }
 
 	renderDatoSeleccionado(datoSeleccionado:string){
@@ -502,7 +502,7 @@ export class DesarrolladorComponent implements OnInit{
 			return ""
 		}
 	}
-    
+
 	renderTipoObjetoSeleccionado(tipoObjetoSeleccionado:string){
 		if(this.desarrolladorService.tipoObjetoSeleccionado==tipoObjetoSeleccionado){
 			return "seleccionado"
@@ -575,7 +575,7 @@ export class DesarrolladorComponent implements OnInit{
 		}
 		return;
 	}
-	
+
 	zoomOut(){
 		if(this.desarrolladorService.mostrarIsometrico){
 			this.escalaIsometrico -= 0.1;
@@ -636,12 +636,12 @@ export class DesarrolladorComponent implements OnInit{
     }
 
 	asignarSala(){
-		console.log("Asignando Sala..."); 
-		this.desarrolladorService.asignarSala(this.asignar_id_sala.value);	
+		console.log("Asignando Sala...");
+		this.desarrolladorService.asignarSala(this.asignar_id_sala.value);
 	}
 
 	renderizarElementoIsometrico(elemento: any):any{
-		
+
 		var opcionesCanvas = this.desarrolladorService.mazmorra.isometrico.MapSave.MapSettings
 		var style = {
 			"position": "absolute",
@@ -650,7 +650,7 @@ export class DesarrolladorComponent implements OnInit{
 			"width": "",
 			"height": "",
 			"z-index": 0,
-			"transform": "translate(-50%,-50%) scaleX(1) scale("+this.escalaIsometrico+")",
+			"transform": "translate(-50%,-50%) scaleX(1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")",
 			"display": "block",
 			"filter": "none"
 		}
@@ -666,7 +666,10 @@ export class DesarrolladorComponent implements OnInit{
 		style["z-index"]= Math.floor(zIndex)
 
 		if(elemento.Mirror=="true"){
-			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+this.escalaIsometrico+")";
+			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")";
+		}
+		if(elemento.Mirror==true){
+			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")";
 		}
 
 		//Aplicar filtrado de visualizacion:
@@ -675,25 +678,25 @@ export class DesarrolladorComponent implements OnInit{
 			if(elemento.tipo == "grid"){
 				style.display = "none";
 			}
-		}	
-		
+		}
+
 		if(!this.desarrolladorService.mostrarDecorado){
 			if(elemento.tipo == "decorado"){
 				style.display = "none";
 			}
-		}	
+		}
 
 		//Aplicar filtrado de Sala
 		if(!this.desarrolladorService.mostrarSalaNula){
 			if(elemento.sala==0){
 				style.display= "none";
-			} 
+			}
 		}
 
 		for(var i =0; i <this.desarrolladorService.mazmorra.salas.length; i++){
 			if((!this.desarrolladorService.mazmorra.salas[i].mostrarIsometrico) && (elemento.sala==this.desarrolladorService.mazmorra.salas[i].sala_id)){
 				style.display= "none";
-			} 
+			}
 		}
 
 		//Renderizar Seleccion:
@@ -701,7 +704,7 @@ export class DesarrolladorComponent implements OnInit{
 			style.filter = "sepia(100%) saturate(100)";
 		}
 
-		//Aplicar filtro de Seleccion: 
+		//Aplicar filtro de Seleccion:
 		//var width= ((window.innerWidth*0.7)/opcionesCanvas.MapSizeX)*100 + "px";
 		//style.width= width.replace(/,/g,".")
 
@@ -723,7 +726,7 @@ export class DesarrolladorComponent implements OnInit{
         if(!coordenadas.ignoraGuardado){
             await this.desarrolladorService.setTile(coordenadas.xAntigua,coordenadas.yAntigua,this.formInMapGeneral.value,this.formInMapTerreno.value,this.formInMapTrigger.value,this.formInMapMisiones.value)
         }
-        //Asigna Coordenadas Seleccionada: 
+        //Asigna Coordenadas Seleccionada:
         this.coordenadaSeleccionadaX= coordenadas.x;
         this.coordenadaSeleccionadaY= coordenadas.y;
 
@@ -741,18 +744,18 @@ export class DesarrolladorComponent implements OnInit{
         }
 
 	    var formInMapGeneral = {
-  	        inMapNombre: valoresFormulario.nombre, 
+  	        inMapNombre: valoresFormulario.nombre,
   	        inMapDescripcion: valoresFormulario.descripcion,
   	        inMapIndicador: valoresFormulario.indicador
         };
 
 	//Campos Campos InMap Terreno:
 	    var formInMapTerreno = {
-  	        inMapTipoTerreno: valoresFormulario.tipoTerreno, 
+  	        inMapTipoTerreno: valoresFormulario.tipoTerreno,
   	        inMapAtravesable: valoresFormulario.atravesable,
             inMapInspeccionable: valoresFormulario.inspeccionable,
             inMapMensajeInsapeccionable: valoresFormulario.mensajeInspeccion,
-  	        inMapUbicacionEspecial: valoresFormulario.ubicacionEspecial 
+  	        inMapUbicacionEspecial: valoresFormulario.ubicacionEspecial
 	    };
 
 	//Campos Campos InMap Eventos:
@@ -760,7 +763,7 @@ export class DesarrolladorComponent implements OnInit{
   	        inMapProbabilidadRandom: valoresFormulario.probabilidadEvento,
   	        inMapCategoriaRandom: valoresFormulario.categoriaEvento,
   	        inMapLootProb: "",
-  	        inMapLootId: "" 
+  	        inMapLootId: ""
 	    };
 
 	//Campos Campos InMap Misiones:
@@ -771,11 +774,11 @@ export class DesarrolladorComponent implements OnInit{
 	    this.formInMapTerreno.setValue(formInMapTerreno);
 	    this.formInMapTrigger.setValue(formInMapTrigger);
 	    this.formInMapMisiones.setValue(formInMapMisiones);
-        
+
         console.log(this.formInMapTerreno)
 
     }
-    
+
     async abrirTrigger(tipo: string){
 
         //Carga los triggers en función del tipo:

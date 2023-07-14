@@ -1,5 +1,5 @@
 
-import { Component , Input } from '@angular/core';
+import { Component , Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'enemigoComponent',
@@ -7,20 +7,30 @@ import { Component , Input } from '@angular/core';
   styleUrls: ['./enemigo.component.sass']
 })
 
-export class EnemigoComponent {
+export class EnemigoComponent implements OnInit{
 
-	@Input() renderEnemigo: any; 
-	@Input() renderMazmorra: any; 
-	@Input() indexEnemigo: number; 
+	@Input() renderEnemigo: any;
+	@Input() renderMazmorra: any;
+	@Input() indexEnemigo: number;
 	@Input() seleccionable: boolean;
 	@Input() desplegable: boolean = false;
+	@Input() desplegadoDefecto: boolean = true;
 
-    public estadoDesplegado: boolean= false;
+    public estadoDesplegado: boolean= true;
 
-	constructor() {}
+	constructor(){
+  }
+
+  ngOnInit(){
+    this.estadoDesplegado = this.desplegadoDefecto
+  }
+
+  toggleDeplegable(){
+    if(this.desplegable){this.estadoDesplegado = !this.estadoDesplegado}
+  }
 
 	renderizarEstiloBuffosEnemigos(buff:any):any{
-		
+
 		var estilo={}
 
 		estilo={

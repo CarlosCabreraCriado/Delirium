@@ -23,7 +23,7 @@ export class FormAnimacionesComponent {
   	//Campos Datos Animaciones:
   	private id_Animaciones = new UntypedFormControl(0);
   	private nombre_Animaciones = new UntypedFormControl('???');
-    private duracion_Animaciones = new UntypedFormControl(0);
+    private duracion_Animaciones = new UntypedFormControl("1");
     private subanimaciones_Animaciones = new UntypedFormControl(0);
     private sonidos_Animaciones = new UntypedFormControl(0);
 
@@ -31,7 +31,7 @@ export class FormAnimacionesComponent {
   	private id_Subanimacion = new UntypedFormControl(0);
   	private nombre_Subanimacion = new UntypedFormControl('???');
   	private sprite_id_Subanimacion = new UntypedFormControl(0);
-    private duracion_Subanimacion = new UntypedFormControl(0);
+    private duracion_Subanimacion = new UntypedFormControl("0");
     private num_frames_Subanimacion = new UntypedFormControl(1);
     private frame_ref_Subanimacion = new UntypedFormControl(0);
 
@@ -44,7 +44,7 @@ export class FormAnimacionesComponent {
     private offsetx_Subanimacion = new UntypedFormControl(0);
     private offsety_Subanimacion = new UntypedFormControl(0);
     private rotate_Subanimacion = new UntypedFormControl(0);
-    private scale_Subanimacion = new UntypedFormControl(0);
+    private scale_Subanimacion = new UntypedFormControl(1);
 
     private mute = true;
 

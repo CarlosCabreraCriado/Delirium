@@ -26,15 +26,15 @@ export class LoggerService {
 	@Output() obtenerRender: EventEmitter<void> = new EventEmitter();
 	@Output() obtenerSesion: EventEmitter<void> = new EventEmitter();
 
-  constructor() { 
+  constructor() {
 
   }
   	setParametros(parametros){
   		this.parametros=parametros;
   	}
 
-  	toggleLogger():void{
- 		this.mostrarLogger = !this.mostrarLogger;
+  	toggleLogger(val: boolean):void{
+ 		this.mostrarLogger = val;
  		this.comando= "";
  	}
 
@@ -95,7 +95,7 @@ export class LoggerService {
  					this.log("restringir accion true: activa las restricciones de acciones");
  					this.log("restringir accion false: desactiva las restricciones de acciones");
  					this.log("---------------------------------------------------------------------------------------------------");
- 					
+
  				break;
 
 
@@ -453,7 +453,7 @@ export class LoggerService {
  					this.estadoLogger="default";
  				break;
 
- 				
+
  				//****************************************
  				//       COMANDO NO ENCONTRADO
  				//****************************************
@@ -462,7 +462,7 @@ export class LoggerService {
  					this.log("Comando no encontrado","red");
  				break;
  			}
- 			this.comando="";	
+ 			this.comando="";
  			return;
  		}
 
@@ -531,8 +531,8 @@ export class LoggerService {
  			this.observarLogger.next({comando: "activar evento",valor: this.comando,toggle: true});
  			this.estadoLogger="default";
  		}
- 		
- 		this.comando="";	
+
+ 		this.comando="";
  		return;
  	}
 

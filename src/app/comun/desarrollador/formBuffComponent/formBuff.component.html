@@ -4,7 +4,7 @@
 <!--   ******************* -->
 
         <!-- LISTA HECHIZOS -->
-        <panelSelectorComponent 
+        <panelSelectorComponent
             [tipo]="'Buff'"
             [titulo]="'Buff'"
             [botonAdd]="true"
@@ -12,7 +12,7 @@
             [botonEliminarRelacion]="false"
             >
         </panelSelectorComponent>
-        
+
 	<!-- CENTRAL DATOS BUFF -->
 	<div id="visualizador" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
 			<div class="contenedorImagen">
@@ -24,7 +24,7 @@
 
 				  <mat-form-field appearance="legacy" class="formId">
 					<mat-label>ID</mat-label>
-					<input matInput placeholder="ID" formControlName="id">
+					<input matInput placeholder="ID" type="number" formControlName="id">
 				  </mat-form-field>
 
 				  <mat-form-field appearance="legacy" class="formNombre">
@@ -143,7 +143,7 @@
 			</form>
 
             <div class="contenedorCampoRelacional campoAnimacion">
-                <div class="titulo">Animacion:</div> 
+                <div class="titulo">Animacion:</div>
                     <div >
                         <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].animacion_id!=null" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
 

@@ -9,7 +9,8 @@ import { Component , Input, Output, EventEmitter} from '@angular/core';
 
 export class PanelControlComponent {
 
-	@Input() tipo: string; 
+	@Input() tipo: string;
+	@Input() habilitar:boolean = true;
 
 	//Emision de eventos
 	@Output() comandoPanelControl: EventEmitter<any> = new EventEmitter();
@@ -36,10 +37,10 @@ export class PanelControlComponent {
 					this.comandoPanelControl.next(comando);
 				break;
 				case "derecha":
-					this.comandoPanelControl.next('elegirHechizo') 
+					this.comandoPanelControl.next('elegirHechizo')
 				break;
 				case "izquierda":
-					this.comandoPanelControl.next('elegirMovimiento') 
+					this.comandoPanelControl.next('elegirMovimiento')
 				break;
 			}
 		}

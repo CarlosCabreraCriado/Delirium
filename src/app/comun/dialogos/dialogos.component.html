@@ -8,7 +8,7 @@
 	<h1 class="title Texto2">Error</h1>
 
 	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
-	
+
 	<botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [tipoBoton]="2" [color]="'rojo'" class="botonUnico"></botonComponent>
 
 </div>
@@ -23,7 +23,7 @@
         <h1 class="title Texto2">{{data.titulo}}</h1>
 
         <div class="textoDialogo Texto3"> {{data.contenido}} </div>
-        
+
         <botonComponent mat-button [mat-dialog-close] [texto]="'OK'" [tipoBoton]="2" [color]="'verde'" class="botonUnico"></botonComponent>
 
     </div>
@@ -56,14 +56,14 @@
 		<div class="formulario">
 		  <input #crearPassword2 type="text" class="Texto2"/>
 		</div>
-		
+
 	</div>
 
-	<div class="contenedorBotones">	
+	<div class="contenedorBotones">
 		<botonComponent mat-button [mat-dialog-close]= "crearCuenta()" [texto]="'Crear Cuenta'" [color]="'verde'" class="boton"></botonComponent>
 		<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
-	
+
 	<div class="frame"></div>
 
 </div>
@@ -86,11 +86,11 @@
 <!--   ******************************** -->
 <div id="confirmacion" *ngIf="data.tipoDialogo == 'Confirmacion'" class= "contenedor FondoPapiro borde1">
     <div class="wrapper">
-        <h1 class= "titulo" >{{data.titulo}}</h1>
+        <h1 class= "titulo Texto1" >{{data.titulo}}</h1>
         <div class="Texto3"> {{data.contenido}} </div>
         <div class="botones">
-            <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Confirmar'" [color]="'verde'" class="boton"></botonComponent>
-            <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+            <botonComponent mat-button [mat-dialog-close]="true" [tipoBoton]="2" [texto]="'Confirmar'" [color]="'verde'" class="boton"></botonComponent>
+            <botonComponent mat-button [mat-dialog-close]="false" [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
         </div>
     </div>
 
@@ -99,7 +99,7 @@
 <!--   **************************** -->
 <!--         DIALOGOS PENSANDO      -->
 <!--   **************************** -->
-<div *ngIf="data.tipoDialogo == 'Pensando'" class= "contenedor"> 
+<div *ngIf="data.tipoDialogo == 'Pensando'" class= "contenedor">
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-actions class= "botones">
         <button mat-button class = "ajustesOpcion" [mat-dialog-close]>Cancel</button>
@@ -109,7 +109,7 @@
 <!--   ************************************ -->
 <!--         DIALOGOS INTRODUCIR DATOS      -->
 <!--   ************************************ -->
-<div *ngIf="data.tipoDialogo == 'IntroduccionDatos'" class= "contenedor"> 
+<div *ngIf="data.tipoDialogo == 'IntroduccionDatos'" class= "contenedor">
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-content>
       <p>{{data.contenido}}</p>
@@ -127,7 +127,7 @@
 <!--   ************************************ -->
 <!--         DIALOGOS INTRODUCIR DATOS      -->
 <!--   ************************************ -->
-<div *ngIf="data.tipoDialogo == 'IntroduccionDatos'" class= "contenedor"> 
+<div *ngIf="data.tipoDialogo == 'IntroduccionDatos'" class= "contenedor">
     <h1 mat-dialog-title class= title>{{data.titulo}}</h1>
     <div mat-dialog-content>
       <p>{{data.contenido}}</p>
@@ -168,27 +168,27 @@
         <!-- Opciones -->
         <div class="contenedorOpciones">
             <div *ngFor="let opcion of data.opciones; let i = index" class="opcion">
-                <botonComponent class="botonOpcion" mat-button [tipoBoton]="2" [texto]="opcion" [vacio]="true" [color]="'rojo'"></botonComponent>
+                <botonComponent class="botonOpcion" mat-button  [mat-dialog-close]="i" [tipoBoton]="2" [texto]="opcion" [vacio]="true" [color]="'rojo'"></botonComponent>
             </div>
         </div>
 
     </div> <!-- Fin contenedor Central -->
 
     <!-- PERSONAJE 1 -->
-    <div class="contenedorPersonaje primero">
-        <img src="../../../assets/Personajes/npc/01.png"/>
+    <div *ngIf="data.personajeIzquierda.mostrar" class="contenedorPersonaje primero">
+      <img src="../../../assets/Personajes/{{data.personajeIzquierda.tipo}}/{{data.personajeIzquierda.imagenIndex}}.png"/>
         <div class="placaNombre">
             <img src="../../../assets/ui/paper/ppr_05.png"/>
-            <div class="nombrePersonaje Texto2">Personaje 1</div>
+            <div class="nombrePersonaje Texto2">{{data.personajeIzquierda.nombre}}</div>
         </div>
     </div>
 
     <!-- PERSONAJE 2 -->
-    <div class="contenedorPersonaje segundo">
-        <img class="Flip" src="../../../assets/Personajes/npc/02.png"/>
+    <div *ngIf="data.personajeDerecha.mostrar" class="contenedorPersonaje segundo">
+        <img class="Flip" src="../../../assets/Personajes/{{data.personajeDerecha.tipo}}/{{data.personajeDerecha.imagenIndex}}.png"/>
         <div class="placaNombre">
             <img src="../../../assets/ui/paper/ppr_05.png"/>
-            <div class="nombrePersonaje Texto2">Personaje 2</div>
+            <div class="nombrePersonaje Texto2">{{data.personajeDerecha.nombre}}</div>
         </div>
     </div>
 
@@ -245,7 +245,7 @@
             <div class="contenido Texto3">{{data.contenido[1]}}</div>
         </div>
         <div class="contenedorControlSlide">
-           
+
             <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_01_3.png">
 
             <checkboxComponent [seleccionado]="true"></checkboxComponent>
@@ -288,7 +288,7 @@
         </div>
 
         <div class="contenedorRecompensa">
-           
+
             <div class="titulo Texto2">RECOMPENSAS</div>
 
             <div class="contenedorObjetos">

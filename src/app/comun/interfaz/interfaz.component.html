@@ -20,7 +20,7 @@
 	<hr class="divisor"/>
 
 	<div class="contenedorOpciones">
-		
+
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
 		<div class="contenedorHechizos">
@@ -40,19 +40,19 @@
 		</div>
 
 	</div>
-	
+
 	<div class="contenedorBotones">
         <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || hechizoSeleccionadoIndex == null }" [tipoBoton]="2" (click)="lanzarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>
             <atributoComponent class="boton" [tipo]="'energia'" [valor]="interfazService.energiaDisponible"></atributoComponent>
 		<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
-	
+
 	<div class="frame"></div>
 </div>
 </div>
 
 	<!-- *************************************************
-				Interfaz Objetivo 
+				Interfaz Objetivo
 		 ************************************************* -->
 
 	<div  id="contenedorInterfazObjetivo" class="borde1" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo' || interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
@@ -63,31 +63,31 @@
             <atributoComponent class="atributo" [tipo]="'alcance'" [valor]="interfazService.hechizoEquipados[interfazService.indexHechizoSeleccionado].distancia"></atributoComponent>
 
 		<div class="contenedorBotones">
-            <botonComponent mat-button (click)="interfazService.lanzarHechizo()" [tipoBoton]="2" [texto]="'Lanzar'" [color]="'verde'" class="boton"></botonComponent>
+            <botonComponent mat-button [ngClass]="{'botonDeshabilitado': !interfazService.objetivoSeleccionado}" (click)="interfazService.lanzarHechizo()" [tipoBoton]="2" [texto]="'Lanzar'" [color]="'verde'" class="boton"></botonComponent>
 			<botonComponent mat-button (click)="interfazService.cancelarHechizo()" [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
 	</div>
 
 	<!-- *************************************************
-				Interfaz Movimiento 
+				Interfaz Movimiento
 		 ************************************************* -->
 
 	<div  id="contenedorInterfazMovimiento" class="borde1" *ngIf="interfazService.pantallaInterfaz=='movimiento'">
-        
+
 		<div class="titulo Texto1">
-            Tirada de Fortuna
+           Realizar Movimiento
         </div>
 
-        <div class="fallo">
-            <div class="textoResta"(click)="interfazService.modificarMovimiento(-1)">-</div>	
+        <div class="restar">
+            <div class="textoResta"(click)="interfazService.modificarMovimiento(-1)">-</div>
         </div>
 
-        <div class="normal">
+        <div class="icono">
             <img class="badgeMovimiento" src="./assets/Iconos/09.png"/>
         </div>
 
-        <div class="afortunado">
-            <div class="textoSuma" (click)="interfazService.modificarMovimiento(1)">+</div>	
+        <div class="sumar">
+            <div class="textoSuma" (click)="interfazService.modificarMovimiento(1)">+</div>
         </div>
 
 		<div class="contenedorAtributos">
@@ -103,11 +103,11 @@
 	</div>
 
 	<!-- *************************************************
-				Interfaz Fortuna 
+				Interfaz Fortuna
 		 ************************************************* -->
 
 	<div id="contenedorInterfazFortuna" class="borde1" *ngIf="interfazService.pantallaInterfaz=='fortuna'">
-        
+
 		<div class="titulo Texto1">
             Tirada de Fortuna:
         </div>
@@ -139,11 +139,11 @@
 	</div>
 
 	<!-- *************************************************
-				Interfaz CRITICO 
+				Interfaz CRITICO
 		 ************************************************* -->
 
 	<div id="contenedorInterfazCritico" *ngIf="interfazService.pantallaInterfaz=='critico'">
-        
+
 		<div class="titulo Texto1">
             Probabilidad de crítico:
         </div>
@@ -168,7 +168,7 @@
 	</div>
 
 	<!-- *************************************************
-				Interfaz ACCIONES ENEMIGO 
+				Interfaz ACCIONES ENEMIGO
 		 ************************************************* -->
 
 	<div  id="contenedorInterfazAccionesEnemigo" class="borde1" *ngIf="interfazService.pantallaInterfaz=='AccionesEnemigo'">
@@ -180,11 +180,11 @@
         <div *ngIf="this.interfazService.tipoAccion == 'movimiento'"class="contenedorMovimiento">
 
             <div class="texto Texto2">
-                El enemigo quiere moverse hacia Doomcrash
+                El enemigo quiere moverse hacia el heroe
             </div>
 
             <div class="enemigo">
-                <enemigoComponent [indexEnemigo]="0" [renderMazmorra]="this.interfazService.renderMazmorra" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
+                <enemigoComponent [indexEnemigo]="0" [renderMazmorra]="this.interfazService.renderMazmorra" [desplegable]="false" [desplegadoDefecto]="false" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
             </div>
 
             <div class="valor">
@@ -201,8 +201,8 @@
             </div>
 
             <div class="botones">
-                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'MOVERSE'" [vacio]="false" [color]="'verde'" (click)="this.interfazService.accion('mover')"></botonComponent>
-                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'Adyascente'" [vacio]="false" [color]="'rojo'" (click)="this.interfazService.accion('adyascente')"></botonComponent>
+              <botonComponent class="boton" mat-button [ngClass]="{'botonDeshabilitado': interfazService.bloquearInterfaz}" [tipoBoton]="2" [texto]="'MOVERSE'" [vacio]="false" [color]="'verde'" (click)="this.interfazService.accion('mover')"></botonComponent>
+                <botonComponent class="boton" mat-button [ngClass]="{'botonDeshabilitado': interfazService.bloquearInterfaz}" [tipoBoton]="2" [texto]="'Adyascente'" [vacio]="false" [color]="'rojo'" (click)="this.interfazService.accion('adyascente')"></botonComponent>
             </div>
 
         </div> <!-- FIN ACCION - MOVIMIENTO -->
@@ -210,11 +210,11 @@
         <div *ngIf="this.interfazService.tipoAccion == 'ataque'"class="contenedorAtaque">
 
             <div class="texto Texto2">
-                El enemigo quiere atacar a Doomcrash
+                El enemigo quiere atacar al heroe
             </div>
 
             <div class="enemigo">
-                <enemigoComponent [indexEnemigo]="0" [renderMazmorra]="this.interfazService.renderMazmorra" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
+                <enemigoComponent [indexEnemigo]="0" [desplegadoDefecto]="false" [renderMazmorra]="this.interfazService.renderMazmorra" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
             </div>
 
             <div class="hechizo">
@@ -236,8 +236,8 @@
             </div>
 
             <div class="botones">
-                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'ATACAR'" [vacio]="false" [color]="'verde'" (click)="this.interfazService.accion('atacar')"></botonComponent>
-                <botonComponent class="boton" mat-button [tipoBoton]="2" [texto]="'Sin rango'" [vacio]="false" [color]="'rojo'" (click)="this.interfazService.accion('sinRango')"></botonComponent>
+                <botonComponent class="boton" mat-button [ngClass]="{'botonDeshabilitado': interfazService.bloquearInterfaz}" [tipoBoton]="2" [texto]="'ATACAR'" [vacio]="false" [color]="'verde'" (click)="this.interfazService.accion('atacar')"></botonComponent>
+                <botonComponent class="boton" mat-button [ngClass]="{'botonDeshabilitado': interfazService.bloquearInterfaz}" [tipoBoton]="2" [texto]="'Sin rango'" [vacio]="false" [color]="'rojo'" (click)="this.interfazService.accion('sinRango')"></botonComponent>
             </div>
 
         </div> <!-- FIN ACCION - MOVIMIENTO -->
@@ -245,7 +245,7 @@
 	</div>
 
 </div>
- 
+
 
 
 

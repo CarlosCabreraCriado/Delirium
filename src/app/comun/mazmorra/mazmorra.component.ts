@@ -31,7 +31,7 @@ class AppAnimacionNumero {
 
 export class MazmorraComponent implements OnInit,AfterViewInit{
 	constructor(public mazmorraService: MazmorraService, public appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
-	
+
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
   	@ViewChild('canvasIsometrico',{static: false}) canvasIsometrico: ElementRef;
   	@ViewChild('pinchZoom',{static: false}) private pinchZoom: PinchZoomComponent;
@@ -73,7 +73,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	//Variable de renderizado:
 	public renderMazmorra: RenderMazmorra;
 	public sala:any={};
-	
+
 	public estiloIsometrico: any = {};
 	public escalaIsometrico:number = 0.3;
 
@@ -113,6 +113,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       			}
       		}
 			*/
+      		if(data.emisor==this.mazmorraService.cuenta.usuario){
+            console.warn("Evitando Rebote Comando Socket...")
+            return;}
+
       		switch(data.peticion){
 
       			case "log":
@@ -137,7 +141,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    	this.appService.setSala(this.sala);
       		    	this.mazmorraService.sala= this.sala;
       		    	this.mazmorraService.comprobarConectado();
-      		    	this.mazmorraService.sincronizar=false;  	
+      		    	this.mazmorraService.sincronizar=false;
       			break;
 
       			case "unirsePartida":
@@ -149,37 +153,55 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    	this.appService.setSala(this.sala);
       		    	this.mazmorraService.sala= this.sala;
       		    	//this.renderMazmorra = this.mazmorraService.cargarPartida(this.sala);
-      		    	this.mazmorraService.sincronizar=false;  	
+      		    	this.mazmorraService.sincronizar=false;
       			break;
 
       			case "cerrarSala":
       				console.log("Peticion: "+data.peticion);
       		    	console.log("Contenido: ");
       		    	console.log(data.contenido);
-      		    	this.appService.setSala({});    		    	
+      		    	this.appService.setSala({});
       		    	this.retroceder();
       			break;
 
       			case "comandoPartida":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Comando: "+data.comando);
+      				  console.warn("Peticion: "+data.peticion);
+      		    	console.warn("Comando: "+data.comando);
       		    	if(data.emisor == this.appService.getCuenta().then((result) => {return result.nombre})){break;}
       		    	switch(data.comando){
 
       		    		case "pasarTurno":
       		    			this.mazmorraService.activarComandoSocket();
       		    			this.mazmorraService.routerMazmorra("p");
+      		    			this.mazmorraService.desactivarComandoSocket();
+      		    		break;
+
+      		    		case "cambiarSala":
+                    console.error("Valor: ",data.valor)
+      		    			this.mazmorraService.activarComandoSocket();
+      		    			this.mazmorraService.cambiarSala(data.valor);
+      		    			this.mazmorraService.desactivarComandoSocket();
       		    		break;
 
       		    		case "lanzarHechizo":
       		    			console.log("Sincronizando hechizo");
       		    			console.log(data.contenido);
-  
+
       		    			//this.mazmorraService.setRenderMazmorra(data.contenido);
       		    			//console.log(data.contenido);
+                    this.mazmorraService.setRenderSesion(data.contenido);
 
-      						this.mazmorraService.lanzarHechizo();
- 							
+      						  this.mazmorraService.lanzarHechizo();
+
+      		    			//this.renderMazmorra =this.mazmorraService.getRenderMazmorra();
+      		    		break;
+
+      		    		case "lanzarHechizoEnemigo":
+                    console.warn("LANZANDO: ",data)
+                    this.mazmorraService.seleccionarEnemigos = false;
+                    this.mazmorraService.seleccionarHeroes = false;
+                    this.mazmorraService.sesion.render.heroes[data.contenido["indexHeroe"]].objetivo = true;
+      						  this.mazmorraService.lanzarHechizo(data.contenido);
       		    			//this.renderMazmorra =this.mazmorraService.getRenderMazmorra();
       		    		break;
 
@@ -195,6 +217,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    			console.log("Forzando Sincronizando: ");
       		    			console.log(data.contenido);
       		    			this.renderMazmorra = data.contenido;
+                    this.mazmorraService.setRenderSesion(data.contenido);
       		    			this.mazmorraService.setRenderMazmorra(data.contenido);
       		    			this.mazmorraService.mensajeAccion("Sincronizando...",2000);
       		    		break;
@@ -216,7 +239,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    		break;
       		    	}
       			break;
-      		} 
+      		}
       	});
 
 		//Suscripcion AppService:
@@ -224,7 +247,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         	switch(val){
         		case "Iniciar":
         			this.mazmorraService.cuenta=this.appService.getCuenta();
-        			
+
         			if(this.mazmorraService.cuenta.miembro=="Host"){
         				//this.socketService.enviarSocket('crearPartida', {nombre: this.mazmorraService.cuenta.nombre, clave: this.mazmorraService.cuenta.clave});
         			}else{
@@ -238,6 +261,19 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
         		case "renderizarCanvasIsometrico":
         			this.renderizarCanvasIsometrico();
+        		break;
+
+        		case "controlMazmorraTrue":
+        			this.interfazService.setBloquearInterfaz(false);
+        		break;
+        		case "controlMazmorraFalse":
+        			this.interfazService.setBloquearInterfaz(true);
+        		break;
+        		case "MultiControl":
+              this.mazmorraService.permitirMultiControl = !this.mazmorraService.permitirMultiControl;
+        		break;
+        		case "ForzarSync":
+              this.mazmorraService.forzarSincronizacion();
         		break;
         	}
         });
@@ -254,9 +290,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         	if(!this.bloquearLogger){
         		this.mazmorraService.loggerObs(val);
         	}
-        	setTimeout(()=>{    
+        	setTimeout(()=>{
       			this.bloquearLogger=false;
- 			}, this.retrasoLoggerObs); 
+ 			}, this.retrasoLoggerObs);
         });
 
         //suscripcion Eventos:
@@ -288,7 +324,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		console.log("ENVIADO");
       		return this.renderMazmorra;
     	});
-    	
+
     	this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.mazmorraService.cuenta.nombre});
 
         this.centrarMazmorra();
@@ -305,7 +341,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	}
 
 /* 	----------------------------------------------
-			FUNCIONES GENERALES 	
+			FUNCIONES GENERALES
  	----------------------------------------------*/
 
 	camelize(texto: string){
@@ -313,7 +349,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	}
 
 	abrirConfiguracion(){
-		this.appService.mostrarConfiguracion("", {})
+		this.appService.mostrarConfiguracion("", {contenido: this.mazmorraService.sesion.idSesion})
 		return;
 	}
 
@@ -343,8 +379,8 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 		//Render de Canvas:
 		//this.renderizarCanvasIsometrico();
-		
-		setTimeout(()=>{    
+
+		setTimeout(()=>{
       		this.appService.mostrarPantallacarga(false);
  		}, 2000);
   	}
@@ -367,7 +403,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
  	renderIndividual(): any{
     	var clase= "";
-	
+
     	if(this.mazmorraService.getDispositivo()=="Movil"){
     	  clase= clase+" Individual"
     	}
@@ -455,7 +491,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		}else{
 			left= 100 - (this.renderMazmorra.heroes[i].escudo/2);
 		}
-		
+
 		return left+"%";
 	}
 
@@ -565,7 +601,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		}else{
 			left= 100 - (this.renderMazmorra.enemigos[i].escudo/2);
 		}
-		
+
 		return left+"%";
 	}
 
@@ -608,7 +644,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	}
 
 	renderizarEstiloBuffosEnemigos(buff:any):any{
-		
+
 		var estilo={}
 		var  indexVertical= Math.floor(buff.icon_id/10);
         var  indexHorizontal= buff.icon_id-indexVertical*10;
@@ -624,9 +660,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		FUNCIONES DE PAUSE
  	----------------------------------------------*/
  	abandonarPartida():void{
- 		
+
  		this.pausaService.togglePause();
- 		
+
  		//Quitar Suscripciones:
  		this.loggerSuscripcion.unsubscribe();
  		this.socketSubscripcion.unsubscribe();
@@ -643,9 +679,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
  		this.appService.setControl("");
  		this.mazmorraService.musicaMazmorra.volume= 0;
   		this.mazmorraService.musicaMazmorra.remove();
-		this.appService.setEstadoApp("index");	
+		this.appService.setEstadoApp("index");
  	}
- 	
+
 	/* 	----------------------------------------------
 		FUNCIONES VARIAS
  		----------------------------------------------*/
@@ -668,18 +704,21 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		if(comando=="centro"){
 			this.mazmorraService.pasarTurno()
 		}
+
 		if(comando=="elegirHechizo"){
 			this.mazmorraService.routerInterfaz('elegirHechizo')
 		}
+
 		if(comando=="elegirMovimiento"){
 			this.mazmorraService.routerInterfaz('elegirMovimiento')
 		}
+
 	}
 
 	//********************
 	// RENDER ISOMETRICO
 	//********************
-	
+
 	renderizarCanvasIsometrico(){
 
 		var posicionMax_x = 0;
@@ -687,10 +726,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 		for(var i = 0; i < this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
 			if(this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.x > posicionMax_x && !this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].oculto){
-				posicionMax_x = this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.x; 
+				posicionMax_x = this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.x;
 			}
 			if(this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.y > posicionMax_y && !this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].oculto){
-				posicionMax_y = this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.y; 
+				posicionMax_y = this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable[i].Position.y;
 			}
 		}
 
@@ -709,11 +748,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         */
 
 		//Centrar el isometrico:
-		//this.canvasIsometrico.nativeElement.scrollTop = posicionMax_y/2 
-		//this.canvasIsometrico.nativeElement.scrollLeft = posicionMax_x/2 
+		//this.canvasIsometrico.nativeElement.scrollTop = posicionMax_y/2
+		//this.canvasIsometrico.nativeElement.scrollLeft = posicionMax_x/2
 
 	}
-	
+
 	renderizarElementoIsometrico(elemento: any):any{
 
 		var opcionesCanvas = this.mazmorraService.mazmorra.isometrico.MapSave.MapSettings
@@ -724,7 +763,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 			"width": "",
 			"height": "",
 			"z-index": 0,
-			"transform": "translate(-50%,-50%) scaleX(1) scale("+this.escalaIsometrico+")",
+			"transform": "translate(-50%,-50%) scaleX(1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")",
 			"-webkit-mask-image": "url('"+elemento.ImagePath+"')",
 			//"mix-blend-mode": "multiply"',
 			"display": "block"
@@ -741,16 +780,19 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 		style["z-index"]= Math.floor(zIndex)
 
 		if(elemento.Mirror=="true"){
-			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+this.escalaIsometrico+")";
+			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")";
+		}
+		if(elemento.Mirror==true){
+			style.transform= "translate(-50%,-50%) scaleX(-1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")";
 		}
 
 		//Aplicar filtrado de visualizacion:
-		style.display = "block";
+		style["display"] = "none";
 
-		for(var i =0; i <this.mazmorraService.mazmorra.salas.length; i++){
-			if((!this.mazmorraService.mazmorra.salas[i].mostrarIsometrico) && (elemento.sala==this.mazmorraService.mazmorra.salas[i].sala_id)){
-				style.display= "none";
-			} 
+		for(var i =0; i <this.mazmorraService.sesion.render.mazmorra.salasDescubiertas.length; i++){
+			if(Number(this.mazmorraService.sesion.render.mazmorra.salasDescubiertas[i])==Number(elemento.sala)){
+				style.display= "block";
+			}
 		}
 
 		//Renderizar Seleccion:
@@ -758,7 +800,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 			style["filter"] = "sepia(100%) saturate(100)";
 		}
 
-		//Aplicar filtro de Seleccion: 
+		//Aplicar filtro de Seleccion:
 		//var width= ((window.innerWidth*0.7)/opcionesCanvas.MapSizeX)*100 + "px";
 		//style.width= width.replace(/,/g,".")
 
@@ -770,13 +812,40 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     centrarMazmorra(){
         console.log("Centrando")
-        this.pinchZoom.pinchZoom.moveX = -233
-        this.pinchZoom.pinchZoom.moveY = -504
+        if(this.pinchZoom==undefined){return}
+        this.pinchZoom.pinchZoom.moveX = -388
+        this.pinchZoom.pinchZoom.moveY = -596
         this.pinchZoom.pinchZoom.scale = 1
         this.pinchZoom.pinchZoom.transformElement(1000);
         this.pinchZoom.pinchZoom.updateInitialValues();
     }
 
+    clickElemento(elemento){
+
+      console.log(elemento)
+      //Trigger de eventos HARCODED:
+      switch(elemento.Id){
+        case "ffca4f5c-0de8-401b-9b8e-9863269d16bb":
+          this.mazmorraService.triggerEvento(1);
+        break
+        case "d23d38b2-c90b-4d12-937b-167b11967107":
+          this.mazmorraService.triggerEvento(2);
+        break
+        case "a309cc1e-2404-426d-b4de-9054092cd43c":
+        case "f58de226-2499-457a-98cb-76f1a802410c":
+          this.mazmorraService.triggerEvento(3);
+        break
+        //Abrir Puerta Boss
+        case "27d37a70-acdf-416d-a036-d7f55091d25c":
+            this.mazmorraService.triggerEvento(4);
+        break
+        //Interacción Mesa:
+        case "2000d6f0-04e6-4ea7-9fc7-88cb56aa7595":
+          this.mazmorraService.triggerEvento(5);
+        break
+
+      }
+    }//FIN clickElemento()
 }
 
 

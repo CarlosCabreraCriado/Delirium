@@ -5,9 +5,10 @@
 
 <div class="contenedorEnemigo" [ngClass]="renderizarMarcoEnemigo()">
 
-	<div class="contenedorImagen" (click)="estadoDesplegado = !estadoDesplegado">
+	<div class="contenedorImagen" (click)="toggleDeplegable()">
 		<div class="frameImagen"></div>
 		<img class="imagenEnemigo" src="../../../assets/Enemigos/{{renderEnemigo.familia}}/{{renderEnemigo.tipo_enemigo_id}}.png">
+    <div class="marcaColor" [ngStyle]="{'background': renderEnemigo.color}"></div>
 
         <appAnimacionEfecto *ngIf="renderEnemigo.mostrarAnimacion" #animacionEfecto [loop]="false" [animacion]="renderEnemigo.animacion"></appAnimacionEfecto>
         <appAnimacionNumero #animacionNumero [enemigo]="renderEnemigo" [enemigoVida]="renderEnemigo.vida" [enemigoIndex]="indexEnemigo"></appAnimacionNumero>
@@ -15,7 +16,7 @@
 	</div>
 
     <div class="wrapperDesplegable">
-        <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado && desplegable}">
+        <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
             <div class="frameDetalle"></div>
             <div class="nombreEnemigo Texto4">{{renderEnemigo.nombre}}</div>
 

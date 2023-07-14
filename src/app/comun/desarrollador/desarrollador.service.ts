@@ -9,7 +9,7 @@ import { TipoDatos } from "./tiposDesarrollador.class"
 import { directorioAssets } from "./propiedadesAssets"
 import { datosDefecto } from "./datosDefecto"
 import { TriggerComponent } from './triggerComponent/trigger.component';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class DesarrolladorService implements OnInit{
     public tipoObjetoSeleccionado= "Equipo";
     public indexEquipoSeleccionado= 0;
     public indexConsumibleSeleccionado= 0;
-    
+
   //VARIABLES DE DATOS
     public archivosExcel: any= [];
     public archivoDato: any;
@@ -55,7 +55,7 @@ export class DesarrolladorService implements OnInit{
     public mostrarSelectorImagen= false;
     public estadoSelectorImagen= "";
     public pathImagenes = "Habilidades/Spell";
-    
+
   //Logger Consola
     public logger=[];
     private loggerColor=[];
@@ -64,7 +64,7 @@ export class DesarrolladorService implements OnInit{
     public mazmorra:any = {};
     public listaMazmorra:any= [];
     public mostrarCargarMazmorra = false;
-    
+
     public mazmorraInicializada = false;
     private mazmorraNombreId= "";
     private renderReticula= {}  as RenderReticula;
@@ -72,23 +72,23 @@ export class DesarrolladorService implements OnInit{
     private numColumnasIni= 37;
     private margenReticula= 6;
     private cuentaIndexPieza= 0;
-    
+
     private activarLimiteReticula: boolean = false;
     private limiteReticulaXMin:number = 0;
     private limiteReticulaXMax: number = 19;
-    
+
     private limiteReticulaYMin: number = 0;
     private limiteReticulaYMax: number = 11;
-    
+
     private visorNumFilaIni:number = 14;
     private visorNumColumnaIni: number= 24;
-    
+
     private visorFila;
-    private visorColumna; 
+    private visorColumna;
 
   //Variables Mazmorra Isometrico
     public mostrarIsometrico = false;
-    public isometrico: any = null; 
+    public isometrico: any = null;
     public mostrarGrid= true
     public mostrarDecorado = true;
     public mostrarSalaNula = true;
@@ -99,8 +99,8 @@ export class DesarrolladorService implements OnInit{
     //Variables Inmap:
     private regionInmap:number = 1;
     private region: any = {};
-    public coordenadaX: number = 0; 
-    public coordenadaY: number = 0; 
+    public coordenadaX: number = 0;
+    public coordenadaY: number = 0;
     private regionSeleccionada: string = "";
     private tileImgSeleccionado: number = 1;
     public opcionPropiedades: string = "trigger";
@@ -156,7 +156,7 @@ export class DesarrolladorService implements OnInit{
   observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
 
 
-  constructor(public appService: AppService, private http: HttpClient, private dialog: MatDialog)  { 
+  constructor(public appService: AppService, private http: HttpClient, private dialog: MatDialog)  {
   }
 
   ngOnInit(){
@@ -251,7 +251,7 @@ export class DesarrolladorService implements OnInit{
       var isometricoMapa = []
       for(var i = 0; i < dimensionX; i++){
 
-        isometricoMapa[i] = [];    
+        isometricoMapa[i] = [];
 
         for(var j = 0; j < dimensionY; j++){
 
@@ -303,7 +303,7 @@ export class DesarrolladorService implements OnInit{
 
   // *************************************************
   //    CONSOLA:
-  // ************************************************* 
+  // *************************************************
 
   log(mensaje:any,color?:any):void{
      this.logger.push(mensaje);
@@ -316,8 +316,8 @@ export class DesarrolladorService implements OnInit{
 
 // *************************************************
 //    PANEL MAZMORRA:
-// ************************************************* 
-  
+// *************************************************
+
   nuevaMazmorra(){
     this.mazmorra= {
       general: [
@@ -339,7 +339,7 @@ export class DesarrolladorService implements OnInit{
       nombre: "",
       nombreId: "Mazmorra"
     }
-    
+
     this.inicializarReticula();
     //this.observarDesarrolladorService.next("reloadReticula");
     this.observarDesarrolladorService.next("reloadForm");
@@ -374,7 +374,7 @@ export class DesarrolladorService implements OnInit{
 
     //Cargar Mazmorra:
     this.mazmorra= this.listaMazmorra[index];
-    
+
     //Inicializar variables de control Builder:
     for(var i=0; i <this.mazmorra.salas.length; i++){
         this.mazmorra.salas[i].mostrarIsometrico = true;
@@ -390,13 +390,13 @@ export class DesarrolladorService implements OnInit{
     this.mazmorraInicializada= true;
   }
 
-  async guardarMazmorra(){  
+  async guardarMazmorra(){
 
-    //Procesar Guardado de celdas: 
-    this.mazmorra.celdas = this.procesarGuardadoCeldas();
-    
+    //Procesar Guardado de celdas:
+    //this.mazmorra.celdas = this.procesarGuardadoCeldas();
+
     console.log(this.mazmorra);
-    
+
     this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: await this.appService.getToken()}).subscribe((res) => {
       if(res){
         console.log("Mazmorra guardada en Base de datos");
@@ -417,10 +417,10 @@ export class DesarrolladorService implements OnInit{
   procesarGuardadoCeldas(){
         var objetoReticula = Object.assign([],this.renderReticula.celdas)
 
-        //Procesar Celdas: 
+        //Procesar Celdas:
         //Procesado eje X:
-        var flagBorrado = true; 
-        for(var i=0; i <objetoReticula.length; i++){ 
+        var flagBorrado = true;
+        for(var i=0; i <objetoReticula.length; i++){
             flagBorrado= true;
             for(var j=0; j <objetoReticula[i].length; j++){ if(objetoReticula[i][j].pieza!= "none"){
                     flagBorrado= false;
@@ -433,8 +433,8 @@ export class DesarrolladorService implements OnInit{
             }
         }
 
-        //Procesar Eje Y: 
-        for(var i=0; i <objetoReticula[0].length; i++){ 
+        //Procesar Eje Y:
+        for(var i=0; i <objetoReticula[0].length; i++){
             flagBorrado= true;
             for(var j=0; j <objetoReticula.length; j++){
                if(objetoReticula[j][i].pieza!= "none"){
@@ -450,7 +450,7 @@ export class DesarrolladorService implements OnInit{
             }
         }
 
-        return objetoReticula 
+        return objetoReticula
   }
 
   async eliminarMazmorra(){
@@ -469,7 +469,7 @@ export class DesarrolladorService implements OnInit{
 
   inicializarReticula(){
 
-    this.renderReticula= { 
+    this.renderReticula= {
       estado: '',
       comando: '',
       celdas: []
@@ -479,10 +479,10 @@ export class DesarrolladorService implements OnInit{
     this.visorColumna=[];
     for (var i = 0; i < this.visorNumFilaIni; ++i) {this.visorFila.push(i);}
     for (var i = 0; i < this.visorNumColumnaIni; ++i) {this.visorColumna.push(i);}
-    
+
     var numFilas = this.numFilasIni;
     var numColumnas = this.numColumnasIni;
-    
+
     var vectorFila= []
     var objetoSector= {
       X: 0,
@@ -549,7 +549,7 @@ export class DesarrolladorService implements OnInit{
     var vectorFila = [];
     var numColumnas = this.renderReticula.celdas[0].length;
     var numFilas = this.renderReticula.celdas.length;
-   
+
     switch (posicion) {
       case "bottom":
           for(var j= 0; j <numColumnas; j++){
@@ -597,7 +597,7 @@ export class DesarrolladorService implements OnInit{
     }
     var numColumnas = this.renderReticula.celdas[0].length;
     var numFilas = this.renderReticula.celdas.length;
-    
+
     switch (posicion) {
       case "right":
         for (var i = 0; i < numFilas; ++i) {
@@ -650,7 +650,7 @@ export class DesarrolladorService implements OnInit{
         break;
 
       case "left":
-       
+
         if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1]>this.margenReticula){
             this.addColumnaReticula("left")
         }else{
@@ -668,7 +668,7 @@ export class DesarrolladorService implements OnInit{
             this.visorFila[i]--;
           }
         }
-        
+
         break;
 
       case "down":
@@ -681,7 +681,7 @@ export class DesarrolladorService implements OnInit{
           this.visorFila[i]++;
         }
         break;
-      
+
       default:
         // code...
         break;
@@ -737,7 +737,7 @@ export class DesarrolladorService implements OnInit{
     this.visorColumna.pop();
     return;
   }
-  
+
   zoomOut(){
 
     this.visorFila.push(this.visorFila[this.visorFila.length-1]+1);
@@ -783,7 +783,7 @@ export class DesarrolladorService implements OnInit{
               for (var j = 0; j < 6; ++j) {
                 this.renderReticula.celdas[x+i][y+j].color= "orange"
                 this.renderReticula.celdas[x+i][y+j].pieza= this.renderReticula.comando;
-                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;           
+                this.renderReticula.celdas[x+i][y+j].indexPieza= this.cuentaIndexPieza;
               }
             }
 
@@ -794,13 +794,13 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
           break;
 
           case "2x2":
-            
+
 
             //Comprobar Colision:
             for (var i = 0; i < 2; ++i) {
@@ -829,7 +829,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
           break;
@@ -875,7 +875,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
           break;
@@ -921,7 +921,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}    
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
           break;
@@ -964,7 +964,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
           break;
@@ -1071,7 +1071,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
 
@@ -1080,7 +1080,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
 
@@ -1130,7 +1130,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
 
@@ -1139,7 +1139,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
           break;
@@ -1246,7 +1246,7 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
 
@@ -1255,17 +1255,17 @@ export class DesarrolladorService implements OnInit{
                 if(this.renderReticula.celdas[x+i-1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[0]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i+1][y+j].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[2]= bordeColor+" "+bordeSize+"px solid"}
                 if(this.renderReticula.celdas[x+i][y+j+1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[1]= bordeColor+" "+bordeSize+"px solid"}
-                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}  
+                if(this.renderReticula.celdas[x+i][y+j-1].indexPieza !== this.cuentaIndexPieza){this.renderReticula.celdas[x+i][y+j].border[3]= bordeColor+" "+bordeSize+"px solid"}
               }
             }
           break;
-          
+
           default:
             // code...
             break;
-        } 
+        }
         break; //Fin estado add
-      
+
       case "eliminar":
       var indexPiezaEliminar= this.renderReticula.celdas[x][y].indexPieza;
         for (var i = 0; i < this.renderReticula.celdas.length; ++i) {
@@ -1330,24 +1330,24 @@ export class DesarrolladorService implements OnInit{
         break;
 
       case "parametros":
-        
+
         this.log("Herramienta: "+herramienta,"green");
         this.renderReticula.estado="parametros";
         if(this.estadoMazmorra=="parametros"){
-            this.estadoMazmorra= "";    
+            this.estadoMazmorra= "";
         }else{
             this.estadoMazmorra= "parametros";
         }
         this.renderReticula.comando= "";
         break;
-      
+
       case "cargarArchivoIsometrico":
         this.log("Herramienta: "+herramienta,"green");
         this.renderReticula.estado="parametros";
         this.estadoMazmorra= "isometrico";
         this.renderReticula.comando= "";
         break;
-        
+
       default:
         this.log("Herramienta no valida: "+herramienta,"red");
         this.renderReticula.estado=""
@@ -1376,7 +1376,7 @@ export class DesarrolladorService implements OnInit{
   seleccionarEnemigoMazmorra(enemigoID: number){
     this.enemigoSeleccionadoId = enemigoID;
     var tipoId= 0;
-    
+
     //Buscar ID Enemigo:
     for(var i = 0; i <this.mazmorra.salas.length; i++){
         for(var j = 0; j <this.mazmorra.salas[i].enemigos.length; j++){
@@ -1492,12 +1492,12 @@ export class DesarrolladorService implements OnInit{
 
     this.mazmorra.eventos.push({
             id_evento: cuentaID,
-            id_mazmorra: 0, 
+            id_mazmorra: 0,
             id_sala: 0,
             tipo: 0,
             codigo: 0,
-            rng: 0, 
-            rng_fallo_evento_id: 0, 
+            rng: 0,
+            rng_fallo_evento_id: 0,
             buff: 0,
             insta_buff: 0,
             objetivo_buff: 0,
@@ -1519,7 +1519,7 @@ export class DesarrolladorService implements OnInit{
             if_falso_evento_id: 0,
             cinematica_id: 0,
             sonido_id: 0,
-            evento_next_id: 0 
+            evento_next_id: 0
     });
 
     this.seleccionarEvento(cuentaID);
@@ -1528,7 +1528,7 @@ export class DesarrolladorService implements OnInit{
 
 //*************************************************
 //      PANEL DATOS:
-//************************************************* 
+//*************************************************
 
     seleccionarAccionDato(opcion:string):void{
         this.estadoDatos= opcion;
@@ -1545,27 +1545,27 @@ export class DesarrolladorService implements OnInit{
                 this.archivoDato= this.appService.getHechizos()
           this.indexArchivoSeleccionado= 1;
                 break;
-    
+
             case "Enemigos":
                 this.archivoDato= this.appService.getEnemigos()
           this.indexArchivoSeleccionado= 2;
                 break;
-    
+
             case "Buff":
                 this.archivoDato= this.appService.getBuff()
           this.indexArchivoSeleccionado= 3;
                 break;
-    
+
             case "Objetos":
                 this.archivoDato= this.appService.getObjetos()
           this.indexArchivoSeleccionado= 4;
                 break;
-    
+
             case "Animaciones":
                 this.archivoDato= this.appService.getAnimaciones()
           this.indexArchivoSeleccionado= 5;
                 break;
-    
+
             case "Perfil":
                 this.archivoDato= this.appService.getPerfil()
           this.indexArchivoSeleccionado= 7;
@@ -1606,24 +1606,24 @@ export class DesarrolladorService implements OnInit{
     var documentos = new Array(13);
 
     //*************************************************
-    //    Construir documento Generico 
+    //    Construir documento Generico
     //*************************************************
-  
+
     //Declaración de variables Generales:
     var documento= {};
     var columnas = [];
     var columnasAtrib= [];
     var result= {};
     var vectorPaginas= [];
-  
+
     for (var docIndex =0; docIndex < documentos.length; docIndex++) {
-    
+
       if(typeof path[docIndex] != "undefined"){
-      
+
         documento= {};
         columnas = [];
         columnasAtrib= [];
-      
+
         switch(docIndex){
           case 0: //HEROE STATS
             vectorPaginas= ['MINOTAURO','CRUZADO','CAZADOR','CHRONOMANTE','HECHICERO','INGENIERO','CLERIGO','SEGADOR_DE_ALMAS']
@@ -1704,7 +1704,7 @@ export class DesarrolladorService implements OnInit{
             };
           break;
         }
-      
+
         /*result = excelToJson({
           sourceFile: path[docIndex],
           header: {
@@ -1712,31 +1712,31 @@ export class DesarrolladorService implements OnInit{
           },
           sheets: vectorPaginas
         });*/
-        
+
         // Iteracion por pagina:
         for (var i = 0; i < vectorPaginas.length; i++) {
-        
+
         documento[vectorPaginas[i].toLowerCase()] = [];
         columnas= result[vectorPaginas[i]][0];
         columnasAtrib = Object.keys(columnas);
-        
+
         //Iteracion por fila:
         for (var j = 1; j < result[vectorPaginas[i]].length; j++) {
-          
+
           documento[vectorPaginas[i].toLowerCase()].push({});
-          
+
           //Iteracion por columna:
           for (var k = 0; k < columnasAtrib.length; k++) {
             documento[vectorPaginas[i].toLowerCase()][documento[vectorPaginas[i].toLowerCase()].length-1][columnas[columnasAtrib[k]].toLowerCase()] = result[vectorPaginas[i]][j][columnasAtrib[k]]
           }
         }
         }
-        
+
         console.log("DOCUMENTO: ");
         console.log(documento);
-          
+
         documentos[docIndex]= documento;
-      } 
+      }
     }
   }
 
@@ -1751,7 +1751,7 @@ export class DesarrolladorService implements OnInit{
       //Lectura de archivo
       const reader: FileReader = new FileReader();
       reader.onload = (e: any) => {
-        
+
         /* Leer workbook */
         const bstr: string = e.target.result;
         const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
@@ -1765,7 +1765,7 @@ export class DesarrolladorService implements OnInit{
 
         this.archivosExcel.find(i => i.nombreArchivo== this.archivoSeleccionado).workbook= wb;
         this.archivosExcel.find(i => i.nombreArchivo== this.archivoSeleccionado).estado= "info";
-        
+
         this.log("Cargando Archivo: "+this.archivoSeleccionado,"lightblue");
 
         console.log(this.archivosExcel);
@@ -1787,10 +1787,10 @@ export class DesarrolladorService implements OnInit{
       const reader: FileReader = new FileReader();
       reader.readAsBinaryString(target.files[0]);
       reader.onload = (e: any) => {
-        
+
         this.log("Cargando Archivo Isometrico...","lightblue");
         var obj = JSON.parse(e.target.result);
-        
+
         delete obj.MapSave["-xmlns:xsd"]
         delete obj.MapSave["-xmlns:xsi"]
 
@@ -1809,7 +1809,7 @@ export class DesarrolladorService implements OnInit{
 
         this.mazmorra.isometrico = Object.assign({}, obj);
         console.log(this.mazmorra)
-        console.log("Mapa Isometrico: ");   
+        console.log("Mapa Isometrico: ");
         console.log(obj);
       }
   }
@@ -1823,9 +1823,9 @@ export class DesarrolladorService implements OnInit{
 
     var token = await this.appService.getToken()
     console.log("Usando token: ",token)
-          
+
     this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatosJuego",{token: token}).subscribe((data) => {
-            
+
         console.log("Datos: ")
         console.log(data)
             if(data){
@@ -1851,7 +1851,7 @@ export class DesarrolladorService implements OnInit{
 
   asignarSala(idSala: number){
       //Verificar Sala;
-      var salaValida= false; 
+      var salaValida= false;
       for(var i=0; i <this.mazmorra.salas.length; i++){
           if(this.mazmorra.salas[i].sala_id == idSala){
               salaValida = true;
@@ -1874,7 +1874,7 @@ export class DesarrolladorService implements OnInit{
             this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala = idSala;
             this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
           }
-      }   
+      }
 
       this.mostrarPanelAsignarSala= false;
       this.mensaje = "Selección asignada"
@@ -1882,12 +1882,12 @@ export class DesarrolladorService implements OnInit{
       this.mostrarSpinner= false;
       this.mostrarBotonAceptar= true;
       console.log("Sala Asignada: "+idSala);
-      
+
     return;
   }
 
   eliminarSala(salaSeleccionadaId: number){
-      
+
         //Elimina elemento sala del Array de salas:
         this.mazmorra["salas"].splice(this.mazmorra.salas.indexOf(this.mazmorra.salas.find(i=> i.sala_id==this.salaSeleccionadaId)),1);
         //Quita asignación de sala a elementos de sala eliminada:
@@ -1896,15 +1896,15 @@ export class DesarrolladorService implements OnInit{
                 this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala= 0;
             }
         }
-        
+
         //Deselecciona la sala seleccionada:
         this.salaSeleccionadaId=0;
 
     return;
   }
-  
+
   eliminarEnemigoMazmorra(){
-      
+
         //Elimina elemento sala del Array de salas:
         this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex]["enemigos"].splice(this.enemigoSeleccionadoIndex,1);
 
@@ -1915,7 +1915,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   eliminarEventoMazmorra(){
-      
+
         //Elimina el evento:
         this.mazmorra["eventos"].splice(this.mazmorra.eventos.indexOf(this.mazmorra.eventos.find(i=> i.id_evento==this.eventoSeleccionadoId)),1);
 
@@ -1927,7 +1927,7 @@ export class DesarrolladorService implements OnInit{
 
   setEstadoDatos(estadoDatos:TipoDatos){
 
-    this.estadoHerramientaDatos = estadoDatos; 
+    this.estadoHerramientaDatos = estadoDatos;
 
     switch(estadoDatos){
         case "Enemigos":
@@ -1942,42 +1942,58 @@ export class DesarrolladorService implements OnInit{
     return;
   }
 
+  findAvailableID(objeto:any):number{
+    if(!objeto[0].id){return 0}
+    var index = 0;
+    var encontrado = false;
+    do{
+      index++;
+      encontrado= false;
+      for(var i = 0; i < objeto.length; i++){
+        if(objeto[i].id==index){encontrado=true;break;}
+      }
+    }while(encontrado);
+    return index;
+  }
+
   addDato(){
       switch(this.estadoHerramientaDatos){
             case "Hechizos":
+
                 this.hechizos.hechizos.push(Object.assign({},datosDefecto.hechizos));
-                this.hechizos.hechizos.at(-1)["id"]= this.hechizos.hechizos.length;
+                this.hechizos.hechizos.at(-1)["id"]= this.findAvailableID(this.hechizos.hechizos);
                 this.hechizos.hechizos.at(-1)["nombre"]= "Hechizo "+this.hechizos.hechizos.length;
                 console.log(this.hechizos.hechizos)
             break;
 
             case "Buff":
                 this.buff.buff.push(Object.assign({},datosDefecto.buff));
-                this.buff.buff.at(-1)["id"]= this.buff.buff.length;
+                this.buff.buff.at(-1)["id"]= this.findAvailableID(this.buff.buff);
                 this.buff.buff.at(-1)["nombre"]= "Buff "+this.buff.buff.length;
             break;
 
             case "Animaciones":
+              console.error("AÑADIENDO")
                 this.animaciones.animaciones.push(Object.assign({},datosDefecto.animaciones));
-                this.animaciones.animaciones.at(-1)["id"]= this.animaciones.animaciones.length;
+                this.animaciones.animaciones.at(-1)["id"]= this.findAvailableID(this.animaciones.animaciones);
                 this.animaciones.animaciones.at(-1)["nombre"]= "Animacion "+this.animaciones.animaciones.length;
             break;
 
             case "Enemigos":
                 this.enemigos.enemigos.push(Object.assign({},datosDefecto.enemigos));
-                this.enemigos.enemigos.at(-1)["id"]= this.enemigos.enemigos.length;
+                this.enemigos.enemigos.at(-1)["id"]= this.findAvailableID(this.enemigos.enemigos);
                 this.enemigos.enemigos.at(-1)["nombre"]= "Enemigos "+this.enemigos.enemigos.length;
             break;
 
             case "Eventos":
                 this.eventos.eventos.push(Object.assign({},datosDefecto.eventos));
-                this.eventos.eventos.at(-1)["id"]= this.eventos.eventos.length;
+                this.eventos.eventos.at(-1)["id"]= this.findAvailableID(this.eventos.eventos);
                 this.eventos.eventos.at(-1)["nombre"]= "Evento "+this.eventos.eventos.length;
             break;
 
             case "Misiones":
                 this.misiones.misiones.push(Object.assign({},datosDefecto.misiones));
-                this.misiones.misiones.at(-1)["id"]= this.misiones.misiones.length;
+                this.misiones.misiones.at(-1)["id"]= this.findAvailableID(this.misiones.misiones);
                 this.misiones.misiones.at(-1)["nombre"]= "Mision "+this.misiones.misiones.length;
             break;
 
@@ -1985,12 +2001,12 @@ export class DesarrolladorService implements OnInit{
                 switch(this.tipoObjetoSeleccionado){
                     case "Equipo":
                         this.objetos.equipo.push(Object.assign({},datosDefecto.equipo));
-                        this.objetos.equipo.at(-1)["id"]= this.objetos.equipo.length;
+                        this.objetos.equipo.at(-1)["id"]= this.findAvailableID(this.objetos.equipo);
                         this.objetos.equipo.at(-1)["nombre"]= "Equipo "+this.objetos.equipo.length;
                         break;
                     case "Consumible":
                         this.objetos.consumible.push(Object.assign({},datosDefecto.consumible));
-                        this.objetos.consumible.at(-1)["id"]= this.objetos.consumible.length;
+                        this.objetos.consumible.at(-1)["id"]= this.findAvailableID(this.objetos.consumible);
                         this.objetos.consumible.at(-1)["nombre"]= "Consumible "+this.objetos.consumible.length;
                         break;
                 }
@@ -2022,17 +2038,17 @@ export class DesarrolladorService implements OnInit{
   }
 
   addAnimacionHechizo(indexAnimacion:number){
-      var animacionId = this.animaciones.animaciones[indexAnimacion].id;  
+      var animacionId = this.animaciones.animaciones[indexAnimacion].id;
       this.hechizos.hechizos[this.hechizoSeleccionadoIndex].animacion_id = animacionId;
   }
 
   addAnimacionBuff(indexAnimacion:number){
-      var animacionId = this.animaciones.animaciones[indexAnimacion].id;  
+      var animacionId = this.animaciones.animaciones[indexAnimacion].id;
       this.buff.buff[this.buffSeleccionadoIndex].animacion_id = animacionId;
   }
 
   addSonido(){
-      var sonido = this.animaciones.sonidos[0];  
+      var sonido = this.animaciones.sonidos[0];
       if(this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos.length <= 0){
         this.sonidoSeleccionadoIndex=-1;
       }
@@ -2041,7 +2057,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   asignarSonidoAnimacion(indexSonido:number){
-      var sonido = this.animaciones.sonidos[indexSonido];  
+      var sonido = this.animaciones.sonidos[indexSonido];
       this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos[this.sonidoSeleccionadoIndex]=sonido;
   		this.efectoSonido.src = "./assets/sounds/"+sonido.id+"."+sonido.extension;
   		this.efectoSonido.load();
@@ -2061,7 +2077,7 @@ export class DesarrolladorService implements OnInit{
       //Actualizar Formulario:
         this.observarDesarrolladorService.next("reloadFormBuff");
   }
-  
+
   eliminarBuff(){
 
       console.log("Eliminando Buff:")
@@ -2081,12 +2097,12 @@ export class DesarrolladorService implements OnInit{
   seleccionarEnemigo(indexEnemigo:number){
       this.enemigoSeleccionadoIndex= indexEnemigo;
       var familia = this.enemigos.enemigos[this.enemigoSeleccionadoIndex].familia;
-      this.pathImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==familia.toLowerCase()).path; 
+      this.pathImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==familia.toLowerCase()).path;
 
       //Actualizar Formulario:
         this.observarDesarrolladorService.next("reloadFormEnemigo");
   }
-  
+
   eliminarEnemigo(){
 
       console.log("Eliminando Enemigo:")
@@ -2105,6 +2121,7 @@ export class DesarrolladorService implements OnInit{
 
   seleccionarAnimacion(indexAnimacion:number){
 
+    console.warn("ANIMACION:",this.animaciones.animaciones[indexAnimacion])
       this.animacionSeleccionadoIndex= indexAnimacion;
 
       this.subanimaciones = this.animaciones.animaciones[indexAnimacion].subanimaciones;
@@ -2194,7 +2211,7 @@ export class DesarrolladorService implements OnInit{
       this.animaciones.animaciones[this.animacionSeleccionadoIndex].subanimaciones.splice(this.subanimacionSeleccionadoIndex,1)
 
       //Cambia el indice de seleccion:
-      
+
       if(this.subanimacionSeleccionadoIndex>0){
         this.subanimacionSeleccionadoIndex= this.subanimacionSeleccionadoIndex-1;
       }else{
@@ -2210,7 +2227,7 @@ export class DesarrolladorService implements OnInit{
       //Actualizar Formulario:
         this.observarDesarrolladorService.next("reloadFormEnemigo");
   }
-  
+
   eliminarMision(){
       console.log("Eliminando Mision:")
       this.misiones.misiones.splice(this.misionSeleccionadaIndex,1)
@@ -2235,8 +2252,8 @@ export class DesarrolladorService implements OnInit{
   abrirSelectorImagen(categoria:string){
     console.log(categoria)
     this.estadoSelectorImagen = categoria.toLowerCase();
-    var numeroImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==categoria.toLowerCase()).numeroImagenes; 
-    this.pathImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==categoria.toLowerCase()).path; 
+    var numeroImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==categoria.toLowerCase()).numeroImagenes;
+    this.pathImagenes = directorioAssets.find(i => i.categoria.toLowerCase()==categoria.toLowerCase()).path;
 
     //Inicializar Imagenes:
     this.imagenes= [];
@@ -2247,7 +2264,7 @@ export class DesarrolladorService implements OnInit{
     this.mostrarSelectorImagen = true;
     return;
   }
-  
+
   seleccionarImagen(indexImagen:number){
 
       console.log(this.estadoSelectorImagen)
@@ -2301,7 +2318,7 @@ export class DesarrolladorService implements OnInit{
   renderImagenBuff(indexHechizo:number){
     return this.buff.buff.find(i=> i.id == this.hechizos.hechizos[indexHechizo].buff_id).imagen_id;
   }
- 
+
   renderImagenEncadenado(indexHechizo:number){
     return this.hechizos.hechizos.find(i=> i.id == this.hechizos.hechizos[indexHechizo].hech_encadenado_id).imagen_id;
   }
@@ -2313,15 +2330,15 @@ export class DesarrolladorService implements OnInit{
   eliminarBuffHechizo(){
     this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id=0;
   }
-  
+
   addEncadenado(indexEncadenado:number){
       this.hechizos.hechizos[this.hechizoSeleccionadoIndex].hech_encadenado_id = this.hechizos.hechizos[indexEncadenado].id;
   }
 
-  async guardarPanelDatos(){  
-    
+  async guardarPanelDatos(){
+
       console.log("GUARDANDO: "+this.estadoHerramientaDatos)
-      
+
       switch(this.estadoHerramientaDatos){
 
           case "Objetos":
@@ -2432,14 +2449,14 @@ export class DesarrolladorService implements OnInit{
 
   // *************************************************
   //    INMAP:
-  // ************************************************* 
-  
-  async guardarInMap(){  
-    
+  // *************************************************
+
+  async guardarInMap(){
+
       console.log("GUARDANDO MAPA: ")
       this.region = this.appService.getRegion();
       console.log(this.region);
-      
+
       switch(this.region.nombreId){
           case "Asfaloth":
             console.log(this.region)
@@ -2471,7 +2488,7 @@ export class DesarrolladorService implements OnInit{
         case "eliminar":
             this.opcionesDesarrolloInMap.herramientaInMap = herramienta;
         break;
-         
+
         case "overlay":
             this.opcionesDesarrolloInMap.opcionOverlay = true;
         break;
@@ -2511,13 +2528,13 @@ export class DesarrolladorService implements OnInit{
 
   setInMapEventos(val){
   }
-  
+
   setInMapMisiones(val){
   }
 
   // *************************************************
   //    EVENTOS:
-  // ************************************************* 
+  // *************************************************
 
 
   seleccionarOrden(ordenIndex:number){
@@ -2533,7 +2550,7 @@ export class DesarrolladorService implements OnInit{
       this.tipoOrdenSeleccionada = tipoOrden;
       return;
   }
-  
+
   seleccionarEvento(eventoIndex: number){
       this.eventoSeleccionadoIndex = eventoIndex;
       console.log("Seleccionando Eventos: " + this.eventos.eventos[this.eventoSeleccionadoIndex].nombre);
@@ -2684,7 +2701,7 @@ export class DesarrolladorService implements OnInit{
       this.observarDesarrolladorService.next("reloadFormEventos");
   }
 
-      
+
   seleccionarClase(clase){
         switch(clase){
             case "Guerrero":
@@ -2719,7 +2736,7 @@ export class DesarrolladorService implements OnInit{
   seleccionarTipoObjeto(tipoObjeto){
       this.tipoObjetoSeleccionado = tipoObjeto;
 }
-      
+
     formatearNombre(nombre: string): string{
         var nombreNuevo = nombre
         return nombreNuevo.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -2729,7 +2746,7 @@ export class DesarrolladorService implements OnInit{
     patchObject(patchableObj: Object, obj: Object) {
       try {
         for (const [key, value] of Object.entries(obj)) {
-      
+
           if (value != null && value != undefined) {
             (patchableObj as any)[key] = value
           }
@@ -2738,11 +2755,11 @@ export class DesarrolladorService implements OnInit{
         console.log(error);
       }
     }
-   
+
     abrirTrigger(tipo:string, triggers: any){
 
       const dialogRef = this.dialog.open(TriggerComponent,{
-          width: "100px", panelClass: ["trigger", "generalContainer"],backdropClass: "fondoDialogo", disableClose:false, data: triggers 
+          width: "100px", panelClass: ["trigger", "generalContainer"],backdropClass: "fondoDialogo", disableClose:false, data: triggers
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -2765,7 +2782,7 @@ export class DesarrolladorService implements OnInit{
         });
         return;
     }
-  
+
 } //FIN EXPORT
 
 
