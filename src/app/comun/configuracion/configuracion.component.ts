@@ -19,7 +19,7 @@ export class ConfiguracionComponent {
 	private confirmation: boolean = false;
 	private comando = "";
 
-	constructor(public dialogRef: MatDialogRef<ConfiguracionComponent>, @Inject(MAT_DIALOG_DATA) public data: ConfiguracionData) { }
+	constructor(public dialogRef: MatDialogRef<ConfiguracionComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
     onAcceptClick(): void {
       this.confirmation = true;

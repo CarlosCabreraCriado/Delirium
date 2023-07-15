@@ -45,7 +45,7 @@ export class InterfazService {
     private renderEnemigos: any;
     private renderHeroes: any;
     private indexEnemigoAccion: number = 0;
-    private indexHeroeAccion: number = 0;
+    public indexHeroeAccion: number = 0;
     private indexAccion: number = undefined;
     private valorAccion: number = 0;
     //variable de accion enemigos:
@@ -56,6 +56,7 @@ export class InterfazService {
     private esAdyascente = false;
     private tieneAlcance = false;
     public  hechizoEnemigoImagenId:number = 0;
+    private indexHechizoAccion: number = 0;
 
     // Observable string sources
     private observarInterfaz = new Subject<any>();
@@ -108,6 +109,7 @@ export class InterfazService {
         // ---------------------------------
 
         if(typeof this.objetivoDefinido === "undefined"){
+            console.error("Verificando AGRO")
             //Determina Objetivo Segun Agro:
             var indexObjetivo = 0;
             var flagIgual = true;
@@ -176,6 +178,7 @@ export class InterfazService {
         // CHECK DE ENERGIA
         // ---------------------------------
         if(this.energiaAccion -  this.renderEnemigos[this.indexEnemigoAccion].acciones[this.indexAccion].energia < 0){
+
             this.finalizarActivacion();
             return;
         }
@@ -189,7 +192,7 @@ export class InterfazService {
                 this.valorAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].movimiento;
             break;
             case "ataque":
-                var indexHechizo= this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_id;
+                this.indexHechizoAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_id;
                 this.hechizoEnemigoImagenId= this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_imagen_id;
                 this.tieneAlcance = true;
                 this.valorAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].alcance;
@@ -210,7 +213,7 @@ export class InterfazService {
         var accion = {
             indexEnemigo: this.indexEnemigoAccion,
             indexHeroe: this.indexHeroeAccion,
-            hechizo_id: 1
+            hechizo_id: this.indexHechizoAccion
         }
 
         this.ultimaAccion = tipoAccion;
@@ -228,15 +231,16 @@ export class InterfazService {
                 this.activarInterfazAccionesEnemigo(this.renderEnemigos, this.renderHeroes, this.indexEnemigoAccion);
                 break;
             case "atacar":
-                this.desactivarInterfaz();
                 this.energiaAccion -= this.renderEnemigos[this.indexEnemigoAccion].acciones[this.indexAccion].energia;
                 console.log("ENERGIA: ",this.energiaAccion)
+                this.desactivarInterfaz();
                 this.observarInterfaz.next({comando: "lanzarHechizoEnemigo",valor: accion});
                 break;
         }
     }
 
     finalizarActivacion(){
+        this.objetivoDefinido = undefined;
         this.ultimaAccion = undefined;
         this.energiaAccion = 100;
         this.primeraAcctivacion = true;
@@ -260,6 +264,7 @@ export class InterfazService {
         this.mostrarInterfaz = true;
         return;
     }
+
 
     activarInterfazMovimiento(costeMovimiento:number,energiaDisponible:number):void{
         this.costePorMovimiento = costeMovimiento;
