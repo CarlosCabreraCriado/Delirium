@@ -596,8 +596,10 @@ export class MazmorraService implements OnInit{
     //Inicializar Canvas Isometrico:
     this.appService.renderizarCanvasIsometrico();
 
-        //Centrar Vista Mazmorra:
-        this.subscripcionMazmorra.emit("mazmorraIniciada");
+    //Centrar Vista Mazmorra:
+    setTimeout(()=>{
+      this.subscripcionMazmorra.emit("mazmorraIniciada");
+    },1000)
 
     } //Fin Inicializar Mazmorra:
 
@@ -969,9 +971,10 @@ export class MazmorraService implements OnInit{
 
   regenerarEnergia(){
     for(var i = 0; i < this.sesion.render.heroes.length; i++){
-      this.sesion.render.heroes[i].energia += this.parametros.regenEnergiaTurno/this.sesion.render.heroes.length;
+      this.sesion.render.heroes[i].energia += (this.parametros.regenEnergiaTurno/this.sesion.render.heroes.length);
       if(this.sesion.render.heroes[i].energia>100){this.sesion.render.heroes[i].energia=100}
     }
+
   }
 
   //Funcion principal de paso de turno:
@@ -1347,7 +1350,7 @@ export class MazmorraService implements OnInit{
         turno: false,
         color: colorSeleccionado,
         vida: 100,
-                energia: 100,
+        energia: 100,
         puntosVida: 1,
         escudo: 0,
         agro: [],
@@ -1905,12 +1908,20 @@ export class MazmorraService implements OnInit{
     //  2) Verifica y consume recurso del hechizo:
     //----------------------------------------------------------------
     if(esHeroe){
-            //Verifica si hay suficiente:
+      //Verifica si hay suficiente:
       this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia -= hechizo.recurso;
 
-      if(caster.recurso>100){
-        caster.recurso= 100;
-      }
+    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia <0){
+       this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia = 0;
+    }
+    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia >100){
+       this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia = 100;
+    }
+    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia==undefined
+    || this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia==null){
+        this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia = 0;
+    }
+
     }
 
     //---------------------------------------------------------------
@@ -3238,7 +3249,7 @@ export class MazmorraService implements OnInit{
       break;
 
       case "lanzarHechizo":
-                var critico = comando.valor
+        var critico = comando.valor
         this.lanzarRng(critico);
       break;
 
@@ -3259,6 +3270,30 @@ export class MazmorraService implements OnInit{
 
         //this.activarRNG();
       break;
+
+      case "fallarHechizo":
+        //Consume energia:
+        var indexHeroeTurno = -1;
+        for(var i = 0; i < this.sesion.render.heroes.length; i++){
+            if(this.sesion.render.heroes[i].turno){
+                indexHeroeTurno = i;
+                break;
+            }
+        }
+        this.sesion.render.heroes[indexHeroeTurno].energia -= comando.valor.energia;
+        if(this.sesion.render.heroes[indexHeroeTurno].energia<0){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
+        }
+        if(this.sesion.render.heroes[indexHeroeTurno].energia>100){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 100;
+        }
+        if(this.sesion.render.heroes[indexHeroeTurno].energia==undefined
+        || this.sesion.render.heroes[indexHeroeTurno].energia==null){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
+        }
+
+      break;
+
       case "finalizarActivacionEnemigo":
         this.pasarTurno();
       break;
@@ -3413,6 +3448,17 @@ export class MazmorraService implements OnInit{
         }
 
         this.sesion.render.heroes[indexHeroeTurno].energia -= costeEnergia;
+
+        if(this.sesion.render.heroes[indexHeroeTurno].energia<0){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
+        }
+        if(this.sesion.render.heroes[indexHeroeTurno].energia>100){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 100;
+        }
+        if(this.sesion.render.heroes[indexHeroeTurno].energia==undefined
+        || this.sesion.render.heroes[indexHeroeTurno].energia==null){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
+        }
 
     }
 

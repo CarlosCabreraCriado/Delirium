@@ -327,7 +327,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     	this.socketService.enviarSocket("buscarSala",{peticion: "buscarSala", comando: this.mazmorraService.cuenta.nombre});
 
-        this.centrarMazmorra();
+      //this.centrarMazmorra();
 	}
 
 	ngOnDestroy(){

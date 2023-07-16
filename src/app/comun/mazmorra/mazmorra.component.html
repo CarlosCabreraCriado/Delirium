@@ -130,6 +130,7 @@
 
   <panelControlComponent [tipo]="'mazmorra'" [habilitar]="mazmorraService.esTurnoPropio || mazmorraService.permitirMultiControl" (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"></panelControlComponent>
 
+  <atributoComponent id="atributoEnergia" [tipo]="'energia'" [valor]="mazmorraService.sesion.render.heroes[this.mazmorraService.personaje.heroeIndex].energia"></atributoComponent>
 
 <!-- *************************************************
             Panel Acción

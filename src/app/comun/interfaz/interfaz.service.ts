@@ -281,12 +281,27 @@ export class InterfazService {
     }
 
     finalizarFortuna(resultadoFortuna:string):void{
+
+      console.warn("FINAL: ",resultadoFortuna)
+      if(resultadoFortuna=="normal"){
         this.iniciarCritico();
         this.mostrarInterfaz = true;
+      }
+
+      if(resultadoFortuna=="fallo"){
+        this.observarInterfaz.next({comando: "fallarHechizo",valor: {energia: this.energiaHechizo}});
+        this.desactivarInterfaz();
+      }
+
+      if(resultadoFortuna=="fortuna"){
+        this.iniciarCritico("fortuna");
+        this.mostrarInterfaz = true;
+      }
+
         return;
     }
 
-    iniciarCritico():void{
+    iniciarCritico(fortuna?):void{
         this.pantallaInterfaz= "critico";
         setTimeout(()=>{
             if(Math.random() < 0.5){
@@ -295,6 +310,7 @@ export class InterfazService {
                 this.noCritico = true;
             }
             setTimeout(()=> {
+
                 this.observarInterfaz.next({comando: "lanzarHechizo",valor: this.critico});
                 this.critico= false;
                 this.noCritico= false;
