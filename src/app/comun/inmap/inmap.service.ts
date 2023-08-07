@@ -102,7 +102,7 @@ export class InMapService {
 		//Inicializa el grupo:
 
     //REDIRIGIR A MAZMORRA:
-		//this.iniciarPartida("Bastion");
+		this.iniciarPartida("Bastion");
 
 	}
 

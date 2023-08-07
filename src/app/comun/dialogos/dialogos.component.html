@@ -32,6 +32,27 @@
 
 </div>
 
+<!--   ******************************* -->
+<!--         DIALOGOS RECONECTAR      -->
+<!--   ******************************* -->
+
+<div id="informativo" *ngIf="data.tipoDialogo == 'Reconectar'" class= "contenedor FondoPapiro borde1">
+
+    <div class="wrapper">
+        <h1 class="title Texto2">{{data.titulo}}</h1>
+
+        <div class="textoDialogo Texto3"> {{data.contenido}} </div>
+
+        <!--
+        <botonComponent mat-button [mat-dialog-close] [texto]="'LOGOUT'" [tipoBoton]="2" [color]="'verde'" class="botonUnico"></botonComponent>
+        -->
+
+    </div>
+
+    <!--<frameComponent [tipoFondo]="'papiro'"></frameComponent>-->
+
+</div>
+
 <!--   ******************************** -->
 <!--         DIALOGOS CREAR CUENTA      -->
 <!--   ******************************** -->

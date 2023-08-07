@@ -10,7 +10,7 @@ import { Component , Input, OnInit } from '@angular/core';
 export class EnemigoComponent implements OnInit{
 
 	@Input() renderEnemigo: any;
-	@Input() renderMazmorra: any;
+	@Input() renderMazmorra: any = undefined;
 	@Input() indexEnemigo: number;
 	@Input() seleccionable: boolean;
 	@Input() desplegable: boolean = false;
@@ -25,7 +25,7 @@ export class EnemigoComponent implements OnInit{
     this.estadoDesplegado = this.desplegadoDefecto
   }
 
-  toggleDeplegable(){
+  toggleDesplegable(){
     if(this.desplegable){this.estadoDesplegado = !this.estadoDesplegado}
   }
 
@@ -58,6 +58,11 @@ export class EnemigoComponent implements OnInit{
 
 	renderizarMarcoEnemigo(): string{
 		var clases = "Enemigo-"+(this.indexEnemigo+1);
+
+        //Evita formateo si no se especifica renderMazmorra;
+        if(this.renderMazmorra==undefined){
+            return clases
+        }
 
 		if(this.seleccionable){
 			console.log("SELECCIONANDO")

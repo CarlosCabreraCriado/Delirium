@@ -26,19 +26,22 @@ export class SocketService {
         //Conection Error:
         this.socket.ioSocket.on('connect_error', err =>{
             console.log("ERROR DE CONEXION SOCKET")
-            console.log(err)
-            this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
+            if(err.message == "Authentication error"){
+                this.emisorEventoSocket.emit({peticion: "authError"})
+            }else{
+                this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
+            }
         });
 
         //Conection Fallida:
         this.socket.ioSocket.on('connect_failed', err =>{
-            console.log("CONEXION SOCKET FALLIDA")
+            console.error("CONEXION SOCKET FALLIDA")
             console.log(err)
         });
 
         //Desconectado:
         this.socket.ioSocket.on('disconnect', err =>{
-            console.log("SE TE HA DESCONECTADO DEL SOCKET")
+            console.error("SE TE HA DESCONECTADO DEL SOCKET")
             console.log(err)
             this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
         });
@@ -46,7 +49,7 @@ export class SocketService {
         //Conection Error:
         this.socket.ioSocket.on('error', err =>{
             console.log("ERROR: Se ha producido un error en el Socket de comunicaciones.")
-            console.log(err)
+            //console.log(err)
             this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
         });
 

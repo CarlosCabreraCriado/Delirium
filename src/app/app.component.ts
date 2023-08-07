@@ -19,18 +19,19 @@ export class AppComponent implements OnInit{
   cursor= 1;
   DEV= true;
 
-	//Declara Suscripcion Evento Socket:
+    //Declara Suscripcion Evento Socket:
   private socketSubscripcion: Subscription
   private appServiceSuscripcion: Subscription
   private cuenta: any = null;
   private token: string = null;
+  private estadoSocket: string = "Desconectado";
 
   constructor(public appService: AppService,private socketService:SocketService, private location: Location){ }
 
   @HostListener('document:keydown', ['$event'])
-  		handleKeyboardEvent(event: KeyboardEvent) { 
-  		this.appService.teclaPulsada(event.key);
-	}
+        handleKeyboardEvent(event: KeyboardEvent) { 
+        this.appService.teclaPulsada(event.key);
+    }
 
   async ngOnInit(){
 
@@ -42,8 +43,8 @@ export class AppComponent implements OnInit{
 
       //await this.appService.inicializarStorage();
 
-	  this.cuenta = await this.appService.getCuenta()
-	  this.token = await this.appService.getToken()
+      this.cuenta = await this.appService.getCuenta()
+      this.token = await this.appService.getToken()
 
       //Inicializando Heroe Seleccionado:
       this.appService.setHeroeSeleccionado(0)
@@ -61,6 +62,7 @@ export class AppComponent implements OnInit{
             console.log("RECONECTANDO SOCKET")
             this.socketService.enviarSocket('validacion', this.cuenta);
             this.socketService.conectarSocket(this.token);
+            this.estadoSocket = "Conectado";
 
           //Determinación de estado APP:
           }else{ 
@@ -89,13 +91,42 @@ export class AppComponent implements OnInit{
         });
 
        //Suscripcion Socket (INTERNO):
-       this.socketSubscripcion = this.socketService.emisorEventoSocket.subscribe((data) =>{
+       this.socketSubscripcion = this.socketService.emisorEventoSocket.subscribe(async (data) =>{
           switch(data.peticion){
-            case "socketDesconectado":
-                console.log("Error en sincronización de socket: ");
+
+            case "authError":
+                console.warn("Error AUTH")
                 this.desconectarSocket();
                 this.appService.logout();
-                this.appService.mostrarDialogo("Informativo",{contenido:"Se ha producido un error en la sincronización del socket."});
+                this.appService.mostrarDialogoReconectar(false);
+            break;
+
+            case "socketDesconectado":
+                console.log("Error en sincronización de socket: ");
+                //this.desconectarSocket();
+                //this.appService.logout();
+                //this.appService.mostrarDialogoReconectar(false);
+                this.appService.mostrarDialogoReconectar(true);
+            break;
+
+            case "conectado":
+                console.warn("Socket Conectado")
+
+                this.cuenta = await this.appService.getCuenta()
+                this.token = await this.appService.getToken()
+
+                this.estadoSocket = "Conectado";
+                //RECONECTAR EL SOCKET:
+                if(this.cuenta != null && this.token != null){
+                    console.log("RECONECTANDO SOCKET")
+                    this.socketService.enviarSocket('validacion', this.cuenta);
+                    this.appService.mostrarDialogoReconectar(false);
+                //Determinación de estado APP:
+                }else{ 
+                    console.log("Cargando INDEX...")
+                    this.desconectarSocket()
+                    this.appService.logout();
+                }
             break;
           }
        })
@@ -122,7 +153,9 @@ export class AppComponent implements OnInit{
   } //FIN ONINIT:
 
     iniciaSesion(sesion: any){
+        
         this.appService.setSesion(sesion);
+        console.warn(sesion)
 
         //Carga el INMAP:
         if(sesion.estadoSesion=="inmap"){

@@ -5,7 +5,7 @@
 
 <div class="contenedorEnemigo" [ngClass]="renderizarMarcoEnemigo()">
 
-	<div class="contenedorImagen" (click)="toggleDeplegable()">
+	<div class="contenedorImagen" (click)="toggleDesplegable()">
 		<div class="frameImagen"></div>
 		<img class="imagenEnemigo" src="../../../assets/Enemigos/{{renderEnemigo.familia}}/{{renderEnemigo.tipo_enemigo_id}}.png">
     <div class="marcaColor" [ngStyle]="{'background': renderEnemigo.color}"></div>

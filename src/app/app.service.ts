@@ -96,6 +96,9 @@ export class AppService {
     public estadoInMap = "global";
     public cargandoMapa:boolean = false;
 
+    //Dialogos:
+    private dialogoReconectar: any = undefined;
+
     // Observable string sources
     private observarAppService = new Subject<string>();
 
@@ -366,6 +369,22 @@ export class AppService {
 		this.observarAppService.next("renderizarCanvasIsometrico");
 		return;
 	}
+
+    mostrarDialogoReconectar(mostrar: boolean){
+
+        if(mostrar){
+            if(this.dialogoReconectar == undefined){
+                this.dialogoReconectar = this.dialog.open(DialogoComponent,{
+                width: "100px", panelClass: ["Reconectar", "generalContainer"], backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "Reconectar", titulo: "Reconectando con el servidor...", contenido: "Se ha producido un error en la sincronización del web socket. Tratando de reconectar...",opciones: null, personajeDerecha: null, personajeIzquierda: null, inputLabel: null}
+                });
+            }
+        }else{
+            this.dialogoReconectar.close();
+            this.dialogoReconectar = undefined;
+        }
+    }
+
+
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
       const dialogRef = this.dialog.open(DialogoComponent,{

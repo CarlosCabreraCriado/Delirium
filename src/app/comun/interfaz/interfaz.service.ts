@@ -12,6 +12,18 @@ export class InterfazService {
     public mostrarInterfaz: boolean= false;
     private pantallaInterfaz: string= "Hechizos";
     private bloquearInterfaz: boolean= true;
+    public esTurno: boolean = false;
+
+    //Detalle:
+    public tipoDetalle: "heroe"|"enemigo";
+    public renderDetalle: any;
+
+    //HEROE ABATIDO:
+    public indexHeroeAbatido: number;
+
+    //ESTADISTICAS:
+    public estadisticas: any;
+    public jugadores: any;
 
     //HECHIZOS:
     private hechizos:any;
@@ -87,6 +99,11 @@ export class InterfazService {
       return;
     }
 
+    setTurno(val: boolean){
+      this.esTurno = val;
+      return;
+    }
+
     getPantallaInterfaz():any{
       return this.pantallaInterfaz;
     }
@@ -110,30 +127,74 @@ export class InterfazService {
 
         if(typeof this.objetivoDefinido === "undefined"){
             console.error("Verificando AGRO")
+
             //Determina Objetivo Segun Agro:
             var indexObjetivo = 0;
             var flagIgual = true;
-            for(var i = 1; i < this.renderHeroes.length; i++){
-               if(this.renderEnemigos[indexEnemigoActivado].agro[i] >this.renderEnemigos[indexEnemigoActivado].agro[i-1]){
-                   flagIgual = false;
-                   indexObjetivo = i;
-               //Detecta si son distintos:
-               }else if(this.renderEnemigos[indexEnemigoActivado].agro[i] != this.renderEnemigos[indexEnemigoActivado].agro[i-1]){
-                   flagIgual = false;
-               }
+            var arrayAgro = Object.assign({},this.renderEnemigos[indexEnemigoActivado].agro);
+            var arrayPuestos = Array(this.renderHeroes.length);
+
+            var puesto = 0;
+            for(var i = 0; i < this.renderHeroes.length; i++){
+                puesto = 0;
+                for(var j = 0; j < this.renderHeroes.length; j++){
+                    if(arrayAgro[i] < arrayAgro[j]){
+                        puesto++;
+                    }
+                }
+                arrayPuestos[i]=puesto;
             }
 
-            //Si el agro es igual determina el index del objetivo aleatorio:
-            if(flagIgual){
-                indexObjetivo = this.getRandomInt(this.renderHeroes.length);
+            //Seleccion Candidatos:
+            var candidatoValido = null;
+            var arrayCandidatos = [];
+            var indexAleatorio = 0;
+            var candidatoEmpatado = false;
+            for(var i = 0; i < this.renderHeroes.length; i++){
+                //Determina candidatos de puesto i: 
+                arrayCandidatos = []
+                candidatoEmpatado = false;
+                for(var j = 0; j < this.renderHeroes.length; j++){
+                   if(arrayPuestos[j]==i){
+                       arrayCandidatos.push(j);
+                   }
+                }
+
+
+                //Itera entrando aleatoriamente por los candidatos:
+                if(arrayCandidatos.length < 1){candidatoEmpatado=true}
+                for(var j = 0; j < arrayCandidatos.length; j++){
+                    indexAleatorio = this.getRandomInt(arrayCandidatos.length);
+                    if(this.checkObjetivoAgroValido(arrayCandidatos[indexAleatorio])){
+                        candidatoValido=arrayCandidatos[indexAleatorio];
+                        break;
+                    }else{
+                        arrayCandidatos.splice(indexAleatorio,1);
+                        j--;
+                    }
+                }
+
+                //Verifica si se ha encontrado un valido:
+                if(candidatoValido != null){
+                    if(candidatoEmpatado){
+                        this.renderEnemigos[indexEnemigoActivado].agro[this.indexHeroeAccion]=this.renderEnemigos[indexEnemigoActivado].agro[this.indexHeroeAccion]+0.1;
+                    }
+                    break;
+                }
+
+            }//fin for i
+
+            //Verifica que haya objetivos posibles:
+            if(candidatoValido==null){
+                console.warn("NO HAY OBJETIVOS POSIBLES")
+                this.finalizarActivacion();
             }
-            this.indexHeroeAccion = indexObjetivo;
-            this.objetivoDefinido = indexObjetivo;
+            
+            this.indexHeroeAccion = candidatoValido;
+            this.objetivoDefinido = candidatoValido;
         }else{
-
             //Si el objetivo está predefinido:
             this.indexHeroeAccion = this.objetivoDefinido
-
         }
 
         //----------------------------------
@@ -169,7 +230,6 @@ export class InterfazService {
         this.indexAccion = indexAccion;
 
         if(iteracion >= 100){
-            console.warn("SALIDA POR ITERACIÓN")
             this.finalizarActivacion();
             return;
         }
@@ -254,6 +314,13 @@ export class InterfazService {
           return Math.floor(Math.random() * max);
     }
 
+    checkObjetivoAgroValido(indexHeroe:number){
+        if(this.renderHeroes[indexHeroe].vida==0){
+            return false;
+        }
+        return true;
+    }
+
     activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID, hechizosEquipadosEnergia, energiaDisponible, hechizoEquipados):void{
         this.hechizoEquipados = hechizoEquipados;
         this.energiaDisponible = energiaDisponible;
@@ -280,9 +347,17 @@ export class InterfazService {
         return;
     }
 
+    activarInterfazDetalle(tipo: "enemigo"|"heroe",renderDetalle:any):void{
+        console.warn("RENDER DETALLE: ",renderDetalle);
+        this.tipoDetalle = tipo;
+        this.renderDetalle = renderDetalle;
+        this.pantallaInterfaz= "detalle";
+        this.mostrarInterfaz = true;
+        return;
+    }
+
     finalizarFortuna(resultadoFortuna:string):void{
 
-      console.warn("FINAL: ",resultadoFortuna)
       if(resultadoFortuna=="normal"){
         this.iniciarCritico();
         this.mostrarInterfaz = true;
@@ -386,6 +461,38 @@ export class InterfazService {
             this.puntosMovimiento = 0;
             this.energiaMovimiento = 0;
         }
+    }
+
+    activarHeroeAbatido(indexHeroeAbatido){
+        this.indexHeroeAbatido = indexHeroeAbatido;
+        this.pantallaInterfaz= "Abatido";
+        this.mostrarInterfaz = true;
+        return;
+    }
+
+    activarEstadisticas(estadisticas,jugadores){
+        this.estadisticas = estadisticas;
+        this.jugadores = jugadores;
+        this.pantallaInterfaz= "Estadisticas";
+        this.mostrarInterfaz = true;
+        return;
+    }
+
+    finalizarEstadisticas():void{
+        this.desactivarInterfaz();
+        return;
+    }
+
+    finalizarAbatido(reanimar:boolean):void{
+
+      if(reanimar){
+        this.observarInterfaz.next({comando: "reanimar",valor: {heroeIndex: this.indexHeroeAbatido}});
+        this.desactivarInterfaz();
+      }else{
+        this.desactivarInterfaz();
+      }
+
+      return;
     }
 
 }

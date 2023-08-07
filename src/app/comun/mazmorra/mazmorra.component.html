@@ -78,6 +78,12 @@
 	<img id="iconoConfiguracion" src="../../../assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
 
 	<!--   ******************* -->
+	<!--      ESTADISTICAS    -->
+	<!--   ******************* -->
+
+	<img id="iconoEstadisticas" src="../../../assets/Iconos/Icono-Estadisticas.png" (click)="abrirEstadisticas()"/>
+
+	<!--   ******************* -->
 	<!--      Social    -->
 	<!--   ******************* -->
 
@@ -94,11 +100,6 @@
 	<img id="iconoCentrar" src="../../../assets/Iconos/07.png" (click)="this.centrarMazmorra()"/>
 
         -->
-		<!--   ******************* -->
-		<!--        Experiencia    -->
-		<!--   ******************* -->
-
-<experienciaComponent id="experiencia"></experienciaComponent>
 
         <!--   ******************* -->
         <!--     INTERFAZ PANEL         -->
@@ -128,9 +129,20 @@
 	<!--      Panel Control    -->
 	<!--   ******************* -->
 
-  <panelControlComponent [tipo]="'mazmorra'" [habilitar]="mazmorraService.esTurnoPropio || mazmorraService.permitirMultiControl" (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"></panelControlComponent>
+    <panelControlComponent (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"
+            [tipo]="'mazmorra'" 
+            [vida]="mazmorraService.sesion.render.heroes[mazmorraService.personaje.heroeIndex].vida"
+            [energia]="mazmorraService.sesion.render.heroes[mazmorraService.personaje.heroeIndex].energia"
+            [energiaFutura]="mazmorraService.sesion.render.heroes[mazmorraService.personaje.heroeIndex].energiaFutura"
+            [turno]= "mazmorraService.esTurnoPropio" 
+            [habilitar]="mazmorraService.esTurnoPropio || mazmorraService.permitirMultiControl" >
+    </panelControlComponent>
 
-  <atributoComponent id="atributoEnergia" [tipo]="'energia'" [valor]="mazmorraService.sesion.render.heroes[this.mazmorraService.personaje.heroeIndex].energia"></atributoComponent>
+		<!--   ******************* -->
+		<!--        Experiencia    -->
+		<!--   ******************* -->
+
+<experienciaComponent id="experiencia"></experienciaComponent>
 
 <!-- *************************************************
             Panel Acción
@@ -149,7 +161,7 @@
 	<div id="contenedorHeroes">
 
         <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-		<heroeComponent *ngFor="let heroe of this.mazmorraService.sesion.render.heroes; let i = index" [desplegable]="true" [renderMazmorra]="this.mazmorraService.sesion.render" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
+		<heroeComponent *ngFor="let heroe of this.mazmorraService.sesion.render.heroes; let i = index" [desplegable]="false" [renderMazmorra]="this.mazmorraService.sesion.render" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
         </ng-container>
 
 	</div>

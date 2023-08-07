@@ -7,10 +7,12 @@
 
     <!-- FRAME CIRCULO -->
     <div class="frameCirculo">
+    <div *ngIf="renderHeroe.vida==0" class="frameAnimacionesFrame shaderAbatido shaderFuego"></div>
+	<img *ngIf="renderHeroe.vida==0" class="imagenAbatido" src="../../../assets/ui/icons/Icon_01.png"/>
     <div class="frameAnimacionesFrame" [ngClass]="{'shaderElectrico': renderHeroe.turno}"></div>
 		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>
 
-        <img (click)="estadoDesplegado = !estadoDesplegado"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
+        <img (click)="toggleDesplegable()"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 
 		<div class="contenedorFrameRol">
       <!--<img class="iconoRol" src="../../../assets/Iconos/Rol-{{marcador}}.png"/>-->
@@ -35,7 +37,7 @@
 
     <!-- DETALLE -->
     <div class="wrapperDesplegable">
-        <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado && desplegable}">
+        <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
             <div class="fondoDetalle">
                 <div class="frameDetalle"></div>
             </div>

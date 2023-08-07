@@ -8,35 +8,110 @@
     height: 100%
     color: white
     z-index: 6
+    background-image: url("../../../assets/Iconos/fondo-badge.png")
+    background-size: cover
 
-    .contenedorBotonCentral
-        position: absolute
-        height: 100%
-        width: 30%
-        bottom: 0
-        left: 35%
-        z-index: 7
-        .icono
-          position: absolute
-          width: 100%
-          height: 100%
+    .contenedorEnergia
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 35%
+      right: 29%
+      aspect-ratio: 1
+      bottom: 0
 
+    .contenedorEnergiaFutura
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 20%
+      left: 46%
+      bottom: 0
+      aspect-ratio: 1
+
+    .contenedorVida
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 35%
+      left: 29%
+      aspect-ratio: 1
+      bottom: 0
+    
     .contenedorBotonLateral
         position: absolute
-        width: 30%
-        height: 100%
+        height: 80%
+        aspect-ratio: 1
         bottom: 0
         z-index: 7
         .icono
           position: absolute
           width: 100%
           height: 100%
-
+          filter: grayscale(0.5)
+          &.activo
+            filter: grayscale(0)
         &.derecho
             right: 0
-
         &.izquierdo
             left: 0
 
+    .fondoIndicador
+      position: absolute
+      width: 100%
+      height: 100%
+
+    .valorIndicador
+      position: absolute
+      display: flex
+      align-items: center
+      justify-content: center
+      color: white
+      width: 100%
+      height: 100%
+      text-align: center
+
+#contenedorBotonCentral
+    position: absolute
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 80%
+    aspect-ratio: 1
+    top: 0
+    left: 35%
+    z-index: 7
+    .diamante
+      position: absolute
+      height: 70%
+      filter: grayscale(1)
+      &.activo
+        filter: grayscale(0)
+      
+    .marcoDiamante
+      position: absolute
+      height: 100%
+    .fondoDiamante
+      position: absolute
+      height: 120%
+
+
+.frameAnimacionesFrame
+    position: absolute
+    height: 120%
+    top: -10%
+    left: -10%
+    border-radius: 0
+    aspect-ratio: 1
+    pointer-events: none
+    filter: hue-rotate(-130deg)
+
+.shaderFondo
+  width: 100%
+  height: 200%
+  left: -1%
 
 

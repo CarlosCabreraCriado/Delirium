@@ -237,6 +237,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    			this.renderMazmorra = data.contenido;
       		    			this.mazmorraService.setRenderMazmorra(data.contenido);
       		    		break;
+
+      		    		case "reanimarHeroe":
+      		    			console.log("Socket... Reanimando Heroe: ",data.contenido);
+                            this.mazmorraService.reanimarHeroe(data.contenido);
+      		    		break;
       		    	}
       			break;
       		}
@@ -270,10 +275,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         			this.interfazService.setBloquearInterfaz(true);
         		break;
         		case "MultiControl":
-              this.mazmorraService.permitirMultiControl = !this.mazmorraService.permitirMultiControl;
+                    this.mazmorraService.toggleMultiControl();
         		break;
         		case "ForzarSync":
-              this.mazmorraService.forzarSincronizacion();
+                    this.mazmorraService.forzarSincronizacion();
         		break;
         	}
         });
@@ -350,6 +355,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 	abrirConfiguracion(){
 		this.appService.mostrarConfiguracion("", {contenido: this.mazmorraService.sesion.idSesion})
+		return;
+	}
+
+    abrirEstadisticas(){
+		this.mazmorraService.mostrarEstadisticas();
 		return;
 	}
 
@@ -702,7 +712,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 	comandoPanelControl(comando:any){
 		//Si se pulsa el centro accede a mazmorra:
 		if(comando=="centro"){
-			this.mazmorraService.pasarTurno()
+            if(this.mazmorraService.esTurnoPropio || this.mazmorraService.permitirMultiControl){
+			    this.mazmorraService.pasarTurno()
+            }
 		}
 
 		if(comando=="elegirHechizo"){

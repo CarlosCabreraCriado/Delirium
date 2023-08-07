@@ -10,6 +10,10 @@ import { Component , Input, Output, EventEmitter} from '@angular/core';
 export class PanelControlComponent {
 
 	@Input() tipo: string;
+	@Input() vida: number;
+	@Input() energia: number;
+	@Input() energiaFutura: number;
+	@Input() turno: boolean = true;
 	@Input() habilitar:boolean = true;
 
 	//Emision de eventos
@@ -25,8 +29,9 @@ export class PanelControlComponent {
 		if(this.tipo == "inMap"){
 			switch(comando){
 				case "centro":
-					console.log("inMap")
-					this.comandoPanelControl.next(comando);
+                    if(this.turno || this.habilitar){
+					    this.comandoPanelControl.next(comando);
+                    }
 				break;
 			}
 		}
@@ -34,7 +39,9 @@ export class PanelControlComponent {
 		if(this.tipo == "mazmorra"){
 			switch(comando){
 				case "centro":
-					this.comandoPanelControl.next(comando);
+                    if(this.turno || this.habilitar){
+					    this.comandoPanelControl.next(comando);
+                    }
 				break;
 				case "derecha":
 					this.comandoPanelControl.next('elegirHechizo')

@@ -42,7 +42,7 @@
 	</div>
 
 	<div class="contenedorBotones">
-        <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || hechizoSeleccionadoIndex == null }" [tipoBoton]="2" (click)="lanzarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>
+        <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || hechizoSeleccionadoIndex == null || !interfazService.esTurno }" [tipoBoton]="2" (click)="lanzarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>
             <atributoComponent class="boton" [tipo]="'energia'" [valor]="interfazService.energiaDisponible"></atributoComponent>
 		<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
@@ -66,6 +66,99 @@
             <botonComponent mat-button [ngClass]="{'botonDeshabilitado': !interfazService.objetivoSeleccionado}" (click)="interfazService.lanzarHechizo()" [tipoBoton]="2" [texto]="'Lanzar'" [color]="'verde'" class="boton"></botonComponent>
 			<botonComponent mat-button (click)="interfazService.cancelarHechizo()" [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
+	</div>
+
+	<!-- *************************************************
+				Interfaz Detalle Enemigo / Heroe
+		 ************************************************* -->
+
+	<div  id="contenedorInterfazDetalle" class="borde1" *ngIf="interfazService.pantallaInterfaz=='detalle'">
+
+        <div class="titulo Texto1">{{this.interfazService.renderDetalle.nombre}}  </div>
+
+        <div class="contenedorPersonaje">
+            <enemigoComponent *ngIf="this.interfazService.tipoDetalle=='enemigo'" class="personaje" [indexEnemigo]="0" [desplegable]="false" [desplegadoDefecto]="false" [renderEnemigo]="this.interfazService.renderDetalle" [seleccionable]="false" ></enemigoComponent>
+
+            <heroeComponent class="personaje" *ngIf="this.interfazService.tipoDetalle=='heroe'" [renderHeroe]="this.interfazService.renderDetalle" [desplegadoDefecto]="false" [seleccionable]="false"></heroeComponent>
+
+        </div>
+
+		<div class="contenedorAtributos">
+            <!-- VIDA MAX -->
+            <div class="atributo">
+                <img class="icono" src="./assets/Iconos/Icono-Vitalidad.png"/>
+                <div class="texto">Vitalidad: {{interfazService.renderDetalle.estadisticas.vitalidad}} ({{interfazService.renderDetalle.estadisticas.vidaMaxima}})</div>
+            </div>
+            <!-- ARMADURA -->
+            <div class="atributo">
+                <img class="icono" src="./assets/Iconos/Icono-Armadura.png"/>
+                <div class="texto">Armadura: {{interfazService.renderDetalle.estadisticas.armadura}} ({{interfazService.renderDetalle.estadisticas.reduccionArmadura*100}}%)</div>
+            </div>
+            <!-- RESISTENCIA -->
+            <div class="atributo">
+                <img class="icono" src="./assets/Iconos/Icono-Resistencia-Magica.png"/>
+                <div class="texto">Resistencia: {{interfazService.renderDetalle.estadisticas.resistenciaMagica}} ({{interfazService.renderDetalle.estadisticas.reduccionResistencia*100}}%)</div>
+            </div>
+            <!-- DAÑO FÍSICO -->
+            <div class="atributo">
+                <img class="icono" src="./assets/Iconos/Icono-Dano-Fisico.png"/>
+                <div class="texto">Daño Físico: {{interfazService.renderDetalle.estadisticas.ad}}</div>
+            </div>
+            <!-- DAÑO MÁGICO -->
+            <div class="atributo">
+                <img class="icono" src="./assets/Iconos/Icono-Dano-Magico.png"/>
+                <div class="texto">Daño Mágico: {{interfazService.renderDetalle.estadisticas.ap}}</div>
+            </div>
+            <!-- DAÑO CRITICO -->
+            <div class="atributo">
+                <img class="icono" src="./assets/Iconos/critico.png"/>
+                <div class="texto">Critico: {{interfazService.renderDetalle.estadisticas.critico}}</div>
+            </div>
+		</div>
+
+		<div class="contenedorBotones">
+			<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.desactivarInterfaz()" [texto]="'Cerrar'" [color]="'rojo'" class="boton"></botonComponent>
+	    </div>
+
+	</div>
+
+	<!-- *************************************************
+				Interfaz ESTADISTICAS
+		 ************************************************* -->
+
+	<div  id="contenedorInterfazEstadisticas" class="borde1" *ngIf="interfazService.pantallaInterfaz=='Estadisticas'">
+
+        <div class="titulo Texto1">Tabla de puntuaciones</div>
+
+        <div class="contenedorCabeceras">
+            <div class="nombre cabecera">Nombre</div>
+            <div class="clase cabecera">Clase</div>
+            <div class="nivel cabecera">Nivel</div>
+            <div class="daño cabecera">Daño</div>
+            <div class="heal cabecera">Curación</div>
+            <div class="escudo cabecera">Escudo</div>
+            <div class="amenaza cabecera">Amenaza</div>
+        </div>
+
+        <hr class="divisor"/>
+
+        <div class="contenedorTabla">
+            <div *ngFor="let jugador of this.interfazService.jugadores; let i = index" class="contenedorJugador">
+                <div class="nombre campo">{{jugador.personaje.personaje}}</div>
+                <div class="clase campo">{{jugador.personaje.clase}}</div>
+                <div class="nivel campo">{{jugador.personaje.nivel}}</div>
+                <div class="daño campo">{{this.interfazService.estadisticas[i]['daño']}}</div>
+                <div class="heal campo">{{this.interfazService.estadisticas[i].heal}}</div>
+                <div class="escudo campo">{{this.interfazService.estadisticas[i].escudo}}</div>
+                <div class="amenaza campo">{{this.interfazService.estadisticas[i].agro}}</div>
+
+            </div>
+        </div>
+
+		<div class="contenedorBotones">
+			<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.desactivarInterfaz()" [texto]="'Cerrar'" [color]="'rojo'" class="boton"></botonComponent>
+	    </div>
+
 	</div>
 
 	<!-- *************************************************
@@ -96,7 +189,7 @@
 		</div>
 
 		<div class="contenedorBotones">
-            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.realizarMovimiento()" [texto]="'Moverse'" [color]="'verde'" class="boton" [ngClass]="{'botonDeshabilitado': interfazService.energiaMovimiento > interfazService.energiaDisponible}"></botonComponent>
+            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.realizarMovimiento()" [texto]="'Moverse'" [color]="'verde'" class="boton" [ngClass]="{'botonDeshabilitado': (interfazService.energiaMovimiento > interfazService.energiaDisponible) || (!interfazService.esTurno)}"></botonComponent>
 			<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.cancelarMovimiento()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	    </div>
 
@@ -105,7 +198,6 @@
 	<!-- *************************************************
 				Interfaz Fortuna
 		 ************************************************* -->
-
 	<div id="contenedorInterfazFortuna" class="borde1" *ngIf="interfazService.pantallaInterfaz=='fortuna'">
 
 		<div class="titulo Texto1">
@@ -134,6 +226,35 @@
             <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarFortuna('fallo')" [texto]="'Fallo'" [color]="'rojo'" class="boton"></botonComponent>
 			<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarFortuna('normal')" [texto]="'Normal'" [color]="'naranja'" class="boton"></botonComponent>
             <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarFortuna('fortuna')" [texto]="'Fortuna'" [color]="'verde'" class="boton"></botonComponent>
+	    </div>
+
+	</div>
+
+	<!-- *************************************************
+				Interfaz HEROE ABATIDO
+		 ************************************************* -->
+	<div id="contenedorInterfazAbatido" class="borde1" *ngIf="interfazService.pantallaInterfaz=='Abatido'">
+
+		<div class="titulo Texto1">
+            Tirada de reanimación:
+        </div>
+
+        <div class="fallo">
+            <img class="badge" src="./assets/Iconos/indicadores/011.png"/>
+        </div>
+
+        <div class="reanimar">
+            <img class="badge" src="./assets/Iconos/indicadores/014.png"/>
+        </div>
+
+		<div class="contenedorAtributos">
+            <atributoComponent class="atributo" [tipo]="'dado'" [valor]="' < 3 '"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'dado'" [valor]="' >= 3 '"></atributoComponent>
+		</div>
+
+		<div class="contenedorBotones">
+            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarAbatido(false)" [texto]="'Fallo'" [color]="'rojo'" class="boton"></botonComponent>
+            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.finalizarAbatido(true)" [texto]="'Levantarse'" [color]="'verde'" class="boton"></botonComponent>
 	    </div>
 
 	</div>
@@ -197,7 +318,7 @@
             </div>
 
             <div class="heroe">
-                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [seleccionable]="false"  class="panelHeroe" ></heroeComponent>
+                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [desplegadoDefecto]="false" [seleccionable]="false"  class="panelHeroe" ></heroeComponent>
             </div>
 
             <div class="botones">
@@ -232,7 +353,7 @@
             </div>
 
             <div class="heroe">
-                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]"  class="panelHeroe" ></heroeComponent>
+                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [desplegadoDefecto]="false" class="panelHeroe" ></heroeComponent>
             </div>
 
             <div class="botones">
@@ -241,8 +362,7 @@
             </div>
 
         </div> <!-- FIN ACCION - MOVIMIENTO -->
-
-	</div>
+    </div> <!-- FIN ACCIONES ENEMIGO -->
 
 </div>
 

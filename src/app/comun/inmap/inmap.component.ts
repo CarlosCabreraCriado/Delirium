@@ -128,7 +128,7 @@ export class InMapComponent implements OnInit {
 	comandoPanelControl(comando:any){
 		//Si se pulsa el centro accede a mazmorra:
 		if(comando=="centro"){
-      this.appService.iniciarMazmorra("Bastion");
+            this.appService.iniciarMazmorra("Bastion");
 		}
 	}
 

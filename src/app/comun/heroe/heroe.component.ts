@@ -1,5 +1,5 @@
 
-import { Component , Input } from '@angular/core';
+import { Component , Input , OnInit } from '@angular/core';
 
 @Component({
   selector: 'heroeComponent',
@@ -7,10 +7,10 @@ import { Component , Input } from '@angular/core';
   styleUrls: ['./heroe.component.sass']
 })
 
-export class HeroeComponent {
+export class HeroeComponent implements OnInit {
 
     //Datos:
-	@Input() renderMazmorra: any; 
+	@Input() renderMazmorra: any = null; 
 	@Input() renderHeroe: any; 
 
     //Opciones:
@@ -19,14 +19,24 @@ export class HeroeComponent {
 	@Input() seleccionable: boolean = false;
 	@Input() desplegable: boolean = false;
 	@Input() pantalla: string = "mazmorra"; 
+	@Input() desplegadoDefecto: boolean = true;
 
     public estadoDesplegado: boolean= true;
 
 	constructor() {}
 
+    ngOnInit(){
+        this.estadoDesplegado = this.desplegadoDefecto
+    }
+
+    toggleDesplegable(){
+        if(this.desplegable){this.estadoDesplegado = !this.estadoDesplegado}
+    }
+
 	renderizarMarcoHeroe(): string{
 
 		if(this.pantalla == "inMap"){ return;}
+        if(this.renderMazmorra == null){ return;}
 
 		var clases = "";
 
