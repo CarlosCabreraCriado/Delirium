@@ -44,6 +44,11 @@
 					<input matInput placeholder="Nombre" formControlName="nombre">
 				  </mat-form-field>
 
+				  <mat-form-field appearance="legacy" class="formDuracionAnimacion">
+					<mat-label>Duración Total</mat-label>
+					<input matInput placeholder="Duración" formControlName="duracion">
+				  </mat-form-field>
+
 			</form>
 
 
@@ -116,9 +121,14 @@
 					<input matInput type="number" placeholder="" formControlName="rotate">
 				  </mat-form-field>
 
-				  <mat-form-field appearance="legacy" class="formScale">
-					<mat-label>Scale</mat-label>
-					<input matInput type="number" placeholder="" formControlName="scale">
+				  <mat-form-field appearance="legacy" class="formScaleX">
+					<mat-label>ScaleX</mat-label>
+					<input matInput type="number" placeholder="" formControlName="scaleX">
+				  </mat-form-field>
+
+				  <mat-form-field appearance="legacy" class="formScaleY">
+					<mat-label>ScaleY</mat-label>
+					<input matInput type="number" placeholder="" formControlName="scaleY">
 				  </mat-form-field>
 			</form>
 

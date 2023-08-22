@@ -10,33 +10,35 @@ import { trigger,state,style,animate,transition, keyframes } from '@angular/anim
   animations: [
     trigger('animacionEfecto', [
       // ...
-        
+
       state('*', style({
-      	backgroundPositionX: "-1000%",
-       	opacity: 0 
+      	backgroundPosition: "-1000%",
+       	opacity: 0
       })),
 
       state('inicio', style({
-      	backgroundPositionX: "-1000%",
+      	backgroundPosition: "-1000%",
        	opacity: 0
       })),
 
       state('fin', style({
-      	backgroundPositionX: "0%",
-    	opacity: 0
+      	backgroundPosition: "0%",
+    	  opacity: 0
       })),
 
 
       transition('inicio => fin', [
         animate('{{tiempoEfectoParam}}s {{delayEfectoParam}}s steps({{stepsParam}})', keyframes([
-    			style({ backgroundPositionX: "-{{stepsParam}}00%",
-						opacity: 1, 
-						'background-size': "{{stepsParam}}00% 100%", 
-					offset: 0
+    			style({
+            backgroundPosition: "{{stepsParam}}00%",
+						opacity: 1,
+						'background-size': "{{stepsParam}}00% 100%",
+					  offset: 0
 				}),
-    			style({ backgroundPositionX: "0%", 
-						opacity: 1 , 
-						offset: 1, 
+    			style({
+            backgroundPosition: "0%",
+						opacity: 1 ,
+						offset: 1,
 						'background-size': "{{stepsParam}}00% 100%"})
   		]))
       ],{params : { tiempoEfectoParam: "0", stepsParam: "1", hue: "0"}}),
@@ -81,12 +83,12 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 	if(this.loop && this.estadoAnimacion=="fin"){
 		if(this.flagLoop){
 			this.flagLoop = false;
-			setTimeout(()=>{  
+			setTimeout(()=>{
                 if(!this.mute){
                     this.efectoSonidoPlay(this.animacion.sonidos[0]);
                 }
 					this.estadoAnimacion = "inicio";
-			}, this.tiempoEfecto*1000+1000);	
+			}, this.tiempoEfecto*1000+2000);
 		}
 	}
 
@@ -102,7 +104,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 	}
 
 	if(this.estadoAnimacion=="inicio"){
-		this.estadoAnimacion = "fin";	
+		this.estadoAnimacion = "fin";
 		this.flagLoop=true;
 	}
   }
@@ -130,7 +132,7 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
 	   console.log("CAMBIO ANIMACION")
 	   console.log(changes)
 
-    if(changes.animacion){ 
+    if(changes.animacion){
 
       // Detectar cambio animacion:
         //this.efectoSonidoPlay(this.animaciones["animaciones"].find(i => i.id == changes.idAnimacion.currentValue).sonido_nombre);
@@ -144,10 +146,11 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
        //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].num_frames!=null){this.stepsEfecto = this.animacion.subanimacion[this.desarrolladorService.sub].num_frames;}
        //if(this.animacion.subanimacion[this.indexSubanimacion].sprite_id!=null){this.spriteId = this.animacion.subanimacion[this.indexSubanimacion].sprite_id;}
 
+       console.log("EJECUTANDO ANIMACION")
 		if(!this.loop){
 			this.estadoAnimacion = "inicio";
 		}
-		
+
     }
 
 

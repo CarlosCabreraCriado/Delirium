@@ -12,6 +12,15 @@
   left: 35vw
   top: 2vh
   width: 30vw
+  .temporizador
+    position: absolute
+    width: 10%
+    left: 50%
+    margin-left: -4%
+    top: 32%
+    font-size: 25px
+    text-align: center
+    color: white
   .barraTiempo
     width: 100%
   .botonCentrar
@@ -196,6 +205,23 @@
     bottom: 5%
     left: 10%
     height: 10%
+
+#iconoLogs
+    position: absolute
+    z-index: 5
+    bottom: 5%
+    left: 17%
+    width: 4%
+    filter: invert(0.7)
+
+#iconoReload
+    position: absolute
+    z-index: 5
+    bottom: 5%
+    right: 30%
+    width: 4%
+    filter: invert(0.7)
+
 
 #iconoSocial
     position: absolute
@@ -984,7 +1010,6 @@
       height: 100%
       left: 80%
       width: 20%
-
       .Texto-Tiempo
         position: absolute
         width: 100%
@@ -1157,6 +1182,7 @@ $highlightObjetivoColor: red
 
         .elementoIsomentrico
             position: absolute
+            pointer-events: none
             transform: translate(-50%,-50%)
 
         .imagenElementoIsometrico

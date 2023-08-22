@@ -33,6 +33,7 @@ export class InterfazService {
     public imagenHechHorizontal= [0,0,0,0,0];
     public imagenHechVertical= [0,0,0,0,0];
     public hechizosEquipadosEnergia = [0,0,0,0,0];
+    public hechizosEquipadosCooldown = [0,0,0,0,0];
     public energiaHechizo: number = 0;
     public hechizoEquipados: any = null;
     public objetivoSeleccionado: boolean = false;
@@ -47,6 +48,8 @@ export class InterfazService {
     private valorTirada:any = 0;
     public critico:boolean = false;
     private noCritico:boolean = false;
+    public probabilidadCritico: number = 0;
+    public probabilidadCriticoPercent: number = 0;
 
     //MAZMORRA:
     private enemigos: any;
@@ -65,7 +68,7 @@ export class InterfazService {
     private ultimaAccion = undefined;
     private primeraAcctivacion = true;
     private energiaAccion = 100;
-    private esAdyascente = false;
+    private esAdyacente = false;
     private tieneAlcance = false;
     public  hechizoEnemigoImagenId:number = 0;
     private indexHechizoAccion: number = 0;
@@ -151,7 +154,7 @@ export class InterfazService {
             var indexAleatorio = 0;
             var candidatoEmpatado = false;
             for(var i = 0; i < this.renderHeroes.length; i++){
-                //Determina candidatos de puesto i: 
+                //Determina candidatos de puesto i:
                 arrayCandidatos = []
                 candidatoEmpatado = false;
                 for(var j = 0; j < this.renderHeroes.length; j++){
@@ -189,7 +192,7 @@ export class InterfazService {
                 console.warn("NO HAY OBJETIVOS POSIBLES")
                 this.finalizarActivacion();
             }
-            
+
             this.indexHeroeAccion = candidatoValido;
             this.objetivoDefinido = candidatoValido;
         }else{
@@ -213,8 +216,8 @@ export class InterfazService {
                this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].tipo =="movimiento"){
                 flagCumple=false;
             }
-            //Si ES ADYASCENTE no volverá a MOVER:
-            if(this.esAdyascente == true &&
+            //Si ES ADYACENTE no volverá a MOVER:
+            if(this.esAdyacente == true &&
                this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].tipo =="movimiento"){
                 flagCumple=false;
             }
@@ -284,8 +287,8 @@ export class InterfazService {
                 this.activarInterfazAccionesEnemigo(this.renderEnemigos, this.renderHeroes, this.indexEnemigoAccion);
                 console.log("ENERGIA: ",this.energiaAccion)
                 break;
-            case "adyascente":
-                this.esAdyascente = true
+            case "adyacente":
+                this.esAdyacente = true
             case "sinRango":
                 this.desactivarInterfaz();
                 this.activarInterfazAccionesEnemigo(this.renderEnemigos, this.renderHeroes, this.indexEnemigoAccion);
@@ -304,7 +307,7 @@ export class InterfazService {
         this.ultimaAccion = undefined;
         this.energiaAccion = 100;
         this.primeraAcctivacion = true;
-        this.esAdyascente = false;
+        this.esAdyacente = false;
         this.tieneAlcance = false;
         this.desactivarInterfaz();
         this.observarInterfaz.next({comando: "finalizarActivacionEnemigo",valor: ""});
@@ -321,12 +324,13 @@ export class InterfazService {
         return true;
     }
 
-    activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID, hechizosEquipadosEnergia, energiaDisponible, hechizoEquipados):void{
+    activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID, hechizosEquipadosEnergia, energiaDisponible, hechizoEquipados, hechizosEquipadosCooldown):void{
         this.hechizoEquipados = hechizoEquipados;
         this.energiaDisponible = energiaDisponible;
         this.hechizosEquipadosImagenID = hechizosEquipadosImagenID;
         this.hechizosEquipadosID = hechizosEquipadosID;
         this.hechizosEquipadosEnergia = hechizosEquipadosEnergia;
+        this.hechizosEquipadosCooldown = hechizosEquipadosCooldown;
         this.pantallaInterfaz= "Hechizos";
         this.mostrarInterfaz = true;
         return;
@@ -341,7 +345,10 @@ export class InterfazService {
         return;
     }
 
-    activarInterfazRNG():void{
+    activarInterfazRNG(probabilidadCritico):void{
+        this.probabilidadCritico = probabilidadCritico;
+        this.probabilidadCriticoPercent = Math.round(this.probabilidadCritico*100);
+        console.warn("PROBABILIDAD: ",probabilidadCritico)
         this.pantallaInterfaz= "fortuna";
         this.mostrarInterfaz = true;
         return;
@@ -351,6 +358,7 @@ export class InterfazService {
         console.warn("RENDER DETALLE: ",renderDetalle);
         this.tipoDetalle = tipo;
         this.renderDetalle = renderDetalle;
+        this.renderDetalle.estadisticas.probabilidadCriticoPercent = Math.round(this.renderDetalle.estadisticas.probabilidadCritico*100);
         this.pantallaInterfaz= "detalle";
         this.mostrarInterfaz = true;
         return;
@@ -359,7 +367,7 @@ export class InterfazService {
     finalizarFortuna(resultadoFortuna:string):void{
 
       if(resultadoFortuna=="normal"){
-        this.iniciarCritico();
+        this.iniciarCritico(false);
         this.mostrarInterfaz = true;
       }
 
@@ -369,7 +377,7 @@ export class InterfazService {
       }
 
       if(resultadoFortuna=="fortuna"){
-        this.iniciarCritico("fortuna");
+        this.iniciarCritico(true);
         this.mostrarInterfaz = true;
       }
 
@@ -379,14 +387,15 @@ export class InterfazService {
     iniciarCritico(fortuna?):void{
         this.pantallaInterfaz= "critico";
         setTimeout(()=>{
-            if(Math.random() < 0.5){
+            if(Math.random() < this.probabilidadCritico){
                 this.critico = true;
+                this.noCritico = false;
             }else{
                 this.noCritico = true;
+                this.critico = false;
             }
             setTimeout(()=> {
-
-                this.observarInterfaz.next({comando: "lanzarHechizo",valor: this.critico});
+                this.observarInterfaz.next({comando: "lanzarHechizo",valor: { critico: this.critico, fortuna: fortuna}});
                 this.critico= false;
                 this.noCritico= false;
                 this.desactivarInterfaz();
@@ -434,7 +443,7 @@ export class InterfazService {
     }
 
     seleccionarHechizo(numHechizo):void{
-        this.indexHechizoSeleccionado = numHechizo-1;
+        this.indexHechizoSeleccionado = numHechizo;
         this.observarInterfaz.next({comando: "seleccionarHechizo",valor: this.hechizosEquipadosID[this.indexHechizoSeleccionado]});
         return;
     }

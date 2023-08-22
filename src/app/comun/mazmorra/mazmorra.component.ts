@@ -778,7 +778,8 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 			"transform": "translate(-50%,-50%) scaleX(1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")",
 			"-webkit-mask-image": "url('"+elemento.ImagePath+"')",
 			//"mix-blend-mode": "multiply"',
-			"display": "block"
+			"display": "block",
+      "pointer-events": ""
 		}
 
 		//Renderizar Elemento:
@@ -800,6 +801,12 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
 		//Aplicar filtrado de visualizacion:
 		style["display"] = "none";
+
+    if(elemento.seleccionable){
+		  style["pointer-events"] = "all";
+    }else{
+		  style["pointer-events"] = "none";
+    }
 
 		for(var i =0; i <this.mazmorraService.sesion.render.mazmorra.salasDescubiertas.length; i++){
 			if(Number(this.mazmorraService.sesion.render.mazmorra.salasDescubiertas[i])==Number(elemento.sala)){
@@ -858,6 +865,14 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
       }
     }//FIN clickElemento()
+
+    abrirLogger(){
+      this.loggerService.toggleLogger(true);
+    }
+
+    reloadDatos(){
+      this.mazmorraService.reloadDatos();
+    }
 }
 
 

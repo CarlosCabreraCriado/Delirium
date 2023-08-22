@@ -27,16 +27,20 @@ export class LoggerComponent {
    scrollToBottom(): void {
         try {
             this.contenedorMensajes.nativeElement.scrollTop = this.contenedorMensajes.nativeElement.scrollHeight;
-        } catch(err) { }                 
+        } catch(err) { }
     }
 
-  ngAfterViewChecked() {        
-        this.scrollToBottom();      
-        this.loggerService.setParametros(this.getParametros());  
-    } 
+  ngAfterViewChecked() {
+        this.scrollToBottom();
+        this.loggerService.setParametros(this.getParametros());
+    }
 
   getRenderMazmorra():any{
   	return this.renderMazmorra;
+  }
+
+  cerrarLogger():any{
+    this.loggerService.toggleLogger(false);
   }
 
   getParametros():any{
@@ -44,6 +48,6 @@ export class LoggerComponent {
     return this.parametros;
   }
 
-  
+
 
 }

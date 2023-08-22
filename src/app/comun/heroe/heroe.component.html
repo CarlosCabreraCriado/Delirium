@@ -8,8 +8,9 @@
     <!-- FRAME CIRCULO -->
     <div class="frameCirculo">
     <div *ngIf="renderHeroe.vida==0" class="frameAnimacionesFrame shaderAbatido shaderFuego"></div>
-	<img *ngIf="renderHeroe.vida==0" class="imagenAbatido" src="../../../assets/ui/icons/Icon_01.png"/>
+      <img *ngIf="renderHeroe.vida==0" class="imagenAbatido" src="../../../assets/ui/icons/Icon_01.png"/>
     <div class="frameAnimacionesFrame" [ngClass]="{'shaderElectrico': renderHeroe.turno}"></div>
+    <div class="frameAnimacionesFrame" [ngClass]="{'shaderFuego': renderHeroe.controlEnemigos}"></div>
 		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>
 
         <img (click)="toggleDesplegable()"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
@@ -48,7 +49,7 @@
             <!-- BARRAS -->
             <div class="contenedorBarras">
                 <div class="wrapperBarras">
-                    <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" class="barra"></barraComponent>
+                    <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
                     <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
                 </div>
                 <div class="separadorMarco"></div>

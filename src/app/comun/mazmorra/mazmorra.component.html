@@ -49,6 +49,7 @@
 
     <div id="tiempo">
 	    <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
+      <div class="temporizador">{{mazmorraService.tiempoActual}}</div>
 	    <botonComponent mat-button (click)="centrarMazmorra()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
 	    <botonComponent mat-button (click)="appService.verInMap()" [texto]="'Mapa'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
     </div>
@@ -69,7 +70,7 @@
 	<!--        Credito      -->
 	<!--   ******************* -->
 
-	<creditoComponent id="creditoMapa" [gemas]= "100" [monedas]= "200"></creditoComponent>
+<creditoComponent id="creditoMapa" [gemas]= "100" [monedas]= "200"></creditoComponent>
 
 	<!--   ******************* -->
 	<!--      Configuracion    -->
@@ -82,6 +83,18 @@
 	<!--   ******************* -->
 
 	<img id="iconoEstadisticas" src="../../../assets/Iconos/Icono-Estadisticas.png" (click)="abrirEstadisticas()"/>
+
+	<!--   ******************* -->
+	<!--      ICONO LOG    -->
+	<!--   ******************* -->
+
+  <img id="iconoLogs" src="../../../assets/General/tool.png" (click)="abrirLogger()"/>
+
+	<!--   ******************* -->
+	<!--      ICONO RELOAD    -->
+	<!--   ******************* -->
+
+  <img id="iconoReload" src="../../../assets/desarrollador/reload.png" (click)="reloadDatos()"/>
 
 	<!--   ******************* -->
 	<!--      Social    -->
@@ -130,11 +143,11 @@
 	<!--   ******************* -->
 
     <panelControlComponent (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"
-            [tipo]="'mazmorra'" 
+            [tipo]="'mazmorra'"
             [vida]="mazmorraService.sesion.render.heroes[mazmorraService.personaje.heroeIndex].vida"
             [energia]="mazmorraService.sesion.render.heroes[mazmorraService.personaje.heroeIndex].energia"
             [energiaFutura]="mazmorraService.sesion.render.heroes[mazmorraService.personaje.heroeIndex].energiaFutura"
-            [turno]= "mazmorraService.esTurnoPropio" 
+            [turno]= "mazmorraService.esTurnoPropio"
             [habilitar]="mazmorraService.esTurnoPropio || mazmorraService.permitirMultiControl" >
     </panelControlComponent>
 
@@ -194,8 +207,7 @@
 
                 <div *ngIf="this.mazmorraService.mostrarMazmorra">
                 <div *ngFor="let elementoIsometrico of this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="clickElemento(elementoIsometrico)" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
-                    <img class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
-
+                    <img  class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
                 </div>
                 </div>
               </div>

@@ -20,7 +20,7 @@
             <div class="frameDetalle"></div>
             <div class="nombreEnemigo Texto4">{{renderEnemigo.nombre}}</div>
 
-            <barraComponent [tipo]="'Vida'" [valor]="renderEnemigo.vida" class="barra"></barraComponent>
+            <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="renderEnemigo.vida" [escudo]="renderEnemigo.escudo" class="barra"></barraComponent>
 
             <div class="Buffos-DeBuffos-Enemigo">
                 <div *ngFor="let buff of renderEnemigo.buff; let j = index"  class="contenedorBuffo">

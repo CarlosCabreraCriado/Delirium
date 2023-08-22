@@ -101,6 +101,10 @@
                     outline: solid 1px white
                     overflow: hidden
                     background-size: 1800%
+                    .cooldown
+                      color: white
+                      font-size: 40px
+                      background-color: rgba(0,0,0,0.7)
 
                 .hechizo:hover
                     color: black
@@ -235,8 +239,8 @@
 
     .contenedorPersonaje
       position: absolute
-      width: 30% 
-      height: 65% 
+      width: 30%
+      height: 65%
       display: flex
       justify-content: center
       .personaje
@@ -244,9 +248,9 @@
         height: 50%
         max-height: 15vw
         aspect-ratio: 1
-      
+
     .contenedorAtributos
-      position: absolute 
+      position: absolute
       right: 5%
       height: 70%
       width: 60%
@@ -264,7 +268,7 @@
         .texto
           position: relative
           display: inline-block
-          
+
 
     .contenedorBotones
       position: absolute
@@ -293,11 +297,11 @@
     left: 50%
     padding: 10px
     transform: translate(-50%, -50%)
-    
+
     .divisor
         position: relative
         width: 100%
-        margin: 0 
+        margin: 0
 
     .titulo
       position: relative
@@ -943,17 +947,16 @@
   -webkit-transform: rotateY(-180deg)
 
 #coin.noCritico
-  -webkit-animation: flipHeads 3s ease-out forwards
-  -moz-animation: flipHeads 3s ease-out forwards
-  -o-animation: flipHeads 3s ease-out forwards
-  animation: flipHeads 3s ease-out forwards
-
-#coin.critico
   -webkit-animation: flipTails 3s ease-out forwards
   -moz-animation: flipTails 3s ease-out forwards
   -o-animation: flipTails 3s ease-out forwards
   animation: flipTails 3s ease-out forwards
 
+#coin.critico
+  -webkit-animation: flipHeads 3s ease-out forwards
+  -moz-animation: flipHeads 3s ease-out forwards
+  -o-animation: flipHeads 3s ease-out forwards
+  animation: flipHeads 3s ease-out forwards
 
 @keyframes flipHeads
   from

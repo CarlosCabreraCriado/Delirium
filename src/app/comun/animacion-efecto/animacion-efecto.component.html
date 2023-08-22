@@ -1,13 +1,19 @@
 
 
 
-<div *ngFor="let subanimacion of animacion.subanimaciones; let i=index" 
+<div *ngFor="let subanimacion of animacion.subanimaciones; let i=index"
 		class="animacionEfecto activo oculto"
-		[@animacionEfecto]="{value: estadoAnimacion, params: {tiempoEfectoParam: subanimacion.duracion, stepsParam: subanimacion.num_frames, delayEfectoParam: subanimacion.delay}}" 
-		(@animacionEfecto.start)="inicioAnimacion(i);" 
-		(@animacionEfecto.done)="finAnimacion(i);"  
-		[ngClass]="renderIndividual()" 
-        [ngStyle]="{'filter': 'hue-rotate('+subanimacion.hue_filter+'deg)','background-image':'url(./assets/Efectos/'+subanimacion.sprite_id+'.png)','background-size': stepsEfecto+'00% 100%', 'transform': 'scale('+subanimacion.scale+') rotate('+subanimacion.rotate+'deg)'}"
+		[@animacionEfecto]="{value: estadoAnimacion, params: {tiempoEfectoParam: subanimacion.duracion, stepsParam: subanimacion.num_frames, delayEfectoParam: subanimacion.delay}}"
+		(@animacionEfecto.start)="inicioAnimacion(i);"
+		(@animacionEfecto.done)="finAnimacion(i);"
+		[ngClass]="renderIndividual()"
+    [ngStyle]="{
+                'filter': 'hue-rotate('+subanimacion.hue_filter+'deg)',
+                'background-image':'url(./assets/Efectos/'+subanimacion.sprite_id+'.png)',
+                'background-size': stepsEfecto+'00% 100%',
+                'transform': 'translateX('+subanimacion.offset_x+'%) translateY('+subanimacion.offset_y+'%) scaleX('+subanimacion.scaleX+') scaleY('+subanimacion.scaleY+') rotate('+subanimacion.rotate+'deg)'
+
+              }"
 		>
 
 </div>

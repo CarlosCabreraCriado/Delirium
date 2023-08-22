@@ -18,16 +18,16 @@ export class InterfazComponent implements OnInit {
 
 
   ngOnInit() {
-    
+
   }
 
   seleccionarHechizo(indexHechizo){
-        this.hechizoSeleccionadoIndex = indexHechizo;
+        this.hechizoSeleccionadoIndex = indexHechizo-1;
         this.interfazService.selectHechizo(indexHechizo);
   }
 
   lanzarHechizo(){
-        this.interfazService.seleccionarHechizo(this.hechizoSeleccionadoIndex); 
+        this.interfazService.seleccionarHechizo(this.hechizoSeleccionadoIndex);
         this.hechizoSeleccionadoIndex = null;
         //this.interfazService.desactivarInterfaz();
   }

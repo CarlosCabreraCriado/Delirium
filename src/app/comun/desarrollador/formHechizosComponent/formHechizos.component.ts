@@ -33,6 +33,8 @@ export class FormHechizosComponent {
     private amenaza_Hechizos = new UntypedFormControl(1);
     private energia_Hechizos = new UntypedFormControl(0);
     private poder_Hechizos = new UntypedFormControl(0);
+    private duracionEscudo_Hechizos = new UntypedFormControl(0);
+    private cooldown_Hechizos = new UntypedFormControl(0);
 
     private esc_dano_AD_Hechizos = new UntypedFormControl(0);
     private esc_dano_AP_Hechizos = new UntypedFormControl(0);
@@ -56,6 +58,8 @@ export class FormHechizosComponent {
         	nivel: 1,
         	recurso: this.energia_Hechizos,
         	poder: this.poder_Hechizos,
+        	duracion_escudo: this.duracionEscudo_Hechizos,
+        	cooldown: this.cooldown_Hechizos,
         	distancia: this.distancia_Hechizos,
         	objetivo: this.objetivo_Hechizos,
         	tipo_daño: this.tipo_dano_Hechizos,
@@ -72,7 +76,7 @@ export class FormHechizosComponent {
         	heal_esc_AD: this.esc_heal_AD_Hechizos,
         	escudo_esc_AP: this.esc_escudo_AP_Hechizos,
         	escudo_esc_AD: this.esc_escudo_AD_Hechizos,
-            triggersHechizo: []
+          triggersHechizo: []
 	    });
 
 		//Suscripcion de Recarga Formulario:

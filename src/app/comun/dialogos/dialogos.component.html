@@ -110,7 +110,7 @@
         <h1 class= "titulo Texto1" >{{data.titulo}}</h1>
         <div class="Texto3"> {{data.contenido}} </div>
         <div class="botones">
-            <botonComponent mat-button [mat-dialog-close]="true" [tipoBoton]="2" [texto]="'Confirmar'" [color]="'verde'" class="boton"></botonComponent>
+            <botonComponent mat-button [ngClass]="{'botonDeshabilitado': data.deshabilitado}"  [mat-dialog-close]="true" [tipoBoton]="2" [texto]="'Confirmar'" [color]="'verde'" class="boton"></botonComponent>
             <botonComponent mat-button [mat-dialog-close]="false" [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
         </div>
     </div>

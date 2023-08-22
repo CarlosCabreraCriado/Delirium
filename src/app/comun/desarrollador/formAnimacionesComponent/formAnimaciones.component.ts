@@ -23,7 +23,7 @@ export class FormAnimacionesComponent {
   	//Campos Datos Animaciones:
   	private id_Animaciones = new UntypedFormControl(0);
   	private nombre_Animaciones = new UntypedFormControl('???');
-    private duracion_Animaciones = new UntypedFormControl("1");
+    private duracion_Animaciones = new UntypedFormControl("2.5");
     private subanimaciones_Animaciones = new UntypedFormControl(0);
     private sonidos_Animaciones = new UntypedFormControl(0);
 
@@ -44,7 +44,8 @@ export class FormAnimacionesComponent {
     private offsetx_Subanimacion = new UntypedFormControl(0);
     private offsety_Subanimacion = new UntypedFormControl(0);
     private rotate_Subanimacion = new UntypedFormControl(0);
-    private scale_Subanimacion = new UntypedFormControl(1);
+    private scaleX_Subanimacion = new UntypedFormControl(1);
+    private scaleY_Subanimacion = new UntypedFormControl(1);
 
     private mute = true;
 
@@ -75,7 +76,8 @@ export class FormAnimacionesComponent {
         	saturation: this.saturacion_Subanimacion,
         	delay: this.delay_Subanimacion,
         	rotate: this.rotate_Subanimacion,
-        	scale: this.scale_Subanimacion,
+        	scaleX: this.scaleX_Subanimacion,
+        	scaleY: this.scaleY_Subanimacion,
         	offset_x: this.offsetx_Subanimacion,
         	offset_y: this.offsety_Subanimacion
 	    });
@@ -105,7 +107,7 @@ export class FormAnimacionesComponent {
 		//Suscripcion de dambios formulario Animaciones:
 		this.formAnimaciones.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.animacionSeleccionadoIndex+1){
-				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex]= val;
+				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex]= Object.assign({},val);
 			}
 			console.log(val)
 		});
@@ -113,7 +115,10 @@ export class FormAnimacionesComponent {
 		//Suscripcion de dambios formulario Subanimacion:
 		this.formSubanimacion.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.animacionSeleccionadoIndex+1 && this.desarrolladorService.subanimacionSeleccionadoIndex+1){
-				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]= val;
+				this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]= Object.assign({},val);
+
+        //Asignación de Numero de frame_ref_Subanimacion
+        this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex].num_frames = this.desarrolladorService.animaciones.sprites.find(i => i.id == val.sprite_id)["numFrames"];
 			}
 			console.log(val)
 		});

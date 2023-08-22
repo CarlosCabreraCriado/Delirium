@@ -22,7 +22,7 @@ import {MazmorraService} from '../mazmorra/mazmorra.service';
       })),
 
       transition('inicio => fin', [
-        animate('3s', keyframes([
+        animate('2.5s', keyframes([
     			style({ opacity: 0 ,top: "0%", offset: 0}),
     			style({ opacity: 1 ,top: "0%", offset: 0.2}),
     			style({ opacity: 1 ,top: "0%", offset: 0.8}),
@@ -90,7 +90,7 @@ export class AnimacionNumeroComponent implements OnInit, OnChanges {
     		this.mostrarAnimacion= true;
   		}
     }
-  	
+
   }
 
   resetAnimacionNumero(): void{

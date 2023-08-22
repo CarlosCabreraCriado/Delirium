@@ -25,6 +25,7 @@ export class PanelPersonaje implements OnInit {
 	private hechizos: any;
 	private buff: any;
 	public heroeSeleccionado : any = "Sin definir";
+  public hechizosAprendidos = [];
 
 	constructor(private appService: AppService) {}
 
@@ -45,19 +46,27 @@ export class PanelPersonaje implements OnInit {
 		//Cargar Descripciones de personaje:
 		console.log(this.clases)
 		console.log(this.perfil)
-		for(var i= 0; i < this.perfil.heroes.length; i++){ 
-			this.perfil.heroes[i]["descripcion"] = this.clases["clases"].find(j=>j.nombre==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
+		for(var i= 0; i < this.perfil.heroes.length; i++){
+			//this.perfil.heroes[i]["descripcion"] = this.clases["clases"].find(j=>j.nombre==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
 		}
 
 		console.log("HEROES:")
 		console.log(this.perfil)
+    console.log(this.hechizos)
+
+    for(var i = 0; i < this.perfil.heroes[0].hechizos.aprendidos.length; i++){
+      this.hechizosAprendidos.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[0].hechizos.aprendidos[i]))
+    }
+
+		console.log("APRENDIDOS:")
+		console.log(this.hechizosAprendidos)
 
 		return;
 	}
 
 	cambiarPantalla(pantalla:string){
 		this.pantalla=pantalla;
-		return;	
+		return;
 	}
 
 	renderizarImagenHechizos(){
@@ -65,7 +74,7 @@ export class PanelPersonaje implements OnInit {
 		if(this.heroeSeleccionado==null){
 			this.idImagenHechizo= [1,1,1,1,1];
 			return;
-		}	
+		}
 
         for(var i=0; i < 5; i++){
 			this.idImagenHechizo[i] = this.hechizos.hechizos[i].imagen_id;
@@ -78,7 +87,7 @@ export class PanelPersonaje implements OnInit {
         for(var i=0; i < 5; i++){
           indexVertical= Math.floor(this.idImagenHechizo[i]/18);
           indexHorizontal= this.idImagenHechizo[i]-indexVertical*18;
-          
+
           this.imagenHechHorizontal[i]= 0.4+5.84*indexHorizontal;
           this.imagenHechVertical[i]= 19.8*indexVertical;
         }
@@ -95,7 +104,7 @@ export class PanelPersonaje implements OnInit {
 		}else{
 			this.mostrarSeleccionHeroe=!this.mostrarSeleccionHeroe;
 		}
-		return;	
+		return;
 	}
 
 	seleccionarHeroe(index){
@@ -104,7 +113,7 @@ export class PanelPersonaje implements OnInit {
 		//Añadir parametros al heroe:
 		this.heroeSeleccionado["descripcion"] = this.clases["clases"].find(i=>i.clase==this.heroeSeleccionado.clase.toLowerCase())["descripcion"]
 
-		this.heroeSeleccionado["idImagen"] = this.perfil.heroes[index].idImagen; 
+		this.heroeSeleccionado["idImagen"] = this.perfil.heroes[index].idImagen;
 
 		console.log("HEROE SELECCIONADO");
 		console.log(this.heroeSeleccionado);
