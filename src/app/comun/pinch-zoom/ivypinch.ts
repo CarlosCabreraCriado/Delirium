@@ -505,13 +505,18 @@ export class IvyPinch {
     }
 
     getImageHeight() {
-        const img = this.element.getElementsByTagName(this.elementTarget)[0];
-        return img.offsetHeight;
+        //const img = this.element.getElementsByTagName(this.elementTarget)[0];
+        //return img.offsetHeight;
+        const height = 375;
+        return height;
     }
 
     getImageWidth() {
-        const img = this.element.getElementsByTagName(this.elementTarget)[0];
-        return img.offsetWidth;
+        //const img = this.element.getElementsByTagName(this.elementTarget)[0];
+        //console.log(img.offsetWidth);
+        //return img.offsetWidth;
+        const width = 715;
+        return width;
     }
 
     transformElement(duration: any) {

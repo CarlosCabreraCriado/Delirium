@@ -236,10 +236,6 @@ export class MazmorraService implements OnInit{
         }
       break;
 
-      case "Escape":
-        this.pausaService.togglePause();
-      break;
-
       /* *************************************************
           ROUTER CON RESTRICCION DE TURNO
       ************************************************* */
@@ -970,6 +966,10 @@ export class MazmorraService implements OnInit{
   }
     */
 
+    forzarRenderizado(){
+      this.subscripcionMazmorra.emit("renderMazmorra");
+    }
+
   getRenderMazmorra(): RenderMazmorra{
     return this.renderMazmorra;
   }
@@ -1162,6 +1162,7 @@ export class MazmorraService implements OnInit{
         this.turnoModificado= false;
         this.cambiarControlPersonaje();
         this.checkTurnoPropio();
+        this.forzarRenderizado();
         return;
       }
 
@@ -1179,6 +1180,7 @@ export class MazmorraService implements OnInit{
           this.turnoModificado= false;
           this.cambiarControlPersonaje();
           this.checkTurnoPropio();
+          this.forzarRenderizado();
           return;
         }
       }
@@ -1202,6 +1204,7 @@ export class MazmorraService implements OnInit{
         this.autoGuardado = cloneDeep(this.sesion.render);
         this.cambiarControlPersonaje();
         this.checkTurnoPropio();
+        this.forzarRenderizado();
         return;
       }
     }
@@ -1224,6 +1227,7 @@ export class MazmorraService implements OnInit{
         this.autoGuardado = cloneDeep(this.sesion.render);
         this.cambiarControlPersonaje();
         this.checkTurnoPropio();
+        this.forzarRenderizado();
         return;
       }
     }
@@ -1265,6 +1269,7 @@ export class MazmorraService implements OnInit{
       this.autoGuardado = cloneDeep(this.sesion.render);
       this.cambiarControlPersonaje();
       this.checkTurnoPropio();
+      this.forzarRenderizado();
       return;
     }
 
@@ -1287,6 +1292,7 @@ export class MazmorraService implements OnInit{
       this.autoGuardado = cloneDeep(this.sesion.render);
       this.cambiarControlPersonaje();
       this.checkTurnoPropio();
+      this.forzarRenderizado();
       return;
     }
 
@@ -1308,7 +1314,8 @@ export class MazmorraService implements OnInit{
     this.appService.setControl("bloqueoMensaje");
     setTimeout(()=>{
         this.sesion.render.interfaz.barraAccion.mostrar = false;
-            this.appService.setControl("desbloqueoMensaje");
+        this.appService.setControl("desbloqueoMensaje");
+        this.forzarRenderizado();
     }, tiempoMensaje);
   }
 
@@ -3710,6 +3717,7 @@ export class MazmorraService implements OnInit{
         var critico = comando.valor.critico
         var fortuna = comando.valor.fortuna
         this.lanzarRng(critico,fortuna);
+        this.forzarRenderizado();
       break;
 
       case "lanzarHechizoEnemigo":

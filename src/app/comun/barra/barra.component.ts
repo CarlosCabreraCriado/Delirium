@@ -1,10 +1,12 @@
 
-import { Component , Input } from '@angular/core';
+import { Component , Input , ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
   selector: 'barraComponent',
   templateUrl: './barra.component.html',
-  styleUrls: ['./barra.component.sass']
+  styleUrls: ['./barra.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 
 export class BarraComponent {

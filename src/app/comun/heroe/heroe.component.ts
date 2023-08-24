@@ -1,10 +1,11 @@
 
-import { Component , Input , OnInit } from '@angular/core';
+import { Component , ChangeDetectionStrategy, Input , OnInit } from '@angular/core';
 
 @Component({
   selector: 'heroeComponent',
   templateUrl: './heroe.component.html',
-  styleUrls: ['./heroe.component.sass']
+  styleUrls: ['./heroe.component.sass'],
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class HeroeComponent implements OnInit {

@@ -1,5 +1,4 @@
-
-import { Component, OnInit, AfterViewInit, NgModule, ViewChildren, ViewChild, ElementRef, QueryList, Directive} from '@angular/core';
+import { Component,ChangeDetectorRef, ChangeDetectionStrategy, OnInit, AfterViewInit, NgModule, ViewChildren, ViewChild, ElementRef, QueryList, Directive} from '@angular/core';
 import { AppService } from '../../app.service';
 import { MazmorraService } from './mazmorra.service';
 import { Subscription } from "rxjs";
@@ -24,13 +23,14 @@ class AppAnimacionNumero {
   selector: 'app-mazmorra',
   templateUrl: './mazmorra.component.html',
   styleUrls: ['./mazmorra.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     // animation triggers go here
   ]
 })
 
 export class MazmorraComponent implements OnInit,AfterViewInit{
-	constructor(public mazmorraService: MazmorraService, public appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
+	constructor(private cdr: ChangeDetectorRef,public mazmorraService: MazmorraService, public appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
 
 	@ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
   	@ViewChild('canvasIsometrico',{static: false}) canvasIsometrico: ElementRef;
@@ -189,19 +189,19 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
       		    			//this.mazmorraService.setRenderMazmorra(data.contenido);
       		    			//console.log(data.contenido);
-                    this.mazmorraService.setRenderSesion(data.contenido);
-
-      						  this.mazmorraService.lanzarHechizo();
+                            //
+                            this.mazmorraService.setRenderSesion(data.contenido);
+      						this.mazmorraService.lanzarHechizo();
 
       		    			//this.renderMazmorra =this.mazmorraService.getRenderMazmorra();
       		    		break;
 
       		    		case "lanzarHechizoEnemigo":
-                    console.warn("LANZANDO: ",data)
-                    this.mazmorraService.seleccionarEnemigos = false;
-                    this.mazmorraService.seleccionarHeroes = false;
-                    this.mazmorraService.sesion.render.heroes[data.contenido["indexHeroe"]].objetivo = true;
-      						  this.mazmorraService.lanzarHechizo(data.contenido);
+                            console.warn("LANZANDO: ",data)
+                            this.mazmorraService.seleccionarEnemigos = false;
+                            this.mazmorraService.seleccionarHeroes = false;
+                            this.mazmorraService.sesion.render.heroes[data.contenido["indexHeroe"]].objetivo = true;
+      						this.mazmorraService.lanzarHechizo(data.contenido);
       		    			//this.renderMazmorra =this.mazmorraService.getRenderMazmorra();
       		    		break;
 
@@ -231,7 +231,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       		    			this.mazmorraService.mensajeAccion("Sincronizando...",2000);
       		    		break;
 
-      		    		case "sincronizacion":
+      		    		case"sincronizacion":
       		    			console.log("Sincronizando: ");
       		    			console.log(data.contenido);
       		    			this.renderMazmorra = data.contenido;
@@ -315,6 +315,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
             switch(val){
                 case "mazmorraIniciada":
                     this.centrarMazmorra();
+                    break;
+                case "renderMazmorra":
+                    this.render();
                     break;
             }
         });
@@ -873,6 +876,12 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     reloadDatos(){
       this.mazmorraService.reloadDatos();
     }
+
+    render(){
+        this.cdr.detectChanges()
+    }
+
+
 }
 
 

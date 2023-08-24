@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, Input, OnDestroy, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, OnInit, Component, ElementRef, HostBinding, HostListener, Input, OnDestroy, SimpleChanges} from '@angular/core';
 
 import {Properties} from './interfaces';
 import {defaultProperties, backwardCompatibilityProperties} from './properties';
@@ -23,10 +23,11 @@ type PropertyName = keyof ComponentProperties;
 	selector: 'pinch-zoom, [pinch-zoom]',
     exportAs: 'pinchZoom',
     templateUrl: './pinch-zoom.component.html',
-    styleUrls: ['./pinch-zoom.component.sass']
+    styleUrls: ['./pinch-zoom.component.sass'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class PinchZoomComponent implements OnDestroy {
+export class PinchZoomComponent implements OnDestroy, OnInit {
     pinchZoom: any;
     _properties!: ComponentProperties;
     defaultComponentProperties!: ComponentProperties;
@@ -36,6 +37,7 @@ export class PinchZoomComponent implements OnDestroy {
     _doubleTapScale!:number;
     _autoZoomOut!:boolean;
     _limitZoom!:number | "original image size";
+
 
     @Input('properties') set properties(value: ComponentProperties) {
         if (value) {
@@ -145,6 +147,7 @@ export class PinchZoomComponent implements OnDestroy {
         return this.properties['backgroundColor'];
     }
 
+
     get isTouchScreen() {
         var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
         var mq = function(query:any) {
@@ -193,14 +196,16 @@ export class PinchZoomComponent implements OnDestroy {
         return this.getPropertiesValue('zoomControlScale');
     }
 
-   constructor(private elementRef: ElementRef) {
+   constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
         this.defaultComponentProperties = this.getDefaultComponentProperties();
         this.applyPropertiesDefault(this.defaultComponentProperties, {});
     }
 
     ngOnInit(){
+
         this.initPinchZoom();
         
+        this.cdr.detach()
         /* Calls the method until the image size is available */
         this.detectLimitZoom();
     }
@@ -217,6 +222,7 @@ export class PinchZoomComponent implements OnDestroy {
     }
 
     initPinchZoom() {
+
         if (this.properties['disabled']) {
             return;
         }

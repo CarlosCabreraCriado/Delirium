@@ -1,13 +1,13 @@
 
-import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {trigger,state,style,animate,transition, keyframes} from '@angular/animations';
-
 import {MazmorraService} from '../mazmorra/mazmorra.service';
 
 @Component({
   selector: 'appAnimacionNumero',
   templateUrl: './animacion-numero.component.html',
   styleUrls: ['./animacion-numero.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('animacionNumero', [
       // ...

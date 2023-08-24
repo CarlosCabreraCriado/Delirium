@@ -1,10 +1,11 @@
 
-import { Component , Input, OnInit } from '@angular/core';
+import { Component ,ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'enemigoComponent',
   templateUrl: './enemigo.component.html',
-  styleUrls: ['./enemigo.component.sass']
+  styleUrls: ['./enemigo.component.sass'],
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class EnemigoComponent implements OnInit{
@@ -19,7 +20,7 @@ export class EnemigoComponent implements OnInit{
     public estadoDesplegado: boolean= true;
 
 	constructor(){
-  }
+    }
 
   ngOnInit(){
     this.estadoDesplegado = this.desplegadoDefecto
