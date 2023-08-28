@@ -29,7 +29,7 @@ export class AppComponent implements OnInit{
   constructor(public appService: AppService,private socketService:SocketService, private location: Location){ }
 
   @HostListener('document:keydown', ['$event'])
-        handleKeyboardEvent(event: KeyboardEvent) { 
+        handleKeyboardEvent(event: KeyboardEvent) {
         this.appService.teclaPulsada(event.key);
     }
 
@@ -48,13 +48,12 @@ export class AppComponent implements OnInit{
 
       //Inicializando Heroe Seleccionado:
       this.appService.setHeroeSeleccionado(0)
-    
 
       //ABRIR APP DEVELOPER:
       if(this.location.path()=="/desarrollador"){
         this.appService.setEstadoApp("desarrollador");
 
-       //ABRIR APP NORMAL: 
+       //ABRIR APP NORMAL:
       }else{
 
           //RECONECTAR EL SOCKET:
@@ -65,7 +64,7 @@ export class AppComponent implements OnInit{
             this.estadoSocket = "Conectado";
 
           //Determinación de estado APP:
-          }else{ 
+          }else{
             console.log("Cargando INDEX...")
             this.desconectarSocket()
             this.appService.logout();
@@ -87,7 +86,7 @@ export class AppComponent implements OnInit{
                   this.desconectarSocket();
                   break;
             }
-          
+
         });
 
        //Suscripcion Socket (INTERNO):
@@ -122,7 +121,7 @@ export class AppComponent implements OnInit{
                     this.socketService.enviarSocket('validacion', this.cuenta);
                     this.appService.mostrarDialogoReconectar(false);
                 //Determinación de estado APP:
-                }else{ 
+                }else{
                     console.log("Cargando INDEX...")
                     this.desconectarSocket()
                     this.appService.logout();
@@ -153,7 +152,7 @@ export class AppComponent implements OnInit{
   } //FIN ONINIT:
 
     iniciaSesion(sesion: any){
-        
+
         this.appService.setSesion(sesion);
         console.warn(sesion)
 

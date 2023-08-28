@@ -7,20 +7,20 @@
   min-height: 100%
   min-width: 100%
   z-index: 1
-  
+
 .Fondo-papiro
   position: fixed
   width: 100%
   min-height: 100%
   z-index: 2
-  opacity: 1 
+  opacity: 1
 
 .ContenedorInicio
   position: fixed
   top: 0
   left: 0
-  width: 100%
-  min-height: 100%
+  width: 100vw
+  min-height: 100vh
   z-index: 3
   background-image: url("../../../assets/General/dibujo-fondo.png")
   background-position: center center
@@ -44,7 +44,6 @@
   height: 100%
   top: 0
   left: 0
-  
 
 .Logo
   position: relative
@@ -59,16 +58,19 @@
   position: absolute
   color: white
   width: 30%
-  height: 40%
+  height: fit-content
   top: 40%
   left: 50%
   margin-left: -15%
-  background-color: $colorFondo2  
+  background-color: $colorFondo2
   @include media("<=phone")
     top: 30vh
     width: 40%
-    height: 50%
+    height: fit-content
     left: 45%
+  @media screen and (min-aspect-ratio: 10/3)
+    width: 80% !important
+    left: 25% !important
 
   .marcoInicioSesion
     position: absolute
@@ -87,19 +89,26 @@
 
   .wrapperCampo
     display: flex
+    margin-bottom: 15px
+
+  .wrapperBoton
+    height: 35px
+    min-width: 150px
 
   .wrapperInterior
     display: flex
     height: 75%
     flex-direction: column
     justify-content: space-evenly
+    @media screen and (min-aspect-ratio: 10/3)
+      flex-direction: row !important
 
-  .bloque 
+  .bloque
     position: relative
     margin-top: 5px
     margin-bottom: 5px
 
-  .textoIniciarSesion  
+  .textoIniciarSesion
     text-align: center
 
   .separador
@@ -109,7 +118,7 @@
   .texto
     width: 30%
     text-align: right
-    
+
   .input
     width: 50%
     margin-left: 10%
@@ -133,7 +142,6 @@
     width: 50%
     left: 50%
     margin-left: -25%
-    height: 20%
 
 #botonCrearCuenta
     position: absolute
@@ -149,7 +157,7 @@
     background-position: center center
     background-size: 100% 100%
 
-.lds-dual-ring 
+.lds-dual-ring
   position: relative
   display: inline-block
   width: 64px
@@ -159,7 +167,7 @@
   top: 50%
   margin-top: -23px
 
-.lds-dual-ring:after 
+.lds-dual-ring:after
   content: " "
   position: absolute
   display: block
@@ -171,11 +179,11 @@
   border-color: #000 transparent #000 transparent
   animation: lds-dual-ring 1.2s linear infinite
 
-@keyframes lds-dual-ring 
-  0% 
+@keyframes lds-dual-ring
+  0%
     transform: rotate(0deg)
-  
-  100% 
+
+  100%
     transform: rotate(360deg)
 
 
@@ -191,7 +199,7 @@
 
 
 
-  
 
-  
-  
+
+
+

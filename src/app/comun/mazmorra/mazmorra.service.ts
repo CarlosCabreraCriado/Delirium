@@ -1,4 +1,4 @@
-import { Injectable, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Injectable, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 import { AppService } from '../../app.service';
 import { LoggerService } from '../logger/logger.service';
 import { PausaService } from '../pausa/pausa.service';
@@ -15,6 +15,20 @@ import { Subscription } from "rxjs";
 //import { ElectronService } from 'ngx-electron';
 import { RenderMazmorra} from './render.class';
 
+interface EstadoControl {
+      estado: String,
+      esTurnoPropio: Boolean,
+      esTurnoHeroe: Boolean,
+      esTurnoEnemigo: Boolean,
+      turnoIndex: Number;
+      hechizo: Number,
+      tipoObjetivo: String,
+      critico: Boolean,
+      fortuna: Boolean,
+      rngEncadenado: Boolean,
+      detenerHechizo: Boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +39,9 @@ export class MazmorraService implements OnInit{
   public cuenta: any;
   public perfil: any;
   public sesion: any;
+
+  public estadoControl: EstadoControl;
+
   public heroeIndex: number;
   public esTurnoPropio: boolean = false;
   public esTurnoHeroe: boolean = false;
@@ -117,7 +134,7 @@ export class MazmorraService implements OnInit{
   //Emision de eventos
   @Output() subscripcionMazmorra: EventEmitter<string> = new EventEmitter();
 
-    constructor(private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) {
+    constructor(private zone: NgZone, private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) {
 
   }
 
@@ -186,20 +203,20 @@ export class MazmorraService implements OnInit{
           return;
         }*/
 
-        if(this.appService.control=="null"){this.appService.setControl("mazmorra");}
+    if(this.appService.control=="null"){this.appService.setControl("mazmorra");}
     if(this.appService.control!="mazmorra"){return;}
 
-        console.log("ESTADO: "+this.sesion.render.estadoControl.estado);
+    console.log("ESTADO: "+this.estadoControl.estado);
 
     //Router del Logger:
-    if(this.sesion.render.estadoControl.estado=="looger"){
+    if(this.estadoControl.estado=="looger"){
       if(tecla=="Enter"){
         this.loggerService.procesarComando(this.sesion.render,this.sesion);
       }else{
         this.loggerService.addComando(tecla);
       }
       if(tecla=="Tab"){
-        this.sesion.render.estadoControl.estado="seleccionAccion";
+        this.estadoControl.estado="seleccionAccion";
         this.loggerService.toggleLogger(false);
       }
       return;
@@ -210,14 +227,12 @@ export class MazmorraService implements OnInit{
       /* ----------------------------------------------
             ROUTER SIN RESTRICCION
       ------------------------------------------------- */
-
       case "Tab":
-      if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
-        this.sesion.render.estadoControl.estado="looger";
+      if(this.estadoControl.estado=="seleccionAccion"){
+        this.estadoControl.estado="looger";
         this.loggerService.toggleLogger(true);
         return;
       }
-
       break;
 
       case "ArrowUp":
@@ -239,34 +254,20 @@ export class MazmorraService implements OnInit{
       /* *************************************************
           ROUTER CON RESTRICCION DE TURNO
       ************************************************* */
-
       case "ArrowRight":
-        if(this.sesion.render.estadoControl.estado=="seleccionObjetivo" || this.sesion.render.estadoControl.estado=="hechizoEncadenado"){
+        if(this.estadoControl.estado=="seleccionObjetivo" || this.estadoControl.estado=="hechizoEncadenado"){
           this.moverObjetivo(1);
         }
-
       break;
 
       case "ArrowLeft":
-        if(this.sesion.render.estadoControl.estado=="seleccionObjetivo" || this.sesion.render.estadoControl.estado=="hechizoEncadenado"){
+        if(this.estadoControl.estado=="seleccionObjetivo" || this.estadoControl.estado=="hechizoEncadenado"){
           this.moverObjetivo(-1);
         }
       break;
 
-      case "Backspace":
-      if(this.sesion.render.estadoControl.estado=="seleccionObjetivo"){
-        this.cancelarObjetivo();
-      }
-      break;
-
-      case "s":
-        if(this.sesion.render.estadoControl.estado=="seleccionObjetivo" || this.sesion.render.estadoControl.estado=="hechizoEncadenado"){
-          this.seleccionarObjetivo();
-        }
-      break;
-
       case "Enter":
-      if(this.sesion.render.estadoControl.estado=="seleccionObjetivo" || this.sesion.render.estadoControl.estado=="hechizoEncadenado"){
+      if(this.estadoControl.estado=="seleccionObjetivo" || this.estadoControl.estado=="hechizoEncadenado"){
         //this.lanzarHechizo();
         this.activarRNG();
         return;
@@ -277,99 +278,9 @@ export class MazmorraService implements OnInit{
         this.pasarTurno();
       break;
 
-      case "0":
-        //Restringir accion por turno incorrecto.
-        if(!this.comandoSocketActivo){
-          if(this.personaje.heroeTurnoIndex!= this.sesion.render.registroTurno[this.sesion.render.registroTurno.length-1] && this.restringirTurno){break;}
-        }else{
-          this.desactivarComandoSocket();
-        }
-
-      console.log("Hechizo 1:");
-      if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
-        if(this.verificarCasteo(1)){this.seleccionObjetivo(1);}
-        return;
-      }
-      break;
-
-      case "1":
-        //Restringir accion por turno incorrecto.
-        if(!this.comandoSocketActivo){
-          if(this.personaje.heroeTurnoIndex!= this.sesion.render.registroTurno[this.sesion.render.registroTurno.length-1] && this.restringirTurno){break;}
-        }else{
-          this.desactivarComandoSocket();
-        }
-
-      console.log("Hechizo 2:");
-      if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
-        if(this.verificarCasteo(2)){this.seleccionObjetivo(2);}
-      }
-      break;
-
-      case "2":
-        //Restringir accion por turno incorrecto.
-        if(!this.comandoSocketActivo){
-          if(this.personaje.heroeTurnoIndex!= this.sesion.render.registroTurno[this.sesion.render.registroTurno.length-1] && this.restringirTurno){break;}
-        }else{
-          this.desactivarComandoSocket();
-        }
-
-      console.log("Hechizo 3:");
-      if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
-        if(this.verificarCasteo(3)){this.seleccionObjetivo(3);}
-      }
-      break;
-
-      case "3":
-        //Restringir accion por turno incorrecto.
-        if(!this.comandoSocketActivo){
-          if(this.personaje.heroeTurnoIndex!= this.sesion.render.registroTurno[this.sesion.render.registroTurno.length-1] && this.restringirTurno){break;}
-        }else{
-          this.desactivarComandoSocket();
-        }
-
-      console.log("Hechizo 4:");
-      if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
-        if(this.verificarCasteo(4)){this.seleccionObjetivo(4);}
-      }
-      break;
-
-      case "4":
-        //Restringir accion por turno incorrecto.
-        if(!this.comandoSocketActivo){
-          if(this.personaje.heroeTurnoIndex!= this.sesion.render.registroTurno[this.sesion.render.registroTurno.length-1] && this.restringirTurno){break;}
-        }else{
-          this.desactivarComandoSocket();
-        }
-
-      console.log("Hechizo 5:");
-      if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
-        if(this.verificarCasteo(5)){this.seleccionObjetivo(5);}
-      }
-      break;
-
-      case "5":
-        //Restringir accion por turno incorrecto.
-        if(!this.comandoSocketActivo){
-          if(this.personaje.heroeTurnoIndex!= this.sesion.render.registroTurno[this.sesion.render.registroTurno.length-1] && this.restringirTurno){break;}
-        }else{
-          this.desactivarComandoSocket();
-        }
-      console.log("Hechizo 6:");
-
-      if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
-        if(this.verificarCasteo(6)){this.seleccionObjetivo(6);}
-      }
-      break;
-
       /* *************************************************
           ROUTER CON RESTRICCION DE HOST
       ************************************************* */
-      case "+":
-      this.sesion.render.estadoControl.estado="seleccionSala";
-      this.mensajeAccion("Selecciona una sala...",1000);
-      break;
-
       case "f":
       console.log("Forzando Sincronización")
       this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.sesion.render});
@@ -389,59 +300,6 @@ export class MazmorraService implements OnInit{
       this.cargarAutoGuardado.emit(this.sesion.render);
       this.mensajeAccion("Realizando rewind...",5000);
       break;
-    }
-
-    if(this.sesion.render.estadoControl.estado=="seleccionSala"){
-
-      switch(tecla){
-        case "0":
-        case "1":
-        case "2":
-        case "3":
-        case "4":
-        case "5":
-        case "6":
-        this.cambiarSala(parseInt(tecla));
-        this.sesion.render.salaActual=parseInt(tecla);
-        this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.sesion.render});
-        this.mensajeAccion("Cambiando Sala...",2000);
-        this.sesion.render.estadoControl.estado="seleccionAccion";
-        break;
-        case "Backspace":
-        this.sesion.render.estadoControl.estado="seleccionAccion";
-        break;
-      }
-
-    }
-
-    if(this.sesion.render.estadoControl.estado=="rng"){
-      if(tecla=="Backspace"){
-        this.sesion.render.estadoControl.estado="seleccionAccion";
-        this.desactivarRNG();
-        return;
-      }
-
-      if(tecla=="Enter"){
-        this.sesion.render.estadoControl.rng= this.rngService.getValorRng();
-        this.desactivarRNG();
-        this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "sincronizacion", contenido: this.sesion.render});
-        this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: {}});
-        this.lanzarHechizo();
-
-        return;
-      }
-
-      switch(tecla){
-        case "0":
-        case "1":
-        case "2":
-        case "3":
-        case "4":
-        case "5":
-        case "6":
-        this.rngService.setValorTirada(tecla);
-        break;
-      }
     }
 
     if(this.sesion.render.turno){}
@@ -503,6 +361,20 @@ export class MazmorraService implements OnInit{
     console.log("-------------------------");
     console.log(" CONFIGURANDO MAZMORRA");
     console.log("-------------------------");
+
+         this.estadoControl = {
+              estado: "seleccionAccion",
+              esTurnoPropio: false,
+              esTurnoHeroe: false,
+              esTurnoEnemigo: false,
+              turnoIndex: 0,
+              hechizo: 0,
+              tipoObjetivo: "EU",
+              critico: false,
+              fortuna: false,
+              rngEncadenado: false,
+              detenerHechizo: false
+        }
 
         //Inicialización de personaje:
         this.personaje = {
@@ -996,7 +868,7 @@ export class MazmorraService implements OnInit{
   }
 
   setEstadoControl(estado):void{
-    this.sesion.render.estadoControl.estado= estado;
+    this.estadoControl.estado= estado;
     return;
   }
 
@@ -1098,9 +970,9 @@ export class MazmorraService implements OnInit{
       }
 
       console.log("Pasando Turno...");
-      if(this.sesion.render.estadoControl.estado=="seleccionObjetivo"){
-        this.sesion.render.estadoControl.estado = "seleccionAccion";
-        this.sesion.render.estadoControl.hechizo = 0;
+      if(this.estadoControl.estado=="seleccionObjetivo"){
+        this.estadoControl.estado = "seleccionAccion";
+        this.estadoControl.hechizo = 0;
         this.cancelarObjetivo();
       }
 
@@ -1754,17 +1626,17 @@ export class MazmorraService implements OnInit{
 
         //Turno del heroe[i]:
         clase= this.sesion.render.heroes[i].clase.toLowerCase();
-        this.sesion.render.estadoControl.tipoObjetivo = this.hechizos.find(j => j.id==numHechizo).objetivo;
+        this.estadoControl.tipoObjetivo = this.hechizos.find(j => j.id==numHechizo).objetivo;
 
         //Si el caster es heroe y el objetivo es AL:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AL"){
+        if(this.estadoControl.tipoObjetivo=="AL"){
           this.sesion.render.heroes[i].objetivo = true;
           //this.lanzarHechizo();
           this.activarRNG()
         }
 
         //Si el caster es heroe y el objetivo es EU:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="EU"){
+        if(this.estadoControl.tipoObjetivo=="EU"){
                     if(this.sesion.render.enemigos[0]==undefined){
                         return;
                     }
@@ -1772,12 +1644,12 @@ export class MazmorraService implements OnInit{
         }
 
         //Si el caster es heroe y el objetivo es AU:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AU"){
+        if(this.estadoControl.tipoObjetivo=="AU"){
           //this.sesion.render.heroes[0].objetivo = true;
         }
 
         //Si el caster es heroe y el objetivo es EM:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="EM"){
+        if(this.estadoControl.tipoObjetivo=="EM"){
                     if(this.sesion.render.enemigos[0]==undefined){
                         return;
                     }
@@ -1785,12 +1657,12 @@ export class MazmorraService implements OnInit{
         }
 
         //Si el caster es heroe y el objetivo es AM:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AM"){
+        if(this.estadoControl.tipoObjetivo=="AM"){
           //this.sesion.render.heroes[0].objetivoAuxiliar = true;
         }
 
         //Si el caster es heroe y el objetivo es AA:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AA"){
+        if(this.estadoControl.tipoObjetivo=="AA"){
           for(var j=0; j <this.sesion.render.heroes.length; j++){
             this.sesion.render.heroes[j].objetivo = true;
           }
@@ -1799,7 +1671,7 @@ export class MazmorraService implements OnInit{
         }
 
         //Si el caster es heroe y el objetivo es EE:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AE"){
+        if(this.estadoControl.tipoObjetivo=="AE"){
                     if(this.sesion.render.enemigos[0]==undefined){
                         return;
                     }
@@ -1819,37 +1691,37 @@ export class MazmorraService implements OnInit{
         //Turno del enemigo[i]:
         clase= this.sesion.render.enemigos[i].nombre;
         //var hechizosEnemigos = this.enemigos.enemigos_hech.find(j => j.id==this.sesion.render.enemigos[i].hechizos);
-        this.sesion.render.estadoControl.tipoObjetivo = this.enemigos.enemigos_hech.find(j => j.id==numHechizo).objetivo;
+        this.estadoControl.tipoObjetivo = this.enemigos.enemigos_hech.find(j => j.id==numHechizo).objetivo;
 
         //Si el caster es enemigo y el objetivo es AL:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AL"){
+        if(this.estadoControl.tipoObjetivo=="AL"){
           this.sesion.render.enemigos[i].objetivo = true;
           //this.lanzarHechizo();
           this.activarRNG()
         }
 
         //Si el caster es enemigo y el objetivo es EU:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="EU"){
+        if(this.estadoControl.tipoObjetivo=="EU"){
           this.sesion.render.heroes[0].objetivo = true;
         }
 
         //Si el caster es enemigo y el objetivo es AU:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AU"){
+        if(this.estadoControl.tipoObjetivo=="AU"){
           this.sesion.render.enemigos[0].objetivo = true;
         }
 
         //Si el caster es enemigo y el objetivo es EM:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="EM"){
+        if(this.estadoControl.tipoObjetivo=="EM"){
           this.sesion.render.heroes[0].objetivoAuxiliar = true;
         }
 
         //Si el caster es enemigo y el objetivo es AM:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AM"){
+        if(this.estadoControl.tipoObjetivo=="AM"){
           this.sesion.render.enemigos[0].objetivoAuxiliar = true;
         }
 
         //Si el caster es enemigo y el objetivo es AA:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="AA"){
+        if(this.estadoControl.tipoObjetivo=="AA"){
           for(var j=0; j <this.sesion.render.enemigos.length; j++){
             this.sesion.render.enemigos[j].objetivo = true;
           }
@@ -1858,7 +1730,7 @@ export class MazmorraService implements OnInit{
         }
 
         //Si el caster es enemigo y el objetivo es EE:
-        if(this.sesion.render.estadoControl.tipoObjetivo=="EE"){
+        if(this.estadoControl.tipoObjetivo=="EE"){
           for(var j=0; j <this.sesion.render.heroes.length; j++){
             this.sesion.render.heroes[j].objetivo = true;
           }
@@ -1870,8 +1742,8 @@ export class MazmorraService implements OnInit{
     }
 
         //Seleccionar Objetivos:
-    this.sesion.render.estadoControl.estado = "seleccionObjetivo";
-    this.sesion.render.estadoControl.hechizo = numHechizo;
+    this.estadoControl.estado = "seleccionObjetivo";
+    this.estadoControl.hechizo = numHechizo;
 
   }
 
@@ -1897,14 +1769,14 @@ export class MazmorraService implements OnInit{
         this.sesion.render.enemigos[i].objetivo= false;
       }
     }
-    this.sesion.render.estadoControl.estado = "seleccionAccion";
+    this.estadoControl.estado = "seleccionAccion";
   }
 
   //moverObjetivo (positivo--> DERECHA; negativo --> IZQUIERDA)
   moverObjetivo(val:number):void{
 
     //Mueve objetivo AU && EU:
-    if(this.sesion.render.estadoControl.tipoObjetivo=="EU" || this.sesion.render.estadoControl.tipoObjetivo=="AU"){
+    if(this.estadoControl.tipoObjetivo=="EU" || this.estadoControl.tipoObjetivo=="AU"){
       //Evalua objetivos en heroes:
       for(var i=0; i <this.sesion.render.heroes.length; i++){
         if(this.sesion.render.heroes[i].objetivo){
@@ -1928,7 +1800,7 @@ export class MazmorraService implements OnInit{
     }
 
     //Mueve el objetivo Auxiliar en AM && EM
-    if(this.sesion.render.estadoControl.tipoObjetivo=="EM" || this.sesion.render.estadoControl.tipoObjetivo=="AM"){
+    if(this.estadoControl.tipoObjetivo=="EM" || this.estadoControl.tipoObjetivo=="AM"){
       //Evalua objetivos Auxiliares en heroes:
       for(var i=0; i <this.sesion.render.heroes.length; i++){
         if(this.sesion.render.heroes[i].objetivoAuxiliar){
@@ -2080,7 +1952,7 @@ export class MazmorraService implements OnInit{
                     indexCaster = i;
                     tipoCaster = "heroe";
                     caster= this.sesion.render.heroes[i];
-                    indexHechizo = this.hechizos.findIndex(j => j.id==this.sesion.render.estadoControl.hechizo);
+                    indexHechizo = this.hechizos.findIndex(j => j.id==this.estadoControl.hechizo);
                     break;
                 }
             }
@@ -2121,8 +1993,7 @@ export class MazmorraService implements OnInit{
         hechizo_encadenado_id: this.hechizos[indexHechizo].hech_encadenado_id
     }
 
-    console.log("RNG: ");
-    console.log(this.sesion.render.estadoControl.rng);
+    console.log("CRITICO: ",this.estadoControl.critico," FORTUNA: ",this.estadoControl.fortuna);
 
     console.log("Lanzando hechizo:");
     console.log(hechizo);
@@ -2313,7 +2184,8 @@ export class MazmorraService implements OnInit{
           var buffEscudo = Object.assign({},this.buff.find(i => i.id==28))
           console.warn("BUFF ESCUDO", buffEscudo);
           buffEscudo["duracion"]= hechizo["duracion_escudo"]*this.sesion.jugadores.length;
-          buffEscudo["rng"]= this.sesion.render.estadoControl.rng;
+          buffEscudo["critico"]= this.estadoControl.critico;
+          buffEscudo["fortuna"]= this.estadoControl.fortuna;
           buffEscudo["nivelCaster"]= hechizo.nivelCaster;
           buffEscudo["tipoCaster"]= hechizo.tipoCaster;
           buffEscudo["indexCaster"]= hechizo.indexCaster;
@@ -2371,10 +2243,10 @@ export class MazmorraService implements OnInit{
       }, this.velocidadHechizo);
     }else{
       setTimeout(()=>{
-        if(hechizo.hechizo_encadenado_id != 0 && !this.sesion.render.estadoControl.detenerHechizo){ //Si hay hechizo encadenado
+        if(hechizo.hechizo_encadenado_id != 0 && !this.estadoControl.detenerHechizo){ //Si hay hechizo encadenado
           this.appService.setControl("desbloqueoHechizo");
-          this.sesion.render.estadoControl.estado = "hechizoEncadenado";
-          this.sesion.render.estadoControl.hechizo = hechizo.hechizo_encadenado_id;
+          this.estadoControl.estado = "hechizoEncadenado";
+          this.estadoControl.hechizo = hechizo.hechizo_encadenado_id;
           this.sesion.render.interfaz.barraAccion.mostrar = false;
           this.cuentaLanzamientoHechizo++;
           this.loggerService.log("--> Iniciando Hechizo encadenado (ID: "+hechizo.hechizo_encadenado_id+")","yellow");
@@ -2383,12 +2255,12 @@ export class MazmorraService implements OnInit{
         }else{
         //Desbloquea y termina la aplicación de Hechizos:
         this.appService.setControl("desbloqueoHechizo");
-        this.sesion.render.estadoControl.estado = "seleccionAccion";
-        this.sesion.render.estadoControl.hechizo = 0;
-        this.sesion.render.estadoControl.rngEncadenado= false;
+        this.estadoControl.estado = "seleccionAccion";
+        this.estadoControl.hechizo = 0;
+        this.estadoControl.rngEncadenado= false;
         this.sesion.render.interfaz.barraAccion.mostrar = false;
         this.cuentaLanzamientoHechizo=1;
-        this.sesion.render.estadoControl.detenerHechizo=false;
+        this.estadoControl.detenerHechizo=false;
         this.sesion.render.interfaz.objetivoPredefinido.enemigos= [];
         this.sesion.render.interfaz.objetivoPredefinido.heroes= [];
                     if(resolve){ resolve(true) } //Devuelve promesa de finalización de hechizo
@@ -2430,7 +2302,7 @@ export class MazmorraService implements OnInit{
         }
 
     //Modificación por critico:
-      if(this.sesion.render.estadoControl.rng && tipoCaster == "heroe"){
+      if(this.estadoControl.critico && tipoCaster == "heroe"){
         console.warn("MODIFICANDO POR CRITICO");
         hechizo["daño_salida"] = hechizo["daño_salida"]*potenciaCritico;
         hechizo["heal_salida"] = hechizo["heal_salida"]*potenciaCritico;
@@ -2438,17 +2310,17 @@ export class MazmorraService implements OnInit{
       }
 
     //Modificación por Fortuna:
-      if(this.sesion.render.estadoControl.fortuna && tipoCaster == "heroe"){
+      if(this.estadoControl.fortuna && tipoCaster == "heroe"){
         console.warn("MODIFICANDO POR FORTUNA");
         hechizo["daño_salida"] = hechizo["daño_salida"]*potenciaFortuna;
         hechizo["heal_salida"] = hechizo["heal_salida"]*potenciaFortuna;
         hechizo["escudo_salida"] = hechizo["escudo_salida"]*potenciaFortuna;
       }
 
-    if(this.sesion.render.estadoControl.rng || this.sesion.render.estadoControl.fortuna){
-      if(this.sesion.render.estadoControl.rng && !this.sesion.render.estadoControl.fortuna){
+    if(this.estadoControl.critico || this.estadoControl.fortuna){
+      if(this.estadoControl.critico && !this.estadoControl.fortuna){
         this.loggerService.log("------ SALIDA (CRITICO) ------- ","teal");
-      }else if(!this.sesion.render.estadoControl.rng && this.sesion.render.estadoControl.fortuna){
+      }else if(!this.estadoControl.critico && this.estadoControl.fortuna){
         this.loggerService.log("------ SALIDA  (Fortuna)------- ","teal");
       }else{
         this.loggerService.log("------ SALIDA  (Fortuna + Critico)------- ","teal");
@@ -2586,7 +2458,7 @@ export class MazmorraService implements OnInit{
     buff["escudo_t_salida"]= buff["escudo_t_salida"]/buff["duracion"];
 
     //Modificación por critico:
-      if(this.sesion.render.estadoControl.rng && tipoCaster == "heroe"){
+      if(this.estadoControl.critico && tipoCaster == "heroe"){
         console.warn("MODIFICANDO BUFF POR CRITICO");
         buff["daño_t_salida"] = buff["daño_t_salida"]*potenciaCritico;
         buff["heal_t_salida"] = buff["heal_t_salida"]*potenciaCritico;
@@ -2594,7 +2466,7 @@ export class MazmorraService implements OnInit{
       }
 
     //Modificación por Fortuna:
-      if(this.sesion.render.estadoControl.fortuna && tipoCaster == "heroe"){
+      if(this.estadoControl.fortuna && tipoCaster == "heroe"){
         console.warn("MODIFICANDO BUFF POR FORTUNA");
         buff["daño_t_salida"] = buff["daño_t_salida"]*potenciaFortuna;
         buff["heal_t_salida"] = buff["heal_t_salida"]*potenciaFortuna;
@@ -2602,10 +2474,10 @@ export class MazmorraService implements OnInit{
       }
 
     //Logger:
-    if(this.sesion.render.estadoControl.rng || this.sesion.render.estadoControl.fortuna){
-      if(this.sesion.render.estadoControl.rng && !this.sesion.render.estadoControl.fortuna){
+    if(this.estadoControl.critico || this.estadoControl.fortuna){
+      if(this.estadoControl.critico && !this.estadoControl.fortuna){
         this.loggerService.log("------ SALIDA BUFF (CRITICO) ------- ","teal");
-      }else if(!this.sesion.render.estadoControl.rng && this.sesion.render.estadoControl.fortuna){
+      }else if(!this.estadoControl.critico && this.estadoControl.fortuna){
         this.loggerService.log("------ SALIDA BUFF  (Fortuna)------- ","teal");
       }else{
         this.loggerService.log("------ SALIDA BUFF  (Fortuna + Critico)------- ","teal");
@@ -2797,7 +2669,7 @@ export class MazmorraService implements OnInit{
     }
 
     //Reset critico:
-    this.sesion.render.estadoControl.critico=false;
+    this.estadoControl.critico=false;
 
     //LOGGER && ANALITICS
     this.loggerService.log("------ ENTRADA ------- ","teal");
@@ -2864,86 +2736,8 @@ export class MazmorraService implements OnInit{
 
     //Ejecuto acciones en función de la función:
     switch(funcion){
-
-      case "GenerarEsencia":
-        caster.recursoEspecial++;
-      break
-
-      case "CargaArcana":
-
-        if((this.cuentaAplicacionHechizo == 1) && (caster.recursoEspecial+objetivoEnemigos.length-1>=3)){
-            this.sesion.render.interfaz.objetivoPredefinido.enemigos = objetivoEnemigos.slice();
-            this.sesion.render.interfaz.objetivoPredefinido.heroes = objetivoHeroes.slice();
-            console.log("CARGA ARCANA");
-            hechizo.hechizo_encadenado_id= this.hechizos.hechicero.find(i=> i.nombre =="Sobrecarga arcana").id;
-        }
-
-        if(objetivoEnemigos.length>1){
-          caster.recursoEspecial++;
-        }
-
-        if(caster.recursoEspecial>=3 && (this.cuentaAplicacionHechizo == this.sesion.render.interfaz.objetivoPredefinido.enemigos.length)){
-          hechizo.hechizo_encadenado_id= this.hechizos.hechicero.find(i=> i.nombre =="Sobrecarga arcana").id;
-        }
-      break
-
-      case "CargaFuego":
-        if(this.sesion.render.estadoControl.critico){
-          caster.recursoEspecial++;
-        }
-        if(caster.recursoEspecial>=3){
-          hechizo.hechizo_encadenado_id=12;
-        }
-      break;
-
-      case "CargaFrio":
-        if(this.sesion.render.enemigos[objetivoEnemigos[0]].buff.find(i=> i.id==3)){
-          this.sesion.render.interfaz.objetivoPredefinido.enemigos = objetivoEnemigos.slice();
-          this.sesion.render.interfaz.objetivoPredefinido.heroes = objetivoHeroes.slice();
-          caster.recursoEspecial++;
-        }
-
-        if(caster.recursoEspecial>=3){
-          this.sesion.render.estadoControl.rngEncadenado=true;
-          hechizo.hechizo_encadenado_id=13;
-        }
-      break;
-
-      case "Proyectil":
-        if(this.sesion.render.estadoControl.rng >= 4){
-          this.sesion.render.estadoControl.rngEncadenado=false;
-          this.sesion.render.interfaz.objetivoPredefinido.enemigos= Object.assign([],objetivoEnemigos);
-          hechizo.hechizo_encadenado_id=15;
-        }else{
-          hechizo.hechizo_encadenado_id=0;
-        }
-
-        if(this.cuentaLanzamientoHechizo >= 2){
-          caster.recursoEspecial++;
-        }
-
-        if(caster.recursoEspecial>=3){
-          this.sesion.render.estadoControl.rngEncadenado=true;
-          this.sesion.render.interfazrender.interfaz.finido.enemigos= Object.assign([],objetivoEnemigos);
-          hechizo.hechizo_encadenado_id=14;
-        }
-
-        if(hechizo.id==14){
-          console.log("Lanzando Misil Resonante");
-          caster.recursoEspecial=0;
-        }
-      break;
-
-      case "Carga_Critico":
-        if(this.sesion.render.estadoControl.critico){
-          caster.recursoEspecial++;
-        }
-      break;
-
-      case "ResetPoder":
-        caster.recursoEspecial = 0;
-      break
     }
+
   }
 
     //-------------------------------
@@ -3009,7 +2803,8 @@ export class MazmorraService implements OnInit{
 
         var buff = Object.assign({},this.buff.find(i => i.id==hechizo.buff_id))
         buff["duracion"]= buff["duracion"]*this.sesion.jugadores.length;
-        buff["rng"]= this.sesion.render.estadoControl.rng;
+        buff["critico"]= this.estadoControl.critico;
+        buff["fortuna"]= this.estadoControl.fortuna;
         buff["nivelCaster"]= hechizo.nivelCaster;
         buff["tipoCaster"]= hechizo.tipoCaster;
         buff["indexCaster"]= hechizo.indexCaster;
@@ -3473,7 +3268,7 @@ export class MazmorraService implements OnInit{
           this.sesion.render.interfaz.objetivoPredefinido.enemigos.splice(j,1);
 
           if(this.sesion.render.interfaz.objetivoPredefinido.enemigos.length==0){
-            this.sesion.render.estadoControl.detenerHechizo= true;
+            this.estadoControl.detenerHechizo= true;
           }else{
             //WARNING MEJORA: RESTARLE 1 AL RESTO DE OBJETIVOS PREDEFINIDOS POR ENCIMA DEL QUE SE QUITA.
           }
@@ -3523,16 +3318,16 @@ export class MazmorraService implements OnInit{
 
   activarRNG(){
 
-    if(this.sesion.render.estadoControl.rngEncadenado){
+    if(this.estadoControl.rngEncadenado){
       //this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: this.sesion.render, emisor: this.sesion.render.personaje});
             console.log("RNG ENCADENADO");
             this.lanzarHechizo();
             return;
         }
 
-    //this.sesion.render.estadoControl.estado="rng";
-    //this.sesion.render.estadoControl.rng=0;
-    //this.sesion.render.estadoControl.rngEncadenado=true;
+    //this.estadoControl.estado="rng";
+    //this.estadoControl.rng=0;
+    //this.estadoControl.rngEncadenado=true;
 
     console.log("MOSTRANDO RNG")
     this.interfazService.activarInterfazRNG(this.sesion.render.heroes[this.personaje.heroeTurnoIndex].estadisticas.probabilidadCritico);
@@ -3548,7 +3343,7 @@ export class MazmorraService implements OnInit{
     var multiplicador= 1;
     multiplicador= 1+ valorRng / 6;
     if(valorRng==6){
-      this.sesion.render.estadoControl.critico= true;
+      this.estadoControl.critico= true;
     }
     if(valorRng==1){multiplicador=0}
     return multiplicador;
@@ -3587,7 +3382,7 @@ export class MazmorraService implements OnInit{
 
       case "cambiar sala":
         this.cambiarSala(comando.valor);
-        this.sesion.render.estadoControl.estado="seleccionAccion";
+        this.estadoControl.estado="seleccionAccion";
         this.loggerService.toggleLogger(false);
         this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "forzarSincronizacion", contenido: this.sesion.render});
       break;
@@ -3618,7 +3413,7 @@ export class MazmorraService implements OnInit{
         //Si toggle Logger:
         if(comando.toggle){
             this.loggerService.toggleLogger(false);
-            this.sesion.render.estadoControl.estado="seleccionAccion";
+            this.estadoControl.estado="seleccionAccion";
         }
 
   }
@@ -3661,7 +3456,7 @@ export class MazmorraService implements OnInit{
 
     switch(comando.comando){
       case "cancelar":
-        this.sesion.render.estadoControl.estado="seleccionAccion";
+        this.estadoControl.estado="seleccionAccion";
         this.seleccionarEnemigos = false;
         this.seleccionarHeroes = false;
         this.cancelarObjetivo();
@@ -3677,7 +3472,7 @@ export class MazmorraService implements OnInit{
 
           this.seleccionObjetivo(comando.valor);
 
-          switch(this.sesion.render.estadoControl.tipoObjetivo){
+          switch(this.estadoControl.tipoObjetivo){
             case "EU":
                             if(this.sesion.render.enemigos[0]==undefined){
                                 this.appService.mostrarDialogo("Informativo",{titulo: "No se puede lanzar el hechizo",contenido: "No hay objetivos posibles para lanzar el hechizo. Cancelando lanzamiento..."})
@@ -3790,17 +3585,17 @@ export class MazmorraService implements OnInit{
   seleccionEnemigo(numEnemigo):void{
     console.log("Selecionando Enemigo "+numEnemigo);
 
-    if(this.sesion.render.estadoControl.tipoObjetivo=="EU"){
+    if(this.estadoControl.tipoObjetivo=="EU"){
     }
 
-    if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
+    if(this.estadoControl.estado=="seleccionAccion"){
         console.log("Mostrando Detalle");
         this.interfazService.activarInterfazDetalle("enemigo",this.sesion.render.enemigos[numEnemigo]);
     }
 
     //Si castea heroe:
     if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoEnemigo"){
-      if(this.sesion.render.estadoControl.tipoObjetivo=="EU"){
+      if(this.estadoControl.tipoObjetivo=="EU"){
         for(var i = 0;i < this.sesion.render.enemigos.length; i++){
           this.sesion.render.enemigos[i].objetivo = false;
         }
@@ -3825,7 +3620,7 @@ export class MazmorraService implements OnInit{
 
     console.log("Heroe seleccionado: ");
 
-    if(this.sesion.render.estadoControl.estado=="seleccionAccion"){
+    if(this.estadoControl.estado=="seleccionAccion"){
         console.warn("Mostrando Detalle",this.sesion.render.heroes[index]);
         this.interfazService.activarInterfazDetalle("heroe",this.sesion.render.heroes[index]);
     }
@@ -3856,7 +3651,7 @@ export class MazmorraService implements OnInit{
 
     switch(pantalla){
       case "elegirHechizo":
-        //this.sesion.render.estadoControl.estado="eligiendoHechizo";
+        //this.estadoControl.estado="eligiendoHechizo";
 
         //Inicializar interfazService con datos de hechizos:
         this.interfazService.setHeroesHech(this.hechizos);
@@ -3914,8 +3709,8 @@ export class MazmorraService implements OnInit{
 
   lanzarRng(critico:boolean, fortuna: boolean):void{
 
-    this.sesion.render.estadoControl.rng= critico;
-    this.sesion.render.estadoControl.fortuna= fortuna;
+    this.estadoControl.critico= critico;
+    this.estadoControl.fortuna= fortuna;
 
     this.lanzarHechizo();
     this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: this.sesion.render});
@@ -4062,13 +3857,17 @@ export class MazmorraService implements OnInit{
     this.tiempoActual = this.tiempoMaxTurno;
     console.warn("Activando Temporizador: ",this.tiempoMaxTurno)
     if(!this.temporizador){
-      this.temporizador = setInterval(() => {
-        this.tiempoActual--;
-        if(this.tiempoActual == 0){
-          this.tiempoActual = this.tiempoMaxTurno;
-          this.pasarTurno();
-        }
-      },1000)
+
+     this.zone.runOutsideAngular(() => {
+        this.temporizador = setInterval(() => {
+          this.tiempoActual--;
+          if(this.tiempoActual == 0){
+            this.tiempoActual = this.tiempoMaxTurno;
+            this.pasarTurno();
+          }
+        },1000)
+      });
+
     }
   }
 

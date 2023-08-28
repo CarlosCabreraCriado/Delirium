@@ -1,5 +1,6 @@
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from '../../app.service';
 import { IndexService } from './index.service';
@@ -16,165 +17,183 @@ import { BotonComponent } from '../boton/boton.component';
 
 export class IndexComponent implements OnInit{
 
-	constructor(public appService: AppService, public indexService: IndexService/*, public electronService: ElectronService*/, private http: HttpClient, private socketService:SocketService, ) { }
+  constructor(public appService: AppService, public indexService: IndexService/*, public electronService: ElectronService*/, private http: HttpClient, private socketService:SocketService, ) {
 
-	private cursorSuscripcion: Subscription = null;
-	
-	private tecla: string;
-	public cursor: number;
-	private cursorMin: number= 1;
-	private cursorMax: number= 2;
-	private cuenta: any = {};
-	public procesando: boolean= false;
-	private pantalla: string= "inicio";
-	private errorInicio: string = null;
-  	
-  	@ViewChild('clave',{static: false}) claveElement:ElementRef; 
-  	@ViewChild('usuario',{static: false}) usuarioElement:ElementRef; 
+    this.formLogin = new FormGroup({
+      usuario: new FormControl(""),
+      password: new FormControl("")
+    })
+  }
 
-	async ngOnInit(){
+  private cursorSuscripcion: Subscription = null;
 
-		this.logout(); //Logout al cargar pagina 
+  private tecla: string;
+  public cursor: number;
+  private cursorMin: number= 1;
+  private cursorMax: number= 2;
+  private cuenta: any = {};
+  public procesando: boolean= false;
+  private pantalla: string= "inicio";
+  private errorInicio: string = null;
 
-		this.appService.claveValida= false;
-		this.cursor= this.cursorMin;
-		this.cursorSuscripcion = this.appService.observarTeclaPulsada$.subscribe(
+  //Form Group:
+  private formLogin: FormGroup;
+
+  //Campos Hechizos:
+  private usuario: FormControl;
+  private password: FormControl;
+
+  @ViewChild('clave',{static: false}) claveElement:ElementRef;
+  @ViewChild('usuario',{static: false}) usuarioElement:ElementRef;
+
+  async ngOnInit(){
+
+    this.logout(); //Logout al cargar pagina
+
+    this.appService.claveValida= false;
+    this.cursor= this.cursorMin;
+    this.cursorSuscripcion = this.appService.observarTeclaPulsada$.subscribe(
         (val) => {
           this.tecla= val;
           this.actualizarComponente();
         }
       );
 
-		this.cuenta= await this.appService.getCuenta();
-      
+    this.cuenta= await this.appService.getCuenta();
+
         //this.cuenta = {}
 
-		console.log(this.cuenta);
+    console.log(this.cuenta);
 
-		if(this.cuenta==null || this.cuenta.nombre==undefined){
-			this.cuenta = {
-				nombre: "Sesión no iniciada."
-			};
+    if(this.cuenta==null || this.cuenta.nombre==undefined){
+      this.cuenta = {
+        nombre: "Sesión no iniciada."
+      };
             this.appService.setSesion(null)
-		}else{
-			this.appService.claveValida= true;
-		}
+    }else{
+      this.appService.claveValida= true;
+    }
 
-		setTimeout(()=>{    
-      		this.appService.mostrarPantallacarga(false);
- 		}, 3000);
+    setTimeout(()=>{
+          this.appService.mostrarPantallacarga(false);
+    }, 3000);
 
-	}
+  }
 
+  focusPassword() {
+      this.claveElement.nativeElement.focus();
+  }
 
-	actualizarComponente(): void{
-		
-		if(this.appService.control=="null"){
-        	this.appService.setControl("index");
-        	this.appService.setEstadoApp("index");
-        	return;
-      	}
+  actualizarComponente(): void{
 
-		if(this.appService.control!="index"){return;}
+    if(this.appService.control=="null"){
+          this.appService.setControl("index");
+          this.appService.setEstadoApp("index");
+          return;
+        }
 
-		switch(this.tecla){
-			
-			case "Enter":
-				this.checkClave();
-			break;
-		}
-	}
+    if(this.appService.control!="index"){return;}
 
-	jugar():void{
-		this.pantalla= "jugar";
-	}
+    switch(this.tecla){
 
-	configuracion():void{
-		this.pantalla= "inicio";
-		this.appService.mostrarDialogo("Informativo",{contenido:"Opción no disponible"})
-	}
+      case "Enter":
+        //this.checkClave();
+      break;
+    }
+  }
 
-	mostrarCrearCuenta(){
-		this.appService.mostrarCrearCuenta()
-	}
+  jugar():void{
+    this.pantalla= "jugar";
+  }
 
-	retroceder():void{
-		this.pantalla="inicio";
-	}
+  configuracion():void{
+    this.pantalla= "inicio";
+    this.appService.mostrarDialogo("Informativo",{contenido:"Opción no disponible"})
+  }
 
-	logout():void{
-		this.cuenta = {};
-		this.socketService.enviarSocket("logout",this.cuenta);
-		this.appService.claveValida = false;
-		this.appService.setCuenta(this.cuenta);
-		this.appService.setSala({});
-	}
+  mostrarCrearCuenta(){
+    console.warn("Crear cuenta Bloqueado Actualmente");
+    //this.appService.mostrarCrearCuenta()
+  }
 
-	renderizarPantalla(pantalla):string{
-		var clase:string;
-		if(this.pantalla==pantalla){
-			clase="visible";
-		}else{
-			clase="oculto";
-		}
-		return clase;
-	}
+  retroceder():void{
+    this.pantalla="inicio";
+  }
 
-	checkClave():void{
+  logout():void{
+    this.cuenta = {};
+    this.socketService.enviarSocket("logout",this.cuenta);
+    this.appService.claveValida = false;
+    this.appService.setCuenta(this.cuenta);
+    this.appService.setSala({});
+  }
 
-		if(this.appService.claveValida==false){
-					this.procesando=true;
-					console.log("Comprobando credenciales: ");
-					console.log("Usuario: "+ this.usuarioElement.nativeElement.value);
-					console.log("Password: "+ this.claveElement.nativeElement.value);
+  renderizarPantalla(pantalla):string{
+    var clase:string;
+    if(this.pantalla==pantalla){
+      clase="visible";
+    }else{
+      clase="oculto";
+    }
+    return clase;
+  }
 
-					var credenciales = {
-						usuario: this.usuarioElement.nativeElement.value,
-						password: this.claveElement.nativeElement.value
-					}
+  checkClave():void{
 
-					this.http.post(this.appService.ipRemota+"/deliriumAPI/login",credenciales).subscribe((data) => {
+    if(this.appService.claveValida==false){
+          this.procesando=true;
+          console.log("Comprobando credenciales: ");
+          console.log("Usuario: "+ this.usuarioElement.nativeElement.value);
+          console.log("Password: "+ this.claveElement.nativeElement.value);
 
-                        //Error 
-                        if(!data["success"]){
-						    this.procesando= false;
-						    this.appService.claveValida= false;
-						    this.appService.mostrarDialogo("Error",{contenido:"El usuario o la contraseña no son validos."});
-                        }else{
+          var credenciales = {
+            usuario: this.usuarioElement.nativeElement.value,
+            password: this.claveElement.nativeElement.value
+          }
 
-                            if(data){
+          this.http.post(this.appService.ipRemota+"/deliriumAPI/login",credenciales).subscribe((data) => {
 
-                                console.log("DATOS RECIBIDOS")
-                                console.log(data)
+                //Error
+                if(!data["success"]){
+                  this.procesando= false;
+                  this.appService.claveValida= false;
+                  this.claveElement.nativeElement.value = "";
+                  this.appService.mostrarDialogo("Error",{contenido:"El usuario o la contraseña no son validos."});
+                }else{
 
-                                //Inicialización de datos:
-                                this.appService.setCuenta(data["cuenta"])
-                                this.appService.setToken(data["token"]);
-                                this.appService.setDatosJuego(data["datosJuego"]);
-                                this.appService.setEventos(data["eventos"]);
-                                this.appService.setPerfil(data["perfil"]);
+                    if(data){
 
-                                this.socketService.enviarSocket('validacion', data["cuenta"]);
-                                
-                                //Retirar Pantalla Carga:
-                                this.appService.claveValida= true;
-                                this.errorInicio = null;
-                                this.procesando= false;
-                                this.appService.finalizarLogin();
-                            }
-                        }
+                        console.log("DATOS RECIBIDOS")
+                        console.log(data)
 
-					},(err) => {
-						console.log(err);
-						this.procesando= false;
-						this.appService.claveValida= false;
-						this.errorInicio= err.error;
-						this.appService.mostrarDialogo("Error",{contenido:"El usuario o la contraseña no son validos."});
-					});
-						
-					this.claveElement.nativeElement.value = "";
-				}
-	}
+                        //Inicialización de datos:
+                        this.appService.setCuenta(data["cuenta"])
+                        this.appService.setToken(data["token"]);
+                        this.appService.setDatosJuego(data["datosJuego"]);
+                        this.appService.setEventos(data["eventos"]);
+                        this.appService.setPerfil(data["perfil"]);
+
+                        this.socketService.enviarSocket('validacion', data["cuenta"]);
+
+                        //Retirar Pantalla Carga:
+                        this.appService.claveValida= true;
+                        this.errorInicio = null;
+                        this.procesando= false;
+                        this.appService.finalizarLogin();
+                    }
+                }
+
+          },(err) => {
+            console.log(err);
+            this.procesando= false;
+            this.appService.claveValida= false;
+            this.errorInicio= err.error;
+            this.claveElement.nativeElement.value = "";
+            this.appService.mostrarDialogo("Error",{contenido:"El usuario o la contraseña no son validos."});
+          });
+
+        }
+  }
 
 }
 

@@ -97,7 +97,7 @@ export class IvyPinch {
     /* Touchstart */
 
     handleTouchstart = (event: any) => {
-        this.touches.addEventListeners("mousemove", "handleMousemove");
+        this.touches.addEventListeners("mousemove", "handleMousemove",{pasive: true});
         this.getElementPosition();
 
         if (this.eventType === undefined) {
@@ -127,7 +127,7 @@ export class IvyPinch {
             }
 
             // Align image
-            if (this.eventType === 'pinch' || 
+            if (this.eventType === 'pinch' ||
                 this.eventType === 'pan' && this.scale > this.minPanScale) {
 
                 this.alignImage();

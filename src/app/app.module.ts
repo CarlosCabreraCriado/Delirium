@@ -13,7 +13,7 @@ import { MatInputModule} from '@angular/material/input';
 import { MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { MatDialogModule} from '@angular/material/dialog';    
+import { MatDialogModule} from '@angular/material/dialog';
 import { MatStepperModule} from '@angular/material/stepper';
 import { DragDropModule} from '@angular/cdk/drag-drop';
 
@@ -23,7 +23,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 
-//Declaración de componentes: 
+//Declaración de componentes:
 import { IndexComponent } from './comun/index/index.component';
 import { MazmorraComponent } from './comun/mazmorra/mazmorra.component';
 import { CargaComponent } from './comun/carga/carga.component';
@@ -50,6 +50,7 @@ import { CheckboxComponent } from './comun/checkbox/checkbox.component';
 import { FrameComponent } from './comun/frame/frame.component';
 import { InMapComponent } from './comun/inmap/inmap.component';
 import { MapaGeneralComponent } from './comun/mapa-general/mapaGeneral.component';
+import { MapaMazmorraComponent } from './comun/mapa-mazmorra/mapa-mazmorra.component';
 import { CreditoComponent } from './comun/credito/credito.component';
 import { HeroeComponent } from './comun/heroe/heroe.component';
 import { BarraComponent } from './comun/barra/barra.component';
@@ -120,6 +121,7 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         CheckboxComponent,
         InMapComponent,
         MapaGeneralComponent,
+        MapaMazmorraComponent,
         CreditoComponent,
         HeroeComponent,
         BarraComponent,

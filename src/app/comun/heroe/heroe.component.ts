@@ -11,15 +11,15 @@ import { Component , ChangeDetectionStrategy, Input , OnInit } from '@angular/co
 export class HeroeComponent implements OnInit {
 
     //Datos:
-	@Input() renderMazmorra: any = null; 
-	@Input() renderHeroe: any; 
+	@Input() renderMazmorra: any = null;
+	@Input() renderHeroe: any;
 
     //Opciones:
-	@Input() marcador: string = "DPS"; 
-	@Input() lider: boolean = false; 
+	@Input() marcador: string = "DPS";
+	@Input() lider: boolean = false;
 	@Input() seleccionable: boolean = false;
 	@Input() desplegable: boolean = false;
-	@Input() pantalla: string = "mazmorra"; 
+	@Input() pantalla: string = "mazmorra";
 	@Input() desplegadoDefecto: boolean = true;
 
     public estadoDesplegado: boolean= true;
@@ -47,7 +47,7 @@ export class HeroeComponent implements OnInit {
 
 		//Renderiza marco de turno:
 		if(this.renderHeroe.turno){
-			clases = clases + " animate__animated animate__infinite animate__pulse";
+			//clases = clases + " animate__animated animate__infinite animate__pulse";
 		}
 
 		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
@@ -122,7 +122,7 @@ export class HeroeComponent implements OnInit {
 		}else{
 			left= 100 - (this.renderHeroe.escudo/2);
 		}
-		
+
 		return left+"%";
 	}
 

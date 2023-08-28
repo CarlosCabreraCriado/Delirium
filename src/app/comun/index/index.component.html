@@ -1,19 +1,19 @@
 
-<!-- Diseño Fondo --> 
+<!-- Diseño Fondo -->
 
 <!--
 <video *ngIf="appService.dispositivo=='Desktop'" autoplay class="video-fondo" id="video-fondo" oncanplay="this.muted=true" loop poster="assets/General/Fondo-Papiro.png">
   <source src="assets/videos/video-fondo.mp4" type="video/mp4"/>
-</video> 
+</video>
 -->
 
 <img src="assets/General/Fondo-Papiro.png" class="Fondo-papiro" alt="Fondo-papiro">
 
-<!-- Pantalla de Inicio --> 
+<!-- Pantalla de Inicio -->
 <div id="ContenedorInicio" class="ContenedorInicio visible">
-  
-  <div id="contenedorLogo"> 
-    <img class="Logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo"> 
+
+  <div id="contenedorLogo">
+    <img class="Logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo">
   </div>
 
 
@@ -21,23 +21,26 @@
 	  <div class="Texto2 bloque textoIniciarSesion">Inicar sesión</div>
 	  <hr class="Texto2 bloque separador">
 
-      <div class="wrapperInterior">
-          <div *ngIf="!procesando" class="wrapperCampo"> 
+      <form class="wrapperInterior" [formGroup]="formLogin">
+          <div *ngIf="!procesando" class="wrapperCampo">
             <div class="Texto2 bloque texto">Usuario:</div>
             <div class="Texto2 bloque input">
-              <input #usuario type="text" class="Texto2"/>
+              <input matInput formControlName="usuario" #usuario (keyup.enter)="focusPassword()" type="text" class="Texto2"/>
             </div>
           </div>
 
-          <div *ngIf="!procesando" class="wrapperCampo"> 
+          <div *ngIf="!procesando" class="wrapperCampo">
               <div class="Texto2 bloque texto">Contraseña:</div>
               <div class="Texto2 bloque input">
-                  <input #clave type="password" class="Texto2"/>
+                  <input matInput formControlName="password" (keyup.enter)="checkClave()" #clave type="password" class="Texto2"/>
               </div>
           </div>
-          <botonComponent *ngIf="!procesando" class="contenedorBoton" [tipoBoton]="2" [color]="'violeta'" [texto]="'Iniciar'" (click)="checkClave();"></botonComponent>
+
+          <div *ngIf="!procesando" class="wrapperCampo wrapperBoton">
+            <botonComponent *ngIf="!procesando" class="contenedorBoton" [tipoBoton]="2" [color]="'violeta'" [texto]="'Iniciar'" (click)="checkClave();"></botonComponent>
+          </div>
           <div *ngIf="procesando" class="lds-dual-ring"></div>
-      </div>
+      </form>
   </div>
 
   <div id="botonCrearCuenta" class="Texto2" (click)="mostrarCrearCuenta()">
@@ -45,7 +48,7 @@
   </div>
 
  </div>
- 
- 
+
+
 
 

@@ -9,8 +9,15 @@
     <div class="frameCirculo">
     <div *ngIf="renderHeroe.vida==0" class="frameAnimacionesFrame shaderAbatido shaderFuego"></div>
       <img *ngIf="renderHeroe.vida==0" class="imagenAbatido" src="../../../assets/ui/icons/Icon_01.png"/>
-    <div class="frameAnimacionesFrame" [ngClass]="{'shaderElectrico': renderHeroe.turno}"></div>
-    <div class="frameAnimacionesFrame" [ngClass]="{'shaderFuego': renderHeroe.controlEnemigos}"></div>
+
+    <div class="frameAnimacionesFrame" *ngIf="renderHeroe.turno">
+      <img class="spriteElectrico" src="../../../assets/Efectos/37.png"/>
+    </div>
+
+    <div class="frameAnimacionesFrame" *ngIf="renderHeroe.controlEnemigos">
+      <img class="spriteFuego" src="../../../assets/Efectos/38.png"/>
+    </div>
+
 		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>
 
         <img (click)="toggleDesplegable()"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>

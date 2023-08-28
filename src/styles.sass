@@ -177,15 +177,19 @@ $colorSecundario: #ff8d40
     box-shadow: inset 0 0 $path-width $path-width
     animation: AnimacionFocus $anime-time linear infinite
 
-.shaderElectrico
-  background-size: 4000% 100%
-  background-image: url("./assets/Efectos/37.png")
-  -webkit-animation: shader 2s steps(39) infinite
+.spriteElectrico
+  -webkit-animation: shaderTransform 2s steps(40) infinite
 
-.shaderFuego
-  background-size: 4000% 100%
-  background-image: url("./assets/Efectos/35.png")
-  -webkit-animation: shader 2s steps(39) infinite
+.spriteFuego
+  position: absolute
+  height: 100%
+  -webkit-animation: shaderTransform 2s steps(40) infinite
+
+@keyframes shaderTransform
+  0%
+    transform: translateX(0%)
+  100%
+    transform: translateX(-100%)
 
 @keyframes shader
   0%

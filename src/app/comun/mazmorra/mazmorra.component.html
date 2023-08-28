@@ -193,28 +193,11 @@
             MAPA MAZMORRA
      ************************************************* -->
 
-	 <div id="contenedorMapaMazmorra">
-
-        <pinch-zoom #pinchZoom id="pinch-zoom"
-            [limitPan]="false"
-            [minPanScale]="1"
-            [disableZoomControl]="'disable'"
-            [limit-zoom]="10">
-          <!-- Contenedor Isometrico -->
-          <div #canvasIsometrico class="contenedorIsometrico">
-
-              <div  class="canvasIsometrico" [ngStyle]= "this.estiloIsometrico">
-
-                <div *ngIf="this.mazmorraService.mostrarMazmorra">
-                <div *ngFor="let elementoIsometrico of this.mazmorraService.mazmorra.isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="clickElemento(elementoIsometrico)" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
-                    <img  class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
-                </div>
-                </div>
-              </div>
-          </div>
-     </pinch-zoom>
-
-    </div>
+	<mapaMazmorraComponent id="mapaMazmorra"
+      [isometrico]="this.mazmorraService.mazmorra.isometrico"
+      [escalaIsometrico]="0.3"
+      [salasDescubiertas]="this.mazmorraService.sesion.render.mazmorra.salasDescubiertas">
+  </mapaMazmorraComponent>
 
 </div>
 

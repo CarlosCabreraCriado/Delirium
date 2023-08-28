@@ -1153,46 +1153,6 @@ $highlightObjetivoColor: red
   height: 100%
   mix-blend-mode: multiply
 
-#contenedorMapaMazmorra
-  .contenedorIsometrico
-    position: relative
-    mix-blend-mode: multiply
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    //transform: translate(-50%,-50%) scale(0.7)
-    &::-webkit-scrollbar
-        display: none
-
-    .mensajeIsometricoVacio
-        position: absolute
-        width: 100%
-        text-align: center
-        font-size: 30px
-        top: 45%
-
-    .canvasIsometrico
-        position: absolute
-        width: 3496px
-        height: 2480px
-        mix-blend-mode: multiply
-        z-index: 5
-        transform: scale(0.8)
-
-        .elementoIsomentrico
-            position: absolute
-            pointer-events: none
-            transform: translate(-50%,-50%)
-
-        .imagenElementoIsometrico
-            width: 100%
-            //height: 100%
-            &:hover
-                filter: sepia(100%) saturate(30)
-
-
-
 // .animacionNumero
 //   position: absolute
 //   font-size: 100px

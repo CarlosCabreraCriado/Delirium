@@ -23,7 +23,7 @@ type PropertyName = keyof ComponentProperties;
 	selector: 'pinch-zoom, [pinch-zoom]',
     exportAs: 'pinchZoom',
     templateUrl: './pinch-zoom.component.html',
-    styleUrls: ['./pinch-zoom.component.sass'],
+    styleUrls: ['./pinch-zoom.component.sass']
 })
 
 export class PinchZoomComponent implements OnDestroy {
@@ -200,7 +200,7 @@ export class PinchZoomComponent implements OnDestroy {
 
     ngOnInit(){
         this.initPinchZoom();
-        
+
         /* Calls the method until the image size is available */
         this.detectLimitZoom();
     }
