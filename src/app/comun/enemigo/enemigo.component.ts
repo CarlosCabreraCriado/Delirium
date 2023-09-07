@@ -11,13 +11,13 @@ import { Component ,ChangeDetectionStrategy, Input, OnInit } from '@angular/core
 export class EnemigoComponent implements OnInit{
 
 	@Input() renderEnemigo: any;
-	@Input() renderMazmorra: any = undefined;
+	@Input() estadoControl: any = undefined;
 	@Input() indexEnemigo: number;
 	@Input() seleccionable: boolean;
 	@Input() desplegable: boolean = false;
 	@Input() desplegadoDefecto: boolean = true;
 
-    public estadoDesplegado: boolean= true;
+  public estadoDesplegado: boolean= true;
 
 	constructor(){
     }
@@ -60,78 +60,69 @@ export class EnemigoComponent implements OnInit{
 	renderizarMarcoEnemigo(): string{
 		var clases = "Enemigo-"+(this.indexEnemigo+1);
 
-        //Evita formateo si no se especifica renderMazmorra;
-        if(this.renderMazmorra==undefined){
-            return clases
-        }
+    //Evita formateo si no se especifica renderMazmorra;
+    if(this.estadoControl==undefined){
+        return clases
+    }
 
 		if(this.seleccionable){
-			console.log("SELECCIONANDO")
 			clases = clases + " seleccionable";
 		}
 
 		//Renderiza Marco de turno:
-		if(this.renderMazmorra.enemigos[this.indexEnemigo].turno){
+		if(this.renderEnemigo.turno){
 			clases = clases + " Turno";
 		}
 
-		//Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
- 		var esHeroe = false;
- 		var esEnemigo = false;
- 		for(var k=0; k <this.renderMazmorra.heroes.length; k++){
- 			if(this.renderMazmorra.heroes[k].turno){
- 				esHeroe= true;
-  				break;
- 			}
- 		}
-
- 		for(var k=0; k <this.renderMazmorra.enemigos.length; k++){
- 			if(this.renderMazmorra.enemigos[k].turno){
- 				esEnemigo= true;
- 				break;
- 			}
- 		}
+    //Determina si es objetivo:
+    var esObjetivo = false;
+    for(var i = 0; i < this.estadoControl.objetivosEnemigos.length; i++){
+      if(this.estadoControl.objetivosEnemigos[i] == this.indexEnemigo){
+        esObjetivo = true;
+        break;
+      }
+    }
 
 		//Renderiza Marco de objetivoAuxiliar:
-		if(this.renderMazmorra.enemigos[this.indexEnemigo].objetivoAuxiliar){
+		if(this.renderEnemigo.objetivoAuxiliar){
 
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="AM"){
+			if(this.estadoControl.tipoObjetivo=="AM"){
 				clases = clases + " ObjetivoAuxiliarAliado";
 			}
 
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EM"){
+			if(this.estadoControl.tipoObjetivo=="EM"){
 				clases = clases + " ObjetivoAuxiliarEnemigo";
 			}
 
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="OM"){
-				if(esHeroe){
+			if(this.estadoControl.tipoObjetivo=="OM"){
+				if(this.estadoControl.esTurnoHeroe){
 					clases = clases + " ObjetivoAuxiliarEnemigo";
 				}
-				if(esEnemigo){
+				if(this.estadoControl.esTurnoEnemigo){
 					clases = clases + " ObjetivoAuxiliarAliado";
 				}
 			}
 		}
 
 		//Renderiza Marco de objetivo:
-		if(this.renderMazmorra.enemigos[this.indexEnemigo].objetivo){
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EU"){
+		if(esObjetivo){
+			if(this.estadoControl.tipoObjetivo=="EU"){
 				clases = clases + " ObjetivoEnemigo";
 			}
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="AU"){
+			if(this.estadoControl.tipoObjetivo=="AU"){
 				clases = clases + " ObjetivoAliado";
 			}
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="EM"){
+			if(this.estadoControl.tipoObjetivo=="EM"){
 				clases = clases + " ObjetivoEnemigo";
 			}
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="AM"){
+			if(this.estadoControl.tipoObjetivo=="AM"){
 				clases = clases + " ObjetivoAliado";
 			}
-			if(this.renderMazmorra.estadoControl.tipoObjetivo=="OM"){
-				if(esHeroe){
+			if(this.estadoControl.tipoObjetivo=="OM"){
+				if(this.estadoControl.esTurnoHeroe){
 					clases = clases + " ObjetivoEnemigo";
 				}
-				if(esEnemigo){
+				if(this.estadoControl.esTurnoEnemigo){
 					clases = clases + " ObjetivoAliado";
 				}
 			}

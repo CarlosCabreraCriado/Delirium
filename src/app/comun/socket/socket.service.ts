@@ -11,7 +11,7 @@ import { AppService } from '../../app.service';
 export class SocketService {
 
     //Emisor de eventos Socket:
-	@Output() emisorEventoSocket: EventEmitter<any> = new EventEmitter();
+	  @Output() emisorEventoSocket: EventEmitter<any> = new EventEmitter();
 
     //Recepción de eventos:
     public eventoSocket = this.socket.fromEvent<any>('eventoSocket');

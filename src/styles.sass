@@ -44,6 +44,13 @@ body
     overflow-x: hidden
     overflow-y: hidden
     cursor: url(assets/Cursor/Metal_Norm.cur), pointer
+    user-select: none
+
+img
+  user-drag: none
+  -webkit-user-drag: none
+  user-drag: none
+  -webkit-touch-callout: none
 
 .Texto1
     font-size: 40px
@@ -178,11 +185,13 @@ $colorSecundario: #ff8d40
     animation: AnimacionFocus $anime-time linear infinite
 
 .spriteElectrico
+  will-change: transform
   -webkit-animation: shaderTransform 2s steps(40) infinite
 
 .spriteFuego
   position: absolute
   height: 100%
+  will-change: transform
   -webkit-animation: shaderTransform 2s steps(40) infinite
 
 @keyframes shaderTransform

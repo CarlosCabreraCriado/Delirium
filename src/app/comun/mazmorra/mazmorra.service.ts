@@ -1,4 +1,4 @@
-import { Injectable, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
+import { Injectable, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 import { AppService } from '../../app.service';
 import { LoggerService } from '../logger/logger.service';
 import { PausaService } from '../pausa/pausa.service';
@@ -16,36 +16,55 @@ import { Subscription } from "rxjs";
 import { RenderMazmorra} from './render.class';
 
 interface EstadoControl {
-      estado: String,
-      esTurnoPropio: Boolean,
-      esTurnoHeroe: Boolean,
-      esTurnoEnemigo: Boolean,
-      turnoIndex: Number;
-      hechizo: Number,
-      tipoObjetivo: String,
-      critico: Boolean,
-      fortuna: Boolean,
-      rngEncadenado: Boolean,
-      detenerHechizo: Boolean
+      estado: string,
+      esTurnoPropio: boolean,
+      esTurnoHeroe: boolean,
+      esTurnoEnemigo: boolean,
+      turnoIndex: number;
+      heroePropioIndex: number;
+      hechizoId: number,
+      tipoObjetivo: string,
+      critico: boolean,
+      fortuna: boolean,
+      fallo: boolean,
+      pifia: boolean,
+      rngEncadenado: boolean,
+      detenerHechizo: boolean,
+      objetivosEnemigos: number[],
+      objetivosHeroes: number[]
+}
+
+interface ConfiguracionHechizo {
+      esEnemigo: boolean,
+      esHeroe: boolean,
+      tipoCaster: "heroes" | "enemigos",
+      caster: any,
+      indexCaster: number,
+      indexHechizo: number,
+      nivelCaster: number,
+      critico: boolean,
+      fortuna: boolean,
+      fallo: boolean,
+      pifia: boolean,
+      objetivosEnemigos: number[],
+      objetivosHeroes: number[]
 }
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class MazmorraService implements OnInit{
+export class MazmorraService {
 
   //Variables generales:
   public cuenta: any;
   public perfil: any;
   public sesion: any;
+  private hash: number;
+  private hashRecibido: number;
+  private flagCheckHash: boolean;
 
   public estadoControl: EstadoControl;
-
-  public heroeIndex: number;
-  public esTurnoPropio: boolean = false;
-  public esTurnoHeroe: boolean = false;
-  public esTurnoEnemigo: boolean = false;
 
   public sala: any = {};
   public dispositivo= "";
@@ -116,7 +135,7 @@ export class MazmorraService implements OnInit{
   public estiloIsometrico: any = {};
 
   //Declara Suscripcion Evento Socket:
-    private socketSubscripcion: Subscription
+  private socketSubscripcion: Subscription
 
   musicaMazmorraPlay(): void{
       this.musicaMazmorra.src = "./assets/musica/musica-mazmorra.mp3";
@@ -136,39 +155,6 @@ export class MazmorraService implements OnInit{
 
     constructor(private zone: NgZone, private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) {
 
-  }
-
-  ngOnInit(){
-
-    //Suscripcion Socket:
-        /*
-        this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
-          if(data.emisor== this.appService.getCuenta().then((result) => {return result.nombre}) && this.appService.getCuenta().then((result) => {return result.tipo})==data.tipoEmisor){console.log("EVITANDO "+data.peticion);return;}
-          switch(data.peticion){
-            case "log":
-              console.log("Peticion: "+data.peticion);
-                console.log("Contenido: ");
-                console.log(data.contenido);
-            break;
-            //case "estadoSala":
-            //  console.log("Peticion: "+data.peticion);
-              //  console.log("Contenido: ");
-              //  console.log(data.contenido);
-              //  this.sala = data.contenido;
-              //  console.log("SALA: ")
-              //  console.log(this.sala);
-              //
-            //break;
-            case "cerrarSala":
-              console.log("Peticion: "+data.peticion);
-                console.log("Contenido: ");
-                console.log(data.contenido);
-                this.appService.setSala(this.sala);
-                console.log(this.sala);
-            break;
-          }
-        });
-        */
   }
 
   async reloadDatos(){
@@ -209,15 +195,17 @@ export class MazmorraService implements OnInit{
     console.log("ESTADO: "+this.estadoControl.estado);
 
     //Router del Logger:
-    if(this.estadoControl.estado=="looger"){
+    if(this.estadoControl.estado=="logger"){
       if(tecla=="Enter"){
-        this.loggerService.procesarComando(this.sesion.render,this.sesion);
+        this.loggerService.procesarComando(this.sesion.render,this.sesion, this.estadoControl);
+        this.forceRender()
       }else{
         this.loggerService.addComando(tecla);
       }
       if(tecla=="Tab"){
         this.estadoControl.estado="seleccionAccion";
         this.loggerService.toggleLogger(false);
+        this.forceRender()
       }
       return;
     }
@@ -229,8 +217,9 @@ export class MazmorraService implements OnInit{
       ------------------------------------------------- */
       case "Tab":
       if(this.estadoControl.estado=="seleccionAccion"){
-        this.estadoControl.estado="looger";
+        this.estadoControl.estado="logger";
         this.loggerService.toggleLogger(true);
+        this.forceRender()
         return;
       }
       break;
@@ -256,13 +245,11 @@ export class MazmorraService implements OnInit{
       ************************************************* */
       case "ArrowRight":
         if(this.estadoControl.estado=="seleccionObjetivo" || this.estadoControl.estado=="hechizoEncadenado"){
-          this.moverObjetivo(1);
         }
       break;
 
       case "ArrowLeft":
         if(this.estadoControl.estado=="seleccionObjetivo" || this.estadoControl.estado=="hechizoEncadenado"){
-          this.moverObjetivo(-1);
         }
       break;
 
@@ -367,29 +354,30 @@ export class MazmorraService implements OnInit{
               esTurnoPropio: false,
               esTurnoHeroe: false,
               esTurnoEnemigo: false,
+              heroePropioIndex: 0,
               turnoIndex: 0,
-              hechizo: 0,
+              hechizoId: 0,
               tipoObjetivo: "EU",
               critico: false,
               fortuna: false,
+              fallo: false,
+              pifia: false,
               rngEncadenado: false,
-              detenerHechizo: false
+              detenerHechizo: false,
+              objetivosEnemigos: [],
+              objetivosHeroes: []
         }
+
+        this.estadoControl.heroePropioIndex = this.sesion.jugadores.findIndex(i => i.usuario==this.cuenta.usuario);
 
         //Inicialización de personaje:
         this.personaje = {
             nombre: "",
-            heroeIndex: 0,
-            heroeTurnoIndex: 0,
             imagenId: 0
         };
 
         this.personaje.nombre = this.sesion.jugadores.find(i => i.usuario==this.cuenta.usuario).personaje;
         this.personaje.imagenId = this.sesion.jugadores.find(i => i.usuario==this.cuenta.usuario).personaje.id_imagen;
-        this.personaje.heroeIndex = this.sesion.jugadores.findIndex(i => i.usuario==this.cuenta.usuario);
-        this.heroeIndex = this.sesion.jugadores.findIndex(i => i.usuario==this.cuenta.usuario);
-
-        console.warn("Heroe index: ",this.heroeIndex)
 
     //Inicializando variables de render:
     this.sesion.render.interfaz = {
@@ -411,78 +399,74 @@ export class MazmorraService implements OnInit{
     for (var i = 0; i < this.sesion.jugadores.length; i++) {
       this.calcularEstadisticasBase("heroe",i);
       this.sesion.render.heroes[i].estadisticas=this.sesion.render.heroes[i].estadisticasBase;
-      this.actualizarEscudo("heroe", i);
+      this.actualizarEscudo("heroes", i);
     }
 
     //Calcular estadisticas Enemigos:
     for (var i = 0; i < this.sesion.render.enemigos.length; i++) {
       this.calcularEstadisticasBase("enemigo",i);
       this.sesion.render.enemigos[i].estadisticas=this.sesion.render.enemigos[i].estadisticasBase;
-      this.actualizarEscudo("enemigo", i);
+      this.actualizarEscudo("enemigos", i);
     }
 
     //Inicializa turno:
-    this.sesion.render.registroTurno= [];
-    this.sesion.render.registroTurno[0]= 0;
-
-    //Detecta si alguien tiene el turno en la sesión:
-    var flagTurnoActivo = false;
-    for (var i = 0; i < this.sesion.render.heroes.length; i++) {
-            if(this.sesion.render.heroes[i].turno){
-                flagTurnoActivo = true;
-            }
-    }
-
-    //Si la sesion no tiene asignado Turno:
-    if(!flagTurnoActivo){
-      this.sesion.render.heroes[0].turno= true;
-    }
+    //this.sesion.render.registroTurno= [];
+    //this.sesion.render.registroTurno[0]= 0;
 
     this.checkTurno();
     this.checkTurnoPropio();
-
     this.sesion.render.numHeroes= this.sesion.jugadores.length;
 
-    //Inicializar Analisis de estadisticas:
-    this.sesion.render.estadisticas= [];
-    for(var i=0; i < this.sesion.render.numHeroes; i++){
-      this.sesion.render.estadisticas[i]={
-        daño: [],
-        heal: [],
-        escudo: [],
-        agro: []
+    //Inicializacion de flag de control enemigo:
+    if(this.estadoControl.esTurnoEnemigo){
+      this.sesion.render.heroes[this.sesion.render.indexActivacionEnemigo].controlEnemigos = true;
+    }
+
+    //Inicializar Analisis de estadisticas si no esta inicializado:
+    if(this.sesion.render.estadisticas.length==0){
+      this.sesion.render.estadisticas= [];
+      for(var i=0; i < this.sesion.render.numHeroes; i++){
+        this.sesion.render.estadisticas[i]={
+          daño: [],
+          heal: [],
+          escudo: [],
+          agro: []
+        }
       }
-    }
+
+      //Agregar nuevo registro de analisis:
+      for(var i=0; i <this.sesion.render.numHeroes;i++){
+        this.sesion.render.estadisticas[i].daño.push(0);
+        this.sesion.render.estadisticas[i].heal.push(0);
+        this.sesion.render.estadisticas[i].escudo.push(0);
+        this.sesion.render.estadisticas[i].agro.push(0);
+      }
+    }//Fin inicializacion estadisticas.
 
 
-    //Agregar nuevo registro de analisis:
-    for(var i=0; i <this.sesion.render.numHeroes;i++){
-      this.sesion.render.estadisticas[i].daño.push(0);
-      this.sesion.render.estadisticas[i].heal.push(0);
-      this.sesion.render.estadisticas[i].escudo.push(0);
-      this.sesion.render.estadisticas[i].agro.push(0);
-    }
-
-    //Agregando registro de estadisticas total:
-    this.sesion.render.estadisticasTotal = [];
-    for(var i=0; i < this.sesion.render.numHeroes; i++){
-        this.sesion.render.estadisticasTotal.push({
-            daño: 0,
-            heal: 0,
-            escudo: 0,
-            agro: 0
-        })
-    }
+    if(this.sesion.render.estadisticasTotal.length==0){
+      //Inicializar Analisis de estadisticas TOTAL si no esta inicializado:
+      this.sesion.render.estadisticasTotal = [];
+      for(var i=0; i < this.sesion.render.numHeroes; i++){
+          this.sesion.render.estadisticasTotal.push({
+              daño: 0,
+              heal: 0,
+              escudo: 0,
+              agro: 0
+          })
+      }
+    }//Fin inicializacion estadisticas Total:
 
     //Generar Secuenciación de acciones enemigos:
     if(this.sesion.render.indexActivacionEnemigo == undefined){
+      console.error("INDEX ACTIVACION UNDEFINED")
       this.sesion.render.indexActivacionEnemigo = 0;
     }
 
     //Check de cambio de control de personaje:
     //this.cambiarControlPersonaje();
 
-    //Iniciar Looger:
+    //Iniciar logger:
     this.loggerService.log("-----------------------------","yellow");
     this.loggerService.log(" DELIRIUM  -  v"+this.appService.version,"yellow");
     this.loggerService.log("Partida Iniciada...","yellow");
@@ -497,15 +481,18 @@ export class MazmorraService implements OnInit{
     this.autoGuardado = cloneDeep(this.sesion.render);
 
     this.cargaCompleta=true;
+
     if(this.sesion.render.interfaz.barraAccion.mostrar){
       this.appService.setControl("bloqueoMensaje");
       setTimeout(()=>{
-          this.sesion.render.interfaz.barraAccion.mostrar = false;
+              this.mostrarBarraAccion(false);
               this.appService.setControl("desbloqueoMensaje");
       }, 2000);
     }
 
+    //Mostrar Mazmorra:
     this.mostrarMazmorra= true;
+    this.forceRender()
 
     //Inicializar Canvas Isometrico:
     this.appService.renderizarCanvasIsometrico();
@@ -795,7 +782,7 @@ export class MazmorraService implements OnInit{
     //Check de cambio de control de personaje:
     this.cambiarControlPersonaje();
 
-    //Iniciar Looger:
+    //Iniciar logger:
     this.loggerService.log("-----------------------------","yellow");
     this.loggerService.log(" DELIRIUM  -  v"+this.appService.version,"yellow");
     this.loggerService.log("Partida Iniciada...","yellow");
@@ -838,8 +825,17 @@ export class MazmorraService implements OnInit{
   }
     */
 
-    forzarRenderizado(){
-      this.subscripcionMazmorra.emit("renderMazmorra");
+    mostrarBarraAccion(mostrar: boolean){
+      this.sesion.render.interfaz.barraAccion.mostrar = mostrar;
+      this.forceRender();
+      return;
+    }
+    forceRender(){
+      this.subscripcionMazmorra.emit("forceRender");
+    }
+
+    forceRenderMazmorra(){
+      this.subscripcionMazmorra.emit("forceRenderMazmorra");
     }
 
   getRenderMazmorra(): RenderMazmorra{
@@ -882,19 +878,20 @@ export class MazmorraService implements OnInit{
   ----------------------------------------------*/
 
   checkTurno(){
-    this.esTurnoHeroe = false;
-    this.esTurnoEnemigo = false;
+
+    this.estadoControl.esTurnoHeroe = false;
+    this.estadoControl.esTurnoEnemigo = false;
 
     //Detecta si es turno de algun Heroe:
     for (var i = 0; i < this.sesion.render.heroes.length; i++) {
             if(this.sesion.render.heroes[i].turno){
-                this.esTurnoHeroe = true;
-                this.personaje.heroeTurnoIndex = i;
+                this.estadoControl.esTurnoHeroe = true;
+                this.estadoControl.turnoIndex = i;
             }
     }
 
     //Detecta si turno de enemigo (Si se ha detectado heroe se elimna el turno del enemigo)
-    if(this.esTurnoHeroe){
+    if(this.estadoControl.esTurnoHeroe){
       for (var i = 0; i < this.sesion.render.enemigos.length; i++) {
         this.sesion.render.enemigos[i].turno = false;
       }
@@ -902,34 +899,35 @@ export class MazmorraService implements OnInit{
     }else{
       for (var i = 0; i < this.sesion.render.enemigos.length; i++) {
         if(this.sesion.render.enemigos[i].turno){
-          this.esTurnoEnemigo = true;
+          this.estadoControl.esTurnoEnemigo = true;
+          this.estadoControl.turnoIndex = i;
         }
       }
     }
 
-    //Elimina el control de enemigos de los heroes si no es turno de enemigo:
-    if(!this.esTurnoEnemigo){
-      for (var i = 0; i < this.sesion.render.heroes.length; i++) {
-        this.sesion.render.heroes[i].controlEnemigos = false;
-      }
+    if(this.estadoControl.esTurnoEnemigo == this.estadoControl.esTurnoHeroe){
+      console.error("Error de asignación de turno: esTurnoEnemigo == esTurnoHeroe");
+      console.error(this.estadoControl);
     }
-
+    return;
   }
 
   checkTurnoPropio(){
-    if(this.sesion.render.heroes[this.heroeIndex].turno){
-      this.esTurnoPropio=true;
+
+    if(this.sesion.render.heroes[this.estadoControl.heroePropioIndex].turno){
+      this.estadoControl.esTurnoPropio=true;
       this.interfazService.setTurno(true);
-      if(this.sesion.render.heroes[this.heroeIndex].vida==0){
-          this.interfazService.activarHeroeAbatido(this.heroeIndex);
+      if(this.sesion.render.heroes[this.estadoControl.heroePropioIndex].vida==0){
+          this.interfazService.activarHeroeAbatido(this.estadoControl.turnoIndex);
       }
       return true;
     }else{
-      this.esTurnoPropio=false;
-      if(this.permitirMultiControl && this.personaje.heroeTurnoIndex!=null){
+      this.estadoControl.esTurnoPropio=false;
+      //Per
+      if(this.permitirMultiControl && this.estadoControl.heroePropioIndex!=null){
         this.interfazService.setTurno(true);
-        if(this.sesion.render.heroes[this.personaje.heroeTurnoIndex].vida==0){
-              this.interfazService.activarHeroeAbatido(this.heroeIndex);
+        if(this.sesion.render.heroes[this.estadoControl.heroePropioIndex].vida==0){
+              this.interfazService.activarHeroeAbatido(this.estadoControl.turnoIndex);
         }
       }else{
         this.interfazService.setTurno(false);
@@ -938,10 +936,22 @@ export class MazmorraService implements OnInit{
     }
   }
 
+  recalcularEnergiaFutura(indexHeroe){
+    var energiaFutura = 0;
+    energiaFutura= this.sesion.render.heroes[indexHeroe].energia + this.parametros.regenEnergiaTurno;
+    if(energiaFutura < 0){
+      energiaFutura = 0;
+    }
+    if(energiaFutura > 100){
+      energiaFutura = 100;
+    }
+    this.sesion.render.heroes[indexHeroe].energiaFutura = energiaFutura;
+  }
+
   regenerarEnergia(){
     for(var i = 0; i < this.sesion.render.heroes.length; i++){
         if(this.sesion.render.heroes[i].vida >0){
-      this.sesion.render.heroes[i].energia += (this.parametros.regenEnergiaTurno/this.sesion.render.heroes.length);
+          this.sesion.render.heroes[i].energia += (this.parametros.regenEnergiaTurno/this.sesion.render.heroes.length);
         }
       if(this.sesion.render.heroes[i].energia>100){this.sesion.render.heroes[i].energia=100}
     }
@@ -949,7 +959,7 @@ export class MazmorraService implements OnInit{
   }
 
   //Funcion principal de paso de turno:
-  async pasarTurno() {
+  async pasarTurno(evitarEmisionSocket?: boolean) {
 
         //Restriccion por BLOQUEO:
         if(this.appService.control=="null"){this.appService.setControl("mazmorra");}
@@ -966,13 +976,13 @@ export class MazmorraService implements OnInit{
 
       if(!this.comandoSocketActivo){
         this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "pasarTurno"});
-        //this.emisor=false;
       }
 
       console.log("Pasando Turno...");
+
       if(this.estadoControl.estado=="seleccionObjetivo"){
         this.estadoControl.estado = "seleccionAccion";
-        this.estadoControl.hechizo = 0;
+        this.estadoControl.hechizoId = 0;
         this.cancelarObjetivo();
       }
 
@@ -1016,43 +1026,18 @@ export class MazmorraService implements OnInit{
 
       //Los ultimos enemigos han sido eliminados:
       if(this.sesion.render.heroes[0].turno){
-        this.sesion.render.turno++;
-        this.sesion.render.registroTurno.push(0);
-        this.eliminarFlagTurno();
-        this.sesion.render.heroes[0].turno = true;
-        this.sesion.render.heroes[this.sesion.render.indexActivacionEnemigo].controlEnemigos = false;
-        this.activarTemporizador()
-        //this.sesion.render.heroes[0].acciones = 2;
-        this.mensajeAccion("Turno de "+this.sesion.render.heroes[0].nombre,2000);
-        this.loggerService.log("-------------- Turno de "+this.sesion.render.heroes[0].nombre+" ------------------");
-        this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render.heroes[0].nombre;
-        this.sesion.render.interfaz.barraAccion.claseTurno="/Clases/"+this.sesion.render.heroes[0].clase.toLowerCase();
-
-        this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
-        this.autoGuardado2 = cloneDeep(this.autoGuardado);
-        this.autoGuardado = cloneDeep(this.sesion.render);
+        this.iniciarTurno("heroes",0)
         this.turnoModificado= false;
-        this.cambiarControlPersonaje();
-        this.checkTurnoPropio();
-        this.forzarRenderizado();
         return;
       }
 
       //Paso de turno entre enemigos:
       for(var i=0; i <this.sesion.render.enemigos.length; i++){
         if(this.sesion.render.enemigos[i].turno){
-          this.loggerService.log("-------------- Turno de "+this.sesion.render.enemigos[i].nombre+" ------------------");
-          this.mensajeAccion("Turno de "+this.sesion.render.enemigos[i].nombre,2000);
-          this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render.enemigos[i].nombre;
-          this.sesion.render.interfaz.barraAccion.claseTurno="/Enemigos/"+this.sesion.render.enemigos[i].nombre.toLowerCase();
-
-          this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
-          this.autoGuardado2 = cloneDeep(this.autoGuardado);
-          this.autoGuardado = cloneDeep(this.sesion.render);
+          console.warn("ENEMIGO -> ENEMIGO");
+          this.iniciarTurno("enemigos",i+1);
+          this.activarEnemigo(i+1);
           this.turnoModificado= false;
-          this.cambiarControlPersonaje();
-          this.checkTurnoPropio();
-          this.forzarRenderizado();
           return;
         }
       }
@@ -1061,45 +1046,18 @@ export class MazmorraService implements OnInit{
     //Paso de turno entre heroes:
     for(var i=0; i <this.sesion.render.heroes.length-1; i++){
       if(this.sesion.render.heroes[i].turno){
-        this.eliminarFlagTurno();
-        this.sesion.render.heroes[i+1].turno = true;
-        this.resetTemporizador()
-        this.sesion.render.registroTurno.push(i+1);
-        //this.sesion.render.heroes[i+1].acciones = 2;
-        this.loggerService.log("-------------- Turno de "+this.sesion.render.heroes[i+1].nombre+" ------------------");
-        this.mensajeAccion("Turno de "+this.sesion.render.heroes[i+1].nombre,2000);
-        this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render.heroes[i+1].nombre;
-        this.sesion.render.interfaz.barraAccion.claseTurno="/Clases/"+this.sesion.render.heroes[i+1].clase.toLowerCase();
-
-        this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
-        this.autoGuardado2 = cloneDeep(this.autoGuardado);
-        this.autoGuardado = cloneDeep(this.sesion.render);
-        this.cambiarControlPersonaje();
-        this.checkTurnoPropio();
-        this.forzarRenderizado();
+        console.warn("HEROE -> HEROE");
+        this.iniciarTurno("heroes",i+1)
         return;
       }
     }
+
     //Paso de turno entre enemigos:
     for(var i=0; i <this.sesion.render.enemigos.length-1; i++){
       if(this.sesion.render.enemigos[i].turno){
-        this.eliminarFlagTurno();
-        this.sesion.render.enemigos[i+1].turno = true;
-        this.sesion.render.registroTurno.push(-(i+2));
-        //this.sesion.render.enemigos[i+1].acciones= 2;
-        console.warn("ENTRE ENEMIGO");
+        console.warn("ENEMIGO -> ENEMIGO");
+        this.iniciarTurno("enemigos",i+1);
         this.activarEnemigo(i+1);
-        this.loggerService.log("-------------- Turno de "+this.sesion.render.enemigos[i+1].nombre+" ------------------");
-        this.mensajeAccion("Turno de "+this.sesion.render.enemigos[i+1].nombre,2000);
-        this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render.enemigos[i+1].nombre;
-        this.sesion.render.interfaz.barraAccion.claseTurno="/Enemigos/"+this.sesion.render.enemigos[i+1].nombre.toLowerCase();
-
-        this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
-        this.autoGuardado2 = cloneDeep(this.autoGuardado);
-        this.autoGuardado = cloneDeep(this.sesion.render);
-        this.cambiarControlPersonaje();
-        this.checkTurnoPropio();
-        this.forzarRenderizado();
         return;
       }
     }
@@ -1107,87 +1065,152 @@ export class MazmorraService implements OnInit{
     if(this.sesion.render.heroes[this.sesion.render.heroes.length-1].turno){
 
       if(this.sesion.render.enemigos.length>0){
-        this.eliminarFlagTurno();
-        this.sesion.render.enemigos[0].turno = true;
-        this.desactivarTemporizador()
-        this.sesion.render.registroTurno.push(-1);
-        //this.sesion.render.enemigos[0].acciones = 2;
         console.warn("HEROE -> ENEMIGO");
-        this.sesion.render.indexActivacionEnemigo++;
-        if(this.sesion.render.indexActivacionEnemigo >= this.sesion.render.heroes.length){
-          this.sesion.render.indexActivacionEnemigo = 0;
-        }
+        this.iniciarTurno("enemigos",0);
+
         this.sesion.render.heroes[this.sesion.render.indexActivacionEnemigo].controlEnemigos = true;
         this.activarEnemigo(0);
-        this.loggerService.log("-------------- Turno de "+this.sesion.render.enemigos[0].nombre+" ------------------");
-        this.mensajeAccion("Turno de "+this.sesion.render.enemigos[0].nombre,2000);
-        this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render.enemigos[0].nombre;
-        this.sesion.render.interfaz.barraAccion.claseTurno="/Enemigos/"+this.sesion.render.enemigos[0].nombre.toLowerCase();
+        //this.sesion.render.interfaz.barraAccion.claseTurno="/Enemigos/"+this.sesion.render.enemigos[0].nombre.toLowerCase();
       }else{
-        this.eliminarFlagTurno();
-        this.sesion.render.heroes[0].turno = true;
-        this.activarTemporizador()
-        this.sesion.render.registroTurno.push(0);
-        this.sesion.render.heroes[this.sesion.render.indexActivacionEnemigo].controlEnemigos = false;
-        //this.sesion.render.heroes[0].acciones = 2;
-        this.loggerService.log("-------------- Turno de "+this.sesion.render.heroes[0].nombre+" ------------------");
-        this.mensajeAccion("Turno de "+this.sesion.render.heroes[0].nombre,2000);
-        this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render.heroes[0].nombre;
-        this.sesion.render.interfaz.barraAccion.claseTurno="/Clases/"+this.sesion.render.heroes[0].clase.toLowerCase();
+        console.warn("HEROE -> HEROE[0] (Cambio de ronda)");
+        this.sesion.render.turno++;
+        this.iniciarTurno("heroes",0)
       }
-
-      this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
-      this.autoGuardado2 = cloneDeep(this.autoGuardado);
-      this.autoGuardado = cloneDeep(this.sesion.render);
-      this.cambiarControlPersonaje();
-      this.checkTurnoPropio();
-      this.forzarRenderizado();
       return;
     }
 
     // Paso de turno Enemigo-Heroe:
     if(this.sesion.render.enemigos[this.sesion.render.enemigos.length-1].turno){
+      console.warn("ENEMIGO -> HEROE[0] (Cambio de ronda)");
+      this.sesion.render.indexActivacionEnemigo++;
+      if(this.sesion.render.indexActivacionEnemigo >= this.sesion.render.heroes.length){
+        this.sesion.render.indexActivacionEnemigo = 0;
+      }
       this.sesion.render.turno++;
-      this.eliminarFlagTurno();
-      this.sesion.render.heroes[0].turno = true;
-      this.activarTemporizador()
-      this.sesion.render.registroTurno.push(0);
-        this.sesion.render.heroes[this.sesion.render.indexActivacionEnemigo].controlEnemigos = false;
-      //this.sesion.render.heroes[0].acciones = 2;
-      this.loggerService.log("-------------- Turno de "+this.sesion.render.heroes[0].nombre+" ------------------");
-      this.mensajeAccion("Turno de "+this.sesion.render.heroes[0].nombre,2000);
-      this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render.heroes[0].nombre;
-      this.sesion.render.interfaz.barraAccion.claseTurno="/Clases/"+this.sesion.render.heroes[0].clase.toLowerCase();
+      this.iniciarTurno("heroes",0)
+      return;
+    }
+  }
 
+  iniciarTurno(tipoTurno: "heroes" | "enemigos",indexTurno){
+
+    //Actualización de flags:
+    this.eliminarFlagTurno(); //Elimina todos los flags de turno.
+    this.sesion.render[tipoTurno][indexTurno].turno = true;
+
+    //Gestión de energia:
+    if(tipoTurno=="heroes"){
+      this.recalcularEnergiaFutura(indexTurno)
+    }
+
+    //Gestión de control de enemigos:
+    if(tipoTurno=="heroes"){
+      this.eliminarFlagControlTurno();
+      this.interfazService.finalizarActivacion(true);
+    }
+
+    //Actualizacón de Temporizador:
+    if(tipoTurno == "heroes"){
+      if(indexTurno == 0){
+        this.activarTemporizador()
+      }else{
+        this.resetTemporizador()
+      }
+    }
+    if(tipoTurno == "enemigos" && indexTurno == 0){
+      this.desactivarTemporizador();
+    }
+
+    //Actualización de metadatos:
+    this.sesion.render.turno++;
+    if(tipoTurno == "heroes"){
+      this.sesion.render.registroTurno.push(indexTurno);
+    }else{
+      this.sesion.render.registroTurno.push(-1);
+    }
+
+    //Servicios de mensajes y loggs:
+    this.mensajeAccion("Turno de "+this.sesion.render[tipoTurno][indexTurno].nombre,2000);
+    this.loggerService.log("-------------- Turno de "+this.sesion.render[tipoTurno][indexTurno].nombre+" ------------------");
+    this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render[tipoTurno][indexTurno].nombre;
+
+    //Gestion de datos y sincronización:
+    this.autoGuardado2 = cloneDeep(this.autoGuardado);
+    this.autoGuardado = cloneDeep(this.sesion.render);
+    this.cambiarControlPersonaje();
+    this.checkTurnoPropio();
+    this.hash = this.hashCode(JSON.stringify(this.sesion.render));
+    if(!this.comandoSocketActivo){
       this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
-      this.autoGuardado2 = cloneDeep(this.autoGuardado);
-      this.autoGuardado = cloneDeep(this.sesion.render);
-      this.cambiarControlPersonaje();
-      this.checkTurnoPropio();
-      this.forzarRenderizado();
+      this.socketService.enviarSocket("checkSinc",{peticion: "checkSinc", comando: "checkSinc", contenido: this.hash});
+    }
+
+    //Si se ha recibido hash hacer comprobació:
+    if(this.hashRecibido){
+      this.checkHash(this.hashRecibido);
+    }else{
+      this.flagCheckHash = true;
+    }
+
+    this.forceRender();
+    return;
+  } //Fin iniciarTurno
+
+    hashCode(str: string): number {
+      //console.warn(str)
+      var h: number = 0;
+      for (var i = 0; i < str.length; i++) {
+          h = h + (str.charCodeAt(i)+(i%10));
+      }
+      return h & 0xFFFFFFFF
+    }
+
+    checkHash(hashRecibido){
+      this.hashRecibido = undefined;
+      this.flagCheckHash = false;
+      if(this.hash == hashRecibido){
+        console.log("---> HASH OK <---");
+      }else{
+        console.error("HASH ERROR --> Actual: ",this.hash," Recibido: ",hashRecibido);
+        this.socketService.enviarSocket("getSinc",{peticion: "getSinc", comando: "getSinc", contenido: this.hash});
+
+      }
       return;
     }
 
+    setHashRecibido(hash){
+      this.hashRecibido = hash;
+      if(this.flagCheckHash){
+        this.checkHash(this.hashRecibido);
+      }
+      return;
+    }
+
+  eliminarFlagTurno(){
+    for(var i=0; i < this.sesion.render.heroes.length; i++){
+      this.sesion.render.heroes[i].turno = false;
+    }
+    for(var i=0; i < this.sesion.render.enemigos.length; i++){
+      this.sesion.render.enemigos[i].turno = false;
+    }
+    return;
   }
 
-    eliminarFlagTurno(){
+  eliminarFlagControlTurno(){
     for(var i=0; i < this.sesion.render.heroes.length; i++){
-            this.sesion.render.heroes[i].turno = false;
-        }
-    for(var i=0; i < this.sesion.render.enemigos.length; i++){
-            this.sesion.render.enemigos[i].turno = false;
-        }
+      this.sesion.render.heroes[i].controlEnemigos = false;
     }
+    return;
+  }
 
   //Muestra mensaje en barra de acción y bloquea input:
   mensajeAccion(mensaje: string, tiempoMensaje: number):void{
     this.sesion.render.interfaz.barraAccion.mensajeAccion = mensaje;
-    this.sesion.render.interfaz.barraAccion.mostrar = true;
+    this.mostrarBarraAccion(true);
     this.appService.setControl("bloqueoMensaje");
     setTimeout(()=>{
-        this.sesion.render.interfaz.barraAccion.mostrar = false;
+        this.mostrarBarraAccion(false);
         this.appService.setControl("desbloqueoMensaje");
-        this.forzarRenderizado();
     }, tiempoMensaje);
   }
 
@@ -1206,9 +1229,9 @@ export class MazmorraService implements OnInit{
     }
 
     if(turnoHeroe){
-        this.personaje.heroeTurnoIndex = indexTurnoHeroe;
+        this.estadoControl.turnoIndex = indexTurnoHeroe;
     }else{
-        this.personaje.heroeTurnoIndex = null;
+        //this.estadoControl.heroePropioIndex = null;
     }
 
     //CAMBIAR PERSONAJE CONTROL SI PERMITE MULTI CONTROL:
@@ -1429,7 +1452,11 @@ export class MazmorraService implements OnInit{
 
     console.log(this.sesion.render.enemigos);
     this.loggerService.log("----------------------------------------------");
-  }
+
+    this.forceRenderMazmorra();
+    this.forceRender();
+
+  }//Fin Cambiar Sala
 
   //Calcular Estadisticas:
   calcularEstadisticasBase(caster:string, indexCaster:number):void{
@@ -1438,18 +1465,19 @@ export class MazmorraService implements OnInit{
 
         var nivel;
         var estadisticas = {
-                vidaMaxima: 0,
-                pa: 0,
-                ad: 0,
-                ap: 0,
-                armadura: 0,
-                critico: 0,
-                potenciaCritico: 0,
-                probabilidadCritico: 0,
-                resistenciaMagica: 0,
-                vitalidad: 0,
-                reduccionArmadura: 0,
-                reduccionResistencia: 0
+          vidaMaxima: 0,
+          pa: 0,
+          ad: 0,
+          ap: 0,
+          armadura: 0,
+          critico: 0,
+          potenciaCritico: 0,
+          probabilidadCritico: 0,
+          probabilidadCriticoPercent: 0,
+          resistenciaMagica: 0,
+          vitalidad: 0,
+          reduccionArmadura: 0,
+          reduccionResistencia: 0
         }
 
         //---------------------
@@ -1505,6 +1533,7 @@ export class MazmorraService implements OnInit{
             probabilidadCritico = Math.round(probabilidadCritico * 100) / 100;
             potenciaCritico = Math.round(potenciaCritico * 100) / 100;
             estadisticas.probabilidadCritico = probabilidadCritico;
+            estadisticas.probabilidadCriticoPercent = Math.round(probabilidadCritico*100);
             estadisticas.potenciaCritico = potenciaCritico;
 
             //RANGOS ARMADURA:
@@ -1630,53 +1659,51 @@ export class MazmorraService implements OnInit{
 
         //Si el caster es heroe y el objetivo es AL:
         if(this.estadoControl.tipoObjetivo=="AL"){
-          this.sesion.render.heroes[i].objetivo = true;
+          this.estadoControl.objetivosHeroes = [this.estadoControl.turnoIndex]
           //this.lanzarHechizo();
           this.activarRNG()
         }
 
         //Si el caster es heroe y el objetivo es EU:
         if(this.estadoControl.tipoObjetivo=="EU"){
-                    if(this.sesion.render.enemigos[0]==undefined){
-                        return;
-                    }
-          //this.sesion.render.enemigos[0].objetivo = true;
+          if(this.sesion.render.enemigos[0]==undefined){
+              return;
+          }
         }
 
         //Si el caster es heroe y el objetivo es AU:
         if(this.estadoControl.tipoObjetivo=="AU"){
-          //this.sesion.render.heroes[0].objetivo = true;
         }
 
         //Si el caster es heroe y el objetivo es EM:
         if(this.estadoControl.tipoObjetivo=="EM"){
-                    if(this.sesion.render.enemigos[0]==undefined){
-                        return;
-                    }
-          //this.sesion.render.enemigos[0].objetivoAuxiliar = true;
+          if(this.sesion.render.enemigos[0]==undefined){
+              return;
+          }
         }
 
         //Si el caster es heroe y el objetivo es AM:
         if(this.estadoControl.tipoObjetivo=="AM"){
-          //this.sesion.render.heroes[0].objetivoAuxiliar = true;
         }
 
-        //Si el caster es heroe y el objetivo es AA:
+        //Si el caster es heroe y el objetivo es AA: (All alies)
         if(this.estadoControl.tipoObjetivo=="AA"){
+          this.estadoControl.objetivosHeroes = [];
           for(var j=0; j <this.sesion.render.heroes.length; j++){
-            this.sesion.render.heroes[j].objetivo = true;
+            this.estadoControl.objetivosHeroes.push(j)
           }
           //this.lanzarHechizo();
           this.activarRNG()
         }
 
-        //Si el caster es heroe y el objetivo es EE:
+        //Si el caster es heroe y el objetivo es AE (All enemies):
         if(this.estadoControl.tipoObjetivo=="AE"){
-                    if(this.sesion.render.enemigos[0]==undefined){
-                        return;
-                    }
+          if(this.sesion.render.enemigos[0]==undefined){
+              return;
+          }
+          this.estadoControl.objetivosEnemigos = []
           for(var j=0; j <this.sesion.render.enemigos.length; j++){
-            this.sesion.render.enemigos[j].objetivo = true;
+            this.estadoControl.objetivosEnemigos.push(j);
           }
           //this.lanzarHechizo();
           this.activarRNG()
@@ -1695,35 +1722,35 @@ export class MazmorraService implements OnInit{
 
         //Si el caster es enemigo y el objetivo es AL:
         if(this.estadoControl.tipoObjetivo=="AL"){
-          this.sesion.render.enemigos[i].objetivo = true;
+          //this.sesion.render.enemigos[i].objetivo = true;
           //this.lanzarHechizo();
           this.activarRNG()
         }
 
         //Si el caster es enemigo y el objetivo es EU:
         if(this.estadoControl.tipoObjetivo=="EU"){
-          this.sesion.render.heroes[0].objetivo = true;
+          //this.sesion.render.heroes[0].objetivo = true;
         }
 
         //Si el caster es enemigo y el objetivo es AU:
         if(this.estadoControl.tipoObjetivo=="AU"){
-          this.sesion.render.enemigos[0].objetivo = true;
+          //this.sesion.render.enemigos[0].objetivo = true;
         }
 
         //Si el caster es enemigo y el objetivo es EM:
         if(this.estadoControl.tipoObjetivo=="EM"){
-          this.sesion.render.heroes[0].objetivoAuxiliar = true;
+          //this.sesion.render.heroes[0].objetivoAuxiliar = true;
         }
 
         //Si el caster es enemigo y el objetivo es AM:
         if(this.estadoControl.tipoObjetivo=="AM"){
-          this.sesion.render.enemigos[0].objetivoAuxiliar = true;
+          //this.sesion.render.enemigos[0].objetivoAuxiliar = true;
         }
 
         //Si el caster es enemigo y el objetivo es AA:
         if(this.estadoControl.tipoObjetivo=="AA"){
           for(var j=0; j <this.sesion.render.enemigos.length; j++){
-            this.sesion.render.enemigos[j].objetivo = true;
+            //this.sesion.render.enemigos[j].objetivo = true;
           }
           //this.lanzarHechizo();
           this.activarRNG()
@@ -1732,7 +1759,7 @@ export class MazmorraService implements OnInit{
         //Si el caster es enemigo y el objetivo es EE:
         if(this.estadoControl.tipoObjetivo=="EE"){
           for(var j=0; j <this.sesion.render.heroes.length; j++){
-            this.sesion.render.heroes[j].objetivo = true;
+            //this.sesion.render.heroes[j].objetivo = true;
           }
           //this.lanzarHechizo();
           this.activarRNG()
@@ -1743,7 +1770,7 @@ export class MazmorraService implements OnInit{
 
         //Seleccionar Objetivos:
     this.estadoControl.estado = "seleccionObjetivo";
-    this.estadoControl.hechizo = numHechizo;
+    this.estadoControl.hechizoId = numHechizo;
 
   }
 
@@ -1769,59 +1796,10 @@ export class MazmorraService implements OnInit{
         this.sesion.render.enemigos[i].objetivo= false;
       }
     }
+
+    this.estadoControl.objetivosHeroes = [];
+    this.estadoControl.objetivosEnemigos = [];
     this.estadoControl.estado = "seleccionAccion";
-  }
-
-  //moverObjetivo (positivo--> DERECHA; negativo --> IZQUIERDA)
-  moverObjetivo(val:number):void{
-
-    //Mueve objetivo AU && EU:
-    if(this.estadoControl.tipoObjetivo=="EU" || this.estadoControl.tipoObjetivo=="AU"){
-      //Evalua objetivos en heroes:
-      for(var i=0; i <this.sesion.render.heroes.length; i++){
-        if(this.sesion.render.heroes[i].objetivo){
-          if((val+i>=0) && (val+i <this.sesion.render.heroes.length)){
-            this.sesion.render.heroes[i].objetivo=false;
-            this.sesion.render.heroes[i+val].objetivo=true;
-            return;
-          }
-        }
-      }
-      //Evalua objetivos en enemigos:
-      for(var i=0; i <this.sesion.render.enemigos.length; i++){
-        if(this.sesion.render.enemigos[i].objetivo){
-          if((val+i>=0) && (val+i <this.sesion.render.enemigos.length)){
-            this.sesion.render.enemigos[i].objetivo=false;
-            this.sesion.render.enemigos[i+val].objetivo=true;
-            return;
-          }
-        }
-      }
-    }
-
-    //Mueve el objetivo Auxiliar en AM && EM
-    if(this.estadoControl.tipoObjetivo=="EM" || this.estadoControl.tipoObjetivo=="AM"){
-      //Evalua objetivos Auxiliares en heroes:
-      for(var i=0; i <this.sesion.render.heroes.length; i++){
-        if(this.sesion.render.heroes[i].objetivoAuxiliar){
-          if((val+i>=0) && (val+i <this.sesion.render.heroes.length)){
-            this.sesion.render.heroes[i].objetivoAuxiliar=false;
-            this.sesion.render.heroes[i+val].objetivoAuxiliar=true;
-            return;
-          }
-        }
-      }
-      //Evalua objetivos Auxiliares en enemigos:
-      for(var i=0; i <this.sesion.render.enemigos.length; i++){
-        if(this.sesion.render.enemigos[i].objetivoAuxiliar){
-          if((val+i>=0) && (val+i <this.sesion.render.enemigos.length)){
-            this.sesion.render.enemigos[i].objetivoAuxiliar=false;
-            this.sesion.render.enemigos[i+val].objetivoAuxiliar=true;
-            return;
-          }
-        }
-      }
-    }
   }
 
   //Selecciona el objetivo desde un objetivo auxiliar:
@@ -1829,15 +1807,38 @@ export class MazmorraService implements OnInit{
     //Evalua objetivos Auxiliares en heroes: (Invierte el objetivo en el objetivo auxiliar)
       for(var i=0; i <this.sesion.render.heroes.length; i++){
         if(this.sesion.render.heroes[i].objetivoAuxiliar){
-          this.sesion.render.heroes[i].objetivo= !this.sesion.render.heroes[i].objetivo;
+          //this.sesion.render.heroes[i].objetivo= !this.sesion.render.heroes[i].objetivo;
           return;
         }
       }
       //Evalua objetivos Auxiliares en enemigos: (Invierte el objetivo en el objetivo auxiliar)
       for(var i=0; i <this.sesion.render.enemigos.length; i++){
         if(this.sesion.render.enemigos[i].objetivoAuxiliar){
-          this.sesion.render.enemigos[i].objetivo= !this.sesion.render.enemigos[i].objetivo;
+          //this.sesion.render.enemigos[i].objetivo= !this.sesion.render.enemigos[i].objetivo;
           return;
+        }
+      }
+  }
+
+  resetObjetivos(): void{
+    //Eliminamos los objetivos:
+      //Elimina objetivos en heroes:
+      for(var i=0; i <this.sesion.render.heroes.length; i++){
+        if(this.sesion.render.heroes[i].objetivoAuxiliar){
+          this.sesion.render.heroes[i].objetivoAuxiliar= false;
+        }
+        if(this.sesion.render.heroes[i].objetivo){
+          this.sesion.render.heroes[i].objetivo= false;
+        }
+
+      }
+      //Elimina objetivos en enemigos:
+      for(var i=0; i <this.sesion.render.enemigos.length; i++){
+        if(this.sesion.render.enemigos[i].objetivoAuxiliar){
+          this.sesion.render.enemigos[i].objetivoAuxiliar= false;
+        }
+        if(this.sesion.render.enemigos[i].objetivo){
+          this.sesion.render.enemigos[i].objetivo= false;
         }
       }
   }
@@ -1914,9 +1915,36 @@ export class MazmorraService implements OnInit{
   }
 
     //------------------------
-    // 2) LANZAR HECHIZO
+    // 2) CONFIGURAR Y LANZAR HECHIZO
     //-----------------------
-  lanzarHechizo(activacionEnemigo?: any){
+  configurarHechizo():ConfiguracionHechizo{
+    var tipoCaster: "heroes" | "enemigos";
+    if(this.estadoControl.esTurnoHeroe){
+      tipoCaster= "heroes"
+    }
+    if(this.estadoControl.esTurnoEnemigo){
+      tipoCaster= "enemigos"
+    }
+    var indexHechizo = this.hechizos.findIndex(i => i.id == this.estadoControl.hechizoId);
+    var configuracionHechizo: ConfiguracionHechizo = {
+      esEnemigo: this.estadoControl.esTurnoEnemigo,
+      esHeroe: this.estadoControl.esTurnoHeroe,
+      tipoCaster: tipoCaster,
+      caster: this.sesion.render[tipoCaster][this.estadoControl.turnoIndex],
+      indexCaster: this.estadoControl.turnoIndex,
+      indexHechizo: indexHechizo,
+      nivelCaster: this.sesion.render[tipoCaster][this.estadoControl.turnoIndex].nivel,
+      critico: this.estadoControl.critico,
+      fortuna: this.estadoControl.fortuna,
+      fallo: this.estadoControl.fallo,
+      pifia: this.estadoControl.pifia,
+      objetivosEnemigos: this.estadoControl.objetivosEnemigos,
+      objetivosHeroes: this.estadoControl.objetivosHeroes
+    }
+    return configuracionHechizo;
+  }
+
+  lanzarHechizo(configuracionHechizo?: ConfiguracionHechizo){
 
     return new Promise((resolve) => {
 
@@ -1926,74 +1954,52 @@ export class MazmorraService implements OnInit{
     //Bloquea los inputs:
     this.appService.setControl("bloqueoHechizo");
     this.sesion.render.interfaz.barraAccion.mensajeAccion = "Procesando...";
-    this.sesion.render.interfaz.barraAccion.mostrar = true;
+    this.mostrarBarraAccion(true);
 
-    //Detecta quien es el caster (Heroes/Enemigo), asigna propiedades y consume recurso:
-    var caster;
-    var esHeroe = false;
-    var esEnemigo = false;
+    //Construccion de Configuración de Hechizo:
+    if(!configuracionHechizo){
+      configuracionHechizo = this.configurarHechizo();
+    }
 
-    var tipoCaster: "heroe"|"enemigo";
-    var indexCaster = -1;
-        var indexHechizo = -1;
-
-        if(activacionEnemigo){
-            esEnemigo= true;
-            indexCaster = activacionEnemigo["indexEnemigo"];
-            tipoCaster = "enemigo";
-            caster= this.sesion.render.enemigos[indexCaster];
-            indexHechizo = this.hechizos.findIndex(j => j.id==activacionEnemigo["hechizo_id"]);
-        }else{
-
-            //Verifica de que heroe es el turno:
-            for(var i=0; i <this.sesion.render.heroes.length; i++){
-                if(this.sesion.render.heroes[i].turno){
-                    esHeroe= true;
-                    indexCaster = i;
-                    tipoCaster = "heroe";
-                    caster= this.sesion.render.heroes[i];
-                    indexHechizo = this.hechizos.findIndex(j => j.id==this.estadoControl.hechizo);
-                    break;
-                }
-            }
-        }
-
+    console.warn("CONFIGURANDO HECHIZO: ", configuracionHechizo)
 
     //------------------------------------
     // 1) Obtiene propiedades del Hechizo:
     //------------------------------------
     var hechizo={
-        id: this.hechizos[indexHechizo].id,
-        nombre: this.hechizos[indexHechizo].nombre,
-        tipo: this.hechizos[indexHechizo].tipo_daño,
-        recurso: this.hechizos[indexHechizo].recurso,
-        poder: this.hechizos[indexHechizo].poder,
-        cooldown: this.hechizos[indexHechizo].cooldown,
-        acciones: this.hechizos[indexHechizo].acciones,
+        id: this.hechizos[configuracionHechizo.indexHechizo].id,
+        nombre: this.hechizos[configuracionHechizo.indexHechizo].nombre,
+        tipo: this.hechizos[configuracionHechizo.indexHechizo].tipo_daño,
+        recurso: this.hechizos[configuracionHechizo.indexHechizo].recurso,
+        poder: this.hechizos[configuracionHechizo.indexHechizo].poder,
+        cooldown: this.hechizos[configuracionHechizo.indexHechizo].cooldown,
+        acciones: this.hechizos[configuracionHechizo.indexHechizo].acciones,
 
-        daño_dir: this.hechizos[indexHechizo].daño_dir,
-        daño_esc_AD: this.hechizos[indexHechizo].daño_esc_AD,
-        daño_esc_AP: this.hechizos[indexHechizo].daño_esc_AP,
-        heal_dir: this.hechizos[indexHechizo].heal_dir,
-        heal_esc_AD: this.hechizos[indexHechizo].heal_esc_AD,
-        heal_esc_AP: this.hechizos[indexHechizo].heal_esc_AP,
-        escudo_dir: this.hechizos[indexHechizo].escudo_dir,
-        escudo_esc_AD: this.hechizos[indexHechizo].escudo_esc_AD,
-        escudo_esc_AP: this.hechizos[indexHechizo].escudo_esc_AP,
-        duracion_escudo: this.hechizos[indexHechizo].duracion_escudo,
-        mod_amenaza: this.hechizos[indexHechizo].mod_amenaza,
-        buff_id: this.hechizos[indexHechizo].buff_id,
-        funcion: this.hechizos[indexHechizo].funcion,
-        objetivo: this.hechizos[indexHechizo].objetivo,
-        animacion: this.hechizos[indexHechizo].animacion_id,
-        tipoCaster: tipoCaster,
-        nivelCaster: this.sesion.jugadores[indexCaster].personaje.nivel,
-        indexCaster: indexCaster,
-        triggerHechizo: this.hechizos[indexHechizo].triggerHechizo,
-        hechizo_encadenado_id: this.hechizos[indexHechizo].hech_encadenado_id
+        daño_dir: this.hechizos[configuracionHechizo.indexHechizo].daño_dir,
+        daño_esc_AD: this.hechizos[configuracionHechizo.indexHechizo].daño_esc_AD,
+        daño_esc_AP: this.hechizos[configuracionHechizo.indexHechizo].daño_esc_AP,
+        heal_dir: this.hechizos[configuracionHechizo.indexHechizo].heal_dir,
+        heal_esc_AD: this.hechizos[configuracionHechizo.indexHechizo].heal_esc_AD,
+        heal_esc_AP: this.hechizos[configuracionHechizo.indexHechizo].heal_esc_AP,
+        escudo_dir: this.hechizos[configuracionHechizo.indexHechizo].escudo_dir,
+        escudo_esc_AD: this.hechizos[configuracionHechizo.indexHechizo].escudo_esc_AD,
+        escudo_esc_AP: this.hechizos[configuracionHechizo.indexHechizo].escudo_esc_AP,
+        duracion_escudo: this.hechizos[configuracionHechizo.indexHechizo].duracion_escudo,
+        mod_amenaza: this.hechizos[configuracionHechizo.indexHechizo].mod_amenaza,
+        buff_id: this.hechizos[configuracionHechizo.indexHechizo].buff_id,
+        funcion: this.hechizos[configuracionHechizo.indexHechizo].funcion,
+        objetivo: this.hechizos[configuracionHechizo.indexHechizo].objetivo,
+        animacion: this.hechizos[configuracionHechizo.indexHechizo].animacion_id,
+        tipoCaster: configuracionHechizo.tipoCaster,
+        nivelCaster: configuracionHechizo.nivelCaster,
+        indexCaster: configuracionHechizo.indexCaster,
+        triggerHechizo: this.hechizos[configuracionHechizo.indexHechizo].triggerHechizo,
+        hechizo_encadenado_id: this.hechizos[configuracionHechizo.indexHechizo].hech_encadenado_id,
+        critico: configuracionHechizo.critico,
+        fallo: configuracionHechizo.fallo,
+        fortuna: configuracionHechizo.fortuna,
+        pifia: configuracionHechizo.pifia
     }
-
-    console.log("CRITICO: ",this.estadoControl.critico," FORTUNA: ",this.estadoControl.fortuna);
 
     console.log("Lanzando hechizo:");
     console.log(hechizo);
@@ -2001,35 +2007,35 @@ export class MazmorraService implements OnInit{
     //---------------------------------------------------------------
     //  2) Verifica y consume recurso del hechizo:
     //----------------------------------------------------------------
-    if(esHeroe){
+    if(configuracionHechizo.tipoCaster == "heroes"){
 
       //Consume la energia y actualiza la energia Futura:
-      this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia -= hechizo.recurso;
-      this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energiaFutura = this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia + this.parametros.regenEnergiaTurno;
+      this.sesion.render.heroes[configuracionHechizo.indexCaster].energia -= hechizo.recurso;
+      this.sesion.render.heroes[configuracionHechizo.indexCaster].energiaFutura = this.sesion.render.heroes[configuracionHechizo.indexCaster].energia + this.parametros.regenEnergiaTurno;
 
     //Actualiza el Cooldown:
-    var indexHechizoCooldown = this.sesion.jugadores[this.personaje.heroeTurnoIndex].personaje.hechizos.equipados.indexOf(hechizo.id)
+    var indexHechizoCooldown = this.sesion.jugadores[this.estadoControl.turnoIndex].personaje.hechizos.equipados.indexOf(hechizo.id)
     //console.warn("INDEX HECHIZO: ",indexHechizoCooldown);
-    this.sesion.render.heroes.find(i => i.nombre == caster.nombre).cooldown[indexHechizoCooldown] = hechizo.cooldown;
+    this.sesion.render.heroes[configuracionHechizo.indexCaster].cooldown[indexHechizoCooldown] = hechizo.cooldown;
 
     //Verificar valores de energiaFutura en los rangos:
-    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energiaFutura < 0){
-        this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energiaFutura = 0;
+    if(this.sesion.render.heroes[configuracionHechizo.indexCaster].energiaFutura < 0){
+        this.sesion.render.heroes[configuracionHechizo.indexCaster].energiaFutura = 0;
     }
-    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energiaFutura > 100){
-        this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energiaFutura = 100;
+    if(this.sesion.render.heroes[configuracionHechizo.indexCaster].energiaFutura > 100){
+        this.sesion.render.heroes[configuracionHechizo.indexCaster].energiaFutura = 100;
     }
 
     //Verificar valores de energia en los rangos:
-    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia <0){
-       this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia = 0;
+    if(this.sesion.render.heroes[configuracionHechizo.indexCaster].energia <0){
+       this.sesion.render.heroes[configuracionHechizo.indexCaster].energia = 0;
     }
-    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia >100){
-       this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia = 100;
+    if(this.sesion.render.heroes[configuracionHechizo.indexCaster].energia >100){
+       this.sesion.render.heroes[configuracionHechizo.indexCaster].energia = 100;
     }
-    if(this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia==undefined
-    || this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia==null){
-        this.sesion.render.heroes.find(i => i.nombre == caster.nombre).energia = 0;
+    if(this.sesion.render.heroes[configuracionHechizo.indexCaster].energia==undefined
+    || this.sesion.render.heroes[configuracionHechizo.indexCaster].energia==null){
+        this.sesion.render.heroes[configuracionHechizo.indexCaster].energia = 0;
     }
 
     }
@@ -2040,43 +2046,8 @@ export class MazmorraService implements OnInit{
     var objetivosEnemigos=[];
     var objetivosHeroes=[];
 
-    //Iteramos enemigos:
-    for(var i=0; i <this.sesion.render.enemigos.length; i++){
-      if(this.sesion.render.enemigos[i].objetivo){
-        objetivosEnemigos.push(i);
-      }
-    }
-
-    //Iteramos heroes:
-    for(var i=0; i <this.sesion.render.heroes.length; i++){
-      if(this.sesion.render.heroes[i].objetivo){
-        objetivosHeroes.push(i);
-      }
-    }
-
-
-
-    //Eliminamos los objetivos:
-
-      //Elimina objetivos en heroes:
-      for(var i=0; i <this.sesion.render.heroes.length; i++){
-        if(this.sesion.render.heroes[i].objetivoAuxiliar){
-          this.sesion.render.heroes[i].objetivoAuxiliar= false;
-        }
-        if(this.sesion.render.heroes[i].objetivo){
-          this.sesion.render.heroes[i].objetivo= false;
-        }
-
-      }
-      //Elimina objetivos en enemigos:
-      for(var i=0; i <this.sesion.render.enemigos.length; i++){
-        if(this.sesion.render.enemigos[i].objetivoAuxiliar){
-          this.sesion.render.enemigos[i].objetivoAuxiliar= false;
-        }
-        if(this.sesion.render.enemigos[i].objetivo){
-          this.sesion.render.enemigos[i].objetivo= false;
-        }
-      }
+    objetivosEnemigos = configuracionHechizo.objetivosEnemigos;
+    objetivosHeroes = configuracionHechizo.objetivosHeroes;
 
     //Si hay objetivos predefinidos Remplaza los objetivos por los predefinidos:
     if(this.sesion.render.interfaz.objetivoPredefinido.enemigos.length!=0){
@@ -2091,7 +2062,7 @@ export class MazmorraService implements OnInit{
     this.loggerService.log("--- HECHIZO ("+hechizo.nombre+")--- ","lightblue");
 
     //Aplicamos el hechizo en los objetivos:
-    this.aplicarHechizos(tipoCaster, indexCaster, hechizo, objetivosEnemigos, objetivosHeroes, resolve);
+    this.aplicarHechizos(configuracionHechizo.tipoCaster, configuracionHechizo.indexCaster, hechizo, objetivosEnemigos, objetivosHeroes, resolve);
 
   });
     } //FIN LANZAR HECHIZO
@@ -2100,7 +2071,7 @@ export class MazmorraService implements OnInit{
     //------------------------
     // 3) APLICAR HECHIZO
     //-----------------------
-  aplicarHechizos(tipoCaster: "heroe"|"enemigo",indexCaster:number,hechizo: any, objetivoEnemigos: any, objetivoHeroes: any, resolve?):void{
+  aplicarHechizos(tipoCaster: "heroes"|"enemigos",indexCaster:number,hechizo: any, objetivoEnemigos: any, objetivoHeroes: any, resolve?):void{
 
     //Añadir cuenta aplicacion hechizo:
     this.cuentaAplicacionHechizo++;
@@ -2117,14 +2088,14 @@ export class MazmorraService implements OnInit{
         var tipoObjetivo;
         var indexObjetivo;
         var objetivo;
-        var caster = tipoCaster+"s";
+        var caster = tipoCaster;
 
     if(objetivoEnemigos.length>0){
-            tipoObjetivo = "enemigo";
+            tipoObjetivo = "enemigos";
             objetivo = "enemigos";
             indexObjetivo= objetivoEnemigos.slice(-1);
         }else if(objetivoHeroes.length>0){
-            tipoObjetivo = "heroe";
+            tipoObjetivo = "heroes";
             objetivo = "heroes";
             indexObjetivo= objetivoHeroes.slice(-1);
         }
@@ -2184,8 +2155,8 @@ export class MazmorraService implements OnInit{
           var buffEscudo = Object.assign({},this.buff.find(i => i.id==28))
           console.warn("BUFF ESCUDO", buffEscudo);
           buffEscudo["duracion"]= hechizo["duracion_escudo"]*this.sesion.jugadores.length;
-          buffEscudo["critico"]= this.estadoControl.critico;
-          buffEscudo["fortuna"]= this.estadoControl.fortuna;
+          buffEscudo["critico"]= hechizo.critico;
+          buffEscudo["fortuna"]= hechizo.fortuna;
           buffEscudo["nivelCaster"]= hechizo.nivelCaster;
           buffEscudo["tipoCaster"]= hechizo.tipoCaster;
           buffEscudo["indexCaster"]= hechizo.indexCaster;
@@ -2207,10 +2178,10 @@ export class MazmorraService implements OnInit{
         //-------------------------
 
         switch(tipoObjetivo){
-            case "heroe":
+            case "heroes":
             this.aplicarHechizosFinal(tipoObjetivo, objetivoHeroes[objetivoHeroes.length-1],hechizo);
             break;
-            case "enemigo":
+            case "enemigos":
             this.aplicarHechizosFinal(tipoObjetivo, objetivoEnemigos[objetivoEnemigos.length-1],hechizo);
             break;
         }
@@ -2219,13 +2190,18 @@ export class MazmorraService implements OnInit{
         // 8) ELIMINACION ELEMENTO LISTA OBJETIVO
         //---------------------------------------
         switch(tipoObjetivo){
-            case "heroe":
+            case "heroes":
             objetivoHeroes.splice(objetivoHeroes.length-1, 1);
             break;
-            case "enemigo":
+            case "enemigos":
             objetivoEnemigos.splice(objetivoEnemigos.length-1, 1);
             break;
         }
+
+        //---------------------------------------
+        // 9) RENDERIZAR LANZAMIENTO
+        //---------------------------------------
+        this.forceRender();
 
         }//EJECUCIÓN SOBRE UN OBJETIVO
 
@@ -2246,24 +2222,24 @@ export class MazmorraService implements OnInit{
         if(hechizo.hechizo_encadenado_id != 0 && !this.estadoControl.detenerHechizo){ //Si hay hechizo encadenado
           this.appService.setControl("desbloqueoHechizo");
           this.estadoControl.estado = "hechizoEncadenado";
-          this.estadoControl.hechizo = hechizo.hechizo_encadenado_id;
-          this.sesion.render.interfaz.barraAccion.mostrar = false;
+          this.estadoControl.hechizoId = hechizo.hechizo_encadenado_id;
+          this.mostrarBarraAccion(false);
           this.cuentaLanzamientoHechizo++;
           this.loggerService.log("--> Iniciando Hechizo encadenado (ID: "+hechizo.hechizo_encadenado_id+")","yellow");
 
           this.seleccionObjetivo(hechizo.hechizo_encadenado_id);
         }else{
-        //Desbloquea y termina la aplicación de Hechizos:
-        this.appService.setControl("desbloqueoHechizo");
-        this.estadoControl.estado = "seleccionAccion";
-        this.estadoControl.hechizo = 0;
-        this.estadoControl.rngEncadenado= false;
-        this.sesion.render.interfaz.barraAccion.mostrar = false;
-        this.cuentaLanzamientoHechizo=1;
-        this.estadoControl.detenerHechizo=false;
-        this.sesion.render.interfaz.objetivoPredefinido.enemigos= [];
-        this.sesion.render.interfaz.objetivoPredefinido.heroes= [];
-                    if(resolve){ resolve(true) } //Devuelve promesa de finalización de hechizo
+          //Desbloquea y termina la aplicación de Hechizos:
+          this.appService.setControl("desbloqueoHechizo");
+          this.estadoControl.estado = "seleccionAccion";
+          this.estadoControl.hechizoId = 0;
+          this.estadoControl.rngEncadenado= false;
+          this.mostrarBarraAccion(false);
+          this.cuentaLanzamientoHechizo=1;
+          this.estadoControl.detenerHechizo=false;
+          this.sesion.render.interfaz.objetivoPredefinido.enemigos= [];
+          this.sesion.render.interfaz.objetivoPredefinido.heroes= [];
+          if(resolve){ resolve(true) } //Devuelve promesa de finalización de hechizo
         }
 
       }, this.velocidadHechizo);
@@ -2274,9 +2250,9 @@ export class MazmorraService implements OnInit{
     //------------------------
     // MODIFICACIONES SALIDA
     //-----------------------
-    modificacionHechizoSalida(tipoCaster:"enemigo"|"heroe",indexCaster:number,hechizo:any):any{
+    modificacionHechizoSalida(tipoCaster:"enemigos"|"heroes",indexCaster:number,hechizo:any):any{
 
-        if(tipoCaster!="heroe" && tipoCaster!="enemigo"){console.error("tipoCaster no valido: "+tipoCaster);return}
+        if(tipoCaster!="heroes" && tipoCaster!="enemigos"){console.error("tipoCaster no valido: "+tipoCaster);return}
 
         //CREA DATOS DE SALIDA:
         var potenciaCritico = 1;
@@ -2287,14 +2263,14 @@ export class MazmorraService implements OnInit{
 
         //Modificaciones por tipoCaster:
         switch(tipoCaster){
-            case "heroe":
+            case "heroes":
                 hechizo["daño_salida"]= (hechizo.daño_dir*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (hechizo.daño_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(hechizo.daño_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
                 hechizo["heal_salida"]= (hechizo.heal_dir*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (hechizo.heal_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(hechizo.heal_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
                 hechizo["escudo_salida"]= (hechizo.escudo_dir*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (hechizo.escudo_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(hechizo.escudo_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
                 potenciaCritico = this.sesion.render.heroes[indexCaster].estadisticas["potenciaCritico"];
                 potenciaFortuna = 1.5;
                 break;
-            case "enemigo":
+            case "enemigos":
                 hechizo["daño_salida"]= (hechizo.daño_dir*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (hechizo.daño_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(hechizo.daño_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
                 hechizo["heal_salida"]= (hechizo.heal_dir*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (hechizo.heal_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(hechizo.heal_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
                 hechizo["escudo_salida"]= (hechizo.escudo_dir*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (hechizo.escudo_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(hechizo.escudo_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
@@ -2302,7 +2278,7 @@ export class MazmorraService implements OnInit{
         }
 
     //Modificación por critico:
-      if(this.estadoControl.critico && tipoCaster == "heroe"){
+      if(hechizo.critico && tipoCaster == "heroes"){
         console.warn("MODIFICANDO POR CRITICO");
         hechizo["daño_salida"] = hechizo["daño_salida"]*potenciaCritico;
         hechizo["heal_salida"] = hechizo["heal_salida"]*potenciaCritico;
@@ -2310,17 +2286,17 @@ export class MazmorraService implements OnInit{
       }
 
     //Modificación por Fortuna:
-      if(this.estadoControl.fortuna && tipoCaster == "heroe"){
+      if(hechizo.fortuna && tipoCaster == "heroes"){
         console.warn("MODIFICANDO POR FORTUNA");
         hechizo["daño_salida"] = hechizo["daño_salida"]*potenciaFortuna;
         hechizo["heal_salida"] = hechizo["heal_salida"]*potenciaFortuna;
         hechizo["escudo_salida"] = hechizo["escudo_salida"]*potenciaFortuna;
       }
 
-    if(this.estadoControl.critico || this.estadoControl.fortuna){
-      if(this.estadoControl.critico && !this.estadoControl.fortuna){
+    if(hechizo.critico || hechizo.fortuna){
+      if(hechizo.critico && !hechizo.fortuna){
         this.loggerService.log("------ SALIDA (CRITICO) ------- ","teal");
-      }else if(!this.estadoControl.critico && this.estadoControl.fortuna){
+      }else if(!hechizo.critico && hechizo.fortuna){
         this.loggerService.log("------ SALIDA  (Fortuna)------- ","teal");
       }else{
         this.loggerService.log("------ SALIDA  (Fortuna + Critico)------- ","teal");
@@ -2438,14 +2414,14 @@ export class MazmorraService implements OnInit{
 
         //Modificaciones por tipoCaster:
         switch(tipoCaster){
-            case "heroe":
+            case "heroes":
                 buff["daño_t_salida"]= (buff.daño_t*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (buff.daño_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(buff.daño_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
                 buff["heal_t_salida"]= (buff.heal_t*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (buff.heal_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(buff.heal_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
                 buff["escudo_t_salida"]= (buff.escudo_t*this.sesion.render.heroes[indexCaster].estadisticas["pa"]) + (buff.escudo_esc_AD * this.sesion.render.heroes[indexCaster].estadisticas["ad"])+(buff.escudo_esc_AP * this.sesion.render.heroes[indexCaster].estadisticas["ap"])
                 potenciaCritico = this.sesion.render.heroes[indexCaster].estadisticas["potenciaCritico"];
                 potenciaFortuna = 1.5;
                 break;
-            case "enemigo":
+            case "enemigos":
                 buff["daño_t_salida"]= (buff.daño_t*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (buff.daño_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(buff.daño_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
                 buff["heal_t_salida"]= (buff.heal_t*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (buff.heal_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(buff.heal_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
                 buff["escudo_t_salida"]= (buff.escudo_t*this.sesion.render.enemigos[indexCaster].estadisticas["pa"]) + (buff.escudo_esc_AD * this.sesion.render.enemigos[indexCaster].estadisticas["ad"])+(buff.escudo_esc_AP * this.sesion.render.enemigos[indexCaster].estadisticas["ap"])
@@ -2458,7 +2434,7 @@ export class MazmorraService implements OnInit{
     buff["escudo_t_salida"]= buff["escudo_t_salida"]/buff["duracion"];
 
     //Modificación por critico:
-      if(this.estadoControl.critico && tipoCaster == "heroe"){
+      if(buff.critico && tipoCaster == "heroes"){
         console.warn("MODIFICANDO BUFF POR CRITICO");
         buff["daño_t_salida"] = buff["daño_t_salida"]*potenciaCritico;
         buff["heal_t_salida"] = buff["heal_t_salida"]*potenciaCritico;
@@ -2466,7 +2442,7 @@ export class MazmorraService implements OnInit{
       }
 
     //Modificación por Fortuna:
-      if(this.estadoControl.fortuna && tipoCaster == "heroe"){
+      if(buff.fortuna && tipoCaster == "heroes"){
         console.warn("MODIFICANDO BUFF POR FORTUNA");
         buff["daño_t_salida"] = buff["daño_t_salida"]*potenciaFortuna;
         buff["heal_t_salida"] = buff["heal_t_salida"]*potenciaFortuna;
@@ -2474,10 +2450,10 @@ export class MazmorraService implements OnInit{
       }
 
     //Logger:
-    if(this.estadoControl.critico || this.estadoControl.fortuna){
-      if(this.estadoControl.critico && !this.estadoControl.fortuna){
+    if(buff.critico || buff.fortuna){
+      if(buff.critico && !buff.fortuna){
         this.loggerService.log("------ SALIDA BUFF (CRITICO) ------- ","teal");
-      }else if(!this.estadoControl.critico && this.estadoControl.fortuna){
+      }else if(!buff.critico && buff.fortuna){
         this.loggerService.log("------ SALIDA BUFF  (Fortuna)------- ","teal");
       }else{
         this.loggerService.log("------ SALIDA BUFF  (Fortuna + Critico)------- ","teal");
@@ -2556,7 +2532,7 @@ export class MazmorraService implements OnInit{
 
     }
 
-    modificacionBuffEntrada(objetivo:"enemigo"|"heroe",indexObjetivo:number,buff:any):any{
+    modificacionBuffEntrada(tipoObjetivo:"enemigos"|"heroes",indexObjetivo:number,buff:any):any{
 
         var armaduraMaxPercent = this.parametros.armaduraMax;
         var armaduraMinPercent = this.parametros.armaduraMin;
@@ -2564,17 +2540,17 @@ export class MazmorraService implements OnInit{
         var min = 0;
         var max = 0;
 
-        switch(objetivo){
+        switch(tipoObjetivo){
 
             //(CUALQUIERA) --> HEROE
-            case "heroe":
+            case "heroes":
                 armadura = this.sesion.render.heroes[indexObjetivo].estadisticas.armadura;
                 min = this.parametros.heroes.base["armadura"]+(buff.nivelCaster*this.parametros.heroes.escalado["armadura"]);
                 max = min + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ buff.nivelCaster * this.parametros.objetos.escalado)
                 break;
 
             //(CUALQUIERA) --> ENEMIGO
-            case "enemigo":
+            case "enemigos":
                 armadura = this.sesion.render.enemigos[indexObjetivo].estadisticas.armadura;
                 min = this.parametros.enemigos.base["armadura"]+ (buff.nivelCaster * this.parametros.enemigos.escalado["armadura"]);
                 max = min + this.parametros.enemigos.baseRango + (buff.nivelCaster * this.parametros.enemigos.escaladoRango);
@@ -2597,7 +2573,7 @@ export class MazmorraService implements OnInit{
     //---------------------------
     // APLICACION FINAL (HECHIZO)
     //---------------------------
-  aplicarHechizosFinal(tipoObjetivo:"heroe"|"enemigo",indexObjetivo:number,hechizo:any):any{
+  aplicarHechizosFinal(tipoObjetivo:"heroes"|"enemigos",indexObjetivo:number,hechizo:any):any{
 
     console.log("APLICANDO HECHIZO FINAL: ")
     console.log(hechizo)
@@ -2605,38 +2581,37 @@ export class MazmorraService implements OnInit{
     //Verificación del caster:
     var indexCaster = hechizo.indexCaster;
     var tipoCaster = hechizo.tipoCaster;
-    var objetivo = tipoObjetivo+"s";
 
-    console.log(indexCaster,tipoCaster,objetivo,indexObjetivo)
+    console.log(indexCaster,tipoCaster,tipoObjetivo,indexObjetivo)
 
     //Calculo Vida Total del objetivo:
-    var vidaTotalObjetivo = this.sesion.render[objetivo][indexObjetivo].estadisticas.vidaMaxima;
+    var vidaTotalObjetivo = this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas.vidaMaxima;
 
     //Añadir Escudos: ESCUDO
     /*
-    if(this.sesion.render[objetivo][indexObjetivo].vida > 0){
-        this.sesion.render[objetivo][indexObjetivo].escudo += (hechizo.escudo_entrante / vidaTotalObjetivo*100);
+    if(this.sesion.render[tipoObjetivo][indexObjetivo].vida > 0){
+      this.sesion.render[tipoObjetivo][indexObjetivo].escudo += (hechizo.escudo_entrante / vidaTotalObjetivo*100);
     }
     */
 
     //Añadir Vida:
-    if(this.sesion.render[objetivo][indexObjetivo].vida > 0){
-        this.sesion.render[objetivo][indexObjetivo].vida += (hechizo.heal_entrante/vidaTotalObjetivo*100);
+    if(this.sesion.render[tipoObjetivo][indexObjetivo].vida > 0){
+        this.sesion.render[tipoObjetivo][indexObjetivo].vida += (hechizo.heal_entrante/vidaTotalObjetivo*100);
     }
 
     var dañoRestante = hechizo.daño_entrante;
 
     //Efectuar Daños en escudo:
-    for(var i = 0; i < this.sesion.render[objetivo][indexObjetivo].buff.length; i++){
-      if(this.sesion.render[objetivo][indexObjetivo].buff[i]["escudo_valor"] > 0){
+    for(var i = 0; i < this.sesion.render[tipoObjetivo][indexObjetivo].buff.length; i++){
+      if(this.sesion.render[tipoObjetivo][indexObjetivo].buff[i]["escudo_valor"] > 0){
         //Si el daño rompe el escudo:
-        if(this.sesion.render[objetivo][indexObjetivo].buff[i]["escudo_valor"] <= dañoRestante){
-          dañoRestante -= this.sesion.render[objetivo][indexObjetivo].buff[i]["escudo_valor"];
-          this.sesion.render[objetivo][indexObjetivo].buff[i]["escudo_valor"] = 0;
+        if(this.sesion.render[tipoObjetivo][indexObjetivo].buff[i]["escudo_valor"] <= dañoRestante){
+          dañoRestante -= this.sesion.render[tipoObjetivo][indexObjetivo].buff[i]["escudo_valor"];
+          this.sesion.render[tipoObjetivo][indexObjetivo].buff[i]["escudo_valor"] = 0;
           break;
         //Si el daño NO rompe el escudo:
         }else{
-          this.sesion.render[objetivo][indexObjetivo].buff[i]["escudo_valor"] -= dañoRestante;
+          this.sesion.render[tipoObjetivo][indexObjetivo].buff[i]["escudo_valor"] -= dañoRestante;
           dañoRestante = 0;
         }
       }
@@ -2646,26 +2621,26 @@ export class MazmorraService implements OnInit{
     this.actualizarEscudo(tipoObjetivo, indexObjetivo);
 
     // Efectuar Daños en vida:
-    this.sesion.render[objetivo][indexObjetivo].vida -= (dañoRestante/vidaTotalObjetivo*100);
+    this.sesion.render[tipoObjetivo][indexObjetivo].vida -= (dañoRestante/vidaTotalObjetivo*100);
 
     //AplicarAgro:
-    if(tipoObjetivo=="enemigo"){
+    if(tipoObjetivo=="enemigos"){
       this.sesion.render.enemigos[indexObjetivo].agro[hechizo.indexCaster] += hechizo.daño_entrante;
     }
 
     //Redondeo de vida:
-    this.sesion.render[objetivo][indexObjetivo].vida = Math.round(this.sesion.render[objetivo][indexObjetivo].vida * 100) / 100;
+    this.sesion.render[tipoObjetivo][indexObjetivo].vida = Math.round(this.sesion.render[tipoObjetivo][indexObjetivo].vida * 100) / 100;
 
-      if(this.sesion.render[objetivo][indexObjetivo].vida==NaN){
+      if(this.sesion.render[tipoObjetivo][indexObjetivo].vida==NaN){
         console.error("VIDA NAN");
       }
 
     //Mantener rango de vida:
-    if(this.sesion.render[objetivo][indexObjetivo].vida > 100){
-      this.sesion.render[objetivo][indexObjetivo].vida = 100;
+    if(this.sesion.render[tipoObjetivo][indexObjetivo].vida > 100){
+      this.sesion.render[tipoObjetivo][indexObjetivo].vida = 100;
     }
-    if(this.sesion.render[objetivo][indexObjetivo].vida < 0){
-      this.sesion.render[objetivo][indexObjetivo].vida = 0;
+    if(this.sesion.render[tipoObjetivo][indexObjetivo].vida < 0){
+      this.sesion.render[tipoObjetivo][indexObjetivo].vida = 0;
     }
 
     //Reset critico:
@@ -2675,21 +2650,21 @@ export class MazmorraService implements OnInit{
     this.loggerService.log("------ ENTRADA ------- ","teal");
     if(hechizo.daño_entrante>0){
       this.loggerService.log("-----> Daño: "+ hechizo.daño_entrante,"orangered");
-      if(tipoCaster=="heroe"){
+      if(tipoCaster=="heroes"){
         this.sesion.render.estadisticas[indexCaster].daño[this.sesion.render.estadisticas[indexCaster].daño.length-1] += hechizo.daño_entrante;
       }
     }
 
     if(hechizo.heal_entrante>0){
       this.loggerService.log("-----> Heal: "+hechizo.heal_entrante,"lawngreen");
-      if(tipoCaster=="heroe"){
+      if(tipoCaster=="heroes"){
         this.sesion.render.estadisticas[indexCaster].heal[this.sesion.render.estadisticas[indexCaster].heal.length-1] += hechizo.heal_entrante;
       }
     }
 
     if(hechizo.escudo_entrante>0){
       this.loggerService.log("-----> Escudo: "+hechizo.escudo_entrante);
-      if(tipoCaster=="heroe"){
+      if(tipoCaster=="heroes"){
         this.sesion.render.estadisticas[indexCaster].escudo[this.sesion.render.estadisticas[indexCaster].escudo.length-1] += hechizo.escudo_entrante;
       }
     }
@@ -2697,10 +2672,10 @@ export class MazmorraService implements OnInit{
     this.calcularEstadisticasTotales();
 
     //Elimina al enemigo si esta muerto:
-        if(tipoObjetivo=="enemigo"){
+        if(tipoObjetivo=="enemigos"){
             if(this.sesion.render.enemigos[indexObjetivo].vida <=0){
                 this.sesion.render.enemigos[indexObjetivo].vida= 0;
-                this.enemigoMuerto(indexObjetivo);
+                //this.enemigoMuerto(indexObjetivo);
                 console.log("Enemigo Muerto: "+indexObjetivo);
                 //Logger:
                 this.loggerService.log("Enemigo Muerto:"+ indexObjetivo);
@@ -2762,20 +2737,19 @@ export class MazmorraService implements OnInit{
     //-------------------------------
     // ACTUALIZAR ESCUDO
     //-------------------------------
-    actualizarEscudo(tipoObjetivo: "heroe"|"enemigo", indexObjetivo: number){
+    actualizarEscudo(tipoObjetivo: "heroes"|"enemigos", indexObjetivo: number){
 
           var escudoTotalValor = 0
           var escudoTotalPercent = 0
-          var objetivo = tipoObjetivo+"s";
 
           //Iteramos por Buffs para determinar valor de escudo:
-          for(var i = 0; i < this.sesion.render[objetivo][indexObjetivo].buff.length; i++){
-            escudoTotalValor += this.sesion.render[objetivo][indexObjetivo].buff[i]["escudo_valor"];
+          for(var i = 0; i < this.sesion.render[tipoObjetivo][indexObjetivo].buff.length; i++){
+            escudoTotalValor += this.sesion.render[tipoObjetivo][indexObjetivo].buff[i]["escudo_valor"];
           }
 
           //Calculo de escudo Percent:
           if(escudoTotalValor > 0){
-            escudoTotalPercent = escudoTotalValor / this.sesion.render[objetivo][indexObjetivo].estadisticas.vidaMaxima;
+            escudoTotalPercent = escudoTotalValor / this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas.vidaMaxima;
           }else{
             escudoTotalPercent = 0;
           }
@@ -2785,7 +2759,7 @@ export class MazmorraService implements OnInit{
           escudoTotalPercent = Math.round( escudoTotalPercent * 100) / 100;
 
           //Asignar Escudo:
-          this.sesion.render[objetivo][indexObjetivo].escudo = escudoTotalPercent;
+          this.sesion.render[tipoObjetivo][indexObjetivo].escudo = escudoTotalPercent;
 
           return;
     }
@@ -2793,7 +2767,7 @@ export class MazmorraService implements OnInit{
     //-------------------------------
     //ADD BUFF LANZADO POR HECHIZO
     //-------------------------------
-    addBuffHechizo(tipoObjetivo: "heroe"|"enemigo",indexObjetivo: number,hechizo:any):any{
+    addBuffHechizo(tipoObjetivo: "heroes"|"enemigos",indexObjetivo: number,hechizo:any):any{
 
         //Aplicacion de Buffos:
         if(!hechizo.buff_id){return false;}
@@ -2803,8 +2777,8 @@ export class MazmorraService implements OnInit{
 
         var buff = Object.assign({},this.buff.find(i => i.id==hechizo.buff_id))
         buff["duracion"]= buff["duracion"]*this.sesion.jugadores.length;
-        buff["critico"]= this.estadoControl.critico;
-        buff["fortuna"]= this.estadoControl.fortuna;
+        buff["critico"]= hechizo.critico;
+        buff["fortuna"]= hechizo.fortuna;
         buff["nivelCaster"]= hechizo.nivelCaster;
         buff["tipoCaster"]= hechizo.tipoCaster;
         buff["indexCaster"]= hechizo.indexCaster;
@@ -2825,11 +2799,7 @@ export class MazmorraService implements OnInit{
         //--------------------------------
         // 3) APLICAR STAT INCREASE
         //--------------------------------
-        if(tipoObjetivo=="heroe"){
-          buff = this.setStatIncreaseBuff(buff,"heroes",indexObjetivo)
-        }else{
-          buff = this.setStatIncreaseBuff(buff,"enemigos",indexObjetivo)
-        }
+        buff = this.setStatIncreaseBuff(buff,tipoObjetivo,indexObjetivo)
 
         return buff;
 
@@ -2844,7 +2814,7 @@ export class MazmorraService implements OnInit{
     //Bloquea los inputs:
     this.appService.setControl("bloqueoBuff");
     this.sesion.render.interfaz.barraAccion.mensajeAccion = "Procesando...";
-    this.sesion.render.interfaz.barraAccion.mostrar = true;
+    this.mostrarBarraAccion(true);
 
     //Mensaje de palicación de buffos:
 
@@ -3034,7 +3004,7 @@ export class MazmorraService implements OnInit{
 
       //Desbloquea y termina la aplicación de buffos:
       this.appService.setControl("desbloqueoBuff");
-      this.sesion.render.interfaz.barraAccion.mostrar = false;
+      this.mostrarBarraAccion(false);
 
       if(resolveGlobal){
          resolveGlobal(true)
@@ -3167,7 +3137,7 @@ export class MazmorraService implements OnInit{
       this.loggerService.log("-----> Daño (Buffo): "+ this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].daño_t_entrante,"orangered");
 
             //Guardar en estadisticas de daño:
-      if(buff.tipoCaster=="heroe"){
+      if(buff.tipoCaster=="heroes"){
                 this.sesion.render.estadisticas[buff.indexCaster].daño[this.sesion.render.estadisticas[buff.indexCaster].daño.length-1]+= buff.daño_t_entrante;
       }
     }
@@ -3230,11 +3200,8 @@ export class MazmorraService implements OnInit{
 
     this.sesion.render[tipoObjetivo][indexObjetivo].buff.splice(indiceBuff,1);
 
-    if(tipoObjetivo == "heroes"){
-      this.actualizarEscudo("heroe", indexObjetivo);
-    }else{
-      this.actualizarEscudo("enemigo", indexObjetivo);
-    }
+    //Actualización de escudos:
+    this.actualizarEscudo(tipoObjetivo, indexObjetivo);
 
     return;
   }
@@ -3330,7 +3297,7 @@ export class MazmorraService implements OnInit{
     //this.estadoControl.rngEncadenado=true;
 
     console.log("MOSTRANDO RNG")
-    this.interfazService.activarInterfazRNG(this.sesion.render.heroes[this.personaje.heroeTurnoIndex].estadisticas.probabilidadCritico);
+    this.interfazService.activarInterfazRNG(this.sesion.render.heroes[this.estadoControl.heroePropioIndex].estadisticas.probabilidadCritico);
 
   }
 
@@ -3423,12 +3390,12 @@ export class MazmorraService implements OnInit{
     ----------------------------------------------*/
 
   activarComandoSocket():void{
-    this.comandoSocketActivo=true;
+    this.comandoSocketActivo = true;
     return;
   }
 
   desactivarComandoSocket():void{
-    this.comandoSocketActivo=false;
+    this.comandoSocketActivo = false;
     return;
   }
 
@@ -3461,9 +3428,12 @@ export class MazmorraService implements OnInit{
         this.seleccionarHeroes = false;
         this.cancelarObjetivo();
       break;
+
       case "realizarMovimiento":
-                this.realizarMovimiento(comando.valor);
-                break;
+        this.realizarMovimiento(comando.valor);
+        this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "realizarMovimiento", contenido: comando.valor});
+      break;
+
       case "seleccionarHechizo":
 
         console.log("Seleccionando Hechizo: "+comando.valor);
@@ -3474,18 +3444,21 @@ export class MazmorraService implements OnInit{
 
           switch(this.estadoControl.tipoObjetivo){
             case "EU":
-                            if(this.sesion.render.enemigos[0]==undefined){
-                                this.appService.mostrarDialogo("Informativo",{titulo: "No se puede lanzar el hechizo",contenido: "No hay objetivos posibles para lanzar el hechizo. Cancelando lanzamiento..."})
-                            }
+              if(this.sesion.render.enemigos[0]==undefined){
+                  this.appService.mostrarDialogo("Informativo",{titulo: "No se puede lanzar el hechizo",contenido: "No hay objetivos posibles para lanzar el hechizo. Cancelando lanzamiento..."})
+                this.interfazService.cancelarHechizo();
+                return;
+              }
               this.seleccionarEnemigos = true;
               console.log("SELECCIONANDO ENEMIGOS")
               this.interfazService.setPantallaInterfaz("seleccionObjetivoEnemigo");
             break;
             case "EM":
-                            if(this.sesion.render.enemigos[0]==undefined){
-                                this.appService.mostrarDialogo("Informativo",{titulo: "No se puede lanzar el hechizo",contenido: "No hay objetivos posibles para lanzar el hechizo. Cancelando lanzamiento..."})
-                                return;
-                            }
+              if(this.sesion.render.enemigos[0]==undefined){
+                  this.appService.mostrarDialogo("Informativo",{titulo: "No se puede lanzar el hechizo",contenido: "No hay objetivos posibles para lanzar el hechizo. Cancelando lanzamiento..."})
+                  this.interfazService.cancelarHechizo();
+                  return;
+              }
               this.seleccionarEnemigos = true;
               this.interfazService.setPantallaInterfaz("seleccionObjetivoEnemigo");
             break;
@@ -3512,21 +3485,28 @@ export class MazmorraService implements OnInit{
         var critico = comando.valor.critico
         var fortuna = comando.valor.fortuna
         this.lanzarRng(critico,fortuna);
-        this.forzarRenderizado();
+        this.forceRender();
       break;
 
       case "lanzarHechizoEnemigo":
         this.seleccionarEnemigos = false;
         this.seleccionarHeroes = false;
 
-        this.sesion.render.heroes[comando.valor["indexHeroe"]].objetivo = true;
+        //this.sesion.render.heroes[comando.valor["indexHeroe"]].objetivo = true;
+        var configuracionHechizo: ConfiguracionHechizo = this.configurarHechizo()
+        var indexHechizo = this.hechizos.findIndex(i => i.id == comando.valor.hechizo_id);
+        configuracionHechizo.indexHechizo = indexHechizo;
+        configuracionHechizo.indexCaster = comando.valor.indexEnemigo;
+        configuracionHechizo.objetivosHeroes = [comando.valor.indexHeroe]
 
-        this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizoEnemigo", contenido: comando.valor});
+        console.warn("CONFIGURACION ENEMIGO: ",configuracionHechizo)
+        this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizoEnemigo", contenido: configuracionHechizo});
 
-        this.lanzarHechizo(comando.valor).then(() => {
+        this.lanzarHechizo(configuracionHechizo).then(() => {
           //Timeout para esperar al socket de los jugadores:
           setTimeout(()=> {
             this.activarEnemigo(comando.valor["indexEnemigo"])
+            this.forceRender()
           },1500)
         });
 
@@ -3582,65 +3562,81 @@ export class MazmorraService implements OnInit{
     }
   }
 
-  seleccionEnemigo(numEnemigo):void{
-    console.log("Selecionando Enemigo "+numEnemigo);
+  seleccionEnemigo(indexEnemigo):void{
 
-    if(this.estadoControl.tipoObjetivo=="EU"){
-    }
+    console.log("Selecionando Enemigo "+indexEnemigo);
 
     if(this.estadoControl.estado=="seleccionAccion"){
         console.log("Mostrando Detalle");
-        this.interfazService.activarInterfazDetalle("enemigo",this.sesion.render.enemigos[numEnemigo]);
+        this.interfazService.activarInterfazDetalle("enemigo",this.sesion.render.enemigos[indexEnemigo]);
+        return;
     }
 
     //Si castea heroe:
     if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoEnemigo"){
+
       if(this.estadoControl.tipoObjetivo=="EU"){
-        for(var i = 0;i < this.sesion.render.enemigos.length; i++){
-          this.sesion.render.enemigos[i].objetivo = false;
-        }
-        this.sesion.render.enemigos[numEnemigo].objetivo = true;
+        this.estadoControl.objetivosEnemigos = [indexEnemigo];
       }else{
-       this.sesion.render.enemigos[numEnemigo].objetivo = !this.sesion.render.enemigos[numEnemigo].objetivo;
+
+        //Ver si el objetivo ya esta seleccionado para hacer toggle:
+        var posicionArray = this.estadoControl.objetivosEnemigos.indexOf(indexEnemigo);
+        if(posicionArray==-1){
+          //El objetivo no esta seleccionado --> Se añade al array:
+          this.estadoControl.objetivosEnemigos.push(indexEnemigo);
+        }else{
+          //El objetivo está seleccionado --> Se añade elimina del array:
+          this.estadoControl.objetivosEnemigos.splice(posicionArray,1);
+        }
       }
 
-        //Check de objetivo Seleccionado para habilitar interfaz Service:
-        this.interfazService.setObjetivoSeleccionado(false);
-        for(var i = 0;i <this.sesion.render.enemigos.length; i++){
-          if(this.sesion.render.enemigos[i].objetivo){
-            this.interfazService.setObjetivoSeleccionado(true);
-          }
-        }
+      //Check de objetivo Seleccionado para habilitar interfaz Service:
+      this.interfazService.setObjetivoSeleccionado(false);
+      if(this.estadoControl.objetivosEnemigos.length > 0){
+        this.interfazService.setObjetivoSeleccionado(true);
+      }
 
-    }
+    } //Fin pantalla "seleccionObjetivoEnemigo"
+
     return;
   }
 
-  seleccionarHeroe(index):void{
+  seleccionarHeroe(indexHeroe):void{
 
     console.log("Heroe seleccionado: ");
 
     if(this.estadoControl.estado=="seleccionAccion"){
-        console.warn("Mostrando Detalle",this.sesion.render.heroes[index]);
-        this.interfazService.activarInterfazDetalle("heroe",this.sesion.render.heroes[index]);
+      console.warn("Mostrando Detalle",this.sesion.render.heroes[indexHeroe]);
+      this.interfazService.activarInterfazDetalle("heroe",this.sesion.render.heroes[indexHeroe]);
     }
 
     //Si castea un heroe:
-    if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoAliado"&& (this.esHeroe)){
-      this.sesion.render.heroes[index].objetivo = !this.sesion.render.heroes[index].objetivo;
-        //Check de objetivo Seleccionado para habilitar interfaz Service:
-        this.interfazService.setObjetivoSeleccionado(false);
-        for(var i = 0;i <this.sesion.render.heroes.length; i++){
-          if(this.sesion.render.heroes[i].objetivo){
-            this.interfazService.setObjetivoSeleccionado(true);
-          }
-        }
-    }
+    if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoAliado"&& (this.estadoControl.esTurnoHeroe)){
 
-    //Si castea un Enemigo:
-    if(this.interfazService.getPantallaInterfaz()=="seleccionObjetivoEnemigo"&& (this.esEnemigo)){
-      this.sesion.render.heroes[index].objetivo = !this.sesion.render.heroes[index].objetivo;
-    }
+
+      if(this.estadoControl.tipoObjetivo=="AU"){
+        this.estadoControl.objetivosHeroes = [indexHeroe];
+      }else{
+
+        //Ver si el objetivo ya esta seleccionado para hacer toggle:
+        var posicionArray = this.estadoControl.objetivosHeroes.indexOf(indexHeroe);
+        if(posicionArray==-1){
+          //El objetivo no esta seleccionado --> Se añade al array:
+          this.estadoControl.objetivosHeroes.push(indexHeroe);
+        }else{
+          //El objetivo está seleccionado --> Se añade elimina del array:
+          this.estadoControl.objetivosHeroes.splice(posicionArray,1);
+        }
+      }
+
+      //Check de objetivo Seleccionado para habilitar interfaz Service:
+      this.interfazService.setObjetivoSeleccionado(false);
+      if(this.estadoControl.objetivosHeroes.length > 0){
+        this.interfazService.setObjetivoSeleccionado(true);
+      }
+    } //Fin pantall "seleccionObjetivoAliado"
+
+    return;
   }
 
   /*  ----------------------------------------------
@@ -3667,7 +3663,7 @@ export class MazmorraService implements OnInit{
                         }
                     }
                 }else{
-                    indexHeroeControlado = this.personaje.heroeIndex;
+                    indexHeroeControlado = this.estadoControl.heroePropioIndex;
                 }
 
                 //SI ERROR
@@ -3707,21 +3703,23 @@ export class MazmorraService implements OnInit{
     return;
   }
 
+  //Se lanza el hechizo despues del Rol de fortuna y Critico:
   lanzarRng(critico:boolean, fortuna: boolean):void{
 
     this.estadoControl.critico= critico;
     this.estadoControl.fortuna= fortuna;
 
-    this.lanzarHechizo();
-    this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: this.sesion.render});
+    var configuracionHechizo = this.configurarHechizo();
+    this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "lanzarHechizo", contenido: configuracionHechizo});
+    this.lanzarHechizo(configuracionHechizo);
+    //this.forceRender();
     return;
-
   }
 
     activarEnemigo(indexEnemigoActivado:number){
 
       //Evita la activación si no le toca la activación al heroe:
-      if(this.heroeIndex!=this.sesion.render.indexActivacionEnemigo && !this.permitirMultiControl){return}
+      if(this.estadoControl.turnoIndex!=this.sesion.render.indexActivacionEnemigo && !this.permitirMultiControl){return}
 
         console.warn("Activando Enemigos: ",indexEnemigoActivado,"(Index)",this.sesion.render.indexActivacionEnemigo,"(IndexActivacion)");
         if(this.sesion.render.enemigos[indexEnemigoActivado]){
@@ -3767,6 +3765,7 @@ export class MazmorraService implements OnInit{
         if(this.sesion.render.heroes[indexHeroeTurno].energiaFutura < 0){
             this.sesion.render.heroes[indexHeroeTurno].energiaFutura = 0;
         }
+
         if(this.sesion.render.heroes[indexHeroeTurno].energiaFutura > 100){
             this.sesion.render.heroes[indexHeroeTurno].energiaFutura = 100;
         }
@@ -3797,7 +3796,7 @@ export class MazmorraService implements OnInit{
     //RESTAURAR ENERGIA HEROE:
     this.sesion.render.heroes[indexHeroe].energia = this.parametros.energiaReanimar;
     this.sesion.render.heroes[indexHeroe].energiaFutura = this.parametros.energiaReanimar+this.parametros.regenEnergiaTurno;
-
+    this.forceRender();
 
   }//FIN REANIMAR HEROE
 
@@ -3886,7 +3885,7 @@ export class MazmorraService implements OnInit{
     console.warn("Ejecutando Evento: ",idEvento)
     //EVENTO 1:
     if(idEvento==1){
-      const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres abrir la puerta?",contenido: "Para poder abrir la puerta tienes que estar adyacente a ella y ser tu turno.", deshabilitado: !this.esTurnoPropio});
+      const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres abrir la puerta?",contenido: "Para poder abrir la puerta tienes que estar adyacente a ella y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
         dialogo.afterClosed().subscribe(result => {
           console.log(result);
           if(result){
@@ -3897,7 +3896,7 @@ export class MazmorraService implements OnInit{
     }//Fin evento
     //EVENTO 2:
     if(idEvento==2){
-       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres abrir la puerta?",contenido: "Para poder abrir la puerta tienes que estar adyacente a ella y ser tu turno.", deshabilitado: !this.esTurnoPropio});
+       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres abrir la puerta?",contenido: "Para poder abrir la puerta tienes que estar adyacente a ella y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
         dialogo.afterClosed().subscribe(result => {
           console.log(result);
           if(result){
@@ -3909,20 +3908,21 @@ export class MazmorraService implements OnInit{
 
     //EVENTO 3:
     if(idEvento==3){
-       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres revelar la zona?",contenido: "Para poder revelar tienes que haber llegado a la ubicación especificada y ser tu turno.", deshabilitado: !this.esTurnoPropio});
+       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres revelar la zona?",contenido: "Para poder revelar tienes que haber llegado a la ubicación especificada y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
         dialogo.afterClosed().subscribe(result => {
           console.log(result);
           if(result){
             console.log('Abriendo Sala');
             this.cambiarSala(4);
             this.cambiarSala(6);
+
           }
         })
     }//Fin evento
 
     //EVENTO 4:
     if(idEvento==4){
-       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres revelar la zona?",contenido: "Para poder revelar tienes que haber llegado a la ubicación especificada y ser tu turno.", deshabilitado: !this.esTurnoPropio});
+       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Seguro que quieres revelar la zona?",contenido: "Para poder revelar tienes que haber llegado a la ubicación especificada y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
         dialogo.afterClosed().subscribe(result => {
           console.log(result);
           if(result){
@@ -3933,7 +3933,7 @@ export class MazmorraService implements OnInit{
 
     //EVENTO 5:
     if(idEvento==5){
-       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Quieres inspeccionar la mesa?",contenido: "Para poder inspeccionar tienes que estar adyacente al objeto y ser tu turno.", deshabilitado: !this.esTurnoPropio});
+       const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Quieres inspeccionar la mesa?",contenido: "Para poder inspeccionar tienes que estar adyacente al objeto y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
         dialogo.afterClosed().subscribe(result => {
           console.log(result);
           if(result){
@@ -3959,7 +3959,7 @@ export class MazmorraService implements OnInit{
             imagenIndex: 2,
             nombre: "Otro"
           },
-          deshabilitado: !this.esTurnoPropio,
+          deshabilitado: !this.estadoControl.esTurnoPropio,
           opciones: ["Coger llaves"]});
           dialogo.afterClosed().subscribe(result => {
             console.log(result);
@@ -3975,7 +3975,7 @@ export class MazmorraService implements OnInit{
       if(this.sesion.render.mazmorra.llaves){
         this.cambiarSala(5);
       }else{
-       const dialogo = this.appService.mostrarDialogo("Informativo",{titulo: "La puerta parece estar cerrada con llave",contenido: "Tratas de abrir la puerta pero tus esfuerzos son en vano. Tendras que encontrar la llave antes de pasar.", deshabilitado: !this.esTurnoPropio});
+       const dialogo = this.appService.mostrarDialogo("Informativo",{titulo: "La puerta parece estar cerrada con llave",contenido: "Tratas de abrir la puerta pero tus esfuerzos son en vano. Tendras que encontrar la llave antes de pasar.", deshabilitado: !this.estadoControl.esTurnoPropio});
         dialogo.afterClosed().subscribe(result => {
           console.log(result);
           if(result){

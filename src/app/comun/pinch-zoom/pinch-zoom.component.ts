@@ -20,7 +20,7 @@ export const _defaultComponentProperties:ComponentProperties = {
 type PropertyName = keyof ComponentProperties;
 
 @Component({
-	selector: 'pinch-zoom, [pinch-zoom]',
+	  selector: 'pinch-zoom, [pinch-zoom]',
     exportAs: 'pinchZoom',
     templateUrl: './pinch-zoom.component.html',
     styleUrls: ['./pinch-zoom.component.sass'],
@@ -38,6 +38,9 @@ export class PinchZoomComponent implements OnDestroy, OnInit {
     _autoZoomOut!:boolean;
     _limitZoom!:number | "original image size";
 
+
+    @Input() renderX: number;
+    @Input() renderY: number;
 
     @Input('properties') set properties(value: ComponentProperties) {
         if (value) {
@@ -204,13 +207,24 @@ export class PinchZoomComponent implements OnDestroy, OnInit {
     ngOnInit(){
 
         this.initPinchZoom();
-        
-        this.cdr.detach()
+
         /* Calls the method until the image size is available */
         this.detectLimitZoom();
     }
 
     ngOnChanges(changes:SimpleChanges) {
+
+        if(this.pinchZoom){
+          if(changes["renderX"]){
+            this.renderX = changes.renderX.currentValue;
+            this.pinchZoom.setRenderX(this.renderX);
+          }
+          if(changes["renderY"]){
+            this.renderY = changes.renderY.currentValue;
+            this.pinchZoom.setRenderY(this.renderY);
+          }
+        }
+
         let changedProperties = this.getProperties(changes);
         changedProperties = this.renameProperties(changedProperties);
 
@@ -229,6 +243,7 @@ export class PinchZoomComponent implements OnDestroy, OnInit {
 
         this.properties['element'] = this.elementRef.nativeElement.querySelector('.pinch-zoom-content');
         this.pinchZoom = new IvyPinch(this.properties);
+
     }
 
     getProperties(changes:SimpleChanges) {
@@ -259,7 +274,6 @@ export class PinchZoomComponent implements OnDestroy, OnInit {
     applyPropertiesDefault(defaultProperties:ComponentProperties, properties:ComponentProperties): void {
         this.properties = Object.assign({}, defaultProperties, properties);
     }
-
 
     toggleZoom() {
         this.pinchZoom.toggleZoom();

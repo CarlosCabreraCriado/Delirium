@@ -20,7 +20,7 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/n
 
 export class AppService {
 
-  	constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
+    constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -36,12 +36,14 @@ export class AppService {
       //Variables de entorno:
       this.ipRemota =  environment.dominio
       this.ionic = environment.ionic
+      this.production = environment.production
       console.warn("ENTORNO: ")
       console.warn("IP REMOTA: ", environment.dominio)
       console.warn("IONIC: ", environment.ionic)
       console.warn("DISPOSITIVO: ", this.dispositivo)
+      console.warn(environment)
 
-        if(this.ionic){this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);}
+      if(this.ionic && this.production){this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);}
 
       //Inicializa Storage:
       this.initStorage()
@@ -50,6 +52,7 @@ export class AppService {
     //Variables de entorno:
     public ipRemota: string= "";
     private ionic: boolean= true;
+    private production: boolean= false;
 
     //Variables de configuración:
     public activarDatosOficiales= true;
@@ -89,7 +92,7 @@ export class AppService {
     private autoDesbloqueo: boolean= true;
     public claveValida: boolean= false;
     private sala: any={};
-	private heroeSeleccionado = null;
+  private heroeSeleccionado = null;
 
     //Estados:
     public estadoApp = "";
@@ -114,11 +117,12 @@ export class AppService {
     setEstadoApp(estado: string){
 
         console.log("ENTRANDO")
-      	//this.mostrarPantallacarga(false);
+        //this.mostrarPantallacarga(false);
         //this.estadoApp = estado;
-      	this.mostrarPantallacarga(true);
+        this.mostrarPantallacarga(true);
 
         setTimeout(()=>{
+                console.warn("CAMBIO ESTADO APP ",estado)
                 this.estadoApp = estado;
         }, 1000);
 
@@ -140,12 +144,12 @@ export class AppService {
     }
 
     setToken(token){
-	  console.log("Guardando Token: ");
-	  console.log(token);
+    console.log("Guardando Token: ");
+    console.log(token);
       if(this.ionic){
           this.set("token",token)
       }else{
-	    window.electronAPI.setToken(token)
+      window.electronAPI.setToken(token)
       }
       this.token=token;
       return;
@@ -157,25 +161,25 @@ export class AppService {
       }else{
         this.token = await window.electronAPI.getToken();
       }
-	  console.log("Recuperando Token... Done");
+    console.log("Recuperando Token... Done");
       return this.token;
     }
 
     async setSesion(sesion:any){
-	  console.log("Cargando Sesion: ");
-	  console.log(sesion);
+    console.log("Cargando Sesion: ");
+    console.log(sesion);
       this.sesion=sesion;
       return;
     }
 
     setPerfil(perfil: any){
-	  console.log("Guardando Perfil...");
-	  console.log(perfil);
+    console.log("Guardando Perfil...");
+    console.log(perfil);
 
       if(this.ionic){
           this.set("perfil",perfil)
       }else{
-	    window.electronAPI.setPerfil(perfil)
+      window.electronAPI.setPerfil(perfil)
       }
       this.perfil=perfil;
       return;
@@ -230,9 +234,9 @@ export class AppService {
      this.control=val;
      console.log("CONTROL: "+this.control);
      if(this.control == "mazmorra"){
-		    this.observarAppService.next("controlMazmorraTrue");
+        this.observarAppService.next("controlMazmorraTrue");
      }else{
-		    this.observarAppService.next("controlMazmorraFalse");
+        this.observarAppService.next("controlMazmorraFalse");
      }
     }
 
@@ -243,18 +247,18 @@ export class AppService {
     @Output() ajustes: EventEmitter<string> = new EventEmitter();
     @Output() eventoAppService: EventEmitter<string> = new EventEmitter();
 
-  	audioTeclaPlay(): void{
-  		let audio = new Audio();
-  		audio.src = "./assets/sounds/tecla.mp3";
-  		audio.load();
-  		audio.play();
-	}
+    audioTeclaPlay(): void{
+      let audio = new Audio();
+      audio.src = "./assets/sounds/tecla.mp3";
+      audio.load();
+      audio.play();
+  }
 
-	  //Router de tecla
-  	teclaPulsada(tecla): void{
-  		//this.audioTeclaPlay();
-  		this.observarTeclaPulsada.next(tecla);
-  	}
+    //Router de tecla
+    teclaPulsada(tecla): void{
+      //this.audioTeclaPlay();
+      this.observarTeclaPulsada.next(tecla);
+    }
 
     finalizarLogin():void{
       this.eventoAppService.emit("login");
@@ -262,7 +266,7 @@ export class AppService {
 
     setDatosJuego(datosJuego: any){
 
-	  if(datosJuego == null || datosJuego == undefined){
+    if(datosJuego == null || datosJuego == undefined){
           console.log("Se ha producido un error interno (Datos Juego no validos)")
           return;}
 
@@ -311,7 +315,7 @@ export class AppService {
       console.log(datosJuego);
 
       if(!this.ionic){
-	    window.electronAPI.setDatosJuego(datosJuego)
+      window.electronAPI.setDatosJuego(datosJuego)
       }
 
       return;
@@ -326,28 +330,28 @@ export class AppService {
         }
     }
 
-	setMazmorra(mazmorra: any){
+  setMazmorra(mazmorra: any){
         //Actualizar datos:
-		this.mazmorra = mazmorra;
-		return;
-	}
+    this.mazmorra = mazmorra;
+    return;
+  }
 
-	crearCuenta(correo,usuario,password,password2){
-	}
+  crearCuenta(correo,usuario,password,password2){
+  }
 
     mostrarPantallacarga(val:boolean):void{
       this.mostrarCarga.emit(val);
     }
 
-	getHeroeSeleccionado(){
-		return this.heroeSeleccionado;
-	}
+  getHeroeSeleccionado(){
+    return this.heroeSeleccionado;
+  }
 
-	setHeroeSeleccionado(heroe: any){
-		this.heroeSeleccionado = heroe;
-		this.observarAppService.next("actualizarHeroeSeleccionado");
-		return;
-	}
+  setHeroeSeleccionado(heroe: any){
+    this.heroeSeleccionado = heroe;
+    this.observarAppService.next("actualizarHeroeSeleccionado");
+    return;
+  }
 
     setProgresoCarga(val:string):void{
       this.progresoCarga.emit(val);
@@ -365,10 +369,10 @@ export class AppService {
 
     }
 
-	renderizarCanvasIsometrico(){
-		this.observarAppService.next("renderizarCanvasIsometrico");
-		return;
-	}
+  renderizarCanvasIsometrico(){
+    this.observarAppService.next("renderizarCanvasIsometrico");
+    return;
+  }
 
     mostrarDialogoReconectar(mostrar: boolean){
 
@@ -379,7 +383,9 @@ export class AppService {
                 });
             }
         }else{
-            this.dialogoReconectar.close();
+            if(this.dialogoReconectar){
+              this.dialogoReconectar.close();
+            }
             this.dialogoReconectar = undefined;
         }
     }
@@ -420,8 +426,8 @@ export class AppService {
           console.log('Cierre Configuracion. Devuelve:');
           console.log(result)
 
-		  if(result === "crearHeroe") {
-		  }
+      if(result === "crearHeroe") {
+      }
 
         });
 
@@ -438,21 +444,21 @@ export class AppService {
           console.log('Cierre Configuracion. Devuelve:');
           console.log(result)
 
-		  if(result === "cerrarSesion") {
+      if(result === "cerrarSesion") {
               this.logout();
-		  }
+      }
 
-		  if(result === "Developer Tool") {
-			  this.mostrarDeveloperTool("")
-		  }
+      if(result === "Developer Tool") {
+        this.mostrarDeveloperTool("")
+      }
 
-		  if(result === "ForzarSync") {
-		    this.observarAppService.next("ForzarSync");
-		  }
+      if(result === "ForzarSync") {
+        this.observarAppService.next("ForzarSync");
+      }
 
-		  if(result === "MultiControl") {
-		    this.observarAppService.next("MultiControl");
-		  }
+      if(result === "MultiControl") {
+        this.observarAppService.next("MultiControl");
+      }
 
         });
 
@@ -462,7 +468,7 @@ export class AppService {
     logout(){
         this.mostrarPantallacarga(true);
 
-		setTimeout(()=>{
+    setTimeout(()=>{
             this.setToken(null)
             this.setPerfil(null)
             this.setCuenta(null)
@@ -470,7 +476,7 @@ export class AppService {
             this.observarAppService.next("logout");
             this.setControl("index");
             this.setEstadoApp("index");
- 		}, 1000);
+    }, 1000);
     }
 
 
@@ -513,11 +519,11 @@ export class AppService {
     setEstadoInMap(estado:string){
         // Pone Nube -1s-> Cambia Mapa -1s-> CentraMapa -1s-> Quita Nubes
         this.cargandoMapa = true;
-		setTimeout(()=>{
+    setTimeout(()=>{
             this.estadoInMap = estado;
-		    setTimeout(()=>{
+        setTimeout(()=>{
                 this.eventoAppService.emit("centrarMapa")
-		        setTimeout(()=>{
+            setTimeout(()=>{
                     this.cargandoMapa = false;
                 },1000)
             },1000)
@@ -530,9 +536,7 @@ export class AppService {
 
     async getCuenta(){
 
-       console.log("Obteniendo Validando: ");
-       //console.log(this.electronService.ipcRenderer);
-
+        //Recuperando Validación de Local DB:
         if(this.ionic){
             this.cuenta = await this.storage.get("cuenta");
         }else{
@@ -540,13 +544,10 @@ export class AppService {
         }
 
        //console.log(this.cuenta);
-
        if(this.perfil==undefined){
          console.log("Obteniendo Datos: ");
-		 this.getDatosJuego()
+         this.getDatosJuego()
        }
-
-       console.log(this.cuenta);
        return this.cuenta;
     }
 
@@ -685,13 +686,13 @@ export class AppService {
     abrirEvento(){
 
         var objetoEventoDialogo = {
-	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"],
-	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"],
+          contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"],
+          opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"],
         }
 
         var objetoEventoNarradorImg = {
-	        contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"],
-	        opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"],
+          contenido: ["Titulo dialogo","orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis turpis eu tortor pellentesque facilisis. Etiam vel euismod arcu, id eleifend justo. Morbi id faucibus urna. Donec ante lorem, volutpat eu accumsan sit amet, semper ut tellus. Pellentesque sodales mattis finibus. Proin tempor condimentum suscipit"],
+          opciones: ["Primera opcion","Segunda Opcion","Tercera Opcion"],
         }
 
         //this.mostrarDialogo("Mision",objetoEventoNarradorImg);
@@ -752,11 +753,11 @@ export class AppService {
         var token = await this.getToken();
         if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;}
 
-		console.log("Cargando appService.region: "+zona);
-		this.http.post(this.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).subscribe((data) => {
-			console.log("Región: ");
-			console.log(data);
-			this.region= data;
+    console.log("Cargando appService.region: "+zona);
+    this.http.post(this.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).subscribe((data) => {
+      console.log("Región: ");
+      console.log(data);
+      this.region= data;
             //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
             //Cargar Render Isometrico:
             this.renderIsometrico = [];
@@ -822,11 +823,11 @@ export class AppService {
 
         //INICIANDO MAZMORRA:
         console.log("Iniciando Mazmorra: "+nombreIdMazmorra);
-      	this.mostrarPantallacarga(true);
+        this.mostrarPantallacarga(true);
 
         //CARGANDO MAZMORRA:
         var token = await this.getToken();
-		this.http.post(this.ipRemota+"/deliriumAPI/cargarMazmorra",{nombreMazmorra: nombreIdMazmorra, token: token}).subscribe((data) => {
+        this.http.post(this.ipRemota+"/deliriumAPI/cargarMazmorra",{nombreMazmorra: nombreIdMazmorra, token: token}).subscribe((data) => {
 
             if(data){
                 //INICIANDO MAZMORRA:
@@ -851,7 +852,7 @@ export class AppService {
        //this.mazmorra = await window.electronAPI.getMazmorra(nombreIdMazmorra);
 
         // 1) Cambio de estados AppService:
-		//this.setSala(this.sala);
+    //this.setSala(this.sala);
     }
 
     verInMap(){

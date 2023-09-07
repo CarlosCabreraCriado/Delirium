@@ -37,7 +37,7 @@ export class IndexComponent implements OnInit{
   private errorInicio: string = null;
 
   //Form Group:
-  private formLogin: FormGroup;
+  public formLogin: FormGroup;
 
   //Campos Hechizos:
   private usuario: FormControl;

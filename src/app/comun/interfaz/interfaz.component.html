@@ -23,6 +23,15 @@
 
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
+
+		<div class="contenedorAtributo">
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
+		</div>
+
 		<div class="contenedorHechizos">
       <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==0}" (click)="seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">
         <div *ngIf="interfazService.hechizosEquipadosCooldown[0] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[0]}}</div>
@@ -40,6 +49,7 @@
         <div *ngIf="interfazService.hechizosEquipadosCooldown[4] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[4]}}</div>
       </div>
 		</div>
+
 		<div class="contenedorAtributo">
             <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.hechizosEquipadosEnergia[0]"></atributoComponent>
             <atributoComponent class="atributo" [tipo]="'energia'" [valor]="interfazService.hechizosEquipadosEnergia[1]"></atributoComponent>
@@ -315,7 +325,7 @@
             </div>
 
             <div class="enemigo">
-                <enemigoComponent [indexEnemigo]="0" [renderMazmorra]="this.interfazService.renderMazmorra" [desplegable]="false" [desplegadoDefecto]="false" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
+                <enemigoComponent [indexEnemigo]="0" [desplegable]="false" [desplegadoDefecto]="false" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
             </div>
 
             <div class="valor">
@@ -328,7 +338,7 @@
             </div>
 
             <div class="heroe">
-                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [desplegadoDefecto]="false" [seleccionable]="false"  class="panelHeroe" ></heroeComponent>
+                <heroeComponent  [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [desplegadoDefecto]="false" [seleccionable]="false"  class="panelHeroe" ></heroeComponent>
             </div>
 
             <div class="botones">
@@ -345,7 +355,7 @@
             </div>
 
             <div class="enemigo">
-                <enemigoComponent [indexEnemigo]="0" [desplegadoDefecto]="false" [renderMazmorra]="this.interfazService.renderMazmorra" [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
+                <enemigoComponent [indexEnemigo]="0" [desplegadoDefecto]="false"  [renderEnemigo]="this.interfazService.renderEnemigos[this.interfazService.indexEnemigoAccion]" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
             </div>
 
             <div class="hechizo">
@@ -363,7 +373,7 @@
             </div>
 
             <div class="heroe">
-                <heroeComponent [renderMazmorra]="this.interfazService.renderMazmorra" [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [desplegadoDefecto]="false" class="panelHeroe" ></heroeComponent>
+                <heroeComponent [renderHeroe]="this.interfazService.renderHeroes[this.interfazService.indexHeroeAccion]" [desplegadoDefecto]="false" class="panelHeroe" ></heroeComponent>
             </div>
 
             <div class="botones">

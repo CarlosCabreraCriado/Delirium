@@ -1,7 +1,8 @@
 
-import { Component,Input, ViewChild, ElementRef, AfterViewChecked} from '@angular/core';
+import { Component,Input, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { LoggerService } from './logger.service';
 import { MazmorraService } from '../mazmorra/mazmorra.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'appLogger',
@@ -21,18 +22,34 @@ export class LoggerComponent {
   public objetos: any;
   public animaciones: any;
   public parametros: any;
+  private scrollFlag: boolean = false;
+
+  //Declara Suscripcion Evento Socket:
+  private loggerSubcription: Subscription
 
   constructor(public loggerService: LoggerService, private mazmorraService: MazmorraService) {}
+
+  ngOnInit(){
+        this.loggerSubcription = this.loggerService.subscripcionLogger.subscribe((data) =>{
+          this.scrollFlag = true;
+        });
+  }
 
    scrollToBottom(): void {
         try {
             this.contenedorMensajes.nativeElement.scrollTop = this.contenedorMensajes.nativeElement.scrollHeight;
-        } catch(err) { }
+        } catch(err) {
+          console.error(err)
+        }
     }
 
   ngAfterViewChecked() {
-        this.scrollToBottom();
         this.loggerService.setParametros(this.getParametros());
+        if(this.scrollFlag){
+          this.scrollToBottom();
+          this.scrollFlag = false;
+        }
+        return;
     }
 
   getRenderMazmorra():any{
@@ -40,6 +57,7 @@ export class LoggerComponent {
   }
 
   cerrarLogger():any{
+    this.mazmorraService.estadoControl.estado = "seleccionAccion";
     this.loggerService.toggleLogger(false);
   }
 

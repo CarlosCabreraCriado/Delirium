@@ -23,17 +23,23 @@ export class LoggerService {
     // Observable string streams
     observarLogger$ = this.observarLogger.asObservable();
 
+    //Emisor de eventos Socket:
+	@Output() subscripcionLogger: EventEmitter<any> = new EventEmitter();
 	@Output() obtenerRender: EventEmitter<void> = new EventEmitter();
 	@Output() obtenerSesion: EventEmitter<void> = new EventEmitter();
+	@Output() obtenerEstado: EventEmitter<void> = new EventEmitter();
 
   constructor() {
-
   }
-  	setParametros(parametros){
+
+  setParametros(parametros){
   		this.parametros=parametros;
   	}
 
-  	toggleLogger(val: boolean):void{
+  toggleLogger(val: boolean):void{
+    if(val){
+      this.subscripcionLogger.emit("scroll");
+    }
  		this.mostrarLogger = val;
  		this.comando= "";
  	}
@@ -58,7 +64,7 @@ export class LoggerService {
  		}
  	}
 
- 	procesarComando(renderMazmorra,sesion){
+ 	procesarComando(renderMazmorra,sesion,estadoControl){
 
  		//Estado Logger DEFAULT
  		if(this.estadoLogger=="default"){
@@ -403,6 +409,14 @@ export class LoggerService {
  				break;
 
  				//****************************************
+ 				//       COMANDO ESTADO
+ 				//****************************************
+ 				case "estado":
+ 					this.log("MOSTRANDO ESTADO CONTROL... ");
+ 					console.warn("ESTADO CONTROL: ",estadoControl);
+ 				break;
+
+ 				//****************************************
  				//       Eliminar Enemigo
  				//****************************************
 
@@ -415,7 +429,7 @@ export class LoggerService {
  				break;
 
  				//****************************************
- 				//       Eliminar Enemigo
+ 				//       Add Enemigo
  				//****************************************
 
  				case "add enemigo":

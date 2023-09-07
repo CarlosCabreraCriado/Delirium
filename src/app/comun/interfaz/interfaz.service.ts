@@ -129,7 +129,6 @@ export class InterfazService {
         // ---------------------------------
 
         if(typeof this.objetivoDefinido === "undefined"){
-            console.error("Verificando AGRO")
 
             //Determina Objetivo Segun Agro:
             var indexObjetivo = 0;
@@ -206,10 +205,18 @@ export class InterfazService {
         var indexAccion = 0;
         var flagCumple = true;
         var iteracion = 0;
+        var primeraAccion = 0;
+
         do{
             //Asigna accion aleatoria:
             indexAccion= this.getRandomInt(this.renderEnemigos[indexEnemigoActivado].acciones.length)
             flagCumple=true;
+
+            //CONDICIÓN DE PRIMERA ACCION (LA PRIMERA ACCION ES SIEMPRE UN ATAQUE):
+            if(this.ultimaAccion == undefined &&
+               this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].tipo !="ataque"){
+                flagCumple=false;
+            }
 
             //Si MOVIO no volverá a MOVER:
             if(this.ultimaAccion == "mover" &&
@@ -302,7 +309,7 @@ export class InterfazService {
         }
     }
 
-    finalizarActivacion(){
+    finalizarActivacion(evitarPasoTurno?: boolean){
         this.objetivoDefinido = undefined;
         this.ultimaAccion = undefined;
         this.energiaAccion = 100;
@@ -310,7 +317,9 @@ export class InterfazService {
         this.esAdyacente = false;
         this.tieneAlcance = false;
         this.desactivarInterfaz();
-        this.observarInterfaz.next({comando: "finalizarActivacionEnemigo",valor: ""});
+        if(!evitarPasoTurno){
+          this.observarInterfaz.next({comando: "finalizarActivacionEnemigo",valor: ""});
+        }
     }
 
     getRandomInt(max) {
@@ -357,7 +366,7 @@ export class InterfazService {
     activarInterfazDetalle(tipo: "enemigo"|"heroe",renderDetalle:any):void{
         console.warn("RENDER DETALLE: ",renderDetalle);
         this.tipoDetalle = tipo;
-        this.renderDetalle = renderDetalle;
+        this.renderDetalle = Object.assign({},renderDetalle);
         this.renderDetalle.estadisticas.probabilidadCriticoPercent = Math.round(this.renderDetalle.estadisticas.probabilidadCritico*100);
         this.pantallaInterfaz= "detalle";
         this.mostrarInterfaz = true;
@@ -386,7 +395,6 @@ export class InterfazService {
 
     iniciarCritico(fortuna?):void{
         this.pantallaInterfaz= "critico";
-        setTimeout(()=>{
             if(Math.random() < this.probabilidadCritico){
                 this.critico = true;
                 this.noCritico = false;
@@ -399,8 +407,7 @@ export class InterfazService {
                 this.critico= false;
                 this.noCritico= false;
                 this.desactivarInterfaz();
-            },3000)
-        },1000)
+            },4000)
     }
 
     desactivarInterfaz():void{

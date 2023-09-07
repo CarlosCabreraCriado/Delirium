@@ -32,6 +32,11 @@ export class IvyPinch {
     maxScale!: number;
     defaultMaxScale: number = 3;
 
+    private vw: number = 0;
+    private vh: number = 0;
+    private renderX: number = 0;
+    private renderY: number = 0;
+
     // Minimum scale at which panning works
     get minPanScale() {
         return this.getPropertiesValue("minPanScale");
@@ -42,7 +47,13 @@ export class IvyPinch {
     }
 
     constructor(properties: any) {
+
         this.element = properties.element;
+        this.renderX = properties.renderX;
+        this.renderY = properties.renderY;
+
+        this.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        this.vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
         if (!this.element) {
             return;
@@ -63,7 +74,6 @@ export class IvyPinch {
                 "wheel": "handleWheel"
             }
         });
-
 
         /* Init */
         this.setBasicStyles();
@@ -91,11 +101,10 @@ export class IvyPinch {
         if (this.properties.autoHeight) {
             this.touches.on('resize', this.handleResize);
         }
+
     }
 
-
     /* Touchstart */
-
     handleTouchstart = (event: any) => {
         this.touches.addEventListeners("mousemove", "handleMousemove",{pasive: true});
         this.getElementPosition();
@@ -107,7 +116,6 @@ export class IvyPinch {
 
 
     /* Touchend */
-
     handleTouchend = (event: any) => {
 
         /* touchend */
@@ -185,8 +193,8 @@ export class IvyPinch {
         this.moveY = this.initialMoveY + (this.moveTop(event, 0) - this.startY);
 
         if (this.properties.limitPan) {
-            this.limitPanY();
-            this.limitPanX();
+            this.limitPanYNuevo();
+            this.limitPanXNuevo();
         }
 
         /* mousemove */
@@ -198,7 +206,6 @@ export class IvyPinch {
     }
 
     handleDoubleTap = (event: any) => {
-        console.log(event)
         this.toggleZoom(event);
         return;
     }
@@ -346,11 +353,47 @@ export class IvyPinch {
         return initialMoveX !== this.moveX || initialMoveY !== this.moveY;
     }
 
+    limitPanYNuevo(){
+      if(this.moveY > 0){
+        this.moveY = 0;
+      }
+
+      if(this.moveY < this.renderY*(-1)*this.scale){
+        this.moveY = this.renderY*(-1)*this.scale;
+      }
+
+    }
+
+    setRenderX(renderX){
+      this.renderX = renderX;
+      return;
+    }
+
+    setRenderY(renderY){
+      this.renderY = renderY;
+      return;
+    }
+
+    limitPanXNuevo(){
+      if(this.moveX > 0){
+        this.moveX = 0;
+      }
+
+      if(this.moveX < this.renderX*(-1)*this.scale){
+        this.moveX = this.renderX*(-1)*this.scale;
+      }
+    }
+
     limitPanY() {
         const imgHeight = this.getImageHeight();
         const scaledImgHeight = imgHeight * this.scale;
         const parentHeight = this.parentElement.offsetHeight;
         const elementHeight = this.element.offsetHeight;
+
+        //Modificaciones:
+        //imgHeight = 659;
+        //scaledImgHeight = 659;
+        //parentHeight =
 
         if (scaledImgHeight < parentHeight) {
             this.moveY = (parentHeight - elementHeight * this.scale) / 2;
@@ -513,7 +556,6 @@ export class IvyPinch {
 
     getImageWidth() {
         //const img = this.element.getElementsByTagName(this.elementTarget)[0];
-        //console.log(img.offsetWidth);
         //return img.offsetWidth;
         const width = 715;
         return width;

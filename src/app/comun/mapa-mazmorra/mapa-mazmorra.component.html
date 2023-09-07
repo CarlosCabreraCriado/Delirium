@@ -5,8 +5,10 @@
 <div id="contenedorMapaMazmorra">
 
         <pinch-zoom #pinchZoom id="pinch-zoom"
-            [limitPan]="false"
+            [limitPan]="true"
             [minPanScale]="1"
+            [renderX]="renderX"
+            [renderY]="renderY"
             [disableZoomControl]="'disable'"
             [limit-zoom]="10">
 
