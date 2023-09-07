@@ -9,7 +9,9 @@
 <div  id="contenedorInterfazHechizos" *ngIf="interfazService.pantallaInterfaz=='Hechizos'">
 <div class= "contenedor borde1">
 
-	<h1 class="title Texto1">Lanzar Hechizos</h1>
+	<h1 *ngIf="!interfazService.mostrarDetalleHechizo" class="title Texto1">Lanzar Hechizo</h1>
+
+    <!-- 
 	<hr class="divisor"/>
 
 	<div class="contenedorPestanas">
@@ -18,18 +20,40 @@
 	</div>
 
 	<hr class="divisor"/>
+    -->
 
-	<div class="contenedorOpciones">
+	<!--PANEL OPCIONES HECHIZOS COMPACTO -->
+	<div *ngIf="!interfazService.mostrarDetalleHechizo" class="contenedorOpciones">
 
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
 
 		<div class="contenedorAtributo">
-            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
-            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
-            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
-            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
-            <atributoComponent class="atributo" [tipo]="'energia'" [valor]="'VER'"></atributoComponent>
+            <atributoComponent class="atributo" 
+                [tipo]="'energia'" 
+                [valor]="'VER'"
+                (click)="interfazService.detalleHechizo(0)">
+            </atributoComponent>
+            <atributoComponent class="atributo" 
+                [tipo]="'energia'" 
+                [valor]="'VER'"
+                (click)="interfazService.detalleHechizo(1)">
+            </atributoComponent>
+            <atributoComponent class="atributo" 
+                [tipo]="'energia'" 
+                [valor]="'VER'"
+                (click)="interfazService.detalleHechizo(2)">
+            </atributoComponent>
+            <atributoComponent class="atributo" 
+                [tipo]="'energia'" 
+                [valor]="'VER'"
+                (click)="interfazService.detalleHechizo(3)">
+            </atributoComponent>
+            <atributoComponent class="atributo" 
+                [tipo]="'energia'" 
+                [valor]="'VER'"
+                (click)="interfazService.detalleHechizo(4)">
+            </atributoComponent>
 		</div>
 
 		<div class="contenedorHechizos">
@@ -59,7 +83,38 @@
 		</div>
 		</div>
 
-	</div>
+	</div><!-- FIN PANEL OPCIONES HECHIZO COMPACTO -->
+
+	<!--PANEL OPCIONES HECHIZO DETALLE -->
+    <div *ngIf="interfazService.mostrarDetalleHechizo" class="contenedorOpcionesDetalle">
+
+		<!--PANEL OPCIONES GENERAL -->
+		<div class="opcionesGenerales Texto3">
+
+            <div class="contenedorHechizos">
+              <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==0}" (click)="seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">
+                <div *ngIf="interfazService.hechizosEquipadosCooldown[0] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[0]}}</div>
+              </div>
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==1}"(click)="seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}">
+                <div *ngIf="interfazService.hechizosEquipadosCooldown[1] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[1]}}</div>
+              </div>
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==2}"(click)="seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}">
+                <div *ngIf="interfazService.hechizosEquipadosCooldown[2] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[2]}}</div>
+              </div>
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==3}"(click)="seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}">
+                <div *ngIf="interfazService.hechizosEquipadosCooldown[3] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[3]}}</div>
+              </div>
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==4}"(click)="seleccionarHechizo(5)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}">
+                <div *ngIf="interfazService.hechizosEquipadosCooldown[4] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[4]}}</div>
+              </div>
+            </div>
+		</div>
+
+        <div class="contenedorDetalleHechizo">
+
+        </div>
+
+	</div><!-- FIN PANEL OPCIONES HECHIZO DETALLE -->
 
 	<div class="contenedorBotones">
         <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || hechizoSeleccionadoIndex == null || !interfazService.esTurno || interfazService.hechizosEquipadosCooldown[hechizoSeleccionadoIndex] != 0}" [tipoBoton]="2" (click)="lanzarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>

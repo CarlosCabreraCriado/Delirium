@@ -3650,7 +3650,8 @@ export class MazmorraService {
         //this.estadoControl.estado="eligiendoHechizo";
 
         //Inicializar interfazService con datos de hechizos:
-        this.interfazService.setHeroesHech(this.hechizos);
+        this.interfazService.setHechizos(this.hechizos);
+        this.interfazService.setBuffs(this.buff);
         this.interfazService.setEnemigos(this.enemigos);
 
                 //Detecta de quien es el turno:

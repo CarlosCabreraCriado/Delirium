@@ -144,6 +144,56 @@
                     border: 2px $colorTexto solid
                     border-radius: 50px
 
+        .contenedorOpcionesDetalle
+            position: relative
+            width: 90%
+            height: 80%
+            margin: 0 5%
+            z-index: 10
+
+            .opcionesGenerales
+              position: relative
+              top: -5vh
+
+            .contenedorHechizos
+                position: relative
+                display: flex
+                justify-content: center
+                align-content: center
+                width: 100%
+
+                .hechizo
+                    position: relative
+                    display: inline-block
+                    text-align: center
+                    line-height: 11vw
+                    height: 10vh
+                    width: 10vh
+                    margin-right: 1.5vw
+                    margin-left: 1.5vw
+                    outline: solid 1px white
+                    overflow: hidden
+                    background-size: 1800%
+                    .cooldown
+                      color: white
+                      font-size: 40px
+                      background-color: rgba(0,0,0,0.7)
+
+                .hechizo:hover
+                    color: black
+                    background-color: rgba(255,255,255,0.6)
+                    .opcionesGenerales
+                        position: relative
+                        width: 100%
+                        height: 100%
+            .contenedorDetalleHechizo
+              position: absolute
+              top: 5vh
+              width: 100%
+              height: 90%
+              border: $colorTexto solid 1px
+
+
         .contenedorBotones
             position: absolute
             display: flex

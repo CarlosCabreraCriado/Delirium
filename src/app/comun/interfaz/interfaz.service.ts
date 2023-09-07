@@ -27,6 +27,7 @@ export class InterfazService {
 
     //HECHIZOS:
     private hechizos:any;
+    private buff:any;
     private hechizosEquipadosImagenID = [0,0,0,0,0];
     private hechizosEquipadosID = [0,0,0,0,0];
     public indexHechizoSeleccionado = null;
@@ -37,6 +38,7 @@ export class InterfazService {
     public energiaHechizo: number = 0;
     public hechizoEquipados: any = null;
     public objetivoSeleccionado: boolean = false;
+    public mostrarDetalleHechizo: boolean = false;
 
     //MOVIMIENTO:
     private costePorMovimiento: number = 5;
@@ -87,8 +89,13 @@ export class InterfazService {
       return;
     }
 
-    setHeroesHech(val){
+    setHechizos(val){
       this.hechizos= val;
+      return;
+    }
+
+    setBuffs(val){
+      this.buff= val;
       return;
     }
 
@@ -463,6 +470,11 @@ export class InterfazService {
       this.setObjetivoSeleccionado(false)
       this.observarInterfaz.next({comando: "checkFortuna",valor: ""});
       //this.desactivarInterfaz();
+      return;
+    }
+
+    detalleHechizo(indexHechizo):void{
+      this.mostrarDetalleHechizo= true;
       return;
     }
 

@@ -66,6 +66,7 @@ import { ExperienciaComponent } from './comun/experiencia/experiencia.component'
 import { PanelControlComponent } from './comun/panel-control/panel-control.component';
 import { PinchZoomComponent } from './comun/pinch-zoom/pinch-zoom.component';
 import { AtributoComponent } from './comun/atributo/atributo.component';
+import { DetalleHechizoComponent } from './comun/detalle-hechizo/detalle-hechizo.component';
 
 //Componentes de Desarrollo:
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
@@ -148,7 +149,8 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         SelectorImagenesComponent,
         PanelSelectorComponent,
         TriggerComponent,
-        AtributoComponent
+        AtributoComponent,
+        DetalleHechizoComponent
     ],
     imports: [
         BrowserModule,
