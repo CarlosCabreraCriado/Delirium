@@ -27,6 +27,8 @@ export class DesarrolladorService implements OnInit{
     public estadoParametros= "General";
     public estadoHerramientaDatos: TipoDatos= null;
     public estadoPanelDatosDerecha= "";
+    public estadoPanelBuffRelacionado= "";
+    public indexBuffRelacionadoIndex = 0;
     public estadoDatos= "subir";
     public estadoAssets= "";
     public estadoDatosSubir= "subir";
@@ -2072,6 +2074,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   seleccionarBuff(indexBuff:number){
+
       this.buffSeleccionadoIndex= indexBuff;
 
       //Actualizar Formulario:
@@ -2307,16 +2310,27 @@ export class DesarrolladorService implements OnInit{
         this.tileImgSeleccionado = this.opcionesDesarrolloInMap.tileImgSeleccionado;
   }
 
+  setEstadoBuffRelacionado(estado,indexSeleccionado?){
+    this.estadoPanelBuffRelacionado = estado;
+    this.indexBuffRelacionadoIndex = indexSeleccionado;
+    this.setEstadoPanelDerecho("Buff");
+  }
+
   setEstadoPanelDerecho(estado:string){
       this.estadoPanelDatosDerecha = estado;
   }
 
   addBuff(indexBuff:number){
-      this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id = this.buff.buff[indexBuff].id;
+      if(this.estadoPanelBuffRelacionado == "Add"){
+        this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id.push(this.buff.buff[indexBuff].id);
+      }
+      if(this.estadoPanelBuffRelacionado == "Modificar"){
+        this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id[this.indexBuffRelacionadoIndex]= this.buff.buff[indexBuff].id;
+      }
   }
 
-  renderImagenBuff(indexHechizo:number){
-    return this.buff.buff.find(i=> i.id == this.hechizos.hechizos[indexHechizo].buff_id).imagen_id;
+  renderImagenBuff(indexHechizo:number,indexBuffRelacionado: number){
+    return this.buff.buff.find(i=> i.id == this.hechizos.hechizos[indexHechizo].buff_id[indexBuffRelacionado]).imagen_id;
   }
 
   renderImagenEncadenado(indexHechizo:number){
@@ -2328,7 +2342,11 @@ export class DesarrolladorService implements OnInit{
   }
 
   eliminarBuffHechizo(){
-    this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id=0;
+      if(this.estadoPanelBuffRelacionado == "Modificar"){
+        this.hechizos.hechizos[this.hechizoSeleccionadoIndex].buff_id.splice(this.indexBuffRelacionadoIndex,1);
+        this.estadoPanelBuffRelacionado = "";
+        this.setEstadoPanelDerecho("");
+      }
   }
 
   addEncadenado(indexEncadenado:number){

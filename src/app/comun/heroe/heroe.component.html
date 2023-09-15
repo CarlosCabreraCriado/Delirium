@@ -8,6 +8,7 @@
     <!-- FRAME CIRCULO -->
     <div class="frameCirculo">
 
+    <div [ngClass]="renderizarObjetivoHeroe()"></div>
     <div class="frameAnimacionesFrame" *ngIf="renderHeroe.vida==0">
       <img class="spriteFuego shaderAbatido" src="../../../assets/Efectos/35.png"/>
     </div>

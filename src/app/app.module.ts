@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatDialogModule} from '@angular/material/dialog';
 import { MatStepperModule} from '@angular/material/stepper';
 import { DragDropModule} from '@angular/cdk/drag-drop';
+import { MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 //Extras
 //import { NgxElectronModule } from 'ngx-electron';
@@ -169,7 +170,8 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         ReactiveFormsModule,
         MatDialogModule,
         MatStepperModule,
-        DragDropModule
+        DragDropModule,
+        MatSlideToggleModule
     ],
     providers: [ScreenOrientation,ElectronService],
     bootstrap: [AppComponent]

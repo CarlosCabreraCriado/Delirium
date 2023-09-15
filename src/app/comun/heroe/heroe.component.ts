@@ -38,7 +38,7 @@ export class HeroeComponent implements OnInit {
 	renderizarMarcoHeroe(): string{
 
 		if(this.pantalla == "inMap"){ return;}
-    if(!this.estadoControl){ return;}
+        if(!this.estadoControl){ return;}
 
 		var clases = "";
 
@@ -46,34 +46,22 @@ export class HeroeComponent implements OnInit {
 			clases = clases + " seleccionable";
 		}
 
-    //Determina si es objetivo:
-    var esObjetivo = false;
-    for(var i = 0; i < this.estadoControl.objetivosHeroes.length; i++){
-      if(this.estadoControl.objetivosHeroes[i] == this.indexHeroe){
-        esObjetivo = true;
-        break;
-      }
-    }
+		return clases;
+	}
 
-		//Renderiza Marco de objetivoAuxiliar:
-		if(this.renderHeroe.objetivoAuxiliar){
-			if(this.estadoControl.tipoObjetivo=="AM"){
-				clases = clases + " ObjetivoAuxiliarAliado";
-			}
+    renderizarObjetivoHeroe():string{
+		if(this.pantalla == "inMap"){ return;}
+        if(!this.estadoControl){ return;}
+		var clases = "";
 
-			if(this.estadoControl.tipoObjetivo=="EM"){
-				clases = clases + " ObjetivoAuxiliarEnemigo";
-			}
-
-			if(this.estadoControl.tipoObjetivo=="OM"){
-				if(this.estadoControl.esTurnoHeroe){
-					clases = clases + " ObjetivoAuxiliarAliado";
-				}
-				if(this.estadoControl.esTurnoEnemigo){
-					clases = clases + " ObjetivoAuxiliarEnemigo";
-				}
-			}
-		}
+        //Determina si es objetivo:
+        var esObjetivo = false;
+        for(var i = 0; i < this.estadoControl.objetivosHeroes.length; i++){
+          if(this.estadoControl.objetivosHeroes[i] == this.indexHeroe){
+            esObjetivo = true;
+            break;
+          }
+        }
 
 		//Renderiza Marco de objetivo:
 		if(esObjetivo){
@@ -81,13 +69,13 @@ export class HeroeComponent implements OnInit {
 				clases = clases + " ObjetivoEnemigo";
 			}
 			if(this.estadoControl.tipoObjetivo=="AU"){
-				clases = clases + " ObjetivoAliado";
+				clases = clases + " animacionCircularFocus";
 			}
 			if(this.estadoControl.tipoObjetivo=="EM"){
-				clases = clases + " ObjetivoEnemigo";
+				clases = clases + " animacionCircularFocus";
 			}
 			if(this.estadoControl.tipoObjetivo=="AM"){
-				clases = clases + " ObjetivoAliado";
+				clases = clases + " animacionCircularFocus";
 			}
 			if(this.estadoControl.tipoObjetivo=="OM"){
 				if(this.estadoControl.esTurnoHeroe){
@@ -99,7 +87,7 @@ export class HeroeComponent implements OnInit {
 			}
 		}
 		return clases;
-	}
+    }
 
 	renderizarEscudoHeroe(): string{
 		var left= 0;

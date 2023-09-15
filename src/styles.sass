@@ -9,11 +9,21 @@
     font-family: "TangerineLocal"
     src: url(./fonts/tangerine-font.woff2)
 
+@font-face
     font-family: "GeographicaHandLocal"
     src: url(./fonts/GeographicaHand.ttf)
 
+@font-face
     font-family: "Chancery"
     src: url(./fonts/Apple-Chancery.ttf)
+
+@font-face
+    font-family: "Arimo"
+    src: url(./fonts/Arimo.ttf)
+
+@font-face
+    font-family: "Arimo-Italic"
+    src: url(./fonts/Arimo-Italic.ttf)
 
 $angular-primary: mat.define-palette(mat.$teal-palette, 500, 100, 900)
 $angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400)
@@ -27,7 +37,7 @@ $angular-dark-theme: mat.define-dark-theme( ( color: ( primary: $angular-primary
 html
     margin: 0
     padding: 0
-    overflow: hidden
+    overflow: hidden !important
     color: #291905
     --animate-duration: 1s
 
@@ -41,6 +51,8 @@ body
     padding: 0
     //font-family: 'Tangerine','TangerineLocal', cursive
     font-family: 'Chancery'
+    //font-family: 'GeographicaHandLocal'
+    //font-family: 'Arimo'
     overflow-x: hidden
     overflow-y: hidden
     cursor: url(assets/Cursor/Metal_Norm.cur), pointer
@@ -51,6 +63,12 @@ img
   -webkit-user-drag: none
   user-drag: none
   -webkit-touch-callout: none
+
+.Arial
+    font-family: 'Arimo'
+    
+.Arial-cursive
+    font-family: 'Arimo-Italic'
 
 .Texto1
     font-size: 40px
@@ -151,6 +169,31 @@ $colorSecundario: #ff8d40
   filter: grayscale(1)
   pointer-events: none
 
+.animacionCircularFocus
+  position: absolute
+  z-index: 10
+  width: 100% 
+  height: 100% 
+  border-radius: 50%
+  display: inline-block
+  border-top: 6px solid #36c108 
+  border-right: 6px solid transparent
+  box-sizing: border-box
+  animation: rotation 1s linear infinite
+  background: radial-gradient(transparent, #00cd004f)
+
+.animacionCircularFocus::after
+  content: ''
+  box-sizing: border-box
+  position: absolute
+  left: 0
+  top: 0
+  width: 100% 
+  height: 100% 
+  border-radius: 50%
+  border-bottom: 6px solid #36c108
+  border-left: 6px solid transparent
+
 .animacionFocus
   width: 100%
   height: 100%
@@ -158,6 +201,10 @@ $colorSecundario: #ff8d40
   box-sizing: border-box
   color: $colorPrincipal
   box-shadow: inset 0 0 $path-width $path-width rgba($colorSecundario, .5)
+  &.focusRojo
+    color: #f00 
+  &.focusVerde
+    color: #f00 
 
   &::before
     position: absolute
@@ -216,6 +263,11 @@ $colorSecundario: #ff8d40
   75%
     clip-path: polygon(0% 0%, 100% 0%, 100% $path-width, 0% $path-width)
 
+@keyframes rotation
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
 
 // Base de formatos:
 

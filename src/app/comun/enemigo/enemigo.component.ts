@@ -58,7 +58,8 @@ export class EnemigoComponent implements OnInit{
 	}
 
 	renderizarMarcoEnemigo(): string{
-		var clases = "Enemigo-"+(this.indexEnemigo+1);
+
+	var clases = "Enemigo-"+(this.indexEnemigo+1);
 
     //Evita formateo si no se especifica renderMazmorra;
     if(this.estadoControl==undefined){
@@ -107,23 +108,23 @@ export class EnemigoComponent implements OnInit{
 		//Renderiza Marco de objetivo:
 		if(esObjetivo){
 			if(this.estadoControl.tipoObjetivo=="EU"){
-				clases = clases + " ObjetivoEnemigo";
+				clases = clases + " animacionFocus focusRojo";
 			}
 			if(this.estadoControl.tipoObjetivo=="AU"){
 				clases = clases + " ObjetivoAliado";
 			}
 			if(this.estadoControl.tipoObjetivo=="EM"){
-				clases = clases + " ObjetivoEnemigo";
+				clases = clases + " animacionFocus focusRojo";
 			}
 			if(this.estadoControl.tipoObjetivo=="AM"){
 				clases = clases + " ObjetivoAliado";
 			}
 			if(this.estadoControl.tipoObjetivo=="OM"){
 				if(this.estadoControl.esTurnoHeroe){
-					clases = clases + " ObjetivoEnemigo";
+					clases = clases + " animacionFocus focusRojo";
 				}
 				if(this.estadoControl.esTurnoEnemigo){
-					clases = clases + " ObjetivoAliado";
+					clases = clases + " animacionFocus focusRojo";
 				}
 			}
 		}

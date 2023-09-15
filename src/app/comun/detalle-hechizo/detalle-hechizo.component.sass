@@ -3,6 +3,88 @@
 @import "../../../breakpoints.scss"
 
 .contenedorDetalleHechizo
+  position: relative
+  width: 100%
+  height: 100%
+  overflow-y: scroll
+  scrollbar-width: none
+  &::-webkit-scrollbar
+    display: none   
+  .detalleHechizo
+    display: grid
+    grid-template-columns: repeat(4, 0.5fr)
+    grid-template-rows: 0.1fr 0.2fr 0.1fr
+    grid-column-gap: 0px
+    grid-row-gap: 0px
+    margin-top: 20px
+    margin-bottom: 10px
+    .contenedorImagenHechizo  
+      grid-area: 1 / 1 / 4 / 2 
+      display: flex
+      justify-content: center
+      .imagenHechizo
+        height: 100%
+        border: white 1px solid
+    .titulo  
+      grid-area: 1 / 2 / 2 / 5 
+    .descripcionHechizo  
+      grid-area: 2 / 2 / 3 / 5 
 
+    .atributosHechizos 
+      grid-area: 3 / 2 / 4 / 5 
+      display: flex
+      justify-content: space-around
+      .atributoHechizo
+        position: relative
+        height: 30px 
+        width: 20%
+        margin: 10px 0
+  .detalleBuff
+    position: relative
+    width: 80%
+    left: 9%
+    border: solid 1px dimgrey
+    padding: 1%
+    background-color: rgb(33,33,33)
+    margin-bottom: 30px
+    .contenedorTituloBuff
+      position: relative
+      width: 100%
+      height: 50px
+      margin-bottom: 5px
+      .imagenBuff
+        position: relative
+        height: 100%
+        display: inline-block
+      .titulo
+        position: relative
+        display: inline-flex
+        vertical-align: top 
+        height: 100%
+        margin-left: 20px
+        align-items: center
+  .contenedorToggleDetalle
+    position: relative
+    display: flex
+    justify-content: center
+    grid-area: 1/4/2/5
+    .toggleDetalle
+      margin: 0
+
+//FORMATEO DE DESCRIPCIONES
+mark
+  background-color: initial 
+  &.fisico
+    color: crimson
+  &.magico
+    color: cornflowerblue
+  &.heal
+    color: chartreuse
+  &.escudo
+    color: white
+  &.violeta
+    color: fuchsia
+  &.amarillo
+    color: gold
 
 

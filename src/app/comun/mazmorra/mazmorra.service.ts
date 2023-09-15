@@ -2141,9 +2141,9 @@ export class MazmorraService {
         //-------------------------
         // 4) ADD BUFF
         //-------------------------
-        var buff = this.addBuffHechizo(tipoObjetivo,indexObjetivo,hechizo);
-        if(buff){
-          this.sesion.render[objetivo][indexObjetivo].buff.push(buff)
+        var arrayBuff = this.addBuffHechizo(tipoObjetivo,indexObjetivo,hechizo);
+        for(var i = 0; i < arrayBuff.length; i++){
+          this.sesion.render[objetivo][indexObjetivo].buff.push(arrayBuff[i])
         }
 
         //-------------------------
@@ -2773,9 +2773,15 @@ export class MazmorraService {
         if(!hechizo.buff_id){return false;}
         if(hechizo.buff_id==0){return false;}
 
-    this.loggerService.log("Aplicando BUFF/DEBUFF (ID: "+hechizo.buff_id+")...","yellow");
+        var arrayBuff = [];
+        var buff = {};
 
-        var buff = Object.assign({},this.buff.find(i => i.id==hechizo.buff_id))
+        for(var i = 0; i < hechizo.buff_id.length; i++){
+
+        this.loggerService.log("Aplicando BUFF/DEBUFF (ID: "+hechizo.buff_id[i]+")...","yellow");
+
+        buff = Object.assign({}, this.buff.find(j => j.id == Number(hechizo.buff_id[i])))
+
         buff["duracion"]= buff["duracion"]*this.sesion.jugadores.length;
         buff["critico"]= hechizo.critico;
         buff["fortuna"]= hechizo.fortuna;
@@ -2783,8 +2789,6 @@ export class MazmorraService {
         buff["tipoCaster"]= hechizo.tipoCaster;
         buff["indexCaster"]= hechizo.indexCaster;
         buff["escudo_valor"]= 0;
-
-        console.log("BUFF:",buff);
 
         //--------------------------------
         // 1) MODIFICACIÓN DE SALIDA BUFF
@@ -2801,7 +2805,12 @@ export class MazmorraService {
         //--------------------------------
         buff = this.setStatIncreaseBuff(buff,tipoObjetivo,indexObjetivo)
 
-        return buff;
+        arrayBuff.push(buff)
+
+        }
+
+        console.warn("ArrayBuffs: ",arrayBuff)
+        return arrayBuff;
 
     } //FIN ADD BUFF POR HECHIZO
 
@@ -3451,6 +3460,7 @@ export class MazmorraService {
               }
               this.seleccionarEnemigos = true;
               console.log("SELECCIONANDO ENEMIGOS")
+              console.error(this.estadoControl)
               this.interfazService.setPantallaInterfaz("seleccionObjetivoEnemigo");
             break;
             case "EM":
@@ -3684,7 +3694,7 @@ export class MazmorraService {
                     hechizosEquipadosEnergia[i]= this.hechizos.find(j => j.id == hechizosEquipadosID[i])["recurso"];
                     hechizosEquipados.push(this.hechizos.find(j => j.id == hechizosEquipadosID[i]));
                 }
-        this.interfazService.activarInterfazHechizos(hechizosEquipadosID, hechizosEquipadosImagenID,hechizosEquipadosEnergia,energiaDisponible,hechizosEquipados,hechizosEquipadosCooldown);
+        this.interfazService.activarInterfazHechizos(hechizosEquipadosID, hechizosEquipadosImagenID,hechizosEquipadosEnergia,energiaDisponible,hechizosEquipados,hechizosEquipadosCooldown,this.sesion.render.heroes[indexHeroeControlado]);
       break;
 
       case "elegirMovimiento":

@@ -28,9 +28,11 @@ export class InterfazService {
     //HECHIZOS:
     private hechizos:any;
     private buff:any;
+    public renderHeroeHechizo: any;
     private hechizosEquipadosImagenID = [0,0,0,0,0];
     private hechizosEquipadosID = [0,0,0,0,0];
     public indexHechizoSeleccionado = null;
+    public idHechizoSeleccionado = null;
     public imagenHechHorizontal= [0,0,0,0,0];
     public imagenHechVertical= [0,0,0,0,0];
     public hechizosEquipadosEnergia = [0,0,0,0,0];
@@ -340,9 +342,10 @@ export class InterfazService {
         return true;
     }
 
-    activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID, hechizosEquipadosEnergia, energiaDisponible, hechizoEquipados, hechizosEquipadosCooldown):void{
+    activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID, hechizosEquipadosEnergia, energiaDisponible, hechizoEquipados, hechizosEquipadosCooldown,renderHeroe:any):void{
         this.hechizoEquipados = hechizoEquipados;
         this.energiaDisponible = energiaDisponible;
+        this.renderHeroeHechizo = renderHeroe;
         this.hechizosEquipadosImagenID = hechizosEquipadosImagenID;
         this.hechizosEquipadosID = hechizosEquipadosID;
         this.hechizosEquipadosEnergia = hechizosEquipadosEnergia;
@@ -423,6 +426,7 @@ export class InterfazService {
     }
 
     cancelarHechizo(){
+       this.setObjetivoSeleccionado(false)
        this.observarInterfaz.next({comando: "cancelar",valor: "cancelar"});
        this.desactivarInterfaz();
        return;
@@ -442,6 +446,7 @@ export class InterfazService {
 
     cancelar(){
        this.indexHechizoSeleccionado = null;
+       this.idHechizoSeleccionado = null;
        this.observarInterfaz.next({comando: "cancelar",valor: "cancelar"});
        this.desactivarInterfaz();
        return;
@@ -453,33 +458,37 @@ export class InterfazService {
     }
 
     selectHechizo(indexHechizo:number){
+        this.indexHechizoSeleccionado = indexHechizo;
+        this.idHechizoSeleccionado = this.hechizosEquipadosID[this.indexHechizoSeleccionado];
         this.energiaHechizo = this.hechizosEquipadosEnergia[indexHechizo-1];
     }
 
     seleccionarHechizo(numHechizo):void{
         this.indexHechizoSeleccionado = numHechizo;
+        this.idHechizoSeleccionado = this.hechizosEquipadosID[this.indexHechizoSeleccionado];
         this.observarInterfaz.next({comando: "seleccionarHechizo",valor: this.hechizosEquipadosID[this.indexHechizoSeleccionado]});
         return;
     }
 
     setObjetivoSeleccionado(val: boolean){
-      this.objetivoSeleccionado= val;
+        this.objetivoSeleccionado= val;
     }
 
     lanzarHechizo():void{
-      this.setObjetivoSeleccionado(false)
-      this.observarInterfaz.next({comando: "checkFortuna",valor: ""});
-      //this.desactivarInterfaz();
-      return;
+        this.setObjetivoSeleccionado(false)
+        this.observarInterfaz.next({comando: "checkFortuna",valor: ""});
+        //this.desactivarInterfaz();
+        return;
     }
 
     detalleHechizo(indexHechizo):void{
-      this.mostrarDetalleHechizo= true;
-      return;
+        this.selectHechizo(indexHechizo);
+        this.mostrarDetalleHechizo= true;
+        return;
     }
 
     setBloquearInterfaz(val:boolean){
-      this.bloquearInterfaz = val;
+        this.bloquearInterfaz = val;
     }
 
     modificarMovimiento(cantidad){

@@ -6,48 +6,6 @@
 	<div class="fondoPanel"></div>
 	<div class="fondoPestana"></div>
 
-		<!-- PANEL SELECCION HEROE -->
-		<div *ngIf="mostrarSeleccionHeroe || heroeSeleccionado==null" id="contenedorSeleccionarHeroe">
-
-			<div class="seccionElegirHeroe">
-
-				<div class="titulo Texto1">Heroes</div>
-				<div class="contenedorHeroes">
-
-					<div *ngFor="let heroe of perfil.heroes; let i = index" class="heroe Texto2" (click)="seleccionarHeroe(i)">
-						<div class="contenedorMarcoHeroe">
-							<div class="frameHeroe"></div>
-							<img  class="imagenHeroe" src="../../../assets/Personajes/heroes/{{heroe.id_imagen}}.png"/>
-							<div class="contenedorNivel">{{heroe.nivel}}</div>
-						</div>
-
-						<div class="contenedorDetalles">
-							<div class="nombreHeroe">{{heroe.nombre}}</div>
-							<div class="descripcion Texto4">Descripción</div>
-
-							<div class="contenedorRoles">
-								<img class="iconoRol" src="../../../assets/Iconos/Rol-Tank.png">
-								<img class="iconoRol" src="../../../assets/Iconos/Rol-Heal.png">
-								<img class="iconoRol" src="../../../assets/Iconos/Rol-DPS.png">
-							</div>
-						</div>
-
-					</div>
-
-				</div>
-			</div>
-
-			<div class="seccionOpciones">
-				<div class="titulo Texto1">Opciones</div>
-				<div class="contenedorOpciones">
-					<div class="boton Texto2" (click)="appService.mostrarCrearHeroe('',{})"> Crear Heroe </div>
-					<div class="boton Texto2"> Eliminar Heroe </div>
-				</div>
-			</div>
-			<div class="frame"></div>
-
-		</div>
-
         <!-- INTERNO -->
 	<div id="contenedorPanelInterno">
 		<div class="fondoPanelInterior"></div>
@@ -84,22 +42,17 @@
 		<!-- PANEL HABILIDADES -->
 		<div *ngIf="pantalla=='Habilidades' && heroeSeleccionado!=null" class="contenedorGeneralHechizos">
 			<div class="contenedorDescripcion">
-				<div class="titulo Texto1">{{heroeSeleccionado.clase}}</div>
-				<div class="contenedorHechizos">
-          <div *ngFor="let hechizo of hechizosAprendidos; let i = index" class="hechizo">
-            <div class ="contenedorImagen">
-              <img class="imagen" src="/../../../assets/Habilidades/Spell/{{hechizo.imagen_id}}.png"/>
-            </div>
-            <div class="contendorTexto">
-              <div class ="nombreHechizo">{{hechizo.nombre}}</div>
-              <div class ="descripcionHechizo">
-                {{hechizo.descripcion}}
-              </div>
-            </div>
-
-          </div>
-				</div>
+                <div class="titulo Texto1">{{heroeSeleccionado.clase}}</div>
 			</div>
+
+            <div class="contenedorHechizos">
+                <detalleHechizoComponent *ngFor="let hechizo of hechizosAprendidos; let i = index" class="detalleHechizoComponent"
+                        [hechizos]="this.hechizos.hechizos"
+                        [buff]="buff.buff"
+                        [idHechizoSeleccionado]="hechizo.id"
+                        [renderHeroe]="this.sesion.render.heroes[indexHeroeSesion]">
+                </detalleHechizoComponent>
+            </div>
     </div>
 
 
@@ -108,10 +61,10 @@
 	<div id="contenedorExterno">
 
 		<div class="marcoPersonaje" (click)="toggleMostrarSeleccionHeroe()">
-			<div *ngIf="heroeSeleccionado==null" class="contenedorIcono">
-				<img class="imagenSeleccionarHeroe" src="../../../assets/Iconos/Icono-Heroe.png"/>
-			</div>
+
 			<img *ngIf="heroeSeleccionado!=null" class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{heroeSeleccionado['id_imagen']}}.png"/>
+            
+
 			<img src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 
@@ -124,6 +77,7 @@
 		</div>
 
 	</div>
+
 
 </div>
 

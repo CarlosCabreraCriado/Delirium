@@ -22,7 +22,7 @@ export class InterfazComponent implements OnInit {
   }
 
   seleccionarHechizo(indexHechizo){
-        this.hechizoSeleccionadoIndex = indexHechizo-1;
+        this.hechizoSeleccionadoIndex = indexHechizo;
         this.interfazService.selectHechizo(indexHechizo);
   }
 

@@ -1,11 +1,12 @@
 
-import { Component , Input, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { AppService } from '../../app.service';
 
 @Component({
   selector: 'panelPersonajeComponent',
   templateUrl: './panel-personaje.component.html',
-  styleUrls: ['./panel-personaje.component.sass']
+  styleUrls: ['./panel-personaje.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class PanelPersonaje implements OnInit {
@@ -18,16 +19,20 @@ export class PanelPersonaje implements OnInit {
 	public imagenHechVertical= [0,0,0,0,0];
 
 	//Definicion estadisticas generales:
-	private perfil: any
-	private clases: any;
-	private objetos: any;
-	private perks: any;
-	private hechizos: any;
-	private buff: any;
-	public heroeSeleccionado : any = "Sin definir";
-  public hechizosAprendidos = [];
+	private perfil: any = null;
+	private clases: any = null;
+	private objetos: any = null;
+	private perks: any = null;
 
-	constructor(private appService: AppService) {}
+	public hechizos: any = null;
+	public buff: any = null;
+
+	public heroeSeleccionado : any = null;
+    public hechizosAprendidos = [];
+    public sesion: any;
+    public indexHeroeSesion: number;
+
+	constructor(private cdr: ChangeDetectorRef, private appService: AppService) {}
 
 	async ngOnInit(){
 
@@ -39,6 +44,7 @@ export class PanelPersonaje implements OnInit {
 		this.hechizos= await this.appService.getHechizos();
 		this.buff= await this.appService.getBuff();
 		this.heroeSeleccionado= await this.appService.getHeroeSeleccionado();
+		this.sesion= await this.appService.getSesion();
 
 		//Inicia el renderizado de los sprites de hechizos:
 		this.renderizarImagenHechizos();
@@ -46,20 +52,26 @@ export class PanelPersonaje implements OnInit {
 		//Cargar Descripciones de personaje:
 		console.log(this.clases)
 		console.log(this.perfil)
+		console.log(this.sesion)
 		for(var i= 0; i < this.perfil.heroes.length; i++){
 			//this.perfil.heroes[i]["descripcion"] = this.clases["clases"].find(j=>j.nombre==this.perfil.heroes[i].clase.toLowerCase())["descripcion"]
 		}
 
 		console.log("HEROES:")
 		console.log(this.perfil)
-    console.log(this.hechizos)
+        console.log(this.hechizos)
+        console.log(this.heroeSeleccionado)
+        
+        this.indexHeroeSesion = this.sesion.render.heroes.findIndex(i => i.nombre == this.heroeSeleccionado.personaje) 
 
-    for(var i = 0; i < this.perfil.heroes[0].hechizos.aprendidos.length; i++){
-      this.hechizosAprendidos.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[0].hechizos.aprendidos[i]))
-    }
+        for(var i = 0; i < this.perfil.heroes[0].hechizos.aprendidos.length; i++){
+          this.hechizosAprendidos.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[0].hechizos.aprendidos[i]))
+        }
 
 		console.log("APRENDIDOS:")
 		console.log(this.hechizosAprendidos)
+
+        this.cdr.detectChanges()
 
 		return;
 	}

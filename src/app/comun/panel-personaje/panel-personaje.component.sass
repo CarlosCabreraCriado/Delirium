@@ -315,6 +315,9 @@
             width: 100%
             height: 100%
             overflow-y: scroll
+            scrollbar-width: none
+            &::-webkit-scrollbar
+              display: none   
             .contenedorDescripcion
                 position: relative
                 top: 2%
@@ -334,22 +337,22 @@
                     @include media("<=smphone")
                         margin: 5px 10px
 
-                .contenedorHechizos
-                  display: flex
-                  flex-direction: column
-                  .hechizo
-                    position: relative
-                    width: 100%
-                    .contenedorImagen
-                      position: relative
-                      height: 10%
-                      width: 100%
-                      .imagen
-                        width: 10%
-                    .contenedorTexto
-                      position: relative
-                      .nombreHechizo
-                      .descripcionHechizo
+            .contenedorHechizos
+              display: flex
+              flex-direction: column
+              .detalleHechizoComponent
+                position: relative
+                width: 100%
+                .contenedorImagen
+                  position: relative
+                  height: 10%
+                  width: 100%
+                  .imagen
+                    width: 10%
+                .contenedorTexto
+                  position: relative
+                  .nombreHechizo
+                  .descripcionHechizo
 
         .contenedorHabilidades
             position: absolute

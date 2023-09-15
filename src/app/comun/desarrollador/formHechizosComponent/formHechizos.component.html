@@ -33,7 +33,7 @@
 
                   <mat-form-field appearance="legacy" class="formDescripcion">
                     <mat-label>Descripción</mat-label>
-                    <input matInput placeholder="Descripción" formControlName="descripcion">
+                    <textarea matInput placeholder="Descripción" formControlName="descripcion"></textarea>
                   </mat-form-field>
 
                   <mat-form-field appearance="legacy" class="formDistancia">
@@ -155,8 +155,16 @@
             <div class="contenedorBuff">
                 <div class="contenedorImagenEncadenado">
 
-                    <img *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].buff_id!=0" (click)="desarrolladorService.setEstadoPanelDerecho('Buff')" class="imagenEncadenado" src="./assets/Habilidades/Spell/{{desarrolladorService.renderImagenBuff(this.desarrolladorService.hechizoSeleccionadoIndex)}}.png"/>
-                    <img *ngIf="this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].buff_id==0" [ngClass]="renderBotonAddSeleccionado('Buff')" (click)="desarrolladorService.setEstadoPanelDerecho('Buff')" class="imagenEncadenado" src="./assets/desarrollador/add.svg"/>
+                    <img *ngFor="let buffId of this.desarrolladorService.hechizos.hechizos[desarrolladorService.hechizoSeleccionadoIndex].buff_id; let i = index" 
+                        [ngClass]="renderBotonAddSeleccionado('ModificarBuffRelacionado',i)"
+                        (click)="desarrolladorService.setEstadoBuffRelacionado('Modificar',i)" 
+                        class="imagenEncadenado" 
+                        src="./assets/Habilidades/Spell/{{desarrolladorService.renderImagenBuff(this.desarrolladorService.hechizoSeleccionadoIndex,i)}}.png"
+                    />
+
+                    <img [ngClass]="renderBotonAddSeleccionado('AddBuffRelacionado')" (click)="desarrolladorService.setEstadoBuffRelacionado('Add')" class="imagenEncadenado" src="./assets/desarrollador/add.svg"/>
+
+
                 </div>
             </div>
 
