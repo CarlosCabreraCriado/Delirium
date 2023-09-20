@@ -102,7 +102,7 @@ export class InMapService {
 		//Inicializa el grupo:
 
     //REDIRIGIR A MAZMORRA:
-		this.iniciarPartida("Bastion");
+		//this.iniciarPartida("Bastion");
 
 	}
 
@@ -112,8 +112,8 @@ export class InMapService {
 
 	iniciarPartida(nombreIdMazmorra: string):void{
         //INICIANDO MAZMORRA:
-    console.warn("INICIANDO...",nombreIdMazmorra)
-    this.appService.iniciarMazmorra(nombreIdMazmorra);
+        console.warn("INICIANDO...",nombreIdMazmorra)
+        this.appService.iniciarMazmorra(nombreIdMazmorra);
 	}
 
 }
