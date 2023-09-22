@@ -3,80 +3,83 @@
 <!--      Crear Heroe    -->
 <!--   ******************* -->
 
-<div class= "contenedor">
+<div class= "contenedor borde1">
 
-	<h1 class="title Texto2">Crear Heroe</h1>
+	<h1 class="title Texto1">Crear Heroe</h1>
 
 	<hr class="divisor"/>
 
 	<div class="contenedorClases">
 		
 		<!-- Emblema Guerrero -->
-		<div class="clase Texto2 seleccionado" (click)="seleccionarClase('guerrero')">
-			<img src="../../../assets/Emblemas/guerrero.png">
+		<div class="clase Texto2" [ngClass]="{'animacionFocus': claseSeleccionada=='Guerrero'}" (click)="seleccionarClase('Guerrero')">
+			<img src="../../../assets/Emblemas/1.png">
 		</div>
 
 		<!-- Emblema Hechicero -->
-		<div class="clase Texto2" (click)="seleccionarClase('hechicero')">
-			<img src="../../../assets/Emblemas/hechicero.png">
+		<div class="clase Texto2" [ngClass]="{'animacionFocus': claseSeleccionada=='Hechicero'}" (click)="seleccionarClase('Hechicero')">
+			<img src="../../../assets/Emblemas/2.png">
 		</div>
 
 		<!-- Emblema Cazador -->
-		<div class="clase Texto2" (click)="seleccionarClase('cazador')">
-			<img src="../../../assets/Emblemas/cazador.png">
+		<div class="clase Texto2" [ngClass]="{'animacionFocus': claseSeleccionada=='Cazador'}" (click)="seleccionarClase('Cazador')">
+			<img src="../../../assets/Emblemas/3.png">
 		</div>
 
 		<!-- Emblema Sacerdote -->
-		<div class="clase Texto2" (click)="seleccionarClase('sacerdote')">
-			<img src="../../../assets/Emblemas/sacerdote.png">
+		<div class="clase Texto2" [ngClass]="{'animacionFocus': claseSeleccionada=='Sacerdote'}" (click)="seleccionarClase('Sacerdote')">
+			<img src="../../../assets/Emblemas/4.png">
 		</div>
 
 		<!-- Emblema Picaro -->
-		<div class="clase Texto2" (click)="seleccionarClase('picaro')">
-			<img src="../../../assets/Emblemas/picaro.png">
+		<div class="clase Texto2" [ngClass]="{'animacionFocus': claseSeleccionada=='Ladrón'}" (click)="seleccionarClase('Ladrón')">
+			<img src="../../../assets/Emblemas/5.png">
 		</div>
 
 	</div>
+
 	<hr class="divisor"/>
 
 	<div class="contenedorHeroe">
 
 		<div class="contenedorGenero">
 
-			<img class="imagenHeroe" src="../../../assets/Personajes/heroes/{{imagenId}}.png">
+            <div class="contenedorImagenHeroe">
+			    <img class="imagenHeroe" src="../../../assets/Personajes/heroes/{{imagenId}}.png">
+            </div>
 
 			<div class="contenedorBotonesGenero">
-				<div class="botonGenero masculino" ><div class="botonInteriorGenero" (click)="seleccionarGenero('masculino')"></div></div>
-				<div class="botonGenero femenino" (click)="seleccionarGenero('femenino')"><div class="botonInteriorGenero" (click)="seleccionarGenero('femenino')"></div></div>
+				<div class="botonGenero masculino animacionFocus" [ngClass]="{'animacionFocus': generoSeleccionado=='masculino'}"><div class="botonInteriorGenero" (click)="seleccionarGenero('masculino')"></div></div>
+				<div class="botonGenero femenino" [ngClass]="{'animacionFocus': generoSeleccionado=='femenino'}" (click)="seleccionarGenero('femenino')"><div class="botonInteriorGenero" (click)="seleccionarGenero('femenino')"></div></div>
 			</div>
 
 			<div class="contenedorFormularioNombre">
-				<input class="formularioTexto Texto2" type="text"/>
+                
+                <input matInput [formControl]="nombre" class="formularioTexto Texto2" type="text"/>
+
 			</div>
 				
 		</div>
 
 		<div class="contenedorDescripcion">
 
-			<div class="tituloClase Texto2">Hechicero</div>
-			<div class="descripcionClase Texto4">Esto es una despripcion de la clase.Esto es una despripcion de la clase.Esto es una despripcion de la clase.Esto es una despripcion de la clase.</div>
+            <div class="tituloClase Texto1">{{claseSeleccionada}}</div>
+            <div class="descripcionClase Texto2 Arial">{{descripcion}}</div>
 
-			<div class="tituloRoles Texto2">Roles</div>
+			<div class="tituloRoles Texto1">Roles</div>
 			<div class="contenedorRoles">
-				<img class="iconoRol" src="../../../assets/Iconos/Rol-Tank.png">		
-				<img class="iconoRol" src="../../../assets/Iconos/Rol-Heal.png">		
-				<img class="iconoRol" src="../../../assets/Iconos/Rol-DPS.png">		
+				<img class="iconoRol" *ngIf="tank" src="../../../assets/Iconos/Rol-Tank.png">		
+				<img class="iconoRol" *ngIf="heal" src="../../../assets/Iconos/Rol-Heal.png">		
+				<img class="iconoRol" *ngIf="dps" src="../../../assets/Iconos/Rol-DPS.png">		
 			</div>
 
 			<div class="contenedorBotones">
-				<botonComponent mat-button [mat-dialog-close] [texto]="'Crear Heroe'" [color]="'verde'" class="boton"></botonComponent>
-				<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+				<botonComponent mat-button (click)="crearPersonaje()" [tipoBoton]="2" [texto]="'Crear Heroe'" [color]="'verde'" class="boton"></botonComponent>
+				<botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 			</div>
 		</div>
 
 	</div>
-	
-	<div class="frame"></div>
 
 </div>
 

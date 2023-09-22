@@ -13,8 +13,8 @@
     position: absolute !important
     width: 50%
     height: 20%
-    min-width: 80vw
-    min-height: 80vh
+    min-width: 90vw
+    min-height: 90vh
     color: $colorTexto
     padding: 0
     overflow: initial
@@ -23,24 +23,12 @@
     position: absolute
     width: 100%
     height: 100%
+    padding: 1%
     color: $colorTexto
     background-color: $colorFondo2
 
-    .frame
-        position: absolute
-        top: 0 
-        left: 0 
-        padding-top: 5%
-        margin-top: -2.5%
-        padding-left: 3%
-        margin-left: -1.5%
-        width: 100%
-        height: 100%
-        background-image: url("../../../assets/Frames/Frame-Dialogo.png")
-        background-size: 100% 100% 
-
     .title
-        margin-top: 20px
+        margin: 0px
         width: 100%
         text-align: center
 
@@ -52,6 +40,7 @@
     .divisor
         position: relative
         width: 80%
+        height: 1px
         margin: 0 10%
         border-color: $colorTexto
 
@@ -79,25 +68,34 @@
         z-index: 100
         flex-direction: row
         width: 100%
-        height: 60%
+        margin-top: 2%
+        height: 65%
 
         .contenedorGenero
+            display: grid
+            grid-template-columns: 0.6fr repeat(2, 1fr)
+            grid-template-rows: 0.5fr repeat(2, 1fr) 0.5fr 0.75fr
+            grid-column-gap: 0px
+            grid-row-gap: 0px
             position: relative
             width: 40%
             height: 100%
-            border-right: 2px solid $colorTexto
+            border-right: 1px solid $colorTexto
 
-            .imagenHeroe
-                position: absolute
-                height: 80%
-                right: 0 
+            .contenedorImagenHeroe
+              grid-area: 1 / 2 / 5 / 4
+              display: flex
+              justify-content: center
+              .imagenHeroe
+                  position: relative
+                  height: 100%
 
             .contenedorFormularioNombre
                 position: absolute
+                grid-area: 5 / 2 / 6 / 4
                 width: 80%
                 left: 10%
-                bottom: 0 
-                height: 50px
+                bottom: 20% 
                 border: #f3b95c solid 3px
                 border-radius: 20px
                 background-color: $colorFondo2
@@ -117,10 +115,9 @@
 
             .contenedorBotonesGenero
                 position: absolute
+                grid-area: 2 / 1 / 4 / 2
                 left: 10%
-                width: 20%
-                height: 60%
-                top: 20%
+                width: 80%
                 .botonGenero
                     position: relative
                     width: 100%
@@ -155,35 +152,34 @@
             
             .tituloClase
                 position: relative
-                height: 10%
                 width: 90%
-                margin: 3%
+                text-align: center
                 
             .descripcionClase
                 position: relative
-                height: 10%
-                width: 90%
+                width: 95%
 
             .tituloRoles
                 position: relative
-                height: 10%
                 width: 90%
-                margin: 3%
+                text-align: center
 
             .contenedorRoles
                 position: relative
+                display: flex
+                width: 30%
+                justify-content: space-around
                 height: 15%
                 .iconoRol
                     position: relative
                     height: 100%
-                    padding: 5%
 
             .contenedorBotones
                 position: absolute
                 display: flex
                 width: 100%
-                height: 10%
-                bottom: 0
+                height: 15%
+                bottom: 5%
 
                 .boton
                     position: relative

@@ -23,7 +23,6 @@ import { MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
-
 //Declaración de componentes:
 import { IndexComponent } from './comun/index/index.component';
 import { MazmorraComponent } from './comun/mazmorra/mazmorra.component';
@@ -68,6 +67,7 @@ import { PanelControlComponent } from './comun/panel-control/panel-control.compo
 import { PinchZoomComponent } from './comun/pinch-zoom/pinch-zoom.component';
 import { AtributoComponent } from './comun/atributo/atributo.component';
 import { DetalleHechizoComponent } from './comun/detalle-hechizo/detalle-hechizo.component';
+import { SeleccionPersonajeComponent } from './comun/seleccion-personaje/seleccion-personaje.component';
 
 //Componentes de Desarrollo:
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
@@ -151,7 +151,8 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         PanelSelectorComponent,
         TriggerComponent,
         AtributoComponent,
-        DetalleHechizoComponent
+        DetalleHechizoComponent,
+        SeleccionPersonajeComponent
     ],
     imports: [
         BrowserModule,

@@ -173,6 +173,7 @@ export class IndexComponent implements OnInit{
                         this.appService.setEventos(data["eventos"]);
                         this.appService.setPerfil(data["perfil"]);
 
+                        //DECOMISIÓN ENVIO DE VALIDACIÓN??
                         this.socketService.enviarSocket('validacion', data["cuenta"]);
 
                         //Retirar Pantalla Carga:

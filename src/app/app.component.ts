@@ -152,6 +152,7 @@ export class AppComponent implements OnInit{
   } //FIN ONINIT:
 
     iniciaSesion(sesion: any){
+
         this.appService.setSesion(sesion);
         console.warn(sesion)
 
@@ -159,6 +160,12 @@ export class AppComponent implements OnInit{
         if(sesion.estadoSesion=="inmap"){
             console.log("Cargando INMAP...")
             this.appService.setEstadoApp("inmap");
+        }
+
+        //Cargar SELECCION:
+        if(sesion.estadoSesion=="seleccion"){
+            console.log("Cargando Seleccion Personaje...")
+            this.appService.setEstadoApp("seleccionPersonaje");
         }
         //this.appService.iniciarMazmorra("MazmorraSnack");
     }

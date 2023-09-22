@@ -12,7 +12,7 @@ import { MatDialog} from '@angular/material/dialog';
 import { Storage } from '@ionic/storage-angular';
 import { environment } from '../environments/environment'
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
-
+import { datosIniciales } from "./datosIniciales"
 
 @Injectable({
   providedIn: 'root'
@@ -92,7 +92,8 @@ export class AppService {
     private autoDesbloqueo: boolean= true;
     public claveValida: boolean= false;
     private sala: any={};
-  private heroeSeleccionado = null;
+    private heroeSeleccionado = null;
+    private heroeSeleccionadoIndex = null;
 
     //Estados:
     public estadoApp = "";
@@ -173,16 +174,16 @@ export class AppService {
     }
 
     setPerfil(perfil: any){
-    console.log("Guardando Perfil...");
-    console.log(perfil);
+        console.log("Guardando Perfil...");
+        console.log(perfil);
+        this.perfil=perfil;
 
-      if(this.ionic){
-          this.set("perfil",perfil)
-      }else{
-      window.electronAPI.setPerfil(perfil)
-      }
-      this.perfil=perfil;
-      return;
+        if(this.ionic){
+              this.set("perfil",perfil)
+        }else{
+            window.electronAPI.setPerfil(perfil)
+        }
+        return;
     }
 
     setControl(val:string):void{
@@ -337,6 +338,7 @@ export class AppService {
   }
 
   crearCuenta(correo,usuario,password,password2){
+
   }
 
     mostrarPantallacarga(val:boolean):void{
@@ -416,7 +418,15 @@ export class AppService {
         return dialogRef;
     }
 
-    mostrarCrearHeroe(tipoDialogo:string, config:any):any{
+    async mostrarCrearHeroe(){
+
+        var tipoDialogo = null;
+        var clases = await this.getClases();
+        var config = {
+            titulo: null,
+            contenido: clases,
+            inputLabel: null
+        }
 
       const dialogCrearHeroe = this.dialog.open(CrearHeroeComponent,{
           width: "100px",panelClass: [tipoDialogo, "contenedorCrearHeroe"],backdropClass: "fondoCrearHeroe", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
@@ -425,13 +435,79 @@ export class AppService {
         dialogCrearHeroe.afterClosed().subscribe(result => {
           console.log('Cierre Configuracion. Devuelve:');
           console.log(result)
-
-      if(result === "crearHeroe") {
-      }
-
         });
 
         return;
+    }
+
+    crearHeroe(nombreHeroe:string,clase:string,genero: "masculino"|"femenino",imagenId: number,dialogRef?){
+
+        clase = clase.toLowerCase();
+        var indexClase = datosIniciales.findIndex(i => i.clase == clase);
+        var objetos = datosIniciales[indexClase].objetos;
+        var hechizos = datosIniciales[indexClase].hechizos;
+        var talentos = datosIniciales[indexClase].talentos;
+        var misiones = datosIniciales[indexClase].misiones;
+
+        var nuevoHeroe = {
+            personaje: nombreHeroe,
+            clase: clase,
+            genero: genero,
+            id_imagen: imagenId,
+            nivel: 1,
+            exp: 0,
+            oro: 0,
+            capacidad_inventario: 10,
+            capacidad_banco: 10,
+            tutorial: false,
+            objetos: objetos,
+            hechizos: hechizos,
+            misiones: misiones,
+            talentos: talentos,
+            mundos: []
+        }
+
+        this.http.post(this.ipRemota+"/deliriumAPI/crearPersonaje",{idCuenta: this.cuenta.idCuenta, nuevoHeroe: nuevoHeroe, token: this.token}).subscribe((data) => {
+
+            if(data["success"] && data["data"]){
+                //PERSONAJE CREADO CON EXITO:
+                console.log("Personaje creado con exito: ",data)
+                this.setPerfil(data["data"]);
+                if(dialogRef){
+                    this.eventoAppService.emit("actualizarHeroeSeleccionado")
+                    dialogRef.close();
+                }
+            }else{
+                console.error("NO SE HA PODIDO CREAR EL PERSONAJE...",nuevoHeroe);
+                this.mostrarDialogo("Error",{titulo: "Error creando personaje",contenido: data["message"]})
+            }
+        });
+
+    }
+
+    eliminarPersonaje(indexHeroeEliminar){
+        //Valida el index:
+        if(indexHeroeEliminar==null){
+            this.mostrarDialogo("Error",{titulo: "Error eliminando personaje",contenido: "Error eliminando el personje"})
+            this.eventoAppService.emit("actualizarHeroeSeleccionado")
+            return;
+        }
+
+        this.http.post(this.ipRemota+"/deliriumAPI/eliminarPersonaje",{idCuenta: this.cuenta.idCuenta, indexHeroeEliminar: indexHeroeEliminar, token: this.token}).subscribe((data) => {
+
+            if(data["success"] && data["data"]){
+                //PERSONAJE CREADO CON EXITO:
+                console.log("Personaje eliminado con exito: ",data)
+                this.setPerfil(data["data"]);
+                this.eventoAppService.emit("actualizarHeroeSeleccionado")
+                this.mostrarDialogo("Informativo",{titulo: "Heroe eliminado",contenido: "El personaje se ha eliminado con exito."})
+            }else{
+                console.error("NO SE HA PODIDO ELIMINAR EL PERSONAJE...");
+                this.eventoAppService.emit("actualizarHeroeSeleccionado")
+                this.mostrarDialogo("Error",{titulo: "Error eliminando personaje",contenido: data["message"]})
+            }
+        });
+
     }
 
     mostrarConfiguracion(tipoDialogo:string, config:any):any{
@@ -553,8 +629,13 @@ export class AppService {
 
     async getDatosJuego(){
       console.log("Accediendo a datos Locales:")
-      //var datos = await window.electronAPI.getDatosJuego()
-      //this.setInicio(datos);
+      this.token = await this.getToken();
+      this.perfil = await this.getPerfil();
+      this.clases = await this.getClases();
+    }
+
+    getPerfilRam(){
+        return this.perfil;
     }
 
     async getPerfil(){
@@ -814,9 +895,89 @@ export class AppService {
                     delete this.region.isometrico[i][j].cogerMisionId;
                 }
             }
-
             console.log(this.renderIsometrico)
+    }
 
+    entrarMundo(indexHeroeSeleccionado:number){
+        this.heroeSeleccionadoIndex = indexHeroeSeleccionado;
+		this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoIndex])
+        this.sesion.estadoSesion = "inmap";
+
+        //Configurar Sesion:
+        if(this.sesion.iniciada==false){
+
+            //Inicializando Jugador:
+            this.sesion.jugadores = [{
+                    usuario: this.cuenta.usuario,
+                    online: true,
+                    lider: true,
+                    personaje: this.heroeSeleccionado
+                }]
+
+            //Inicializando RENDER:
+            var heroeRender = {
+                  clase: this.heroeSeleccionado.clase,
+                  nombre: this.heroeSeleccionado.personaje,
+                  nivel: this.heroeSeleccionado.nivel,
+                  id_imagen: this.heroeSeleccionado.id_imagen,
+                  vida: 100,
+                  escudo: 0,
+                  energia: 100,
+                  energiaFutura: 100,
+                  acciones: 2,
+                  recursoEspecial: 0,
+                  estadisticas: {
+                    armadura: null,
+                    resistenciaMagica: null,
+                    vitalidad: null,
+                    pa: null,
+                    ad: null,
+                    ap: null,
+                    critico: null,
+                  },
+                  cargaUlti: 0,
+                  buff: [],
+                  cooldown: [0,0,0,0,0],
+                  oro: 0,
+                  turno: true,
+                  controlEnemigos: false,
+                  objetivo: false,
+                  objetivoAuxiliar: false,
+                  animacion: 0,
+                  online: true
+                }
+
+            this.sesion["render"]= {
+                heroes: [heroeRender],
+                enemigos: [],
+                objetosGlobales: [],
+                nivel_equipo: this.heroeSeleccionado.nivel,
+                turno: 1,
+                indexActivacionEnemigo: 0
+            }
+
+            //Inicializando INMAP:
+            if(this.heroeSeleccionado.tutorial){
+                this.sesion["inmap"]= {
+                    posicion_x: 61,
+                    posicion_y: 50,
+                    mapa: "Asfaloth"
+                }
+            }else{
+                this.sesion["inmap"]= {
+                    posicion_x: 56,
+                    posicion_y: 48,
+                    mapa: "Asfaloth"
+                }
+            }
+
+            this.sesion.online = true;
+            this.sesion.iniciada = false;
+
+        }//Fin configuracion de sesion
+            
+        //Cambiar a pantalla InMap:
+        this.setEstadoApp("inmap");
     }
 
     async iniciarMazmorra(nombreIdMazmorra: string){

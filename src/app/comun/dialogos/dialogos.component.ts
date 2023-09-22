@@ -1,4 +1,4 @@
-
+ 
 import { Component , Inject, ViewChild,  ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { BotonComponent } from '../boton/boton.component';

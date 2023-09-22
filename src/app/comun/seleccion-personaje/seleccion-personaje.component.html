@@ -1,7 +1,114 @@
 
 <!--   ******************* -->
-<!--         Plantilla       -->
+<!--         Seleccion Personaje       -->
 <!--   ******************* -->
 
-<div class="contenedorPlantilla">
-</div>
+    <img src="assets/illustration/20.png" class="ilustracionFondo" alt="fondo-montaña">
+    <img src="assets/General/Fondo-Papiro.png" class="Fondo-papiro" alt="Fondo-papiro">
+
+    <!--
+    <div id="contenedorLogo">
+        <img class="Logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo">
+    </div>
+    -->
+
+	<!--   ******************* -->
+	<!--      Configuracion    -->
+	<!--   ******************* -->
+
+	<img id="iconoConfiguracion" src="assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
+
+	<!--   ******************* -->
+	<!--      Badges Heroes    -->
+	<!--   ******************* -->
+    <div id="contenedorHeroes">
+
+        <!-- CONTENEDOR 1 -->
+        <div *ngIf="heroes[1]" class="heroe"(click)="seleccionarHeroe(1)">
+            <div class="nombrePersonaje Texto1">{{heroes[1].personaje}}</div>
+            <div class="contenedorBandera">
+                <img class="bandera" src="assets/ui/banners/bn_01_3.png"/>
+                <img class="adornoBandera" src="assets/ui/banners/bn_01_2.png"/>
+            </div>
+            <div class="contenedorImagenHeroe">
+                <div class="contenedorInterior">
+                    <div class="frameAnimacionesFrame" *ngIf="heroeSeleccionado==1">
+                      <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
+                    </div>
+                    <img class="personaje" src="assets/Personajes/heroes/{{heroes[1].id_imagen}}.png"/>
+                </div>
+                <img class="frame" src="assets/Frames/Frame-Heroe-Circulo.png"/>
+            </div>
+            <img class="badge" src="assets/Emblemas/{{heroes[1]['badgeId']}}.png"/>
+        </div>
+
+        <div *ngIf="!heroes[1]" class="contenedorCrearHeroe"(click)="mostrarCrearHeroe()">
+            <div class="textoNuevo Texto1">Nuevo Personaje</div>
+            <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
+        </div>
+
+        <!-- CONTENEDOR 2 -->
+        <div *ngIf="heroes[0]" class="heroe"(click)="seleccionarHeroe(0)">
+            <div class="nombrePersonaje Texto1">{{heroes[0].personaje}}</div>
+            <div class="contenedorBandera">
+                <img class="bandera" src="assets/ui/banners/bn_01_3.png"/>
+                <img class="adornoBandera" src="assets/ui/banners/bn_01_2.png"/>
+            </div>
+            <div class="contenedorImagenHeroe">
+                <div class="contenedorInterior">
+                    <div class="frameAnimacionesFrame" *ngIf="heroeSeleccionado==0">
+                      <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
+                    </div>
+                    <img class="personaje" src="assets/Personajes/heroes/{{heroes[0].id_imagen}}.png"/>
+                </div>
+                <img class="frame" src="assets/Frames/Frame-Heroe-Circulo.png"/>
+            </div>
+            <img class="badge" src="assets/Emblemas/{{heroes[0]['badgeId']}}.png"/>
+        </div>
+
+        <div *ngIf="!heroes[0]" class="contenedorCrearHeroe"(click)="mostrarCrearHeroe()">
+            <div class="textoNuevo Texto1">Nuevo Personaje</div>
+            <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
+        </div>
+
+        <!-- CONTENEDOR 3 -->
+        <div *ngIf="heroes[2]" class="heroe"(click)="seleccionarHeroe(2)">
+            <div class="nombrePersonaje Texto1">{{heroes[2].personaje}}</div>
+            <div class="contenedorBandera">
+                <img class="bandera" src="assets/ui/banners/bn_01_3.png"/>
+                <img class="adornoBandera" src="assets/ui/banners/bn_01_2.png"/>
+            </div>
+            <div class="contenedorImagenHeroe">
+                <div class="contenedorInterior">
+                    <div class="frameAnimacionesFrame" *ngIf="heroeSeleccionado==2">
+                      <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
+                    </div>
+                    <img class="personaje" src="assets/Personajes/heroes/{{heroes[2].id_imagen}}.png"/>
+                </div>
+                <img class="frame" src="assets/Frames/Frame-Heroe-Circulo.png"/>
+            </div>
+            <img class="badge" src="assets/Emblemas/{{heroes[2]['badgeId']}}.png"/>
+        </div>
+
+        <div *ngIf="!heroes[2]" class="contenedorCrearHeroe"(click)="mostrarCrearHeroe()">
+            <div class="textoNuevo Texto1">Nuevo Personaje</div>
+            <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
+        </div>
+
+    </div>
+
+    <botonComponent class="botonEntrar" 
+        [ngClass]="{'botonDeshabilitado': heroeSeleccionado== null}" 
+        [tipoBoton]="2"
+        [color]="'naranja'" 
+        [texto]="'Entrar'" 
+        (click)="entrar();">
+    </botonComponent>
+
+    <botonComponent class="botonEliminar" [ngClass]="{'botonDeshabilitado': heroeSeleccionado==null}"
+        [tipoBoton]="2"
+        [color]="'rojo'"
+        [texto]="'Eliminar Personaje'" 
+        (click)="eliminarPersonaje();">
+    </botonComponent>
+

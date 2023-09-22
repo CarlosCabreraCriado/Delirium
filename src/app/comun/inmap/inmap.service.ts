@@ -94,14 +94,17 @@ export class InMapService {
         console.log("Heroe Seleccionado")
         console.log(this.heroeSeleccionado)
 
-
-        //CARGAR DATOS:
+        //CARGAR Sesion:
         this.sesion= await this.appService.getSesion();
         console.warn(this.sesion);
 
 		//Inicializa el grupo:
+        if(this.sesion.iniciada == false){
+            this.sesion.iniciada = true;
+            this.socketService.enviarSocket("actualizarSesion",{peticion: "actualizarSesion", comando: "actualizarSesion", contenido: this.sesion});
+        }
 
-    //REDIRIGIR A MAZMORRA:
+        //REDIRIGIR A MAZMORRA:
 		//this.iniciarPartida("Bastion");
 
 	}
