@@ -1494,7 +1494,7 @@ export class MazmorraService {
             estadisticas.critico = this.parametros.heroes.base.critico + nivel * this.parametros.heroes.escalado.critico
 
             estadisticas.armadura = this.parametros.heroes.base.armadura + nivel * this.parametros.heroes.escalado.armadura
-            estadisticas.vitalidad = this.parametros.heroes.base.vitalidad + nivel * this.parametros.heroes.escalado.vitalidad
+           estadisticas.vitalidad = this.parametros.heroes.base.vitalidad + nivel * this.parametros.heroes.escalado.vitalidad
             estadisticas.resistenciaMagica = this.parametros.heroes.base.resistenciaMagica + nivel * this.parametros.heroes.escalado.resistenciaMagica
 
             //Añadir estadisticas de objetos equipados:

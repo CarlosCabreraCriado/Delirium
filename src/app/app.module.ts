@@ -59,7 +59,7 @@ import { IndicadorPantallaComponent } from './comun/indicador-pantalla/indicador
 import { EstadisticasGeneralComponent } from './comun/estadisticas-general/estadisticas-general.component';
 import { PanelGeneralComponent } from './comun/panel-general/panel-general.component';
 import { PanelEquipoComponent } from './comun/panel-equipo/panel-equipo.component';
-import { PanelMazmorraComponent } from './comun/panel-mazmorra/panel-mazmorra.component';
+import { PanelUbicacionComponent } from './comun/panel-ubicacion/panel-ubicacion.component';
 import { PanelDiarioComponent } from './comun/panel-diario/panel-diario.component';
 import { PanelTiendaComponent } from './comun/panel-tienda/panel-tienda.component';
 import { ExperienciaComponent } from './comun/experiencia/experiencia.component';
@@ -132,7 +132,7 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         EstadisticasGeneralComponent,
         PanelGeneralComponent,
         PanelEquipoComponent,
-        PanelMazmorraComponent,
+        PanelUbicacionComponent,
         PanelDiarioComponent,
         PanelTiendaComponent,
         ExperienciaComponent,

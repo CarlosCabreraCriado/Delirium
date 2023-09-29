@@ -241,7 +241,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
                   case "reanimarHeroe":
                     console.log("Socket... Reanimando Heroe: ",data.contenido);
-                            this.mazmorraService.reanimarHeroe(data.contenido);
+                        this.mazmorraService.reanimarHeroe(data.contenido);
                   break;
                 }
             break;

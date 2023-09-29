@@ -1,53 +1,89 @@
 
 <!--   ******************* -->
-<!--         Plantilla       -->
+<!--       Ubicaciones     -->
 <!--   ******************* -->
 
 <div class="contenedorPanelMazmorra">
 	<div class="fondoPanel"></div>
 	<div class="fondoPestana"></div>
 
-	<!-- PANEL INTERNO -->
-	<div id="contenedorPanelInterno">
-		<div class="fondoPanelInterior"></div>
-
-		<div class="tituloMazmorra Texto1">Cloacas</div>
-
-		<div class="contenedorImagenMazmorra">
-			
-			<div class="frame"></div>
-			<img class="imagen" src="../../assets/Mazmorras/Cloacas.jpg">
-
-		</div>
-
-		<div class="contenedorDescripcion">
-			<div class="tituloDescripcion Texto1">Descripción</div>
-
-			<div class="textoDescripcion Texto3"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ri </div>
-		</div>
-
-		<botonComponent mat-button [texto]="'Fijar'" [color]="'verde'" class="botonFijar"></botonComponent>
-		<div class="tiempoEstimado Texto2">Tiempo estimado: 1 Hora</div>
-
-	</div>
-
 
 	<!-- PANEL EXTERNO -->
 	<div id="contenedorExterno">
 
-		<div class="titulo Texto1">Mazmorras</div>
-		<hr class="separadorTituloMazmorra"/>
-		<div class="contenedorListaMazmorras">
-			<div class="mazmorra Texto2 seleccionado">
-				Nivel 10.  Cloacas	
-			</div>	
-			<div class="mazmorra Texto2">
-				Nivel 10.  Catacumbas	
-			</div>	
-			<div class="mazmorra Texto2">
-				Nivel 10.  Templo	
-			</div>	
-		</div>
+        <div id="contenedorUbicaciones">
+            <!-- Posada -->
+            <div class="ubicacion">
+                <img class="imagenUbicacion" src="assets/Iconos/indicadores/002.png"/>
+                <div class="textoUbicacion Texto1">Posada</div>
+            </div>
+            <!-- Mercado -->
+            <div class="ubicacion">
+                <img class="imagenUbicacion" src="assets/Iconos/indicadores/017.png"/>
+                <div class="textoUbicacion Texto1">Mercado</div>
+            </div>
+            <!-- Herrero -->
+            <div class="ubicacion">
+                <img class="imagenUbicacion" src="assets/Iconos/indicadores/018.png"/>
+                <div class="textoUbicacion Texto1">Herrero</div>
+            </div>
+            <!-- Armero -->
+            <div class="ubicacion">
+                <img class="imagenUbicacion" src="assets/Iconos/indicadores/008.png"/>
+                <div class="textoUbicacion Texto1">Armero</div>
+            </div>
+            <!-- Instructor -->
+            <div class="ubicacion">
+                <img class="imagenUbicacion" src="assets/Iconos/indicadores/005.png"/>
+                <div class="textoUbicacion Texto1">Instructor</div>
+            </div>
+            <!-- Portal -->
+            <div class="ubicacion">
+                <img class="imagenUbicacion" src="assets/Iconos/indicadores/013.png"/>
+                <div class="textoUbicacion Texto1">Portal</div>
+            </div>
+        </div>
+
+        <div id="contenedorInterior">
+
+            <ng-container>
+                <img class="badge" src="assets/Iconos/indicadores/002.png"/>
+                <img class="personaje" src="assets/Personajes/npc/04.png"/>
+
+                <div class="contenedorOpciones">
+                    <div class="opcion Texto1"> Grupo </div>
+                    <div class="opcion Texto1"> Servicios </div>
+                </div>
+
+                <div class="contenedorGrupo">
+
+                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+                    <heroeComponent *ngFor="let heroe of this.sesion.render.heroes; let i = index" [desplegable]="false" [desplegadoDefecto]="false" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
+                    <div class="texto Texto1">{{this.sesion.render.heroes[0].nombre}}</div>
+                    </div>
+
+                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+                        <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
+                        <div class="texto Texto1">Reclutar</div>
+                    </div>
+                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+                        <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
+                        <div class="texto Texto1">Reclutar</div>
+                    </div>
+                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+                        <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
+                        <div class="texto Texto1">Reclutar</div>
+                    </div>
+                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+                        <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
+                        <div class="texto Texto1">Reclutar</div>
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+        </div>
 		
 	</div>
 

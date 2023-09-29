@@ -116,7 +116,7 @@
 		</div>
 
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
-			<panelMazmorraComponent></panelMazmorraComponent>
+			<panelUbicacionComponent [sesion]="this.inmapService.sesion"></panelUbicacionComponent>
 		</div>
 
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Diario'">

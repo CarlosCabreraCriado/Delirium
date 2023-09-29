@@ -37,117 +37,97 @@
         -moz-box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
         box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
 
-    #contenedorPanelInterno
-        position: absolute
-        width: 60%
-        height: 100%
-        right: 0
+#contenedorExterno
+    position: absolute
+    height: 100%
+    left: 12%
+    width: 88%
 
-        .fondoPanelInterior
-            position: absolute
-            width: 101%
-            height: 100%
-            border: 1px solid burlywood
-            background-color: #1e1c21
-            background-size: 100% 100% 
-            box-sizing: border-box
-            border-radius: 5px
-            -webkit-box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
-            -moz-box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
-            box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
+#contenedorUbicaciones
+    position: absolute
+    display: flex
+    width: 100%
+    height: 20%
+    top: 3%
+    justify-content: space-around
+    .ubicacion
+      position: relative
+      display: flex
+      flex-direction: column
+      height: 100%
+      width: 10%
+      padding: 1%
+      justify-content: center
+      border: 1px solid $colorTexto
+      border-radius: 20px
+      align-items: center
+      .imagenUbicacion
+        position: relative
+        height: 70%
+        width: fit-content
+      .textoUbicacion
+        text-align: center
+        font-size: 20px
 
-        .tituloMazmorra
-            position: relative
-            width: 100%
-            text-align: center
-            margin-top: 5%
-            margin-bottom: 5%
-
-        .contenedorImagenMazmorra
-            position: relative
-            width: 70%
-            margin-left: -35%
-            left: 52%
-            height: 35%
-
-            .frame
-                position: absolute
-                width: 100%
-                height: 100%
-                z-index: 10
-                background-image: url("../../../assets/Frames/Frame-Mazmorra.png")
-                background-size: 100% 100% 
-
-            .imagen
-                position: absolute
-                width: 100%
-                height: 100%
-
-        .contenedorDescripcion
-            position: relative 
-            display: flex
-            flex-direction: column 
-            margin-top: 5%
-            width: 90%
-            left: 5%
-
-            .tituloDescripcion
-                position: relative
-                width: 100%
-
-            .textoDescripcion
-                position: relative
-                width: 100%
-
-        .botonFijar
-            position: absolute
-            color: white
-            left: 5%
-            bottom: 5%
-            width: 30%
-
-        .tiempoEstimado 
-            position: absolute
-            display: flex
-            align-items: center
-            width: 40%
-            right: 5%
-            bottom: 5%
-
-    #contenedorExterno
-        position: absolute
-        height: 100%
-        left: 12%
+#contenedorInterior
+    position: absolute
+    top: 30%
+    left: 2%
+    width: 96%
+    height: 67%
+    background-color: $colorFondo2
+    border: 1px solid $colorTexto
+    border-radius: 20px
+    .badge
+      position: absolute
+      width: 10%
+    .personaje
+      position: absolute
+      bottom: 0
+      width: 20%
+      left: 2%
+    .contenedorOpciones
+      position: absolute
+      display: flex
+      justify-content: center
+      width: 70%
+      height: 15%
+      top: 10%
+      left: 25%
+      .opcion
+        position: relative
+        display: flex
+        align-items: center
+        justify-content: center
         width: 30%
-        .titulo
-            position: relative
-            margin-top: 5%
-            margin-bottom: 5%
-            width: 100%
-            text-align: center
-        .separadorTituloMazmorra
-            position: relative
-            width: 80%
-            border-color: $colorTexto
-        .contenedorListaMazmorras
-            position: relative
-            display: flex
-            flex-direction: column
-            justify-content: center
-            items-align: center
-            width: 100%
-            height: 70%
-        .mazmorra
-            position: relative
-            display: flex
-            height: 15%
-            width: 80%
-            text-align: center
-            margin: -1px auto
-            align-items: center
-            border-top: 2px $colorTexto solid
-            border-bottom: 2px $colorTexto solid
-            &.seleccionado
-                background: url("../../../assets/Background/Sombreado-Seleccion-Personaje.png")
-                background-size: 100% 100%
+        margin: 1%
+        color: white
+        text-align: center
+        background-image: url("../../../assets/ui/surface/sur_04.png")
+        background-size: 100% 100%
+
+    .contenedorGrupo
+      position: absolute
+      display: flex
+      justify-content: space-around
+      width: 70%
+      height: 30%
+      top: 30%
+      left: 25%
+      .panelHeroe
+        position: relative
+      .contenedorReclutar
+        position: relative
+        height: 100%
+        aspect-ratio: 1
+        .imagenAdd
+          position: relative
+          width: 100%
+          filter: invert(1)
+        .texto
+          text-align: center
+
+
+
+
 

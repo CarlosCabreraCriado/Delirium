@@ -348,6 +348,9 @@ export class AppService {
   getHeroeSeleccionado(){
     return this.heroeSeleccionado;
   }
+  getHeroeSeleccionadoIndex(){
+    return this.heroeSeleccionadoIndex;
+  }
 
   setHeroeSeleccionado(heroe: any){
     this.heroeSeleccionado = heroe;
@@ -973,6 +976,9 @@ export class AppService {
 
             this.sesion.online = true;
             this.sesion.iniciada = false;
+
+
+
 
         }//Fin configuracion de sesion
             
