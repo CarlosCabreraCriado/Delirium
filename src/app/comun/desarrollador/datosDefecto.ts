@@ -83,6 +83,7 @@ export const datosDefecto = {
           ]
     },
     eventos: {
+        "id": 0,
         "nombre": "Nuevo Evento",
         "descripcion": "Descripcion del evento",
         "categoria": "null",

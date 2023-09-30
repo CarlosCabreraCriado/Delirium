@@ -4,19 +4,18 @@
 <!--   ******************* -->
 
 		<!-- LISTA EVENTOS -->
-      <div class="contenedorLateral izquierda">
-        <div class="titulo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">Eventos: </div>
-		<div class="lista"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
-			<div *ngFor="let evento of this.desarrolladorService.eventos.eventos; let i=index" [ngClass]="renderListaSeleccionado('eventos',i)" class="hechizo" (click)="desarrolladorService.seleccionarEvento(i)">
-				<div class="nombre">{{evento.nombre}}</div>
-				<!-- <img class="imagenHechizo" src="./assets/Efectos/{{animacion.sprite_id}}.png">-->
-			</div>
-		</div>
-          <!-- Boton Add -->
-          <div class="botonAddLista" (click)="desarrolladorService.addDato()">
-                Añadir
-            </div>
-	  </div> <!-- FIN CONTENEDOR LISTA IZQUIERDA -->
+        <panelSelectorComponent
+            [datos]="this.desarrolladorService.eventos.eventos"
+            [tipo]="'Eventos'"
+            [titulo]="'Eventos'"
+            [botonAdd]="true"
+            [lateral]="'izquierda'"
+            [botonEliminarRelacion]="false"
+            >
+        </panelSelectorComponent>
+
+		<!-- Boton TEST EVENTO -->
+        <botonComponent class="botonTest" (click)="desarrolladorService.testEvento()" mat-button [tipoBoton]="2" [texto]="'TEST'" [color]="'naranja'"></botonComponent>
 
 		<!-- CENTRAL DATOS EVENTOS -->
         <div id="visualizadorEventos" *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
@@ -205,9 +204,16 @@
                     <!-- Orden Diálogo -->
 			        <form  *ngIf="desarrolladorService.tipoOrdenSeleccionada=='dialogo'" class="formularioGeneral" [formGroup]="formOrdenDialogo">
                       <div  class="contenedorTipoOrden">
-                          <mat-form-field appearance="legacy" class="formDuracion">
-                            <mat-label>Tipo Diálogo</mat-label>
-                            <input matInput placeholder="" formControlName="tipoDialogo">
+
+                          <mat-form-field appearance="fill">
+                            <mat-label>Tipo Dialogo</mat-label>
+                            <mat-select [formControl]="tipoDialogo_Orden_Dialogo">
+                                <mat-option value="Dialogo">Dialogo</mat-option>
+                                <mat-option value="NarradorImg">Narrador IMG</mat-option>
+                                <mat-option value="Diapositiva">Diapositiva</mat-option>
+                                <mat-option value="Mision">Mision</mat-option>
+                                <mat-option value="Pensando">Pensando</mat-option>
+                            </mat-select>
                           </mat-form-field>
 
                           <mat-form-field appearance="legacy" class="formDuracion">

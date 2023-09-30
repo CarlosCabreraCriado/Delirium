@@ -61,6 +61,9 @@ export class PanelSelectorComponent {
 			case "enemigos":
 				if(this.desarrolladorService.enemigoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
 				break;
+			case "eventos":
+				if(this.desarrolladorService.eventoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
+				break;
 			case "misiones":
 				if(this.desarrolladorService.misionSeleccionadaIndex==indiceSeleccionado){return "seleccionado"}
 				break;

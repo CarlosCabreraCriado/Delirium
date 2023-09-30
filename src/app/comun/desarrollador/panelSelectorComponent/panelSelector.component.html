@@ -21,7 +21,7 @@
             <ng-container *ngIf="tipo=='Buff'">
                 <div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index" [ngClass]="renderListaSeleccionado('buff',i)" class="hechizo" (click)="desarrolladorService.seleccionarBuff(i)">
                     <img class="imagen" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
-                    <div class="nombre">{{buff.nombre}}</div>
+                    <div class="nombre">[{{buff.id}}] {{buff.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -33,7 +33,7 @@
                 </div>
                 <div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index"  class="hechizo" (click)="desarrolladorService.addEncadenado(i)">
                     <img class="imagen" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
-                    <div class="nombre">{{hechizo.nombre}}</div>
+                    <div class="nombre">[{{hechizo.id}}] {{hechizo.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -45,7 +45,7 @@
                 </div>
                 <div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index"  class="hechizo" (click)="desarrolladorService.addBuff(i)">
                     <img class="imagen" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
-                    <div class="nombre">{{buff.nombre}}</div>
+                    <div class="nombre">[{{buff.id}}] {{buff.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -57,7 +57,7 @@
                 </div>
                 <div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado('animacionHechizo',i)" class="hechizo" (click)="desarrolladorService.addAnimacionHechizo(i)">
                     <img class="imagen" src="./assets/desarrollador/animacion.png">
-                    <div class="nombre">{{animacion.nombre}}</div>
+                    <div class="nombre">[{{animacion.id}}] {{animacion.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -69,7 +69,7 @@
                 </div>
                 <div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado('animacionBuff',i)" class="hechizo" (click)="desarrolladorService.addAnimacionBuff(i)">
                     <img class="imagen" src="./assets/desarrollador/animacion.png">
-                    <div class="nombre">{{animacion.nombre}}</div>
+                    <div class="nombre">[{{animacion.id}}] {{animacion.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -85,7 +85,7 @@
             <ng-container *ngIf="tipo=='Equipo'">
                 <div *ngFor="let objeto of datos; let i=index" (click)="this.desarrolladorService.seleccionarObjeto(i)" [ngClass]="renderListaSeleccionado('equipo',i)" class="hechizo" >
                     <img class="imagen" src="./assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png">
-                    <div class="nombre">{{objeto.nombre}}</div>
+                    <div class="nombre">[{{objeto.id}}] {{objeto.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -93,7 +93,7 @@
             <ng-container *ngIf="tipo=='Consumible'">
                 <div *ngFor="let objeto of datos; let i=index" (click)="this.desarrolladorService.seleccionarObjeto(i)" [ngClass]="renderListaSeleccionado('consumible',i)" class="hechizo" >
                     <img class="imagen" src="./assets/Items/{{objeto.tipo.toLowerCase()}}/{{objeto.imagen_id}}.png">
-                    <div class="nombre">{{objeto.nombre}}</div>
+                    <div class="nombre">[{{objeto.id}}] {{objeto.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -101,7 +101,15 @@
             <ng-container *ngIf="tipo=='Enemigos'">
                 <div *ngFor="let enemigo of datos; let i=index" (click)="this.desarrolladorService.seleccionarEnemigo(i)" [ngClass]="renderListaSeleccionado('enemigos',i)" class="hechizo" >
                     <img class="imagen" src="./assets/Enemigos/{{enemigo.familia.toLowerCase()}}/{{enemigo.imagen_id}}.png">
-                    <div class="nombre">{{enemigo.nombre}}</div>
+                    <div class="nombre">[{{enemigo.id}}] {{enemigo.nombre}}</div>
+                </div>
+            </ng-container>
+
+            <!-- LISTA EVENTOS -->
+            <ng-container *ngIf="tipo=='Eventos'">
+                <div *ngFor="let evento of datos; let i=index" (click)="this.desarrolladorService.seleccionarEvento(i)" [ngClass]="renderListaSeleccionado('eventos',i)" class="hechizo" >
+                    <img class="imagen" src="./assets/desarrollador/trigger.png">
+                    <div class="nombre">[{{evento.id}}] {{evento.nombre}}</div>
                 </div>
             </ng-container>
 
@@ -109,7 +117,7 @@
             <ng-container *ngIf="tipo=='Misiones'">
                 <div *ngFor="let mision of datos; let i=index" (click)="this.desarrolladorService.seleccionarMision(i)" [ngClass]="renderListaSeleccionado('misiones',i)" class="hechizo" >
                     <img class="imagen" src="./assets/desarrollador/mision.png">
-                    <div class="nombre">{{mision.titulo}}</div>
+                    <div class="nombre">[{{mision.id}}] {{mision.titulo}}</div>
                 </div>
             </ng-container>
 
@@ -117,7 +125,7 @@
             <ng-container *ngIf="tipo=='Objetivos'">
                 <div *ngFor="let objetivo of datos; let i=index" (click)="this.desarrolladorService.seleccionarObjetivoMision(i)" [ngClass]="renderListaSeleccionado('objetivo',i)" class="hechizo" >
                     <img class="imagen" src="./assets/desarrollador/mision.png">
-                    <div class="nombre">{{objetivo.texto}}</div>
+                    <div class="nombre">[{{objetivo.id}}] {{objetivo.texto}}</div>
                 </div>
             </ng-container>
 
@@ -125,7 +133,7 @@
             <ng-container *ngIf="tipo=='Triggers'">
                 <div *ngFor="let trigger of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado('trigger',i)" class="hechizo" >
                     <img class="imagen" src="./assets/desarrollador/trigger.png">
-                    <div class="nombre">{{trigger.identificador}}</div>
+                    <div class="nombre">[{{trigger.id}}] {{trigger.identificador}}</div>
                 </div>
             </ng-container>
         </div> <!-- FIN LISTA  -->

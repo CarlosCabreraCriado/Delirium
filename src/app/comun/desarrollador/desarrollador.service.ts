@@ -1843,7 +1843,21 @@ export class DesarrolladorService implements OnInit{
 
           },(err) => {
             this.log("Error de adquisición de datos","red");
-          });
+    });
+
+    //Peticion Eventos:
+    this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarEventos",{token: token}).subscribe((data) => {
+
+        console.log("Eventos: ")
+        console.log(data)
+            if(data){
+                this.appService.setEventos(data[0]);
+                this.log("Adquisición de datos exitosa!","green");
+            }
+
+          },(err) => {
+                this.log("Error de adquisición de datos","red");
+    });
   }
 
   seleccionarElementoIsometrico(indexElemento: number){
@@ -1945,7 +1959,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   findAvailableID(objeto:any):number{
-    if(!objeto[0].id){return 0}
+    if(objeto[0].id == undefined){console.error("Error Asignando nuevo ID");return 0}
     var index = 0;
     var encontrado = false;
     do{
@@ -1989,6 +2003,7 @@ export class DesarrolladorService implements OnInit{
 
             case "Eventos":
                 this.eventos.eventos.push(Object.assign({},datosDefecto.eventos));
+                console.error(this.findAvailableID(this.eventos.eventos));
                 this.eventos.eventos.at(-1)["id"]= this.findAvailableID(this.eventos.eventos);
                 this.eventos.eventos.at(-1)["nombre"]= "Evento "+this.eventos.eventos.length;
             break;
@@ -2589,6 +2604,7 @@ export class DesarrolladorService implements OnInit{
   seleccionarEvento(eventoIndex: number){
       this.eventoSeleccionadoIndex = eventoIndex;
       console.log("Seleccionando Eventos: " + this.eventos.eventos[this.eventoSeleccionadoIndex].nombre);
+      console.warn("Evento: ",this.eventos.eventos[this.eventoSeleccionadoIndex]);
         this.observarDesarrolladorService.next("reloadFormEventos");
       return;
   }
@@ -2816,6 +2832,10 @@ export class DesarrolladorService implements OnInit{
 
         });
         return;
+    }
+
+    testEvento(){
+        this.appService.mostrarDialogo("Dialogo",{titulo: "",contenido: "", opciones: "", personajeDerecha: 1, personajeIzquierda: 1})
     }
 
 } //FIN EXPORT

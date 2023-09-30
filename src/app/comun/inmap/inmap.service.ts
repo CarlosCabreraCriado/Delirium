@@ -4,6 +4,13 @@ import { Subscription } from "rxjs";
 import { AppService } from '../../app.service';
 import { SocketService } from '../socket/socket.service';
 
+interface EstadoControlInMap {
+      estado: string,
+      esTurnoPropio: boolean,
+      turnoIndex: number;
+      heroePropioIndex: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +37,7 @@ export class InMapService {
 	public heroeSeleccionado: any;
 	public heroeSeleccionadoIndex: number;
     public estadoInmap = "global";
+    public estadoControlInMap: EstadoControlInMap;
 
 	//Variables de sala:
 	private sala:any={
@@ -42,8 +50,6 @@ export class InMapService {
         console.log("INICIANDO INMAP SERVICE");
 
         this.sesion= this.appService.getSesion();
-
-		//this.socketService.enviarSocket('unirseSala',{peticion: 'unirseSala',usuario: this.cuenta.nombre,nombreSala: this.sala.nombre, contenido: this.heroeSeleccionado});
 
 	}
 

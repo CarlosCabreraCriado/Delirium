@@ -21,7 +21,7 @@
 	</div>
 
 	<!-- Boton Lateral Derecho -->
-	<div class="contenedorBotonLateral derecho" (click)="enviarComando('derecha')">
+	<div *ngIf="tipo=='mazmorra'" class="contenedorBotonLateral derecho" (click)="enviarComando('derecha')">
         <div class="frameAnimacionesFrame" *ngIf="turno">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
@@ -29,7 +29,7 @@
 	</div>
 
 	<!-- Boton Lateral Izquierdo -->
-	<div class="contenedorBotonLateral izquierdo" (click)="enviarComando('izquierda')">
+	<div *ngIf="tipo=='mazmorra'" class="contenedorBotonLateral izquierdo" (click)="enviarComando('izquierda')">
         <div class="frameAnimacionesFrame" *ngIf="turno">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
@@ -37,19 +37,19 @@
 	</div>
 
 	<!-- Indicador Vida -->
-	<div class="contenedorVida">
+	<div *ngIf="tipo=='mazmorra'" class="contenedorVida">
 		<img class="fondoIndicador" src="assets/ui/icons/fondo-vida.png"/>
         <div class="valorIndicador Texto1">{{vida}}</div>
 	</div>
 
 	<!-- Indicador Energia -->
-	<div class="contenedorEnergia">
+	<div *ngIf="tipo=='mazmorra'" class="contenedorEnergia">
 		<img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
         <div class="valorIndicador Texto1">{{energia}}</div>
 	</div>
 
 	<!-- Indicador Energia Futura -->
-	<div class="contenedorEnergiaFutura">
+	<div *ngIf="tipo=='mazmorra'" class="contenedorEnergiaFutura">
 		<img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
         <div class="valorIndicador Texto2">{{energiaFutura}}</div>
 	</div>

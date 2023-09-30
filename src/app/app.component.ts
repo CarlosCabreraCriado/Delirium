@@ -2,6 +2,8 @@
 import { Component, OnInit} from '@angular/core';
 import { HostListener } from '@angular/core';
 import { AppService } from './app.service';
+import { EventosService } from './eventos.service';
+import { TriggerService } from './trigger.service';
 import { SocketService } from './comun/socket/socket.service';
 import { Subscription } from "rxjs";
 import { Location } from "@angular/common";

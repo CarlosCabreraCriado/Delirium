@@ -36,12 +36,12 @@ export class FormEventosComponent {
   	private formOrdenMazmorra: UntypedFormGroup;
 
 	//Campos Datos Eventos:
-  	private id_Evento = new UntypedFormControl({value: 0,disabled:true});
+  	private id_Evento = new UntypedFormControl({value: 0, disabled:true});
   	private nombre_Evento = new UntypedFormControl('???');
   	private categoria_Evento = new UntypedFormControl('?');
 
 	//Campos Datos Orden:
-  	private id_Orden = new UntypedFormControl({value: 0,disabled:true});
+  	private id_Orden = new UntypedFormControl({value: 0, disabled:true});
   	private nombre_Orden = new UntypedFormControl('???');
   	private tipo_Orden = new UntypedFormControl({value: null, disabled: true});
 
@@ -301,7 +301,7 @@ export class FormEventosComponent {
             }) // Fin Suscripcion
 
 
-		//Suscripcion de dambios formulario Eventos:
+		//Suscripcion de cambios formulario Eventos:
 		this.formEvento.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.eventoSeleccionadoIndex>=0){
                 for (var key in val) {
