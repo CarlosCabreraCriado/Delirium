@@ -1,7 +1,7 @@
 
 import { Injectable, EventEmitter, Output} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { ElectronService } from './comun/electronService/public_api';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
@@ -13,6 +13,8 @@ import { Storage } from '@ionic/storage-angular';
 import { environment } from '../environments/environment'
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { datosIniciales } from "./datosIniciales"
+import { TriggerService } from "./trigger.service"
+import { EventosService } from "./eventos.service"
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,7 @@ import { datosIniciales } from "./datosIniciales"
 
 export class AppService {
 
-    constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
+    constructor(private triggerService: TriggerService, private eventosService: EventosService, private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -62,10 +64,14 @@ export class AppService {
     public token: string = null;
     private _storage: Storage | null = null;
 
+    //Variables de sesion:
+    private _sesion = new BehaviorSubject({});
+    public sesion$ = this._sesion.asObservable(); 
+    private sesionInterna: any = {};
+
     //Variables de datos:
     public perfil:any;
     public datosJuego: any;
-    public sesion: any;
     public region: any;
     public mazmorra: any;
     public renderIsometrico: any;
@@ -166,10 +172,11 @@ export class AppService {
       return this.token;
     }
 
-    async setSesion(sesion:any){
-    console.log("Cargando Sesion: ");
-    console.log(sesion);
-      this.sesion=sesion;
+    setSesion(sesion:any){
+      console.log("Set Sesion: ");
+      console.log(sesion);
+      this.sesionInterna = sesion;
+      this._sesion.next(sesion);
       return;
     }
 
@@ -324,6 +331,7 @@ export class AppService {
 
     setEventos(eventos: any){
         this.eventos = eventos;
+        this.eventosService.setEventos(eventos);
         if(this.ionic){
             this.set("eventos",this.eventos)
         }else{
@@ -745,7 +753,7 @@ export class AppService {
     }
 
     getSesion(){
-        return this.sesion;
+        return this.sesionInterna;
     }
 
     getDispositivo(){
@@ -849,10 +857,10 @@ export class AppService {
             var radioVision = this.radioRenderIsometrico;
 
             if(this.estadoApp!="desarrollador"){
-                var coordenadaMinX = this.sesion.inmap.posicion_x - radioVision;
-                var coordenadaMinY = this.sesion.inmap.posicion_y - radioVision;
-                var coordenadaMaxX = this.sesion.inmap.posicion_x + radioVision+1;
-                var coordenadaMaxY = this.sesion.inmap.posicion_y + radioVision+1;
+                var coordenadaMinX = this.sesionInterna.inmap.posicion_x - radioVision;
+                var coordenadaMinY = this.sesionInterna.inmap.posicion_y - radioVision;
+                var coordenadaMaxX = this.sesionInterna.inmap.posicion_x + radioVision+1;
+                var coordenadaMaxY = this.sesionInterna.inmap.posicion_y + radioVision+1;
 
                 //Bloqueo de valores de coordenadas:
                 if(coordenadaMinX < 0){ coordenadaMinX = 0; }
@@ -874,9 +882,26 @@ export class AppService {
             //REALIZA UNA REGULARIZACION:
             //this.regularizarRegion();
 
+            //Cargar Triggers de Región:
+            var triggersRegion = [];
+            //this.triggerService.setTriggersRegion(this.);
+            for(var i = 0; i < this.region.dimensionX; i++){
+                for(var j = 0; j < this.region.dimensionY; j++){
+                   if(this.region.isometrico[i][j].triggersInMapEventos.length){
+                       for(var k = 0; k < this.region.isometrico[i][j].triggersInMapEventos.length; k++){
+                        triggersRegion.push(this.region.isometrico[i][j].triggersInMapEventos[k]);
+                        triggersRegion[triggersRegion.length-1]["posicion_x"]=i;
+                        triggersRegion[triggersRegion.length-1]["posicion_y"]=j;
+                       }
+                   }
+                }
+            }
+
+            this.triggerService.setTriggerRegion(triggersRegion);
             this.eventoAppService.emit("inicializarIsometrico")
             this.setEstadoInMap("region");
-
+            console.warn("Sesion: ",this.sesionInterna)
+            this.setSesion(this.sesionInterna);
         })
   }
 
@@ -904,13 +929,13 @@ export class AppService {
     entrarMundo(indexHeroeSeleccionado:number){
         this.heroeSeleccionadoIndex = indexHeroeSeleccionado;
 		this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoIndex])
-        this.sesion.estadoSesion = "inmap";
+        this.sesionInterna.estadoSesion = "inmap";
 
         //Configurar Sesion:
-        if(this.sesion.iniciada==false){
+        if(this.sesionInterna.iniciada==false){
 
             //Inicializando Jugador:
-            this.sesion.jugadores = [{
+            this.sesionInterna.jugadores = [{
                     usuario: this.cuenta.usuario,
                     online: true,
                     lider: true,
@@ -950,7 +975,7 @@ export class AppService {
                   online: true
                 }
 
-            this.sesion["render"]= {
+            this.sesionInterna["render"]= {
                 heroes: [heroeRender],
                 enemigos: [],
                 objetosGlobales: [],
@@ -961,28 +986,26 @@ export class AppService {
 
             //Inicializando INMAP:
             if(this.heroeSeleccionado.tutorial){
-                this.sesion["inmap"]= {
+                this.sesionInterna["inmap"]= {
                     posicion_x: 61,
                     posicion_y: 50,
                     mapa: "Asfaloth"
                 }
             }else{
-                this.sesion["inmap"]= {
+                this.sesionInterna["inmap"]= {
                     posicion_x: 56,
                     posicion_y: 48,
                     mapa: "Asfaloth"
                 }
             }
 
-            this.sesion.online = true;
-            this.sesion.iniciada = false;
-
-
-
+            this.sesionInterna.online = true;
+            this.sesionInterna.iniciada = false;
 
         }//Fin configuracion de sesion
             
         //Cambiar a pantalla InMap:
+        this.setSesion(this.sesionInterna);
         this.setEstadoApp("inmap");
     }
 
@@ -1003,8 +1026,8 @@ export class AppService {
                 console.log(this.mazmorra);
 
                 //Actualiza Sesión:
-                this.sesion.estadoSesion = "mazmorra";
-                this.sesion.render.mazmorra.nombreIdMazmorra = this.mazmorra.nombreId;
+                this.sesionInterna.estadoSesion = "mazmorra";
+                this.sesionInterna.render.mazmorra.nombreIdMazmorra = this.mazmorra.nombreId;
 
                 //Cambia de componente:
                 this.setControl("mazmorra");
@@ -1020,6 +1043,10 @@ export class AppService {
 
         // 1) Cambio de estados AppService:
     //this.setSala(this.sala);
+        //
+        //
+        //Actualizar Sesion: 
+        this.setSesion(this.sesionInterna);
     }
 
     verInMap(){
@@ -1031,11 +1058,6 @@ export class AppService {
         this.setControl("inmap");
         this.setEstadoApp("inmap");
     }
-
-    funcionDesarrollo(){
-        this.mostrarDialogo("Informativo",{titulo:"Prueba de dialogo",contenido: "Abriendo Developer Tool"})
-    }
-
 
 }
 

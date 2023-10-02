@@ -1,7 +1,7 @@
 
 
 import { Component , Input } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup,FormArray} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
 
@@ -26,7 +26,7 @@ export class FormEventosComponent {
   	private formOrdenVariable: UntypedFormGroup;
   	private formOrdenMision: UntypedFormGroup;
   	private formOrdenTrigger: UntypedFormGroup;
-  	private formOrdenDialogo: UntypedFormGroup;
+  	//private formOrdenDialogo: UntypedFormGroup;
   	private formOrdenMultimedia: UntypedFormGroup;
   	private formOrdenHechizo: UntypedFormGroup;
   	private formOrdenLoot: UntypedFormGroup;
@@ -34,6 +34,9 @@ export class FormEventosComponent {
   	private formOrdenEnemigo: UntypedFormGroup;
   	private formOrdenTiempo: UntypedFormGroup;
   	private formOrdenMazmorra: UntypedFormGroup;
+
+    //Tipos de dialogos:
+  	private formOrdenDialogoTipoDialogo: UntypedFormGroup;
 
 	//Campos Datos Eventos:
   	private id_Evento = new UntypedFormControl({value: 0, disabled:true});
@@ -67,10 +70,24 @@ export class FormEventosComponent {
 	//Campos Datos Eventos (Dialogo):
   	private id_Orden_Dialogo = new UntypedFormControl('?');
   	private tipoDialogo_Orden_Dialogo = new UntypedFormControl('?');
+
+    //Campos Eventos Dialogo Subtipo:
+  	private titulo_Orden_Dialogo = new UntypedFormControl('?');
   	private contenido_Orden_Dialogo = new UntypedFormControl('?');
-  	private opciones_Orden_Dialogo = new UntypedFormControl('?');
-  	private encadenadoId_Orden_Dialogo = new UntypedFormControl(0);
-  	private tipoEncadenado_Orden_Dialogo = new UntypedFormControl(0);
+  	private opciones_Orden_Dialogo = new UntypedFormControl([]);
+
+  	private textoOpcion_Orden_Dialogo = new UntypedFormControl([]);
+  	private encadenadoOpcion_Orden_Dialogo = new UntypedFormControl([]);
+
+  	private interlocutor_Orden_Dialogo = new UntypedFormControl(null);
+  	private mostrarPersonajeDerecha_Orden_Dialogo = new UntypedFormControl(false);
+  	private mostrarPersonajeIzquierda_Orden_Dialogo = new UntypedFormControl(false);
+  	private tipoPersonajeDerecha_Orden_Dialogo = new UntypedFormControl("npc");
+  	private tipoPersonajeIzquierda_Orden_Dialogo = new UntypedFormControl("npc");
+  	private imagenPersonajeDerecha_Orden_Dialogo = new UntypedFormControl(0);
+  	private imagenPersonajeIzquierda_Orden_Dialogo = new UntypedFormControl(0);
+  	private nombrePersonajeDerecha_Orden_Dialogo = new UntypedFormControl("Personaje 1");
+  	private nombrePersonajeIzquierda_Orden_Dialogo = new UntypedFormControl("Personaje 2");
 
 	//Campos Datos Eventos (Mision):
   	private id_Orden_Mision = new UntypedFormControl('?');
@@ -131,6 +148,24 @@ export class FormEventosComponent {
   	private mazmorraId_Orden_Mazmorra = new UntypedFormControl('?');
   	private salaOpenId_Orden_Mazmorra = new UntypedFormControl(0);
 
+    private flagEvitarChangeDetection: boolean = false;
+
+		//Inicializacion formulario Orden Dialogo:
+	    public formOrdenDialogo = this.formBuilder.group({
+            tipoDialogo: this.tipoDialogo_Orden_Dialogo,
+            titulo: this.titulo_Orden_Dialogo,
+            contenido: this.contenido_Orden_Dialogo,
+            opciones: this.formBuilder.array([]),
+            interlocutor: this.interlocutor_Orden_Dialogo,
+            mostrarPersonajeDerecha: this.mostrarPersonajeDerecha_Orden_Dialogo,
+            mostrarPersonajeIzquierda: this.mostrarPersonajeIzquierda_Orden_Dialogo,
+            tipoPersonajeDerecha: this.tipoPersonajeDerecha_Orden_Dialogo,
+            tipoPersonajeIzquierda: this.tipoPersonajeIzquierda_Orden_Dialogo,
+            imagenPersonajeDerecha: this.imagenPersonajeDerecha_Orden_Dialogo,
+            imagenPersonajeIzquierda: this.imagenPersonajeIzquierda_Orden_Dialogo,
+            nombrePersonajeDerecha: this.nombrePersonajeDerecha_Orden_Dialogo,
+            nombrePersonajeIzquierda: this.nombrePersonajeIzquierda_Orden_Dialogo
+        }); 
 
 	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
@@ -169,14 +204,6 @@ export class FormEventosComponent {
             valorOperador: this.valorOperador_Orden_Variable
         }); 
 
-		//Inicializacion formulario Orden Dialogo:
-	    this.formOrdenDialogo = this.formBuilder.group({
-            tipoDialogo: this.tipoDialogo_Orden_Dialogo,
-            contenido: this.contenido_Orden_Dialogo,
-            opciones: this.opciones_Orden_Dialogo,
-            encadenadoId: this.encadenadoId_Orden_Dialogo,
-            tipoEncadenado: this.tipoEncadenado_Orden_Dialogo
-        }); 
 
 		//Inicializacion formulario Orden Mision:
 	    this.formOrdenMision = this.formBuilder.group({
@@ -207,7 +234,6 @@ export class FormEventosComponent {
             heroeObjetivoId: this.heroeObjetivoId_Orden_Hechizo,
             enemigoObjetivoId: this.enemigoObjetivoId_Orden_Hechizo
         }); 
-
 
 		//Inicializacion formulario Orden Loot:
 	    this.formOrdenLoot = this.formBuilder.group({
@@ -269,7 +295,20 @@ export class FormEventosComponent {
                             this.formOrdenVariable.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
                             break;
                             case "dialogo":
+
+                            var orden = this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]
+
+                            this.flagEvitarChangeDetection = true;
                             this.formOrdenDialogo.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
+                            var formArray = this.formBuilder.array([]);
+                            for(var i=0; i < orden.opciones.length; i++){
+                               formArray.push(this.formBuilder.group({
+                                   textoOpcion: orden.opciones[i].textoOpcion,
+                                   ordenIdEncadanado: orden.opciones[i].ordenIdEncadanado
+                               }))
+                            }
+                            this.formOrdenDialogo.setControl('opciones', formArray); 
+                            this.flagEvitarChangeDetection = false;
                             break;
                             case "mision":
                             this.formOrdenMision.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
@@ -310,10 +349,10 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
-		//Suscripcion de dambios formulario Ordenes:
+		//Suscripcion de cambios formulario Ordenes:
 		this.formOrden.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
@@ -322,7 +361,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Condicion):
@@ -334,7 +373,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Variables):
@@ -346,11 +385,12 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Dialogo):
 		this.formOrdenDialogo.valueChanges.subscribe((val) =>{
+            if(this.flagEvitarChangeDetection){return;}
 			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
@@ -358,7 +398,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Mision):
@@ -370,7 +410,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Trigger):
@@ -382,7 +422,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Multimedia):
@@ -394,7 +434,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Loot):
@@ -406,7 +446,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Hechizo):
@@ -418,7 +458,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Enemigo):
@@ -430,7 +470,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Tiempo):
@@ -442,7 +482,7 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Mazmorra):
@@ -454,17 +494,15 @@ export class FormEventosComponent {
                   }
                 }
 			}
-			console.log(val)
+			//console.log(val)
 		});
 
     } //Fin OnInit
 
-	renderListaSeleccionado(opcionSeleccionado:string,indiceSeleccionado:number){
-		switch(opcionSeleccionado){
-			case "hechizo":
-				if(this.desarrolladorService.hechizoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-				break;
-		}
+	renderListaSeleccionado(indexOrden:number){
+        if(this.desarrolladorService.ordenSeleccionadaIndex == indexOrden){
+            return "seleccionado"
+        }
 		return "";
 	}
 
@@ -507,8 +545,27 @@ export class FormEventosComponent {
         }
         return clase;
     }
+ 
+    addOpcion() {
+        const opcionForm = this.formBuilder.group({
+            textoOpcion: "",
+            ordenIdEncadanado: 0
+        });
+        this.opciones.push(opcionForm);
+    }
+
+    eliminarOpcion(indexOpcion: number){
+        this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex].opciones.splice(indexOpcion,1)
+        this.desarrolladorService.seleccionarOrden(this.desarrolladorService.ordenSeleccionadaIndex)
+        console.log(this.desarrolladorService.eventos.eventos)
+    }
+
+     get opciones() {
+        return this.formOrdenDialogo.controls["opciones"] as FormArray;
+    }
 
 }
+
 
 
 

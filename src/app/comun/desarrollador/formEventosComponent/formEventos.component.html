@@ -36,7 +36,7 @@
 
 			</form>
 
-			<form  class="formularioGeneral orden" [formGroup]="formOrden">
+            <form *ngIf="this.desarrolladorService.ordenSeleccionadaIndex!=null" class="formularioGeneral orden" [formGroup]="formOrden">
 				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarOrden()"/>
 
                 <div class="contenedorCabeceraOrden">
@@ -203,12 +203,12 @@
 
                     <!-- Orden Diálogo -->
 			        <form  *ngIf="desarrolladorService.tipoOrdenSeleccionada=='dialogo'" class="formularioGeneral" [formGroup]="formOrdenDialogo">
-                      <div  class="contenedorTipoOrden">
+                      <div  class="contenedorTipoOrdenDialogo">
 
-                          <mat-form-field appearance="fill">
+                          <mat-form-field appearance="fill" >
                             <mat-label>Tipo Dialogo</mat-label>
-                            <mat-select [formControl]="tipoDialogo_Orden_Dialogo">
-                                <mat-option value="Dialogo">Dialogo</mat-option>
+                            <mat-select formControlName="tipoDialogo">
+                                <mat-option  value="Dialogo">Dialogo</mat-option>
                                 <mat-option value="NarradorImg">Narrador IMG</mat-option>
                                 <mat-option value="Diapositiva">Diapositiva</mat-option>
                                 <mat-option value="Mision">Mision</mat-option>
@@ -216,25 +216,84 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
-                            <mat-label>Contenido</mat-label>
-                            <input matInput placeholder="" formControlName="contenido">
-                          </mat-form-field>
+                          <!-- INPUTS TIPO DIALOGO: DIALOGO -->
+                          <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='Dialogo'">
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
-                            <mat-label>Opciones</mat-label>
-                            <input matInput placeholder="" formControlName="opciones">
-                          </mat-form-field>
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Titulo</mat-label>
+                                <textarea matInput placeholder="" formControlName="titulo"></textarea>
+                              </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
-                            <mat-label>Encadenado ID</mat-label>
-                            <input matInput placeholder="" formControlName="encadenadoId">
-                          </mat-form-field>
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Contenido</mat-label>
+                                <textarea matInput placeholder="" formControlName="contenido"></textarea>
+                              </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
-                            <mat-label>Tipo Encadenado</mat-label>
-                            <input matInput placeholder="" formControlName="tipoEncadenado">
-                          </mat-form-field>
+                              <button (click)="addOpcion()">Añadir Opción</button>
+                              <ng-container formArrayName="opciones">
+                              <div  *ngFor="let opcion of opciones.controls; let i = index">
+                                <ng-container [formGroup]="opcion">
+                                    Opción {{i+1}}:
+                                    <div class="contenedorOpcion">
+                                        <input class="textoOpcion" placeholder="Opción" formControlName="textoOpcion">
+                                        <input class="encadenadoOpcion" type="number" placeholder="EncadenadoID" formControlName="ordenIdEncadanado">
+					                    <img class="botonEliminarOpcion" src="./assets/desarrollador/papelera.svg" (click)="eliminarOpcion(i)"/>
+                                    </div>
+                                </ng-container>
+                              </div>
+                              </ng-container>
+
+                              <mat-form-field appearance="legacy">
+                                <mat-label>Interlocutor</mat-label>
+                                <mat-select formControlName="interlocutor">
+                                    <mat-option value="null">Ninguno</mat-option>
+                                    <mat-option value="Derecha">Derecha</mat-option>
+                                    <mat-option value="Izquierda">Izquierda</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                              <!-- Inicio Personaje Izquierda -->
+                              <mat-checkbox  formControlName="mostrarPersonajeIzquierda">Mostrar Personaje Izquierda</mat-checkbox>
+                              <ng-container *ngIf="mostrarPersonajeIzquierda_Orden_Dialogo.value">
+                              <mat-form-field appearance="legacy">
+                                <mat-label>Tipo Personaje</mat-label>
+                                <mat-select formControlName="tipoPersonajeIzquierda">
+                                    <mat-option value="npc">NPC</mat-option>
+                                    <mat-option value="heroes">Heroes</mat-option>
+                                    <mat-option value="self">Self</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Imagen ID:</mat-label>
+                                <input matInput type="number" placeholder="" formControlName="imagenPersonajeIzquierda"/>
+                              </mat-form-field>
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Nombre:</mat-label>
+                                <input matInput placeholder="" formControlName="nombrePersonajeIzquierda"/>
+                              </mat-form-field>
+                              </ng-container>
+
+                              <!-- Inicio Personaje Derecha -->
+                              <mat-checkbox  formControlName="mostrarPersonajeDerecha">Mostrar Personaje Derecha</mat-checkbox>
+                              <ng-container *ngIf="mostrarPersonajeDerecha_Orden_Dialogo.value">
+                              <mat-form-field appearance="legacy">
+                                <mat-label>Tipo Personaje</mat-label>
+                                <mat-select formControlName="tipoPersonajeDerecha">
+                                    <mat-option value="npc">NPC</mat-option>
+                                    <mat-option value="heroes">Heroes</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Imagen ID:</mat-label>
+                                <input matInput type="number" placeholder="" formControlName="imagenPersonajeDerecha"/>
+                              </mat-form-field>
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Nombre:</mat-label>
+                                <input matInput placeholder="" formControlName="nombrePersonajeDerecha"/>
+                              </mat-form-field>
+                              </ng-container>
+
+                          </ng-container>
 
                       </div> <!-- Fin Orden Diálogo -->
                     </form>
@@ -421,8 +480,13 @@
 			<div class="contenedorSubLista contenedorOrdenes">
 				
 				<div class="tituloSubLista">Ordenes:</div>
-				<div *ngFor="let orden of this.desarrolladorService.eventos.eventos[desarrolladorService.eventoSeleccionadoIndex].ordenes; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('orden',i)" (click)="desarrolladorService.seleccionarOrden(i,orden)">{{orden.nombre}} </div>
+				<div *ngFor="let orden of this.desarrolladorService.eventos.eventos[desarrolladorService.eventoSeleccionadoIndex].ordenes; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado(i)" (click)="desarrolladorService.seleccionarOrden(i,orden)">{{orden.nombre}} </div>
 			</div>
+
+            <div class="contenedorBotonesOrdenarOrdenes">
+                <img class="imagenSubir" (click)="this.desarrolladorService.ordenarOrden('subir')" src="./assets/desarrollador/flecha-izquierda.png"/>
+                <img class="imagenBajar" (click)="this.desarrolladorService.ordenarOrden('bajar')" src="./assets/desarrollador/flecha-izquierda.png"/>
+            </div>
 
 		</div> <!-- FIN VISUALIZACIÓN EVENTOS -->
 

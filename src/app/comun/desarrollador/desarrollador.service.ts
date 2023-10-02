@@ -10,6 +10,7 @@ import { directorioAssets } from "./propiedadesAssets"
 import { datosDefecto } from "./datosDefecto"
 import { TriggerComponent } from './triggerComponent/trigger.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EventosService } from "../../eventos.service"
 
 @Injectable({
   providedIn: 'root'
@@ -127,7 +128,7 @@ export class DesarrolladorService implements OnInit{
     public enemigoSeleccionadoIndex = 0;
     public eventoSeleccionadoIndex = 0;
     public tipoOrdenSeleccionada = "Condición";
-    public ordenSeleccionadaIndex = 0;
+    public ordenSeleccionadaIndex = null;
     public misionSeleccionadaIndex = 0;
     public objetivoMisionSeleccionadoIndex = 0;
 
@@ -149,7 +150,7 @@ export class DesarrolladorService implements OnInit{
     public misiones: any;
 
     //Efectos:
-	private efectoSonido = new Audio();
+    private efectoSonido = new Audio();
 
   // Observable string sources
     private observarDesarrolladorService = new Subject<string>();
@@ -158,7 +159,7 @@ export class DesarrolladorService implements OnInit{
   observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
 
 
-  constructor(public appService: AppService, private http: HttpClient, private dialog: MatDialog)  {
+  constructor(private eventosService: EventosService, public appService: AppService, private http: HttpClient, private dialog: MatDialog)  {
   }
 
   ngOnInit(){
@@ -2076,10 +2077,10 @@ export class DesarrolladorService implements OnInit{
   asignarSonidoAnimacion(indexSonido:number){
       var sonido = this.animaciones.sonidos[indexSonido];
       this.animaciones.animaciones[this.animacionSeleccionadoIndex].sonidos[this.sonidoSeleccionadoIndex]=sonido;
-  		this.efectoSonido.src = "./assets/sounds/"+sonido.id+"."+sonido.extension;
-  		this.efectoSonido.load();
-  		this.efectoSonido.play();
-  		this.efectoSonido.volume= 1;
+        this.efectoSonido.src = "./assets/sounds/"+sonido.id+"."+sonido.extension;
+        this.efectoSonido.load();
+        this.efectoSonido.play();
+        this.efectoSonido.volume= 1;
   }
 
   eliminarSonidoAnimacion(){
@@ -2589,9 +2590,10 @@ export class DesarrolladorService implements OnInit{
 
   seleccionarOrden(ordenIndex:number){
       console.log("Seleccionando Orden: " + this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex].nombre);
+      console.log(this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex]);
       this.ordenSeleccionadaIndex = ordenIndex;
       this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex].tipo;
-    this.observarDesarrolladorService.next("reloadFormEventos");
+      this.observarDesarrolladorService.next("reloadFormEventos");
       return;
   }
 
@@ -2605,7 +2607,10 @@ export class DesarrolladorService implements OnInit{
       this.eventoSeleccionadoIndex = eventoIndex;
       console.log("Seleccionando Eventos: " + this.eventos.eventos[this.eventoSeleccionadoIndex].nombre);
       console.warn("Evento: ",this.eventos.eventos[this.eventoSeleccionadoIndex]);
-        this.observarDesarrolladorService.next("reloadFormEventos");
+      this.ordenSeleccionadaIndex = null;
+      this.eventoSeleccionadoId = this.eventos.eventos[this.eventoSeleccionadoIndex].id;
+      this.tipoOrdenSeleccionada = null;
+      this.observarDesarrolladorService.next("reloadFormEventos");
       return;
   }
 
@@ -2627,7 +2632,7 @@ export class DesarrolladorService implements OnInit{
           this.eventoSeleccionadoIndex -= 1;
       }
       this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[0].tipo;
-      this.ordenSeleccionadaIndex = 0;
+      this.ordenSeleccionadaIndex = null;
       this.observarDesarrolladorService.next("reloadFormEventos");
   }
 
@@ -2682,11 +2687,11 @@ export class DesarrolladorService implements OnInit{
           case "dialogo":
               this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
                   id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
+                  nombre: "Nuevo "+tipoOrden,
                   tipo: tipoOrden,
                   tipoDialogo: null,
                   contenido: null,
-                  opciones: null,
+                  opciones: [],
                   encadenadoId: null,
                   tipoEncadenado: null
               });
@@ -2745,13 +2750,45 @@ export class DesarrolladorService implements OnInit{
   eliminarOrden(){
     //Elimina la orden Seleccionada:
       this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.splice(this.ordenSeleccionadaIndex,1);
+      this.ordenSeleccionadaIndex = null;
+      this.tipoOrdenSeleccionada = null;
+      /*
       if(this.ordenSeleccionadaIndex>0){
           this.ordenSeleccionadaIndex -= 1;
       }
       this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex].tipo;
+      */
       this.observarDesarrolladorService.next("reloadFormEventos");
   }
 
+  ordenarOrden(comando: "subir"|"bajar"){
+      if(this.ordenSeleccionadaIndex == null){return;}
+      var indexOrigen = this.ordenSeleccionadaIndex;
+      var indexDestino = 0;
+
+      if(comando=="subir"){
+          indexDestino = indexOrigen-1;
+      }else{
+          indexDestino = indexOrigen+1;
+      }
+
+      //Evitar Swap imposible:
+      if(indexOrigen == indexDestino){
+          return;
+      }else if(indexDestino < 0){
+          console.warn("Evitando Swap por overflow")
+          return;
+      }else if(indexDestino > this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length-1){
+          console.warn("Evitando Swap por overflow")
+          return;
+      }
+
+      //Comando Swap:
+      this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[indexOrigen] = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.splice(indexDestino, 1, this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[indexOrigen])[0];
+      this.ordenSeleccionadaIndex = indexDestino;
+      return;
+
+  }
 
   seleccionarClase(clase){
         switch(clase){
@@ -2835,7 +2872,8 @@ export class DesarrolladorService implements OnInit{
     }
 
     testEvento(){
-        this.appService.mostrarDialogo("Dialogo",{titulo: "",contenido: "", opciones: "", personajeDerecha: 1, personajeIzquierda: 1})
+        this.eventosService.setEventos(this.eventos.eventos);
+        this.eventosService.ejecutarEvento(this.eventoSeleccionadoId);
     }
 
 } //FIN EXPORT
