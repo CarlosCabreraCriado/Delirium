@@ -2,6 +2,7 @@
 import { Component, OnInit , Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import { MapaGeneralService } from './mapaGeneral.service';
 import { AppService } from '../../app.service';
+import { TriggerService } from '../../trigger.service';
 import { Subscription } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { PinchZoomComponent } from '../../comun/pinch-zoom/pinch-zoom.component';
@@ -61,11 +62,14 @@ export class MapaGeneralComponent implements OnInit {
 
     //Suscripcion AppService:
     private appServiceSuscripcion: Subscription
+    public sesion: any;
 
-	constructor(public appService: AppService) {}
+	constructor(public appService: AppService, public triggerService: TriggerService) {
+        this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
+    }
 
   ngOnInit(){
-
+      
        //Suscripcion AppService:
        this.appServiceSuscripcion = this.appService.eventoAppService.subscribe((comando) =>{
           switch(comando){
@@ -278,24 +282,24 @@ export class MapaGeneralComponent implements OnInit {
       //Extraer Coordenadas renderizadas:
       var renderIsometricoLength= this.appService.radioRenderIsometrico*2; 
 
-      var minRenderX = this.appService.sesion.inmap.posicion_x - this.appService.radioRenderIsometrico;
-      var maxRenderX = this.appService.sesion.inmap.posicion_x + this.appService.radioRenderIsometrico;
-      var minRenderY = this.appService.sesion.inmap.posicion_y - this.appService.radioRenderIsometrico;
-      var maxRenderY = this.appService.sesion.inmap.posicion_y + this.appService.radioRenderIsometrico;
+      var minRenderX = this.sesion.inmap.posicion_x - this.appService.radioRenderIsometrico;
+      var maxRenderX = this.sesion.inmap.posicion_x + this.appService.radioRenderIsometrico;
+      var minRenderY = this.sesion.inmap.posicion_y - this.appService.radioRenderIsometrico;
+      var maxRenderY = this.sesion.inmap.posicion_y + this.appService.radioRenderIsometrico;
 
       //ACTUALIZA POSICION:
       switch(direccion){
           case "NorEste":
-                this.appService.sesion.inmap.posicion_x -= 1;
+                this.sesion.inmap.posicion_x -= 1;
               break
           case "SurEste":
-                this.appService.sesion.inmap.posicion_y += 1;
+                this.sesion.inmap.posicion_y += 1;
               break
           case "SurOeste":
-                this.appService.sesion.inmap.posicion_x += 1;
+                this.sesion.inmap.posicion_x += 1;
               break
           case "NorOeste":
-                this.appService.sesion.inmap.posicion_y -= 1;
+                this.sesion.inmap.posicion_y -= 1;
               break
       }
        
@@ -387,6 +391,12 @@ export class MapaGeneralComponent implements OnInit {
                 }, 1000);
               break;
       }
+
+      this.triggerService.checkTrigger("entrarCasilla",{
+          posicion_x: this.sesion.inmap.posicion_x,
+          posicion_y: this.sesion.inmap.posicion_y
+      });
+
   }//FIN MOVIMIENTO
 
   checkMovimientoValido(){

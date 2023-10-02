@@ -14,17 +14,19 @@ import { SocketService } from '../socket/socket.service';
 
 export class InMapComponent implements OnInit {
 
-	constructor(private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) { }
-
-
 	public pantalla: string = "Inmap";
 	private idCuenta: string;
     public estadoInMap: string = "global";
+    public sesion: any;
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription = null;
 	//Declara Suscripcion Evento AppService:
 	private appServiceSuscripcion: Subscription = null;
+
+	constructor(private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
+        this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
+    }
 
 	ngOnInit(){
 

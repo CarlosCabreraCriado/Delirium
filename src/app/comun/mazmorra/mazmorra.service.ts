@@ -154,7 +154,7 @@ export class MazmorraService {
   @Output() subscripcionMazmorra: EventEmitter<string> = new EventEmitter();
 
     constructor(private zone: NgZone, private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) {
-
+        this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
   }
 
   async reloadDatos(){
@@ -311,7 +311,7 @@ export class MazmorraService {
         this.enemigos= await this.appService.getEnemigos();
         this.parametros= await this.appService.getParametros();
 
-        this.sesion= await this.appService.getSesion();
+        //this.sesion= await this.appService.getSesion();
         this.cuenta= await this.appService.getCuenta();
         this.perfil= await this.appService.getPerfil();
         this.mazmorra= await this.appService.getMazmorra();
@@ -345,10 +345,19 @@ export class MazmorraService {
         console.log("Mazmorra:")
         console.log(this.mazmorra)
 
-    console.log("-------------------------");
-    console.log(" CONFIGURANDO MAZMORRA");
-    console.log("-------------------------");
+        console.log("-------------------------");
+        console.log(" CONFIGURANDO MAZMORRA");
+        console.log("-------------------------");
 
+        //Inicializa la mazmorra si no se ha iniciado:
+        if(!this.sesion.render.mazmorra.iniciada){
+            this.sesion.render.mazmorra.salasDescubiertas = [];
+            for(var i = 0; i < this.mazmorra.salas.length; i++){
+                if(this.mazmorra.salas[i].salaInicial){
+                    this.sesion.render.mazmorra.salasDescubiertas.push(this.mazmorra.salas[i].sala_id)
+                }
+            }
+        }
          this.estadoControl = {
               estado: "seleccionAccion",
               esTurnoPropio: false,
@@ -412,6 +421,9 @@ export class MazmorraService {
     //Inicializa turno:
     //this.sesion.render.registroTurno= [];
     //this.sesion.render.registroTurno[0]= 0;
+    if(this.sesion.render.registroTurno == undefined){
+        this.sesion.render.registroTurno= [0];
+    }
 
     this.checkTurno();
     this.checkTurnoPropio();
@@ -423,6 +435,9 @@ export class MazmorraService {
     }
 
     //Inicializar Analisis de estadisticas si no esta inicializado:
+    if(this.sesion.render.estadisticas == undefined){
+        this.sesion.render.estadisticas = [];
+    }
     if(this.sesion.render.estadisticas.length==0){
       this.sesion.render.estadisticas= [];
       for(var i=0; i < this.sesion.render.numHeroes; i++){
@@ -444,6 +459,10 @@ export class MazmorraService {
     }//Fin inicializacion estadisticas.
 
 
+    if(this.sesion.render.estadisticasTotal == undefined){
+        this.sesion.render.estadisticasTotal = [];
+    }
+        
     if(this.sesion.render.estadisticasTotal.length==0){
       //Inicializar Analisis de estadisticas TOTAL si no esta inicializado:
       this.sesion.render.estadisticasTotal = [];
@@ -1509,6 +1528,7 @@ export class MazmorraService {
                 estadisticas.resistenciaMagica = estadisticas.resistenciaMagica + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.resistencia_magica
             }
 
+
             //Calculo de la vida Maxima (HEROE):
 
             //PROBABILIDAD CRITICO:
@@ -1565,6 +1585,8 @@ export class MazmorraService {
 
             estadisticas.vidaMaxima = vidaBase+vidaAdicional;
             estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
+
+            estadisticas.pa = 0;
 
             //Copiar estadisticas en RENDER:
             this.sesion.render.heroes[indexCaster].estadisticasBase = estadisticas;
@@ -3460,7 +3482,6 @@ export class MazmorraService {
               }
               this.seleccionarEnemigos = true;
               console.log("SELECCIONANDO ENEMIGOS")
-              console.error(this.estadoControl)
               this.interfazService.setPantallaInterfaz("seleccionObjetivoEnemigo");
             break;
             case "EM":

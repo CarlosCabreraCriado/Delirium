@@ -1,9 +1,10 @@
 
 import { Injectable, EventEmitter } from '@angular/core';
 //import { Eventos } from './eventos.class';
+import { AppService } from './app.service';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
 import { MatDialog} from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,25 @@ export class EventosService {
     public eventoEjecutando: any;
     public indexOrdenEjecutando: number= 0;
 
-    // Observable string sources
-    private observarEventos = new Subject<string>();
+    private sesion: any; 
 
-    // Observable string streams
-    observarEventos$ = this.observarEventos.asObservable();
+    //Declara Suscripcion para Eventos:
+    private appServiceSuscripcion: Subscription;
 
-    constructor(private dialog: MatDialog) { }
+    constructor(private appService: AppService, private dialog: MatDialog) {
+        //Observar Sesion:
+        this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
+		//Observar Eventos AppService:
+		this.appServiceSuscripcion = this.appService.eventoAppService.subscribe(
+			async(val) => {
+				switch(val){
+					case "inicializarIsometrico":
+                        this.eventos = await this.appService.getEventos();
+                        console.error("Inicializando Eventos",this.eventos)
+						break;
+				}
+		});
+    }
 
     setEventos(eventos: any){
       this.eventos = eventos;
@@ -31,9 +44,9 @@ export class EventosService {
 
     ejecutarEvento(idEvento:number){
         //Cargar Datos de eventos a ejecutar:
-        console.log(this.eventos)
+        console.log(this.eventos.eventos)
         console.log("ID: ",idEvento);
-        this.eventoEjecutando = this.eventos.find(i => i.id==idEvento);
+        this.eventoEjecutando = this.eventos.eventos.find(i => i.id==idEvento);
         this.indexOrdenEjecutando = 0;
 
         if(!this.eventoEjecutando){console.error("No se encuentra evento con ID: "+idEvento);return;}
@@ -64,9 +77,14 @@ export class EventosService {
     ejecutarOrdenDialogo(indexOrden:number){
         var tipoDialogo = this.eventoEjecutando.ordenes[indexOrden].tipoDialogo; 
         var orden = this.eventoEjecutando.ordenes[indexOrden];
+        //Preprocesar Orden: 
+       
         switch(tipoDialogo){
             case "Dialogo":
                 
+                //Preprocesado de Orden:
+                if(orden.tipoPersonajeDerecha == "self"){
+                }
                 const dialogRef = this.mostrarDialogo("Dialogo",{
                     titulo: orden.titulo,
                     contenido: orden.contenido, 

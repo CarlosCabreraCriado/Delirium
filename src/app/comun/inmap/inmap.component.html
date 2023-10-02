@@ -92,7 +92,7 @@
         <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
         <mapaGeneralComponent id="mapaGeneralComponent"
                               (comandoMapaGeneral)="comandoPanelGeneral($event)"
-                              [coordenadas]="appService.sesion.inmap"
+                              [coordenadas]="sesion.inmap"
                               [radioRenderIsometrico]="appService.radioRenderIsometrico"
                               [herramientaInMap]="'InMap'"
                               [mostrarNiebla]="appService.estadoInMap=='region'">

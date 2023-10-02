@@ -104,8 +104,9 @@ export class InMapService {
 
         //CARGAR Sesion:
         this.sesion= await this.appService.getSesion();
-
         this.parametros = await this.appService.getParametros();
+
+        await this.appService.getEventos();
 
 		//Inicializa el grupo:
         if(this.sesion.iniciada == false){
@@ -239,6 +240,8 @@ export class InMapService {
             this.sesion.render.heroes[indexCaster].estadisticasBase = estadisticas;
 
     }
+
+    console.error(this.sesion)
 
   }
 }

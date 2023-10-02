@@ -13,8 +13,6 @@ import { Storage } from '@ionic/storage-angular';
 import { environment } from '../environments/environment'
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { datosIniciales } from "./datosIniciales"
-import { TriggerService } from "./trigger.service"
-import { EventosService } from "./eventos.service"
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +20,7 @@ import { EventosService } from "./eventos.service"
 
 export class AppService {
 
-    constructor(private triggerService: TriggerService, private eventosService: EventosService, private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
+    constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -67,12 +65,14 @@ export class AppService {
     //Variables de sesion:
     private _sesion = new BehaviorSubject({});
     public sesion$ = this._sesion.asObservable(); 
+
     private sesionInterna: any = {};
 
     //Variables de datos:
     public perfil:any;
     public datosJuego: any;
     public region: any;
+    public triggerRegion: any;
     public mazmorra: any;
     public renderIsometrico: any;
     public radioRenderIsometrico: number = 6;
@@ -331,7 +331,6 @@ export class AppService {
 
     setEventos(eventos: any){
         this.eventos = eventos;
-        this.eventosService.setEventos(eventos);
         if(this.ionic){
             this.set("eventos",this.eventos)
         }else{
@@ -807,6 +806,10 @@ export class AppService {
       return this.region;
   }
 
+  getTriggerRegion(){
+      return this.triggerRegion;
+  }
+
   getTile(x:number,y:number){
       return this.region.isometrico[x][y];
   }
@@ -897,7 +900,7 @@ export class AppService {
                 }
             }
 
-            this.triggerService.setTriggerRegion(triggersRegion);
+            this.triggerRegion = triggersRegion;
             this.eventoAppService.emit("inicializarIsometrico")
             this.setEstadoInMap("region");
             console.warn("Sesion: ",this.sesionInterna)
@@ -981,6 +984,10 @@ export class AppService {
                 objetosGlobales: [],
                 nivel_equipo: this.heroeSeleccionado.nivel,
                 turno: 1,
+                mazmorra: {
+                    nombreIdMazmorra: null,
+                    iniciada: false
+                },
                 indexActivacionEnemigo: 0
             }
 
@@ -997,6 +1004,10 @@ export class AppService {
                     posicion_y: 48,
                     mapa: "Asfaloth"
                 }
+            }
+
+            this.sesionInterna["variablesMundo"] = {
+                tutorial: "true"
             }
 
             this.sesionInterna.online = true;
@@ -1024,10 +1035,11 @@ export class AppService {
                 this.setMazmorra(data);
                 console.log("MAZMORRA CARGADA: ");
                 console.log(this.mazmorra);
+                console.log(this.sesionInterna);
 
                 //Actualiza Sesión:
                 this.sesionInterna.estadoSesion = "mazmorra";
-                this.sesionInterna.render.mazmorra.nombreIdMazmorra = this.mazmorra.nombreId;
+                this.sesionInterna.render["mazmorra"]["nombreIdMazmorra"] = this.mazmorra.nombreId;
 
                 //Cambia de componente:
                 this.setControl("mazmorra");
@@ -1042,7 +1054,7 @@ export class AppService {
        //this.mazmorra = await window.electronAPI.getMazmorra(nombreIdMazmorra);
 
         // 1) Cambio de estados AppService:
-    //this.setSala(this.sala);
+        //this.setSala(this.sala);
         //
         //
         //Actualizar Sesion: 
