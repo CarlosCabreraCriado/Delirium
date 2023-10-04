@@ -15,6 +15,11 @@ export class PanelUbicacionComponent {
 	constructor(private appService: AppService) {}
 
 
+    reclutarHeroe(){
+        this.appService.mostrarSocial("",{});
+    }
+
+
 }
 
 

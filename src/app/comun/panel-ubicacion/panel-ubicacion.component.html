@@ -7,7 +7,6 @@
 	<div class="fondoPanel"></div>
 	<div class="fondoPestana"></div>
 
-
 	<!-- PANEL EXTERNO -->
 	<div id="contenedorExterno">
 
@@ -48,7 +47,7 @@
 
             <ng-container>
                 <img class="badge" src="assets/Iconos/indicadores/002.png"/>
-                <img class="personaje" src="assets/Personajes/npc/04.png"/>
+                <img class="personaje" src="assets/Personajes/npc/4.png"/>
 
                 <div class="contenedorOpciones">
                     <div class="opcion Texto1"> Grupo </div>
@@ -62,7 +61,7 @@
                     <div class="texto Texto1">{{this.sesion.render.heroes[0].nombre}}</div>
                     </div>
 
-                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar" (click)="reclutarHeroe()">
                         <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
                         <div class="texto Texto1">Reclutar</div>
                     </div>

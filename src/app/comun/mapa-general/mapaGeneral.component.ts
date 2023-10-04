@@ -1,11 +1,13 @@
 
 import { Component, OnInit , Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import { ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { MapaGeneralService } from './mapaGeneral.service';
 import { AppService } from '../../app.service';
 import { TriggerService } from '../../trigger.service';
 import { Subscription } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { PinchZoomComponent } from '../../comun/pinch-zoom/pinch-zoom.component';
+import { InMapService } from '../../comun/inmap/inmap.service';
 
 export interface Coordenadas {
     x: number,
@@ -16,7 +18,8 @@ export interface Coordenadas {
 @Component({
   selector: 'mapaGeneralComponent',
   templateUrl: './mapaGeneral.component.html',
-  styleUrls: ['./mapaGeneral.component.sass']
+  styleUrls: ['./mapaGeneral.component.sass'],
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MapaGeneralComponent implements OnInit {
@@ -64,7 +67,7 @@ export class MapaGeneralComponent implements OnInit {
     private appServiceSuscripcion: Subscription
     public sesion: any;
 
-	constructor(public appService: AppService, public triggerService: TriggerService) {
+	constructor(public appService: AppService, public triggerService: TriggerService, private inmapService: InMapService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
     }
 
@@ -396,6 +399,9 @@ export class MapaGeneralComponent implements OnInit {
           posicion_x: this.sesion.inmap.posicion_x,
           posicion_y: this.sesion.inmap.posicion_y
       });
+
+      this.inmapService.realizarMovimiento();
+
 
   }//FIN MOVIMIENTO
 

@@ -80,6 +80,11 @@ export class IndexComponent implements OnInit{
 
   }
 
+  ngOnDestroy() {
+        console.warn("Destruyendo Index...");
+        this.cursorSuscripcion.unsubscribe();
+  }
+
   focusPassword() {
       this.claveElement.nativeElement.focus();
   }

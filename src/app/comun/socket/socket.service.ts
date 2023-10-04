@@ -2,7 +2,6 @@
 import { Injectable, Output, EventEmitter} from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable, Subscription , Subject, BehaviorSubject} from 'rxjs';
-import { AppService } from '../../app.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,7 @@ export class SocketService {
     //    Constructor
     //****************************
 
-    constructor(private socket: Socket, private appService: AppService) {
+    constructor(private socket: Socket) {
 
         //Conection Error:
         this.socket.ioSocket.on('connect_error', err =>{

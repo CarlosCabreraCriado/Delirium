@@ -14,7 +14,7 @@ export class DetalleHechizoComponent implements OnChanges {
 	@Input() hechizos: any; 
 	@Input() buff: any; 
 	@Input() idHechizoSeleccionado: any; 
-	@Input() renderHeroe: any = null; 
+	@Input() estadisticas: any = null; 
 
     public hechizoSeleccionado: any = null;
     public buffsSeleccionados: any[] = [];
@@ -131,11 +131,11 @@ export class DetalleHechizoComponent implements OnChanges {
 
 
         //Calculo de valores Totales Daño/Heal/Escudo.
-        daño = (escalados[i].daño_esc_AD*this.renderHeroe.estadisticasBase.ad)+(escalados[i].daño_esc_AP*this.renderHeroe.estadisticasBase.ap);
+        daño = (escalados[i].daño_esc_AD*this.estadisticas.ad)+(escalados[i].daño_esc_AP*this.estadisticas.ap);
 
-        heal = (escalados[i].heal_esc_AD*this.renderHeroe.estadisticasBase.ad)+(escalados[i].heal_esc_AP*this.renderHeroe.estadisticasBase.ap);
+        heal = (escalados[i].heal_esc_AD*this.estadisticas.ad)+(escalados[i].heal_esc_AP*this.estadisticas.ap);
 
-        escudo = (escalados[i].escudo_esc_AD*this.renderHeroe.estadisticasBase.ad)+(escalados[i].escudo_esc_AP*this.renderHeroe.estadisticasBase.ap);
+        escudo = (escalados[i].escudo_esc_AD*this.estadisticas.ad)+(escalados[i].escudo_esc_AP*this.estadisticas.ap);
 
         daño = this.redondeo(daño);
         heal = this.redondeo(heal);
@@ -146,26 +146,26 @@ export class DetalleHechizoComponent implements OnChanges {
 
             //DAÑO DETALLE:
             if(escalados[i].daño_esc_AD > 0){
-                dad = String(this.redondeo(escalados[i].daño_esc_AD*this.renderHeroe.estadisticasBase.ad)+" (x"+String(this.redondeo(escalados[i].daño_esc_AD))+")[AD]")
+                dad = String(this.redondeo(escalados[i].daño_esc_AD*this.estadisticas.ad)+" (x"+String(this.redondeo(escalados[i].daño_esc_AD))+")[AD]")
             }
             if(escalados[i].daño_esc_AP > 0){
-                dap = String(this.redondeo(escalados[i].daño_esc_AP*this.renderHeroe.estadisticasBase.ap)+" (x"+String(this.redondeo(escalados[i].daño_esc_AP))+")[AP]")
+                dap = String(this.redondeo(escalados[i].daño_esc_AP*this.estadisticas.ap)+" (x"+String(this.redondeo(escalados[i].daño_esc_AP))+")[AP]")
             }
 
             //HEAL DETALLE:
             if(escalados[i].heal_esc_AD > 0){
-                had = String(this.redondeo(escalados[i].heal_esc_AD*this.renderHeroe.estadisticasBase.ad)+" (x"+String(this.redondeo(escalados[i].heal_esc_AD))+")[AD]")
+                had = String(this.redondeo(escalados[i].heal_esc_AD*this.estadisticas.ad)+" (x"+String(this.redondeo(escalados[i].heal_esc_AD))+")[AD]")
             }
             if(escalados[i].heal_esc_AP > 0){
-                hap = String(this.redondeo(escalados[i].heal_esc_AP*this.renderHeroe.estadisticasBase.ap)+" (x"+String(this.redondeo(escalados[i].heal_esc_AP))+")[AP]")
+                hap = String(this.redondeo(escalados[i].heal_esc_AP*this.estadisticas.ap)+" (x"+String(this.redondeo(escalados[i].heal_esc_AP))+")[AP]")
             }
 
             //ESCUDO DETALLE:
             if(escalados[i].escudo_esc_AD > 0){
-                ead = String(this.redondeo(escalados[i].escudo_esc_AD*this.renderHeroe.estadisticasBase.ad)+" (x"+String(this.redondeo(escalados[i].escudo_esc_AD))+")[AD]")
+                ead = String(this.redondeo(escalados[i].escudo_esc_AD*this.estadisticas.ad)+" (x"+String(this.redondeo(escalados[i].escudo_esc_AD))+")[AD]")
             }
             if(escalados[i].escudo_esc_AP > 0){
-                eap = String(this.redondeo(escalados[i].escudo_esc_AP*this.renderHeroe.estadisticasBase.ap)+" (x"+String(this.redondeo(escalados[i].escudo_esc_AP))+")[AP]")
+                eap = String(this.redondeo(escalados[i].escudo_esc_AP*this.estadisticas.ap)+" (x"+String(this.redondeo(escalados[i].escudo_esc_AP))+")[AP]")
             }
 
             //Montaje de String final con detalle:

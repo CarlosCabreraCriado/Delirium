@@ -22,8 +22,8 @@
     <div id="tiempo">
 	    <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
 	    <botonComponent mat-button (click)="appService.centrarMapa()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
-	    <botonComponent *ngIf="estadoInMap=='global'" mat-button (click)="toggleInMap()" [texto]="'Región'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
-	    <botonComponent *ngIf="estadoInMap=='region'" mat-button (click)="toggleInMap()" [texto]="'Global'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+	    <botonComponent *ngIf="inmapService.estadoInMap=='global'" mat-button (click)="inmapService.toggleInMap()" [texto]="'Región'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+	    <botonComponent *ngIf="inmapService.estadoInMap=='region'" mat-button (click)="inmapService.toggleInMap()" [texto]="'Global'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
     </div>
 
 <!--   ************************** -->
@@ -95,7 +95,8 @@
                               [coordenadas]="sesion.inmap"
                               [radioRenderIsometrico]="appService.radioRenderIsometrico"
                               [herramientaInMap]="'InMap'"
-                              [mostrarNiebla]="appService.estadoInMap=='region'">
+                              [mostrarNiebla]="false">
+                                <!--appService.estadoInMap=='region'-->
         </mapaGeneralComponent>
 	</div>
 

@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { InMapService } from './inmap.service';
@@ -9,14 +9,14 @@ import { SocketService } from '../socket/socket.service';
 @Component({
   selector: 'app-inmap',
   templateUrl: './inmap.component.html',
-  styleUrls: ['./inmap.component.sass']
+  styleUrls: ['./inmap.component.sass'],
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class InMapComponent implements OnInit {
 
 	public pantalla: string = "Inmap";
 	private idCuenta: string;
-    public estadoInMap: string = "global";
     public sesion: any;
 
 	//Declara Suscripcion Evento Socket:
@@ -24,7 +24,7 @@ export class InMapComponent implements OnInit {
 	//Declara Suscripcion Evento AppService:
 	private appServiceSuscripcion: Subscription = null;
 
-	constructor(private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
+	constructor(private cdr: ChangeDetectorRef, private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
     }
 
@@ -40,6 +40,10 @@ export class InMapComponent implements OnInit {
 						this.inmapService.importarHeroeSeleccionado();
 						this.inmapService.iniciarInMap();
 						break;
+                    case "triggerChangeDetection":
+                        //this.cdr.detectChanges();
+                        console.error("TRIGGER CHANGE DETECTION")
+                        break;
 				}
 		});
 
@@ -109,8 +113,9 @@ export class InMapComponent implements OnInit {
 	}
 
 	ngOnDestroy(){
-        console.log("Destruyendo INMAP");
+        console.warn("Destruyendo INMAP");
         this.appServiceSuscripcion.unsubscribe;
+        this.socketSubscripcion.unsubscribe;
 	}
 
 	abrirConfiguracion(){
@@ -148,16 +153,6 @@ export class InMapComponent implements OnInit {
  		return texto.toLowerCase().charAt(0).toUpperCase() + texto.toLowerCase().slice(1);
 	}
 
-    toggleInMap(){
-        this.estadoInMap = this.appService.estadoInMap;
-        if(this.estadoInMap=="global"){
-            this.appService.cargarRegion("Asfaloth");
-            this.estadoInMap = "region";
-        }else{
-            this.appService.setEstadoInMap("global");
-            this.estadoInMap = "global";
-        }
-    }
 
 }
 

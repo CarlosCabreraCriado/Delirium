@@ -68,11 +68,19 @@
                   </div>
                 
                      <div *ngFor="let fila of this.appService.renderIsometrico;let i = index" class="row">
-                         <div *ngFor="let tile of this.appService.renderIsometrico[i];let j = index" data-cords='[tile.coordenadaX,tile.coordenadaY]' class="tile" [ngStyle]="{'height': tileHeight[i]+'px','width': tileWidth[j]+'px'}" [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)" (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >
-                            <div [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" class="marcador"></div>
-                            <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
-                            <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
-                            <img *ngIf="tile.ubicacionEspecial!=null" class="imagenMarcador" src="assets/Iconos/indicadores/{{renderImagenMarcador(tile.ubicacionEspecial)}}.png"/>
+                         <div *ngFor="let tile of this.appService.renderIsometrico[i];let j = index" 
+                             data-cords='[tile.coordenadaX,tile.coordenadaY]' 
+                             class="tile" 
+                             [ngStyle]="{'height': tileHeight[i]+'px','width': tileWidth[j]+'px'}" 
+                             [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" 
+                             (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)" 
+                             (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >
+
+                                <div *ngIf="desarrollo" [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" class="marcador"></div>
+                                <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
+                                <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
+                                <img *ngIf="tile.ubicacionEspecial!=null" class="imagenMarcador" src="assets/Iconos/indicadores/{{renderImagenMarcador(tile.ubicacionEspecial)}}.png"/>
+
                          </div> 
                      </div>
 
@@ -85,6 +93,7 @@
 
         </pinch-zoom>
 
+        <!--
             <div class="fogwrapper">
                 <div id="foglayer_01" class="fog">
                   <div class="image01"></div>
@@ -99,6 +108,7 @@
                   <div class="image02"></div>
                 </div> 
             </div> 
+        -->
     </div>
 
 

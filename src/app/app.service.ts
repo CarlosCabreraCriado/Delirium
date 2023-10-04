@@ -1,4 +1,3 @@
-
 import { Injectable, EventEmitter, Output} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -13,6 +12,8 @@ import { Storage } from '@ionic/storage-angular';
 import { environment } from '../environments/environment'
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { datosIniciales } from "./datosIniciales"
+import { LogicService } from "./logic.service"
+import { SocketService } from './comun/socket/socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ import { datosIniciales } from "./datosIniciales"
 
 export class AppService {
 
-    constructor(private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
+    constructor(private socketService:SocketService, private logicService: LogicService, private screenOrientation: ScreenOrientation, private route: ActivatedRoute, private router: Router, private http: HttpClient, private dialog: MatDialog, private socialComponent: MatDialog, private dialogoConfiguracion: MatDialog, private dialogCrearHeroe: MatDialog, private storage: Storage) {
 
       console.log("Detectando Dispositivo: ");
       console.log(navigator.userAgent);
@@ -98,13 +99,17 @@ export class AppService {
     private autoDesbloqueo: boolean= true;
     public claveValida: boolean= false;
     private sala: any={};
-    private heroeSeleccionado = null;
-    private heroeSeleccionadoIndex = null;
+
 
     //Estados:
     public estadoApp = "";
     public estadoInMap = "global";
     public cargandoMapa:boolean = false;
+    private heroeSeleccionado = null;
+    private heroeSeleccionadoPerfilIndex = null;
+
+    private heroePropioSesionIndex = null;
+    private personajePropioSesionIndex = null;
 
     //Dialogos:
     private dialogoReconectar: any = undefined;
@@ -121,9 +126,14 @@ export class AppService {
     // Observable string streams
     observarTeclaPulsada$ = this.observarTeclaPulsada.asObservable();
 
+
+    triggerChangeDetection(){
+      this.observarAppService.next("triggerChangeDetection");
+    }
+
     setEstadoApp(estado: string){
 
-        console.log("ENTRANDO")
+        console.log("ENTRANDO ("+estado+")")
         //this.mostrarPantallacarga(false);
         //this.estadoApp = estado;
         this.mostrarPantallacarga(true);
@@ -136,7 +146,10 @@ export class AppService {
         setTimeout(()=>{
               this.mostrarPantallacarga(false);
         }, 4000);
+    }
 
+    getEstadoApp(){
+        return this.estadoApp;
     }
 
     //STORAGE:
@@ -177,6 +190,7 @@ export class AppService {
       console.log(sesion);
       this.sesionInterna = sesion;
       this._sesion.next(sesion);
+      this.observarAppService.next("triggerChangeDetection");
       return;
     }
 
@@ -314,6 +328,7 @@ export class AppService {
           break;
           case "Parametros":
             this.parametros = datosJuego[i];
+            this.logicService.setParametros(this.parametros);
             if(this.ionic){this.set("parametros",this.parametros)}
           break;
         }
@@ -355,8 +370,20 @@ export class AppService {
   getHeroeSeleccionado(){
     return this.heroeSeleccionado;
   }
-  getHeroeSeleccionadoIndex(){
-    return this.heroeSeleccionadoIndex;
+
+  actualizarIndexHeroe(){
+    if(!this.sesionInterna.render.heroes){return}
+    this.heroePropioSesionIndex = this.sesionInterna.render.heroes.findIndex(i => i.usuario == this.cuenta.usuario)
+    this.personajePropioSesionIndex = this.sesionInterna.jugadores.findIndex(i => i.usuario == this.cuenta.usuario)
+    return;
+  }
+
+  getHeroePropioSesionIndex(){
+    return this.heroePropioSesionIndex;
+  }
+
+  getHeroeSeleccionadoPerfilIndex(){
+    return this.heroeSeleccionadoPerfilIndex;
   }
 
   setHeroeSeleccionado(heroe: any){
@@ -565,8 +592,6 @@ export class AppService {
     }, 1000);
     }
 
-
-
     mostrarSocial(tipoDialogo:string, config:any):any{
 
       const dialogSocial = this.dialog.open(SocialComponent,{
@@ -579,6 +604,38 @@ export class AppService {
         });
 
         return;
+    }
+
+    reclutarHeroe(usuario:string){
+        this.socketService.enviarSocket("enviarSolicitudReclutar",{usuario: usuario});
+        this.mostrarDialogo("Informativo",{titulo: "Petición enviada", contenido: "Para que el jugador pueda recibir la solicitud debe estar conectado con un heroe dentro del mundo."});
+        return;
+    }
+
+    solicitarEstadoAmigos(){
+        this.socketService.enviarSocket("getEstadoAmigos",{amigos: this.perfil.amigos});
+    }
+
+    procesarSolicitudReclutar(solicitante: any){
+        const dialogoConfirmarUnirse = this.mostrarDialogo("Confirmacion",{titulo: "Solicitud recibida", contenido: solicitante["solicitante"]+" quiere invitarte a su partida."});
+
+        dialogoConfirmarUnirse.afterClosed().subscribe(result => {
+          console.log('Fin dialogo confirmacion Reclutamiento', result);
+          if(result){
+              this.unirseSesion(solicitante);
+          }
+        });
+    }
+
+    unirseSesion(solicitante:any){
+        console.warn("UNIENDO")
+        this.socketService.enviarSocket("unirseSesion",
+            {
+                idSocketAnfitrion: solicitante["idSolicitante"], 
+                idSesionAnfitrion: solicitante["idSesionSolicitante"], 
+                datosJugador: this.sesionInterna.jugadores[this.heroePropioSesionIndex], 
+                datosRenderHeroe: this.sesionInterna.render.heroes[this.heroePropioSesionIndex]
+            });
     }
 
     mostrarBugLog(val:string):void{
@@ -611,6 +668,7 @@ export class AppService {
                 this.eventoAppService.emit("centrarMapa")
             setTimeout(()=>{
                     this.cargandoMapa = false;
+                    this.observarAppService.next("triggerChangeDetection");
                 },1000)
             },1000)
         },1000)
@@ -744,6 +802,7 @@ export class AppService {
         }else{
             this.parametros = await window.electronAPI.getDatosParametros();
         }
+        this.logicService.setParametros(this.parametros);
       return this.parametros;
     }
 
@@ -903,8 +962,10 @@ export class AppService {
             this.triggerRegion = triggersRegion;
             this.eventoAppService.emit("inicializarIsometrico")
             this.setEstadoInMap("region");
+
             console.warn("Sesion: ",this.sesionInterna)
             this.setSesion(this.sesionInterna);
+
         })
   }
 
@@ -929,11 +990,16 @@ export class AppService {
             console.log(this.renderIsometrico)
     }
 
-    entrarMundo(indexHeroeSeleccionado:number){
-        this.heroeSeleccionadoIndex = indexHeroeSeleccionado;
-		this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoIndex])
-        this.sesionInterna.estadoSesion = "inmap";
+    peticionEntrarMundo(indexHeroeSeleccionado: number){
+        this.heroeSeleccionadoPerfilIndex = indexHeroeSeleccionado;
+        this.socketService.enviarSocket("entrarMundo",{heroe: this.perfil.heroes[this.heroeSeleccionadoPerfilIndex]["personaje"]});
+    }
 
+    entrarMundo(){
+
+		this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoPerfilIndex])
+        this.sesionInterna.estadoSesion = "inmap";
+        
         //Configurar Sesion:
         if(this.sesionInterna.iniciada==false){
 
@@ -943,12 +1009,13 @@ export class AppService {
                     online: true,
                     lider: true,
                     personaje: this.heroeSeleccionado
-                }]
+            }]
 
             //Inicializando RENDER:
             var heroeRender = {
                   clase: this.heroeSeleccionado.clase,
                   nombre: this.heroeSeleccionado.personaje,
+                  usuario: this.cuenta.usuario,
                   nivel: this.heroeSeleccionado.nivel,
                   id_imagen: this.heroeSeleccionado.id_imagen,
                   vida: 100,
@@ -976,7 +1043,9 @@ export class AppService {
                   objetivoAuxiliar: false,
                   animacion: 0,
                   online: true
-                }
+            }
+
+            heroeRender["estadisticas"] = this.logicService.calcularEstadisticasBaseHeroe(this.heroeSeleccionado);
 
             this.sesionInterna["render"]= {
                 heroes: [heroeRender],
@@ -1016,6 +1085,7 @@ export class AppService {
         }//Fin configuracion de sesion
             
         //Cambiar a pantalla InMap:
+        this.actualizarIndexHeroe();
         this.setSesion(this.sesionInterna);
         this.setEstadoApp("inmap");
     }

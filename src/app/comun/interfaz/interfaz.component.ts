@@ -9,7 +9,6 @@ import { InterfazService } from './interfaz.service';
 })
 export class InterfazComponent implements OnInit {
 
-
 	@Input() renderMazmorra: any;
 
     public hechizoSeleccionadoIndex = null;

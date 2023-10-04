@@ -17,7 +17,6 @@ export class SeleccionPersonajeComponent implements OnInit {
 
 	constructor(private appService: AppService) {}
 
-
     ngOnInit(){
 
         var perfil = this.appService.getPerfilRam();
@@ -35,7 +34,11 @@ export class SeleccionPersonajeComponent implements OnInit {
                     break;
             }
         });
+    }
 
+    ngOnDestroy() {
+        console.warn("Destruyendo Seleccion Personaje...")
+        this.appServiceSuscripcion.unsubscribe();
     }
 
     seleccionarHeroe(index:number){
@@ -72,8 +75,7 @@ export class SeleccionPersonajeComponent implements OnInit {
     }
 
     entrar(){
-        this.appService.entrarMundo(this.heroeSeleccionado);
-        
+        this.appService.peticionEntrarMundo(this.heroeSeleccionado);
     }
 
     abrirConfiguracion(){

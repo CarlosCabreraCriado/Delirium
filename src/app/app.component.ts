@@ -144,31 +144,51 @@ export class AppComponent implements OnInit{
                 case "conectado":
                     this.socketService.enviarSocket('validacion', this.cuenta);
                 break
+                case "entrarMundoServer":
+                    this.appService.entrarMundo();
+                    break
                 case "serverEnviaSesion":
-                    console.log("INICIANDO SESION:")
                     console.log(data.contenido)
-                    this.iniciaSesion(data.contenido)
+                    this.iniciaSesion(data.contenido, data.forzarReload)
+                break
+                case "solicitudReclutarServer":
+                    this.appService.procesarSolicitudReclutar(data);
                 break
             }//FIN SWITCH
         });
   } //FIN ONINIT:
 
-    iniciaSesion(sesion: any){
+    iniciaSesion(sesion: any, forzarReload?:boolean){
 
+        console.warn("INICIANDO SESION:")
+        console.log("Cargando Datos locales...")
         this.appService.setSesion(sesion);
-        console.warn(sesion)
+        this.appService.getDatosJuego();
+        this.appService.getParametros();
+        this.appService.getEventos();
+        this.appService.getMisiones();
+        this.appService.getEnemigos();
+        this.appService.getAnimaciones();
+        this.appService.getBuff();
+        this.appService.getHechizos();
+        this.appService.getPerks();
+        this.appService.getClases();
+        this.appService.getPerfil();
+
+        //SET INDEX HEROE:
+        this.appService.actualizarIndexHeroe();
 
         //Carga el INMAP:
-        if(sesion.estadoSesion=="inmap"){
-            console.log("Cargando INMAP...")
-            this.appService.setEstadoApp("inmap");
+        var estadoApp = this.appService.getEstadoApp();
+
+        if(sesion.estadoSesion == estadoApp){
+            if(forzarReload){
+                this.appService.setEstadoApp(sesion.estadoSesion);
+            }
+        }else{
+            this.appService.setEstadoApp(sesion.estadoSesion);
         }
 
-        //Cargar SELECCION:
-        if(sesion.estadoSesion=="seleccion"){
-            console.log("Cargando Seleccion Personaje...")
-            this.appService.setEstadoApp("seleccionPersonaje");
-        }
         //this.appService.iniciarMazmorra("MazmorraSnack");
     }
 

@@ -1,4 +1,3 @@
-
 import { Injectable, EventEmitter } from '@angular/core';
 //import { Eventos } from './eventos.class';
 import { AppService } from './app.service';
@@ -65,7 +64,9 @@ export class EventosService {
         switch(tipoOrden){
             case "dialogo":
                 this.ejecutarOrdenDialogo(indexOrden);
-                
+                break;
+            case "mazmorra":
+                this.ejecutarOrdenMazmorra(indexOrden,this.eventoEjecutando.ordenes[indexOrden]["comando"],this.eventoEjecutando.ordenes[indexOrden]["mazmorraId"],this.eventoEjecutando.ordenes[indexOrden]["salaOpenId"]);
                 break;
             default:
                 this.ejecutarOrden(indexOrden+1);
@@ -77,13 +78,22 @@ export class EventosService {
     ejecutarOrdenDialogo(indexOrden:number){
         var tipoDialogo = this.eventoEjecutando.ordenes[indexOrden].tipoDialogo; 
         var orden = this.eventoEjecutando.ordenes[indexOrden];
-        //Preprocesar Orden: 
-       
+
         switch(tipoDialogo){
             case "Dialogo":
-                
                 //Preprocesado de Orden:
                 if(orden.tipoPersonajeDerecha == "self"){
+                    var heroeIndex = this.appService.getHeroePropioSesionIndex();
+                    console.warn(this.sesion,heroeIndex)
+                    orden.tipoPersonajeDerecha = "heroes";
+                    orden.imagenPersonajeDerecha = this.sesion.render.heroes[heroeIndex]["id_imagen"];
+                    orden.nombrePersonajeDerecha = this.sesion.render.heroes[heroeIndex]["nombre"];
+                }
+                if(orden.tipoPersonajeIzquierda == "self"){
+                    var heroeIndex = this.appService.getHeroePropioSesionIndex();
+                    orden.tipoPersonajeIzquierda = "heroes";
+                    orden.imagenPersonajeIzquierda = this.sesion.render.heroes[heroeIndex]["id_imagen"];
+                    orden.nombrePersonajeIzquierda = this.sesion.render.heroes[heroeIndex]["nombre"];
                 }
                 const dialogRef = this.mostrarDialogo("Dialogo",{
                     titulo: orden.titulo,
@@ -113,6 +123,20 @@ export class EventosService {
                 });
                 break;
         }
+    }
+
+    ejecutarOrdenMazmorra(indexOrden,comando,mazmorraNombreId:string,salaOpenId){
+        //Iniciando Mazmorra:
+        switch(comando){
+            case "iniciar":
+                if(mazmorraNombreId){
+                    this.appService.iniciarMazmorra(mazmorraNombreId)
+                }else{
+                    console.error("Error iniciando Mazmorra NombreID no valido: ",mazmorraNombreId)
+                }
+                break;
+        }
+        this.ejecutarOrden(indexOrden+1);
     }
     
     finalizarEvento(){

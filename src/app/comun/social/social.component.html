@@ -3,9 +3,13 @@
 <!--      Social    -->
 <!--   ******************* -->
 
-<div class= "contenedor">
+<div class= "contenedor borde1">
 
-	<h1 class="title Texto1">Social</h1>
+	<h1 class="title Texto1">Reclutar</h1>
+		
+    <botonComponent mat-button [tipoBoton]="2" [texto]="'Añadir amigo'" [color]="'verde'" class="boton botonAddAmigo"></botonComponent>
+
+	<botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" [color]="'rojo'" class="boton botonCerrar"></botonComponent>
 
 	<hr class="divisor"/>
 
@@ -21,32 +25,18 @@
 		
 		<!--PANEL OPCIONES GENERAL -->
 		<div class="opcionesGenerales Texto3">
-			<div class="amigo Texto3">
-				<div class="nombre Texto2">Doomcrash</div>
-				<div class="nivel Texto2">Nv. 10</div>
-				<div class="contenedorBotonInvitar">
-					<div class="botonInvitar Texto2">Invitar</div>
-				</div>
-				<div class="botonEliminar">X</div>
-			</div>
 
-			<div class="amigo Texto3">
-				<div class="nombre Texto2">Doomcrash</div>
-				<div class="nivel Texto2">Nv. 10</div>
+			<div class="amigo Texto3" *ngFor="let amigo of this.perfil.amigos; let i = index">
+                <div class="nombre Texto2">{{amigo.usuario}}</div>
 				<div class="contenedorBotonInvitar">
-					<div class="botonInvitar Texto2">Invitar</div>
+		            <botonComponent mat-button (click)="reclutar(amigo.usuario)" [texto]="'Reclutar'" [color]="'naranja'" [tipoBoton]="2" class="botonInvitar"></botonComponent>
 				</div>
-				<div class="botonEliminar">X</div>
 			</div>
+			
 		</div>
 
 	</div>
 	
-	<div class="contenedorBotones">
-		<botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [color]="'rojo'" class="boton"></botonComponent>
-	</div>
-	
-	<div class="frame"></div>
 
 </div>
 

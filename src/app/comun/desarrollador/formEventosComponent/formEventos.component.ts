@@ -557,7 +557,6 @@ export class FormEventosComponent {
     eliminarOpcion(indexOpcion: number){
         this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex].opciones.splice(indexOpcion,1)
         this.desarrolladorService.seleccionarOrden(this.desarrolladorService.ordenSeleccionadaIndex)
-        console.log(this.desarrolladorService.eventos.eventos)
     }
 
      get opciones() {
