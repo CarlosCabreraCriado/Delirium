@@ -105,6 +105,7 @@ export class AppService {
     public estadoApp = "";
     public estadoInMap = "global";
     public cargandoMapa:boolean = false;
+    public cargaMapaCompleta:boolean = true;
     private heroeSeleccionado = null;
     private heroeSeleccionadoPerfilIndex = null;
 
@@ -662,6 +663,7 @@ export class AppService {
     setEstadoInMap(estado:string){
         // Pone Nube -1s-> Cambia Mapa -1s-> CentraMapa -1s-> Quita Nubes
         this.cargandoMapa = true;
+        this.cargaMapaCompleta = false;
     setTimeout(()=>{
             this.estadoInMap = estado;
         setTimeout(()=>{
@@ -669,6 +671,9 @@ export class AppService {
             setTimeout(()=>{
                     this.cargandoMapa = false;
                     this.observarAppService.next("triggerChangeDetection");
+                    setTimeout(()=>{
+                        this.cargaMapaCompleta = true;
+                    },1000)
                 },1000)
             },1000)
         },1000)

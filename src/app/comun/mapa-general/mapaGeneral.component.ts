@@ -37,8 +37,6 @@ export class MapaGeneralComponent implements OnInit {
     public traslacionIsometricoX: number = 0;
     public traslacionIsometricoY: number = 0;
     private tileSize: number = 48;
-    public tileHeight: number[] = []
-    public tileWidth: number[] = []
     private bloqueoMovimiento: boolean = false; 
     private direccionMovimientoPermitido: boolean[] = [false,false,false,false]; 
 
@@ -120,10 +118,6 @@ export class MapaGeneralComponent implements OnInit {
 
   inicializarIsometrico(){
       //Inicializar RENDER:
-      for(var i = 0; i < this.radioRenderIsometrico*2+1; i++){
-          this.tileHeight.push(this.tileSize); 
-          this.tileWidth.push(this.tileSize); 
-      } 
       this.checkMovimientoValido()
   }
 
@@ -272,6 +266,12 @@ export class MapaGeneralComponent implements OnInit {
   }
 
   moverPersonaje(direccion: string){
+      //Realizando Desplazamiento General:
+      this.procesarMoverPersonaje(direccion)
+
+  }
+  
+  procesarMoverPersonaje(direccion: string){
 
       //Evitar Si hay bloqueo de Movimiento: 
       if(this.bloqueoMovimiento){
@@ -309,16 +309,13 @@ export class MapaGeneralComponent implements OnInit {
       console.log("Direccion: "+direccion)
 
       switch(direccion){
+
           case "NorEste":
               //Añadir ROW NORESTE:
               this.bloqueoMovimiento = true;
-              this.tileHeight.push(0)
-              this.tileHeight[0] = 0
               var clone = this.appService.region.isometrico[minRenderX-1].slice(minRenderY,maxRenderY+1);
               this.appService.renderIsometrico.unshift(clone)
                 setTimeout(()=>{    
-                    this.tileHeight[this.tileHeight.length-1] = 48 
-                    this.tileHeight.shift()
                     this.appService.renderIsometrico.pop()
                     this.checkMovimientoValido();
                 }, 500);
@@ -330,14 +327,10 @@ export class MapaGeneralComponent implements OnInit {
           case "SurOeste":
               //Añadir ROW SUROESTE:
               this.bloqueoMovimiento = true;
-              this.tileHeight.unshift(0)
-              this.tileHeight[this.tileHeight.length-1]=0
 
               var clone = this.appService.region.isometrico[maxRenderX+1].slice(minRenderY,maxRenderY+1);
               this.appService.renderIsometrico.push(clone)
                 setTimeout(()=>{    
-                    this.tileHeight[0] = 48 
-                    this.tileHeight.pop();
                     this.appService.renderIsometrico.shift()
                     this.checkMovimientoValido();
                 }, 500);
@@ -349,18 +342,13 @@ export class MapaGeneralComponent implements OnInit {
           case "SurEste":
               //Añadir ROW SUROESTE:
               this.bloqueoMovimiento = true;
-              this.tileWidth.unshift(0)
-              this.tileWidth[this.tileWidth.length-1]=0
-
-              for(var i = 0; i < maxRenderY-minRenderY; i++){
+              for(var i = 0; i <= maxRenderY-minRenderY; i++){
                 this.appService.renderIsometrico[i].push(
                     this.appService.region.isometrico[minRenderX+i][maxRenderY+1]
                 )
               }
                 setTimeout(()=>{    
-                    this.tileWidth[0] = 48 
-                    this.tileWidth.pop();
-                      for(var i = 0; i < maxRenderY-minRenderY; i++){
+                      for(var i = 0; i <= maxRenderY-minRenderY; i++){
                         this.appService.renderIsometrico[i].shift()
                       }
                     this.checkMovimientoValido();
@@ -373,18 +361,14 @@ export class MapaGeneralComponent implements OnInit {
           case "NorOeste":
               //Añadir ROW SUROESTE:
               this.bloqueoMovimiento = true;
-              this.tileWidth.push(0)
-              this.tileWidth[0]=0
 
-              for(var i = 0; i < maxRenderY-minRenderY; i++){
+              for(var i = 0; i <= maxRenderY-minRenderY; i++){
                 this.appService.renderIsometrico[i].unshift(
                     this.appService.region.isometrico[minRenderX+i][minRenderY-1]
                 )
               }
                 setTimeout(()=>{    
-                    this.tileWidth[this.tileWidth.length-1] = 48 
-                    this.tileWidth.shift();
-                      for(var i = 0; i < maxRenderY-minRenderY; i++){
+                      for(var i = 0; i <= maxRenderY-minRenderY; i++){
                         this.appService.renderIsometrico[i].pop()
                       }
                     this.checkMovimientoValido();

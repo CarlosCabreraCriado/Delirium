@@ -172,7 +172,9 @@
       //left: 2936px
 
   .row
-    position: relative
+    position: absolute
+    width: 650px //Radio de 6 Casillas
+    height: 650px //Radio de 6 Casillas
     white-space: nowrap
     pointer-events: none
     transition: all 1s
@@ -181,16 +183,22 @@
     //animation: rowInsert 1s forwards
 
   .floor 
-      -webkit-transform: rotateX(55deg) rotateZ(45deg)
-      -webkit-transform-style: preserve-3d
-      transition: all 1s
-      font-size: 0
+    position: absolute
+    width: 650px //Radio de 6 Casillas
+    height: 650px //Radio de 6 Casillas
+    //-webkit-transform: rotateX(55deg) rotateZ(45deg)
+    -webkit-transform: rotateX(0deg) rotateZ(0deg)
+    transform: rotateX(0deg) rotateZ(0deg) !important
+    -webkit-transform-style: preserve-3d
+    transition: all 1s
+    font-size: 0
 
 
   .floor .tile 
+      position: absolute
       font-size: 11pt
       color: #ccc
-      display: inline-block
+      //display: inline-block
       //background: #111
       width: 48px
       height: 48px
@@ -199,7 +207,6 @@
       border: solid 1px gray
       line-height: 48px
       text-align: center
-      position: relative
       vertical-align: top
       pointer-events: all
       transition: all 0.5s linear
@@ -243,9 +250,8 @@
   .floor .player
       position: absolute
       z-index: 1
-      width: 47px
-      height: 47px
-      border-radius: 3px
+      width: 50px
+      height: 50px
       transform-style: preserve-3d
       -webkit-transition: all 250ms
       -moz-transition: all 250ms
@@ -253,45 +259,24 @@
       -o-transition: all 250ms
       transition: all 250ms
       opacity: 1
-
-  .floor .player.die
-      animation: fallanddie 0.5s
-      animation-fill-mode: forwards
-
-  .floor .player div
-      border: solid 1px rgba(0,0,0,.5)
-      position: absolute
-      width: 47px
-      height: 47px
-      border-radius: 3px
-      transform-style: preserve-3d
-      -webkit-transform-style: preserve-3d
-      -moz-transform-style: preserve-3d
-      background: rgba(255, 255, 255, 0.5)
-
-  .floor .player .front 
-      transform-origin: 50% 100%
-      -webkit-transform-origin: 50% 100%
-      -moz-transform-origin: 50% 100%
-      transform: rotateX(-90deg)
-      -webkit-transform: rotateX(-90deg)
-      -moz-transform: rotateX(-90deg)
-
-  .floor .player .top
-      transform-origin: 50% 0%
-      transform: rotateX(-90deg)
-      -webkit-transform-origin: 50% 0%
-      -webkit-transform: rotateX(-90deg)
-      -moz-transform-origin: 50% 0%
-      -moz-transform: rotateX(-90deg)
-
-  .floor .player .right 
-      transform-origin: 100% 50%
-      transform: rotateY(90deg)
-      -webkit-transform-origin: 100% 50%
-      -webkit-transform: rotateY(90deg)
-      -moz-transform-origin: 100% 50%
-      -moz-transform: rotateY(90deg)
+      .flecha
+        position: absolute
+        height: 50px
+        width: 25px
+        transform-origin: right
+        opacity: 0.7
+        animation: flechaMovimiento 2s infinite
+        &.oeste
+          left: -25px
+        &.norte
+          top: -25px
+          rotate: 90deg
+        &.este
+          right: 0px
+          rotate: 180deg
+        &.sur
+          bottom: -25px
+          rotate: -90deg
 
   .warning
      position: absolute
@@ -548,9 +533,9 @@
 
 @keyframes flechaMovimiento
   0%, 100%
-    background-position-x: 100%
+    transform: translateX(0px)
   50%
-    background-position-x: 70%
+    transform: translateX(-5px)
 
 @keyframes pulsoMarcador
   0%, 100%

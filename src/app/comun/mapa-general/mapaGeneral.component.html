@@ -4,13 +4,9 @@
 <!--   *********************************** -->
 
     <!-- NUBES FONDO -->
-    <div id="nubes">
-
+    <div id="nubes" *ngIf="!appService.cargaMapaCompleta">
     </div>
 
-    <!-- Fondo Mapa -->
-    <div id="mascaraNubes">
-    </div>
 
     <div id="contenedorMapa" [ngClass]="{'mostrarNubes': appService.cargandoMapa}" #canvasMapa class="bordeDesarrollador">
 
@@ -46,32 +42,28 @@
 
             <div class="floor" [ngStyle]="{'transform': 'translate('+0+'px, '+0+'px) rotateX(55deg) rotateZ(45deg)'}">
                 <!-- rotateX(55deg) rotateZ(45deg) -->
-                  <div class="players">
+                  <div class="player"[ngStyle]="{'transform': 'translate('+(50*appService.radioRenderIsometrico)+'px, '+(50*appService.radioRenderIsometrico)+'px)'}">
                      <!-- player 1 -->
-                     <div class="player animacionFocus" [ngStyle]="{'transform': 'translate('+(50*appService.radioRenderIsometrico)+'px, '+(50*appService.radioRenderIsometrico)+'px)'}">
-                     </div>
+                     <!-- Flecha NorEste -->
+                     <div class="player animacionFocus"></div>
+                     <img class="flecha norte" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorEste')" *ngIf="direccionMovimientoPermitido[0]"/>
+                     <!-- Flecha NorOeste -->
+                     <img class="flecha oeste" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorOeste')" *ngIf="direccionMovimientoPermitido[3]"/>
+                     <!-- Flecha SurEste -->
+                     <img class="flecha este" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurEste')" *ngIf="direccionMovimientoPermitido[1]"/>
+                     <!-- Flecha SurOeste -->
+                     <img class="flecha sur" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurOeste')" *ngIf="direccionMovimientoPermitido[2]"/>
                   </div>
 
                   <div id="flechasMovimiento">
                      <!-- Flecha NorEste -->
-                     <div class="flecha" (click)="moverPersonaje('NorEste')" *ngIf="direccionMovimientoPermitido[0]"  [ngStyle]="{'transform': 'translate('+(50*(appService.radioRenderIsometrico))+'px, '+(50*(appService.radioRenderIsometrico-1))+'px) rotate(90deg)'}">
-                     </div>
-                     <!-- Flecha NorOeste -->
-                     <div class="flecha" (click)="moverPersonaje('NorOeste')" *ngIf="direccionMovimientoPermitido[3]" [ngStyle]="{'transform': 'translate('+(50*(appService.radioRenderIsometrico-1))+'px, '+(50*appService.radioRenderIsometrico)+'px)'}">
-                     </div>
-                     <!-- Flecha SurEste -->
-                     <div class="flecha" (click)="moverPersonaje('SurEste')" *ngIf="direccionMovimientoPermitido[1]" [ngStyle]="{'transform': 'translate('+(50*(appService.radioRenderIsometrico+1))+'px, '+(50*appService.radioRenderIsometrico)+'px) rotate(180deg)'}">
-                     </div>
-                     <!-- Flecha SurOeste -->
-                     <div class="flecha" (click)="moverPersonaje('SurOeste')" *ngIf="direccionMovimientoPermitido[2]" [ngStyle]="{'transform': 'translate('+(50*appService.radioRenderIsometrico)+'px, '+(50*(appService.radioRenderIsometrico+1))+'px) rotate(-90deg)'}">
-                     </div>
                   </div>
                 
                      <div *ngFor="let fila of this.appService.renderIsometrico;let i = index" class="row">
                          <div *ngFor="let tile of this.appService.renderIsometrico[i];let j = index" 
                              data-cords='[tile.coordenadaX,tile.coordenadaY]' 
                              class="tile" 
-                             [ngStyle]="{'height': tileHeight[i]+'px','width': tileWidth[j]+'px'}" 
+                             [ngStyle]="{'transform': 'translate('+(50*j)+'px,'+(50*i)+'px)'}" 
                              [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" 
                              (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)" 
                              (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >
