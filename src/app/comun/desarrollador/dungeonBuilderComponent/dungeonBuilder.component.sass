@@ -2,287 +2,720 @@
 @import "../../../../variables.sass"
 @import "../../../../breakpoints.scss"
 
-.botonAddLista
+// *************************************************
+//     SECCION DUNGEON BUILDER  
+// *************************************************
+.contenedorDungeonBuilder
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+
+#panelMazmorraInicio
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  .titulo
+    position: absolute
+    top: 5%
+    color: white
+    width: 50%
+    left: 50%
+    margin-left: -25%
+    text-align: center
+    font-size: 30px
+    top: 15%
+  .botonNuevaMazmorra
     position: absolute
     display: flex
-    align-items: center
-    justify-content: center
-    background-color: greenyellow
-    color: black
-    height: 10%
-    width: 100%
-    &:hover
-      background-color: white
-      color: black
+    top: 30%
+    width: 20%
+    left: 25%
+    height: 30%
+    border: 2px solid white
+    border-radius: 20px
+    background-color: black
 
-.contenedorLateral
-  position: absolute
-  top: 0%
-  height: 86%
-  width: 20%
-  color: white
-  .titulo
-    position: relative
+    img
+      position: absolute
+      max-height: 80%
+      width: 70%
+      margin-left: -35%
+      left: 50%
+      filter: invert(1)
+    div
+      position: absolute
+      width: 100%
+      height: 10%
+      top: 85%
+      text-align: center
+      color: white
+
+  .botonCargarMazmorra
+    position: absolute
     display: flex
-    align-items: center
-    justify-content: center
-    width: 100%
-    text-align: center
-    background-color: rgba(0,0,0,1)
-    height: 15%
-  &.libre
-    width: 100%
-    height: 100%
-    left: 0%
-  &.izquierda
-    left: 3%
-  &.derecha
-    right: 3%
-    .lista
-      border: solid 2px greenyellow
-      box-sizing: border-box
+    top: 30%
+    width: 20%
+    right: 25%
+    height: 30%
+    border: 2px solid white
+    border-radius: 20px
+    background-color: black
+    img
+      position: absolute
+      max-height: 80%
+      width: 70%
+      margin-left: -35%
+      left: 50%
+      filter: invert(1)
+    div
+      position: absolute
+      width: 100%
+      height: 10%
+      top: 85%
+      text-align: center
+      color: white
 
-  .mat-label
-  .mat-checkbox
-    position: relative
-    width: 100%
+.contenedorCargarMazmorra
+  position: absolute
+  background-color: black
+  border: solid white 5px
+  text-align: center
+  font-size: 30px
+  color: white
+  width: 80%
+  height: 70%
+  top: 15%
+  left: 10%
 
-  .lista
+  .iconoCerrar
+    position: absolute
+    width: 5%
+    top: 2%
+    right: 2%
+    filter: invert(1)
+  .contenedorMazmorras
+    position: absolute
+    top: 15%
+    width: 100%
+    height: 85%
+    overflow-y: scroll
+    .cargarMazmorra
+      position: relative
+      display: flex
+      height: 20%
+      justify-content: center
+      align-items: center
+      background-color: black
+      margin: 2%
+      color: white
+      border: solid white 3px
+      &:hover
+        color: black
+        background-color: white
+
+#panelMazmorra
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+
+  .flechaDungeonBuilder
+    position: absolute
+    width: 10%
+
+    &.superior
+      bottom: 87%
+      left: 50%
+      margin-left: -5%
+    &.inferior
+      top: 87%
+      left: 50%
+      transform: rotate(180deg)
+      margin-left: -5%
+    &.derecha
+      top: 50%
+      left: 77%
+      transform: rotate(90deg)
+    &.izquierda
+      top: 50%
+      right: 77%
+      transform: rotate(-90deg)
+    &:hover
+      filter: invert(1)
+
+  .iconoEliminar
+    position: absolute
+    width: 3%
+    top: 6%
+    right: 15%
+    &:hover
+      filter: invert(1)
+
+  .iconoGuardar
+    position: absolute
+    width: 3%
+    top: 6%
+    right: 10%
+    &:hover
+      filter: invert(1)
+
+  .iconoCerrar
+    position: absolute
+    width: 3%
+    top: 6%
+    right: 5%
+    &:hover
+      filter: invert(1)
+
+  .contenedorIsometrico
+    position: absolute
+    overflow: scroll
+    top: 15%
+    left: 20%
+    width: 60% 
+    height: 70% 
+
+    .mensajeIsometricoVacio
+        position: absolute
+        width: 100%
+        text-align: center
+        font-size: 30px
+        top: 45%
+
+    .canvasIsometrico
+        position: absolute
+        overflow: scroll
+        width: 3496px 
+        height: 2480px 
+        mix-blend-mode: multiply
+
+        .elementoIsomentrico
+            position: absolute
+            transform: translate(-50%,-50%)
+            
+        .imagenElementoIsometrico    
+            width: 100%
+            //height: 100%
+            &:hover
+                filter: sepia(100%) saturate(30)
+
+  .contenedorReticula
+    position: absolute
+    top: 15%
+    left: 20%
+    width: 60%
+    height: 70%
+
+    .piezaTablero
+      position: absolute
+      top: 0
+      left: 0
+      width: 30%
+      z-index: 9
+
+    .filaReticula
       position: relative
       width: 100%
-      height: 90%
-      overflow-y: scroll
-      overflow-x: hidden
-      .hechizo
-          position: relative
-          display: flex
-          height: 10%
-          width: 100%
-          background-color: rgba(0,0,0,0.5)
-          &:hover
-              background-color: grey
-          &.seleccionado
-              background-color: white
-              color: black
-
-          .imagen
-              position: relative
-              display: inline-block
-              height: 100%
-          .nombre
-              position: relative
-              display: inline-flex
-              justify-content: center
-              align-items: center
-              height: 100%
-              width: 70%
-
-#visualizador
-    position: absolute
-    left: 25%
-    width: 50%
-    height: 100%
-    background-color: rgba(0,0,0,0.5)
-    .contenedorImagen
-      position: absolute
-      top: 2vh
-      left: 2vh
-      width: 10vw
-      height: 10vw
-      border: 2px solid white
+      height: 8.33%
       z-index: 10
-      img
-        position: relative
+
+      div
+        position: absolute
         width: 100%
         height: 100%
-    form
+        .cuadradoReticula
+          position: relative
+          display: inline-block
+          box-sizing: border-box
+          font-size: 10px
+          text-align: center
+          width: 5%
+          height: 100%
+          div
+            border: solid 1px black
+            &:hover
+              background-color: rgba(0,0,0,0.5)
+
+  .contenedorPanelParametros
+    position: absolute
+    z-index: 100
+    width: 60%
+    height: 7%
+    top: 5%
+    left: 20%
+    background-color: black
+    display: flex
+    justify-content: space-around
+
+    .boton
+      position: relative
+      display: inline-block
+      color: white
+      line-height: 2
+      text-align: center
+      img
+        height: 100%
+        filter: invert(1)
+    .boton:hover
+      color: black
+      background-color: white
+
+  .contenidoParametros
+    position: absolute
+    width: 100%
+    height: 85%
+    top: 15%
+
+    //Formulario General
+    .formularioGeneral
       position: absolute
-      width: 100%
-      height: 100%
+      display: flex
+      left: 10%
+      width: 80%
+      height: 90%
+      background-color: white
 
-      .selector
-        position: absolute
-        mat-form-field
+      .columna
+        height: 90%
+        width: 50%
+        margin: 5%
+
+        .campoFormulario
+          height: 25%
+
+          &.descripcion
+            height: 40%
+            width: 100%
+
+    //Formulario Salas
+    .formularioSalas
+      position: absolute
+      display: flex
+      width: 75%
+      height: 90%
+      left: 20%
+      background-color: white
+
+      .panelSalas
+        position: relative
+        height: 100%
+        width: 25%
+
+        .titulo
+          position: absolute
           width: 100%
+          top: 2%
+          height: 8%
+          background-color: black
+          color: white
+          text-align: center
 
-      mat-form-field
-        position: absolute
-        mat-label
-          color: chartreuse
-        input
+        .contenedorSalas
+          position: absolute
+          width: 100%
+          top: 10%
+          height: 75%
+          background-color: lightgray
+
+          .sala
+            position: relative
+            width: 100%
+            text-align: center
+
+          .sala:hover
+            background-color: darkgrey
+
+        .botonAddSala
+          position: absolute
+          width: 100%
+          top: 85%
+          height: 10%
+          text-align: center
+          background-color: darkgray
+         
+        .botonAddSala:hover
+          background-color: black
           color: white
 
-      .formId
-        right: 10%
-        top: 5%
-        width: 10%
-      .formNombre
-        left: 30%
-        top: 5%
-      .formDescripcion
-        left: 30%
-        top: 20%
-        width: 60%
-      .formDistancia
-        left: 5%
-        top: 35%
-        width: 10%
-      .formObjetivo
-        position: absolute
-        left: 5%
-        top: 50%
-        width: 10%
-      .formTipoDaño
-        left: 5%
-        top: 65%
-        width: 10%
-      .formAnimacion
-        left: 5%
-        top: 80%
-        width: 15%
+      .contenedorFormularioSala
+        position: relative
+        display: flex
+        width: 75%
+        height: 100%
 
-      .formDañoDir
-        left: 30%
-        top: 35%
-        width: 10%
-      .formHealDir
-        left: 55%
-        top: 35%
-        width: 10%
-      .formEscudoDir
-        left: 80%
-        top: 35%
-        width: 10%
+        .columna
+          position: relative
+          height: 90%
+          width: 50%
+          margin: 5%
 
-      .formAmenaza
-        left: 30%
-        top: 50%
-        width: 10%
-      .formEnergia
-        left: 55%
-        top: 50%
-        width: 10%
-      .formPoder
-        left: 80%
-        top: 50%
-        width: 10%
+          .campoFormulario
+            height: 25%
 
-      .formFuncion
-        left: 70%
-        top: 65%
-        width: 20%
+            &.descripcion
+              height: 40%
+              width: 100%
 
-    .botonEliminar
+        .botonOpcionParametros
+          position: absolute
+          width: 20%
+          height: 5%
+          margin-left: -10%
+          border: 2px solid black
+          text-align: center
+          left: 50%
+          bottom: 5%
+          &:hover
+              color: white
+              background-color: black
+
+        &.seleccioneSala
+          display: flex
+          align-items: center
+
+    //Formulario Enemigos:
+    .formularioEnemigos
       position: absolute
-      top: 5%
-      width: 5%
-      right: 5%
-      &:hover
-        filter: invert(1)
+      display: flex
+      width: 75%
+      height: 90%
+      left: 20%
+      background-color: white
 
-    .tituloEncadenado
+      .panelTipoEnemigo
         position: absolute
-        top: 86%
-        left: 32%
+        width: 90%
+        height: 90%
         color: white
+        text-align: center
+        background-color: rgba(0,0,0,0.9)
+        border: double 10px darkgrey
+        z-index: 10
+        margin: 2%
+        .titulo
+          position: relative
+          width: 96%
+          text-align: center
+          font-size: 20px
+          margin: 2%
 
-    .contenedorAnimacion
-        position: absolute
-        display: flex
-        top: 80%
-        left: 50%
-        width: 48%
-        height: 15%
-        background-color: grey
+        .botonCerrar
+            position: absolute
+            top: 2%
+            right: 2%
+            width: 5%
+            filter: invert(1)
 
-        .contenedorImagenAnimacion
+        .contenedorTipoEnemigo
+          position: absolute
+          width: 95%
+          height: 80%
+          overflow-y: scroll
+
+          .tipoEnemigo
             position: relative
-            .flecha
-                filter: invert(1)
-                transform: rotate(180deg)
-            img
-                position: relative 
-                height: 100%
-                z-index: 10
-                &.seleccionado
-                    border: solid 2px greenyellow
-                    box-sizing: border-box
-            .imagenAddEncadenado
-                &:hover
-                    filter: invert(1)
-    .contenedorEncadenado
-        position: absolute
+            width: 95%
+            height: 20%
+            margin: 2% 2%
+            border: solid white
+            overflow: hidden
+            .imagenTipoEnemigo
+              position: absolute
+              height: 100%
+              left: 5%
+
+            .nombretipoEnemigo
+              position: absolute
+              height: 100%
+              text-align: center
+          .tipoEnemigo:hover
+            background-color: white
+            color: black
+
+
+        .botonAddEnemigo
+          position: absolute
+          width: 100%
+          top: 85%
+          height: 10%
+          text-align: center
+          background-color: darkgray
+         
+        .botonAddEnemigo:hover
+          background-color: black
+          color: white
+
+      .contenedorFormularioEnemigo
+        position: relative
         display: flex
-        top: 80%
-        left: 50%
-        width: 48%
-        height: 15%
-        background-color: grey
+        width: 100%
+        height: 100%
 
-        .contenedorImagenEncadenado
+        .panelEnemigoGeneral
+          position: absolute
+          width: 100%
+          height: 40%
+          border-bottom: 1px solid black
+
+          .contenedorImagenEnemigo
             position: relative
-            .flecha
-                filter: invert(1)
-                transform: rotate(180deg)
-            img
-                position: relative 
-                height: 100%
-                z-index: 10
-                &.seleccionado
-                    border: solid 2px greenyellow
-                    box-sizing: border-box
-            .imagenAddEncadenado
-                &:hover
-                    filter: invert(1)
+            vertical-align: top
+            display: inline-flex
+            justify-content: center
+            align-items: center
+            height: 15vh 
+            width: 15vh 
+            border: double 2px black
+            overflow: hidden
+            margin: 2.5%
+            img 
+              max-height: 100%
+              max-width: 100%
 
-    .tituloBuff
+          .contenedorInformacionEnemigo
+            position: relative
+            display: inline-block
+            width: 60%
+            height: 90%
+            margin-top: 2%
+            text-align: center
+            font-size: 18px
+
+            .boton
+              position: relative
+              display: inline-block
+              margin: 2%
+              background-color: black
+              color: white
+              padding: 2%
+              text-align: center
+              border-radius: 10px
+              border: 5px solid slategrey
+            .boton:hover
+              background-color: white
+              color: black
+              border: 5px solid black
+
+        .columna
+          position: relative
+          height: 56%
+          top: 42%
+          width: 50%
+          margin: 0 5%
+          overflow-y: scroll
+
+          .campoFormulario
+            &.descripcion
+              height: 40%
+              width: 100%
+
+        .botonEliminarEnemigo
+          position: absolute
+          width: 5%
+          right: 0
+          margin: 1%
+          &:hover
+              filter: invert(0.5)
+
+        &.seleccioneEnemigo
+          display: flex
+          align-items: center
+
+    //Panel Eventos:
+    .formularioEventos
+      position: absolute
+      display: flex
+      width: 100%
+      height: 90%
+
+  .panelDerecho
+    position: absolute
+    top: 15%
+    width: 15%
+    height: 36vw
+    right: 1%
+    z-index: 2
+    background-color: rgba(0,0,0,0.5)
+    .contenedorTitulo
+      position: absolute
+      width: 100%
+      height: 10%
+      text-align: center
+      background-color: black
+      color: white
+      line-height: 2.5
+    .contenedorPanelDerecho
+      position: absolute
+      overflow-y: scroll
+      color: white
+      top: 10%
+      height: 90%
+      width: 100%
+      img
+        position: relative
+        width: 40%
+        margin: 5%
+        display: inline-block
+        &:hover
+          filter: invert(1)
+      .tituloSeccion      
+        position: relative
+        width: 100%
+        height: 5%
+        text-align: center
+        margin: 5% 0
+        border-top: solid white 2px
+        border-bottom: solid white 2px
+
+      .subtituloSeccion
+          position: relative
+          width: 100%
+          height: 5%
+          margin: 5% 0
+          img
+              position: relative
+              margin: 0 5% 0 0
+              width: 20%
+              max-height: 100%
+              display: inline-block
+              vertical-align: middle
+              &:hover
+                  filter: invert(1)
+          .texto
+            position: relative
+            width: 70%
+            display: inline-block
+
+          .botonSeleccion
+            position: relative
+            width: 80%
+            height: 100%
+            margin-left: 10%
+            margin-bottom: 5%
+            border: white 2px solid
+            border-radius: 20px
+            text-align: center
+            background-color: black
+            &:hover
+                color: black
+                background-color: white
+                border: black 2px solid
+
+      .contenedorSeleccion
         position: absolute
-        top: 68%
-        left: 40%
+        background-color: black
+        border: solid white 5px
+        text-align: center
         color: white
-
-    .contenedorBuff
-        position: absolute
-        display: flex
-        top: 62.5%
-        left: 50%
-        height: 15%
-        width: 0
-        background-color: grey
-
-        .contenedorImagenEncadenado
+        width: 80%
+        height: 70%
+        top: 15%
+        left: 10%
+        .contenedorOpcionesSeleccion
             position: relative
-            width: 0
-            .flecha
-                filter: invert(1)
-                transform: rotate(180deg)
-            img
-                position: relative 
-                height: 100%
-                z-index: 10
-                &:hover
-                    filter: invert(1)
-                &.seleccionado
-                    border: solid 2px greenyellow
-                    box-sizing: border-box
+            margin: 5% 0px
+            .formularioSeleccion
+                position: relative
+                width: 80%
+                margin: 10%
+                color: black
+                background-color: white
+                text-align: center
+        .texto
+            position: relative
+            margin: 5% 0
+        .boton
+          position: relative
+          margin: 5% 10% 
+          width: 80%
+          height: 25px 
+          border: white 2px solid
+          &:hover
+            background-color: white
+            color: black
 
-.campoAnimacion
-  top: 78% 
-  right: 85%
-  width: 10%
-.contenedorCampoRelacional
-  position: absolute
-  display: flex
-  flex-direction: column
-  align-items: center
-  .titulo
-    color: greenyellow
-  .imagenCampoRelacional
-    width: 100%
-    &:hover
-        filter: invert(1)
+  .panelIzquierdo
+    position: absolute
+    top: 15%
+    width: 15%
+    height: 36vw
+    left: 1%
+    z-index: 2
+    background-color: rgba(0,0,0,0.5)
+    .contenedorPanelIzquierdo
+      position: relative
+      width: 100%
+      height: 100%
+      .contenedorTitulo
+        position: absolute
+        width: 100%
+        height: 10%
+        text-align: center
+        background-color: black
+        color: white
+        line-height: 2.5
+      .contenedorPanelIzquierdo
+        position: absolute
+        top: 10%
+        height: 90%
+        width: 100%
+        img
+          position: relative
+          width: 40%
+          margin: 5%
+          display: inline-block
+          &:hover
+            filter: invert(1)
+        #botonSubirIsometrico
+          display: none
 
+      .panelEnemigos
+        position: relative
+        height: 100%
 
+        .titulo
+          position: absolute
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 100%
+          height: 10%
+          background-color: black
+          color: white
+          text-align: center
+
+        .contenedorEnemigos
+          position: absolute
+          width: 100%
+          top: 10%
+          height: 75%
+          background-color: lightgray
+
+          .enemigo
+            position: relative
+            width: 100%
+            text-align: center
+            background-color: darkgrey
+
+          .sala
+            position: relative
+            width: 100%
+            text-align: center
+            background-color: crimson
+            
+          .add
+            position: relative
+            width: 100%
+            text-align: center
+            background-color: cornsilk
+
+          .enemigo:hover
+            background-color: white
 
 
 

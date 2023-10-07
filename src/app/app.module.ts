@@ -84,6 +84,7 @@ import { FormPerksComponent } from './comun/desarrollador/formPerksComponent/for
 import { SelectorImagenesComponent } from './comun/desarrollador/selectorImagenerComponent/selectorImagenes.component';
 import { PanelSelectorComponent } from './comun/desarrollador/panelSelectorComponent/panelSelector.component';
 import { TriggerComponent } from './comun/desarrollador/triggerComponent/trigger.component';
+import { DungeonBuilderComponent } from './comun/desarrollador/dungeonBuilderComponent/dungeonBuilder.component';
 
 //Componentes Backend:
 import { ElectronService } from './comun/electronService/public_api';
@@ -151,6 +152,7 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         SelectorImagenesComponent,
         PanelSelectorComponent,
         TriggerComponent,
+        DungeonBuilderComponent,
         AtributoComponent,
         DetalleHechizoComponent,
         SeleccionPersonajeComponent,
