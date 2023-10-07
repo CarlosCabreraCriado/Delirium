@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
+import { datosDefecto } from "../datosDefecto"
 
 @Component({
   selector: 'formMisionesComponent',
@@ -166,6 +167,22 @@ export class FormMisionesComponent {
         }
     }
 
+
+    seleccionarMision(selector:any){
+
+      //Set Index
+      this.desarrolladorService.misionSeleccionadaIndex = selector.index;
+
+      //Actualizar Formulario:
+      this.reloadForm();
+    }
+
+    addMision(){
+        this.desarrolladorService.misiones.misiones.push(Object.assign({},datosDefecto.misiones));
+        this.desarrolladorService.misiones.misiones.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.desarrolladorService.misiones.misiones);
+        this.desarrolladorService.misiones.misiones.at(-1)["nombre"]= "Misiones "+this.desarrolladorService.misiones.misiones.length;
+        this.seleccionarMision({index: this.desarrolladorService.misiones.misiones.length-1})
+    }
 
 }
 

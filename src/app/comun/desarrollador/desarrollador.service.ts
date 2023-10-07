@@ -84,10 +84,12 @@ export class DesarrolladorService implements OnInit{
     public subanimacionSeleccionadoIndex = 0;
     public sonidoSeleccionadoIndex = 0;
     public enemigoSeleccionadoIndex = 0;
-    public eventoSeleccionadoIndex = 0;
-    public eventoSeleccionadoId = 0;
-    public tipoOrdenSeleccionada = "Condición";
-    public ordenSeleccionadaIndex = null;
+
+    //public eventoSeleccionadoIndex = 0;
+    //public eventoSeleccionadoId = 0;
+    //public tipoOrdenSeleccionada = "Condición";
+    //public ordenSeleccionadaIndex = null;
+    //
     public misionSeleccionadaIndex = 0;
     public objetivoMisionSeleccionadoIndex = 0;
 
@@ -161,7 +163,6 @@ export class DesarrolladorService implements OnInit{
     this.seleccionarBuff(0)
     this.seleccionarHechizo(0)
     this.seleccionarEnemigo(0)
-    this.seleccionarEvento(0)
     this.seleccionarAnimacion(0)
     this.seleccionarSubanimacion(0)
 
@@ -173,6 +174,7 @@ export class DesarrolladorService implements OnInit{
     for(var i=1; i <308; i++){
         this.imagenes.push(i);
     }
+
 
   }
 
@@ -201,6 +203,11 @@ export class DesarrolladorService implements OnInit{
 
   setPanel(panel):void{
     this.panel= panel;
+    if(panel=="inmap"){
+        console.warn("CARGANDO INMAP:")
+        //REDIRIGE A ASFALOTH POR DEFECTO:
+        this.mapaGeneralService.cargarRegion("Asfaloth");
+    }
   }
 
   inicializarIsometricoMapa(){
@@ -626,19 +633,6 @@ export class DesarrolladorService implements OnInit{
 
   addDato(){
       switch(this.estadoHerramientaDatos){
-            case "Hechizos":
-
-                this.hechizos.hechizos.push(Object.assign({},datosDefecto.hechizos));
-                this.hechizos.hechizos.at(-1)["id"]= this.findAvailableID(this.hechizos.hechizos);
-                this.hechizos.hechizos.at(-1)["nombre"]= "Hechizo "+this.hechizos.hechizos.length;
-                console.log(this.hechizos.hechizos)
-            break;
-
-            case "Buff":
-                this.buff.buff.push(Object.assign({},datosDefecto.buff));
-                this.buff.buff.at(-1)["id"]= this.findAvailableID(this.buff.buff);
-                this.buff.buff.at(-1)["nombre"]= "Buff "+this.buff.buff.length;
-            break;
 
             case "Animaciones":
               console.error("AÑADIENDO")
@@ -666,20 +660,6 @@ export class DesarrolladorService implements OnInit{
                 this.misiones.misiones.at(-1)["nombre"]= "Mision "+this.misiones.misiones.length;
             break;
 
-            case "Objetos":
-                switch(this.tipoObjetoSeleccionado){
-                    case "Equipo":
-                        this.objetos.equipo.push(Object.assign({},datosDefecto.equipo));
-                        this.objetos.equipo.at(-1)["id"]= this.findAvailableID(this.objetos.equipo);
-                        this.objetos.equipo.at(-1)["nombre"]= "Equipo "+this.objetos.equipo.length;
-                        break;
-                    case "Consumible":
-                        this.objetos.consumible.push(Object.assign({},datosDefecto.consumible));
-                        this.objetos.consumible.at(-1)["id"]= this.findAvailableID(this.objetos.consumible);
-                        this.objetos.consumible.at(-1)["nombre"]= "Consumible "+this.objetos.consumible.length;
-                        break;
-                }
-            break;
         }//Fin switch
   }
 
@@ -1238,209 +1218,6 @@ export class DesarrolladorService implements OnInit{
   //    EVENTOS:
   // *************************************************
 
-
-  seleccionarOrden(ordenIndex:number){
-      console.log("Seleccionando Orden: " + this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex].nombre);
-      console.log(this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex]);
-      this.ordenSeleccionadaIndex = ordenIndex;
-      this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex].tipo;
-      this.observarDesarrolladorService.next("reloadFormEventos");
-      return;
-  }
-
-  seleccionarTipoOrden(tipoOrden:string){
-      console.log("Seleccionando Tipo Orden: " + tipoOrden);
-      this.tipoOrdenSeleccionada = tipoOrden;
-      return;
-  }
-
-  seleccionarEvento(eventoIndex: number){
-      this.eventoSeleccionadoIndex = eventoIndex;
-      console.log("Seleccionando Eventos: " + this.eventos.eventos[this.eventoSeleccionadoIndex].nombre);
-      console.warn("Evento: ",this.eventos.eventos[this.eventoSeleccionadoIndex]);
-      this.ordenSeleccionadaIndex = null;
-      this.eventoSeleccionadoId = this.eventos.eventos[this.eventoSeleccionadoIndex].id;
-      this.tipoOrdenSeleccionada = null;
-      this.observarDesarrolladorService.next("reloadFormEventos");
-      return;
-  }
-
-  addEvento(){
-      this.eventos.eventos[this.eventoSeleccionadoIndex].push({
-          id: this.eventos.eventos.length,
-          nombre: "Nuevo Evento",
-          descripcio: "Descripcion de evento",
-          categoria: "null",
-          ordenes: []
-      });
-    return;
-  }
-
-  eliminarEvento(){
-    //Elimina el evento seleccionado:
-      this.eventos.eventos.splice(this.eventoSeleccionadoIndex,1);
-      if(this.eventoSeleccionadoIndex>0){
-          this.eventoSeleccionadoIndex -= 1;
-      }
-      this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[0].tipo;
-      this.ordenSeleccionadaIndex = null;
-      this.observarDesarrolladorService.next("reloadFormEventos");
-  }
-
-  addOrden(tipoOrden: string){
-      //Inicialización de campos de Ordenes:
-      switch(tipoOrden){
-          case "condicion":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  variable: null,
-                  valorVariable: null,
-                  operador: null,
-                  tipoEncadenadoTrue: null,
-                  encadenadoTrue: null,
-                  tipoEncadenadoFalse: null,
-                  encadenadoFalse: null
-              });
-          break;
-          case "variable":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  comando: null,
-                  variableTarget: null,
-                  valorNuevo: null,
-                  valorOperador: null
-              });
-          break;
-          case "mision":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  comando: null,
-                  mision_id: null,
-                  tarea_id: null
-              });
-          break;
-          case "trigger":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  comando: null,
-                  trigger_id: null,
-                  trigger: null
-              });
-          break;
-          case "dialogo":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nuevo "+tipoOrden,
-                  tipo: tipoOrden,
-                  tipoDialogo: null,
-                  contenido: null,
-                  opciones: [],
-                  encadenadoId: null,
-                  tipoEncadenado: null
-              });
-          break;
-          case "multimedia":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  comando: null,
-                  tipoMultimedia: null,
-                  nombreAsset: null
-              });
-          break;
-          case "loot":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  comando: null,
-                  objetivo: null,
-                  oro: 0,
-                  exp: 0,
-                  objetos: null,
-              });
-          break;
-          case "enemigo":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  comando: null,
-                  idEnemigo: null,
-                  tipoEnemigo: null
-              });
-          break;
-          case "mazmorra":
-              this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                  id: this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
-                  nombre: "Nueva "+tipoOrden,
-                  tipo: tipoOrden,
-                  comando: null,
-                  mazmorraId: null,
-                  salaOpenId: null
-              });
-          break;
-      }
-
-      this.tipoOrdenSeleccionada = tipoOrden;
-      this.ordenSeleccionadaIndex = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length-1;
-      this.observarDesarrolladorService.next("reloadFormEventos");
-
-    return;
-  }
-
-  eliminarOrden(){
-    //Elimina la orden Seleccionada:
-      this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.splice(this.ordenSeleccionadaIndex,1);
-      this.ordenSeleccionadaIndex = null;
-      this.tipoOrdenSeleccionada = null;
-      /*
-      if(this.ordenSeleccionadaIndex>0){
-          this.ordenSeleccionadaIndex -= 1;
-      }
-      this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex].tipo;
-      */
-      this.observarDesarrolladorService.next("reloadFormEventos");
-  }
-
-  ordenarOrden(comando: "subir"|"bajar"){
-      if(this.ordenSeleccionadaIndex == null){return;}
-      var indexOrigen = this.ordenSeleccionadaIndex;
-      var indexDestino = 0;
-
-      if(comando=="subir"){
-          indexDestino = indexOrigen-1;
-      }else{
-          indexDestino = indexOrigen+1;
-      }
-
-      //Evitar Swap imposible:
-      if(indexOrigen == indexDestino){
-          return;
-      }else if(indexDestino < 0){
-          console.warn("Evitando Swap por overflow")
-          return;
-      }else if(indexDestino > this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.length-1){
-          console.warn("Evitando Swap por overflow")
-          return;
-      }
-
-      //Comando Swap:
-      this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[indexOrigen] = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes.splice(indexDestino, 1, this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[indexOrigen])[0];
-      this.ordenSeleccionadaIndex = indexDestino;
-      return;
-
-  }
-
   seleccionarClase(clase){
         switch(clase){
             case "Guerrero":
@@ -1521,11 +1298,12 @@ export class DesarrolladorService implements OnInit{
         return;
     }
 
-    testEvento(){
+    testEvento(eventoSeleccionadoId){
         this.appService.actualizarSesion();
         this.eventosService.setEventos(this.eventos);
-        this.eventosService.ejecutarEvento(this.eventoSeleccionadoId);
+        this.eventosService.ejecutarEvento(eventoSeleccionadoId);
     }
+
 
 } //FIN EXPORT
 

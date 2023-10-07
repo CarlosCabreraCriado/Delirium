@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
+import { datosDefecto } from "../datosDefecto"
 
 @Component({
   selector: 'formEnemigosComponent',
@@ -181,10 +182,14 @@ export class FormEnemigosComponent {
 
     reloadForm(){
         console.log("Recargando formulario")
+        this.cargarHechizosDisponibles();
         this.formEnemigo.patchValue(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex]);
         this.formEstadisticas.patchValue(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].estadisticas);
         this.formEscalado.patchValue(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].escalado);
-        this.formAcciones.patchValue(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones[this.accionSeleccionadaIndex]);
+
+        if(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones){
+            this.formAcciones.patchValue(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones[this.accionSeleccionadaIndex]);
+        }
     }
 
     cargarHechizosDisponibles(){
@@ -239,6 +244,22 @@ export class FormEnemigosComponent {
         this.accionSeleccionadaIndex = cantidadAcciones;
         this.formAcciones.patchValue(this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones[this.accionSeleccionadaIndex]);
 
+    }
+
+    seleccionarEnemigo(selector:any){
+
+      //Set Index
+      this.desarrolladorService.enemigoSeleccionadoIndex = selector.index;
+
+      //Actualizar Formulario:
+      this.reloadForm();
+    }
+
+    addEnemigo(){
+        this.desarrolladorService.enemigos.enemigos.push(Object.assign({},datosDefecto.enemigos));
+        this.desarrolladorService.enemigos.enemigos.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.desarrolladorService.enemigos.enemigos);
+        this.desarrolladorService.enemigos.enemigos.at(-1)["nombre"]= "Enemigos "+this.desarrolladorService.enemigos.enemigos.length;
+        this.seleccionarEnemigo({index: this.desarrolladorService.enemigos.enemigos.length-1})
     }
 
 }

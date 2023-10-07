@@ -35,10 +35,6 @@ export class EventosService {
     ejecutarEvento(idEvento:number){
 
         //Cargar Datos de eventos a ejecutar:
-        console.error(this.eventos)
-        console.log("ID: ",idEvento);
-
-
         this.eventoEjecutando = this.eventos.eventos.find(i => i.id==idEvento);
         this.indexOrdenEjecutando = 0;
 
@@ -84,7 +80,6 @@ export class EventosService {
                 //Preprocesado de Orden:
                 if(orden.tipoPersonajeDerecha == "self"){
                     var heroeIndex = this.appService.getHeroePropioSesionIndex();
-                    console.warn(this.sesion,heroeIndex)
                     orden.tipoPersonajeDerecha = "heroes";
                     orden.imagenPersonajeDerecha = this.sesion.render.heroes[heroeIndex]["id_imagen"];
                     orden.nombrePersonajeDerecha = this.sesion.render.heroes[heroeIndex]["nombre"];
@@ -116,7 +111,6 @@ export class EventosService {
 
                   if(result != "continuar"){
                       var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==orden.opciones[result]["ordenIdEncadanado"])
-                      console.warn("Direccionando: ", indexEncadenado)
                       this.ejecutarOrden(indexEncadenado);
                   }else{
                       this.ejecutarOrden(indexOrden+1);
@@ -125,35 +119,45 @@ export class EventosService {
                 });
                 break;
             case "NarradorImg":
-                console.warn("PROCESANDO NARRADOR IMG: ", orden);
                 var dialogRef = this.mostrarDialogo("NarradorImg",{
                     titulo: orden.titulo,
                     contenido: orden.contenido, 
                     tipoImagen: orden.tipoImagen,
+                    ordenEncadenado: orden.ordenEncadenado,
                     imagenId: orden.imagenId
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
                   console.log('Fin del dialogo');
                   console.log(result)
-                  this.ejecutarOrden(indexOrden+1);
+                  if(result!=null){
+                    var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
+                    this.ejecutarOrden(indexEncadenado);
+                  }else{
+                    this.ejecutarOrden(indexOrden+1);
+                  }
                 });
                 
                 break;
 
             case "Diapositiva":
-                console.warn("PROCESANDO DIAPOSITIVA: ", orden);
                 var dialogRef = this.mostrarDialogo("Diapositiva",{
                     titulo: orden.titulo,
                     contenido: orden.contenido, 
                     tipoImagen: orden.tipoImagen,
+                    ordenEncadenado: orden.ordenEncadenado,
                     imagenId: orden.imagenId
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
                   console.log('Fin del dialogo');
                   console.log(result)
-                  this.ejecutarOrden(indexOrden+1);
+                  if(result!=null){
+                    var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
+                    this.ejecutarOrden(indexEncadenado);
+                  }else{
+                    this.ejecutarOrden(indexOrden+1);
+                  }
                 });
                 
                 break;
@@ -340,6 +344,7 @@ export class EventosService {
               imagenId: config.imagenId,
               opciones: config.opciones, 
               interlocutor: config.interlocutor,
+              ordenEncadenado: config.ordenEncadenado,
               mostrarPersonajeDerecha: config.mostrarPersonajeDerecha, 
               mostrarPersonajeIzquierda: config.mostrarPersonajeIzquierda,
               tipoPersonajeDerecha: config.tipoPersonajeDerecha, 

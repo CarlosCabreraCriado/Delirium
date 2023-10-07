@@ -20,7 +20,8 @@
             [minPanScale]="1" 
             [disableZoomControl]="'disable'"
             [double-tap]="false"
-            [limit-zoom]="10">
+            [limit-zoom]="10"
+            >
 
             <div *ngIf="mostrarCentro" id="marcadorCentro"></div>
 
@@ -44,7 +45,7 @@
             <div class="floor">
                 <!-- rotateX(55deg) rotateZ(45deg) -->
 
-                  <div class="player"[ngStyle]="{'transform': 'translate('+(50*mapaGeneralService.radioRenderIsometrico)+'px, '+(50*mapaGeneralService.radioRenderIsometrico)+'px)'}">
+                  <div *ngIf="!desarrollo" class="player"[ngStyle]="{'transform': 'translate('+(50*mapaGeneralService.radioRenderIsometrico)+'px, '+(50*mapaGeneralService.radioRenderIsometrico)+'px)'}">
                      <!-- player 1 -->
                      <!-- Flecha NorEste -->
                      <div class="player">
@@ -66,7 +67,7 @@
                          <div *ngFor="let tile of this.mapaGeneralService.renderIsometrico[i];let j = index" 
                              data-cords='[tile.coordenadaX,tile.coordenadaY]' 
                              class="tile" 
-                             [ngStyle]="{'transform': 'translate('+(50*j)+'px,'+(50*i)+'px)','pointer-events':'none'}" 
+                             [ngStyle]="{'transform': 'translate('+(50*j)+'px,'+(50*i)+'px)','pointer-events': pointerEventCelda}" 
                              [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" 
                              (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)" 
                              (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >

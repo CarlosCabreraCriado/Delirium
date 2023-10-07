@@ -11,6 +11,8 @@
             [botonAdd]="true"
             [lateral]="'izquierda'"
             [botonEliminarRelacion]="false"
+            (addElementoEmitter)="addEnemigo()"
+            (selector)="seleccionarEnemigo($event)"
             >
     </panelSelectorComponent>
 
@@ -136,7 +138,7 @@
                 </form>
                 </ng-container>
 
-                <ng-container *ngIf="opcionSeleccionada=='acciones'">
+                <ng-container *ngIf="opcionSeleccionada=='acciones' ">
 
                 <!-- Inicio Lista Acciones -->
                 <div class="contenedorSubLista contenedorSonido">
@@ -145,8 +147,7 @@
                     <div *ngFor="let accion of this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones; let i=index"  class="elemento" [ngClass]="{'seleccionado': accionSeleccionadaIndex==i}" (click)="seleccionarAccion(i)">{{accion.nombre}}</div>
                 </div>
                 <div class="botonAdd botonAccion" (click)="addAccion()">Añadir</div>
-
-                <form  id="formularioAcciones" [formGroup]="formAcciones">
+                <form *ngIf="desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones"  id="formularioAcciones" [formGroup]="formAcciones">
                       <mat-form-field appearance="legacy"  class="campo campo1">
                         <mat-label>Nombre</mat-label>
                         <input matInput formControlName="nombre">

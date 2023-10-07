@@ -27,10 +27,13 @@ private confirmation: boolean = false;
 
     ngOnInit(){
         console.warn("Iniciando Dialogo:",this.data)
-        this.data.contenido = this.data.contenido.replaceAll("\n","</br>");
+        this.textosDialogo = [];
+        if(this.data.contenido){
+            this.data.contenido = this.data.contenido.replaceAll("\n","</br>");
+            this.textosDialogo = this.data.contenido.split("$");
+        }
         this.indexTextoMostrado = 0;
         this.opciones = [];
-        this.textosDialogo = this.data.contenido.split("$");
         if(this.textosDialogo.length == 1){
             this.opciones = this.data.opciones;
         }

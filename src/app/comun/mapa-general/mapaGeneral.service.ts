@@ -35,6 +35,11 @@ export class MapaGeneralService {
   //    INMAP:
   // ************************************************* 
 
+  setDesarrollador(val:boolean){
+      this.desarrollador = val;
+      return;
+  }
+
   async cargarRegion(zona:string){
 
         console.warn("CARGAR REGION: ",zona);
@@ -122,7 +127,6 @@ export class MapaGeneralService {
         this.appService.setEstadoInMap(this.estadoInMap);
 
         this.eventoMapaGeneral.emit("cargaMapaCompleta");
-
         //this.regularizarRegion();
   }
 

@@ -68,6 +68,8 @@ export class DesarrolladorComponent implements OnInit{
     //Configuracion MapaGeneral:
     private mostrarNieblaGuerra = false;
     private mostrarInfranqueable = false;
+    private mostrarTriggers = false;
+    public escalaMapaIsometrico:number = 1;
 
     //Opciones Selectores:
     private opcionesInMapIndicador = ["Mision","Evento"]
@@ -189,8 +191,8 @@ export class DesarrolladorComponent implements OnInit{
             this.appService.mostrarPantallacarga(false);
             //this.desarrolladorService.abrirTrigger("inmap",{})
         }, 3000);
-
         return;
+
     }
 
     /*
@@ -254,29 +256,6 @@ export class DesarrolladorComponent implements OnInit{
         }
     }
 
-    renderListaSeleccionado(opcionSeleccionado:string,indiceSeleccionado:number){
-        switch(opcionSeleccionado){
-            case "subanimacion":
-                if(this.desarrolladorService.subanimacionSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-                break;
-            case "sonido":
-                break;
-            case "hechizo":
-                if(this.desarrolladorService.hechizoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-                break;
-            case "buff":
-                if(this.desarrolladorService.buffSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-                break;
-            case "animaciones":
-                if(this.desarrolladorService.animacionSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-                break;
-            case "orden":
-                if(this.desarrolladorService.ordenSeleccionadaIndex==indiceSeleccionado){return "seleccionado"}
-                break;
-        }
-        return "";
-    }
-
     renderizarSector(i,j){
         return;
     }
@@ -284,8 +263,6 @@ export class DesarrolladorComponent implements OnInit{
     mostrarEstadisticasEnemigo(){
         return;
     }
-
-
 
     renderizarSelector(opcion:string){
 
@@ -411,6 +388,10 @@ export class DesarrolladorComponent implements OnInit{
 
     }
 
+    zoomMapaIsometrico(val){
+        this.escalaMapaIsometrico += val;
+        this.escalaMapaIsometrico = Math.round(this.escalaMapaIsometrico * 100) / 100;
+    }
 
 }
 

@@ -466,7 +466,7 @@
 
         <!-- FORMULARIO DE ENEMIGOS -->
         <div *ngIf="estadoMazmorra=='eventos'" class="contenidoParametros">
-            <formEventosComponent class="formularioEventos"></formEventosComponent>
+            <formEventosComponent [eventos]="mazmorra.eventos" (sizeChange)="mazmorra.eventos=$event" class="formularioEventos"></formEventosComponent>
         </div>
 
     </div>

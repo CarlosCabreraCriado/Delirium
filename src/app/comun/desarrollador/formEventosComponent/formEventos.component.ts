@@ -1,9 +1,10 @@
 
 
-import { Component , Input } from '@angular/core';
+import { Component , Input, Output, EventEmitter } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup,FormArray} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
+import { datosDefecto } from "../datosDefecto"
 
 @Component({
   selector: 'formEventosComponent',
@@ -82,6 +83,7 @@ export class FormEventosComponent {
 
   	private opciones_Orden_Dialogo = new UntypedFormControl([]);
   	private interlocutor_Orden_Dialogo = new UntypedFormControl(null);
+  	private ordenEncadenado_Orden_Dialogo = new UntypedFormControl(null);
   	private mostrarPersonajeDerecha_Orden_Dialogo = new UntypedFormControl(false);
   	private mostrarPersonajeIzquierda_Orden_Dialogo = new UntypedFormControl(false);
   	private tipoPersonajeDerecha_Orden_Dialogo = new UntypedFormControl("npc");
@@ -161,6 +163,7 @@ export class FormEventosComponent {
             imagenId: this.imagenId_Orden_Dialogo,
             opciones: this.formBuilder.array([]),
             interlocutor: this.interlocutor_Orden_Dialogo,
+            ordenEncadenado: this.ordenEncadenado_Orden_Dialogo,
             mostrarPersonajeDerecha: this.mostrarPersonajeDerecha_Orden_Dialogo,
             mostrarPersonajeIzquierda: this.mostrarPersonajeIzquierda_Orden_Dialogo,
             tipoPersonajeDerecha: this.tipoPersonajeDerecha_Orden_Dialogo,
@@ -170,6 +173,14 @@ export class FormEventosComponent {
             nombrePersonajeDerecha: this.nombrePersonajeDerecha_Orden_Dialogo,
             nombrePersonajeIzquierda: this.nombrePersonajeIzquierda_Orden_Dialogo
         }); 
+
+    public eventoSeleccionadoIndex = 0;
+    public eventoSeleccionadoId = 0;
+    public tipoOrdenSeleccionada = "Condición";
+    public ordenSeleccionadaIndex = null;
+
+	@Input() eventos: any = [];
+    @Output() eventosChange = new EventEmitter<any>();
 
 	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
@@ -278,233 +289,250 @@ export class FormEventosComponent {
         }); 
 
 		//Suscripcion de Recarga Formulario:
-		this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe(
-	        (val) => {
-	            switch (val) {
-                    case "reloadFormEventos":
-                        //Formulario Evento:
-                        this.formEvento.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex]);
-
-                        //Formulario Orden:
-                        this.formOrden.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-
-                        //Formulario Parametros Orden:
-                        //this.formParametrosOrden.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                        
-                        switch(this.desarrolladorService.tipoOrdenSeleccionada){
-                            case "condicion":
-                            this.formOrdenCondicion.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "variable":
-                            this.formOrdenVariable.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "dialogo":
-
-                            var orden = this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]
-
-                            this.flagEvitarChangeDetection = true;
-                            this.formOrdenDialogo.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            var formArray = this.formBuilder.array([]);
-                            for(var i=0; i < orden.opciones.length; i++){
-                               formArray.push(this.formBuilder.group({
-                                   textoOpcion: orden.opciones[i].textoOpcion,
-                                   ordenIdEncadanado: orden.opciones[i].ordenIdEncadanado
-                               }))
-                            }
-                            this.formOrdenDialogo.setControl('opciones', formArray); 
-                            this.flagEvitarChangeDetection = false;
-                            break;
-                            case "mision":
-                            this.formOrdenMision.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "trigger":
-                            this.formOrdenTrigger.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "multimedia":
-                            this.formOrdenMultimedia.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "loot":
-                            this.formOrdenLoot.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "hechizo":
-                            this.formOrdenHechizo.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "enemigo":
-                            this.formOrdenEnemigo.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "tiempo":
-                            this.formOrdenTiempo.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                            case "mazmorra":
-                            this.formOrdenMazmorra.patchValue(this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex]);
-                            break;
-                        }
-                    break;
-                }
+		this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe((val) => {
+                this.reloadForm(val);
             }) // Fin Suscripcion
-
 
 		//Suscripcion de cambios formulario Eventos:
 		this.formEvento.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.eventoSeleccionadoIndex>=0){
+			if(this.eventoSeleccionadoIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && key!="ordenes") {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Ordenes:
 		this.formOrden.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key=="id"||key=="tipo"||key=="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Condicion):
 		this.formOrdenCondicion.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Variables):
 		this.formOrdenVariable.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Dialogo):
 		this.formOrdenDialogo.valueChanges.subscribe((val) =>{
             if(this.flagEvitarChangeDetection){return;}
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Mision):
 		this.formOrdenMision.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
 			//console.log(val)
+            this.eventosChange.emit(this.eventos);
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Trigger):
 		this.formOrdenTrigger.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Multimedia):
 		this.formOrdenMultimedia.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Loot):
 		this.formOrdenLoot.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Hechizo):
 		this.formOrdenHechizo.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Enemigo):
 		this.formOrdenEnemigo.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Tiempo):
 		this.formOrdenTiempo.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
 		//Suscripcion de cambios formulario Parametros Ordenes (Mazmorra):
 		this.formOrdenMazmorra.valueChanges.subscribe((val) =>{
-			if(this.desarrolladorService.ordenSeleccionadaIndex>=0){
+			if(this.ordenSeleccionadaIndex>=0){
                 for (var key in val) {
                   if (val.hasOwnProperty(key) && (key!="id" && key!="tipo" && key!="nombre")) {
-				    this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex][key]= val[key];
+				    this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex][key]= val[key];
                   }
                 }
 			}
+            this.eventosChange.emit(this.eventos);
 			//console.log(val)
 		});
 
+        this.seleccionarEvento({tipo: "evento",index: 0})
+
     } //Fin OnInit
 
+    reloadForm(val: string){
+        switch (val) {
+            case "reloadFormEventos":
+                //Formulario Evento:
+                this.formEvento.patchValue(this.eventos[this.eventoSeleccionadoIndex]);
+
+                //Formulario Orden:
+                this.formOrden.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+
+                //Formulario Parametros Orden:
+                //this.formParametrosOrden.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                
+                switch(this.tipoOrdenSeleccionada){
+                    case "condicion":
+                    this.formOrdenCondicion.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "variable":
+                    this.formOrdenVariable.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "dialogo":
+
+                    var orden = this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]
+
+                    this.flagEvitarChangeDetection = true;
+                    this.formOrdenDialogo.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    var formArray = this.formBuilder.array([]);
+                    for(var i=0; i < orden.opciones.length; i++){
+                       formArray.push(this.formBuilder.group({
+                           textoOpcion: orden.opciones[i].textoOpcion,
+                           ordenIdEncadanado: orden.opciones[i].ordenIdEncadanado
+                       }))
+                    }
+                    this.formOrdenDialogo.setControl('opciones', formArray); 
+                    this.flagEvitarChangeDetection = false;
+                    break;
+                    case "mision":
+                    this.formOrdenMision.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "trigger":
+                    this.formOrdenTrigger.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "multimedia":
+                    this.formOrdenMultimedia.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "loot":
+                    this.formOrdenLoot.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "hechizo":
+                    this.formOrdenHechizo.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "enemigo":
+                    this.formOrdenEnemigo.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "tiempo":
+                    this.formOrdenTiempo.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                    case "mazmorra":
+                    this.formOrdenMazmorra.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                    break;
+                }
+            break;
+        }
+    }//Fin Reload Form.
+
 	renderListaSeleccionado(indexOrden:number){
-        if(this.desarrolladorService.ordenSeleccionadaIndex == indexOrden){
+        if(this.ordenSeleccionadaIndex == indexOrden){
             return "seleccionado"
         }
 		return "";
@@ -541,7 +569,7 @@ export class FormEventosComponent {
     renderizarOrdenSeleccionada(tipoOrden:string){
         tipoOrden = this.formatearTipoOrden(tipoOrden)
         var clase = {}; 
-        if(tipoOrden.toLowerCase() == this.desarrolladorService.tipoOrdenSeleccionada){
+        if(tipoOrden.toLowerCase() == this.tipoOrdenSeleccionada){
             clase = {
                 "background-color": "white", 
                 "color": "black"
@@ -559,17 +587,216 @@ export class FormEventosComponent {
     }
 
     eliminarOpcion(indexOpcion: number){
-        this.desarrolladorService.eventos.eventos[this.desarrolladorService.eventoSeleccionadoIndex].ordenes[this.desarrolladorService.ordenSeleccionadaIndex].opciones.splice(indexOpcion,1)
-        this.desarrolladorService.seleccionarOrden(this.desarrolladorService.ordenSeleccionadaIndex)
+        this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex].opciones.splice(indexOpcion,1)
+        this.seleccionarOrden(this.ordenSeleccionadaIndex)
     }
 
      get opciones() {
         return this.formOrdenDialogo.controls["opciones"] as FormArray;
     }
 
+    seleccionarEvento(selector){
+        this.eventoSeleccionadoIndex = selector["index"];
+        this.ordenSeleccionadaIndex = null;
+        this.eventoSeleccionadoId = this.eventos[this.eventoSeleccionadoIndex].id;
+        this.tipoOrdenSeleccionada = null;
+        console.log("Seleccionando Evento: " + this.eventos[this.eventoSeleccionadoIndex]);
+        this.reloadForm("reloadFormEventos");
+        return;
+    }
+
+    seleccionarOrden(ordenIndex:number){
+        console.log(this.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex]);
+        this.ordenSeleccionadaIndex = ordenIndex;
+        this.tipoOrdenSeleccionada = this.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex].tipo;
+        console.log("Seleccionando Orden: " + this.eventos[this.eventoSeleccionadoIndex].ordenes[ordenIndex]);
+        this.reloadForm("reloadFormEventos");
+        return;
+    }
+
+    addEvento(){
+        this.eventos.push(Object.assign({},datosDefecto.eventos));
+        this.eventos.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.eventos);
+        this.eventos.at(-1)["nombre"]= "Evento "+this.eventos.length;
+    }
+
+    eliminarEvento(){
+        //Elimina el evento seleccionado:
+        this.eventos.splice(this.eventoSeleccionadoIndex,1);
+        if(this.eventoSeleccionadoIndex>0){
+            this.eventoSeleccionadoIndex -= 1;
+        }
+        this.tipoOrdenSeleccionada = this.eventos[this.eventoSeleccionadoIndex].ordenes[0].tipo;
+        this.ordenSeleccionadaIndex = null;
+        this.reloadForm("reloadFormEventos");
+    }
+
+    seleccionarTipoOrden(tipoOrden:string){
+        console.log("Seleccionando Tipo Orden: " + tipoOrden);
+        this.tipoOrdenSeleccionada = tipoOrden;
+        return;
+    }
+
+    ordenarOrden(comando: "subir"|"bajar"){
+        if(this.ordenSeleccionadaIndex == null){return;}
+        var indexOrigen = this.ordenSeleccionadaIndex;
+        var indexDestino = 0;
+
+        if(comando=="subir"){
+            indexDestino = indexOrigen-1;
+        }else{
+            indexDestino = indexOrigen+1;
+        }
+
+        //Evitar Swap imposible:
+        if(indexOrigen == indexDestino){
+            return;
+        }else if(indexDestino < 0){
+            console.warn("Evitando Swap por overflow")
+            return;
+        }else if(indexDestino > this.eventos[this.eventoSeleccionadoIndex].ordenes.length-1){
+            console.warn("Evitando Swap por overflow")
+            return;
+        }
+
+        //Comando Swap:
+        this.eventos[this.eventoSeleccionadoIndex].ordenes[indexOrigen] = this.eventos[this.eventoSeleccionadoIndex].ordenes.splice(indexDestino, 1, this.eventos[this.eventoSeleccionadoIndex].ordenes[indexOrigen])[0];
+        this.ordenSeleccionadaIndex = indexDestino;
+        return;
+
+    }
+
+    addOrden(tipoOrden: string){
+          //Inicialización de campos de Ordenes:
+          switch(tipoOrden){
+              case "condicion":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      variable: null,
+                      valorVariable: null,
+                      operador: null,
+                      tipoEncadenadoTrue: null,
+                      encadenadoTrue: null,
+                      tipoEncadenadoFalse: null,
+                      encadenadoFalse: null
+                  });
+              break;
+              case "variable":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      comando: null,
+                      variableTarget: null,
+                      valorNuevo: null,
+                      valorOperador: null
+                  });
+              break;
+              case "mision":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      comando: null,
+                      mision_id: null,
+                      tarea_id: null
+                  });
+              break;
+              case "trigger":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      comando: null,
+                      trigger_id: null,
+                      trigger: null
+                  });
+              break;
+              case "dialogo":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nuevo "+tipoOrden,
+                      tipo: tipoOrden,
+                      tipoDialogo: null,
+                      contenido: null,
+                      opciones: [],
+                      encadenadoId: null,
+                      tipoEncadenado: null
+                  });
+              break;
+              case "multimedia":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      comando: null,
+                      tipoMultimedia: null,
+                      nombreAsset: null
+                  });
+              break;
+              case "loot":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      comando: null,
+                      objetivo: null,
+                      oro: 0,
+                      exp: 0,
+                      objetos: null,
+                  });
+              break;
+              case "enemigo":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      comando: null,
+                      idEnemigo: null,
+                      tipoEnemigo: null
+                  });
+              break;
+              case "mazmorra":
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
+                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      nombre: "Nueva "+tipoOrden,
+                      tipo: tipoOrden,
+                      comando: null,
+                      mazmorraId: null,
+                      salaOpenId: null
+                  });
+              break;
+          }
+
+          this.tipoOrdenSeleccionada = tipoOrden;
+          this.ordenSeleccionadaIndex = this.eventos[this.eventoSeleccionadoIndex].ordenes.length-1;
+          this.reloadForm("reloadFormEventos");
+
+        return;
+    }
+
+    eliminarOrden(){
+        //Elimina la orden Seleccionada:
+          this.eventos[this.eventoSeleccionadoIndex].ordenes.splice(this.ordenSeleccionadaIndex,1);
+          this.ordenSeleccionadaIndex = null;
+          this.tipoOrdenSeleccionada = null;
+          /*
+          if(this.ordenSeleccionadaIndex>0){
+              this.ordenSeleccionadaIndex -= 1;
+          }
+          this.tipoOrdenSeleccionada = this.eventos.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex].tipo;
+          */
+          this.reloadForm("reloadFormEventos");
+    }
+
+    testEvento(){
+        this.eventosChange.emit(this.eventos);
+        this.desarrolladorService.testEvento(this.eventoSeleccionadoId);
+    }
+
 }
-
-
 
 
 

@@ -21,6 +21,7 @@ export class PanelSelectorComponent {
     @Input() tipo: string= "Hechizos";
     @Input() titulo: string= "";
     @Input() lateral: string= "";
+    @Input() indexSeleccionado: number= 0;
 
     @Input() botonAdd: boolean= false;
     @Input() botonEliminarRelacion: boolean= true;
@@ -28,49 +29,32 @@ export class PanelSelectorComponent {
     @Output() selector = new EventEmitter<Selector>();
     @Output() addElementoEmitter = new EventEmitter<void>();
 
-    private indexSeleccionado = 0;
-
 	constructor(public desarrolladorService: DesarrolladorService) {}
 
 	async ngOnInit(){
 
     } //Fin OnInit
 
-	renderListaSeleccionado(opcionSeleccionado:string,indiceSeleccionado:number){
-		switch(opcionSeleccionado){
-			case "equipo":
-				if(this.desarrolladorService.indexEquipoSeleccionado==indiceSeleccionado){return "seleccionado"}
-				break;
-			case "consumible":
-				if(this.desarrolladorService.indexConsumibleSeleccionado==indiceSeleccionado){return "seleccionado"}
-				break;
-			case "hechizo":
-				if(this.desarrolladorService.hechizoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-				break;
+	renderListaSeleccionado(indiceRender:number,opcionEncadenado?:string){
+
+        if(opcionEncadenado){
+		switch(opcionEncadenado){
 			case "animacionHechizo":
-                var animacionId = this.desarrolladorService.animaciones.animaciones[indiceSeleccionado].id;
+                var animacionId = this.desarrolladorService.animaciones.animaciones[indiceRender].id;
 				if(this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex].animacion_id==animacionId){return "seleccionado"}
 				break;
-			case "buff":
-				if(this.desarrolladorService.buffSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-				break;
+
 			case "animacionBuff":
-                var animacionId = this.desarrolladorService.animaciones.animaciones[indiceSeleccionado].id;
+                var animacionId = this.desarrolladorService.animaciones.animaciones[indiceRender].id;
 				if(this.desarrolladorService.buff.buff[this.desarrolladorService.buffSeleccionadoIndex].animacion_id==animacionId){return "seleccionado"}
 				break;
-			case "enemigos":
-				if(this.desarrolladorService.enemigoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-				break;
-			case "eventos":
-				if(this.desarrolladorService.eventoSeleccionadoIndex==indiceSeleccionado){return "seleccionado"}
-				break;
-			case "misiones":
-				if(this.desarrolladorService.misionSeleccionadaIndex==indiceSeleccionado){return "seleccionado"}
-				break;
-			case "trigger":
-				if(this.indexSeleccionado==indiceSeleccionado){return "seleccionado"}
-				break;
+
 		}
+        }else{
+
+            if(this.indexSeleccionado == indiceRender){return "seleccionado"}
+        }
+
 		return "";
 	}
 
@@ -92,6 +76,7 @@ export class PanelSelectorComponent {
     }
 
     seleccionarElemento(indexSeleccionado: number){
+        console.warn("SELECIONANDO",indexSeleccionado)
         var selector = {
             tipo: this.tipo,
             index: indexSeleccionado
@@ -101,12 +86,9 @@ export class PanelSelectorComponent {
     }
 
     addElemento(){
-        if(this.tipo=="Triggers"){
-            this.addElementoEmitter.emit();
-            this.indexSeleccionado = this.datos.length-1;
-        }else{
-            this.desarrolladorService.addDato()
-        }
+        this.addElementoEmitter.emit();
+        this.indexSeleccionado = this.datos.length-1;
+        //this.desarrolladorService.addDato()
     }
 
 }

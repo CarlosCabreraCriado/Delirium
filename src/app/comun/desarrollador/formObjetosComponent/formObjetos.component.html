@@ -11,6 +11,8 @@
             [botonAdd]="true"
             [lateral]="'izquierda'"
             [botonEliminarRelacion]="false"
+            (addElementoEmitter)="addEquipo()"
+            (selector)="seleccionarObjeto($event)"
             >
     </panelSelectorComponent>
 
@@ -21,6 +23,8 @@
             [botonAdd]="true"
             [lateral]="'izquierda'"
             [botonEliminarRelacion]="false"
+            (addElementoEmitter)="addConsumible()"
+            (selector)="seleccionarObjeto($event)"
             >
     </panelSelectorComponent>
 

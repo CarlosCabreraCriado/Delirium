@@ -152,7 +152,6 @@ export class InMapService {
             }
         }
 
-
         //REDIRIGE A ASFALOTH POR DEFECTO:
         this.mapaGeneralService.cargarRegion("Asfaloth");
         this.estadoInMap = "region";

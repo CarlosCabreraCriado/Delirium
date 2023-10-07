@@ -86,8 +86,8 @@
 
             <div class="tituloSeccion">Posición:</div>
             <div class="selectorPosicion">
-                <div class="formPosicionX">X:</div>
-                <div class="formPosicionY">Y:</div>
+                <div class="formPosicionX">X: {{coordenadaSeleccionadaX}}</div>
+                <div class="formPosicionY">Y: {{coordenadaSeleccionadaY}}</div>
                 <div class="botonIr" (click)="posicionarMapaIsometrico()">Posicionar</div>
             </div>
 
@@ -103,6 +103,9 @@
 
 			<mat-label>Mostrar Infranqueable: </mat-label>
             <mat-checkbox  [(ngModel)]="mostrarInfranqueable"></mat-checkbox>
+
+			<mat-label>Mostrar Triggers: </mat-label>
+            <mat-checkbox  [(ngModel)]="mostrarTriggers"></mat-checkbox>
 
         </div>
 
@@ -132,13 +135,17 @@
         <!-- Fondo Mapa -->
         <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
             <mapaGeneralComponent id="mapaGeneralComponent"
-                                  (tileCopiado)="copiarTile($event)" 
-                                  (tileSeleccionado)="seleccionarTile($event)" 
-                                  [tileImgSeleccionado]="desarrolladorService.tileImgSeleccionado"
-                                  [desarrollo]="true"
-                                  [mostrarInfranqueable]="mostrarInfranqueable"
-                                  [mostrarNiebla]="mostrarNieblaGuerra"
-                                  [opcionesDesarrolloInMap]="desarrolladorService.opcionesDesarrolloInMap"></mapaGeneralComponent>
+                (tileCopiado)="copiarTile($event)" 
+                (tileSeleccionado)="seleccionarTile($event)" 
+                [tileImgSeleccionado]="desarrolladorService.tileImgSeleccionado"
+                [desarrollo]="true"
+                [herramientaInMap]="desarrolladorService.opcionesDesarrolloInMap.herramientaInMap"
+                [escalaMapaIsometrico]="escalaMapaIsometrico"
+                [mostrarInfranqueable]="mostrarInfranqueable"
+                [mostrarNiebla]="mostrarNieblaGuerra"
+                [mostrarTriggers]="mostrarTriggers"
+                [opcionesDesarrolloInMap]="desarrolladorService.opcionesDesarrolloInMap">
+            </mapaGeneralComponent>
         </div>
 
     <!--Panel Inferior-->
@@ -285,6 +292,7 @@
 <!-- *************************************************
         PANEL DATOS
      ************************************************* -->
+
     <div *ngIf="desarrolladorService.panel=='import/export'" id="panelDatos">
       <div class="contenedorBarraAccion">
         <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('ver')" (click)="desarrolladorService.seleccionarAccionDato('ver');">VER</div>
@@ -423,7 +431,7 @@
       <formBuffComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'"></formBuffComponent>
       <formAnimacionesComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'"></formAnimacionesComponent>
       <formEnemigosComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Enemigos'"></formEnemigosComponent>
-      <formEventosComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'"></formEventosComponent>
+      <formEventosComponent [eventos]="desarrolladorService.eventos.eventos" (sizeChange)="desarrolladorService.eventos.eventos=$event" class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'"></formEventosComponent>
       <formMisionesComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Misiones'"></formMisionesComponent>
 
       </div>

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
+import { datosDefecto } from "../datosDefecto"
 
 @Component({
   selector: 'formObjetosComponent',
@@ -161,7 +162,6 @@ export class FormObjetosComponent {
 
     reloadForm(){
 
-        console.log("Recargando formulario")
         if(this.desarrolladorService.tipoObjetoSeleccionado=="Equipo"){
             console.log(this.desarrolladorService.objetos.equipo[this.desarrolladorService.indexEquipoSeleccionado])
         }
@@ -178,6 +178,34 @@ export class FormObjetosComponent {
         this.formConsumible.patchValue(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
 
         this.formPropiedadesConsumible.patchValue(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
+    }
+
+    seleccionarObjeto(selector:any){
+
+      if(this.desarrolladorService.tipoObjetoSeleccionado == "Equipo"){
+          this.desarrolladorService.indexEquipoSeleccionado = selector.index;
+      }
+
+      if(this.desarrolladorService.tipoObjetoSeleccionado == "Consumible"){
+          this.desarrolladorService.indexConsumibleSeleccionado = selector.index;
+      }
+
+      //Actualizar Formulario:
+      this.reloadForm();
+    }
+
+    addEquipo(){
+        this.desarrolladorService.objetos.equipo.push(Object.assign({},datosDefecto.equipo));
+        this.desarrolladorService.objetos.equipo.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.desarrolladorService.objetos.equipo);
+        this.desarrolladorService.objetos.equipo.at(-1)["nombre"]= "Equipo "+this.desarrolladorService.objetos.equipo.length;
+        this.seleccionarObjeto({index: this.desarrolladorService.objetos.equipo.length-1})
+    }
+
+    addConsumible(){
+        this.desarrolladorService.objetos.consumible.push(Object.assign({},datosDefecto.consumible));
+        this.desarrolladorService.objetos.consumible.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.desarrolladorService.objetos.consumible);
+        this.desarrolladorService.objetos.consumible.at(-1)["nombre"]= "Consumible "+this.desarrolladorService.objetos.consumible.length;
+        this.seleccionarObjeto({index: this.desarrolladorService.objetos.consumible.length-1})
     }
 
 }

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { DesarrolladorService } from '../desarrollador.service';
 import { Subscription } from "rxjs";
+import { datosDefecto } from "../datosDefecto"
 
 @Component({
   selector: 'formHechizosComponent',
@@ -82,12 +83,7 @@ export class FormHechizosComponent {
         //Suscripcion de Recarga Formulario:
         this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe(
             (val) => {
-                switch (val) {
-                    case "reloadFormHechizos":
-                    case "reloadForm":
-                        this.formHechizos.setValue(this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex]);
-                    break;
-                }
+                this.reloadForm(val)
             }) // Fin Suscripcion
 
         //Suscripcion de dambios formulario Hechizos:
@@ -129,6 +125,31 @@ export class FormHechizosComponent {
         }
 
         return ""
+    }
+
+    reloadForm(val:string){
+        switch (val) {
+            case "reloadFormHechizos":
+            case "reloadForm":
+                this.formHechizos.setValue(this.desarrolladorService.hechizos.hechizos[this.desarrolladorService.hechizoSeleccionadoIndex]);
+            break;
+        }
+    }
+
+    seleccionarHechizo(selector:any){
+
+      //Set Index
+      this.desarrolladorService.hechizoSeleccionadoIndex = selector.index;
+
+      //Actualizar Formulario:
+      this.reloadForm("reloadForm");
+    }
+
+    addHechizo(){
+        this.desarrolladorService.hechizos.hechizos.push(Object.assign({},datosDefecto.hechizos));
+        this.desarrolladorService.hechizos.hechizos.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.desarrolladorService.hechizos.hechizos);
+        this.desarrolladorService.hechizos.hechizos.at(-1)["nombre"]= "Hechizo "+this.desarrolladorService.hechizos.hechizos.length;
+        this.seleccionarHechizo({index: this.desarrolladorService.hechizos.hechizos.length-1})
     }
 
 }

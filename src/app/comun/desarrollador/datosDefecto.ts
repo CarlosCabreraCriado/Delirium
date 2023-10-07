@@ -78,7 +78,8 @@ export const datosDefecto = {
                 "offset_x": 0,
                 "offset_y": 0,
                 "rotate": 0,
-                "scale": 1
+                "scaleX": 1,
+                "scaleY": 1
             }
           ]
     },
@@ -114,6 +115,7 @@ export const datosDefecto = {
         },
         "hechizos": [1,2,3],
         "movimiento_base": 4,
+        "acciones": [],
         "alcance": 1,
         "perma_buff_id": [],
         "hechizos_id": 1,

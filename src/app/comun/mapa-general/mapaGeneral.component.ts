@@ -38,6 +38,7 @@ export class MapaGeneralComponent implements OnInit {
     private coordenadaY: number = 0;  //PENDINTE DECOMISION
     private regionSeleccionada: string = "";
     public opcionOverlay: boolean = false;
+    public pointerEventCelda: "all"|"none" = "none"
 
     public traslacionIsometricoX: number = 0;
     public traslacionIsometricoY: number = 0;
@@ -52,9 +53,11 @@ export class MapaGeneralComponent implements OnInit {
 	@Input() desarrollo: boolean = false;
 	@Input() mostrarNiebla: boolean = true;
 	@Input() mostrarNieblaFija: boolean = false;
-	@Input() mostrarInfranqueable: boolean;
+	@Input() mostrarInfranqueable: boolean = false;
+	@Input() mostrarTriggers: boolean = false;
 	@Input() mostrarCentro: boolean = false;
 	@Input() esTurnoPropio: boolean = false;
+	@Input() escalaMapaIsometrico: number = 1;
 
 	@Input() coordenadas: Coordenadas = null; //PENDINTE DECOMISION
 	@Input() radioRenderIsometrico: number;
@@ -128,12 +131,14 @@ export class MapaGeneralComponent implements OnInit {
                   break;
 
               case "cargarMapa":
+                    console.warn("CARGANDO")
                     this.mapaCargado = false;
                     this.mostrarNubes = true;
                     this.cdr.detectChanges();
                     break;
 
               case "cargaMapaCompleta":
+                    console.warn("CARGA COMPLETA")
                     this.mapaCargado = true;
                     this.cdr.detectChanges();
                     setTimeout(()=>{
@@ -158,6 +163,13 @@ export class MapaGeneralComponent implements OnInit {
            }
         });
 
+        if(this.desarrollo){
+            this.pointerEventCelda = "all";
+        }else{
+            this.pointerEventCelda = "none";
+        }
+        this.mapaGeneralService.setDesarrollador(this.desarrollo);
+
   }//Fin OnInit
 
   ngOnDestroy(){
@@ -167,6 +179,9 @@ export class MapaGeneralComponent implements OnInit {
   }
 
   clickTile(i:number,j:number,event: any){
+      
+    console.log("Click: i: "+i+" j: "+j,this.desarrollo) 
+
       if(!this.desarrollo){return}
 
     console.log("Click: i: "+i+" j: "+j) 
@@ -186,31 +201,38 @@ export class MapaGeneralComponent implements OnInit {
     }else{
 
     //Segundo Click:
-    switch(this.herramientaInMap){
-        case "InMap":
-            break
-        case "add":
-            console.log("Añadiendo")
-            if(!this.opcionesDesarrolloInMap.opcionOverlay){
-                this.mapaGeneralService.region.isometrico[i][j].tileImage= this.opcionesDesarrolloInMap.tileImgSeleccionado;
-            }else{
-                this.mapaGeneralService.region.isometrico[i][j].tileImageOverlay= this.opcionesDesarrolloInMap.tileImgSeleccionado;
-            }
-            break;
-        case "eliminar":
-            console.log("Eliminando")
-            if(!this.opcionesDesarrolloInMap.opcionOverlay){
-                this.mapaGeneralService.region.isometrico[i][j].tileImage=0;
-            }else{
-                this.mapaGeneralService.region.isometrico[i][j].tileImageOverlay=0;
-            }
-            break;
-    }
+        console.warn("Segundo Click...")
 
     } // Fin Else opcion accion de herramienta
   } //Fin click
 
   clickTileAux(i:number,j:number,event: any){
+
+      console.warn("AUX CLICK",event)
+
+    //Set Tile con click derecho del raton:
+    if(event.which === 3){
+        switch(this.herramientaInMap){
+            case "InMap":
+                break
+            case "add":
+                console.log("Añadiendo")
+                if(!this.opcionesDesarrolloInMap.opcionOverlay){
+                    this.mapaGeneralService.region.isometrico[i][j].tileImage= this.opcionesDesarrolloInMap.tileImgSeleccionado;
+                }else{
+                    this.mapaGeneralService.region.isometrico[i][j].tileImageOverlay= this.opcionesDesarrolloInMap.tileImgSeleccionado;
+                }
+                break;
+            case "eliminar":
+                console.log("Eliminando")
+                if(!this.opcionesDesarrolloInMap.opcionOverlay){
+                    this.mapaGeneralService.region.isometrico[i][j].tileImage=0;
+                }else{
+                    this.mapaGeneralService.region.isometrico[i][j].tileImageOverlay=0;
+                }
+                break;
+        }
+    }
 
     //Copiar Tile con click de la rueda del raton:
     if(event.which === 2){
@@ -234,6 +256,12 @@ export class MapaGeneralComponent implements OnInit {
       if(this.mostrarInfranqueable){
           if(!this.mapaGeneralService.region.isometrico[i][j].atravesable){
               return "desarrollador infranqueable";
+          }
+      }
+
+      if(this.mostrarTriggers){
+          if(this.mapaGeneralService.region.isometrico[i][j].triggersInMapEventos.length != 0){
+              return "desarrollador triggers";
           }
       }
 
