@@ -15,6 +15,8 @@ export class PanelControlComponent {
 	@Input() energiaFutura: number;
 	@Input() turno: boolean = true;
 	@Input() habilitar:boolean = true;
+	@Input() movimientoRestante:number = 0;
+	@Input() mensajeControl:string = "";
 
 	//Emision de eventos
 	@Output() comandoPanelControl: EventEmitter<any> = new EventEmitter();

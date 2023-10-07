@@ -7,6 +7,10 @@ export interface IElectronAPI {
   getCuenta: () => Promise<any>,
   setCuenta: (any) => Promise<void>,
 
+  //Gestion de Sesion:
+  getSesion: () => Promise<any>,
+  setSesion: (any) => Promise<void>,
+
   //Gestion de Perfil:
   getPerfil: () => Promise<any>,
   setPerfil: (any) => Promise<void>,

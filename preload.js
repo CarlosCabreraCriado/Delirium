@@ -6,6 +6,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getToken: () => ipcRenderer.sendSync('getToken'),
     setToken: (token) => ipcRenderer.send('setToken',token),
 
+    //Gestion de Sesion:
+    getSesion: () => ipcRenderer.sendSync('getSesion'),
+    setSesion: (sesion) => ipcRenderer.send('setSesion',sesion),
+
 	//Gestion de Cuenta:
     getCuenta: () => ipcRenderer.sendSync('getCuenta'),
     setCuenta: (cuenta) => ipcRenderer.sendSync('setCuenta',cuenta),

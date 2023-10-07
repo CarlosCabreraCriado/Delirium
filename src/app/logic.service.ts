@@ -123,7 +123,7 @@ export class LogicService {
         estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
 
         estadisticas.pa = 0
-        console.error("Estadisticas Calculadas: ",estadisticas)
+        console.log("Estadisticas Calculadas: ",estadisticas)
         return estadisticas;
 
   }

@@ -11,6 +11,7 @@ import { datosDefecto } from "./datosDefecto"
 import { TriggerComponent } from './triggerComponent/trigger.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventosService } from "../../eventos.service"
+import { MapaGeneralService } from "../mapa-general/mapaGeneral.service"
 
 @Injectable({
   providedIn: 'root'
@@ -159,7 +160,7 @@ export class DesarrolladorService implements OnInit{
   observarDesarrolladorService$ = this.observarDesarrolladorService.asObservable();
 
 
-  constructor(private eventosService: EventosService, public appService: AppService, private http: HttpClient, private dialog: MatDialog)  {
+  constructor(private mapaGeneralService: MapaGeneralService,private eventosService: EventosService, public appService: AppService, private http: HttpClient, private dialog: MatDialog)  {
   }
 
   ngOnInit(){
@@ -400,6 +401,13 @@ export class DesarrolladorService implements OnInit{
 
     console.log(this.mazmorra);
 
+    //Cambiando Nombre ID:
+    if(this.mazmorra.general[0]["nombre"]){
+        this.mazmorra["nombreId"] = this.mazmorra.general[0]["nombre"];
+    }
+
+    console.warn("GUARDANDO: ",this.mazmorra);
+
     this.http.post(this.appService.ipRemota+"/deliriumAPI/guardarMazmorra",{mazmorra: this.mazmorra, token: await this.appService.getToken()}).subscribe((res) => {
       if(res){
         console.log("Mazmorra guardada en Base de datos");
@@ -630,14 +638,14 @@ export class DesarrolladorService implements OnInit{
   }
 
   getReticula(){return this.renderReticula;}
-  getRegion(){return this.appService.getRegion();}
+  getRegion(){return this.mapaGeneralService.getRegion();}
 
   async getTile(x:number,y:number){
-      return this.appService.getTile(x,y);
+      return this.mapaGeneralService.getTile(x,y);
   }
 
   async setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){
-      return this.appService.setTile(x,y,formGeneral,formTerreno,formEventos,formMisiones);
+      return this.mapaGeneralService.setTile(x,y,formGeneral,formTerreno,formEventos,formMisiones);
   }
 
   moverReticula(movimiento){
@@ -742,7 +750,6 @@ export class DesarrolladorService implements OnInit{
   }
 
   zoomOut(){
-
     this.visorFila.push(this.visorFila[this.visorFila.length-1]+1);
     this.visorColumna.push(this.visorColumna[this.visorColumna.length-1]+1);
     if(this.renderReticula.celdas[0].length-this.visorColumna[this.visorColumna.length-1] <this.margenReticula){
@@ -751,7 +758,6 @@ export class DesarrolladorService implements OnInit{
     if(this.renderReticula.celdas.length-this.visorFila[this.visorFila.length-1] <this.margenReticula){
       this.addFilaReticula("bottom")
     }
-
     return;
   }
 
@@ -2505,7 +2511,7 @@ export class DesarrolladorService implements OnInit{
   async guardarInMap(){
 
       console.log("GUARDANDO MAPA: ")
-      this.region = this.appService.getRegion();
+      this.region = this.mapaGeneralService.getRegion();
       console.log(this.region);
 
       switch(this.region.nombreId){
@@ -2859,12 +2865,11 @@ export class DesarrolladorService implements OnInit{
 
           switch(tipo){
               case "inmap-evento":
-                  this.appService.region.isometrico[this.coordenadaX,this.coordenadaY].triggersInMapEventos = result;
-
-                  break
+                  this.mapaGeneralService.region.isometrico[this.coordenadaX,this.coordenadaY].triggersInMapEventos = result;
+                  break;
               case "inmap-mision":
-                  this.appService.region.isometrico[this.coordenadaX,this.coordenadaY].triggersInMapMisiones = result;
-                  break
+                  this.mapaGeneralService.region.isometrico[this.coordenadaX,this.coordenadaY].triggersInMapMisiones = result;
+                  break;
           }
 
         });
@@ -2872,7 +2877,8 @@ export class DesarrolladorService implements OnInit{
     }
 
     testEvento(){
-        this.eventosService.setEventos(this.eventos.eventos);
+        this.appService.actualizarSesion();
+        this.eventosService.setEventos(this.eventos);
         this.eventosService.ejecutarEvento(this.eventoSeleccionadoId);
     }
 

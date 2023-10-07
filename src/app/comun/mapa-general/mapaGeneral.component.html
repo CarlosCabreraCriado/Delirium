@@ -4,11 +4,11 @@
 <!--   *********************************** -->
 
     <!-- NUBES FONDO -->
-    <div id="nubes" *ngIf="!appService.cargaMapaCompleta">
+    <div id="nubes" *ngIf="mostrarNubes">
     </div>
 
 
-    <div id="contenedorMapa" [ngClass]="{'mostrarNubes': appService.cargandoMapa}" #canvasMapa class="bordeDesarrollador">
+    <div id="contenedorMapa" [ngClass]="{'mostrarNubes': !mapaCargado}" #canvasMapa class="bordeDesarrollador">
 
         <!-- Fondo Mapa -->
         <div id="fondoMar">
@@ -19,6 +19,7 @@
             [limitPan]="false" 
             [minPanScale]="1" 
             [disableZoomControl]="'disable'"
+            [double-tap]="false"
             [limit-zoom]="10">
 
             <div *ngIf="mostrarCentro" id="marcadorCentro"></div>
@@ -29,7 +30,7 @@
                 <div class="contenedorMascara">
                     <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
                     <div class="contenedorMarcadoresZonas">
-                        <img class="marcador zona1 animate__animated animate__infinite animate__pulse" src="../../../assets/Mapa/indicador.png" (click)="appService.cargarRegion('Asfaloth')">
+                        <img class="marcador zona1 animate__animated animate__infinite animate__pulse" src="../../../assets/Mapa/indicador.png" (click)="mapaGeneralService.cargarRegion('Asfaloth')">
                     </div>
                 </div>
 
@@ -38,32 +39,34 @@
             <!-- Mapa Isometrico -->
             <div [ngClass]="{'niebla': mostrarNiebla}" *ngIf="appService.estadoInMap=='region'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
 
-                <div class="wrapper" [ngStyle]="{'transform': 'scale('+appService.escalaIsometrico+') translate('+traslacionIsometricoX+'px, '+traslacionIsometricoY+'px)'}">
+                <div class="wrapper" [ngStyle]="{'transform': 'scale('+mapaGeneralService.escalaIsometrico+') translate('+traslacionIsometricoX+'px, '+traslacionIsometricoY+'px)'}">
 
-            <div class="floor" [ngStyle]="{'transform': 'translate('+0+'px, '+0+'px) rotateX(55deg) rotateZ(45deg)'}">
+            <div class="floor">
                 <!-- rotateX(55deg) rotateZ(45deg) -->
-                  <div class="player"[ngStyle]="{'transform': 'translate('+(50*appService.radioRenderIsometrico)+'px, '+(50*appService.radioRenderIsometrico)+'px)'}">
+
+                  <div class="player"[ngStyle]="{'transform': 'translate('+(50*mapaGeneralService.radioRenderIsometrico)+'px, '+(50*mapaGeneralService.radioRenderIsometrico)+'px)'}">
                      <!-- player 1 -->
                      <!-- Flecha NorEste -->
-                     <div class="player animacionFocus"></div>
-                     <img class="flecha norte" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorEste')" *ngIf="direccionMovimientoPermitido[0]"/>
-                     <!-- Flecha NorOeste -->
-                     <img class="flecha oeste" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorOeste')" *ngIf="direccionMovimientoPermitido[3]"/>
-                     <!-- Flecha SurEste -->
-                     <img class="flecha este" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurEste')" *ngIf="direccionMovimientoPermitido[1]"/>
-                     <!-- Flecha SurOeste -->
-                     <img class="flecha sur" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurOeste')" *ngIf="direccionMovimientoPermitido[2]"/>
-                  </div>
+                     <div class="player">
+                         <animacionFocusComponent></animacionFocusComponent>
+                     </div>
 
-                  <div id="flechasMovimiento">
+                     <img class="flecha norte" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorEste')" *ngIf="direccionMovimientoPermitido[0] && !bloqueoMovimiento && esTurnoPropio"/>
+                     <!-- Flecha NorOeste -->
+                     <img class="flecha oeste" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorOeste')" *ngIf="direccionMovimientoPermitido[3] && !bloqueoMovimiento && esTurnoPropio"/>
+                     <!-- Flecha SurEste -->
+                     <img class="flecha este" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurEste')" *ngIf="direccionMovimientoPermitido[1] && !bloqueoMovimiento && esTurnoPropio"/>
+                     <!-- Flecha SurOeste -->
+                     <img class="flecha sur" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurOeste')" *ngIf="direccionMovimientoPermitido[2] && !bloqueoMovimiento && esTurnoPropio"/>
+
                      <!-- Flecha NorEste -->
                   </div>
                 
-                     <div *ngFor="let fila of this.appService.renderIsometrico;let i = index" class="row">
-                         <div *ngFor="let tile of this.appService.renderIsometrico[i];let j = index" 
+                     <div *ngFor="let fila of this.mapaGeneralService.renderIsometrico;let i = index" class="row">
+                         <div *ngFor="let tile of this.mapaGeneralService.renderIsometrico[i];let j = index" 
                              data-cords='[tile.coordenadaX,tile.coordenadaY]' 
                              class="tile" 
-                             [ngStyle]="{'transform': 'translate('+(50*j)+'px,'+(50*i)+'px)'}" 
+                             [ngStyle]="{'transform': 'translate('+(50*j)+'px,'+(50*i)+'px)','pointer-events':'none'}" 
                              [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" 
                              (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)" 
                              (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >

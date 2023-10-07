@@ -74,11 +74,13 @@ export class FormEventosComponent {
     //Campos Eventos Dialogo Subtipo:
   	private titulo_Orden_Dialogo = new UntypedFormControl('?');
   	private contenido_Orden_Dialogo = new UntypedFormControl('?');
-  	private opciones_Orden_Dialogo = new UntypedFormControl([]);
+    private tipoImagen_Orden_Dialogo = new UntypedFormControl('');
+    private imagenId_Orden_Dialogo = new UntypedFormControl(0);
 
   	private textoOpcion_Orden_Dialogo = new UntypedFormControl([]);
   	private encadenadoOpcion_Orden_Dialogo = new UntypedFormControl([]);
 
+  	private opciones_Orden_Dialogo = new UntypedFormControl([]);
   	private interlocutor_Orden_Dialogo = new UntypedFormControl(null);
   	private mostrarPersonajeDerecha_Orden_Dialogo = new UntypedFormControl(false);
   	private mostrarPersonajeIzquierda_Orden_Dialogo = new UntypedFormControl(false);
@@ -155,6 +157,8 @@ export class FormEventosComponent {
             tipoDialogo: this.tipoDialogo_Orden_Dialogo,
             titulo: this.titulo_Orden_Dialogo,
             contenido: this.contenido_Orden_Dialogo,
+            tipoImagen: this.tipoImagen_Orden_Dialogo,
+            imagenId: this.imagenId_Orden_Dialogo,
             opciones: this.formBuilder.array([]),
             interlocutor: this.interlocutor_Orden_Dialogo,
             mostrarPersonajeDerecha: this.mostrarPersonajeDerecha_Orden_Dialogo,

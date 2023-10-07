@@ -5,11 +5,12 @@
 <div id="contenedorMapaMazmorra">
 
         <pinch-zoom #pinchZoom id="pinch-zoom"
-            [limitPan]="true"
+            [limitPan]="false"
             [minPanScale]="1"
             [renderX]="renderX"
             [renderY]="renderY"
             [disableZoomControl]="'disable'"
+            [double-tap]="false"
             [limit-zoom]="10">
 
           <!-- Contenedor Isometrico -->

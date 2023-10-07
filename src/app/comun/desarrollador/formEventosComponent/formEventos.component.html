@@ -37,7 +37,7 @@
 			</form>
 
             <form *ngIf="this.desarrolladorService.ordenSeleccionadaIndex!=null" class="formularioGeneral orden" [formGroup]="formOrden">
-				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarOrden()"/>
+				<img class="botonEliminarOrden" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarOrden()"/>
 
                 <div class="contenedorCabeceraOrden">
 				  <mat-form-field appearance="legacy" class="formNombreOrden">
@@ -85,6 +85,10 @@
                             <input matInput placeholder="" formControlName="valorVariable">
                           </mat-form-field>
 
+                          <div>
+                              Encadenado TRUE:
+                          </div>
+
                           <mat-form-field appearance="fill">
                             <mat-label>Tipo Encadenado True</mat-label>
                             <mat-select [formControl]="tipoEncadenadoTrue_Orden_Condicion">
@@ -95,8 +99,12 @@
 
                           <mat-form-field appearance="legacy" class="formParametro">
                             <mat-label>Encadenado True</mat-label>
-                            <input matInput min="1" placeholder="" formControlName="encadenadoTrue">
+                            <input matInput type="number" placeholder="" formControlName="encadenadoTrue">
                           </mat-form-field>
+
+                          <div>
+                              Encadenado FALSE:
+                          </div>
 
                           <mat-form-field appearance="fill">
                             <mat-label>Tipo Encadenado False</mat-label>
@@ -108,8 +116,21 @@
 
                           <mat-form-field appearance="legacy" class="formParametro">
                             <mat-label>Encadenado False</mat-label>
-                            <input matInput min="1" placeholder="" type="number" formControlName="encadenadoFalse">
+                            <input matInput placeholder="" type="number" formControlName="encadenadoFalse">
                           </mat-form-field>
+
+                          <div>
+                              LEYENDA:
+                          </div>
+
+                          <div>
+                              Encadenado < 0 <br/>
+                              (Fin evento)
+                          </div>
+                          <div>
+                              Encadenado = null<br/>
+                              (Siguiente orden)
+                          </div>
 
                       </div> <!-- Fin Orden Condición -->
                     </form>
@@ -295,6 +316,62 @@
                               </ng-container>
 
                           </ng-container>
+
+                          <!-- INPUTS TIPO DIALOGO: NarradorImg -->
+                          <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='NarradorImg'">
+
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Titulo</mat-label>
+                                <textarea matInput placeholder="" formControlName="titulo"></textarea>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Contenido</mat-label>
+                                <textarea matInput placeholder="" formControlName="contenido"></textarea>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="legacy">
+                                <mat-label>Tipo Imagen</mat-label>
+                                <mat-select formControlName="tipoImagen">
+                                    <mat-option value="illustration">Ilustracion</mat-option>
+                                    <mat-option value="Tutorial">Tutorial</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Imagen ID:</mat-label>
+                                <input matInput type="number" placeholder="" formControlName="imagenId"/>
+                              </mat-form-field>
+
+                          </ng-container> <!-- Fin tipo dialogo NarradorImg -->
+
+                          <!-- INPUTS TIPO DIALOGO: DIAPOSITIVA -->
+                          <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='Diapositiva'">
+
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Titulo</mat-label>
+                                <textarea matInput placeholder="" formControlName="titulo"></textarea>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Contenido</mat-label>
+                                <textarea matInput placeholder="" formControlName="contenido"></textarea>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="legacy">
+                                <mat-label>Tipo Imagen</mat-label>
+                                <mat-select formControlName="tipoImagen">
+                                    <mat-option value="illustration">Ilustracion</mat-option>
+                                    <mat-option value="Tutorial">Tutorial</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="legacy" class="formDuracion">
+                                <mat-label>Imagen ID:</mat-label>
+                                <input matInput type="number" placeholder="" formControlName="imagenId"/>
+                              </mat-form-field>
+
+                          </ng-container> <!-- Fin tipo dialogo Diapositiva -->
 
                       </div> <!-- Fin Orden Diálogo -->
                     </form>

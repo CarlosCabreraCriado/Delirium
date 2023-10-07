@@ -17,20 +17,26 @@ export class InMapComponent implements OnInit {
 
 	public pantalla: string = "Inmap";
 	private idCuenta: string;
+    private cuenta: any = null;
     public sesion: any;
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription = null;
+
 	//Declara Suscripcion Evento AppService:
 	private appServiceSuscripcion: Subscription = null;
+
+	//Declara Suscripcion Evento AppService:
+	private inmapServiceSuscripcion: Subscription = null;
 
 	constructor(private cdr: ChangeDetectorRef, private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
     }
 
-	ngOnInit(){
+	async ngOnInit(){
 
        console.warn("INICIANDO INMAP")
+       this.cuenta = await this.appService.getCuenta();
 
 		//Observar Eventos AppService:
 		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
@@ -38,11 +44,24 @@ export class InMapComponent implements OnInit {
 				switch(val){
 					case "actualizarHeroeSeleccionado":
 						this.inmapService.importarHeroeSeleccionado();
-						this.inmapService.iniciarInMap();
+						//this.inmapService.iniciarInMap();
 						break;
                     case "triggerChangeDetection":
+                        //console.error("TRIGGER CHANGE DETECTION")
                         //this.cdr.detectChanges();
-                        console.error("TRIGGER CHANGE DETECTION")
+                        break;
+                    case "reloadInMapService":
+                        this.inmapService.iniciarInMap();
+                        break;
+				}
+		});
+
+		//Observar Eventos InMap Service:
+		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
+			(val) => {
+				switch(val){
+                    case "triggerChangeDetection":
+                        this.cdr.detectChanges();
                         break;
 				}
 		});
@@ -50,46 +69,38 @@ export class InMapComponent implements OnInit {
 		//Suscripcion Socket:
       	this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
 
-            var cuenta = await this.appService.getCuenta();
+      		if(data.emisor== this.cuenta.usuario){return;}
 
-      		if(data.emisor== cuenta.nombre && data.tipoEmisor == cuenta.tipo){console.log("EVITANDO "+data.peticion);return;}
       		switch(data.peticion){
-      			case "log":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      			break;
 
-      			case "estadoSala":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      		    	//this.sala = data.contenido;
-      		    	console.log("SALA: ")
-      		    	//console.log(this.sala);
+            case "checkSinc":
+              this.inmapService.setHashRecibido(data.contenido);
+            break;
 
-      			break;
+            case "comandoPartida":
+                console.warn("Peticion: "+data.peticion);
+                console.warn("Comando: "+data.comando);
+                if(data.emisor == this.appService.getCuenta().then((result) => {return result.nombre})){break;}
+                //Activar Bloqueo de comando Socket:
+                this.inmapService.activarComandoSocket();
+                switch(data.comando){
 
-      			case "cerrarSala":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      		    	//this.appService.setSala(this.sala);
-      		    	//console.log(this.sala);
-      			break;
+                    case "pasarTurno":
+                        await this.inmapService.pasarTurno();
+                    break;
 
-      			case "iniciarPartida":
-      				console.log("Peticion: "+data.peticion);
-      		    	console.log("Contenido: ");
-      		    	console.log(data.contenido);
-      		    	//this.sala = data.contenido;
-      		    	//this.appService.setSala(this.sala);
-      		    	//this.socketSubscripcion.unsubscribe();
-      		    	//this.appService.setControl("mazmorra");
-					//this.appService.setEstadoApp("mazmorra");
-      			break;
+                    case "realizarMovimientoInMap":
+                        await this.inmapService.realizarMovimientoInMap(data.valor);
+                    break;
+
+                }
+                //Desactivar Bloqueo de comando Socket:
+                this.inmapService.desactivarComandoSocket();
+            break;
+
       		}
-      	});
+
+      	}); //FIN SOCKET SUSCRIPTION:
 
 		//Comprueba el Logueo carga el perfil en Servicio InMap:
 		this.inmapService.cargarPerfil().then(() => {
@@ -99,16 +110,13 @@ export class InMapComponent implements OnInit {
             this.idCuenta = this.inmapService.getIDCuenta();
 
         }).then(() => {
-
     		//Importar Datos Generales al servicio Inmap:
-            console.log("Importando Datos Generales: ");
 	    	this.inmapService.importarDatosGenerales();
 
         }).then(() => {
             //Cargar Grupo:
             console.log("Iniciando Inmap: ");
             this.inmapService.iniciarInMap();
-
         });
 	}
 

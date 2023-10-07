@@ -33,6 +33,7 @@ console.log("INICIANDO")
 // DATOS DE JUEGO:
 //------------------
 var cuenta = null;
+var sesion = null;
 var cuentaID = null;
 var token= null;
 var perfil = null;
@@ -193,6 +194,19 @@ ipc.on('setCuenta', function (event, arg) {
   //actualizarModelos();
   console.log("Guardando Cuenta... Done ");
   event.returnValue = cuenta;
+});
+
+//SETTER GETTER (SESION)
+ipc.on('getSesion', function (event) {
+  event.returnValue = sesion;
+});
+
+ipc.on('setSesion', function (event, arg) {
+  sesion = arg; 
+  console.log(sesion);
+  //actualizarModelos();
+  console.log("Guardando Sesion... Done ");
+  event.returnValue = sesion;
 });
 
 //SETTER GETTER (TOKEN)

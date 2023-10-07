@@ -60,12 +60,7 @@ export class AppComponent implements OnInit{
 
           //RECONECTAR EL SOCKET:
           if(this.cuenta != null && this.token != null){
-            console.log("RECONECTANDO SOCKET")
-            this.socketService.enviarSocket('validacion', this.cuenta);
             this.socketService.conectarSocket(this.token);
-            this.estadoSocket = "Conectado";
-
-          //Determinación de estado APP:
           }else{
             console.log("Cargando INDEX...")
             this.desconectarSocket()
@@ -74,16 +69,16 @@ export class AppComponent implements OnInit{
       }
 
        //Suscripcion AppService:
-       this.appServiceSuscripcion = this.appService.eventoAppService.subscribe((comando) =>{
+       this.appServiceSuscripcion = this.appService.eventoAppService.subscribe(async (comando) =>{
 
           switch(comando){
-              case "login":
-                  var token = this.appService.token
+              case "conectarSocket":
+                  var token = await this.appService.getToken();
                   console.log("Autentificando Socket: ")
                   console.log("Token: "+token)
                   this.socketService.conectarSocket(token);
                   break;
-              case "logout":
+              case "desconectarSocket":
                   console.log("Desconectando Socket: ")
                   this.desconectarSocket();
                   break;
@@ -144,13 +139,16 @@ export class AppComponent implements OnInit{
                 case "conectado":
                     this.socketService.enviarSocket('validacion', this.cuenta);
                 break
+
                 case "entrarMundoServer":
                     this.appService.entrarMundo();
                     break
+
                 case "serverEnviaSesion":
                     console.log(data.contenido)
                     this.iniciaSesion(data.contenido, data.forzarReload)
                 break
+
                 case "solicitudReclutarServer":
                     this.appService.procesarSolicitudReclutar(data);
                 break

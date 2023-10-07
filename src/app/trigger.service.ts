@@ -16,27 +16,15 @@ export class TriggerService {
     private estado:string="default";
     private sesion: any; 
 
-    //Declara Suscripcion para Eventos:
-    private appServiceSuscripcion: Subscription;
-
   constructor(private eventosService: EventosService, private appService: AppService) { 
         //Observar Sesion:
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
-
-		//Observar Eventos AppService:
-		this.appServiceSuscripcion = this.appService.eventoAppService.subscribe(
-			(val) => {
-				switch(val){
-					case "inicializarIsometrico":
-                        this.triggerRegion = this.appService.getTriggerRegion();
-						break;
-				}
-		});
   }
 
   setTriggerRegion(triggersRegion: any){
     console.warn("CARGANDO TRIGGERS REGIÓN: ",triggersRegion); 
     this.triggerRegion = triggersRegion;
+    this.eventosService.actualizarEventos();
   }
 
   checkTrigger(activacion: string,config?:any){

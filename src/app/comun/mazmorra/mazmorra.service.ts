@@ -978,7 +978,7 @@ export class MazmorraService {
   }
 
   //Funcion principal de paso de turno:
-  async pasarTurno(evitarEmisionSocket?: boolean) {
+  async pasarTurno() {
 
         //Restriccion por BLOQUEO:
         if(this.appService.control=="null"){this.appService.setControl("mazmorra");}

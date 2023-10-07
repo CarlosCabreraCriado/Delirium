@@ -1,19 +1,28 @@
 
 <!--   ******************* -->
-<!--      Barra Component   -->
+<!--      Animacion Focus Component   -->
 <!--   ******************* -->
 
-<div class="contenedorBarra">
+<div class="contenedorAnimacionFocus">
 
-	<div class="barra">
-		<div class="fondoBarra" [ngClass]="tipo" [style.width]="valor+'%'"></div>
-		<div *ngIf="tipo=='Vida'" class="fondoBarra escudo" [style.width]="escudo+'%'"></div>
-		<img class="frameBarra" src="../../../assets/Frames/Frame-Barra-Heroe.png"/>
-	</div>
+        <!--
+    <div class="mascaraCentral">
+    </div>
 
-	<div class="contenedorCirculo" [ngClass]="tipo" *ngIf="badge">
-		<img class="frameCirculo" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
-		<img class="iconoTipoBarra" src="../../../assets/Iconos/Icono-{{tipo}}.png"/>
-	</div>
+    <svg id="mascaraCentral" width="50" height="50">
+        <mask id="svgmask1">
+            <polygon fill="#ffffff" points="0 0, 0 25, 25 25, 25 0"></polygon>
+        </mask>
+    </svg>
+
+    <img src="../assets/Mapa/water-tile.jpg" class="imagenFondo"/>
+
+        -->
+    <div class="contenedorAspas">
+        <div class="aspas">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
 
 </div>

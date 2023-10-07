@@ -73,9 +73,13 @@
 	<!--      Panel Control    -->
 	<!--   ******************* -->
 
-    <!--
-	<panelControlComponent [tipo]="'inMap'" (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"></panelControlComponent>
-    -->
+	<panelControlComponent id="panelControl"
+        [tipo]="'inMap'" 
+        [mensajeControl]="inmapService.mensajeControl" 
+        [movimientoRestante]="inmapService.movimientoRestante" 
+        (comandoPanelControl)="comandoPanelControl($event)" >
+
+    </panelControlComponent>
 
 	<!--   ******************* -->
 	<!--      Paneles Heroes   -->
@@ -94,15 +98,29 @@
         <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
         <mapaGeneralComponent id="mapaGeneralComponent"
                               (comandoMapaGeneral)="comandoPanelGeneral($event)"
-                              [coordenadas]="sesion.inmap"
+                              [coordenadas]="sesion.render.inmap"
                               [radioRenderIsometrico]="appService.radioRenderIsometrico"
                               [herramientaInMap]="'InMap'"
-                              [mostrarNiebla]="false">
+                              [esTurnoPropio]="inmapService.checkTurnoPropio()"
+                              [mostrarNiebla]="true">
                                 <!--appService.estadoInMap=='region'-->
         </mapaGeneralComponent>
 	</div>
 
 </div> <!-- Fin Contenedor Main Window -->
+
+	<!--   ******************* -->
+	<!--          NOCHE      -->
+	<!--   ******************* -->
+
+    <div id="contenedorNoche" *ngIf="inmapService.mostrarNoche">
+        <img src="../assets/Iconos/luna.png" class="imagenLuna"/> 
+
+        <div class="contenedorTextoNoche">
+            <div class="textoNoche slide1 visible"> Empieza a anochecer... </div>
+            <div class="textoNoche slide2 visible"> La noche está tranquila... </div>
+        </div>
+    </div>
 
 	<!--   ******************* -->
 	<!--          PANELES      -->

@@ -94,38 +94,12 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     //Suscripcion Socket:
     this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async (data) => {
 
-          //if(this.appService.control!="mazmorra"){return;}
-
-          /*
-          if(data.emisor == this.appService.getCuenta().nombre && this.mazmorraService.cuenta.tipo==data.tipoEmisor){
-            switch(data.peticion){
-
-              case "unirsePartida":
-                if(this.mazmorraService.partidaIniciada){
-                  console.log("EVITANDO "+data.peticion);
-                  return;
-                }
-              break;
-
-              default:
-                console.log("EVITANDO "+data.peticion);
-                return;
-              break;
-            }
-          }
-      */
           if(data.emisor==this.mazmorraService.cuenta.usuario){
             //console.warn("Evitando Rebote Comando Socket...")
             return;
           }
 
           switch(data.peticion){
-
-            case "log":
-              console.log("Peticion: "+data.peticion);
-              console.log("Contenido: ");
-              console.log(data.contenido);
-            break;
 
             case "renderizarCanvas":
               console.log("Peticion: "+data.peticion);
@@ -241,7 +215,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
                   case "reanimarHeroe":
                     console.log("Socket... Reanimando Heroe: ",data.contenido);
-                        this.mazmorraService.reanimarHeroe(data.contenido);
+                    this.mazmorraService.reanimarHeroe(data.contenido);
                   break;
                 }
             break;

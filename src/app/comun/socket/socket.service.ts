@@ -70,7 +70,7 @@ export class SocketService {
     }
 
     enviarSocket(evento,data){
-      console.warn("ENVIANDO: ",data)
+      console.log("ENVIANDO SOCKET:",evento,data)
       this.socket.emit(evento,data);
     }
 

@@ -20,6 +20,9 @@ import * as XLSX from 'xlsx';
 
 export class DesarrolladorComponent implements OnInit{
 
+    public cuenta: any;
+    public token: any;
+
 	public editorVerOptions: JsonEditorOptions;
 	public editorModificarOptions: JsonEditorOptions;
   	public data: any;
@@ -31,6 +34,7 @@ export class DesarrolladorComponent implements OnInit{
     private coordenadaSeleccionadaX= 0;
     private coordenadaSeleccionadaY= 0
 
+    //Declara Suscripcion Evento Desarrollador:
   	private desarrolladorSuscripcion: Subscription = null;
 
   	//Variables Parametros Enemigos:
@@ -380,9 +384,13 @@ export class DesarrolladorComponent implements OnInit{
 	        }
       	);
 
+
 		await this.desarrolladorService.inicializarGestor();
 		this.desarrolladorService.inicializarArchivos();
 
+        //Obtener Sesion del servicio Electron Storage:
+        this.appService.setSesion(await window.electronAPI.getSesion());
+        this.appService.actualizarIndexHeroe();
 
 		this.formGeneral.valueChanges.subscribe((val) =>{
 			this.desarrolladorService.mazmorra["general"][0] = val;

@@ -1,25 +1,26 @@
 
 import { Component, OnInit , Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import { ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
-import { MapaGeneralService } from './mapaGeneral.service';
 import { AppService } from '../../app.service';
 import { TriggerService } from '../../trigger.service';
 import { Subscription } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { PinchZoomComponent } from '../../comun/pinch-zoom/pinch-zoom.component';
-import { InMapService } from '../../comun/inmap/inmap.service';
 
-export interface Coordenadas {
-    x: number,
-    y: number,
-    mapa: string
+import { InMapService } from '../../comun/inmap/inmap.service';
+import { MapaGeneralService } from '../../comun/mapa-general/mapaGeneral.service';
+
+export interface Coordenadas { //PENDINTE DECOMISION
+    posicion_x: number,
+    posicion_y: number,
+    region: string
 }
 
 @Component({
   selector: 'mapaGeneralComponent',
   templateUrl: './mapaGeneral.component.html',
   styleUrls: ['./mapaGeneral.component.sass'],
-  //changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MapaGeneralComponent implements OnInit {
@@ -27,10 +28,14 @@ export class MapaGeneralComponent implements OnInit {
     private casillaSeleccionadaX = 0;
     private casillaSeleccionadaY = 0;
 
+    //Variables generales
+    public mapaCargado:boolean = false;
+    public mostrarNubes:boolean = true;
+
     //Variables INMAP:
     public region: any = {};
-    private coordenadaX: number = 0; 
-    private coordenadaY: number = 0; 
+    private coordenadaX: number = 0;  //PENDINTE DECOMISION
+    private coordenadaY: number = 0;  //PENDINTE DECOMISION
     private regionSeleccionada: string = "";
     public opcionOverlay: boolean = false;
 
@@ -38,7 +43,7 @@ export class MapaGeneralComponent implements OnInit {
     public traslacionIsometricoY: number = 0;
     private tileSize: number = 48;
     private bloqueoMovimiento: boolean = false; 
-    private direccionMovimientoPermitido: boolean[] = [false,false,false,false]; 
+    private direccionMovimientoPermitido: boolean[] = [true,true,true,true]; 
 
 	@Input() tileImgSeleccionado: number;
 	@Input() herramientaInMap: string;
@@ -49,8 +54,9 @@ export class MapaGeneralComponent implements OnInit {
 	@Input() mostrarNieblaFija: boolean = false;
 	@Input() mostrarInfranqueable: boolean;
 	@Input() mostrarCentro: boolean = false;
+	@Input() esTurnoPropio: boolean = false;
 
-	@Input() coordenadas: Coordenadas = null;
+	@Input() coordenadas: Coordenadas = null; //PENDINTE DECOMISION
 	@Input() radioRenderIsometrico: number;
 
     //Emisores de eventos:
@@ -61,11 +67,13 @@ export class MapaGeneralComponent implements OnInit {
   	@ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
   	@ViewChild('pinchZoom',{static: false}) private pinchZoom: PinchZoomComponent;
 
-    //Suscripcion AppService:
+    //Suscripciones:
     private appServiceSuscripcion: Subscription
+    private mapaGeneralSuscripcion: Subscription
+
     public sesion: any;
 
-	constructor(public appService: AppService, public triggerService: TriggerService, private inmapService: InMapService) {
+	constructor(private mapaGeneralService: MapaGeneralService, private cdr: ChangeDetectorRef, public appService: AppService, public triggerService: TriggerService, private inmapService: InMapService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
     }
 
@@ -82,6 +90,7 @@ export class MapaGeneralComponent implements OnInit {
                     this.pinchZoom.pinchZoom.moveY = 0 
                     this.pinchZoom.pinchZoom.scale= 1
                     //this.pinchZoom.pinchZoom.setZoom({scale: 1, center:[0,0]})
+                    this.cdr.detectChanges();
                   break;
 
               case "centrarIsometrico":
@@ -105,20 +114,56 @@ export class MapaGeneralComponent implements OnInit {
                         this.pinchZoom.pinchZoom.scale= 1
                     }
                   break;
-
-              case "inicializarIsometrico":
-                  this.inicializarIsometrico();
-                  break;
             }
             this.pinchZoom.pinchZoom.transformElement(1000);
             this.pinchZoom.pinchZoom.updateInitialValues();
         });
 
+        //Suscripcion MapaGeneralService:
+        this.mapaGeneralSuscripcion = this.mapaGeneralService.eventoMapaGeneral.subscribe((comando) =>{
+
+           switch(comando){
+              case "verificarMovimiento":
+                  this.checkMovimientoValido()
+                  break;
+
+              case "cargarMapa":
+                    this.mapaCargado = false;
+                    this.mostrarNubes = true;
+                    this.cdr.detectChanges();
+                    break;
+
+              case "cargaMapaCompleta":
+                    this.mapaCargado = true;
+                    this.cdr.detectChanges();
+                    setTimeout(()=>{
+                        this.mostrarNubes = false;
+                        this.cdr.detectChanges();
+                    },1000)
+                  break;
+
+              case "movimientoNorEste":
+                  this.procesarMoverPersonaje("NorEste")
+                  break;
+              case "movimientoSurEste":
+                  this.procesarMoverPersonaje("SurEste")
+                  break;
+              case "movimientoNorOeste":
+                  this.procesarMoverPersonaje("NorOeste")
+                  break;
+              case "movimientoSurOeste":
+                  this.procesarMoverPersonaje("SurOeste")
+                  break;
+
+           }
+        });
+
   }//Fin OnInit
 
-  inicializarIsometrico(){
-      //Inicializar RENDER:
-      this.checkMovimientoValido()
+  ngOnDestroy(){
+        console.log("Destruyendo Componente INMAP")
+        this.mapaGeneralSuscripcion.unsubscribe();
+        this.appServiceSuscripcion.unsubscribe();
   }
 
   clickTile(i:number,j:number,event: any){
@@ -126,7 +171,7 @@ export class MapaGeneralComponent implements OnInit {
 
     console.log("Click: i: "+i+" j: "+j) 
     console.log("TILE:")
-    console.log(this.appService.region.isometrico[i][j])
+    console.log(this.mapaGeneralService.region.isometrico[i][j])
 
     //Detectar Primer Click Seleccion: 
     if(this.casillaSeleccionadaX != i || this.casillaSeleccionadaY != j){
@@ -147,17 +192,17 @@ export class MapaGeneralComponent implements OnInit {
         case "add":
             console.log("Añadiendo")
             if(!this.opcionesDesarrolloInMap.opcionOverlay){
-                this.appService.region.isometrico[i][j].tileImage= this.opcionesDesarrolloInMap.tileImgSeleccionado;
+                this.mapaGeneralService.region.isometrico[i][j].tileImage= this.opcionesDesarrolloInMap.tileImgSeleccionado;
             }else{
-                this.appService.region.isometrico[i][j].tileImageOverlay= this.opcionesDesarrolloInMap.tileImgSeleccionado;
+                this.mapaGeneralService.region.isometrico[i][j].tileImageOverlay= this.opcionesDesarrolloInMap.tileImgSeleccionado;
             }
             break;
         case "eliminar":
             console.log("Eliminando")
             if(!this.opcionesDesarrolloInMap.opcionOverlay){
-                this.appService.region.isometrico[i][j].tileImage=0;
+                this.mapaGeneralService.region.isometrico[i][j].tileImage=0;
             }else{
-                this.appService.region.isometrico[i][j].tileImageOverlay=0;
+                this.mapaGeneralService.region.isometrico[i][j].tileImageOverlay=0;
             }
             break;
     }
@@ -170,23 +215,25 @@ export class MapaGeneralComponent implements OnInit {
     //Copiar Tile con click de la rueda del raton:
     if(event.which === 2){
         if(this.opcionesDesarrolloInMap.opcionOverlay){
-            this.tileCopiado.emit(this.appService.region.isometrico[i][j].tileImageOverlay);
+            this.tileCopiado.emit(this.mapaGeneralService.region.isometrico[i][j].tileImageOverlay);
         }else{
-            this.tileCopiado.emit(this.appService.region.isometrico[i][j].tileImage);
+            this.tileCopiado.emit(this.mapaGeneralService.region.isometrico[i][j].tileImage);
         }
     }
   } //Fin click AUX
 
   renderTile(i:number, j:number){
 
+      if(!this.desarrollo){return "";}
+
       //Si está Seleccionada:
       if(this.casillaSeleccionadaX === i && this.casillaSeleccionadaY === j){
-          return "seleccionada";
+          return "desarrollador seleccionada";
       }
 
       if(this.mostrarInfranqueable){
-          if(!this.appService.region.isometrico[i][j].atravesable){
-              return "infranqueable";
+          if(!this.mapaGeneralService.region.isometrico[i][j].atravesable){
+              return "desarrollador infranqueable";
           }
       }
 
@@ -216,59 +263,9 @@ export class MapaGeneralComponent implements OnInit {
       }
   }
 
-  regularizarRegion(){
-      for(var i=0; i < this.appService.region.isometrico.length; i++){
-
-          this.appService.region.isometrico[i].forEach(function(v){
-              delete v.probabilidadEventoCamino
-              delete v.categoriaEventoCamino
-              delete v.eventoId
-              delete v.indicadorCogerMision
-              delete v.indicadorEvento
-              delete v.indicadorPeligro
-              delete v.indicadorTerrenoDificil
-          })
-          
-        for(var j=0; j < this.appService.region.isometrico[i].length; j++){
-
-            this.appService.region.isometrico[i][j]["probabilidadEvento"] = 0;
-            this.appService.region.isometrico[i][j]["categoriaEvento"] = "camino";
-            this.appService.region.isometrico[i][j]["indicador"] = null;
-            this.appService.region.isometrico[i][j]["eventoInspeccion"] = 0;
-            this.appService.region.isometrico[i][j]["eventoInspeccion"] = 0;
-            this.appService.region.isometrico[i][j]["ubicacionEspecial"] = null;
-            this.appService.region.isometrico[i][j]["checkMisiones"] = [];
-            this.appService.region.isometrico[i][j]["nombre"] = null;
-            this.appService.region.isometrico[i][j]["descripcion"] = null;
-
-            //Defecto Mar:
-            if(this.appService.region.isometrico[i][j].tileImage == 122){ 
-                this.appService.region.isometrico[i][j].atravesable = false;
-            }
-
-            //Defecto Montaña:
-            if(this.appService.region.isometrico[i][j].tileImage == 14){ 
-                this.appService.region.isometrico[i][j].atravesable = false;
-            }
-            if(this.appService.region.isometrico[i][j].tileImage == 118){ 
-                this.appService.region.isometrico[i][j].atravesable = false;
-            }
-
-            //Bosque;
-            if(this.appService.region.isometrico[i][j].tileImage == 118){ 
-                this.appService.region.isometrico[i][j].tipoTerreno = "bosque";
-            }
-        }
-      }
-
-      console.log("REGION REGULARIZADA: ");
-      console.log(this.appService.region)
-  }
-
-  moverPersonaje(direccion: string){
+  moverPersonaje(direccion:"NorEste"|"SurEste"|"SurOeste"|"NorOeste"){
       //Realizando Desplazamiento General:
-      this.procesarMoverPersonaje(direccion)
-
+      this.inmapService.realizarMovimientoInMap(direccion);
   }
   
   procesarMoverPersonaje(direccion: string){
@@ -280,29 +277,29 @@ export class MapaGeneralComponent implements OnInit {
       }
 
       console.log("REGION: ");
-      console.log(this.appService.renderIsometrico)
+      console.log(this.mapaGeneralService.renderIsometrico)
 
       //Extraer Coordenadas renderizadas:
-      var renderIsometricoLength= this.appService.radioRenderIsometrico*2; 
+      var renderIsometricoLength= this.mapaGeneralService.radioRenderIsometrico*2; 
 
-      var minRenderX = this.sesion.inmap.posicion_x - this.appService.radioRenderIsometrico;
-      var maxRenderX = this.sesion.inmap.posicion_x + this.appService.radioRenderIsometrico;
-      var minRenderY = this.sesion.inmap.posicion_y - this.appService.radioRenderIsometrico;
-      var maxRenderY = this.sesion.inmap.posicion_y + this.appService.radioRenderIsometrico;
+      var minRenderX = this.sesion.render.inmap.posicion_x - this.mapaGeneralService.radioRenderIsometrico;
+      var maxRenderX = this.sesion.render.inmap.posicion_x + this.mapaGeneralService.radioRenderIsometrico;
+      var minRenderY = this.sesion.render.inmap.posicion_y - this.mapaGeneralService.radioRenderIsometrico;
+      var maxRenderY = this.sesion.render.inmap.posicion_y + this.mapaGeneralService.radioRenderIsometrico;
 
       //ACTUALIZA POSICION:
       switch(direccion){
           case "NorEste":
-                this.sesion.inmap.posicion_x -= 1;
+                this.sesion.render.inmap.posicion_x -= 1;
               break
           case "SurEste":
-                this.sesion.inmap.posicion_y += 1;
+                this.sesion.render.inmap.posicion_y += 1;
               break
           case "SurOeste":
-                this.sesion.inmap.posicion_x += 1;
+                this.sesion.render.inmap.posicion_x += 1;
               break
           case "NorOeste":
-                this.sesion.inmap.posicion_y -= 1;
+                this.sesion.render.inmap.posicion_y -= 1;
               break
       }
        
@@ -311,94 +308,112 @@ export class MapaGeneralComponent implements OnInit {
       switch(direccion){
 
           case "NorEste":
-              //Añadir ROW NORESTE:
-              this.bloqueoMovimiento = true;
-              var clone = this.appService.region.isometrico[minRenderX-1].slice(minRenderY,maxRenderY+1);
-              this.appService.renderIsometrico.unshift(clone)
+
+                //Añadir ROW NORESTE:
+                this.bloqueoMovimiento = true;
+
+                var clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(minRenderY,maxRenderY+1);
+                this.mapaGeneralService.renderIsometrico.pop()
+                this.mapaGeneralService.renderIsometrico.unshift(clone)
+
+                console.log("MOVIENDO")
+                this.cdr.detectChanges();
+
                 setTimeout(()=>{    
-                    this.appService.renderIsometrico.pop()
+                    this.triggerService.checkTrigger("entrarCasilla",{
+                          posicion_x: this.sesion.render.inmap.posicion_x,
+                          posicion_y: this.sesion.render.inmap.posicion_y
+                    });
                     this.checkMovimientoValido();
-                }, 500);
-                setTimeout(()=>{    
-                      this.bloqueoMovimiento = false;
+                    this.bloqueoMovimiento = false;
+                    this.cdr.detectChanges();
                 }, 1000);
+
               break;
 
           case "SurOeste":
-              //Añadir ROW SUROESTE:
-              this.bloqueoMovimiento = true;
+                //Añadir ROW SUROESTE:
+                this.bloqueoMovimiento = true;
 
-              var clone = this.appService.region.isometrico[maxRenderX+1].slice(minRenderY,maxRenderY+1);
-              this.appService.renderIsometrico.push(clone)
+                var clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(minRenderY,maxRenderY+1);
+                this.mapaGeneralService.renderIsometrico.push(clone)
+                this.mapaGeneralService.renderIsometrico.shift()
+
                 setTimeout(()=>{    
-                    this.appService.renderIsometrico.shift()
+                    this.triggerService.checkTrigger("entrarCasilla",{
+                          posicion_x: this.sesion.render.inmap.posicion_x,
+                          posicion_y: this.sesion.render.inmap.posicion_y
+                    });
                     this.checkMovimientoValido();
-                }, 500);
-                setTimeout(()=>{    
-                      this.bloqueoMovimiento = false;
+                    this.bloqueoMovimiento = false;
+                    this.cdr.detectChanges();
                 }, 1000);
               break;
 
           case "SurEste":
-              //Añadir ROW SUROESTE:
-              this.bloqueoMovimiento = true;
-              for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                this.appService.renderIsometrico[i].push(
-                    this.appService.region.isometrico[minRenderX+i][maxRenderY+1]
-                )
-              }
+                //Añadir ROW SUROESTE:
+                this.bloqueoMovimiento = true;
+
+                for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                    this.mapaGeneralService.renderIsometrico[i].push(
+                        this.mapaGeneralService.region.isometrico[minRenderX+i][maxRenderY+1]
+                    )
+                }
+
+                for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                    this.mapaGeneralService.renderIsometrico[i].shift()
+                }
                 setTimeout(()=>{    
-                      for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                        this.appService.renderIsometrico[i].shift()
-                      }
+                    this.triggerService.checkTrigger("entrarCasilla",{
+                          posicion_x: this.sesion.render.inmap.posicion_x,
+                          posicion_y: this.sesion.render.inmap.posicion_y
+                    });
                     this.checkMovimientoValido();
-                }, 500);
-                setTimeout(()=>{    
-                      this.bloqueoMovimiento = false;
+                    this.bloqueoMovimiento = false;
+                    this.cdr.detectChanges();
                 }, 1000);
               break;
 
           case "NorOeste":
-              //Añadir ROW SUROESTE:
-              this.bloqueoMovimiento = true;
+                //Añadir ROW SUROESTE:
+                this.bloqueoMovimiento = true;
 
-              for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                this.appService.renderIsometrico[i].unshift(
-                    this.appService.region.isometrico[minRenderX+i][minRenderY-1]
-                )
-              }
+                for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                    this.mapaGeneralService.renderIsometrico[i].unshift(
+                        this.mapaGeneralService.region.isometrico[minRenderX+i][minRenderY-1]
+                    )
+                }
+
+                for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                    this.mapaGeneralService.renderIsometrico[i].pop()
+                }
                 setTimeout(()=>{    
-                      for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                        this.appService.renderIsometrico[i].pop()
-                      }
+                    this.triggerService.checkTrigger("entrarCasilla",{
+                          posicion_x: this.sesion.render.inmap.posicion_x,
+                          posicion_y: this.sesion.render.inmap.posicion_y
+                    });
                     this.checkMovimientoValido();
-                }, 500);
-                setTimeout(()=>{    
-                      this.bloqueoMovimiento = false;
+                    this.bloqueoMovimiento = false;
+                    this.cdr.detectChanges();
                 }, 1000);
-              break;
+            break;
       }
-
-      this.triggerService.checkTrigger("entrarCasilla",{
-          posicion_x: this.sesion.inmap.posicion_x,
-          posicion_y: this.sesion.inmap.posicion_y
-      });
-
-      this.inmapService.realizarMovimiento();
 
 
   }//FIN MOVIMIENTO
 
   checkMovimientoValido(){
-      var movimiento = [false,false,false,false]
-      var centro = this.appService.radioRenderIsometrico;
 
-      if(this.appService.renderIsometrico[centro-1][centro]["atravesable"]){movimiento[0]=true}
-      if(this.appService.renderIsometrico[centro][centro+1]["atravesable"]){movimiento[1]=true}
-      if(this.appService.renderIsometrico[centro+1][centro]["atravesable"]){movimiento[2]=true}
-      if(this.appService.renderIsometrico[centro][centro-1]["atravesable"]){movimiento[3]=true}
+      var movimiento = [false,false,false,false]
+      var centro = this.mapaGeneralService.radioRenderIsometrico;
+
+      if(this.mapaGeneralService.renderIsometrico[centro-1][centro]["atravesable"]){movimiento[0]=true}
+      if(this.mapaGeneralService.renderIsometrico[centro][centro+1]["atravesable"]){movimiento[1]=true}
+      if(this.mapaGeneralService.renderIsometrico[centro+1][centro]["atravesable"]){movimiento[2]=true}
+      if(this.mapaGeneralService.renderIsometrico[centro][centro-1]["atravesable"]){movimiento[3]=true}
 
       this.direccionMovimientoPermitido = movimiento; 
+
   } // Fin Check Movimiento Valido
 
 } //Fin Componente

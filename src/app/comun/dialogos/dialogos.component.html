@@ -213,18 +213,18 @@
             <img class="decoracionSuperior" src="../../../assets/ui/decor/dcr_01.png"/>
         </div>
         <div class="contenedorImagen">
-            <img src="../../../assets/illustration/11.png"/>
+            <img src="../../../assets/{{data.tipoImagen}}/{{data.imagenId}}.png"/>
         </div>
         <div class="contenedorTexto">
             <div class="contenedorTitulo">
                 <img class="decoracion izquierda" src="../../../assets/ui/decor/dcr_03.png"/>
-                <h1 class="texto Texto2">{{data.contenido[0]}}</h1>
+                <h1 class="texto Texto2">{{data.titulo}}</h1>
                 <img class="decoracion derecha" src="../../../assets/ui/decor/dcr_03.png"/>
             </div>
-            <div class="contenido Texto3">{{data.contenido[1]}}</div>
+            <div class="contenido Texto3">{{data.contenido}}</div>
         </div>
 
-        <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" class="botonUnico"></botonComponent>
+        <botonComponent mat-button [mat-dialog-close]="continuar" [tipoBoton]="2" [texto]="'Siguiente'" class="botonUnico"></botonComponent>
         <frameComponent [tipoFondo]="'papiro'"></frameComponent>
     </div> <!-- Fin Contenedor Central -->
 </div>
@@ -241,16 +241,17 @@
             <img class="decoracionSuperior" src="../../../assets/ui/decor/dcr_01.png"/>
         </div>
         <div class="contenedorImagen">
-            <img class="imagen" src="../../../assets/illustration/11.png"/>
+            <img class="imagen" src="../../../assets/{{data.tipoImagen}}/{{data.imagenId}}.png"/>
         </div>
         <div class="contenedorTexto">
             <div class="contenedorTitulo">
                 <img class="decoracion izquierda" src="../../../assets/ui/decor/dcr_03.png"/>
-                <h1 class="texto Texto2">{{data.contenido[0]}}</h1>
+                <h1 class="texto Texto2">{{data.titulo}}</h1>
                 <img class="decoracion derecha" src="../../../assets/ui/decor/dcr_03.png"/>
             </div>
-            <div class="contenido Texto3">{{data.contenido[1]}}</div>
+            <div class="contenido Texto3">{{data.contenido}}</div>
         </div>
+        <!--
         <div class="contenedorControlSlide">
 
             <img class="botonSlide Flip" src="../../../assets/ui/buttons/bt_01_3.png">
@@ -258,11 +259,13 @@
             <checkboxComponent [seleccionado]="true"></checkboxComponent>
             <checkboxComponent [seleccionado]="false"></checkboxComponent>
             <checkboxComponent [seleccionado]="false"></checkboxComponent>
+
             <img class="botonSlide" src="../../../assets/ui/buttons/bt_01_3.png">
 
         </div>
+        -->
 
-        <botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" class="botonUnico"></botonComponent>
+        <botonComponent mat-button [mat-dialog-close]="continuar" [tipoBoton]="2" [texto]="'Siguiente'" class="botonUnico"></botonComponent>
         <frameComponent [tipoFondo]="'papiro'"></frameComponent>
     </div> <!-- Fin Contenedor Central -->
 </div>

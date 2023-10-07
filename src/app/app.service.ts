@@ -72,11 +72,8 @@ export class AppService {
     //Variables de datos:
     public perfil:any;
     public datosJuego: any;
-    public region: any;
     public triggerRegion: any;
     public mazmorra: any;
-    public renderIsometrico: any;
-    public radioRenderIsometrico: number = 6;
     public escalaIsometrico: number = 1;
 
     //Definicion estadisticas generales:
@@ -105,7 +102,6 @@ export class AppService {
     public estadoApp = "";
     public estadoInMap = "global";
     public cargandoMapa:boolean = false;
-    public cargaMapaCompleta:boolean = true;
     private heroeSeleccionado = null;
     private heroeSeleccionadoPerfilIndex = null;
 
@@ -142,6 +138,9 @@ export class AppService {
         setTimeout(()=>{
                 console.warn("CAMBIO ESTADO APP ",estado)
                 this.estadoApp = estado;
+                if(estado=="inmap"){
+                    this.observarAppService.next("reloadInMapService");
+                }
         }, 1000);
 
         setTimeout(()=>{
@@ -192,7 +191,15 @@ export class AppService {
       this.sesionInterna = sesion;
       this._sesion.next(sesion);
       this.observarAppService.next("triggerChangeDetection");
+      if(!this.ionic){
+         window.electronAPI.setSesion(sesion)
+      }
       return;
+    }
+    
+    actualizarSesion(){
+        this._sesion.next(this.sesionInterna);
+        return;
     }
 
     setPerfil(perfil: any){
@@ -281,10 +288,6 @@ export class AppService {
     teclaPulsada(tecla): void{
       //this.audioTeclaPlay();
       this.observarTeclaPulsada.next(tecla);
-    }
-
-    finalizarLogin():void{
-      this.eventoAppService.emit("login");
     }
 
     setDatosJuego(datosJuego: any){
@@ -587,7 +590,7 @@ export class AppService {
             this.setPerfil(null)
             this.setCuenta(null)
             //this.setSesion(null)
-            this.observarAppService.next("logout");
+            this.observarAppService.next("desconectarSocket");
             this.setControl("index");
             this.setEstadoApp("index");
     }, 1000);
@@ -663,17 +666,13 @@ export class AppService {
     setEstadoInMap(estado:string){
         // Pone Nube -1s-> Cambia Mapa -1s-> CentraMapa -1s-> Quita Nubes
         this.cargandoMapa = true;
-        this.cargaMapaCompleta = false;
     setTimeout(()=>{
             this.estadoInMap = estado;
         setTimeout(()=>{
                 this.eventoAppService.emit("centrarMapa")
             setTimeout(()=>{
                     this.cargandoMapa = false;
-                    this.observarAppService.next("triggerChangeDetection");
-                    setTimeout(()=>{
-                        this.cargaMapaCompleta = true;
-                    },1000)
+                    this.eventoAppService.emit("cargaMapaCompleta")
                 },1000)
             },1000)
         },1000)
@@ -866,133 +865,17 @@ export class AppService {
  // INMAP
  //*********************************
 
-  getRegion(){
-      return this.region;
-  }
+    async peticionHttpRegion(zona:string) {
 
-  getTriggerRegion(){
-      return this.triggerRegion;
-  }
-
-  getTile(x:number,y:number){
-      return this.region.isometrico[x][y];
-  }
-
-  setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){
-
-      console.log("Setting Tile")
-
-        //Fomrulario General:
-        this.region.isometrico[x][y].nombre = formGeneral.inMapNombre
-        this.region.isometrico[x][y].descripcion = formGeneral.inMapDescripcion
-        this.region.isometrico[x][y].indicador = formGeneral.inMapIndicador
-
-        //Fomrulario General:
-        this.region.isometrico[x][y].tipoTerreno = formTerreno.inMapTipoTerreno
-        this.region.isometrico[x][y].atravesable = formTerreno.inMapAtravesable
-        this.region.isometrico[x][y].inspeccionable = formTerreno.inMapInspeccionable
-        this.region.isometrico[x][y].mensajeInspeccion = formTerreno.inMapMensajeInsapeccionable
-        this.region.isometrico[x][y].ubicacionEspecial = formTerreno.inMapUbicacionEspecial
-        //this.region.isometrico[x][y].visitado = formTerreno.inMapVisitado
-
-        //Fomrulario Eventos:
-        this.region.isometrico[x][y].categoriaEvento = formEventos.inMapCategoriaRandom
-        this.region.isometrico[x][y].probabilidadEvento = formEventos.inMapProbabilidadRandom
-        //this.region.isometrico[x][y].checkEventos = formEventos.inMapCheckTrigger
-
-        //Fomrulario Misiones:
-        //this.region.isometrico[x][y].checkMisiones = formMisiones.inMapCheckMisiones
-
-      return true;
-  }
-
-  async cargarRegion(zona:string){
-
-        this.cargandoMapa = true;
         var token = await this.getToken();
         if(zona== undefined || zona== null || zona==""){ console.log("Zona no valida"); return;}
 
-    console.log("Cargando appService.region: "+zona);
-    this.http.post(this.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).subscribe((data) => {
-      console.log("Región: ");
-      console.log(data);
-      this.region= data;
-            //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
-            //Cargar Render Isometrico:
-            this.renderIsometrico = [];
+        return this.http.post(this.ipRemota+"/deliriumAPI/cargarRegion",{nombreRegion: zona, token: token}).toPromise();
 
-            var radioVision = this.radioRenderIsometrico;
-
-            if(this.estadoApp!="desarrollador"){
-                var coordenadaMinX = this.sesionInterna.inmap.posicion_x - radioVision;
-                var coordenadaMinY = this.sesionInterna.inmap.posicion_y - radioVision;
-                var coordenadaMaxX = this.sesionInterna.inmap.posicion_x + radioVision+1;
-                var coordenadaMaxY = this.sesionInterna.inmap.posicion_y + radioVision+1;
-
-                //Bloqueo de valores de coordenadas:
-                if(coordenadaMinX < 0){ coordenadaMinX = 0; }
-                if(coordenadaMinY < 0){ coordenadaMinY = 0; }
-                if(coordenadaMaxX > this.region.isometrico.length){ coordenadaMaxX = this.region.isometrico.length; }
-                if(coordenadaMaxY > this.region.isometrico.length){ coordenadaMaxY = this.region.isometrico.length; }
-
-                for(var i = coordenadaMinX; i < coordenadaMaxX; i++){
-                    this.renderIsometrico.push(this.region.isometrico[i].slice(coordenadaMinY,coordenadaMaxY))
-                }
-            }else{
-                //Si es el panel de desarrollador:
-                this.renderIsometrico= this.region.isometrico;
-            }
-
-            console.log("RENDER ISOMETRICO: ")
-            console.log(this.renderIsometrico)
-
-            //REALIZA UNA REGULARIZACION:
-            //this.regularizarRegion();
-
-            //Cargar Triggers de Región:
-            var triggersRegion = [];
-            //this.triggerService.setTriggersRegion(this.);
-            for(var i = 0; i < this.region.dimensionX; i++){
-                for(var j = 0; j < this.region.dimensionY; j++){
-                   if(this.region.isometrico[i][j].triggersInMapEventos.length){
-                       for(var k = 0; k < this.region.isometrico[i][j].triggersInMapEventos.length; k++){
-                        triggersRegion.push(this.region.isometrico[i][j].triggersInMapEventos[k]);
-                        triggersRegion[triggersRegion.length-1]["posicion_x"]=i;
-                        triggersRegion[triggersRegion.length-1]["posicion_y"]=j;
-                       }
-                   }
-                }
-            }
-
-            this.triggerRegion = triggersRegion;
-            this.eventoAppService.emit("inicializarIsometrico")
-            this.setEstadoInMap("region");
-
-            console.warn("Sesion: ",this.sesionInterna)
-            this.setSesion(this.sesionInterna);
-
-        })
-  }
+    }
 
     camellCase(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
-    regularizarRegion(){
-            console.log("REGULARIZANDO RENDER ISOMETRICO")
-
-            //Iteración por todos los tiles del render:
-            var longitudX = this.region.isometrico[0].length;
-            var longitudY = this.region.isometrico.length;
-            for( var i = 0; i < longitudX; i++){
-                for( var j = 0; j < longitudY; j++){
-                    delete this.region.isometrico[i][j].tileBase;
-                    delete this.region.isometrico[i][j].visitado;
-                    delete this.region.isometrico[i][j].tileId;
-                    delete this.region.isometrico[i][j].cogerMisionId;
-                }
-            }
-            console.log(this.renderIsometrico)
     }
 
     peticionEntrarMundo(indexHeroeSeleccionado: number){
@@ -1002,7 +885,7 @@ export class AppService {
 
     entrarMundo(){
 
-		this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoPerfilIndex])
+        this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoPerfilIndex])
         this.sesionInterna.estadoSesion = "inmap";
         
         //Configurar Sesion:
@@ -1047,7 +930,7 @@ export class AppService {
                   objetivo: false,
                   objetivoAuxiliar: false,
                   animacion: 0,
-                  online: true
+                  online: true,
             }
 
             heroeRender["estadisticas"] = this.logicService.calcularEstadisticasBaseHeroe(this.heroeSeleccionado);
@@ -1058,6 +941,11 @@ export class AppService {
                 objetosGlobales: [],
                 nivel_equipo: this.heroeSeleccionado.nivel,
                 turno: 1,
+                inmap: {
+                      posicion_x: 56,
+                      posicion_y: 48,
+                      region: "Asfaloth"
+                },
                 mazmorra: {
                     nombreIdMazmorra: null,
                     iniciada: false
@@ -1065,18 +953,12 @@ export class AppService {
                 indexActivacionEnemigo: 0
             }
 
-            //Inicializando INMAP:
+            //Inicializa Posición Si se inicia el tutorial:
             if(this.heroeSeleccionado.tutorial){
-                this.sesionInterna["inmap"]= {
+                this.sesionInterna["render"]["inmap"]= {
                     posicion_x: 61,
                     posicion_y: 50,
-                    mapa: "Asfaloth"
-                }
-            }else{
-                this.sesionInterna["inmap"]= {
-                    posicion_x: 56,
-                    posicion_y: 48,
-                    mapa: "Asfaloth"
+                    region: "Asfaloth"
                 }
             }
 

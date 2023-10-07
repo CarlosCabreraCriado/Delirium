@@ -68,6 +68,7 @@ import { PinchZoomComponent } from './comun/pinch-zoom/pinch-zoom.component';
 import { AtributoComponent } from './comun/atributo/atributo.component';
 import { DetalleHechizoComponent } from './comun/detalle-hechizo/detalle-hechizo.component';
 import { SeleccionPersonajeComponent } from './comun/seleccion-personaje/seleccion-personaje.component';
+import { AnimacionFocusComponent } from './comun/animacion-focus/animacion-focus.component';
 
 //Componentes de Desarrollo:
 import { DesarrolladorComponent } from './comun/desarrollador/desarrollador.component';
@@ -152,7 +153,8 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         TriggerComponent,
         AtributoComponent,
         DetalleHechizoComponent,
-        SeleccionPersonajeComponent
+        SeleccionPersonajeComponent,
+        AnimacionFocusComponent
     ],
     imports: [
         BrowserModule,

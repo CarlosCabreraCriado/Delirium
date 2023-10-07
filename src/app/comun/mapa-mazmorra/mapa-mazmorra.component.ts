@@ -14,7 +14,7 @@ export class MapaMazmorraComponent implements OnInit{
 	@Input() isometrico: any;
 	@Input() salasDescubiertas: any;
 	@Input() escalaIsometrico: number;
-  @Output() eventoClickElemento = new EventEmitter<any>();
+    @Output() eventoClickElemento = new EventEmitter<any>();
 
 	constructor(private cdr: ChangeDetectorRef) {}
 
@@ -33,11 +33,33 @@ export class MapaMazmorraComponent implements OnInit{
     public renderX: number;
     public renderY: number;
 
+    private flagRePaint: boolean = true;
+    private intervaloRepaint: any;
+
     ngOnInit(){
       this.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
       this.vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
       this.renderizarCanvasIsometrico();
+      this.intervaloRepaint = setInterval(() => {
+            if(this.flagRePaint){
+                this.renderX++;
+            }else{
+                this.renderX--;
+            }
+            this.flagRePaint = !this.flagRePaint;
+		    this.estiloContenedorIsometrico = {
+			    "width": this.renderX +"px",
+			    "height": this.renderY +"px"
+                
+            }
+            this.cdr.detectChanges();
+        },2000)
     }
+
+    ngOnDestroy(){
+        clearInterval(this.intervaloRepaint)
+    }
+
 
 	//********************
 	// RENDER ISOMETRICO
@@ -106,11 +128,12 @@ export class MapaMazmorraComponent implements OnInit{
 			//"margin-bottom": ""+(posicionMax_y/2)+"px"
 		}
 
+
 		//Centrar el isometrico:
 		//this.canvasIsometrico.nativeElement.scrollTop = posicionMax_y/2
 		//this.canvasIsometrico.nativeElement.scrollLeft = posicionMax_x/2
 
-    this.cdr.detectChanges();
+        this.cdr.detectChanges();
 
 	}
 
