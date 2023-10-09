@@ -128,7 +128,7 @@ export class AppService {
       this.observarAppService.next("triggerChangeDetection");
     }
 
-    setEstadoApp(estado: string){
+    setEstadoApp(estado: string, parametro?:any){
 
         console.log("ENTRANDO ("+estado+")")
         //this.mostrarPantallacarga(false);
@@ -145,6 +145,11 @@ export class AppService {
 
         setTimeout(()=>{
               this.mostrarPantallacarga(false);
+                if(estado=="mazmorra"){
+                    if(parametro){
+                        this.socketService.enviarInterno("comandoPartida",{comando: "cambiarSala",valor: parametro});
+                    }
+                }
         }, 4000);
     }
 
@@ -977,7 +982,7 @@ export class AppService {
         this.setEstadoApp("inmap");
     }
 
-    async iniciarMazmorra(nombreIdMazmorra: string){
+    async iniciarMazmorra(nombreIdMazmorra: string, salaOpenId?:number){
 
         //INICIANDO MAZMORRA:
         console.log("Iniciando Mazmorra: "+nombreIdMazmorra);
@@ -1000,7 +1005,7 @@ export class AppService {
 
                 //Cambia de componente:
                 this.setControl("mazmorra");
-                this.setEstadoApp("mazmorra");
+                this.setEstadoApp("mazmorra",salaOpenId);
 
             }else{
                 console.error("NO SE HA PODIDO CARGAR LA MAZMORRA: "+nombreIdMazmorra);

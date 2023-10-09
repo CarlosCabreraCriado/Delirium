@@ -47,6 +47,10 @@ export class DesarrolladorComponent implements OnInit{
     private formInMapTrigger: UntypedFormGroup;
     private formInMapMisiones: UntypedFormGroup;
 
+    //Form Group Evento Random:
+    private formEventoRandom: UntypedFormGroup;
+    public tipoEventoRandom: string ="camino";
+
     //Campos Campos InMap General:
     private inMapNombre = new UntypedFormControl('null');
     private inMapDescripcion = new UntypedFormControl('null');
@@ -125,6 +129,12 @@ export class DesarrolladorComponent implements OnInit{
         this.formInMapMisiones = this.formBuilder.group({
         });
 
+    //Campos Campos Evento Random:
+        this.formEventoRandom = this.formBuilder.group({
+            tipoEventoRandom: new UntypedFormControl("camino")
+        });
+
+
     //Suscripcion DesarrolladorService:
         this.desarrolladorSuscripcion = this.desarrolladorService.observarDesarrolladorService$.subscribe(
             (val) => {
@@ -174,6 +184,12 @@ export class DesarrolladorComponent implements OnInit{
         this.formInMapMisiones.valueChanges.subscribe((val) =>{
             this.desarrolladorService.setInMapMisiones(val);
             //console.log(val)
+        });
+
+        //Suscripcion de cambios formulario Evento Random:
+        this.formEventoRandom.valueChanges.subscribe((val) =>{
+            this.tipoEventoRandom = val.tipoEventoRandom;
+            this.desarrolladorService.tipoEventoRandom = val.tipoEventoRandom;
         });
 
         //Crear registro de nombres de enemigos para display de assets:
@@ -242,6 +258,14 @@ export class DesarrolladorComponent implements OnInit{
 
     renderTipoObjetoSeleccionado(tipoObjetoSeleccionado:string){
         if(this.desarrolladorService.tipoObjetoSeleccionado==tipoObjetoSeleccionado){
+            return "seleccionado"
+        }else{
+            return ""
+        }
+    }
+
+    renderTipoEventoSeleccionado(tipoEventoSeleccionado:string){
+        if(this.desarrolladorService.tipoEventoSeleccionado==tipoEventoSeleccionado){
             return "seleccionado"
         }else{
             return ""
@@ -391,6 +415,10 @@ export class DesarrolladorComponent implements OnInit{
     zoomMapaIsometrico(val){
         this.escalaMapaIsometrico += val;
         this.escalaMapaIsometrico = Math.round(this.escalaMapaIsometrico * 100) / 100;
+    }
+
+    testEvento(event: any){
+        this.desarrolladorService.testEvento(event);
     }
 
 }

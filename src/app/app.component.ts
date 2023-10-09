@@ -87,7 +87,7 @@ export class AppComponent implements OnInit{
         });
 
        //Suscripcion Socket (INTERNO):
-       this.socketSubscripcion = this.socketService.emisorEventoSocket.subscribe(async (data) =>{
+       this.socketSubscripcion = this.socketService.emisorSocketInterno.subscribe(async (data) =>{
           switch(data.peticion){
 
             case "authError":

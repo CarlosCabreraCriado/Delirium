@@ -10,7 +10,7 @@ import { Observable, Subscription , Subject, BehaviorSubject} from 'rxjs';
 export class SocketService {
 
     //Emisor de eventos Socket:
-	  @Output() emisorEventoSocket: EventEmitter<any> = new EventEmitter();
+	  @Output() emisorSocketInterno: EventEmitter<any> = new EventEmitter();
 
     //Recepción de eventos:
     public eventoSocket = this.socket.fromEvent<any>('eventoSocket');
@@ -26,9 +26,9 @@ export class SocketService {
         this.socket.ioSocket.on('connect_error', err =>{
             console.log("ERROR DE CONEXION SOCKET")
             if(err.message == "Authentication error"){
-                this.emisorEventoSocket.emit({peticion: "authError"})
+                this.emisorSocketInterno.emit({peticion: "authError"})
             }else{
-                this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
+                this.emisorSocketInterno.emit({peticion: "socketDesconectado"})
             }
         });
 
@@ -42,20 +42,20 @@ export class SocketService {
         this.socket.ioSocket.on('disconnect', err =>{
             console.error("SE TE HA DESCONECTADO DEL SOCKET")
             console.log(err)
-            this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
+            this.emisorSocketInterno.emit({peticion: "socketDesconectado"})
         });
 
         //Conection Error:
         this.socket.ioSocket.on('error', err =>{
             console.log("ERROR: Se ha producido un error en el Socket de comunicaciones.")
             //console.log(err)
-            this.emisorEventoSocket.emit({peticion: "socketDesconectado"})
+            this.emisorSocketInterno.emit({peticion: "socketDesconectado"})
         });
 
         //Connexion establecida:
         this.socket.ioSocket.on('connect', err =>{
             console.log("Socket conectado... Done");
-            this.emisorEventoSocket.emit({peticion: "conectado"})
+            this.emisorSocketInterno.emit({peticion: "conectado"})
         });
     }
 
@@ -76,6 +76,11 @@ export class SocketService {
 
     desconectar(){
       this.socket.disconnect();
+    }
+
+    enviarInterno(evento,data){
+        console.warn("ENVIANDO INTERNO: ",evento,data)
+        this.emisorSocketInterno.emit({peticion: evento, comando: data.comando, valor: data.valor})
     }
 
 }

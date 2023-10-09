@@ -5,11 +5,11 @@
 
 <div *ngIf="data.tipoDialogo == 'Error'" class= "contenedor FondoPapiro borde1">
 
-	<h1 class="title Texto2">Error</h1>
+    <h1 class="title Texto2">Error</h1>
 
-	<div class="textoDialogo Texto3"> {{data.contenido}} </div>
+    <div class="textoDialogo Texto3"> {{data.contenido}} </div>
 
-	<botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [tipoBoton]="2" [color]="'rojo'" class="botonUnico"></botonComponent>
+    <botonComponent mat-button [mat-dialog-close] [texto]="'Cerrar'" [tipoBoton]="2" [color]="'rojo'" class="botonUnico"></botonComponent>
 
 </div>
 
@@ -58,34 +58,34 @@
 <!--   ******************************** -->
 <div *ngIf="data.tipoDialogo == 'CrearCuenta'" class= "contenedor">
 
-	<h1 class="title Texto1 colorTexto">Crear Cuenta:</h1>
+    <h1 class="title Texto1 colorTexto">Crear Cuenta:</h1>
 
-	<div class="contenedorFormulario colorTexto">
-		<div class="texto Texto2">Correo Electrónico:</div>
-		<div class="formulario">
-		  <input #crearCorreo type="text" class="Texto2"/>
-		</div>
-		<div class="texto Texto2">Usuario:</div>
-		<div class="formulario">
-		  <input #crearUsuario type="text" class="Texto2"/>
-		</div>
-		<div class="texto Texto2">Contraseña:</div>
-		<div class="formulario">
-		  <input #crearPassword type="text" class="Texto2"/>
-		</div>
-		<div class="texto Texto2">Repetir Contraseña:</div>
-		<div class="formulario">
-		  <input #crearPassword2 type="text" class="Texto2"/>
-		</div>
+    <div class="contenedorFormulario colorTexto">
+        <div class="texto Texto2">Correo Electrónico:</div>
+        <div class="formulario">
+          <input #crearCorreo type="text" class="Texto2"/>
+        </div>
+        <div class="texto Texto2">Usuario:</div>
+        <div class="formulario">
+          <input #crearUsuario type="text" class="Texto2"/>
+        </div>
+        <div class="texto Texto2">Contraseña:</div>
+        <div class="formulario">
+          <input #crearPassword type="text" class="Texto2"/>
+        </div>
+        <div class="texto Texto2">Repetir Contraseña:</div>
+        <div class="formulario">
+          <input #crearPassword2 type="text" class="Texto2"/>
+        </div>
 
-	</div>
+    </div>
 
-	<div class="contenedorBotones">
-		<botonComponent mat-button [mat-dialog-close]= "crearCuenta()" [texto]="'Crear Cuenta'" [color]="'verde'" class="boton"></botonComponent>
-		<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
-	</div>
+    <div class="contenedorBotones">
+        <botonComponent mat-button [mat-dialog-close]= "crearCuenta()" [texto]="'Crear Cuenta'" [color]="'verde'" class="boton"></botonComponent>
+        <botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+    </div>
 
-	<div class="frame"></div>
+    <div class="frame"></div>
 
 </div>
 
@@ -161,7 +161,7 @@
             </div>
 
             <div class="textoDialogo Texto2 Arial" [innerHtml]="textosDialogo[indexTextoMostrado]"></div>
-            <botonComponent *ngIf="this.opciones.length == 0" class="botonSiguiente Arial" mat-button  (click)="nextDialogo()" [tipoBoton]="2" [texto]="'Siguiente'" [vacio]="false" [color]="'naranja'"></botonComponent>
+            <botonComponent *ngIf="this.opciones.length == 0" class="botonSiguiente Arial" mat-button   [tipoBoton]="2" [texto]="'Siguiente'" [vacio]="false" [color]="'naranja'"></botonComponent>
             <img class="decoracion" src="../../../assets/ui/decor/dcr_04.png"/>
             <!--
             <div class="contenedorBandera izquierda">
@@ -175,7 +175,7 @@
         <!-- Opciones -->
         <div class="contenedorOpciones">
             <div *ngFor="let opcion of opciones; let i = index" class="opcion">
-                <botonComponent class="botonOpcion Arial" mat-button  [mat-dialog-close]="i" [tipoBoton]="2" [texto]="opcion.textoOpcion" [vacio]="true" [color]="'rojo'"></botonComponent>
+                <botonComponent class="botonOpcion Arial" mat-button  [mat-dialog-close]="opcion.ordenIdEncadanado" [tipoBoton]="2" [texto]="opcion.textoOpcion" [vacio]="true" [color]="'rojo'"></botonComponent>
             </div>
         </div>
 
@@ -221,10 +221,10 @@
                 <h1 class="texto Texto2">{{data.titulo}}</h1>
                 <img class="decoracion derecha" src="../../../assets/ui/decor/dcr_03.png"/>
             </div>
-            <div class="contenido Texto3">{{data.contenido}}</div>
+            <div class="contenido Texto3 Arial"[innerHtml]="textosDialogo[indexTextoMostrado]"></div>
         </div>
 
-        <botonComponent mat-button [mat-dialog-close]="data.ordenEncadenado" [tipoBoton]="2" [texto]="'Siguiente'" class="botonUnico"></botonComponent>
+        <botonComponent mat-button  [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico"></botonComponent>
         <frameComponent [tipoFondo]="'papiro'"></frameComponent>
     </div> <!-- Fin Contenedor Central -->
 </div>
@@ -249,7 +249,7 @@
                 <h1 class="texto Texto2">{{data.titulo}}</h1>
                 <img class="decoracion derecha" src="../../../assets/ui/decor/dcr_03.png"/>
             </div>
-            <div class="contenido Texto3">{{data.contenido}}</div>
+            <div class="contenido Texto3 Arial"[innerHtml]="textosDialogo[indexTextoMostrado]"></div>
         </div>
         <!--
         <div class="contenedorControlSlide">
@@ -265,7 +265,7 @@
         </div>
         -->
 
-        <botonComponent mat-button [mat-dialog-close]="data.ordenEncadenado" [tipoBoton]="2" [texto]="'Siguiente'" class="botonUnico"></botonComponent>
+        <botonComponent mat-button [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico"></botonComponent>
         <frameComponent [tipoFondo]="'papiro'"></frameComponent>
     </div> <!-- Fin Contenedor Central -->
 </div>

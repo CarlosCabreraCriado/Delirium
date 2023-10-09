@@ -147,6 +147,7 @@
                     <div *ngFor="let accion of this.desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones; let i=index"  class="elemento" [ngClass]="{'seleccionado': accionSeleccionadaIndex==i}" (click)="seleccionarAccion(i)">{{accion.nombre}}</div>
                 </div>
                 <div class="botonAdd botonAccion" (click)="addAccion()">Añadir</div>
+
                 <form *ngIf="desarrolladorService.enemigos.enemigos[this.desarrolladorService.enemigoSeleccionadoIndex].acciones"  id="formularioAcciones" [formGroup]="formAcciones">
                       <mat-form-field appearance="legacy"  class="campo campo1">
                         <mat-label>Nombre</mat-label>

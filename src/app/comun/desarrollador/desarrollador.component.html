@@ -98,13 +98,13 @@
             </div>
 
             <!-- Opciones de configuracion -->
-			<mat-label>Mostrar Niebla: </mat-label>
+            <mat-label>Mostrar Niebla: </mat-label>
             <mat-checkbox [(ngModel)]="mostrarNieblaGuerra"></mat-checkbox>
 
-			<mat-label>Mostrar Infranqueable: </mat-label>
+            <mat-label>Mostrar Infranqueable: </mat-label>
             <mat-checkbox  [(ngModel)]="mostrarInfranqueable"></mat-checkbox>
 
-			<mat-label>Mostrar Triggers: </mat-label>
+            <mat-label>Mostrar Triggers: </mat-label>
             <mat-checkbox  [(ngModel)]="mostrarTriggers"></mat-checkbox>
 
         </div>
@@ -159,23 +159,23 @@
         </div>
 
             <!-- Formulario General-->
-			<form *ngIf="desarrolladorService.opcionPropiedades==='general'" class="formularioGeneral subanimacion" [formGroup]="formInMapGeneral">
+            <form *ngIf="desarrolladorService.opcionPropiedades==='general'" class="formularioGeneral subanimacion" [formGroup]="formInMapGeneral">
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy">
-					<mat-label>Nombre: </mat-label>
-					<input matInput placeholder="Nombre" formControlName="inMapNombre">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Nombre: </mat-label>
+                    <input matInput placeholder="Nombre" formControlName="inMapNombre">
+                  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy">
-					<mat-label>Descripcion: </mat-label>
-					<textarea matInput placeholder="Descripcion" formControlName="inMapDescripcion"></textarea>
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Descripcion: </mat-label>
+                    <textarea matInput placeholder="Descripcion" formControlName="inMapDescripcion"></textarea>
+                  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="fill">
-					<mat-label>Indicador: </mat-label>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Indicador: </mat-label>
                     <mat-select [formControl]="inMapIndicador">
                         <mat-option value="null">null</mat-option>
                         <mat-option value="Ciudad">Ciudad</mat-option>
@@ -183,16 +183,16 @@
                         <mat-option value="Portal">Portal</mat-option>
                         <mat-option value="Viaje">Viaje rápido</mat-option>
                     </mat-select>
-				  </mat-form-field>
+                  </mat-form-field>
 
-			</form>
+            </form>
 
             <!-- Formulario Terreno -->
-			<form *ngIf="desarrolladorService.opcionPropiedades==='terreno'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTerreno">
+            <form *ngIf="desarrolladorService.opcionPropiedades==='terreno'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTerreno">
 
                 <!--Campo-->
-				  <mat-form-field appearance="fill">
-					<mat-label>Tipo Terreno: </mat-label>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Tipo Terreno: </mat-label>
                     <mat-select [formControl]="inMapTipoTerreno">
                         <mat-option value="normal">Normal</mat-option>
                         <mat-option value="camino">Camino</mat-option>
@@ -202,25 +202,25 @@
                         <mat-option value="bosque">Bosque</mat-option>
                         <mat-option value="peligroso">Peligroso</mat-option>
                     </mat-select>
-				  </mat-form-field>
+                  </mat-form-field>
 
                 <!--Campo-->
-				<mat-label>Atravesable: </mat-label>
+                <mat-label>Atravesable: </mat-label>
                 <mat-checkbox formControlName="inMapAtravesable"></mat-checkbox>
 
                 <!--Campo-->
-				<mat-label>Inspeccionable: </mat-label>
+                <mat-label>Inspeccionable: </mat-label>
                 <mat-checkbox formControlName="inMapInspeccionable"></mat-checkbox>
 
                 <!--Campo-->
-				<mat-form-field appearance="legacy">
-					<mat-label>Mensaje Inspección: </mat-label>
-					<textarea matInput placeholder="Mensaje Insp." formControlName="inMapMensajeInsapeccionable"></textarea>
-				</mat-form-field>
+                <mat-form-field appearance="legacy">
+                    <mat-label>Mensaje Inspección: </mat-label>
+                    <textarea matInput placeholder="Mensaje Insp." formControlName="inMapMensajeInsapeccionable"></textarea>
+                </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="fill">
-					<mat-label>Indicador: </mat-label>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Indicador: </mat-label>
                     <mat-select [formControl]="inMapUbicacionEspecial">
                         <mat-option value="null">null</mat-option>
                         <mat-option value="portal">Portal</mat-option>
@@ -230,24 +230,24 @@
                         <mat-option value="mercado">Mercado</mat-option>
                         <mat-option value="posada">Posada</mat-option>
                     </mat-select>
-				  </mat-form-field>
+                  </mat-form-field>
 
-			</form>
+            </form>
 
             <!-- Formulario Trigger-->
-			<form *ngIf="desarrolladorService.opcionPropiedades==='trigger'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTrigger">
+            <form *ngIf="desarrolladorService.opcionPropiedades==='trigger'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTrigger">
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy">
-					<mat-label>Probabilidad Random: </mat-label>
-					<input matInput placeholder="0" formControlName="inMapProbabilidadRandom">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Probabilidad Random: </mat-label>
+                    <input matInput placeholder="0" formControlName="inMapProbabilidadRandom">
+                  </mat-form-field>
 
                 <!--Campo-->
-				  <mat-form-field appearance="legacy">
-					<mat-label>Categoria Random:</mat-label>
-					<input matInput placeholder="Camino" formControlName="inMapCategoriaRandom">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Categoria Random:</mat-label>
+                    <input matInput placeholder="Camino" formControlName="inMapCategoriaRandom">
+                  </mat-form-field>
 
                 <!--Campo-->
                 <div class="contenedorCampoRelacional campoAnimacion campo">
@@ -255,28 +255,28 @@
                 </div>
 
                 <!--Campo
-				  <mat-form-field appearance="legacy">
-					<mat-label>Loot Prob:</mat-label>
-					<input matInput placeholder="0" formControlName="inMapLootProb">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Loot Prob:</mat-label>
+                    <input matInput placeholder="0" formControlName="inMapLootProb">
+                  </mat-form-field>
 
-				  <mat-form-field appearance="legacy">
-					<mat-label>Loot ID:</mat-label>
-					<input matInput placeholder="0" formControlName="inMapLootId">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Loot ID:</mat-label>
+                    <input matInput placeholder="0" formControlName="inMapLootId">
+                  </mat-form-field>
                     -->
 
-			</form>
+            </form>
 
             <!-- Formulario Misiones-->
-			<form *ngIf="desarrolladorService.opcionPropiedades==='misiones'"  class="formularioGeneral subanimacion" >
+            <form *ngIf="desarrolladorService.opcionPropiedades==='misiones'"  class="formularioGeneral subanimacion" >
 
                 <!--Campo-->
                 <div class="contenedorCampoRelacional campoAnimacion campo">
                     <img class="imagenCampoRelacional" (click)="abrirTrigger('inmap-mision')" src="./assets/desarrollador/mision.png"/>
                 </div>
 
-			</form>
+            </form>
     </div> <!-- FIN Panel INMAP Inferior -->
 
 
@@ -418,9 +418,16 @@
         <img class="icono" src="./assets/Iconos/indicadores/008.png" [ngClass]="renderTipoObjetoSeleccionado('Equipo')" (click)="desarrolladorService.seleccionarTipoObjeto('Equipo')"/>
         <img class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoObjetoSeleccionado('Consumible')" (click)="desarrolladorService.seleccionarTipoObjeto('Consumible')"/>
         </ng-container> 
+
+        <ng-container *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'"> 
+            <div class="icono" src="./assets/Iconos/indicadores/008.png" [ngClass]="renderTipoEventoSeleccionado('General')" (click)="desarrolladorService.seleccionarTipoEvento('General')">General</div>
+            <div class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoEventoSeleccionado('Variables')" (click)="desarrolladorService.seleccionarTipoEvento('Variables')">Variables</div>
+            <div class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoEventoSeleccionado('Random')" (click)="desarrolladorService.seleccionarTipoEvento('Random')">Random</div>
+        </ng-container> 
+
       </div> <!-- FIN SUBCONTAINER -->
 
-	  <img class="botonGuardar" src="./assets/desarrollador/guardar.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.guardarPanelDatos()"/>
+      <img class="botonGuardar" src="./assets/desarrollador/guardar.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.guardarPanelDatos()"/>
 
       <div class="contenedorCentral">
 
@@ -431,7 +438,34 @@
       <formBuffComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'"></formBuffComponent>
       <formAnimacionesComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'"></formAnimacionesComponent>
       <formEnemigosComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Enemigos'"></formEnemigosComponent>
-      <formEventosComponent [eventos]="desarrolladorService.eventos.eventos" (sizeChange)="desarrolladorService.eventos.eventos=$event" class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'"></formEventosComponent>
+
+      <ng-container *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+        <formEventosComponent *ngIf="desarrolladorService.tipoEventoSeleccionado=='General'" [eventos]="desarrolladorService.eventos.eventos" (eventosChange)="desarrolladorService.eventos.eventos=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
+
+        <formEventosComponent *ngIf="desarrolladorService.tipoEventoSeleccionado=='Variables'" [eventos]="desarrolladorService.eventos.eventosVariables" (eventosChange)="desarrolladorService.eventos.eventosVariables=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
+
+        <formEventosComponent *ngIf="desarrolladorService.tipoEventoSeleccionado=='Random'" [eventos]="desarrolladorService.eventos.eventosRandom[tipoEventoRandom]" (eventosChange)="desarrolladorService.eventos.eventosRandom[tipoEventoRandom]=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
+
+        <form *ngIf="desarrolladorService.tipoEventoSeleccionado=='Random'" id="formularioEventoRandom" [formGroup]="formEventoRandom">
+            <!--Campo-->
+              <mat-form-field appearance="fill">
+                <mat-label>Tipo Evento Random: </mat-label>
+                <mat-select formControlName="tipoEventoRandom">
+                    <mat-option value="camino">Camino</mat-option>
+                    <mat-option value="bosque">Bosque</mat-option>
+                    <mat-option value="costa">Costa</mat-option>
+                    <mat-option value="ciudad">Ciudad</mat-option>
+                    <mat-option value="montaña">Montaña</mat-option>
+                    <mat-option value="ruina">Ruina</mat-option>
+                    <mat-option value="nieve">Nieve</mat-option>
+                    <mat-option value="lava">Lava</mat-option>
+                    <mat-option value="pueblo">Pueblo</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </form>
+
+      </ng-container>
+
       <formMisionesComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Misiones'"></formMisionesComponent>
 
       </div>
@@ -442,15 +476,15 @@
 
   <!-- SELECTOR DE IMAGENES -->
   <div id="SelectorImagenes" *ngIf="desarrolladorService.mostrarSelectorImagen">
-	  <div class="frame">
-		  <div class="titulo">Seleccione una imagen:</div>
-			<img (click)="desarrolladorService.mostrarSelectorImagen = false" class="botonCerrar" src="./assets/desarrollador/cerrar.png"/>
-		  <div class="contenedorImagenes">
-			  <div *ngFor="let imagenes of desarrolladorService.imagenes; let i= index" class="imagen">
+      <div class="frame">
+          <div class="titulo">Seleccione una imagen:</div>
+            <img (click)="desarrolladorService.mostrarSelectorImagen = false" class="botonCerrar" src="./assets/desarrollador/cerrar.png"/>
+          <div class="contenedorImagenes">
+              <div *ngFor="let imagenes of desarrolladorService.imagenes; let i= index" class="imagen">
                   <img (click)="desarrolladorService.seleccionarImagen(i+1)" src="./assets/{{desarrolladorService.pathImagenes}}/{{imagenes}}.png"/>
-			  </div>
-		  </div>
-	  </div>
+              </div>
+          </div>
+      </div>
   </div>
   
 <!-- *************************************************

@@ -264,7 +264,6 @@ export class MapaGeneralComponent implements OnInit {
               return "desarrollador triggers";
           }
       }
-
       return "noDisplay";
   }
 

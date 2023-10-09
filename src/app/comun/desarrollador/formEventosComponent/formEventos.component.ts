@@ -48,7 +48,6 @@ export class FormEventosComponent {
   	private id_Orden = new UntypedFormControl({value: 0, disabled:true});
   	private nombre_Orden = new UntypedFormControl('???');
   	private tipo_Orden = new UntypedFormControl({value: null, disabled: true});
-
   	private variable_Orden_Parametro = new UntypedFormControl('?');
 
 	//Campos Datos Eventos (Condición):
@@ -180,7 +179,10 @@ export class FormEventosComponent {
     public ordenSeleccionadaIndex = null;
 
 	@Input() eventos: any = [];
+	@Input() esMazmorra: boolean = false;
+
     @Output() eventosChange = new EventEmitter<any>();
+    @Output() testEventoEmitter = new EventEmitter<any>();
 
 	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 
@@ -474,7 +476,9 @@ export class FormEventosComponent {
                 this.formEvento.patchValue(this.eventos[this.eventoSeleccionadoIndex]);
 
                 //Formulario Orden:
-                this.formOrden.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                if(this.eventos[this.eventoSeleccionadoIndex]?.ordenes){
+                    this.formOrden.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
+                }
 
                 //Formulario Parametros Orden:
                 //this.formParametrosOrden.patchValue(this.eventos[this.eventoSeleccionadoIndex].ordenes[this.ordenSeleccionadaIndex]);
@@ -598,7 +602,11 @@ export class FormEventosComponent {
     seleccionarEvento(selector){
         this.eventoSeleccionadoIndex = selector["index"];
         this.ordenSeleccionadaIndex = null;
-        this.eventoSeleccionadoId = this.eventos[this.eventoSeleccionadoIndex].id;
+        if(this.eventos[this.eventoSeleccionadoIndex]){
+            this.eventoSeleccionadoId = this.eventos[this.eventoSeleccionadoIndex].id;
+        }else{
+            this.eventoSeleccionadoId = 0;
+        }
         this.tipoOrdenSeleccionada = null;
         console.log("Seleccionando Evento: " + this.eventos[this.eventoSeleccionadoIndex]);
         this.reloadForm("reloadFormEventos");
@@ -618,6 +626,8 @@ export class FormEventosComponent {
         this.eventos.push(Object.assign({},datosDefecto.eventos));
         this.eventos.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.eventos);
         this.eventos.at(-1)["nombre"]= "Evento "+this.eventos.length;
+        this.eventos.at(-1)["ordenes"]= [];
+        this.seleccionarEvento({tipo: "evento",index: this.eventos.length-1})
     }
 
     eliminarEvento(){
@@ -626,7 +636,7 @@ export class FormEventosComponent {
         if(this.eventoSeleccionadoIndex>0){
             this.eventoSeleccionadoIndex -= 1;
         }
-        this.tipoOrdenSeleccionada = this.eventos[this.eventoSeleccionadoIndex].ordenes[0].tipo;
+        this.tipoOrdenSeleccionada = null;
         this.ordenSeleccionadaIndex = null;
         this.reloadForm("reloadFormEventos");
     }
@@ -667,11 +677,14 @@ export class FormEventosComponent {
     }
 
     addOrden(tipoOrden: string){
+
+        var idDisponible = this.desarrolladorService.findAvailableID(this.eventos[this.eventoSeleccionadoIndex].ordenes);
+
           //Inicialización de campos de Ordenes:
           switch(tipoOrden){
               case "condicion":
-                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push(new Object({
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       variable: null,
@@ -681,11 +694,11 @@ export class FormEventosComponent {
                       encadenadoTrue: null,
                       tipoEncadenadoFalse: null,
                       encadenadoFalse: null
-                  });
+                  }));
               break;
               case "variable":
                   this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       comando: null,
@@ -696,7 +709,7 @@ export class FormEventosComponent {
               break;
               case "mision":
                   this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       comando: null,
@@ -706,7 +719,7 @@ export class FormEventosComponent {
               break;
               case "trigger":
                   this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       comando: null,
@@ -715,8 +728,8 @@ export class FormEventosComponent {
                   });
               break;
               case "dialogo":
-                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                  this.eventos[this.eventoSeleccionadoIndex].ordenes.push(new Object({
+                      id: idDisponible,
                       nombre: "Nuevo "+tipoOrden,
                       tipo: tipoOrden,
                       tipoDialogo: null,
@@ -724,11 +737,11 @@ export class FormEventosComponent {
                       opciones: [],
                       encadenadoId: null,
                       tipoEncadenado: null
-                  });
+                  }));
               break;
               case "multimedia":
                   this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       comando: null,
@@ -738,7 +751,7 @@ export class FormEventosComponent {
               break;
               case "loot":
                   this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       comando: null,
@@ -750,7 +763,7 @@ export class FormEventosComponent {
               break;
               case "enemigo":
                   this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       comando: null,
@@ -760,7 +773,7 @@ export class FormEventosComponent {
               break;
               case "mazmorra":
                   this.eventos[this.eventoSeleccionadoIndex].ordenes.push({
-                      id: this.eventos[this.eventoSeleccionadoIndex].ordenes.length+1,
+                      id: idDisponible,
                       nombre: "Nueva "+tipoOrden,
                       tipo: tipoOrden,
                       comando: null,
@@ -793,8 +806,38 @@ export class FormEventosComponent {
 
     testEvento(){
         this.eventosChange.emit(this.eventos);
-        this.desarrolladorService.testEvento(this.eventoSeleccionadoId);
+        this.testEventoEmitter.emit(this.eventoSeleccionadoId);
+        //this.desarrolladorService.testEvento(this.eventoSeleccionadoId);
     }
+
+    copiarOrden(event: any,indexOrdenCopiar: number){
+        if(event.which===3){
+
+            this.eventos[this.eventoSeleccionadoIndex].ordenes.push(Object.assign({},this.eventos[this.eventoSeleccionadoIndex].ordenes[indexOrdenCopiar]));
+
+            this.eventos[this.eventoSeleccionadoIndex].ordenes.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.eventos[this.eventoSeleccionadoIndex].ordenes);
+            this.eventos[this.eventoSeleccionadoIndex].ordenes.at(-1)["nombre"]+= "_COPY"; 
+
+            this.ordenSeleccionadaIndex = this.eventos[this.eventoSeleccionadoIndex].ordenes.length-1;
+
+            this.seleccionarOrden(this.ordenSeleccionadaIndex)
+
+        }
+    }
+
+    copiarEvento(indexEventoCopiar: number){
+        console.log("COPIANDO:",indexEventoCopiar)
+
+        this.eventos.push(Object.assign({},this.eventos[indexEventoCopiar]));
+
+        this.eventos.at(-1)["id"]= this.desarrolladorService.findAvailableID(this.eventos);
+        this.eventos.at(-1)["nombre"]+= "_COPY"; 
+
+        this.eventoSeleccionadoIndex = this.eventos.length-1;
+
+        this.seleccionarEvento({tipo: "evento",index: this.eventoSeleccionadoIndex});
+    }
+
 
 }
 

@@ -11,7 +11,7 @@
 
             <!-- LISTA HECHIZOS -->
             <ng-container *ngIf="tipo=='Hechizos'">
-                <div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index" [ngClass]="renderListaSeleccionado(i)" class="hechizo" (click)="seleccionarElemento(i)">
+                <div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index" [ngClass]="renderListaSeleccionado(i)" class="hechizo" (auxclick)="clickAuxElemento($event,i)" (click)="seleccionarElemento(i)">
                     <img class="imagen" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
                     <div class="nombre">[{{hechizo.id}}] {{hechizo.nombre}}</div>
                 </div>
@@ -27,11 +27,11 @@
 
             <!-- LISTA HECHIZO ENCADENADO -->
             <ng-container *ngIf="tipo=='Hechizo_Encadenado'">
-                <div *ngIf="botonEliminarRelacion" class="hechizo" (click)="desarrolladorService.eliminarEncadenado()" >
+                <div *ngIf="botonEliminarRelacion" class="hechizo" (auxclick)="clickAuxElemento($event,i)" (click)="desarrolladorService.eliminarEncadenado()" >
                     <img class="imagen" src="./assets/desarrollador/papelera.svg">
                     <div class="nombre">Eliminar Hechizo Encadenado</div>
                 </div>
-                <div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index"  class="hechizo" (click)="desarrolladorService.addEncadenado(i)">
+                <div *ngFor="let hechizo of this.desarrolladorService.hechizos.hechizos; let i=index"  class="hechizo" (auxclick)="clickAuxElemento($event,i)"(click)="desarrolladorService.addEncadenado(i)">
                     <img class="imagen" src="./assets/Habilidades/Spell/{{hechizo.imagen_id}}.png">
                     <div class="nombre">[{{hechizo.id}}] {{hechizo.nombre}}</div>
                 </div>
@@ -39,11 +39,11 @@
 
             <!-- LISTA BUFF RELACIONAL-->
             <ng-container *ngIf="tipo=='Buff_relacionado'">
-                <div class="hechizo" (click)="desarrolladorService.eliminarBuffHechizo()">
+                <div class="hechizo" (auxclick)="clickAuxElemento($event,i)"(click)="desarrolladorService.eliminarBuffHechizo()">
                     <img class="imagen" src="./assets/desarrollador/papelera.svg">
                     <div class="nombre">Eliminar buff</div>
                 </div>
-                <div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index"  class="hechizo" (click)="desarrolladorService.addBuff(i)">
+                <div *ngFor="let buff of this.desarrolladorService.buff.buff; let i=index"  class="hechizo" (auxclick)="clickAuxElemento($event,i)"(click)="desarrolladorService.addBuff(i)">
                     <img class="imagen" src="./assets/Habilidades/Spell/{{buff.imagen_id}}.png">
                     <div class="nombre">[{{buff.id}}] {{buff.nombre}}</div>
                 </div>
@@ -51,11 +51,11 @@
 
             <!-- LISTA ANIMACION RELACIONAL HECHIZO-->
             <ng-container *ngIf="tipo=='Animacion_relacionada_hechizo'">
-                <div *ngIf="botonEliminarRelacion" class="hechizo" (click)="desarrolladorService.eliminarAnimacionHechizo()">
+                <div *ngIf="botonEliminarRelacion" class="hechizo" (auxclick)="clickAuxElemento($event,i)"(click)="desarrolladorService.eliminarAnimacionHechizo()">
                     <img class="imagen" src="./assets/desarrollador/papelera.svg">
                     <div class="nombre">Eliminar animación</div>
                 </div>
-                <div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado(i,'animacionHechizo')" class="hechizo" (click)="desarrolladorService.addAnimacionHechizo(i)">
+                <div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado(i,'animacionHechizo')" class="hechizo"(auxclick)="clickAuxElemento($event,i)" (click)="desarrolladorService.addAnimacionHechizo(i)">
                     <img class="imagen" src="./assets/desarrollador/animacion.png">
                     <div class="nombre">[{{animacion.id}}] {{animacion.nombre}}</div>
                 </div>
@@ -63,11 +63,11 @@
 
             <!-- LISTA ANIMACION RELACIONAL BUFF-->
             <ng-container *ngIf="tipo=='Animacion_relacionada_buff'">
-                <div *ngIf="botonEliminarRelacion" class="hechizo" (click)="desarrolladorService.eliminarAnimacionHechizo()">
+                <div *ngIf="botonEliminarRelacion" class="hechizo"(auxclick)="clickAuxElemento($event,i)" (click)="desarrolladorService.eliminarAnimacionHechizo()">
                     <img class="imagen" src="./assets/desarrollador/papelera.svg">
                     <div class="nombre">Eliminar animación</div>
                 </div>
-                <div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado(i,'animacionBuff')" class="hechizo" (click)="desarrolladorService.addAnimacionBuff(i)">
+                <div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado(i,'animacionBuff')" class="hechizo"(auxclick)="clickAuxElemento($event,i)" (click)="desarrolladorService.addAnimacionBuff(i)">
                     <img class="imagen" src="./assets/desarrollador/animacion.png">
                     <div class="nombre">[{{animacion.id}}] {{animacion.nombre}}</div>
                 </div>
@@ -83,7 +83,7 @@
 
             <!-- LISTA OBJETOS -->
             <ng-container *ngIf="tipo=='Equipo'">
-                <div *ngFor="let objeto of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
+                <div *ngFor="let objeto of datos; let i=index"(auxclick)="clickAuxElemento($event,i)" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
                     <img class="imagen" src="./assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png">
                     <div class="nombre">[{{objeto.id}}] {{objeto.nombre}}</div>
                 </div>
@@ -91,7 +91,7 @@
 
             <!-- LISTA CONSUMIBLE -->
             <ng-container *ngIf="tipo=='Consumible'">
-                <div *ngFor="let objeto of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
+                <div *ngFor="let objeto of datos; let i=index"(auxclick)="clickAuxElemento($event,i)" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
                     <img class="imagen" src="./assets/Items/{{objeto.tipo.toLowerCase()}}/{{objeto.imagen_id}}.png">
                     <div class="nombre">[{{objeto.id}}] {{objeto.nombre}}</div>
                 </div>
@@ -99,7 +99,7 @@
 
             <!-- LISTA ENEMIGOS -->
             <ng-container *ngIf="tipo=='Enemigos'">
-                <div *ngFor="let enemigo of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
+                <div *ngFor="let enemigo of datos; let i=index"(auxclick)="clickAuxElemento($event,i)" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
                     <img class="imagen" src="./assets/Enemigos/{{enemigo.familia.toLowerCase()}}/{{enemigo.imagen_id}}.png">
                     <div class="nombre">[{{enemigo.id}}] {{enemigo.nombre}}</div>
                 </div>
@@ -107,7 +107,7 @@
 
             <!-- LISTA EVENTOS -->
             <ng-container *ngIf="tipo=='Eventos'">
-                <div *ngFor="let evento of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
+                <div *ngFor="let evento of datos; let i=index"(auxclick)="$event.preventDefault();clickAuxElemento($event,i)" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
                     <img class="imagen" src="./assets/desarrollador/trigger.png">
                     <div class="nombre">[{{evento.id}}] {{evento.nombre}}</div>
                 </div>
@@ -115,7 +115,7 @@
 
             <!-- LISTA MISIONES -->
             <ng-container *ngIf="tipo=='Misiones'">
-                <div *ngFor="let mision of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
+                <div *ngFor="let mision of datos; let i=index"(auxclick)="clickAuxElemento($event,i)" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
                     <img class="imagen" src="./assets/desarrollador/mision.png">
                     <div class="nombre">[{{mision.id}}] {{mision.titulo}}</div>
                 </div>
@@ -123,7 +123,7 @@
 
             <!-- LISTA OBJETIVOS -->
             <ng-container *ngIf="tipo=='Objetivos'">
-                <div *ngFor="let objetivo of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
+                <div *ngFor="let objetivo of datos; let i=index"(auxclick)="clickAuxElemento($event,i)" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
                     <img class="imagen" src="./assets/desarrollador/mision.png">
                     <div class="nombre">[{{objetivo.id}}] {{objetivo.texto}}</div>
                 </div>
@@ -131,7 +131,7 @@
 
             <!-- LISTA TRIGGERS -->
             <ng-container *ngIf="tipo=='Triggers'">
-                <div *ngFor="let trigger of datos; let i=index" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
+                <div *ngFor="let trigger of datos; let i=index"(auxclick)="clickAuxElemento($event,i)" (click)="seleccionarElemento(i)" [ngClass]="renderListaSeleccionado(i)" class="hechizo" >
                     <img class="imagen" src="./assets/desarrollador/trigger.png">
                     <div class="nombre">[{{trigger.id}}] {{trigger.identificador}}</div>
                 </div>

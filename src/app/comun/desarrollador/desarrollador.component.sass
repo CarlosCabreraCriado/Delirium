@@ -1289,12 +1289,15 @@
         display: inline-block
         height: 100%
         margin: auto
+        color: white
         &.seleccionado
             box-shadow: 0 0 6px 4px white
             background-color: white
+            color: black
         &:hover
             box-shadow: 0 0 6px 4px white
             background-color: white
+            color: black
 
   .contenedorCentral
     position: absolute
@@ -2209,6 +2212,11 @@
     &:hover
         filter: invert(1)
 
+#formularioEventoRandom
+  position: absolute
+  top: -20%
+  left: 3%
+
 // ANIMACIONE:
 
 @keyframes lds-dual-ring 
@@ -2235,8 +2243,6 @@ ngx-json-viewer
   overflow: scroll !important
   ::ng-deep 
     overflow: scroll !important
-
-
   
 
 

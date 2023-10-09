@@ -27,6 +27,7 @@ export class PanelSelectorComponent {
     @Input() botonEliminarRelacion: boolean= true;
 
     @Output() selector = new EventEmitter<Selector>();
+    @Output() copiar = new EventEmitter<number>();
     @Output() addElementoEmitter = new EventEmitter<void>();
 
 	constructor(public desarrolladorService: DesarrolladorService) {}
@@ -89,6 +90,13 @@ export class PanelSelectorComponent {
         this.addElementoEmitter.emit();
         this.indexSeleccionado = this.datos.length-1;
         //this.desarrolladorService.addDato()
+    }
+
+    clickAuxElemento(event:any,index: number){
+        console.log("COPIANDO:",event)
+        if(event.which === 3){
+            this.copiar.emit(index);
+        }
     }
 
 }

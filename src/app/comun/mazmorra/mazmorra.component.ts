@@ -91,9 +91,22 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     if(this.appService.control!="mazmorra"){this.appService.setControl("mazmorra")}
 
+       //Suscripcion Socket (INTERNO):
+       this.socketSubscripcion = this.socketService.emisorSocketInterno.subscribe(async (data) =>{
+          switch(data.peticion){
+              case"comandoPartida":
+                switch(data.comando){
+                    case "cambiarSala":
+                        this.mazmorraService.cambiarSala(data.valor);
+                        break;
+                }
+              break;
+          }
+       })
+
     //Suscripcion Socket:
     this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async (data) => {
-
+        console.warn("RECIBIENDO: ",data)
           if(data.emisor==this.mazmorraService.cuenta.usuario){
             //console.warn("Evitando Rebote Comando Socket...")
             return;
@@ -235,6 +248,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               }
             break;
 
+
             case "AbandonarPartida":
               this.abandonarPartida();
             break;
@@ -291,7 +305,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     //suscripcion MazmorraService:
         this.subscripcionMazmorra = this.mazmorraService.subscripcionMazmorra.subscribe((val) => {
             switch(val){
-                case "mazmorraIniciada":
+                case "centrarMazmorra":
                     this.centrarMazmorra();
                     break;
                 case "forceRender":
@@ -827,28 +841,21 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
       console.log(elemento)
 
-      //Trigger de eventos HARCODED:
-      switch(elemento.Id){
-        case "ffca4f5c-0de8-401b-9b8e-9863269d16bb":
-          this.mazmorraService.triggerEvento(1);
-        break
-        case "d23d38b2-c90b-4d12-937b-167b11967107":
-          this.mazmorraService.triggerEvento(2);
-        break
-        case "a309cc1e-2404-426d-b4de-9054092cd43c":
-        case "f58de226-2499-457a-98cb-76f1a802410c":
-          this.mazmorraService.triggerEvento(3);
-        break
-        //Abrir Puerta Boss
-        case "27d37a70-acdf-416d-a036-d7f55091d25c":
-            this.mazmorraService.triggerEvento(4);
-        break
-        //Interacción Mesa:
-        case "2000d6f0-04e6-4ea7-9fc7-88cb56aa7595":
-          this.mazmorraService.triggerEvento(5);
-        break
+      switch(elemento.especial){
+              case undefined:
+              case null:
+              case "":
+                return;
+              break;
+
+              case "interactuar":
+              case "exploracion":
+              case "inspeccionable":
+                this.mazmorraService.lanzarEventoMazmorra(elemento.especial,elemento.mensaje,elemento.eventoId,elemento.Id); 
+                break;
 
       }
+
     }//FIN clickElemento()
 
     abrirLogger(){

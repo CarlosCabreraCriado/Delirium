@@ -3,7 +3,7 @@
 <!--       FORM EVENTOS    -->
 <!--   ******************* -->
 
-		<!-- LISTA EVENTOS -->
+        <!-- LISTA EVENTOS -->
         <panelSelectorComponent
             [datos]="eventos"
             [tipo]="'Eventos'"
@@ -14,57 +14,58 @@
             [indexSeleccionado]="eventoSeleccionadoIndex"
             (addElementoEmitter)="addEvento()"
             (selector)="seleccionarEvento($event)"
+            (copiar)="copiarEvento($event)"
             >
         </panelSelectorComponent>
 
-		<!-- Boton TEST EVENTO -->
+        <!-- Boton TEST EVENTO -->
         <botonComponent class="botonTest" (click)="testEvento()" mat-button [tipoBoton]="2" [texto]="'TEST'" [color]="'naranja'"></botonComponent>
 
-		<!-- CENTRAL DATOS EVENTOS -->
-        <div id="visualizadorEventos" *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+        <!-- CENTRAL DATOS EVENTOS -->
+        <div id="visualizadorEventos" >
 
-			<form  class="formularioGeneral evento" [formGroup]="formEvento">
+            <form  class="formularioGeneral evento" [formGroup]="formEvento">
 
-					<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="eliminarEvento()"/>
+                  <img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="eliminarEvento()"/>
 
-				  <mat-form-field appearance="legacy">
-					<mat-label>Nombre Evento</mat-label>
-					<input matInput placeholder="Nombre_Evento" formControlName="nombre">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Nombre Evento</mat-label>
+                    <input matInput placeholder="Nombre_Evento" formControlName="nombre">
+                  </mat-form-field>
 
-				  <mat-form-field appearance="legacy">
-					<mat-label>Evento ID</mat-label>
-					<input matInput placeholder="ID" formControlName="id">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy">
+                    <mat-label>Evento ID</mat-label>
+                    <input matInput placeholder="ID" formControlName="id">
+                  </mat-form-field>
 
-			</form>
+            </form>
 
             <form *ngIf="ordenSeleccionadaIndex!=null" class="formularioGeneral orden" [formGroup]="formOrden">
-				<img class="botonEliminarOrden" src="./assets/desarrollador/papelera.svg" (click)="eliminarOrden()"/>
+                <img class="botonEliminarOrden" src="./assets/desarrollador/papelera.svg" (click)="eliminarOrden()"/>
 
                 <div class="contenedorCabeceraOrden">
-				  <mat-form-field appearance="legacy" class="formNombreOrden">
-					<mat-label>Nombre Orden</mat-label>
-					<input matInput placeholder="Nombre" formControlName="nombre">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy" class="formNombreOrden">
+                    <mat-label>Nombre Orden</mat-label>
+                    <input matInput placeholder="Nombre" formControlName="nombre">
+                  </mat-form-field>
 
-				  <mat-form-field appearance="legacy" class="formCategoriaOrden">
-					<mat-label>Tipo Orden</mat-label>
-					<input matInput placeholder="null" formControlName="tipo">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy" class="formCategoriaOrden">
+                    <mat-label>Tipo Orden</mat-label>
+                    <input matInput placeholder="null" formControlName="tipo">
+                  </mat-form-field>
 
-				  <mat-form-field appearance="legacy" class="formIdOrden">
-					<mat-label>ID Orden</mat-label>
-					<input matInput type="number" formControlName="id">
-				  </mat-form-field>
+                  <mat-form-field appearance="legacy" class="formIdOrden">
+                    <mat-label>ID Orden</mat-label>
+                    <input matInput type="number" formControlName="id">
+                  </mat-form-field>
                 </div>
-			</form>
+            </form>
 
                   <!-- Parametros de Orden -->
                   <div  class="contenedorParametrosOrden">
 
                     <!-- Orden Condición -->
-			        <form *ngIf="tipoOrdenSeleccionada=='condicion'" class="formularioGeneral" [formGroup]="formOrdenCondicion">
+                    <form *ngIf="tipoOrdenSeleccionada=='condicion'" class="formularioGeneral" [formGroup]="formOrdenCondicion">
                       <div  class="contenedorTipoOrden">
                           <mat-form-field appearance="legacy" class="formParametro">
                             <mat-label>Variable</mat-label>
@@ -139,7 +140,7 @@
                     </form>
 
                     <!-- Orden Variable -->
-			        <form *ngIf="tipoOrdenSeleccionada=='variable'" class="formularioGeneral" [formGroup]="formOrdenVariable">
+                    <form *ngIf="tipoOrdenSeleccionada=='variable'" class="formularioGeneral" [formGroup]="formOrdenVariable">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -147,6 +148,7 @@
                             <mat-select [formControl]="comando_Orden_Variable">
                                 <mat-option value="add">add</mat-option>
                                 <mat-option value="remove">remove</mat-option>
+                                <mat-option value="removeAll">removeAll</mat-option>
                                 <mat-option value="modificar">modificar</mat-option>
                                 <mat-option value="suma">suma</mat-option>
                                 <mat-option value="multiplica">multiplica</mat-option>
@@ -172,7 +174,7 @@
                     </form>
 
                     <!-- Orden Misión -->
-			        <form *ngIf="tipoOrdenSeleccionada=='mision'" class="formularioGeneral" [formGroup]="formOrdenMision">
+                    <form *ngIf="tipoOrdenSeleccionada=='mision'" class="formularioGeneral" [formGroup]="formOrdenMision">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -201,7 +203,7 @@
                     </form>
 
                     <!-- Orden Trigger -->
-			        <form *ngIf="tipoOrdenSeleccionada=='trigger'" class="formularioGeneral" [formGroup]="formOrdenTrigger">
+                    <form *ngIf="tipoOrdenSeleccionada=='trigger'" class="formularioGeneral" [formGroup]="formOrdenTrigger">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -226,7 +228,7 @@
                     </form>
 
                     <!-- Orden Diálogo -->
-			        <form  *ngIf="tipoOrdenSeleccionada=='dialogo'" class="formularioGeneral" [formGroup]="formOrdenDialogo">
+                    <form  *ngIf="tipoOrdenSeleccionada=='dialogo'" class="formularioGeneral" [formGroup]="formOrdenDialogo">
                       <div  class="contenedorTipoOrdenDialogo">
 
                           <mat-form-field appearance="fill" >
@@ -261,7 +263,7 @@
                                     <div class="contenedorOpcion">
                                         <input class="textoOpcion" placeholder="Opción" formControlName="textoOpcion">
                                         <input class="encadenadoOpcion" type="number" placeholder="EncadenadoID" formControlName="ordenIdEncadanado">
-					                    <img class="botonEliminarOpcion" src="./assets/desarrollador/papelera.svg" (click)="eliminarOpcion(i)"/>
+                                        <img class="botonEliminarOpcion" src="./assets/desarrollador/papelera.svg" (click)="eliminarOpcion(i)"/>
                                     </div>
                                 </ng-container>
                               </div>
@@ -318,6 +320,11 @@
                               </mat-form-field>
                               </ng-container>
 
+                              <mat-form-field appearance="legacy" class="formParametro">
+                                <mat-label>Orden Encadenado ID:</mat-label>
+                                <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
+                              </mat-form-field>
+
                           </ng-container>
 
                           <!-- INPUTS TIPO DIALOGO: NarradorImg -->
@@ -347,8 +354,8 @@
                               </mat-form-field>
 
                               <mat-form-field appearance="legacy" class="formParametro">
-                                <mat-label>Encadenado True</mat-label>
-                                <input matInput type="number" placeholder="" formControlName="ordenEncadenado">
+                                <mat-label>Orden Encadenado ID</mat-label>
+                                <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
 
                           </ng-container> <!-- Fin tipo dialogo NarradorImg -->
@@ -380,8 +387,8 @@
                               </mat-form-field>
 
                               <mat-form-field appearance="legacy" class="formParametro">
-                                <mat-label>Encadenado</mat-label>
-                                <input matInput type="number" placeholder="" formControlName="ordenEncadenado">
+                                <mat-label>Orden Encadenado ID</mat-label>
+                                <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
 
                           </ng-container> <!-- Fin tipo dialogo Diapositiva -->
@@ -390,7 +397,7 @@
                     </form>
 
                     <!-- Orden Hechizo -->
-			        <form *ngIf="tipoOrdenSeleccionada=='hechizo'" class="formularioGeneral " [formGroup]="formOrdenHechizo">
+                    <form *ngIf="tipoOrdenSeleccionada=='hechizo'" class="formularioGeneral " [formGroup]="formOrdenHechizo">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -431,7 +438,7 @@
                     </form>
 
                     <!-- Orden Loot -->
-			        <form *ngIf="tipoOrdenSeleccionada=='loot'" class="formularioGeneral " [formGroup]="formOrdenLoot">
+                    <form *ngIf="tipoOrdenSeleccionada=='loot'" class="formularioGeneral " [formGroup]="formOrdenLoot">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -463,7 +470,7 @@
                     </form>
 
                     <!-- Orden Enemigo -->
-			        <form *ngIf="tipoOrdenSeleccionada=='enemigo'" class="formularioGeneral " [formGroup]="formOrdenEnemigo">
+                    <form *ngIf="tipoOrdenSeleccionada=='enemigo'" class="formularioGeneral " [formGroup]="formOrdenEnemigo">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -488,7 +495,7 @@
                     </form>
 
                     <!-- Orden Mazmorra -->
-			        <form  *ngIf="tipoOrdenSeleccionada=='mazmorra'" class="formularioGeneral " [formGroup]="formOrdenMazmorra">
+                    <form  *ngIf="tipoOrdenSeleccionada=='mazmorra'" class="formularioGeneral " [formGroup]="formOrdenMazmorra">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -514,7 +521,7 @@
                     </form>
 
                     <!-- Orden Multimedia -->
-			        <form  *ngIf="tipoOrdenSeleccionada=='multimedia'" class="formularioGeneral " [formGroup]="formOrdenMultimedia">
+                    <form  *ngIf="tipoOrdenSeleccionada=='multimedia'" class="formularioGeneral " [formGroup]="formOrdenMultimedia">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -543,7 +550,7 @@
                     </form>
 
                     <!-- Orden Tiempo -->
-			        <form  *ngIf="tipoOrdenSeleccionada=='tiempo'" class="formularioGeneral " [formGroup]="formOrdenTiempo">
+                    <form  *ngIf="tipoOrdenSeleccionada=='tiempo'" class="formularioGeneral " [formGroup]="formOrdenTiempo">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -565,28 +572,30 @@
                     </form>
                   </div> <!-- Fin Parametros Orden -->
 
-			<!-- Inicio panel Ordenes -->
-			<div class="contenedorSubLista contenedorOrdenes">
+            <!-- Inicio panel Ordenes -->
+            <div class="contenedorSubLista contenedorOrdenes">
                 <div class="tituloSubLista">Ordenes:</div>
-				<div *ngFor="let orden of eventos[eventoSeleccionadoIndex].ordenes; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado(i)" (click)="seleccionarOrden(i)">{{orden.nombre}} </div>
-			</div>
+                <ng-container *ngIf="eventos[eventoSeleccionadoIndex]?.ordenes">
+                <div *ngFor="let orden of eventos[eventoSeleccionadoIndex].ordenes; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado(i)" (click)="seleccionarOrden(i)" (auxclick)="copiarOrden($event,i)">[{{orden.id}}] {{orden.nombre}} </div>
+                </ng-container>
+            </div>
 
             <div class="contenedorBotonesOrdenarOrdenes">
                 <img class="imagenSubir" (click)="ordenarOrden('subir')" src="./assets/desarrollador/flecha-izquierda.png"/>
                 <img class="imagenBajar" (click)="ordenarOrden('bajar')" src="./assets/desarrollador/flecha-izquierda.png"/>
             </div>
 
-		</div> <!-- FIN VISUALIZACIÓN EVENTOS -->
+        </div> <!-- FIN VISUALIZACIÓN EVENTOS -->
 
-		<!-- LISTA TIPOS ORDENES EVENTOS -->
-	  <div class="contenedorLateral derecha">
-        <div class="titulo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">Ordenes Evento:</div>
-		<div class="lista"*ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
+        <!-- LISTA TIPOS ORDENES EVENTOS -->
+      <div class="contenedorLateral derecha">
+        <div class="titulo">Ordenes Evento:</div>
+        <div class="lista" *ngIf="eventos[eventoSeleccionadoIndex]">
             <div *ngFor="let orden of this.tiposOrdenes; let i=index"  class="hechizo" (click)="addOrden(formatearTipoOrden(orden))">
                 <img class="imagen" src="./assets/desarrollador/{{formatearTipoOrden(orden)}}.png">
-				<div [ngStyle]= "renderizarOrdenSeleccionada(orden)" class="nombre">{{orden}}</div>
+                <div [ngStyle]= "renderizarOrdenSeleccionada(orden)" class="nombre">{{orden}}</div>
                 <img class="imagen" src="./assets/desarrollador/{{formatearTipoOrden(orden)}}.png">
-			</div>
-		</div>
-	  </div> <!-- Fin contenedor lateral derecha -->
+            </div>
+        </div>
+      </div> <!-- Fin contenedor lateral derecha -->
 

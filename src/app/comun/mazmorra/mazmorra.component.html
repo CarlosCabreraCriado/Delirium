@@ -199,6 +199,8 @@
 	<mapaMazmorraComponent #mapaMazmorra id="mapaMazmorra"
       (eventoClickElemento)="clickElemento($event)"
       [isometrico]="this.mazmorraService.mazmorra.isometrico"
+      [renderEnemigos]="this.mazmorraService.sesion?.render.enemigos"
+      [renderMazmorra]= "this.mazmorraService.sesion?.render.mazmorra"
       [escalaIsometrico]="0.3"
       [salasDescubiertas]="this.mazmorraService.sesion.render.mazmorra.salasDescubiertas">
   </mapaMazmorraComponent>

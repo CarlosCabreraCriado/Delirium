@@ -12,6 +12,8 @@ import { Subscription } from 'rxjs';
 export class EventosService {
 
     public eventos: any;
+    public eventosMazmorra: any;
+
     public mostrarEvento:boolean= false;
     private estado:string="default";
     public eventoEjecutando: any;
@@ -30,12 +32,38 @@ export class EventosService {
 
     async actualizarEventos(){
         this.eventos = await this.appService.getEventos();
+        var mazmorra = await this.appService.getMazmorra();
+        console.warn("CARGANDO EVENTOS MAZMORRA: ",mazmorra)
+        if(mazmorra){
+            this.eventosMazmorra = mazmorra["eventos"];
+        }else{
+            this.eventosMazmorra = [];
+        }
     }
 
-    ejecutarEvento(idEvento:number){
+    ejecutarEvento(idEvento:number,tipoEvento?:string,tipoEventoRandom?:string){
+
+        console.warn("EVENTOOOO: ",idEvento,tipoEvento,tipoEventoRandom)
+        console.warn("Evento Mazmorra: ",this.eventosMazmorra);
 
         //Cargar Datos de eventos a ejecutar:
-        this.eventoEjecutando = this.eventos.eventos.find(i => i.id==idEvento);
+        switch(tipoEvento){
+            case undefined:
+            case "General":
+                this.eventoEjecutando = this.eventos.eventos.find(i => i.id==idEvento);
+                break;
+            case "Random":
+                if(!tipoEventoRandom){console.error("Error Ejecutando Evento: Tipo Evento Random no definido.");return;}
+                this.eventoEjecutando = this.eventos.eventosRandom[tipoEventoRandom].find(i => i.id==idEvento);
+                break;
+            case "Variables":
+                this.eventoEjecutando = this.eventos.eventosVariables.find(i => i.id==idEvento);
+                break;
+            case "Mazmorra":
+                this.eventoEjecutando = this.eventosMazmorra.find(i => i.id==idEvento);
+                break;
+        }
+
         this.indexOrdenEjecutando = 0;
 
         if(!this.eventoEjecutando){console.error("No se encuentra evento con ID: "+idEvento);return;}
@@ -95,6 +123,7 @@ export class EventosService {
                     contenido: orden.contenido, 
                     opciones: orden.opciones,
                     interlocutor: orden.interlocutor,
+                    ordenEncadenado: orden.ordenEncadenado, 
                     mostrarPersonajeDerecha: orden.mostrarPersonajeDerecha, 
                     mostrarPersonajeIzquierda: orden.mostrarPersonajeIzquierda,
                     tipoPersonajeDerecha: orden.tipoPersonajeDerecha, 
@@ -106,16 +135,27 @@ export class EventosService {
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
-                  console.log('Fin del dialogo');
-                  console.log(result)
+                    console.log('Fin del dialogo');
+                    console.log(result)
 
-                  if(result != "continuar"){
-                      var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==orden.opciones[result]["ordenIdEncadanado"])
-                      this.ejecutarOrden(indexEncadenado);
-                  }else{
-                      this.ejecutarOrden(indexOrden+1);
-                  }
+                    //Ejecuta siguiente evento:
+                    if(result == null || result == undefined || result == 0){
+                        this.ejecutarOrden(indexOrden+1);
+                        return;
+                    }
 
+                    //Ejecuta Detiene Ejecucion:
+                    if(result < 0){
+                        return;
+                    }
+
+                    //Ejecuta Encadenado:
+                    if(result > 0){
+                        var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
+                        console.warn("ENCADENANDO: ",indexEncadenado);
+                        this.ejecutarOrden(indexEncadenado);
+                        return;
+                    }
                 });
                 break;
             case "NarradorImg":
@@ -128,14 +168,27 @@ export class EventosService {
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
-                  console.log('Fin del dialogo');
-                  console.log(result)
-                  if(result!=null){
-                    var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
-                    this.ejecutarOrden(indexEncadenado);
-                  }else{
-                    this.ejecutarOrden(indexOrden+1);
-                  }
+                    console.log('Fin del dialogo');
+                    console.log(result)
+
+                    //Ejecuta siguiente evento:
+                    if(result == null || result == undefined || result == 0){
+                        this.ejecutarOrden(indexOrden+1);
+                        return;
+                    }
+
+                    //Ejecuta Detiene Ejecucion:
+                    if(result < 0){
+                        return;
+                    }
+
+                    //Ejecuta Encadenado:
+                    if(result > 0){
+                        var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
+                        console.warn("ENCADENANDO: ",indexEncadenado);
+                        this.ejecutarOrden(indexEncadenado);
+                        return;
+                    }
                 });
                 
                 break;
@@ -150,14 +203,27 @@ export class EventosService {
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
-                  console.log('Fin del dialogo');
-                  console.log(result)
-                  if(result!=null){
-                    var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
-                    this.ejecutarOrden(indexEncadenado);
-                  }else{
-                    this.ejecutarOrden(indexOrden+1);
-                  }
+                    console.log('Fin del dialogo');
+                    console.log(result)
+
+                    //Ejecuta siguiente evento:
+                    if(result == null || result == undefined || result == 0){
+                        this.ejecutarOrden(indexOrden+1);
+                        return;
+                    }
+
+                    //Ejecuta Detiene Ejecucion:
+                    if(result < 0){
+                        return;
+                    }
+
+                    //Ejecuta Encadenado:
+                    if(result > 0){
+                        var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
+                        console.warn("ENCADENANDO: ",indexEncadenado);
+                        this.ejecutarOrden(indexEncadenado);
+                        return;
+                    }
                 });
                 
                 break;
@@ -169,7 +235,7 @@ export class EventosService {
         switch(comando){
             case "iniciar":
                 if(mazmorraNombreId){
-                    this.appService.iniciarMazmorra(mazmorraNombreId)
+                    this.appService.iniciarMazmorra(mazmorraNombreId,salaOpenId);
                 }else{
                     console.error("Error iniciando Mazmorra NombreID no valido: ",mazmorraNombreId)
                 }
@@ -192,6 +258,8 @@ export class EventosService {
                 break;
             case "remove":
                 this.sesion.variablesMundo[orden.variableTarget] = null;
+            case "removeAll":
+                this.sesion.variablesMundo = {};
                 break;
             case "suma":
                 var valorInicial = Number(this.sesion.variablesMundo[orden.variableTarget]);
@@ -260,7 +328,6 @@ export class EventosService {
                     condicionSuperada = false;
                 }
                 break;
-
         }
 
         //ENCADENADO TRUE:

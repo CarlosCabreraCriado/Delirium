@@ -2,7 +2,7 @@ import { Injectable, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } fr
 import { AppService } from '../../app.service';
 import { LoggerService } from '../logger/logger.service';
 import { PausaService } from '../pausa/pausa.service';
-import { EventosService } from '../eventos/eventos.service';
+import { EventosService } from '../../eventos.service';
 import { RngService } from '../rng/rng.service';
 import { InterfazService } from '../interfaz/interfaz.service';
 import { Subject } from 'rxjs';
@@ -354,7 +354,7 @@ export class MazmorraService {
             this.sesion.render.mazmorra.salasDescubiertas = [];
             for(var i = 0; i < this.mazmorra.salas.length; i++){
                 if(this.mazmorra.salas[i].salaInicial){
-                    this.sesion.render.mazmorra.salasDescubiertas.push(this.mazmorra.salas[i].sala_id)
+                    this.sesion.render.mazmorra.salasDescubiertas.push(this.mazmorra.salas[i].id)
                 }
             }
         }
@@ -522,7 +522,7 @@ export class MazmorraService {
 
     //Centrar Vista Mazmorra:
     setTimeout(()=>{
-      this.subscripcionMazmorra.emit("mazmorraIniciada");
+      this.subscripcionMazmorra.emit("centrarMazmorra");
     },1000)
 
     } //Fin Inicializar Mazmorra:
@@ -739,7 +739,7 @@ export class MazmorraService {
     var idSalaInicial = 0;
     for(var i = 0; i < this.mazmorra.salas.length; i++){
       if(this.mazmorra.salas[i].salaInicial){
-        idSalaInicial = this.mazmorra.salas[i].sala_id;
+        idSalaInicial = this.mazmorra.salas[i].id;
       }
     }
 
@@ -1372,7 +1372,7 @@ export class MazmorraService {
         console.log("ENEMIGOS:")
         console.log(this.enemigos)
 
-    var enemigosAdd= this.mazmorra.salas.find(j => j.sala_id == sala).enemigos;
+    var enemigosAdd= this.mazmorra.salas.find(j => j.id == sala).enemigos;
     console.warn("EnemigosAdd: ",enemigosAdd)
 
     this.loggerService.log("--------------Cambiando Sala------------------");
@@ -1474,6 +1474,7 @@ export class MazmorraService {
 
     this.forceRenderMazmorra();
     this.forceRender();
+    this.subscripcionMazmorra.emit("centrarMazmorra");
 
   }//Fin Cambiar Sala
 
@@ -2697,7 +2698,7 @@ export class MazmorraService {
         if(tipoObjetivo=="enemigos"){
             if(this.sesion.render.enemigos[indexObjetivo].vida <=0){
                 this.sesion.render.enemigos[indexObjetivo].vida= 0;
-                //this.enemigoMuerto(indexObjetivo);
+                this.enemigoMuerto(indexObjetivo);
                 console.log("Enemigo Muerto: "+indexObjetivo);
                 //Logger:
                 this.loggerService.log("Enemigo Muerto:"+ indexObjetivo);
@@ -3359,7 +3360,7 @@ export class MazmorraService {
 
     switch(comando.comando){
       case "activar evento":
-        this.eventosService.activarEvento(comando.valor);
+        //this.eventosService.activarEvento(comando.valor);
         this.loggerService.log("-------------- Pasando Turno ------------------");
       break;
 
@@ -3914,6 +3915,7 @@ export class MazmorraService {
 
   //Función de Trigger Hardcoded:
   triggerEvento(idEvento){
+
     console.warn("Ejecutando Evento: ",idEvento)
     //EVENTO 1:
     if(idEvento==1){
@@ -4018,6 +4020,25 @@ export class MazmorraService {
     }//Fin evento
 
   }//Fin TriggerEvento
+
+    lanzarEventoMazmorra(tipo,mensaje,eventoId,elementoId){
+        
+        const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: mensaje,contenido: "Para realizar esta accion tienes que estar adyacente a la ubicación y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
+
+        dialogo.afterClosed().subscribe(async (result) => {
+          console.log(result);
+          if(result){
+                await this.eventosService.actualizarEventos();
+                if(!this.sesion.render.mazmorra["interactuado"]){
+                    this.sesion.render.mazmorra["interactuado"] = [];
+                }
+                this.sesion.render.mazmorra["interactuado"].push(elementoId);
+                this.eventosService.ejecutarEvento(eventoId,"Mazmorra");
+          }
+        })
+
+    }
+
 }
 
 

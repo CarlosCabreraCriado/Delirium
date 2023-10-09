@@ -26,6 +26,10 @@ export class DungeonBuilderComponent {
     private formDialogos: UntypedFormGroup;
     private formAsignarSala: UntypedFormGroup;
     private formAsignarEvento: UntypedFormGroup;
+    private formPropiedadesIsometrico: UntypedFormGroup;
+    private formAsignarTipo: UntypedFormGroup;
+    private formAsignarEnemigo: UntypedFormGroup;
+    private formAsignarEspecial: UntypedFormGroup;
 
     //Campos General:
     private nombre_General = new UntypedFormControl("Primera mazmorra");
@@ -44,8 +48,8 @@ export class DungeonBuilderComponent {
     private evento_final_id_Sala = new UntypedFormControl(0);
     private mostrarIsometricoSala = new UntypedFormControl(true);
 
-    //Campos Enemigos:
-    private enemigo_id_Enemigos = new UntypedFormControl({value: 0});
+    //Campos Enemigos:new UntypedFormControl({value: 0, disabled:true})
+    private enemigo_id_Enemigos = new UntypedFormControl(0);
     private tipo_enemigo_id_Enemigos = new UntypedFormControl(1);
     private num_sala_Enemigos = new UntypedFormControl(0);
     private nombre_Enemigos = new UntypedFormControl('Enemigo');
@@ -103,7 +107,9 @@ export class DungeonBuilderComponent {
     public mostrarDecorado = true;
     public mostrarSalaNula = true;
     public mostrarPanelAsignarSala = false;
-    public mostrarPanelAsignarEvento = false;
+    public mostrarPanelAsignarTipo = false;
+    public mostrarPanelAsignarEspecial = false;
+    public mostrarPanelAsignarEnemigo = false;
 
     //Variables de Reticula:
     private renderReticula= {}  as RenderReticula;
@@ -129,7 +135,7 @@ export class DungeonBuilderComponent {
     public estadoMazmorra: TipoEstado = "general";
     public estadoParametros= "General";
     public estadoPanelIzquierdo: "reticula"|"isometrico"|"enemigos"|null = null;
-    public estadoPanelDerecho: "reticula"|null = null;
+    public estadoPanelDerecho: "isometrico"|"reticula"|null = null;
     public herramientaReticula: "add" | "seleccionar" | "rotar" | "isometrico" = null; 
 
     public mazmorra:any = {};
@@ -195,7 +201,7 @@ export class DungeonBuilderComponent {
         this.formEnemigos = this.formBuilder.group({
             enemigo_id: this.enemigo_id_Enemigos,
             tipo_enemigo_id: this.tipo_enemigo_id_Enemigos,
-            num_sala: this.num_sala_Enemigos,
+            salaId: this.num_sala_Enemigos,
             nombre: this.nombre_Enemigos,
             imagen_id: this.imagen_id_Enemigos,
             nivel: this.nivel_Enemigos,
@@ -207,7 +213,10 @@ export class DungeonBuilderComponent {
             evento_intervalo_id: this.evento_intervalo_id_Enemigos,
             evento_intervalo_tiempo: this.evento_intervalo_tiempo_Enemigos
         });
+
         this.formEnemigos.get("enemigo_id")?.disable();
+        this.formEnemigos.get("tipo_enemigo_id")?.disable();
+        this.formEnemigos.get("salaId")?.disable();
 
         //Inicializacion formulario EventosMazmorra:
         this.formEventosMazmorra = this.formBuilder.group({
@@ -242,60 +251,35 @@ export class DungeonBuilderComponent {
             evento_next_id: this.evento_next_id
         });
 
-        //Inicializacion formulario Orden Parametros:
-        /*
-        this.formParametrosOrden = this.formBuilder.group({
-            variable: this.variable_Orden_Parametro,
-            operador: this.operador_Orden_Parametro,
-            valorVariable: this.valorVariable_Orden_Parametro,
-            tipoEncadenadoTrue: this.tipoEncadenadoTrue_Orden_Parametro,
-            encadenadoTrue: this.encadenadoTrue_Orden_Parametro,
-            tipoEncadenadoFalse: this.tipoEncadenadoFalse_Orden_Parametro,
-            encadenadoFalse: this.encadenadoFalse_Orden_Parametro,
-            comando: this.comando_Orden_Parametro,
-            variableTarget: this.variableTarget_Orden_Parametro,
-            valorNuevo: this.valorNuevo_Orden_Parametro,
-            valorOperador: this.valorOperador_Orden_Parametro,
-            tipoDialogo: this.tipoDialogo_Orden_Parametro,
-            contenido: this.contenido_Orden_Parametro,
-            opciones: this.opciones_Orden_Parametro,
-            encadenadoId: this.encadenadoId_Orden_Parametro,
-            tipoEncadenado: this.tipoEncadenado_Orden_Parametro,
-            misionId: this.misionId_Orden_Parametro,
-            tareaId: this.tareaId_Orden_Parametro,
-            triggerId: this.triggerId_Orden_Parametro,
-            trigger: this.trigger_Orden_Parametro,
-            tipoMultimedia: this.tipoMultimedia_Orden_Parametro,
-            nombreAsset: this.nombreAsset_Orden_Parametro,
-            hechizoId: this.heroeObjetivoId_Orden_Parametro,
-            objetivoOrden: this.objetivo_Orden_Parametro,
-            heroeObjetivoId: this.heroeObjetivoId_Orden_Parametro,
-            enemigoObjetivoId: this.enemigoObjetivoId_Orden_Parametro,
-            objetivo: this.objetivo_Orden_Parametro,
-            oro: this.oro_Orden_Parametro,
-            exp: this.exp_Orden_Parametro,
-            generado: this.generado_Objeto_Parametro,
-            objetoId: this.objetoId_Objeto_Parametro,
-            probTipo: this.probTipo_Objeto_Parametro,
-            probRareza: this.probRareza_Objeto_Parametro,
-            nivelMin: this.nivelMin_Objeto_Parametro,
-            nivelMax: this.nivelMax_Objeto_Parametro,
-            idEnemigo: this.idEnemigo_Orden_Parametro,
-            tipoEnemigo: this.tipoEnemigo_Orden_Parametro,
-            dias: this.dias_Orden_Parametro,
-            mazmorraId: this.mazmorraId_Orden_Mazmorra,
-            salaOpenId: this.salaOpenId_Orden_Mazmorra
+        //Inicialización formulario Asignar Sala:
+        this.formPropiedadesIsometrico = this.formBuilder.group({
+            tipo: new UntypedFormControl('decorado'),
+            especial: new UntypedFormControl(null),
+            enemigoId: new UntypedFormControl(0),
+            evento_inspeccion: new UntypedFormControl(0)
         });
-        */
+
 
         //Inicialización formulario Asignar Sala:
         this.formAsignarSala = this.formBuilder.group({
             asignar_id_sala: this.asignar_id_sala
         });
 
-        //Inicialización formulario Asignar Evento:
-        this.formAsignarEvento = this.formBuilder.group({
-            asignar_evento: this.asignar_evento
+        //Inicialización formulario Asignar Enemigo:
+        this.formAsignarEnemigo = this.formBuilder.group({
+            enemigoId: new UntypedFormControl(0)
+        });
+
+        //Inicialización formulario Asignar Tipo:
+        this.formAsignarTipo = this.formBuilder.group({
+            tipo: new UntypedFormControl('decorado')
+        });
+
+        //Inicialización formulario Asignar Especial:
+        this.formAsignarEspecial = this.formBuilder.group({
+            especial: new UntypedFormControl(null),
+            mensaje: new UntypedFormControl(""),
+            eventoId: new UntypedFormControl(0)
         });
 
     //Suscripcion DesarrolladorService:
@@ -324,7 +308,11 @@ export class DungeonBuilderComponent {
         //Suscripcion de cambios formulario Enemigos:
         this.formEnemigos.valueChanges.subscribe((val) =>{
             if(this.enemigoSeleccionadoId){
-                this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex] = val;
+                for (var key in val) {
+                  if (val.hasOwnProperty(key)) {
+                    this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex][key] = val[key];
+                  }
+                }
             }
             console.log(val)
         });
@@ -347,6 +335,7 @@ export class DungeonBuilderComponent {
                 break;
             case "isometrico":
                 this.estadoPanelIzquierdo = "isometrico";
+                this.estadoPanelDerecho = "isometrico";
                 break;
             case "reticula":
                 this.estadoPanelIzquierdo = "reticula";
@@ -369,9 +358,9 @@ export class DungeonBuilderComponent {
                     this.formSala.patchValue(this.mazmorra["salas"][this.mazmorra.salas.indexOf(this.mazmorra.salas.find(i=> i.id==this.salaSeleccionadaId))]);
                 break;
 
-                case "reloadFormEnemigo":
+                case "reloadFormEnemigoMazmorra":
                 case "reloadForm":
-                    //this.formEnemigos.patchValue(this.mazmorra["salas"][this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex]);
+                    this.formEnemigos.patchValue(this.mazmorra["salas"][this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex]);
                 break;
 
                 case "reloadFormEventosMazmorra":
@@ -404,7 +393,8 @@ export class DungeonBuilderComponent {
             "height": "",
             "z-index": 0,
             "transform": "translate(-50%,-50%) scaleX(1) scale("+(elemento.CustomScale*this.escalaIsometrico)+")",
-            "display": "block",
+            "display": "flex",
+            "justify-content": "center",
             "filter": "none"
         }
 
@@ -426,7 +416,7 @@ export class DungeonBuilderComponent {
         }
 
         //Aplicar filtrado de visualizacion:
-        style.display = "block";
+        style.display = "flex";
         if(!this.mostrarGrid){
             if(elemento.tipo == "grid"){
                 style.display = "none";
@@ -467,44 +457,6 @@ export class DungeonBuilderComponent {
         return style;
     }
 
-    asignarSala(){
-        console.log("Asignando Sala...");
-        //Verificar Sala;
-        var idSala = this.asignar_id_sala.value;
-        var salaValida= false;
-        for(var i=0; i <this.mazmorra.salas.length; i++){
-            if(this.mazmorra.salas[i].id == idSala){
-                salaValida = true;
-            }
-        }
-
-        if(!salaValida && idSala!=0){
-            this.mostrarPanelAsignarSala= true;
-            this.desarrolladorService.mensaje= "Id Sala Invalido"
-            this.desarrolladorService.mostrarMensaje= true;
-            this.desarrolladorService.mostrarSpinner= false;
-            this.desarrolladorService.mostrarBotonAceptar= true;
-            console.log("Error: id_sala invalido"+idSala);
-            return;
-        }
-
-        //Asignando ID SALA;
-        for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
-            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
-              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala = idSala;
-              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
-            }
-        }
-
-        this.mostrarPanelAsignarSala= false;
-        this.desarrolladorService.mensaje = "Selección asignada"
-        this.desarrolladorService.mostrarMensaje= true;
-        this.desarrolladorService.mostrarSpinner= false;
-        this.desarrolladorService.mostrarBotonAceptar= true;
-        console.log("Sala Asignada: "+idSala);
-
-        return;
-    }
 
     zoomIn(){
 
@@ -1557,7 +1509,7 @@ export class DungeonBuilderComponent {
   }
 
   seleccionarSala(salaID: number){
-      console.warn("Seleccionando Sala: ",salaID)
+    console.warn("Seleccionando Sala: ",salaID)
     this.salaSeleccionadaId = salaID;
     this.reloadForm("reloadFormSala");
   }
@@ -1578,15 +1530,17 @@ export class DungeonBuilderComponent {
         }
         if(tipoId!=0){break;}
     }
+
     if(tipoId==0){console.log("ERROR: No se ha encontrado ningun enemigo con ID: "+enemigoID);return}
 
-    console.warn("ENEMIGOS: ",this.enemigos)
     this.tipoEnemigoSeleccionado = this.enemigos.find(i=> i.id== tipoId);
-    this.reloadForm("reloadFormEnemigo");
+
+    this.reloadForm("reloadFormEnemigoMazmorra");
     return;
   }
 
   seleccionarTipoEnemigo(tipoEnemigoID: number){
+
     this.mostrarTipoEnemigo =false;
     this.tipoEnemigoSeleccionado = this.enemigos.find(i=> i.id== tipoEnemigoID);
 
@@ -1596,8 +1550,10 @@ export class DungeonBuilderComponent {
 
     this.mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex].imagen_id= this.tipoEnemigoSeleccionado.imagen_id;
 
-    this.reloadForm("reloadFormEnemigo");
+
+    this.reloadForm("reloadFormEnemigoMazmorra");
     return;
+
   }
 
   seleccionarEventoMazmorra(eventoID: number){
@@ -1646,7 +1602,7 @@ export class DungeonBuilderComponent {
     this.mazmorra.salas[indexSala].enemigos.push({
       enemigo_id: cuentaID,
       tipo_enemigo_id: 1,
-      num_sala: 0,
+      salaId: this.mazmorra.salas[indexSala].id,
       nombre: nombreEnemigo,
       imagen_id: 1,
       nivel: 0,
@@ -1747,6 +1703,247 @@ export class DungeonBuilderComponent {
         return;
     }
 
+    botonAsignar(form:string){
+        this.mostrarPanelAsignarSala = false;
+        this.mostrarPanelAsignarEnemigo = false;
+        this.mostrarPanelAsignarEspecial = false;
+        this.mostrarPanelAsignarTipo = false;
+        switch(form){
+            case "sala":
+                this.mostrarPanelAsignarSala = true;
+                break;
+            case "tipo":
+                this.mostrarPanelAsignarTipo = true;
+                break;
+            case "especial":
+                this.mostrarPanelAsignarEspecial = true;
+                break;
+            case "enemigo":
+                this.mostrarPanelAsignarEnemigo = true;
+                break;
+        }
+    }
+
+    asignarSala(){
+        console.log("Asignando Sala...");
+        //Verificar Sala;
+        var idSala = this.asignar_id_sala.value;
+        var salaValida= false;
+        for(var i=0; i <this.mazmorra.salas.length; i++){
+            if(this.mazmorra.salas[i].id == idSala){
+                salaValida = true;
+            }
+        }
+
+        if(!salaValida && idSala!=0){
+            this.mostrarPanelAsignarSala= true;
+            this.desarrolladorService.mensaje= "Id Sala Invalido"
+            this.desarrolladorService.mostrarMensaje= true;
+            this.desarrolladorService.mostrarSpinner= false;
+            this.desarrolladorService.mostrarBotonAceptar= true;
+            console.log("Error: id_sala invalido"+idSala);
+            return;
+        }
+
+        //Asignando ID SALA;
+        for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala = idSala;
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+            }
+        }
+
+        this.mostrarPanelAsignarSala= false;
+        this.desarrolladorService.mensaje = "Selección asignada"
+        this.desarrolladorService.mostrarMensaje= true;
+        this.desarrolladorService.mostrarSpinner= false;
+        this.desarrolladorService.mostrarBotonAceptar= true;
+        console.log("Sala Asignada: "+idSala);
+
+        return;
+    }
+
+    asignarTipo(){
+
+        var valor = this.formAsignarTipo.get("tipo").value;
+        console.warn("Asignando Tipo...",valor);
+
+
+        if(valor != "decorado" && valor != "grid"){
+            this.mostrarPanelAsignarSala= true;
+            this.desarrolladorService.mensaje= "Tipo Invalido"
+            this.desarrolladorService.mostrarMensaje= true;
+            this.desarrolladorService.mostrarSpinner= false;
+            this.desarrolladorService.mostrarBotonAceptar= true;
+            console.log("Error: Tipo invalido: "+valor);
+            return;
+        }
+
+        //Asignando ID SALA;
+        for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].tipo = valor;
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+            }
+        }
+
+        this.mostrarPanelAsignarTipo= false;
+        this.desarrolladorService.mensaje = "Tipo "+valor+" asignado correctamente."
+        this.desarrolladorService.mostrarMensaje= true;
+        this.desarrolladorService.mostrarSpinner= false;
+        this.desarrolladorService.mostrarBotonAceptar= true;
+        return;
+    }
+
+    asignarEspecial(){
+
+        var especial = this.formAsignarEspecial.get("especial").value;
+        var mensaje = this.formAsignarEspecial.get("mensaje").value;
+        var eventoId = this.formAsignarEspecial.get("eventoId").value;
+
+        console.warn("Asignando Especial...",especial);
+
+        //Asignando ID SALA;
+        for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].especial = especial;
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].mensaje = mensaje;
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].eventoId = eventoId;
+            }
+        }
+
+        this.mensajeExitoAsignacion("Especial "+especial+" asignado correctamente.");
+        return;
+    }
+
+    asignarEnemigo(){
+
+        var valor = this.formAsignarEnemigo.get("enemigoId").value;
+        console.warn("Asignando Enemigo...",valor);
+
+        var idSala = this.asignar_id_sala.value;
+        var enemigoValido= false;
+        var enemigoYaAsignado = false;
+        var error = false;
+        var salaEnemigo = 0;
+        var flagSeleccionado= false;
+        var tipoCasillaSeleccion = null;
+
+        //Si se trata de una deseleccion:
+        if(valor == 0){
+            for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+                if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+                  this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].enemigoId = valor;
+                  this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+                }
+            }
+            this.mensajeExitoAsignacion("Enemigo ID: "+valor+" asignado correctamente.");
+            return;
+        }
+
+        //ID no valido.
+        if(!valor || valor < 0){
+            this.mensajeErrorAsignacion("Error: ID no valido");
+            return;
+        }
+
+        //DETECTA SI HAY SELECCION MULTIPLE Y EN QUE SALA ESTA EL ENEMIGO:
+        for(var i=0; i < this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+                if(flagSeleccionado){
+                    this.mensajeErrorAsignacion("Error: No se puede asignar enemigo sobre multiples casillas.");
+                    return;
+                }
+                tipoCasillaSeleccion = this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].tipo;
+                salaEnemigo = Number(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].sala);
+                flagSeleccionado = true;
+            }
+        }
+
+        if(tipoCasillaSeleccion == "decorado"){
+            this.mensajeErrorAsignacion("Error: No se puede asignar un enemigo sobre decorado.");
+            return;
+        }
+
+        //SI NO SE ENCUENTRA ID O ESTA EN SALA INCORRECTA:
+        for(var i=0; i <this.mazmorra.salas.length; i++){
+            for(var j=0; j < this.mazmorra.salas[i].enemigos.length; j++){
+            if(this.mazmorra.salas[i].enemigos[j].enemigo_id == valor){
+                enemigoValido = true;
+                if(salaEnemigo != this.mazmorra.salas[i].id){
+                    this.mensajeErrorAsignacion("Error: El enemigo tiene que estar en su sala asignada.");
+                    return;
+                }
+            }
+            }
+        }
+
+        //Si no se ha encontrado enemigo con ese ID:
+        if(!enemigoValido){
+            this.mensajeErrorAsignacion("Error: No se ha encontrado enemigo con ID "+valor);
+            return;
+        }
+
+        //Error Ya asignado:
+        for(var i=0; i < this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].enemigoId== valor){
+                this.mensajeErrorAsignacion("Error: El enemigo ya ha sido asignado");
+                return;
+            }
+        }
+
+
+        //Asignando ID ENEMIGO;
+        for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].enemigoId = valor;
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+            }
+        }
+
+        this.mensajeExitoAsignacion("Enemigo ID: "+valor+" asignado correctamente.");
+        return;
+    }
+
+    mensajeExitoAsignacion(mensaje?:string){
+        this.desarrolladorService.mensaje = mensaje; 
+        this.desarrolladorService.mostrarMensaje= true;
+        this.desarrolladorService.mostrarSpinner= false;
+        this.desarrolladorService.mostrarBotonAceptar= true;
+        this.mostrarPanelAsignarSala= false;
+        this.mostrarPanelAsignarEnemigo= false;
+        this.mostrarPanelAsignarTipo= false;
+        this.mostrarPanelAsignarEspecial= false;
+    }
+
+    mensajeErrorAsignacion(mensaje){
+            this.mostrarPanelAsignarSala= true;
+            this.desarrolladorService.mensaje= mensaje; 
+            this.desarrolladorService.mostrarMensaje= true;
+            this.desarrolladorService.mostrarSpinner= false;
+            this.desarrolladorService.mostrarBotonAceptar= true;
+            this.mostrarPanelAsignarSala= false;
+            this.mostrarPanelAsignarEnemigo= false;
+            this.mostrarPanelAsignarTipo= false;
+            this.mostrarPanelAsignarEspecial= false;
+            console.log("Error: "+mensaje);
+            return;
+    }
+
+    deseleccionarTodo(){
+        //Deseleccionar Todo;
+        for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
+            if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+            }
+        }
+    }
+
+    testEvento(event: any){
+        console.warn("Hola: ",event)
+        this.appService.setMazmorra(this.mazmorra);
+        this.desarrolladorService.testEvento(event);
+    }
 }
 
 

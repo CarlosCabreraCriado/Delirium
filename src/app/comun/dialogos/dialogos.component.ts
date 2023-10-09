@@ -32,11 +32,13 @@ private confirmation: boolean = false;
             this.data.contenido = this.data.contenido.replaceAll("\n","</br>");
             this.textosDialogo = this.data.contenido.split("$");
         }
+        console.warn("textosDialogo: ",this.textosDialogo)
         this.indexTextoMostrado = 0;
         this.opciones = [];
         if(this.textosDialogo.length == 1){
             this.opciones = this.data.opciones;
         }
+
     }
 
     onAcceptClick(): void {
@@ -58,19 +60,23 @@ private confirmation: boolean = false;
     nextDialogo(){
 
         //Si hay opciones Deshabilita el paso de dialogo:
-        if(this.opciones.length > 0){
+        if(this.opciones?.length > 0){
             return;
+
         //Si no hay opciones y todavia quedan dialogos por mostrar:
-        }else if(this.textosDialogo.length-1 >= this.indexTextoMostrado){
+        }else if(this.textosDialogo.length-2 >= this.indexTextoMostrado){
+
             this.indexTextoMostrado++;
             if(this.indexTextoMostrado == this.textosDialogo.length-1){
                 this.opciones = this.data.opciones;
             }
             return;
+
         }else{
-            this.dialogRef.close("continuar")
+            this.dialogRef.close(this.data.ordenEncadenado)
             return;
         }
+//[mat-dialog-close]="data.ordenEncadenado"
     }
         
 

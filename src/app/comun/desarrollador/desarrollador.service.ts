@@ -35,7 +35,9 @@ export class DesarrolladorService implements OnInit{
     public estadoDatosSubir= "subir";
     public claseSeleccionada= "Guerrero";
     public indexClaseSeleccionada= 0;
-    public tipoObjetoSeleccionado= "Equipo";
+    public tipoObjetoSeleccionado: "Equipo" | "Consumible"= "Equipo";
+    public tipoEventoSeleccionado: "General" | "Random" | "Variables" = "General";
+    public tipoEventoRandom: string = "camino";
     public indexEquipoSeleccionado= 0;
     public indexConsumibleSeleccionado= 0;
 
@@ -89,7 +91,7 @@ export class DesarrolladorService implements OnInit{
     //public eventoSeleccionadoId = 0;
     //public tipoOrdenSeleccionada = "Condición";
     //public ordenSeleccionadaIndex = null;
-    //
+    
     public misionSeleccionadaIndex = 0;
     public objetivoMisionSeleccionadoIndex = 0;
 
@@ -618,6 +620,7 @@ export class DesarrolladorService implements OnInit{
   }
 
   findAvailableID(objeto:any):number{
+    if(objeto[0] == undefined){console.error("Error Asignando nuevo ID");return 1}
     if(objeto[0].id == undefined){console.error("Error Asignando nuevo ID");return 0}
     var index = 0;
     var encontrado = false;
@@ -780,8 +783,8 @@ export class DesarrolladorService implements OnInit{
       this.subanimacionSeleccionadoIndex= 0;
 
       //Actualizar Formulario:
-        this.observarDesarrolladorService.next("reloadFormSubAnimacion");
-        this.observarDesarrolladorService.next("reloadFormAnimaciones");
+      this.observarDesarrolladorService.next("reloadFormSubAnimacion");
+      this.observarDesarrolladorService.next("reloadFormAnimaciones");
   }
 
   seleccionarObjeto(indexObjeto:number){
@@ -1249,9 +1252,13 @@ export class DesarrolladorService implements OnInit{
         return;
 }
 
-  seleccionarTipoObjeto(tipoObjeto){
-      this.tipoObjetoSeleccionado = tipoObjeto;
-}
+    seleccionarTipoObjeto(tipoObjeto){
+        this.tipoObjetoSeleccionado = tipoObjeto;
+    }
+
+    seleccionarTipoEvento(tipoEvento){
+        this.tipoEventoSeleccionado = tipoEvento;
+    }
 
     formatearNombre(nombre: string): string{
         var nombreNuevo = nombre
@@ -1298,10 +1305,17 @@ export class DesarrolladorService implements OnInit{
         return;
     }
 
-    testEvento(eventoSeleccionadoId){
+    async testEvento(eventoSeleccionadoId){
         this.appService.actualizarSesion();
         this.eventosService.setEventos(this.eventos);
-        this.eventosService.ejecutarEvento(eventoSeleccionadoId);
+
+        if(this.panel != "mazmorra"){
+            this.eventosService.ejecutarEvento(eventoSeleccionadoId,this.tipoEventoSeleccionado,this.tipoEventoRandom);
+        }else{
+            //this.appService.setMazmorra(this.mazmorra);
+            await this.eventosService.actualizarEventos();
+            this.eventosService.ejecutarEvento(eventoSeleccionadoId,"Mazmorra");
+        }
     }
 
 
