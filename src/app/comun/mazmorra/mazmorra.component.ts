@@ -9,7 +9,7 @@ import { LoggerComponent} from '../logger/logger.component'
 import { MapaMazmorraComponent} from '../mapa-mazmorra/mapa-mazmorra.component'
 import { LoggerService} from '../logger/logger.service'
 import { PausaService} from '../pausa/pausa.service'
-import { EventosService} from '../eventos/eventos.service'
+import { EventosService} from '../../eventos.service'
 import { RngComponent} from '../rng/rng.component'
 import { InterfazService} from '../interfaz/interfaz.service'
 import { SocketService} from '../socket/socket.service'
@@ -59,7 +59,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   private subscripcionMazmorra: Subscription;
 
   //Declara Suscripcion Evento Socket:
-    private socketSubscripcion: Subscription;
+  private socketSubscripcion: Subscription;
 
   //Variables Internas:
   private mostrarPantallaCarga:boolean = true;
@@ -82,6 +82,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   ----------------------------------------------*/
   async ngOnInit(){
 
+       console.error("INICIANDO MAZMORRA")
     this.appService.mostrarPantallacarga(true);
 
     this.mazmorraService.setDispositivo(this.appService.getDispositivo());
@@ -106,11 +107,12 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     //Suscripcion Socket:
     this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async (data) => {
-        console.warn("RECIBIENDO: ",data)
           if(data.emisor==this.mazmorraService.cuenta.usuario){
             //console.warn("Evitando Rebote Comando Socket...")
             return;
           }
+
+          console.warn("RECIBIENDO: ",data)
 
           switch(data.peticion){
 
@@ -133,8 +135,14 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               this.mazmorraService.sincronizar=false;
             break;
 
+            case "abandonarMazmorra":
+                this.mazmorraService.abandonarMazmorra();
+                break;
+
             case "checkSinc":
-              this.mazmorraService.setHashRecibido(data.contenido);
+                if(this.mazmorraService.sesion.estadoSesion == "mazmorra"){
+                    this.mazmorraService.setHashRecibido(data.contenido);
+                }
             break;
 
             case "unirsePartida":
@@ -248,6 +256,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               }
             break;
 
+            case "reloadMazmorraService":
+              this.mazmorraService.reloadMazmorraService();
+            break;
 
             case "AbandonarPartida":
               this.abandonarPartida();
@@ -293,9 +304,16 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         });
 
         //suscripcion Eventos:
-        this.eventosSuscripcion = this.eventosService.observarEventos$.subscribe((val) => {
-          this.mazmorraService.eventosObs(val);
-      });
+        this.eventosSuscripcion = this.eventosService.eventoMazmorraEmitter.subscribe((val) => {
+            switch(val.comando){
+                case "openSala":
+                    this.mazmorraService.cambiarSala(val.valor);
+                    break;
+                case "abandonarMazmorra":
+                    this.mazmorraService.abandonarMazmorra();
+                    break;
+            }
+        });
 
         //suscripcion Interfaz:
         this.interfazSuscripcion = this.interfazService.observarInterfaz$.subscribe((val) => {
@@ -312,7 +330,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.forceRender();
                     break;
                 case "forceRenderMazmorra":
-                    this.mapaMazmorra.renderizarCanvasIsometrico();
+                    //this.mapaMazmorra.renderizarCanvasIsometrico();
                     break;
                 case "forcerenderAll":
                   this.cdr.detectChanges();
@@ -337,13 +355,14 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   }
 
   ngOnDestroy(){
-        console.log("Destruyendo Componente Mazmorra")
+    console.warn("Destruyendo Componente Mazmorra")
     this.loggerSuscripcion.unsubscribe();
     this.socketSubscripcion.unsubscribe();
     this.eventosSuscripcion.unsubscribe();
     this.interfazSuscripcion.unsubscribe();
     this.appServiceSuscripcion.unsubscribe();
     this.teclaSuscripcion.unsubscribe();
+    this.subscripcionMazmorra.unsubscribe();
   }
 
 /*  ----------------------------------------------
@@ -355,7 +374,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   }
 
   abrirConfiguracion(){
-    this.appService.mostrarConfiguracion("", {contenido: this.mazmorraService.sesion.idSesion})
+    this.appService.mostrarConfiguracion("", {contenido: this.mazmorraService.sesion.idSesion});
     return;
   }
 
@@ -689,7 +708,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     this.socketService.enviarSocket('abandonarSala',null);
     this.appService.setControl("");
     this.mazmorraService.musicaMazmorra.volume= 0;
-      this.mazmorraService.musicaMazmorra.remove();
+    this.mazmorraService.musicaMazmorra.remove();
     this.appService.setEstadoApp("index");
   }
 

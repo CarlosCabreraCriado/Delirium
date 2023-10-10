@@ -146,9 +146,7 @@ export class AppService {
         setTimeout(()=>{
               this.mostrarPantallacarga(false);
                 if(estado=="mazmorra"){
-                    if(parametro){
-                        this.socketService.enviarInterno("comandoPartida",{comando: "cambiarSala",valor: parametro});
-                    }
+                    this.observarAppService.next("reloadMazmorraService");
                 }
         }, 4000);
     }
@@ -559,7 +557,7 @@ export class AppService {
     mostrarConfiguracion(tipoDialogo:string, config:any):any{
 
       const dialogConfiguracion = this.dialog.open(ConfiguracionComponent,{
-          width: "100px", panelClass: [tipoDialogo, "contenedorConfiguracion"], backdropClass: "fondoConfiguracion", disableClose: true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+           panelClass: [tipoDialogo, "contenedorConfiguracion"], backdropClass: "fondoConfiguracion", disableClose: false, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
         });
 
         dialogConfiguracion.afterClosed().subscribe(result => {
@@ -580,6 +578,10 @@ export class AppService {
 
       if(result === "MultiControl") {
         this.observarAppService.next("MultiControl");
+      }
+
+      if(result === "abandonarMazmorra") {
+          this.peticionAbandonarMazmorra();
       }
 
         });
@@ -982,45 +984,38 @@ export class AppService {
         this.setEstadoApp("inmap");
     }
 
-    async iniciarMazmorra(nombreIdMazmorra: string, salaOpenId?:number){
+    async iniciarMazmorra(nombreIdMazmorra,salaOpenId?){
+        this.mostrarPantallacarga(true);
+        this.mazmorra = await this.peticionCargarMazmorra(nombreIdMazmorra);
+        if(!this.mazmorra){
+            console.error("Error cargando Mazmorra: ",nombreIdMazmorra);
+        }
+        this.setMazmorra(this.mazmorra);
+
+        console.log("MAZMORRA CARGADA: ");
+        console.log(this.mazmorra);
+        console.log(this.sesionInterna);
+
+        this.sesionInterna.estadoSesion = "mazmorra";
+        this.sesionInterna.render["mazmorra"]["nombreIdMazmorra"] = this.mazmorra.nombreId;
+        this.actualizarSesion();
+        this.socketService.enviarSocket("entrarMazmorra",{nombreIdMazmorra: this.mazmorra.nombreId});
+
+        //Cambia de componente:
+        this.setControl("mazmorra");
+        this.setEstadoApp("mazmorra",salaOpenId);
+    }
+
+    async peticionCargarMazmorra(nombreIdMazmorra: string){
 
         //INICIANDO MAZMORRA:
-        console.log("Iniciando Mazmorra: "+nombreIdMazmorra);
+        console.warn("PETICION HTTP MAZMORRA: "+nombreIdMazmorra);
+
         this.mostrarPantallacarga(true);
 
         //CARGANDO MAZMORRA:
         var token = await this.getToken();
-        this.http.post(this.ipRemota+"/deliriumAPI/cargarMazmorra",{nombreMazmorra: nombreIdMazmorra, token: token}).subscribe((data) => {
-
-            if(data){
-                //INICIANDO MAZMORRA:
-                this.setMazmorra(data);
-                console.log("MAZMORRA CARGADA: ");
-                console.log(this.mazmorra);
-                console.log(this.sesionInterna);
-
-                //Actualiza Sesión:
-                this.sesionInterna.estadoSesion = "mazmorra";
-                this.sesionInterna.render["mazmorra"]["nombreIdMazmorra"] = this.mazmorra.nombreId;
-
-                //Cambia de componente:
-                this.setControl("mazmorra");
-                this.setEstadoApp("mazmorra",salaOpenId);
-
-            }else{
-                console.error("NO SE HA PODIDO CARGAR LA MAZMORRA: "+nombreIdMazmorra);
-            }
-
-        });
-
-       //this.mazmorra = await window.electronAPI.getMazmorra(nombreIdMazmorra);
-
-        // 1) Cambio de estados AppService:
-        //this.setSala(this.sala);
-        //
-        //
-        //Actualizar Sesion: 
-        this.setSesion(this.sesionInterna);
+        return this.http.post(this.ipRemota+"/deliriumAPI/cargarMazmorra",{nombreMazmorra: nombreIdMazmorra, token: token}).toPromise();
     }
 
     verInMap(){
@@ -1031,6 +1026,63 @@ export class AppService {
         this.setMazmorra({});
         this.setControl("inmap");
         this.setEstadoApp("inmap");
+
+        this.sesionInterna.estadoSesion = "inmap";
+        this.sesionInterna.render.mazmorra.iniciada = false;
+        this.actualizarSesion();
+    }
+
+    peticionAbandonarMazmorra(){
+
+        const dialogoConfirmarAbandonarMazmorra = this.mostrarDialogo("Confirmacion",{titulo: "¿Abandonar Mazmorra?", contenido: "Al realizar esta acción tú y todo tu equipo abandonareis la mazmorra saliendo al mapa de mundo."});
+
+        dialogoConfirmarAbandonarMazmorra.afterClosed().subscribe(result => {
+          console.log('Fin dialogo abandonar Mazmorra', result);
+          if(result){
+                this.socketService.enviarSocket("abandonarMazmorra",{});
+          }
+        });
+    }
+
+     
+    iniciaSesion(sesion: any, forzarReload?:boolean){
+
+        console.warn("INICIANDO SESION:")
+        console.log("Cargando Datos locales...")
+        this.setSesion(sesion);
+        this.getDatosJuego();
+        this.getParametros();
+        this.getEventos();
+        this.getMisiones();
+        this.getEnemigos();
+        this.getAnimaciones();
+        this.getBuff();
+        this.getHechizos();
+        this.getPerks();
+        this.getClases();
+        this.getPerfil();
+
+        //SET INDEX HEROE:
+        this.actualizarIndexHeroe();
+
+        //Carga el INMAP:
+        var estadoApp = this.getEstadoApp();
+
+        if(sesion.estadoSesion == estadoApp){
+            if(forzarReload){
+                this.setEstadoApp(sesion.estadoSesion);
+            }
+        }else{
+            this.setEstadoApp(sesion.estadoSesion);
+        }
+
+
+        if(sesion.estadoSesion == "mazmorra"){
+            console.warn("RELOAD 1")
+            this.observarAppService.next("appServerEnviaSesion");
+        }
+
+        //this.appService.iniciarMazmorra("MazmorraSnack");
     }
 
 }

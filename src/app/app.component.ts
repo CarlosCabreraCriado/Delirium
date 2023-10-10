@@ -129,6 +129,7 @@ export class AppComponent implements OnInit{
 
        //Suscripcion Socket (SERVER):
        this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
+           console.warn("RECIBIENDO EN APP COMP: ",data);
             switch(data.peticion){
                 case "socketDesconectado":
                     console.log("Error en sincronización de socket: ");
@@ -145,8 +146,7 @@ export class AppComponent implements OnInit{
                     break
 
                 case "serverEnviaSesion":
-                    console.log(data.contenido)
-                    this.iniciaSesion(data.contenido, data.forzarReload)
+                    this.appService.iniciaSesion(data.contenido, data.forzarReload)
                 break
 
                 case "solicitudReclutarServer":
@@ -156,39 +156,6 @@ export class AppComponent implements OnInit{
         });
   } //FIN ONINIT:
 
-    iniciaSesion(sesion: any, forzarReload?:boolean){
-
-        console.warn("INICIANDO SESION:")
-        console.log("Cargando Datos locales...")
-        this.appService.setSesion(sesion);
-        this.appService.getDatosJuego();
-        this.appService.getParametros();
-        this.appService.getEventos();
-        this.appService.getMisiones();
-        this.appService.getEnemigos();
-        this.appService.getAnimaciones();
-        this.appService.getBuff();
-        this.appService.getHechizos();
-        this.appService.getPerks();
-        this.appService.getClases();
-        this.appService.getPerfil();
-
-        //SET INDEX HEROE:
-        this.appService.actualizarIndexHeroe();
-
-        //Carga el INMAP:
-        var estadoApp = this.appService.getEstadoApp();
-
-        if(sesion.estadoSesion == estadoApp){
-            if(forzarReload){
-                this.appService.setEstadoApp(sesion.estadoSesion);
-            }
-        }else{
-            this.appService.setEstadoApp(sesion.estadoSesion);
-        }
-
-        //this.appService.iniciarMazmorra("MazmorraSnack");
-    }
 
     desconectarSocket(){
         this.socketService.desconectar();

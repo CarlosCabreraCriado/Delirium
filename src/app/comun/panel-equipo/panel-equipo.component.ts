@@ -1,5 +1,6 @@
 
-import { Component , Input, ViewChild, ElementRef  } from '@angular/core';
+import { Component , Input, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { AppService } from '../../app.service';
 import {
   CdkDragDrop,
   CdkDragEnter,
@@ -23,7 +24,11 @@ export class PanelEquipoComponent {
     public zindexBolsa: number= 20
     public zindexBanco: number= 10
 
-    constructor() {}
+	public heroeSeleccionado : any = null;
+    public sesion: any;
+    public indexHeroeSesion: number;
+
+    constructor(private appService: AppService) {}
 
     //DRAG AND DROP:
     dropListReceiverElement?: HTMLElement;
@@ -32,6 +37,17 @@ export class PanelEquipoComponent {
         dragIndex: number;
         dropIndex: number;
     };
+
+
+	async ngOnInit(){
+
+		console.log("Importando Datos de AppService... ")
+		this.sesion= await this.appService.getSesion();
+		this.heroeSeleccionado= await this.appService.getHeroeSeleccionado();
+
+        this.indexHeroeSesion = this.sesion.render.heroes.findIndex(i => i.nombre == this.heroeSeleccionado.personaje) 
+
+    }
 
 dragEntered(event: CdkDragEnter<number>) {
     const drag = event.item;

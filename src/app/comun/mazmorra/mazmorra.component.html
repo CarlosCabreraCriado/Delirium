@@ -143,6 +143,7 @@
 	<!--   ******************* -->
 
     <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
+
     <panelControlComponent (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"
             [tipo]="'mazmorra'"
             [vida]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].vida"
@@ -151,6 +152,7 @@
             [turno]= "mazmorraService.estadoControl.esTurnoPropio"
             [habilitar]="mazmorraService.estadoControl.esTurnoPropio || mazmorraService.permitirMultiControl" >
     </panelControlComponent>
+
     </ng-container>
 
 		<!--   ******************* -->

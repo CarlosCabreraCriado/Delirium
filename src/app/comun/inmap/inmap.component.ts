@@ -26,9 +26,6 @@ export class InMapComponent implements OnInit {
 	//Declara Suscripcion Evento AppService:
 	private appServiceSuscripcion: Subscription = null;
 
-	//Declara Suscripcion Evento AppService:
-	private inmapServiceSuscripcion: Subscription = null;
-
 	constructor(private cdr: ChangeDetectorRef, private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
     }
@@ -53,13 +50,7 @@ export class InMapComponent implements OnInit {
                     case "reloadInMapService":
                         this.inmapService.iniciarInMap();
                         break;
-				}
-		});
 
-		//Observar Eventos InMap Service:
-		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
-			(val) => {
-				switch(val){
                     case "triggerChangeDetection":
                         this.cdr.detectChanges();
                         break;
@@ -71,10 +62,15 @@ export class InMapComponent implements OnInit {
 
       		if(data.emisor== this.cuenta.usuario){return;}
 
+            console.error("RECIBIENDO: ",data)
+
       		switch(data.peticion){
 
             case "checkSinc":
-              this.inmapService.setHashRecibido(data.contenido);
+                console.error("CHECK")
+                if(this.sesion.estadoSesion == "inmap"){
+                    this.inmapService.setHashRecibido(data.contenido);
+                }
             break;
 
             case "comandoPartida":
@@ -122,8 +118,8 @@ export class InMapComponent implements OnInit {
 
 	ngOnDestroy(){
         console.warn("Destruyendo INMAP");
-        this.appServiceSuscripcion.unsubscribe;
-        this.socketSubscripcion.unsubscribe;
+        this.appServiceSuscripcion.unsubscribe();
+        this.socketSubscripcion.unsubscribe();
 	}
 
 	abrirConfiguracion(){

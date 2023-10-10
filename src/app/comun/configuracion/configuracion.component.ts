@@ -16,21 +16,24 @@ export interface ConfiguracionData {
 
 export class ConfiguracionComponent {
 
-	private confirmation: boolean = false;
-	private comando = "";
+    private confirmation: boolean = false;
+    private comando = "";
+    public estadoConfiguracion: "inicio" | "developer" | "configuracion" = "inicio";
 
-	constructor(public dialogRef: MatDialogRef<ConfiguracionComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+    constructor(public dialogRef: MatDialogRef<ConfiguracionComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
     onAcceptClick(): void {
       this.confirmation = true;
       this.dialogRef.close();
     }
 
-	cerrarSesion():void{
-		console.log("Cierre")
-		//this.dialogRef.close("Cerrar");
-		return;
-	}
+    cerrarSesion():void{
+        console.log("Cierre")
+        //this.dialogRef.close("Cerrar");
+        return;
+    }
+
+
 
 }
 

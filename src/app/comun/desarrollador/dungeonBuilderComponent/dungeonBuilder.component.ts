@@ -43,6 +43,7 @@ export class DungeonBuilderComponent {
     //Campos Sala:
     private sala_id_Sala = new UntypedFormControl({value: 0});
     private nombre_Sala = new UntypedFormControl('Sala');
+    private inicial_Sala = new UntypedFormControl(false);
     private descripcion_Sala = new UntypedFormControl('Sala de ejemplo');
     private evento_inicial_id_Sala = new UntypedFormControl(0);
     private evento_final_id_Sala = new UntypedFormControl(0);
@@ -193,8 +194,10 @@ export class DungeonBuilderComponent {
             descripcion: this.descripcion_Sala,
             evento_inicial_id: this.evento_inicial_id_Sala,
             evento_final_id: this.evento_final_id_Sala,
-            mostrarIsometrico: this.mostrarIsometricoSala
+            mostrarIsometrico: this.mostrarIsometricoSala,
+            salaInicial: this.inicial_Sala
         });
+
         this.formSala.get("id")?.disable();
 
         //Inicializacion formulario Enemigos:

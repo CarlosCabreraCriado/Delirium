@@ -1,4 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
+
+import { Injectable, EventEmitter, Output } from '@angular/core';
 //import { Eventos } from './eventos.class';
 import { AppService } from './app.service';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
@@ -18,8 +19,11 @@ export class EventosService {
     private estado:string="default";
     public eventoEjecutando: any;
     public indexOrdenEjecutando: number= 0;
+    public salaOpenInicio: number = null;
 
     private sesion: any; 
+
+    @Output() eventoMazmorraEmitter: EventEmitter<any> = new EventEmitter();
 
     constructor(private appService: AppService, private dialog: MatDialog) {
         //Observar Sesion:
@@ -28,6 +32,12 @@ export class EventosService {
 
     setEventos(eventos: any){
       this.eventos = eventos;
+    }
+
+    getSalaOpenInicio(){
+        var salaOpen = this.salaOpenInicio;
+        this.salaOpenInicio = null;
+        return salaOpen;
     }
 
     async actualizarEventos(){
@@ -74,6 +84,7 @@ export class EventosService {
 
     ejecutarOrden(indexOrden:number){
         //Verifica que se pueda ejecutar
+        if(!this.eventoEjecutando.ordenes){this.finalizarEvento();return;}
         if(indexOrden >= this.eventoEjecutando.ordenes.length){this.finalizarEvento();return;}
 
         //Identificar tipo Orden:
@@ -158,6 +169,7 @@ export class EventosService {
                     }
                 });
                 break;
+
             case "NarradorImg":
                 var dialogRef = this.mostrarDialogo("NarradorImg",{
                     titulo: orden.titulo,
@@ -235,11 +247,22 @@ export class EventosService {
         switch(comando){
             case "iniciar":
                 if(mazmorraNombreId){
+                    if(salaOpenId){
+                        this.salaOpenInicio = salaOpenId;
+                    }
                     this.appService.iniciarMazmorra(mazmorraNombreId,salaOpenId);
                 }else{
                     console.error("Error iniciando Mazmorra NombreID no valido: ",mazmorraNombreId)
                 }
                 break;
+            case "openSala":
+                    this.eventoMazmorraEmitter.emit({comando: "openSala",valor: salaOpenId})
+                break;
+            case "finalizar":
+                    this.eventoMazmorraEmitter.emit({comando: "abandonarMazmorra"})
+                break;
+
+
         }
         this.ejecutarOrden(indexOrden+1);
     }

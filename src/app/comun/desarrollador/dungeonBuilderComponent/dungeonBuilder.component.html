@@ -449,6 +449,14 @@
                   <mat-label>Evento Final ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
                 </mat-form-field>
+
+                <mat-form-field appearance="legacy" class="campoFormulario">
+                  <mat-label>Evento Final ID</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
+                </mat-form-field>
+
+                <mat-checkbox  formControlName="salaInicial">Sala inicial: </mat-checkbox>
+
               </div>
 
               <div class="botonOpcionParametros" (click)="eliminarSala(salaSeleccionadaId)">Eliminar Sala</div>

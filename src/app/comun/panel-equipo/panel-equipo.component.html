@@ -22,21 +22,21 @@
 					<img src="../../../assets/Iconos/Icono-Armadura.png">
 					<div class="textoEstadisticas Texto3">
                             Armadura
-                            <br>10
+                            <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.armadura}}
+					</div>
+				</div>
+
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Resistencia-Magica.png">
+					<div class="textoEstadisticas Texto3">
+                            Resist. Mágica <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.resistenciaMagica}} 
 					</div>
 				</div>
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Vitalidad.png">
 					<div class="textoEstadisticas Texto3">
-                            Resist. Mágica <br>10 
-					</div>
-				</div>
-
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Curacion.png">
-					<div class="textoEstadisticas Texto3">
-                            Vitalidad <br>10 
+                            Vitalidad <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.vitalidad}} 
 					</div>
 				</div>	
 			</div>	
@@ -46,21 +46,21 @@
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
 					<div class="textoEstadisticas Texto3">
-                            Daño Físico <br>10 
+                            Daño Físico <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.ad}} 
 					</div>
 				</div>
 					
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Magico.png">
 					<div class="textoEstadisticas Texto3">
-                            Daño Mágico <br>10 
+                            Daño Mágico <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.ap}} 
 					</div>
 				</div>
 
 				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Energia-Stat.png">
+					<img src="../../../assets/Iconos/critico.png">
 					<div class="textoEstadisticas Texto3">
-                            Crítico <br>10 
+                            Crítico <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.critico}} 
 					</div>
 				</div>	
 

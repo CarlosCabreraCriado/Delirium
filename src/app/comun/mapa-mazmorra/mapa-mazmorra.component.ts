@@ -83,6 +83,7 @@ export class MapaMazmorraComponent implements OnInit{
   }//Fin checkOculto()
 
     renderizarCanvasIsometrico(){
+
     //Comprobar elementos Ocultos:
     this.checkOculto();
 
@@ -136,7 +137,6 @@ export class MapaMazmorraComponent implements OnInit{
         //this.canvasIsometrico.nativeElement.scrollLeft = posicionMax_x/2
 
         this.cdr.detectChanges();
-
     }
 
     renderizarElementoIsometrico(elemento: any):any{
@@ -218,7 +218,6 @@ export class MapaMazmorraComponent implements OnInit{
     renderizarEnemigoIsometrico(elemento){
         var style = {
             "display": "none",
-            "mix-blend-mode": "multiply",
             "border": "none"
         }
        for(var i = 0; i < this.renderEnemigos.length; i++){

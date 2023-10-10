@@ -352,6 +352,7 @@ export class InterfazService {
         this.hechizosEquipadosCooldown = hechizosEquipadosCooldown;
         this.pantallaInterfaz= "Hechizos";
         this.mostrarInterfaz = true;
+        console.warn("REnder: ",this.renderHeroeHechizo)
         return;
     }
 
@@ -460,7 +461,7 @@ export class InterfazService {
     selectHechizo(indexHechizo:number){
         this.indexHechizoSeleccionado = indexHechizo;
         this.idHechizoSeleccionado = this.hechizosEquipadosID[this.indexHechizoSeleccionado];
-        this.energiaHechizo = this.hechizosEquipadosEnergia[indexHechizo-1];
+        this.energiaHechizo = this.hechizosEquipadosEnergia[indexHechizo];
     }
 
     seleccionarHechizo(numHechizo):void{
