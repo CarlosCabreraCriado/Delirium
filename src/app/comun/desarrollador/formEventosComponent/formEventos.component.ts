@@ -20,7 +20,7 @@ export class FormEventosComponent {
   	readonly tiposOrdenes = ["Condición","Variable","Misión","Trigger","Diálogo","Hechizo","Loot","Enemigo","Mazmorra","Multimedia","Tiempo"];
 
     //Form Group:
-  	private formEvento: UntypedFormGroup;
+  	public formEvento: UntypedFormGroup;
   	private formOrden: UntypedFormGroup;
   	private formParametrosOrden: UntypedFormGroup;
   	private formOrdenCondicion: UntypedFormGroup;

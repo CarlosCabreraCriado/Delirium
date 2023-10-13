@@ -62,12 +62,9 @@ export class InMapComponent implements OnInit {
 
       		if(data.emisor== this.cuenta.usuario){return;}
 
-            console.error("RECIBIENDO: ",data)
-
       		switch(data.peticion){
 
             case "checkSinc":
-                console.error("CHECK")
                 if(this.sesion.estadoSesion == "inmap"){
                     this.inmapService.setHashRecibido(data.contenido);
                 }

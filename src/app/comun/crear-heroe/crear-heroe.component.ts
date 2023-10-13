@@ -21,15 +21,15 @@ export class CrearHeroeComponent implements OnInit {
 	private confirmation: boolean = false;
 	private comando = "";
 
-	private claseSeleccionada = "Guerrero";
-	private generoSeleccionado: "masculino"|"femenino" = "masculino";
-    private descripcion: string = "";
+	public claseSeleccionada = "Guerrero";
+	public generoSeleccionado: "masculino"|"femenino" = "masculino";
+    public descripcion: string = "";
 	public imagenId:number = 3;
 
     public tank = true;
     public dps = true;
     public heal = false;
-    private nombre = new FormControl('');
+    public nombre = new FormControl('');
 
 	constructor(public dialogRef: MatDialogRef<CrearHeroeComponent>, @Inject(MAT_DIALOG_DATA) public data: CrearHeroeData, private appService: AppService) { }
 

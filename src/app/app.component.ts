@@ -129,7 +129,14 @@ export class AppComponent implements OnInit{
 
        //Suscripcion Socket (SERVER):
        this.socketSubscripcion = this.socketService.eventoSocket.subscribe((data) =>{
-           console.warn("RECIBIENDO EN APP COMP: ",data);
+
+            if(data.emisor==this.cuenta.usuario){
+                console.warn("Evitando Rebote Comando Socket...")
+                return;
+            }
+
+            this.appService.activarComandoSocket();
+            console.warn("RECIBIENDO EN APP COMP: ",data);
             switch(data.peticion){
                 case "socketDesconectado":
                     console.log("Error en sincronización de socket: ");
@@ -152,7 +159,11 @@ export class AppComponent implements OnInit{
                 case "solicitudReclutarServer":
                     this.appService.procesarSolicitudReclutar(data);
                 break
+                case "actualizarHechizosEquipados":
+                    this.appService.setHechizosEquipados(data.personajeIndex,data.hechizosEquipadosIDs);
+                    break;
             }//FIN SWITCH
+            this.appService.desactivarComandoSocket();
         });
   } //FIN ONINIT:
 

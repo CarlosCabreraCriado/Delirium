@@ -1590,7 +1590,10 @@ export class DungeonBuilderComponent {
     var idOcupados = [];
 
     for(var i = 0;i <this.mazmorra.salas.length;i++){
-        for(var j = 0;j <this.mazmorra.salas[i].enemigos.length;j++){
+        if(this.mazmorra.salas[i].enemigos == null){
+            this.mazmorra.salas[i].enemigos = [];
+        }
+        for(var j = 0;j < this.mazmorra.salas[i].enemigos?.length;j++){
             idOcupados.push(parseInt(this.mazmorra.salas[i].enemigos[j].enemigo_id));
         }
     }

@@ -29,8 +29,10 @@ export class PanelPersonaje implements OnInit {
 
 	public heroeSeleccionado : any = null;
     public hechizosAprendidos = [];
+    public hechizosEquipados = [];
     public sesion: any;
     public indexHeroeSesion: number;
+    public hechizoSeleccionadoIndex = null;
 
 	constructor(private cdr: ChangeDetectorRef, private appService: AppService) {}
 
@@ -64,12 +66,21 @@ export class PanelPersonaje implements OnInit {
         
         this.indexHeroeSesion = this.sesion.render.heroes.findIndex(i => i.nombre == this.heroeSeleccionado.personaje) 
 
+        console.log("Index Heroe",this.indexHeroeSesion,this.heroeSeleccionado)
+
         for(var i = 0; i < this.perfil.heroes[0].hechizos.aprendidos.length; i++){
           this.hechizosAprendidos.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[0].hechizos.aprendidos[i]))
         }
 
+        for(var i = 0; i < this.perfil.heroes[0].hechizos.equipados.length; i++){
+          this.hechizosEquipados.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[0].hechizos.equipados[i]))
+        }
+
 		console.log("APRENDIDOS:")
 		console.log(this.hechizosAprendidos)
+
+		console.log("EQUIPADOS:")
+		console.log(this.hechizosEquipados)
 
         this.cdr.detectChanges()
 
@@ -80,6 +91,11 @@ export class PanelPersonaje implements OnInit {
 		this.pantalla=pantalla;
 		return;
 	}
+
+    seleccionarHechizo(indexSeleccion){
+        this.hechizoSeleccionadoIndex= indexSeleccion;
+        return;
+    }
 
 	renderizarImagenHechizos(){
 
@@ -142,6 +158,23 @@ export class PanelPersonaje implements OnInit {
 		}
 		return clase;
 	}
+
+    equiparHechizo(indexHechizoEquipar){
+        if(this.hechizoSeleccionadoIndex==null){return;}
+        this.hechizosEquipados[this.hechizoSeleccionadoIndex] = this.hechizosAprendidos[indexHechizoEquipar]
+
+        //Actualizar SESION -> Jugador:
+        var hechizosEquipadosIDs = [];
+        for(var i = 0; i < this.hechizosEquipados.length; i++){
+            hechizosEquipadosIDs.push(this.hechizosEquipados[i].id);
+        }
+
+        console.warn("EQUIPados: ",hechizosEquipadosIDs)
+        this.appService.setHechizosEquipados(this.appService.personajePropioSesionIndex,hechizosEquipadosIDs);
+        return;
+    }
+
+    
 
 }
 

@@ -41,19 +41,40 @@
 
 		<!-- PANEL HABILIDADES -->
 		<div *ngIf="pantalla=='Habilidades' && heroeSeleccionado!=null" class="contenedorGeneralHechizos">
+            <!--
 			<div class="contenedorDescripcion">
                 <div class="titulo Texto1">{{heroeSeleccionado.clase}}</div>
 			</div>
-
-            <div class="contenedorHechizos">
-                <detalleHechizoComponent *ngFor="let hechizo of hechizosAprendidos; let i = index" class="detalleHechizoComponent"
-                        [hechizos]="this.hechizos.hechizos"
-                        [buff]="buff.buff"
-                        [idHechizoSeleccionado]="hechizo.id"
-                        [estadisticas]="this.sesion.render.heroes[indexHeroeSesion].estadisticas">
-                </detalleHechizoComponent>
+            -->
+            
+            <div class="opcionesGenerales Texto3">
+                      <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==0}" (click)="seleccionarHechizo(0)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+hechizosEquipados[0].imagen_id+'.png) '}">
+                      </div>
+                            <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==1}"(click)="seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+hechizosEquipados[1].imagen_id+'.png) ','background-size': '100%'}">
+                      </div>
+                            <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==2}"(click)="seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+hechizosEquipados[2].imagen_id+'.png) ','background-size': '100%'}">
+                      </div>
+                            <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==3}"(click)="seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+hechizosEquipados[3].imagen_id+'.png) ','background-size': '100%'}">
+                      </div>
+                            <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==4}"(click)="seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+hechizosEquipados[4].imagen_id+'.png) ','background-size': '100%'}">
+                      </div>
             </div>
-    </div>
+
+            <div class="contenedorScroll">
+                <div class="contenedorHechizos">
+                    <div class="contenedorDetalleHechizo"*ngFor="let hechizo of hechizosAprendidos; let i = index" >
+                    <detalleHechizoComponent class="detalleHechizoComponent" 
+                            [hechizos]="this.hechizos.hechizos"
+                            [buff]="buff.buff"
+                            [idHechizoSeleccionado]="hechizo.id"
+                            [estadisticas]="this.sesion.render.heroes[indexHeroeSesion].estadisticas">
+                    </detalleHechizoComponent>
+                    <botonComponent mat-button (click)="equiparHechizo(i)" [texto]="'Equipar'" [tipoBoton]="2" [color]="'verde'" class="boton Arial"></botonComponent>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
 
 	</div><!-- Cierre de panel INTERNO -->

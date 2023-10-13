@@ -31,7 +31,7 @@
 			<panelEquipoComponent></panelEquipoComponent>
 		</div>
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
-			<panelUbicacionComponent></panelUbicacionComponent>
+			<panelUbicacionComponent [sesion]="this.mazmorraService.sesion"></panelUbicacionComponent>
 		</div>
 
 		<div class="panel panelMazmorra" *ngIf="pantalla =='Diario'">

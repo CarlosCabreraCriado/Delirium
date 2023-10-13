@@ -97,6 +97,7 @@ export class AppService {
     public claveValida: boolean= false;
     private sala: any={};
 
+    public comandoSocketActivo:boolean= false;
 
     //Estados:
     public estadoApp = "";
@@ -106,7 +107,7 @@ export class AppService {
     private heroeSeleccionadoPerfilIndex = null;
 
     private heroePropioSesionIndex = null;
-    private personajePropioSesionIndex = null;
+    public personajePropioSesionIndex = null;
 
     //Dialogos:
     private dialogoReconectar: any = undefined;
@@ -155,8 +156,15 @@ export class AppService {
         return this.estadoApp;
     }
 
-    //STORAGE:
+    activarComandoSocket(){
+        this.comandoSocketActivo = true;
+    }
 
+    desactivarComandoSocket(){
+        this.comandoSocketActivo = false;
+    }
+
+    //STORAGE:
     async initStorage(){
         const storage = await this.storage.create();
         this._storage = storage;
@@ -382,6 +390,8 @@ export class AppService {
     if(!this.sesionInterna.render.heroes){return}
     this.heroePropioSesionIndex = this.sesionInterna.render.heroes.findIndex(i => i.usuario == this.cuenta.usuario)
     this.personajePropioSesionIndex = this.sesionInterna.jugadores.findIndex(i => i.usuario == this.cuenta.usuario)
+    this.heroeSeleccionadoPerfilIndex = this.perfil.heroes.findIndex(i => i.personaje == this.sesionInterna.render.heroes[this.heroePropioSesionIndex].nombre);
+    this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoPerfilIndex]);
     return;
   }
 
@@ -399,6 +409,18 @@ export class AppService {
     return;
   }
 
+  setHechizosEquipados(indexPersonaje, hechizosEquipadosIDs){
+      this.sesionInterna.jugadores[this.personajePropioSesionIndex].personaje.hechizos.equipados = hechizosEquipadosIDs;
+      if(indexPersonaje == this.personajePropioSesionIndex){
+        this.perfil.heroes[this.heroeSeleccionadoPerfilIndex].hechizos.equipados = hechizosEquipadosIDs;
+        this.setPerfil(this.perfil);
+      }
+      this.actualizarSesion();
+      if(!this.comandoSocketActivo){
+        this.socketService.enviarSocket("actualizarHechizosEquipados",{personajeIndex: this.personajePropioSesionIndex, hechizosEquipadosIDs: hechizosEquipadosIDs});
+      }
+  }
+
     setProgresoCarga(val:string):void{
       this.progresoCarga.emit(val);
     }
@@ -412,7 +434,6 @@ export class AppService {
         }else{
             console.log(await window.electronAPI.setCuenta(this.cuenta));
         }
-
     }
 
   renderizarCanvasIsometrico(){

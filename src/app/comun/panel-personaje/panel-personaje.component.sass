@@ -314,10 +314,6 @@
             position: absolute
             width: 100%
             height: 100%
-            overflow-y: scroll
-            scrollbar-width: none
-            &::-webkit-scrollbar
-              display: none   
             .contenedorDescripcion
                 position: relative
                 top: 2%
@@ -337,22 +333,66 @@
                     @include media("<=smphone")
                         margin: 5px 10px
 
-            .contenedorHechizos
-              display: flex
-              flex-direction: column
-              .detalleHechizoComponent
+            .opcionesGenerales
                 position: relative
-                width: 100%
-                .contenedorImagen
+                display: flex
+                justify-content: center
+                margin-top: 3vh 
+
+                .hechizo
+                    position: relative
+                    display: inline-block
+                    text-align: center
+                    line-height: 11vw
+                    height: 10vh
+                    width: 10vh
+                    margin-right: 1.5vw
+                    margin-left: 1.5vw
+                    outline: solid 1px white
+                    overflow: hidden
+                    background-size: 100% !important
+                    .cooldown
+                      color: white
+                      font-size: 40px
+                      background-color: rgba(0,0,0,0.7)
+
+                .hechizo:hover
+                    color: black
+                    background-color: rgba(255,255,255,0.6)
+                    .opcionesGenerales
+                      position: relative
+                      width: 100%
+                      height: 100%
+
+            .contenedorScroll
+              position: relative
+              height: 85vh
+              overflow-y: scroll
+              scrollbar-width: none
+              &::-webkit-scrollbar
+                display: none   
+              
+              .contenedorDetalleHechizo
+                display: flex
+                flex-direction: column
+                .detalleHechizoComponent
                   position: relative
-                  height: 10%
                   width: 100%
-                  .imagen
-                    width: 10%
-                .contenedorTexto
+                  .contenedorImagen
+                    position: relative
+                    height: 10%
+                    width: 100%
+                    .imagen
+                      width: 10%
+                  .contenedorTexto
+                    position: relative
+                    .nombreHechizo
+                    .descripcionHechizo
+                .boton
                   position: relative
-                  .nombreHechizo
-                  .descripcionHechizo
+                  width: 20vw
+                  height: 10vh
+                  margin: auto
 
         .contenedorHabilidades
             position: absolute
