@@ -55,6 +55,7 @@ export class InMapComponent implements OnInit {
                         this.cdr.detectChanges();
                         break;
 				}
+            this.cdr.detectChanges();
 		});
 
 		//Suscripcion Socket:
@@ -92,7 +93,7 @@ export class InMapComponent implements OnInit {
             break;
 
       		}
-
+            this.cdr.detectChanges();
       	}); //FIN SOCKET SUSCRIPTION:
 
 		//Comprueba el Logueo carga el perfil en Servicio InMap:

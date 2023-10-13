@@ -453,9 +453,9 @@ export class MazmorraService {
         this.sesion.render.estadisticas = [];
     }
 
-    if(this.sesion.render.estadisticas.length==0){
+    if(this.sesion.render.estadisticas.length < this.sesion.render.heroes.length){
       this.sesion.render.estadisticas= [];
-      for(var i=0; i < this.sesion.render.numHeroes; i++){
+      for(var i=0; i < this.sesion.render.heroes.length; i++){
         this.sesion.render.estadisticas[i]={
           daño: [],
           heal: [],
@@ -760,6 +760,7 @@ export class MazmorraService {
       }
     }
 
+    
     //Agregar nuevo registro de analisis:
     for(var i=0; i <this.sesion.render.numHeroes;i++){
       this.sesion.render.estadisticas[i].daño.push(0);

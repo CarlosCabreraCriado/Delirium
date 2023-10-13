@@ -241,6 +241,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                 }
             break;
           }
+            this.cdr.detectChanges();
         });
 
     //Suscripcion AppService:
@@ -284,6 +285,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.forzarSincronizacion();
             break;
           }
+            this.cdr.detectChanges();
         });
 
     //Suscripcion Tecla Pulsada:
