@@ -32,6 +32,11 @@ export class MapaGeneralComponent implements OnInit {
     public mapaCargado:boolean = false;
     public mostrarNubes:boolean = true;
 
+    public animacionAddRow: boolean = false;
+    public animacionDeleteRow: boolean = false;
+    public animacionAddColumn: boolean = false;
+    public animacionDeleteColumn: boolean = false;
+
     //Variables INMAP:
     public region: any = {};
     private coordenadaX: number = 0;  //PENDINTE DECOMISION
@@ -43,8 +48,8 @@ export class MapaGeneralComponent implements OnInit {
     public traslacionIsometricoX: number = 0;
     public traslacionIsometricoY: number = 0;
     private tileSize: number = 48;
-    private bloqueoMovimiento: boolean = false; 
-    private direccionMovimientoPermitido: boolean[] = [true,true,true,true]; 
+    private bloqueoMovimiento: boolean = false;
+    private direccionMovimientoPermitido: boolean[] = [true,true,true,true];
 
 	@Input() tileImgSeleccionado: number;
 	@Input() herramientaInMap: string;
@@ -81,7 +86,7 @@ export class MapaGeneralComponent implements OnInit {
     }
 
   ngOnInit(){
-      
+
        //Suscripcion AppService:
        this.appServiceSuscripcion = this.appService.eventoAppService.subscribe((comando) =>{
           switch(comando){
@@ -89,8 +94,8 @@ export class MapaGeneralComponent implements OnInit {
               case "centrarMapa":
                     console.log("Centrando Mapa Global...")
                     //this.pinchZoom.pinchZoom.centeringImage();
-                    this.pinchZoom.pinchZoom.moveX = 0 
-                    this.pinchZoom.pinchZoom.moveY = 0 
+                    this.pinchZoom.pinchZoom.moveX = 0
+                    this.pinchZoom.pinchZoom.moveY = 0
                     this.pinchZoom.pinchZoom.scale= 1
                     //this.pinchZoom.pinchZoom.setZoom({scale: 1, center:[0,0]})
                     this.cdr.detectChanges();
@@ -100,20 +105,20 @@ export class MapaGeneralComponent implements OnInit {
                     console.log("Centrando Isometrico...")
                     this.pinchZoom.pinchZoom.centeringImage();
 
-                    this.pinchZoom.pinchZoom.moveX = 0 
-                    this.pinchZoom.pinchZoom.moveY = 0 
+                    this.pinchZoom.pinchZoom.moveX = 0
+                    this.pinchZoom.pinchZoom.moveY = 0
                   break;
 
               case "region1":
                   console.log("CENTRANDO REGION 1...")
-                  //this.pinchZoom.pinchZoom.moveX = 656 
-                  //this.pinchZoom.pinchZoom.moveY = 387 
+                  //this.pinchZoom.pinchZoom.moveX = 656
+                  //this.pinchZoom.pinchZoom.moveY = 387
                   //this.pinchZoom.pinchZoom.scale= 3
                     if(this.pinchZoom.pinchZoom.scale==1){
                         this.pinchZoom.pinchZoom.setZoom({scale: 3, center:[656,387]})
                     }else{
-                        this.pinchZoom.pinchZoom.moveX = 0 
-                        this.pinchZoom.pinchZoom.moveY = 0 
+                        this.pinchZoom.pinchZoom.moveX = 0
+                        this.pinchZoom.pinchZoom.moveY = 0
                         this.pinchZoom.pinchZoom.scale= 1
                     }
                   break;
@@ -179,18 +184,18 @@ export class MapaGeneralComponent implements OnInit {
   }
 
   clickTile(i:number,j:number,event: any){
-      
-    console.log("Click: i: "+i+" j: "+j,this.desarrollo) 
+
+    console.log("Click: i: "+i+" j: "+j,this.desarrollo)
 
       if(!this.desarrollo){return}
 
-    console.log("Click: i: "+i+" j: "+j) 
+    console.log("Click: i: "+i+" j: "+j)
     console.log("TILE:")
     console.log(this.mapaGeneralService.region.isometrico[i][j])
 
-    //Detectar Primer Click Seleccion: 
+    //Detectar Primer Click Seleccion:
     if(this.casillaSeleccionadaX != i || this.casillaSeleccionadaY != j){
-       //Seleccionando Casilla: 
+       //Seleccionando Casilla:
         var flagIgnoraGuardadoForm = false
         if(this.casillaSeleccionadaX == 0 && this.casillaSeleccionadaY == 0){
             flagIgnoraGuardadoForm = true
@@ -246,6 +251,9 @@ export class MapaGeneralComponent implements OnInit {
 
   renderTile(i:number, j:number){
 
+      if(this.animacionAddColumn && !this.desarrollo){return "animacionAddColumn"}
+      if(this.animacionDeleteColumn && !this.desarrollo){return "animacionDeleteColumn"}
+
       if(!this.desarrollo){return "";}
 
       //Si está Seleccionada:
@@ -294,10 +302,10 @@ export class MapaGeneralComponent implements OnInit {
       //Realizando Desplazamiento General:
       this.inmapService.realizarMovimientoInMap(direccion);
   }
-  
+
   procesarMoverPersonaje(direccion: string){
 
-      //Evitar Si hay bloqueo de Movimiento: 
+      //Evitar Si hay bloqueo de Movimiento:
       if(this.bloqueoMovimiento){
           console.log("Bloqueando Movimiento")
           return false;
@@ -307,7 +315,7 @@ export class MapaGeneralComponent implements OnInit {
       console.log(this.mapaGeneralService.renderIsometrico)
 
       //Extraer Coordenadas renderizadas:
-      var renderIsometricoLength= this.mapaGeneralService.radioRenderIsometrico*2; 
+      var renderIsometricoLength= this.mapaGeneralService.radioRenderIsometrico*2;
 
       var minRenderX = this.sesion.render.inmap.posicion_x - this.mapaGeneralService.radioRenderIsometrico;
       var maxRenderX = this.sesion.render.inmap.posicion_x + this.mapaGeneralService.radioRenderIsometrico;
@@ -329,7 +337,7 @@ export class MapaGeneralComponent implements OnInit {
                 this.sesion.render.inmap.posicion_y -= 1;
               break
       }
-       
+
       console.log("Direccion: "+direccion)
 
       switch(direccion){
@@ -340,17 +348,19 @@ export class MapaGeneralComponent implements OnInit {
                 this.bloqueoMovimiento = true;
 
                 var clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(minRenderY,maxRenderY+1);
-                this.mapaGeneralService.renderIsometrico.pop()
-                this.mapaGeneralService.renderIsometrico.unshift(clone)
+                this.animacionAddRow = true;
 
                 console.log("MOVIENDO")
                 this.cdr.detectChanges();
 
-                setTimeout(()=>{    
+                setTimeout(()=>{
                     this.triggerService.checkTrigger("entrarCasilla",{
                           posicion_x: this.sesion.render.inmap.posicion_x,
                           posicion_y: this.sesion.render.inmap.posicion_y
                     });
+                    this.animacionAddRow = false
+                    this.mapaGeneralService.renderIsometrico.pop()
+                    this.mapaGeneralService.renderIsometrico.unshift(clone)
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -363,14 +373,19 @@ export class MapaGeneralComponent implements OnInit {
                 this.bloqueoMovimiento = true;
 
                 var clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(minRenderY,maxRenderY+1);
-                this.mapaGeneralService.renderIsometrico.push(clone)
-                this.mapaGeneralService.renderIsometrico.shift()
+                this.animacionDeleteRow = true;
 
-                setTimeout(()=>{    
+                console.log("MOVIENDO")
+                this.cdr.detectChanges();
+
+                setTimeout(()=>{
                     this.triggerService.checkTrigger("entrarCasilla",{
                           posicion_x: this.sesion.render.inmap.posicion_x,
                           posicion_y: this.sesion.render.inmap.posicion_y
                     });
+                    this.animacionDeleteRow = false;
+                    this.mapaGeneralService.renderIsometrico.push(clone)
+                    this.mapaGeneralService.renderIsometrico.shift()
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -381,20 +396,26 @@ export class MapaGeneralComponent implements OnInit {
                 //Añadir ROW SUROESTE:
                 this.bloqueoMovimiento = true;
 
-                for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                    this.mapaGeneralService.renderIsometrico[i].push(
-                        this.mapaGeneralService.region.isometrico[minRenderX+i][maxRenderY+1]
-                    )
-                }
+                this.animacionAddColumn = true;
 
-                for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                    this.mapaGeneralService.renderIsometrico[i].shift()
-                }
-                setTimeout(()=>{    
+                console.log("MOVIENDO")
+                this.cdr.detectChanges();
+
+                setTimeout(()=>{
                     this.triggerService.checkTrigger("entrarCasilla",{
                           posicion_x: this.sesion.render.inmap.posicion_x,
                           posicion_y: this.sesion.render.inmap.posicion_y
                     });
+                  this.animacionAddColumn = false;
+                    for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                        this.mapaGeneralService.renderIsometrico[i].push(
+                            this.mapaGeneralService.region.isometrico[minRenderX+i][maxRenderY+1]
+                        )
+                    }
+
+                    for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                        this.mapaGeneralService.renderIsometrico[i].shift()
+                    }
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -405,20 +426,28 @@ export class MapaGeneralComponent implements OnInit {
                 //Añadir ROW SUROESTE:
                 this.bloqueoMovimiento = true;
 
-                for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                    this.mapaGeneralService.renderIsometrico[i].unshift(
-                        this.mapaGeneralService.region.isometrico[minRenderX+i][minRenderY-1]
-                    )
-                }
+                this.animacionDeleteColumn = true;
 
-                for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                    this.mapaGeneralService.renderIsometrico[i].pop()
-                }
-                setTimeout(()=>{    
+                console.log("MOVIENDO")
+                this.cdr.detectChanges();
+
+                setTimeout(()=>{
                     this.triggerService.checkTrigger("entrarCasilla",{
                           posicion_x: this.sesion.render.inmap.posicion_x,
                           posicion_y: this.sesion.render.inmap.posicion_y
                     });
+
+                    this.animacionDeleteColumn = false;
+                    for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                        this.mapaGeneralService.renderIsometrico[i].unshift(
+                            this.mapaGeneralService.region.isometrico[minRenderX+i][minRenderY-1]
+                        )
+                    }
+
+                    for(var i = 0; i <= maxRenderY-minRenderY; i++){
+                        this.mapaGeneralService.renderIsometrico[i].pop()
+                    }
+
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -439,7 +468,7 @@ export class MapaGeneralComponent implements OnInit {
       if(this.mapaGeneralService.renderIsometrico[centro+1][centro]["atravesable"]){movimiento[2]=true}
       if(this.mapaGeneralService.renderIsometrico[centro][centro-1]["atravesable"]){movimiento[3]=true}
 
-      this.direccionMovimientoPermitido = movimiento; 
+      this.direccionMovimientoPermitido = movimiento;
 
   } // Fin Check Movimiento Valido
 

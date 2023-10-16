@@ -4,7 +4,8 @@
 <!--   *********************************** -->
 
     <!-- NUBES FONDO -->
-    <div id="nubes" *ngIf="mostrarNubes">
+    <div id="nubes" *ngIf="mostrarNubes" >
+      <img src="../../../assets/Mapa/nubes.jpg">
     </div>
 
 
@@ -15,9 +16,9 @@
             <img class="mar" src="./assets/General/Fondo-Papiro.png"/>
         </div>
 
-        <pinch-zoom #pinchZoom id="pinch-zoom" [ngClass]="{'niebla': mostrarNieblaFija} " 
-            [limitPan]="false" 
-            [minPanScale]="1" 
+        <pinch-zoom #pinchZoom id="pinch-zoom" [ngClass]="{'niebla': mostrarNieblaFija} "
+            [limitPan]="false"
+            [minPanScale]="1"
             [disableZoomControl]="'disable'"
             [double-tap]="false"
             [limit-zoom]="10"
@@ -45,7 +46,7 @@
             <div class="floor">
                 <!-- rotateX(55deg) rotateZ(45deg) -->
 
-                  <div *ngIf="!desarrollo" class="player"[ngStyle]="{'transform': 'translate('+(50*mapaGeneralService.radioRenderIsometrico)+'px, '+(50*mapaGeneralService.radioRenderIsometrico)+'px)'}">
+                  <div *ngIf="!desarrollo" class="player" [ngStyle]="{'transform': 'translate('+(50*mapaGeneralService.radioRenderIsometrico)+'px, '+(50*mapaGeneralService.radioRenderIsometrico)+'px)'}">
                      <!-- player 1 -->
                      <!-- Flecha NorEste -->
                      <div class="player">
@@ -62,14 +63,14 @@
 
                      <!-- Flecha NorEste -->
                   </div>
-                
-                     <div *ngFor="let fila of this.mapaGeneralService.renderIsometrico;let i = index" class="row">
-                         <div *ngFor="let tile of this.mapaGeneralService.renderIsometrico[i];let j = index" 
-                             data-cords='[tile.coordenadaX,tile.coordenadaY]' 
-                             class="tile" 
-                             [ngStyle]="{'transform': 'translate('+(50*j)+'px,'+(50*i)+'px)','pointer-events': pointerEventCelda}" 
-                             [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" 
-                             (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)" 
+
+                  <div *ngFor="let fila of this.mapaGeneralService.renderIsometrico;let i = index" class="row" [ngClass]="{'animacionAddRow': animacionAddRow, 'animacionDeleteRow': animacionDeleteRow}" [ngStyle]="{'z-index': i}">
+                         <div *ngFor="let tile of this.mapaGeneralService.renderIsometrico[i];let j = index"
+                             data-cords='[tile.coordenadaX,tile.coordenadaY]'
+                             class="tile"
+                             [ngStyle]="{'pointer-events': pointerEventCelda}"
+                             [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)"
+                             (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)"
                              (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >
 
                                 <div *ngIf="desarrollo" [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" class="marcador"></div>
@@ -77,15 +78,15 @@
                                 <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
                                 <img *ngIf="tile.ubicacionEspecial!=null" class="imagenMarcador" src="assets/Iconos/indicadores/{{renderImagenMarcador(tile.ubicacionEspecial)}}.png"/>
 
-                         </div> 
+                         </div>
                      </div>
 
-                  </div> 
+                  </div>
                 </div>
             </div>
 
             <div class="fogwrapper">
-            </div> 
+            </div>
 
         </pinch-zoom>
 
@@ -102,8 +103,8 @@
                 <div id="foglayer_03" class="fog">
                   <div class="image01"></div>
                   <div class="image02"></div>
-                </div> 
-            </div> 
+                </div>
+            </div>
         -->
     </div>
 

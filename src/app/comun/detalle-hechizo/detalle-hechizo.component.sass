@@ -9,7 +9,7 @@
   overflow-y: scroll
   scrollbar-width: none
   &::-webkit-scrollbar
-    display: none   
+    display: none
   .detalleHechizo
     display: grid
     grid-template-columns: repeat(4, 0.5fr)
@@ -18,25 +18,29 @@
     grid-row-gap: 0px
     margin-top: 20px
     margin-bottom: 10px
-    .contenedorImagenHechizo  
-      grid-area: 1 / 1 / 4 / 2 
+    .contenedorImagenHechizo
+      grid-area: 1 / 1 / 4 / 2
       display: flex
+      margin: 10px
       justify-content: center
       .imagenHechizo
-        height: 100%
+        width: 100%
+        top: 0
+        aspect-ratio: 1
+        margin-bottom: auto
         border: white 1px solid
-    .titulo  
-      grid-area: 1 / 2 / 2 / 5 
-    .descripcionHechizo  
-      grid-area: 2 / 2 / 3 / 5 
+    .titulo
+      grid-area: 1 / 2 / 2 / 5
+    .descripcionHechizo
+      grid-area: 2 / 2 / 3 / 5
 
-    .atributosHechizos 
-      grid-area: 3 / 2 / 4 / 5 
+    .atributosHechizos
+      grid-area: 3 / 2 / 4 / 5
       display: flex
       justify-content: space-around
       .atributoHechizo
         position: relative
-        height: 30px 
+        height: 30px
         width: 20%
         margin: 10px 0
   .detalleBuff
@@ -59,7 +63,7 @@
       .titulo
         position: relative
         display: inline-flex
-        vertical-align: top 
+        vertical-align: top
         height: 100%
         margin-left: 20px
         align-items: center
@@ -73,7 +77,7 @@
 
 //FORMATEO DE DESCRIPCIONES
 mark
-  background-color: initial 
+  background-color: initial
   &.fisico
     color: crimson
   &.magico
