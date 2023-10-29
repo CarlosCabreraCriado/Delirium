@@ -231,7 +231,7 @@ export class LogicService {
         //---------------------
 
       //Calcula estadisticas ENEMIGO:
-            var indexTipoEnemigo = enemigo.enemigo_id;
+            var indexTipoEnemigo = this.enemigos.findIndex( i => i.id == enemigo.enemigo_id);
 
             nivel = Number(enemigo.nivel);
 
@@ -258,6 +258,8 @@ export class LogicService {
 
             console.warn("REDUC: ",reduccionArmadura)
             console.warn("NIVEL: ",nivel)
+            console.warn("ESTADIST: ",estadisticas)
+            console.warn("Index Tipo: ",indexTipoEnemigo)
 
             console.warn("%ARmin: ",armaduraMinPercent)
             console.warn("%ARmax: ",armaduraMaxPercent)
