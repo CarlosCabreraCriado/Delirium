@@ -36,8 +36,14 @@ export class LogicService {
           pa: 0,
           ad: 0,
           ap: 0,
-          armadura: 0,
           critico: 0,
+          pa_base: 0,
+          ad_base: 0,
+          ap_base: 0,
+          critico_base: 0,
+          armadura: 0,
+          multiplicadorDanoTipoArmadura: 1,
+          multiplicadorDanoTipoArmaduraPercent: 100,
           potenciaCritico: 0,
           probabilidadCritico: 0,
           probabilidadCriticoPercent: 0,
@@ -53,20 +59,44 @@ export class LogicService {
         //  CALCULO ESTADISTICAS HEROE
         //---------------------
 
+        console.warn("Clases: ", this.clases)
         console.warn("Personaje: ", personaje)
+
+        var indexClase = null;
+        switch(personaje.clase){
+            case "guerrero":
+                indexClase = 0
+                break;
+            case "hechicero":
+                indexClase = 1
+                break;
+            case "cazador":
+                indexClase = 2
+                break;
+            case "sacerdote":
+                indexClase = 3
+                break;
+            case "ladron":
+                indexClase = 4
+                break;
+        }
+
+        if(indexClase == null){console.error("ERROR, Clase no valida"); return;}
+
         nivel = personaje.nivel;
 
         //Calcula estadisticas BASE HEROE:
-        estadisticas.pa = this.parametros.heroes.base.pa + nivel * this.parametros.heroes.escalado.pa
-        estadisticas.ad = this.parametros.heroes.base.ad + nivel * this.parametros.heroes.escalado.ad
-        estadisticas.ap = this.parametros.heroes.base.ap + nivel * this.parametros.heroes.escalado.ap
-        estadisticas.critico = this.parametros.heroes.base.critico + nivel * this.parametros.heroes.escalado.critico
+        estadisticas.pa = 0
+        estadisticas.ad = this.clases.clases[indexClase].estadisticas.AD + nivel * this.clases.clases[indexClase].escalado.AD_esc;
+        estadisticas.ap = this.clases.clases[indexClase].estadisticas.AP + nivel * this.clases.clases[indexClase].escalado.AP_esc;
+        estadisticas.critico = this.clases.clases[indexClase].estadisticas.critico + nivel * this.clases.clases[indexClase].escalado.critico_esc;
 
-        estadisticas.armadura = this.parametros.heroes.base.armadura + nivel * this.parametros.heroes.escalado.armadura
-       estadisticas.vitalidad = this.parametros.heroes.base.vitalidad + nivel * this.parametros.heroes.escalado.vitalidad
-        estadisticas.resistenciaMagica = this.parametros.heroes.base.resistenciaMagica + nivel * this.parametros.heroes.escalado.resistenciaMagica
+        estadisticas.armadura = this.clases.clases[indexClase].estadisticas.armadura + nivel * this.clases.clases[indexClase].escalado.armadura_esc;
+       estadisticas.vitalidad = this.clases.clases[indexClase].estadisticas.vitalidad + nivel * this.clases.clases[indexClase].escalado.vitalidad_esc;
+        estadisticas.resistenciaMagica = this.clases.clases[indexClase].estadisticas.resistencia_magica + nivel * this.clases.clases[indexClase].escalado.resistencia_magica_esc;
 
         //Añadir estadisticas de objetos equipados:
+        var multiplicadorDañoTipoArmadura = 1;
         for(var i = 0; i < personaje.objetos.equipado.length; i++){
             if(personaje.objetos.equipado[i] == null){continue;}
             estadisticas.pa = estadisticas.pa + personaje.objetos.equipado[i].estadisticas.PA
@@ -77,7 +107,25 @@ export class LogicService {
             estadisticas.armadura = estadisticas.armadura + personaje.objetos.equipado[i].estadisticas.armadura
             estadisticas.vitalidad = estadisticas.vitalidad + personaje.objetos.equipado[i].estadisticas.vitalidad
             estadisticas.resistenciaMagica = estadisticas.resistenciaMagica + personaje.objetos.equipado[i].estadisticas.resistencia_magica
+            if(personaje.objetos.equipado[i].tipo == "Pesada"){multiplicadorDañoTipoArmadura += this.parametros.objetos.modificadorDanoPesada}
+            if(personaje.objetos.equipado[i].tipo == "Ligera"){multiplicadorDañoTipoArmadura += this.parametros.objetos.modificadorDanoLigera}
         }
+
+        estadisticas.pa_base = estadisticas.pa
+        estadisticas.ap_base = estadisticas.ap
+        estadisticas.ad_base = estadisticas.ad 
+        estadisticas.critico_base = estadisticas.critico
+
+        estadisticas.pa = this.redondeo(estadisticas.pa * multiplicadorDañoTipoArmadura);
+        estadisticas.ap = this.redondeo(estadisticas.ap * multiplicadorDañoTipoArmadura);
+        estadisticas.ad = this.redondeo(estadisticas.ad * multiplicadorDañoTipoArmadura);
+        estadisticas.critico = this.redondeo(estadisticas.critico * multiplicadorDañoTipoArmadura);
+
+        estadisticas.multiplicadorDanoTipoArmadura = multiplicadorDañoTipoArmadura;
+        estadisticas.multiplicadorDanoTipoArmaduraPercent = this.redondeo(100*(multiplicadorDañoTipoArmadura-1));
+
+        console.error("Personaje: ",personaje)
+        console.error("Stats: ",estadisticas)
 
         //Calculo de la vida Maxima (HEROE):
 
@@ -85,7 +133,11 @@ export class LogicService {
         var criticoMaxPercent = this.parametros.criticoMax;
         var criticoMinPercent = this.parametros.criticoMin;
         var criticoMin = this.parametros.heroes.base["critico"]+(nivel*this.parametros.heroes.escalado["critico"]);
-        var criticoMax = criticoMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
+        //var criticoMax = criticoMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
+
+        var criticoMax = criticoMin + (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado) * (this.parametros.objetos.distribucionArmadura * this.parametros.objetos.tipoObjArmaduraMax +
+    this.parametros.objetos.distribucionArma * this.parametros.objetos.tipoObjArmaOfensivaMax)
+
         var potenciaMin = this.parametros.potenciaCriticoMin;
 
         var estadisticaPrincipal = 0;
@@ -110,7 +162,9 @@ export class LogicService {
         var armaduraMaxPercent = this.parametros.armaduraMax;
         var armaduraMinPercent = this.parametros.armaduraMin;
         var armMin = this.parametros.heroes.base["armadura"]+(nivel*this.parametros.heroes.escalado["armadura"]);
-        var armMax = armMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
+
+        var armMax = armMin + (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado) * (this.parametros.objetos.distribucionArmadura * this.parametros.objetos.tipoObjArmaduraMax +
+    this.parametros.objetos.distribucionArma * this.parametros.objetos.tipoObjArmaDefensivaMax)
 
         var reduccionArmadura = armaduraMinPercent+((estadisticas.armadura-armMin)/(armMax-armMin))*(armaduraMaxPercent-armaduraMinPercent);
 
@@ -122,7 +176,9 @@ export class LogicService {
         var resistenciaMaxPercent = this.parametros.armaduraMax;
         var resistenciaMinPercent = this.parametros.armaduraMin;
         var resMin = this.parametros.heroes.base["resistenciaMagica"]+(nivel*this.parametros.heroes.escalado["resistenciaMagica"]);
-        var resMax = resMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
+
+        var resMax = resMin + (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado) * (this.parametros.objetos.distribucionArmadura * this.parametros.objetos.tipoObjArmaduraMax +
+    this.parametros.objetos.distribucionArma * this.parametros.objetos.tipoObjArmaDefensivaMax)
 
         var reduccionResistencia = resistenciaMinPercent+((estadisticas.resistenciaMagica-resMin)/(resMax-resMin))*(resistenciaMaxPercent-resistenciaMinPercent);
         reduccionResistencia = Math.round(reduccionResistencia * 100) / 100;
@@ -131,13 +187,16 @@ export class LogicService {
 
         //RANGOS VITALIDAD:
         var vitMin = this.parametros.heroes.base["vitalidad"]+(nivel*this.parametros.heroes.escalado["vitalidad"]);
-        var vitMax = vitMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
+
+        var vitMax = vitMin + (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado) * (this.parametros.objetos.distribucionArmadura * this.parametros.objetos.tipoObjArmaduraMax +
+    this.parametros.objetos.distribucionArma * this.parametros.objetos.tipoObjArmaDefensivaMax)
 
         var vidaBase = this.parametros.ratioVitalidadBase * vitMin;
+        var factorNerfVit = this.parametros.factorNerfVitalidad;
 
-        var vidaAdicional = (vidaBase*(armaduraMinPercent-armaduraMaxPercent)*((estadisticas.vitalidad-vitMin)/(vitMax-vitMin)))/((armaduraMaxPercent-armaduraMinPercent)*(((estadisticas.vitalidad-vitMin)/(vitMax-vitMin))+((estadisticas.armadura-armMin)/(armMax-armMin)))+armaduraMinPercent-1);
+        var vidaAdicional = (vidaBase*(armaduraMinPercent-armaduraMaxPercent)*(factorNerfVit*(estadisticas.vitalidad-vitMin)/(vitMax-vitMin)))/((armaduraMaxPercent-armaduraMinPercent)*(factorNerfVit*((estadisticas.vitalidad-vitMin)/(vitMax-vitMin))+((estadisticas.armadura-armMin)/(armMax-armMin))+((estadisticas.resistenciaMagica-resMin)/(resMax-resMin)))+armaduraMinPercent-1);
 
-        estadisticas.vidaMaxima = vidaBase+vidaAdicional;
+        estadisticas.vidaMaxima = vidaBase + vidaAdicional;
         estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
 
         estadisticas.pa = 0

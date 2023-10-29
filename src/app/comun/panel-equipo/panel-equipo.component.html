@@ -44,22 +44,25 @@
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
-					<div class="textoEstadisticas Texto3">
-                            Daño Físico <br>{{estadisticas.ad}} 
+					<div class="textoEstadisticas Texto3 Arial">
+                        Daño Físico <br>{{estadisticas.ad_base}}
+                        <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmaduraPercent}}%] ({{estadisticas.ad}})</ng-container>
 					</div>
 				</div>
 					
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Magico.png">
-					<div class="textoEstadisticas Texto3">
-                            Daño Mágico <br>{{estadisticas.ap}} 
+					<div class="textoEstadisticas Texto3 Arial">
+                        Daño Mágico <br>{{estadisticas.ap_base}}
+                        <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmaduraPercent}}%] ({{estadisticas.ap}})</ng-container>
 					</div>
 				</div>
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/critico.png">
-					<div class="textoEstadisticas Texto3">
-                            Crítico <br>{{estadisticas.critico}} 
+					<div class="textoEstadisticas Texto3 Arial">
+                        Critico <br>{{estadisticas.critico_base}}
+                        <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmaduraPercent}}%] ({{estadisticas.critico}})</ng-container>
 					</div>
 				</div>	
 

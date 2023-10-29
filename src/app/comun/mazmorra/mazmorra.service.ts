@@ -2176,17 +2176,14 @@ export class MazmorraService {
           hechizo["daño_entrante"] = 0;
         }
 
-        if(hechizo["daño_entrante"] || hechizo["heal_entrante"] ||  hechizo["escudo_entrante"]){
-        this.loggerService.log("------ ENTRADA ------- ","teal");
-        }
         if(hechizo["daño_entrante"]){
-        this.loggerService.log("-----> Daño Entrante: "+ hechizo["daño_entrante"]+" ("+hechizo["daño_bloqueado"]+" Bloqueado)["+(reduccionAplicada*100)+"%]","orangered");
+        this.loggerService.log("[Entrada] -----> Daño Entrante: "+ hechizo["daño_entrante"]+" ("+hechizo["daño_bloqueado"]+" Bloqueado)["+(reduccionAplicada*100)+"%]","orangered");
         }
         if(hechizo["heal_entrante"]){
-        this.loggerService.log("-----> Heal Entrante: "+ hechizo["heal_entrante"],"orangered");
+        this.loggerService.log("[Entrada] -----> Heal Entrante: "+ hechizo["heal_entrante"],"orangered");
         }
         if(hechizo["escudo_entrante"]){
-        this.loggerService.log("-----> Escudo Entrante: "+ hechizo["escudo_entrante"],"orangered");
+        this.loggerService.log("[Entrada] -----> Escudo Entrante: "+ hechizo["escudo_entrante"],"orangered");
         }
         return hechizo;
 
@@ -2238,8 +2235,18 @@ export class MazmorraService {
         buff["heal_t_entrante"] = this.logicService.redondeo(buff["heal_t_entrante"]);
         buff["escudo_t_entrante"] = this.logicService.redondeo(buff["escudo_t_entrante"]);
 
-    this.loggerService.log("------ ENTRADA BUFF ------- ","teal");
-    this.loggerService.log("-----> Daño_T Entrante (TOTAL): "+ buff["daño_t_entrante"]+" ("+buff["daño_t_bloqueado"]+" Bloqueado)["+(reduccionAplicada*100)+"%]","orangered");
+        if(buff["daño_t_entrante"]){
+            this.loggerService.log("[Entrada Buff] -----> Daño_T (TOTAL): "+ buff["daño_t_entrante"]+" ("+buff["daño_t_bloqueado"]+" Bloqueado)["+(reduccionAplicada*100)+"%]","orangered");
+        }
+
+        if(buff["heal_t_entrante"]){
+            this.loggerService.log("[Entrada Buff] -----> Heal_T (TOTAL): "+ buff["heal_t_entrante"],"lawngreen");
+        }
+
+        if(buff["escudo_t_entrante"]){
+            this.loggerService.log("[Entrada Buff] -----> Escudo_T (TOTAL): "+ buff["escudo_t_entrante"]);
+        }
+
         return buff;
 
     }
