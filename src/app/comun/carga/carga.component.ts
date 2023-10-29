@@ -1,16 +1,16 @@
 
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { AppService} from '../../app.service'
 
 @Component({
   selector: 'app-carga',
   templateUrl: './carga.component.html',
-  styleUrls: ['./carga.component.sass']
+  styleUrls: ['./carga.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CargaComponent implements OnInit {
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService, private cdr: ChangeDetectorRef) { }
 
   public mostrarPantallaCarga: boolean = true;
   private subtituloCarga: string = "Cargando";
@@ -24,10 +24,12 @@ export class CargaComponent implements OnInit {
       if(mostrar){
 		  this.mostrarPantallaCarga=true;
 		  this.opacidad=1; 
+          this.cdr.detectChanges();
 	  }else{
 		  this.opacidad=0; 
  			setTimeout(()=>{  
 				this.mostrarPantallaCarga=false;
+                this.cdr.detectChanges();
  			}, 2000);	
 	  }
     });

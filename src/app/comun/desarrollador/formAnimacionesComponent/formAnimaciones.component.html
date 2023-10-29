@@ -24,7 +24,7 @@
 			<div class="contenedorImagen">
 				<div (click)="desarrolladorService.abrirSelectorImagen('buff')" class="fondoAnimacion"></div>
 
-				<appAnimacionEfecto [loop]="true" [mute]="mute" [animacion]="desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex]"></appAnimacionEfecto>
+				<appAnimacionEfecto [desarrollador]="true" [loop]="true" [mute]="mute" [animacion]="desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex]"></appAnimacionEfecto>
 
 			</div>
 

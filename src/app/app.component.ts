@@ -1,5 +1,5 @@
 
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { AppService } from './app.service';
 import { EventosService } from './eventos.service';
@@ -27,8 +27,14 @@ export class AppComponent implements OnInit{
   private cuenta: any = null;
   private token: string = null;
   private estadoSocket: string = "Desconectado";
+  public estadoApp: any;
 
-  constructor(public appService: AppService,private socketService:SocketService, private location: Location){ }
+  constructor(private cdr: ChangeDetectorRef, public appService: AppService,private socketService:SocketService, private location: Location){
+        this.appService.estadoApp$.subscribe(estadoApp => {
+            this.estadoApp = estadoApp;
+            console.warn("Cambio -->",this.estadoApp.pantalla)
+        });
+  }
 
   @HostListener('document:keydown', ['$event'])
         handleKeyboardEvent(event: KeyboardEvent) {
@@ -49,22 +55,23 @@ export class AppComponent implements OnInit{
       this.token = await this.appService.getToken()
 
       //Inicializando Heroe Seleccionado:
-      this.appService.setHeroeSeleccionado(0)
+      this.estadoApp.heroePropioPerfilIndex = 0;
 
       //ABRIR APP DEVELOPER:
       if(this.location.path()=="/desarrollador"){
-        this.appService.setEstadoApp("desarrollador");
+        this.appService.setPantallaApp("desarrollador");
 
        //ABRIR APP NORMAL:
       }else{
 
           //RECONECTAR EL SOCKET:
-          if(this.cuenta != null && this.token != null){
+          if(this.cuenta != null && this.cuenta["idCuenta"] != undefined && this.token != null){
             this.socketService.conectarSocket(this.token);
           }else{
             console.log("Cargando INDEX...")
             this.desconectarSocket()
             this.appService.logout();
+            this.appService.mostrarDialogoReconectar(false);
           }
       }
 
@@ -95,6 +102,7 @@ export class AppComponent implements OnInit{
                 this.desconectarSocket();
                 this.appService.logout();
                 this.appService.mostrarDialogoReconectar(false);
+                    this.cdr.detectChanges();
             break;
 
             case "socketDesconectado":
@@ -102,7 +110,10 @@ export class AppComponent implements OnInit{
                 //this.desconectarSocket();
                 //this.appService.logout();
                 //this.appService.mostrarDialogoReconectar(false);
-                this.appService.mostrarDialogoReconectar(true);
+                this.token = await this.appService.getToken()
+                if(this.token != null){
+                    this.appService.mostrarDialogoReconectar(true);
+                }
             break;
 
             case "conectado":
@@ -111,17 +122,22 @@ export class AppComponent implements OnInit{
                 this.cuenta = await this.appService.getCuenta()
                 this.token = await this.appService.getToken()
 
+                console.warn(this.cuenta,this.token);
+
                 this.estadoSocket = "Conectado";
                 //RECONECTAR EL SOCKET:
-                if(this.cuenta != null && this.token != null){
+                if(this.cuenta != null && this.cuenta["idCuenta"] != undefined && this.token != null){
                     console.log("RECONECTANDO SOCKET")
                     this.socketService.enviarSocket('validacion', this.cuenta);
                     this.appService.mostrarDialogoReconectar(false);
+                    this.cdr.detectChanges();
+
                 //Determinación de estado APP:
                 }else{
                     console.log("Cargando INDEX...")
                     this.desconectarSocket()
                     this.appService.logout();
+                    this.appService.mostrarDialogoReconectar(false);
                 }
             break;
           }
@@ -156,6 +172,10 @@ export class AppComponent implements OnInit{
                     this.appService.iniciaSesion(data.contenido, data.forzarReload)
                 break
 
+                case "serverEnviaJugador":
+                    this.appService.actualizarJugador(data.contenido, data.indexJugador)
+                break
+
                 case "solicitudReclutarServer":
                     this.appService.procesarSolicitudReclutar(data);
                 break
@@ -165,6 +185,9 @@ export class AppComponent implements OnInit{
             }//FIN SWITCH
             this.appService.desactivarComandoSocket();
         });
+
+        this.cdr.detectChanges();
+
   } //FIN ONINIT:
 
 

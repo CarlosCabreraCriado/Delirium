@@ -75,7 +75,8 @@ export class SocketService {
     }
 
     desconectar(){
-      this.socket.disconnect();
+        console.warn("Desconectando Socket")
+        this.socket.disconnect();
     }
 
     enviarInterno(evento,data){

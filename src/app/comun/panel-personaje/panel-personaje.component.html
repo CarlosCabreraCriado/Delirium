@@ -67,7 +67,7 @@
                             [hechizos]="this.hechizos.hechizos"
                             [buff]="buff.buff"
                             [idHechizoSeleccionado]="hechizo.id"
-                            [estadisticas]="this.sesion.render.heroes[indexHeroeSesion].estadisticas">
+                            [estadisticas]="this.sesion.render.heroes[estadoApp.heroePropioSesionIndex].estadisticas">
                     </detalleHechizoComponent>
                     <botonComponent mat-button (click)="equiparHechizo(i)" [texto]="'Equipar'" [tipoBoton]="2" [color]="'verde'" class="boton Arial"></botonComponent>
                     </div>

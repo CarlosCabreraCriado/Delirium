@@ -61,7 +61,6 @@ export class IndexComponent implements OnInit{
 
     this.cuenta= await this.appService.getCuenta();
 
-        //this.cuenta = {}
 
     console.log(this.cuenta);
 
@@ -93,7 +92,7 @@ export class IndexComponent implements OnInit{
 
     if(this.appService.control=="null"){
           this.appService.setControl("index");
-          this.appService.setEstadoApp("index");
+          this.appService.setPantallaApp("index");
           return;
         }
 
@@ -121,16 +120,11 @@ export class IndexComponent implements OnInit{
     //this.appService.mostrarCrearCuenta()
   }
 
-  retroceder():void{
-    this.pantalla="inicio";
-  }
-
   logout():void{
     this.cuenta = {};
     this.socketService.enviarSocket("logout",this.cuenta);
     this.appService.claveValida = false;
     this.appService.setCuenta(this.cuenta);
-    this.appService.setSala({});
   }
 
   renderizarPantalla(pantalla):string{
@@ -185,6 +179,7 @@ export class IndexComponent implements OnInit{
 
                         //CONECTAR SOCKET:
                         this.socketService.conectarSocket(data["token"]);
+
                     }
                 }
 

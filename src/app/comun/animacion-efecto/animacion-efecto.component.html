@@ -6,8 +6,7 @@
 		[@animacionEfecto]="{value: estadoAnimacion, params: {tiempoEfectoParam: subanimacion.duracion, stepsParam: subanimacion.num_frames, delayEfectoParam: subanimacion.delay}}"
 		(@animacionEfecto.start)="inicioAnimacion(i);"
 		(@animacionEfecto.done)="finAnimacion(i);"
-		[ngClass]="renderIndividual()"
-    [ngStyle]="{
+        [ngStyle]="{
                 'filter': 'hue-rotate('+subanimacion.hue_filter+'deg)',
                 'background-image':'url(./assets/Efectos/'+subanimacion.sprite_id+'.png)',
                 'background-size': stepsEfecto+'00% 100%',

@@ -37,6 +37,7 @@ var sesion = null;
 var cuentaID = null;
 var token= null;
 var perfil = null;
+var mazmorra = null;
 var datosJuego=null;
 
 var heroeStat = null; //Pendiente Decomision
@@ -230,6 +231,19 @@ ipc.on('setPerfil', function (event, arg) {
   perfil = arg; 
   console.log("Cargando Perfil");
   console.log(perfil);
+   
+  event.returnValue = true;
+});
+
+//SETTER GETTER (MAZMORRA)
+ipc.on('getMazmorra', function (event) {
+  event.returnValue = mazmorra;
+});
+
+ipc.on('setMazmorra', function (event, arg) {
+  mazmorra = arg; 
+  console.log("Cargando Mazmorra");
+  console.log(mazmorra);
    
   event.returnValue = true;
 });

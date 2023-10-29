@@ -68,7 +68,6 @@ export class MapaGeneralComponent implements OnInit {
 	@Input() radioRenderIsometrico: number;
 
     //Emisores de eventos:
-    @Output() comandoMapaGeneral = new EventEmitter<any>();
     @Output() tileCopiado = new EventEmitter<number>();
     @Output() tileSeleccionado = new EventEmitter<{x: number, y: number, xAntigua: number, yAntigua: number, ignoraGuardado: boolean}>();
 
@@ -187,7 +186,7 @@ export class MapaGeneralComponent implements OnInit {
 
     console.log("Click: i: "+i+" j: "+j,this.desarrollo)
 
-      if(!this.desarrollo){return}
+    if(!this.desarrollo){return}
 
     console.log("Click: i: "+i+" j: "+j)
     console.log("TILE:")

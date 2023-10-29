@@ -1,4 +1,4 @@
-import { Component,ChangeDetectorRef, ChangeDetectionStrategy, OnInit, AfterViewInit, NgModule, ViewChildren, ViewChild, ElementRef, QueryList, Directive} from '@angular/core';
+import { Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, AfterViewInit, NgModule, ViewChildren, ViewChild, ElementRef, QueryList, Directive} from '@angular/core';
 import { AppService } from '../../app.service';
 import { MazmorraService } from './mazmorra.service';
 import { Subscription } from "rxjs";
@@ -14,6 +14,7 @@ import { RngComponent} from '../rng/rng.component'
 import { InterfazService} from '../interfaz/interfaz.service'
 import { SocketService} from '../socket/socket.service'
 import { HeroesInfoService} from '../heroesInfo/heroesInfo.service'
+import { InterfazComponent} from '../interfaz/interfaz.component'
 
 @Directive({selector: 'AppAnimacionNumero'})
 class AppAnimacionNumero {
@@ -129,7 +130,6 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               console.log("Contenido: ");
               console.log(data.contenido);
               this.sala = data.contenido;
-              this.appService.setSala(this.sala);
               this.mazmorraService.sala= this.sala;
               this.mazmorraService.comprobarConectado();
               this.mazmorraService.sincronizar=false;
@@ -151,7 +151,6 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               console.log("Contenido: ");
               console.log(data.contenido);
               this.sala = data.contenido;
-              this.appService.setSala(this.sala);
               this.mazmorraService.sala= this.sala;
               //this.renderMazmorra = this.mazmorraService.cargarPartida(this.sala);
               this.mazmorraService.sincronizar=false;
@@ -161,7 +160,6 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               console.log("Peticion: "+data.peticion);
               console.log("Contenido: ");
               console.log(data.contenido);
-              this.appService.setSala({});
               this.retroceder();
             break;
 
@@ -185,7 +183,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
                   case "realizarMovimiento":
                     this.mazmorraService.realizarMovimiento(data.contenido)
-                    this.forceRender();
+                    this.cdr.detectChanges();
                     break;
 
                   case "lanzarHechizo":
@@ -193,6 +191,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     console.log(data.contenido);
                     this.mazmorraService.lanzarHechizo(data.contenido);
                   break;
+
+                  case "actualizarInteractuado":
+                      this.mazmorraService.actualizarInteractuado(data.contenido);
+                      break;
 
                   case "lanzarHechizoEnemigo":
                     console.warn("LANZANDO HECHIZO ENEMIGO: ",data)
@@ -271,16 +273,19 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
             case "controlMazmorraTrue":
               this.interfazService.setBloquearInterfaz(false);
-              this.forceRender()
+              this.cdr.detectChanges();
             break;
+
             case "controlMazmorraFalse":
               this.interfazService.setBloquearInterfaz(true);
-              this.forceRender()
+              this.cdr.detectChanges();
             break;
+
             case "MultiControl":
                     this.mazmorraService.toggleMultiControl();
-                    this.forceRender();
+                    this.cdr.detectChanges();
             break;
+
             case "ForzarSync":
                     this.mazmorraService.forzarSincronizacion();
             break;
@@ -329,14 +334,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.centrarMazmorra();
                     break;
                 case "forceRender":
-                    this.forceRender();
+                    this.cdr.detectChanges()
                     break;
-                case "forceRenderMazmorra":
-                    //this.mapaMazmorra.renderizarCanvasIsometrico();
-                    break;
-                case "forcerenderAll":
-                  this.cdr.detectChanges();
-                  break;
+                case "habilitarInterfaz":
+                  this.interfazService.setBloquearInterfaz(false);
+                break;
             }
         });
 
@@ -401,6 +403,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     }else{
       this.pantalla=nombrePantalla;
     }
+    //this.cdr.detectChanges();
     return;
   }
 
@@ -706,12 +709,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     this.mazmorraService.cargaCompleta=false;
 
     //Gestionar Control:
-    this.appService.setSala({});
     this.socketService.enviarSocket('abandonarSala',null);
     this.appService.setControl("");
     this.mazmorraService.musicaMazmorra.volume= 0;
     this.mazmorraService.musicaMazmorra.remove();
-    this.appService.setEstadoApp("index");
+    this.appService.setPantallaApp("index");
   }
 
   /*  ----------------------------------------------
@@ -722,7 +724,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     this.appService.setControl("");
     this.mazmorraService.musicaMazmorra.volume= 0;
       this.mazmorraService.musicaMazmorra.remove();
-    this.appService.setEstadoApp("index");
+    this.appService.setPantallaApp("index");
   }
 
   seleccionarHeroe(index):void{
@@ -886,10 +888,6 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     reloadDatos(){
       this.mazmorraService.reloadDatos();
-    }
-
-    forceRender(){
-        this.cdr.detectChanges()
     }
 
 

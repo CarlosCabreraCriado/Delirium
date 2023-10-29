@@ -15,6 +15,16 @@ import { datosIniciales } from "./datosIniciales"
 import { LogicService } from "./logic.service"
 import { SocketService } from './comun/socket/socket.service';
 
+type PantallaApp = "index"|"seleccionPersonaje"|"inmap"|"mazmorra"|"desarrollador"|null;
+
+interface EstadoApp {
+    pantalla: PantallaApp ,
+    estadoInMap: "global"|"region",
+    heroePropioSesionIndex:  number,
+    jugadorPropioSesionIndex: number,
+    heroePropioPerfilIndex: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -64,10 +74,19 @@ export class AppService {
     private _storage: Storage | null = null;
 
     //Variables de sesion:
-    private _sesion = new BehaviorSubject({});
+    private _sesion = new BehaviorSubject<any>({});
     public sesion$ = this._sesion.asObservable(); 
 
-    private sesionInterna: any = {};
+    //Variables de estadoApp:
+    private _estadoApp = new BehaviorSubject<EstadoApp>({
+        pantalla: null,
+        estadoInMap: "region",
+        heroePropioSesionIndex: null,
+        jugadorPropioSesionIndex: null,
+        heroePropioPerfilIndex: null
+    });
+
+    public estadoApp$ = this._estadoApp.asObservable(); 
 
     //Variables de datos:
     public perfil:any;
@@ -100,14 +119,9 @@ export class AppService {
     public comandoSocketActivo:boolean= false;
 
     //Estados:
-    public estadoApp = "";
+    private estadoApp = "";
     public estadoInMap = "global";
     public cargandoMapa:boolean = false;
-    private heroeSeleccionado = null;
-    private heroeSeleccionadoPerfilIndex = null;
-
-    private heroePropioSesionIndex = null;
-    public personajePropioSesionIndex = null;
 
     //Dialogos:
     private dialogoReconectar: any = undefined;
@@ -129,31 +143,31 @@ export class AppService {
       this.observarAppService.next("triggerChangeDetection");
     }
 
-    setEstadoApp(estado: string, parametro?:any){
-
-        console.log("ENTRANDO ("+estado+")")
-        //this.mostrarPantallacarga(false);
-        //this.estadoApp = estado;
+    setPantallaApp(pantalla: PantallaApp, parametro?:any){
+        console.log("Cambiando Pantalla --> "+pantalla)
         this.mostrarPantallacarga(true);
 
         setTimeout(()=>{
-                console.warn("CAMBIO ESTADO APP ",estado)
-                this.estadoApp = estado;
-                if(estado=="inmap"){
+                console.warn("CAMBIO ESTADO APP ",pantalla)
+                //this.estadoApp = pantalla;
+                //this._estadoApp.next(this.)
+                this._estadoApp.value.pantalla = pantalla;
+                this._estadoApp.next(this._estadoApp.value)
+                if(pantalla=="inmap"){
                     this.observarAppService.next("reloadInMapService");
                 }
         }, 1000);
 
         setTimeout(()=>{
               this.mostrarPantallacarga(false);
-                if(estado=="mazmorra"){
+                if(pantalla=="mazmorra"){
                     this.observarAppService.next("reloadMazmorraService");
                 }
         }, 4000);
     }
 
     getEstadoApp(){
-        return this.estadoApp;
+        return this._estadoApp.value;
     }
 
     activarComandoSocket(){
@@ -199,7 +213,6 @@ export class AppService {
     setSesion(sesion:any){
       console.log("Set Sesion: ");
       console.log(sesion);
-      this.sesionInterna = sesion;
       this._sesion.next(sesion);
       this.observarAppService.next("triggerChangeDetection");
       if(!this.ionic){
@@ -207,11 +220,18 @@ export class AppService {
       }
       return;
     }
-    
-    actualizarSesion(){
-        this._sesion.next(this.sesionInterna);
-        return;
+
+    /*
+    setEstadoApp(estadoApp:any){
+      console.log("Set Estado App: ");
+      console.log(estadoApp);
+      this.estadoAppInterna = sesion;
+      this._sesion.next(sesion);
+      this.observarAppService.next("triggerChangeDetection");
+      return;
     }
+    */
+
 
     setPerfil(perfil: any){
         console.log("Guardando Perfil...");
@@ -224,6 +244,57 @@ export class AppService {
             window.electronAPI.setPerfil(perfil)
         }
         return;
+    }
+
+    actualizarJugador(heroePerfil, indexJugador){
+
+        var estadisticasAntiguas = this.logicService.calcularEstadisticasBaseHeroe(this._sesion.value.jugadores[indexJugador].personaje);
+        var estadisticasNuevas = this.logicService.calcularEstadisticasBaseHeroe(heroePerfil);
+
+        //Asignar nuevas estadisticas Base:
+        this._sesion.value.jugadores[indexJugador].personaje = heroePerfil;
+        this._sesion.value.render.heroes[indexJugador]["estadisticasBase"] = this.logicService.calcularEstadisticasBaseHeroe(heroePerfil);
+        
+        //Detectar Diferencial de estadisticas:
+        var diferencialEstadisticas = estadisticasAntiguas;
+        for(var key in estadisticasAntiguas){
+            if(estadisticasAntiguas.hasOwnProperty(key)){
+                diferencialEstadisticas[key] = estadisticasNuevas[key] - estadisticasAntiguas[key];
+            }
+        }
+
+        //Actualizar render de estadisticas de heroe:
+        for(var key in this._sesion.value.render.heroes[indexJugador].estadisticas){
+            if(this._sesion.value.render.heroes[indexJugador].estadisticas.hasOwnProperty(key)){
+                this._sesion.value.render.heroes[indexJugador].estadisticas[key] = this._sesion.value.render.heroes[indexJugador].estadisticas[key] + diferencialEstadisticas[key];
+            }
+        }
+
+        console.warn("Jugador Actualizado: ",this._sesion.value);
+    }
+
+    checkSincPerfil(){
+
+        var hashPersonajeSesion = this.hashCode(JSON.stringify(this._sesion.value.jugadores[this._estadoApp.value.jugadorPropioSesionIndex].personaje));
+        var hashHeroePerfil = this.hashCode(JSON.stringify(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex]));
+
+        if(hashPersonajeSesion === hashHeroePerfil){
+            console.warn("HASH PERSONAJE --> OK")
+        }else{
+            console.warn("HASH PERSONAJE --> DESINC")
+            this.socketService.enviarSocket("sincPersonaje",{heroePerfil: this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex], indexJugador: this._estadoApp.value.heroePropioPerfilIndex});
+            this.actualizarJugador(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex],this._estadoApp.value.heroePropioPerfilIndex);
+        }
+
+    }
+
+    hashCode(str: string): number {
+      //console.warn(str)
+      var h: number = 0;
+      for (var i = 0; i < str.length; i++) {
+          h = h + (str.charCodeAt(i)+(i%10));
+      }
+      return h & 0xFFFFFFFF
     }
 
     setControl(val:string):void{
@@ -311,6 +382,7 @@ export class AppService {
         switch(datosJuego[i].nombreId){
           case "Clases":
             this.clases = datosJuego[i];
+            this.logicService.setClases(this.clases);
             if(this.ionic){this.set("clases",this.clases)}
           break;
           case "Objetos":
@@ -335,6 +407,7 @@ export class AppService {
           break;
           case "Enemigos":
             this.enemigos = datosJuego[i];
+            this.logicService.setEnemigos(this.enemigos);
             if(this.ionic){this.set("enemigos",this.enemigos)}
           break;
           case "Misiones":
@@ -359,6 +432,14 @@ export class AppService {
       return;
     }
 
+    async reloadLogicService(){
+
+        this.logicService.setParametros(await this.getParametros());
+        this.logicService.setClases(await this.getClases());
+        this.logicService.setEnemigos(await this.getEnemigos());
+        return;
+    }
+
     setEventos(eventos: any){
         this.eventos = eventos;
         if(this.ionic){
@@ -368,56 +449,61 @@ export class AppService {
         }
     }
 
-  setMazmorra(mazmorra: any){
+    setMazmorra(mazmorra: any){
         //Actualizar datos:
-    this.mazmorra = mazmorra;
-    return;
-  }
+        this.mazmorra = mazmorra;
+        if(this.ionic){
+            this.set("mazmorra",this.mazmorra)
+        }else{
+            window.electronAPI.setMazmorra(mazmorra)
+        }
+        return;
+    }
 
-  crearCuenta(correo,usuario,password,password2){
+    crearCuenta(correo,usuario,password,password2){
 
-  }
+    }
 
     mostrarPantallacarga(val:boolean):void{
       this.mostrarCarga.emit(val);
     }
 
-  getHeroeSeleccionado(){
-    return this.heroeSeleccionado;
-  }
 
-  actualizarIndexHeroe(){
-    if(!this.sesionInterna.render.heroes){return}
-    this.heroePropioSesionIndex = this.sesionInterna.render.heroes.findIndex(i => i.usuario == this.cuenta.usuario)
-    this.personajePropioSesionIndex = this.sesionInterna.jugadores.findIndex(i => i.usuario == this.cuenta.usuario)
-    this.heroeSeleccionadoPerfilIndex = this.perfil.heroes.findIndex(i => i.personaje == this.sesionInterna.render.heroes[this.heroePropioSesionIndex].nombre);
-    this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoPerfilIndex]);
+    actualizarEstadoApp(){
+
+    if(!this._sesion.value.render.heroes){return}
+
+    var nuevoEstado = {
+        pantalla: this._estadoApp.value["pantalla"],
+        estadoInMap: this._estadoApp.value["estadoInMap"],
+        heroePropioSesionIndex: null,
+        jugadorPropioSesionIndex: null,
+        heroePropioPerfilIndex: null
+    }
+
+    nuevoEstado.heroePropioSesionIndex = Number(this._sesion.value.render.heroes.findIndex(i => i.usuario == this.cuenta.usuario))
+
+    nuevoEstado.jugadorPropioSesionIndex = Number(this._sesion.value.jugadores.findIndex(i => i.usuario == this.cuenta.usuario))
+
+    nuevoEstado.heroePropioPerfilIndex = Number(this.perfil.heroes.findIndex(i => i.personaje == this._sesion.value.render.heroes[nuevoEstado.heroePropioSesionIndex].nombre));
+
+    //this.setHeroeSeleccionado(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex]);
+
+    this._estadoApp.next(nuevoEstado);
+    console.warn("Estado App: ", this._estadoApp.value);
+
     return;
   }
 
-  getHeroePropioSesionIndex(){
-    return this.heroePropioSesionIndex;
-  }
-
-  getHeroeSeleccionadoPerfilIndex(){
-    return this.heroeSeleccionadoPerfilIndex;
-  }
-
-  setHeroeSeleccionado(heroe: any){
-    this.heroeSeleccionado = heroe;
-    this.observarAppService.next("actualizarHeroeSeleccionado");
-    return;
-  }
 
   setHechizosEquipados(indexPersonaje, hechizosEquipadosIDs){
-      this.sesionInterna.jugadores[this.personajePropioSesionIndex].personaje.hechizos.equipados = hechizosEquipadosIDs;
-      if(indexPersonaje == this.personajePropioSesionIndex){
-        this.perfil.heroes[this.heroeSeleccionadoPerfilIndex].hechizos.equipados = hechizosEquipadosIDs;
+      this._sesion.value.jugadores[this._estadoApp.value.jugadorPropioSesionIndex].personaje.hechizos.equipados = hechizosEquipadosIDs;
+      if(indexPersonaje == this._estadoApp.value.heroePropioSesionIndex){
+        this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex].hechizos.equipados = hechizosEquipadosIDs;
         this.setPerfil(this.perfil);
       }
-      this.actualizarSesion();
       if(!this.comandoSocketActivo){
-        this.socketService.enviarSocket("actualizarHechizosEquipados",{personajeIndex: this.personajePropioSesionIndex, hechizosEquipadosIDs: hechizosEquipadosIDs});
+        this.socketService.enviarSocket("actualizarHechizosEquipados",{personajeIndex: this._estadoApp.value.heroePropioSesionIndex, hechizosEquipadosIDs: hechizosEquipadosIDs});
       }
   }
 
@@ -427,8 +513,7 @@ export class AppService {
 
     async setCuenta(val:any){
       this.cuenta= val;
-      console.log("SET CUENTA")
-      console.log(this.cuenta);
+      console.log("SET CUENTA: ",this.cuenta)
         if(this.ionic){
             this.set("cuenta",this.cuenta)
         }else{
@@ -611,6 +696,7 @@ export class AppService {
     }
 
     logout(){
+        console.error("LOGOUT")
         this.mostrarPantallacarga(true);
 
     setTimeout(()=>{
@@ -619,8 +705,9 @@ export class AppService {
             this.setCuenta(null)
             //this.setSesion(null)
             this.observarAppService.next("desconectarSocket");
+            this.socketService.desconectar();
             this.setControl("index");
-            this.setEstadoApp("index");
+            this.setPantallaApp("index");
     }, 1000);
     }
 
@@ -665,8 +752,8 @@ export class AppService {
             {
                 idSocketAnfitrion: solicitante["idSolicitante"], 
                 idSesionAnfitrion: solicitante["idSesionSolicitante"], 
-                datosJugador: this.sesionInterna.jugadores[this.heroePropioSesionIndex], 
-                datosRenderHeroe: this.sesionInterna.render.heroes[this.heroePropioSesionIndex]
+                datosJugador: this._sesion.value.jugadores[this._estadoApp.value.jugadorPropioSesionIndex], 
+                datosRenderHeroe: this._sesion.value.render.heroes[this._estadoApp.value.heroePropioSesionIndex]
             });
     }
 
@@ -681,14 +768,6 @@ export class AppService {
 
     mostrarAjustes(val:string):void{
       this.ajustes.emit(val);
-    }
-
-    setSala(sala: any){
-      this.sala= sala;
-    }
-
-    getSala(){
-      return this.sala;
     }
 
     setEstadoInMap(estado:string){
@@ -839,11 +918,16 @@ export class AppService {
     }
 
     async getMazmorra(){
+        if(this.ionic){
+            this.mazmorra = await this.storage.get("mazmorra");
+        }else{
+            this.mazmorra = await window.electronAPI.getMazmorra();
+        }
       return this.mazmorra;
     }
 
     getSesion(){
-        return this.sesionInterna;
+        return this._sesion.value;
     }
 
     getDispositivo(){
@@ -907,33 +991,37 @@ export class AppService {
     }
 
     peticionEntrarMundo(indexHeroeSeleccionado: number){
-        this.heroeSeleccionadoPerfilIndex = indexHeroeSeleccionado;
-        this.socketService.enviarSocket("entrarMundo",{heroe: this.perfil.heroes[this.heroeSeleccionadoPerfilIndex]["personaje"]});
+        this._estadoApp.value.heroePropioPerfilIndex = indexHeroeSeleccionado;
+        this.socketService.enviarSocket("entrarMundo",{heroe: this.perfil.heroes[indexHeroeSeleccionado]["personaje"]});
     }
 
     entrarMundo(){
 
-        this.setHeroeSeleccionado(this.perfil.heroes[this.heroeSeleccionadoPerfilIndex])
-        this.sesionInterna.estadoSesion = "inmap";
+        //this.setHeroeSeleccionado(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex])
+        var heroeSeleccionado = this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex]
+
+        console.warn(heroeSeleccionado);
+
+        this._sesion.value.estadoSesion = "inmap";
         
         //Configurar Sesion:
-        if(this.sesionInterna.iniciada==false){
+        if(this._sesion.value.iniciada==false){
 
             //Inicializando Jugador:
-            this.sesionInterna.jugadores = [{
+            this._sesion.value.jugadores = [{
                     usuario: this.cuenta.usuario,
                     online: true,
                     lider: true,
-                    personaje: this.heroeSeleccionado
+                    personaje: heroeSeleccionado
             }]
 
             //Inicializando RENDER:
             var heroeRender = {
-                  clase: this.heroeSeleccionado.clase,
-                  nombre: this.heroeSeleccionado.personaje,
+                  clase: heroeSeleccionado.clase,
+                  nombre: heroeSeleccionado.personaje,
                   usuario: this.cuenta.usuario,
-                  nivel: this.heroeSeleccionado.nivel,
-                  id_imagen: this.heroeSeleccionado.id_imagen,
+                  nivel: heroeSeleccionado.nivel,
+                  id_imagen: heroeSeleccionado.id_imagen,
                   vida: 100,
                   escudo: 0,
                   energia: 100,
@@ -961,13 +1049,13 @@ export class AppService {
                   online: true,
             }
 
-            heroeRender["estadisticas"] = this.logicService.calcularEstadisticasBaseHeroe(this.heroeSeleccionado);
+            heroeRender["estadisticas"] = this.logicService.calcularEstadisticasBaseHeroe(heroeSeleccionado);
 
-            this.sesionInterna["render"]= {
+            this._sesion.value["render"]= {
                 heroes: [heroeRender],
                 enemigos: [],
                 objetosGlobales: [],
-                nivel_equipo: this.heroeSeleccionado.nivel,
+                nivel_equipo: heroeSeleccionado.nivel,
                 turno: 1,
                 inmap: {
                       posicion_x: 56,
@@ -982,27 +1070,27 @@ export class AppService {
             }
 
             //Inicializa Posición Si se inicia el tutorial:
-            if(this.heroeSeleccionado.tutorial){
-                this.sesionInterna["render"]["inmap"]= {
+            if(heroeSeleccionado.tutorial){
+                this._sesion.value["render"]["inmap"]= {
                     posicion_x: 61,
                     posicion_y: 50,
                     region: "Asfaloth"
                 }
             }
 
-            this.sesionInterna["variablesMundo"] = {
+            this._sesion.value["variablesMundo"] = {
                 tutorial: "true"
             }
 
-            this.sesionInterna.online = true;
-            this.sesionInterna.iniciada = false;
+            this._sesion.value.online = true;
+            this._sesion.value.iniciada = false;
 
         }//Fin configuracion de sesion
             
         //Cambiar a pantalla InMap:
-        this.actualizarIndexHeroe();
-        this.setSesion(this.sesionInterna);
-        this.setEstadoApp("inmap");
+        this.actualizarEstadoApp();
+        this.setSesion(this._sesion.value);
+        this.setPantallaApp("inmap");
     }
 
     async iniciarMazmorra(nombreIdMazmorra,salaOpenId?){
@@ -1015,22 +1103,21 @@ export class AppService {
 
         console.log("MAZMORRA CARGADA: ");
         console.log(this.mazmorra);
-        console.log(this.sesionInterna);
+        console.log(this._sesion.value);
 
-        this.sesionInterna.estadoSesion = "mazmorra";
-        this.sesionInterna.render["mazmorra"]["nombreIdMazmorra"] = this.mazmorra.nombreId;
-        this.actualizarSesion();
+        this._sesion.value.estadoSesion = "mazmorra";
+        this._sesion.value.render["mazmorra"]["nombreIdMazmorra"] = this.mazmorra.nombreId;
         this.socketService.enviarSocket("entrarMazmorra",{nombreIdMazmorra: this.mazmorra.nombreId});
 
         //Cambia de componente:
         this.setControl("mazmorra");
-        this.setEstadoApp("mazmorra",salaOpenId);
+        this.setPantallaApp("mazmorra",salaOpenId);
     }
 
     async peticionCargarMazmorra(nombreIdMazmorra: string){
 
         //INICIANDO MAZMORRA:
-        console.warn("PETICION HTTP MAZMORRA: "+nombreIdMazmorra);
+        console.error("PETICION HTTP MAZMORRA: "+nombreIdMazmorra);
 
         this.mostrarPantallacarga(true);
 
@@ -1040,17 +1127,16 @@ export class AppService {
     }
 
     verInMap(){
-        this.setEstadoApp("inmap");
+        this.setPantallaApp("inmap");
     }
 
     abandonarMazmorra(){
         this.setMazmorra({});
         this.setControl("inmap");
-        this.setEstadoApp("inmap");
+        this.setPantallaApp("inmap");
 
-        this.sesionInterna.estadoSesion = "inmap";
-        this.sesionInterna.render.mazmorra.iniciada = false;
-        this.actualizarSesion();
+        this._sesion.value.estadoSesion = "inmap";
+        this._sesion.value.render.mazmorra.iniciada = false;
     }
 
     peticionAbandonarMazmorra(){
@@ -1083,23 +1169,25 @@ export class AppService {
         this.getClases();
         this.getPerfil();
 
+        //LOGIC SERVICE:
+        this.reloadLogicService();
+
         //SET INDEX HEROE:
-        this.actualizarIndexHeroe();
+        this.actualizarEstadoApp();
 
         //Carga el INMAP:
         var estadoApp = this.getEstadoApp();
 
         if(sesion.estadoSesion == estadoApp){
             if(forzarReload){
-                this.setEstadoApp(sesion.estadoSesion);
+                this.setPantallaApp(sesion.estadoSesion);
             }
         }else{
-            this.setEstadoApp(sesion.estadoSesion);
+            this.setPantallaApp(sesion.estadoSesion);
         }
 
-
         if(sesion.estadoSesion == "mazmorra"){
-            console.warn("RELOAD 1")
+            console.error("REMOTO: ",this._sesion.value);
             this.observarAppService.next("appServerEnviaSesion");
         }
 

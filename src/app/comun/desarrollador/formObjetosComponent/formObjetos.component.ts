@@ -34,6 +34,7 @@ export class FormObjetosComponent {
     private tipo_Equipo = new UntypedFormControl('Ligera');
     private pieza_Equipo = new UntypedFormControl('Pechera');
     private rareza_Equipo = new UntypedFormControl('Común');
+  	private nivel_Equipo = new UntypedFormControl(1);
     private vinculadoEquipar_Equipo = new UntypedFormControl(true);
     private vinculadoRecoger_Equipo = new UntypedFormControl(true);
 
@@ -64,6 +65,7 @@ export class FormObjetosComponent {
 	    	nombre: this.nombre_Equipo,
 	    	descripcion: this.descripcion_Equipo,
             imagen_id: 0,
+	    	nivel: this.nivel_Equipo,
             perk_id: 0,
 	    });
 

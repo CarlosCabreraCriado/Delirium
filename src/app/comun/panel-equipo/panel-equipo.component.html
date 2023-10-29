@@ -12,7 +12,6 @@
 	<div id="contenedorPanelInterno">
 		<div class="fondoPanelInterior"></div>
 
-
 		<div class="titulo Texto1">Estadisticas</div>
 
 		<div class="containerEstadisticas">
@@ -22,21 +21,21 @@
 					<img src="../../../assets/Iconos/Icono-Armadura.png">
 					<div class="textoEstadisticas Texto3">
                             Armadura
-                            <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.armadura}}
+                            <br>{{estadisticas.armadura}}
 					</div>
 				</div>
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Resistencia-Magica.png">
 					<div class="textoEstadisticas Texto3">
-                            Resist. Mágica <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.resistenciaMagica}} 
+                            Resist. Mágica <br>{{estadisticas.resistenciaMagica}} 
 					</div>
 				</div>
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Vitalidad.png">
 					<div class="textoEstadisticas Texto3">
-                            Vitalidad <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.vitalidad}} 
+                            Vitalidad <br>{{estadisticas.vitalidad}} 
 					</div>
 				</div>	
 			</div>	
@@ -46,21 +45,21 @@
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
 					<div class="textoEstadisticas Texto3">
-                            Daño Físico <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.ad}} 
+                            Daño Físico <br>{{estadisticas.ad}} 
 					</div>
 				</div>
 					
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Magico.png">
 					<div class="textoEstadisticas Texto3">
-                            Daño Mágico <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.ap}} 
+                            Daño Mágico <br>{{estadisticas.ap}} 
 					</div>
 				</div>
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/critico.png">
 					<div class="textoEstadisticas Texto3">
-                            Crítico <br>{{sesion?.render.heroes[indexHeroeSesion].estadisticas.critico}} 
+                            Crítico <br>{{estadisticas.critico}} 
 					</div>
 				</div>	
 
@@ -75,16 +74,40 @@
             <!-- LISTA INVENTARIO DRAG AND DROP -->
             <div id="listaInventario" #dropListContainer class="listaInventario" cdkDropListGroup>
 
-                <div class="contenedorImagen" *ngFor="let objeto of inventario; let i = index" [cdkDropListData]="i" cdkDropList>
-                        <img 
-                            cdkDrag 
-                            [cdkDragData]="i"
-                            (cdkDragEntered)="dragEntered($event)"
-                            (cdkDragMoved)="dragMoved($event)"
-                            (cdkDragDropped)="dragDropped($event)"
-                            class="imagen" src="../../../assets/Items/miscelaneo/{{objeto}}.png"/> 
-                        <img *cdkDragPreview class="imagen" src="../../../assets/Items/miscelaneo/{{objeto}}.png"/> 
+                <div id="contenedorListaItems">
 
+                    <div *ngFor="let objeto of perfil?.heroes[estadoApp.heroePropioPerfilIndex].objetos.inventario; let i = index" 
+                        tooltip 
+                        (accionBotonTooltip)="equipar(i)" 
+                        [tooltipTextoBoton]="'Equipar'" 
+                        [tooltipObjeto]="objeto" 
+                        tooltipPosition="top" 
+
+                        cdkDropList
+                        [cdkDropListData]="i"
+                        class="contenedorImagen">
+
+                            <img 
+                                cdkDrag 
+                                (cdkDragEntered)="dragEntered($event)"
+                                [cdkDragData]="i"
+                                (cdkDragDropped)="dragDropped($event)"
+                                (cdkDragMoved)="dragMoved($event)"
+                                class="imagen" src="../../../assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png"/> 
+
+                            <img *cdkDragPreview class="imagen" src="../../../assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png"/> 
+
+                    </div>
+                </div>
+
+                <div id="containerEliminar"
+                    cdkDropList
+                    #eliminarObjeto="cdkDropList"
+                    [cdkDropListConnectedTo]="[listaInventario]"
+                    >
+                    <img  
+                        id="botonEliminarObjeto"    
+                        class="imagenEliminar" src="../../../assets/desarrollador/papelera.svg"/> 
                 </div>
             </div>
 
@@ -107,21 +130,27 @@
 
 			<div class="casco">
 				<div class="reticulaPequena">
-					<img src="../../../assets/Items/casco/3.png"/> 
-					<div class="frameItem"></div>
+                    <ng-container  *ngIf="equipado[0]!=null">
+                        <img tooltip (accionBotonTooltip)="desequipar(0)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[0]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[0]}}"/> 
+                    </ng-container>
+                        <div class="frameItem"></div>
 				</div>
 			</div>
 
 			<div class="pechera">
 				<div class="reticulaPequena">
-					<img src="../../../assets/Items/pechera/2.png"/> 
+                    <ng-container *ngIf="equipado[1]!=null">
+                        <img tooltip (accionBotonTooltip)="desequipar(1)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[1]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[1]}}"/> 
+                    </ng-container>
 					<div class="frameItem"></div>
 				</div>
 			</div>
 
 			<div class="arma1">
 				<div class="reticulaGrande">
-					<img src="../../../assets/Items/espada/4.png"/> 
+                    <ng-container *ngIf="equipado[4]!=null">
+                        <img tooltip (accionBotonTooltip)="desequipar(4)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[4]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[4]}}"/> 
+                    </ng-container>
 					<div class="frameItem"></div>
 				</div>
 			</div>	
@@ -132,21 +161,27 @@
 
 			<div class="pantalon">
 				<div class="reticulaPequena Derecha">
-					<img src="../../../assets/Items/pantalon/2.png"/> 
+                    <ng-container *ngIf="equipado[2]!=null">
+                        <img tooltip (accionBotonTooltip)="desequipar(2)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[2]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[2]}}"/> 
+                    </ng-container>
 					<div class="frameItem"></div>
 				</div>
 			</div>	
 
 			<div class="botas">
 				<div class="reticulaPequena Derecha">
-					<img src="../../../assets/Items/botas/2.png"/> 
+                    <ng-container *ngIf="equipado[3]!=null">
+                        <img tooltip (accionBotonTooltip)="desequipar(3)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[3]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[3]}}"/> 
+                    </ng-container>
 					<div class="frameItem"></div>
 				</div>
 			</div>	
 
 			<div class="arma2">
 				<div class="reticulaGrande">
-					<img src="../../../assets/Items/escudo/2.png"/> 
+                    <ng-container *ngIf="equipado[5]!=null">
+                        <img tooltip (accionBotonTooltip)="desequipar(5)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[5]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[5]}}"/> 
+                    </ng-container>
 					<div class="frameItem"></div>
 				</div>
 			</div>	

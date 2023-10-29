@@ -19,6 +19,7 @@ export class InMapComponent implements OnInit {
 	private idCuenta: string;
     private cuenta: any = null;
     public sesion: any;
+    public estadoApp: any;
 
 	//Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription = null;
@@ -28,6 +29,9 @@ export class InMapComponent implements OnInit {
 
 	constructor(private cdr: ChangeDetectorRef, private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
+        this.appService.estadoApp$.subscribe(estadoApp => {
+            this.estadoApp = estadoApp;
+        });
     }
 
 	async ngOnInit(){
@@ -40,7 +44,7 @@ export class InMapComponent implements OnInit {
 			(val) => {
 				switch(val){
 					case "actualizarHeroeSeleccionado":
-						this.inmapService.importarHeroeSeleccionado();
+						//this.inmapService.importarHeroeSeleccionado();
 						//this.inmapService.iniciarInMap();
 						break;
                     case "triggerChangeDetection":
@@ -84,7 +88,29 @@ export class InMapComponent implements OnInit {
                     break;
 
                     case "realizarMovimientoInMap":
-                        await this.inmapService.realizarMovimientoInMap(data.valor);
+                        if(data.valor["coordX"]==this.sesion.render.inmap.posicion_x && data.valor["coordY"]==this.sesion.render.inmap.posicion_y){
+                            console.warn("Movimiento OK")
+                            await this.inmapService.realizarMovimientoInMap(data.valor["direccion"]);
+                        }else{
+                            console.error("Movimiento DESINC");
+                            var nuevaCoordenadaX = data.valor["coordX"]
+                            var nuevaCoordenadaY = data.valor["coordY"]
+                            switch(data.valor["direccion"]){
+                                case "NorEste":
+                                    nuevaCoordenadaX--;
+                                    break;
+                                case "SurEste":
+                                    nuevaCoordenadaY++;
+                                    break;
+                                case "SurOeste":
+                                    nuevaCoordenadaX++;
+                                    break;
+                                case "NorOeste":
+                                    nuevaCoordenadaY--;
+                                    break;
+                            }
+                            this.inmapService.desplazarCoordenada(nuevaCoordenadaX,nuevaCoordenadaY);
+                        }
                     break;
 
                 }

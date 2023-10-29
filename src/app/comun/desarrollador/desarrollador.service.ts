@@ -1306,7 +1306,6 @@ export class DesarrolladorService implements OnInit{
     }
 
     async testEvento(eventoSeleccionadoId){
-        this.appService.actualizarSesion();
         this.eventosService.setEventos(this.eventos);
 
         if(this.panel != "mazmorra"){

@@ -1,35 +1,35 @@
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,  ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { InterfazService } from './interfaz.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-interfaz',
   templateUrl: './interfaz.component.html',
-  styleUrls: ['./interfaz.component.sass']
+  styleUrls: ['./interfaz.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class InterfazComponent implements OnInit {
 
-	@Input() renderMazmorra: any;
+	@Input() activarInterfaz: boolean = false;
 
-    public hechizoSeleccionadoIndex = null;
+    //Declara Suscripcion para Interfaz:
+    private interfazSuscripcion: Subscription;
 
-  constructor(public interfazService: InterfazService) { }
+  constructor(private cdr: ChangeDetectorRef, public interfazService: InterfazService) { }
 
 
   ngOnInit() {
-
+        //suscripcion Interfaz:
+        this.interfazSuscripcion = this.interfazService.observarInterfaz$.subscribe((val) => {
+            if(val == "reloadInterfaz"){
+                this.cdr.detectChanges();
+            }
+        });
   }
 
-  seleccionarHechizo(indexHechizo){
-        this.hechizoSeleccionadoIndex = indexHechizo;
-        this.interfazService.selectHechizo(indexHechizo);
-  }
 
-  lanzarHechizo(){
-        this.interfazService.seleccionarHechizo(this.hechizoSeleccionadoIndex);
-        this.hechizoSeleccionadoIndex = null;
-        //this.interfazService.desactivarInterfaz();
-  }
 
 
 }

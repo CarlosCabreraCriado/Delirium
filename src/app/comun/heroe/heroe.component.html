@@ -9,9 +9,11 @@
     <div class="frameCirculo">
 
     <div [ngClass]="renderizarObjetivoHeroe()"></div>
-    <div class="frameAnimacionesFrame" *ngIf="renderHeroe.vida==0">
+
+    <div class="frameAnimacionesFrame" *ngIf="renderHeroe.vida==0 && !renderHeroe.controlEnemigos">
       <img class="spriteFuego shaderAbatido" src="../../../assets/Efectos/35.png"/>
     </div>
+
     <img *ngIf="renderHeroe.vida==0" class="imagenAbatido" src="../../../assets/ui/icons/Icon_01.png"/>
 
     <div class="frameAnimacionesFrame" *ngIf="renderHeroe.turno">
@@ -41,7 +43,7 @@
 			<img class="frameNivel Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 
-        <appAnimacionEfecto *ngIf="renderHeroe.mostrarAnimacion" #animacionEfecto [loop]="false" [animacion]="renderHeroe.animacion"></appAnimacionEfecto>
+        <appAnimacionEfecto #animacionEfecto [loop]="false" [animacion]="renderHeroe.animacion" [mostrarAnimacion]="renderHeroe.mostrarAnimacion"></appAnimacionEfecto>
 
         <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.vida"></appAnimacionNumero>
 

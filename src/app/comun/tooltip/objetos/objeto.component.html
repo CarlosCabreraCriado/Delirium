@@ -1,3 +1,60 @@
 
+<div class="tooltip" 
+    [style.top]="styleTop" 
+    [style.left]="styleLeft"
+    [style.bottom]="styleBottom"
+    [style.right]="styleRight"
+     [ngClass]="posicion"
+    >
 
-<div class="tooltip"></div>
+    <div class="nombre Texto2">
+        {{objeto.nombre}}
+    </div>
+
+    <div class="contenedorEstadisticas">
+
+        <div class="estadistica Texto1">
+            Nv: {{objeto.nivel}}
+        </div>
+
+        <div class="estadistica Texto1" *ngIf="objeto.estadisticas.armadura != 0">
+            <img class="icono" src="../../../../assets/Iconos/Icono-Armadura.png">
+            {{objeto.estadisticas.armadura}}
+        </div>
+
+        <div class="estadistica Texto1"*ngIf="objeto.estadisticas.resistencia_magica != 0">
+            <img class="icono" src="../../../../assets/Iconos/Icono-Resistencia-Magica.png">
+            {{objeto.estadisticas.resistencia_magica}}
+        </div>
+
+        <div class="estadistica Texto1"*ngIf="objeto.estadisticas.vitalidad != 0">
+            <img class="icono" src="../../../../assets/Iconos/Icono-Vitalidad.png">
+            {{objeto.estadisticas.vitalidad}}
+        </div>
+
+        <div class="estadistica Texto1"*ngIf="objeto.estadisticas.AD != 0">
+            <img class="icono" src="../../../../assets/Iconos/Icono-Dano-Fisico.png">
+            {{objeto.estadisticas.AD}}
+        </div>
+
+        <div class="estadistica Texto1"*ngIf="objeto.estadisticas.AP != 0">
+            <img class="icono" src="../../../../assets/Iconos/Icono-Dano-Magico.png">
+            {{objeto.estadisticas.AP}}
+        </div>
+
+        <div class="estadistica Texto1"*ngIf="objeto.estadisticas.critico != 0">
+            <img class="icono" src="../../../../assets/Iconos/critico.png">
+            {{objeto.estadisticas.critico}}
+        </div>
+    </div>
+
+        <ng-container *ngIf="tooltipTextoBoton=='Desequipar'"(click)="pulsarBoton()">
+            <botonComponent id="botonTooltip" (click)="pulsarBoton()" [texto]="tooltipTextoBoton" [tipoBoton]="2" [color]="'rojo'" class="botonUnico"></botonComponent>
+        </ng-container>
+
+        <ng-container *ngIf="tooltipTextoBoton=='Equipar'"(click)="pulsarBoton()">
+            <botonComponent id="botonTooltip" (click)="pulsarBoton()" [texto]="tooltipTextoBoton" [tipoBoton]="2" [color]="'verde'" class="botonUnico"></botonComponent>
+        </ng-container>
+
+
+</div>

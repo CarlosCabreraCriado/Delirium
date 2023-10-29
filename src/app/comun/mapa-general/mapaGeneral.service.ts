@@ -130,6 +130,13 @@ export class MapaGeneralService {
         //this.regularizarRegion();
   }
 
+  desplazarCoordenada(posicionX,posicionY){
+    this.sesion.render.inmap.posicion_x = posicionX;
+    this.sesion.render.inmap.posicion_y = posicionY;
+    this.cargarRegion("Asfaloth");
+  }
+
+
   regularizarRegion(){
       console.log("REGULARIZANDO RENDER ISOMETRICO")
       for(var i=0; i < this.region.isometrico.length; i++){

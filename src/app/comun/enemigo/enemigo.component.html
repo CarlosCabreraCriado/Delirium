@@ -10,7 +10,7 @@
 		<img class="imagenEnemigo" src="../../../assets/Enemigos/{{renderEnemigo.familia}}/{{renderEnemigo.tipo_enemigo_id}}.png">
     <div class="marcaColor" [ngStyle]="{'background': renderEnemigo.color}"></div>
 
-        <appAnimacionEfecto *ngIf="renderEnemigo.mostrarAnimacion" #animacionEfecto [loop]="false" [animacion]="renderEnemigo.animacion"></appAnimacionEfecto>
+        <appAnimacionEfecto #animacionEfecto [loop]="false" [animacion]="renderEnemigo.animacion" [mostrarAnimacion]="renderEnemigo.mostrarAnimacion"></appAnimacionEfecto>
         <appAnimacionNumero #animacionNumero [enemigo]="renderEnemigo" [enemigoVida]="renderEnemigo.vida" [enemigoIndex]="indexEnemigo"></appAnimacionNumero>
 
 	</div>

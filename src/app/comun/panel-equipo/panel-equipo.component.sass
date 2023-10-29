@@ -13,7 +13,8 @@
 
 .cdk-drag-placeholder
     position: relative
-    width: 20%
+    //width: 20%
+    height: 50%
     aspect-ratio: 1
     border: solid
     box-sizing: border-box
@@ -156,15 +157,34 @@
             flex-direction: row
             flex-wrap: wrap
             cursor: move
-            .contenedorImagen
-              position: relative
-              display: inline-block
-              width: 20%
-              aspect-ratio: 1
-              .imagen
-                position: absolute
-                height: 100%
+            #contenedorListaItems
+              position: absolute
+              display: flex
+              flex-wrap: wrap
+              width: 100%
+              height: 100%
+              .contenedorImagen
+                position: relative
+                //display: inline-block
+                //width: 20%
+                height: 50%
                 aspect-ratio: 1
+                .imagen
+                  position: absolute
+                  height: 100%
+                  aspect-ratio: 1
+            #containerEliminar
+              position: absolute
+              bottom: 0
+              right: 0
+              height: 50%
+              width: 20%
+              .imagenEliminar
+                position: absolute
+                display: block !important
+                height: 100%
+                width: 100%
+                filter: invert(1)
 
     #contenedorExterno
         position: absolute
@@ -260,6 +280,7 @@
                 width: 100%
                 height: 100%
                 top: 0
+                pointer-events: none
                 background: url("../../../assets/Frames/Frame-Item.png")
                 background-size: 100% 100%
 

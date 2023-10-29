@@ -12,101 +12,96 @@ import { trigger,state,style,animate,transition, keyframes } from '@angular/anim
       // ...
 
       state('*', style({
-      	backgroundPosition: "-1000%",
-       	opacity: 0
+        backgroundPosition: "-1000%",
+        opacity: 0
       })),
 
       state('inicio', style({
-      	backgroundPosition: "-1000%",
-       	opacity: 0
+        backgroundPosition: "-1000%",
+        opacity: 0
       })),
 
       state('fin', style({
-      	backgroundPosition: "0%",
-    	  opacity: 0
+        backgroundPosition: "0%",
+          opacity: 0
       })),
 
 
       transition('inicio => fin', [
         animate('{{tiempoEfectoParam}}s {{delayEfectoParam}}s steps({{stepsParam}})', keyframes([
-    			style({
+                style({
             backgroundPosition: "{{stepsParam}}00%",
-						opacity: 1,
-						'background-size': "{{stepsParam}}00% 100%",
-					  offset: 0
-				}),
-    			style({
+                        opacity: 1,
+                        'background-size': "{{stepsParam}}00% 100%",
+                      offset: 0
+                }),
+                style({
             backgroundPosition: "0%",
-						opacity: 1 ,
-						offset: 1,
-						'background-size': "{{stepsParam}}00% 100%"})
-  		]))
+                        opacity: 1 ,
+                        offset: 1,
+                        'background-size': "{{stepsParam}}00% 100%"})
+        ]))
       ],{params : { tiempoEfectoParam: "0", stepsParam: "1", hue: "0"}}),
     ]),
   ],
 })
 
-export class AnimacionEfectoComponent implements OnInit, OnChanges {
+export class AnimacionEfectoComponent implements OnChanges, OnInit {
 
-	private efectoSonido = new Audio();
-	private flagLoop:boolean = true;
-	public estadoAnimacion: string= "inicio";
+    private efectoSonido = new Audio();
+    private flagLoop:boolean = true;
+    public estadoAnimacion: string= null;
 
-	public tiempoEfecto = 0;
-	public stepsEfecto: string= "1";
-	public hue: string= "0";
-	public spriteId: string= "0";
+    public tiempoEfecto = 0;
+    public stepsEfecto: string= "1";
+    public hue: string= "0";
+    public spriteId: string= "0";
 
-	@Input() animacion: any;
-	@Input() loop: any;
-	@Input() mute: any;
+    @Input() animacion: any;
+    @Input() mostrarAnimacion: boolean;
+    @Input() loop: any;
+    @Input() mute: any;
+    @Input() desarrollador: boolean = false;
 
-  constructor() { }
-
-  ngOnInit() {
-
-  	//Inicio suscripcion evento progreso Carga
-    //	this.mazmorraService.mostrarAnimacionNumero.subscribe(val => {
-    // 		this.mostrarAnimacion= true;
-    //	});
-
-    if(!this.mute){
-        this.efectoSonidoPlay(this.animacion.sonidos[0]);
-    }
-
-	console.log(this.animacion)
-
+  constructor() {
   }
+
+  ngOnInit(){
+      if(this.desarrollador){
+          this.estadoAnimacion = "inicio";
+      }
+  }
+
 
   finAnimacion(indexSubanimacion:number): void{
 
-	if(this.loop && this.estadoAnimacion=="fin"){
-		if(this.flagLoop){
-			this.flagLoop = false;
-			setTimeout(()=>{
+    if(this.loop && this.estadoAnimacion=="fin"){
+        if(this.flagLoop){
+            this.flagLoop = false;
+            setTimeout(()=>{
                 if(!this.mute){
                     this.efectoSonidoPlay(this.animacion.sonidos[0]);
                 }
-					this.estadoAnimacion = "inicio";
-			}, this.tiempoEfecto*1000+2000);
-		}
-	}
+                    this.estadoAnimacion = "inicio";
+            }, this.tiempoEfecto*1000+2000);
+        }
+    }
 
   }
 
   inicioAnimacion(indexSubanimacion: number): void{
 
-	//Determinar duracion total de la animacion:
-	for(var i=0;i <this.animacion.subanimaciones.length; i++){
-		if(this.animacion.subanimaciones[i].duracion>this.tiempoEfecto){
-			this.tiempoEfecto = this.animacion.subanimaciones[i].duracion;
-		}
-	}
+    //Determinar duracion total de la animacion:
+    for(var i=0;i <this.animacion.subanimaciones.length; i++){
+        if(this.animacion.subanimaciones[i].duracion>this.tiempoEfecto){
+            this.tiempoEfecto = this.animacion.subanimaciones[i].duracion;
+        }
+    }
 
-	if(this.estadoAnimacion=="inicio"){
-		this.estadoAnimacion = "fin";
-		this.flagLoop=true;
-	}
+    if(this.estadoAnimacion=="inicio"){
+        this.estadoAnimacion = "fin";
+        this.flagLoop=true;
+    }
   }
 
   renderIndividual(): any{
@@ -120,36 +115,28 @@ export class AnimacionEfectoComponent implements OnInit, OnChanges {
   }
 
   //Sonido Efecto:
-	efectoSonidoPlay(sonido:any): void{
-  		this.efectoSonido.src = "./assets/sounds/"+sonido.id+"."+sonido.extension;
-  		this.efectoSonido.load();
-  		this.efectoSonido.play();
-  		this.efectoSonido.volume= 1;
-		}
+    efectoSonidoPlay(sonido:any): void{
+        this.efectoSonido.src = "./assets/sounds/"+sonido.id+"."+sonido.extension;
+        this.efectoSonido.load();
+        this.efectoSonido.play();
+        this.efectoSonido.volume= 1;
+        console.error("SONANDO")
+        }
 
    ngOnChanges(changes: SimpleChanges) {
 
-	   console.log("CAMBIO ANIMACION")
-	   console.log(changes)
+       console.log(changes)
+    if(((changes.mostrarAnimacion && changes.mostrarAnimacion?.firstChange == false) ||
+        (changes.animacion && changes.animacion?.firstChange == false))
+        && this.mostrarAnimacion == true){
 
-    if(changes.animacion){
+        if(!this.mute){
+            this.efectoSonidoPlay(this.animacion.sonidos[0]);
+        }
 
-      // Detectar cambio animacion:
-        //this.efectoSonidoPlay(this.animaciones["animaciones"].find(i => i.id == changes.idAnimacion.currentValue).sonido_nombre);
-        //this.tiempoEfecto = this.animaciones.animaciones.find(i => i.id == changes.idAnimacion.currentValue).animacion_tiempo;
-        //this.stepsEfecto = this.animaciones.animaciones.find(i => i.id == changes.idAnimacion.currentValue).num_frames;
-        //this.nombreEfecto = this.animaciones.animaciones.find(i => i.id == changes.idAnimacion.currentValue).sprite_nombre;
-        //this.mostrarAnimacion= true;
-
-       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].hue_filter!=null){this.hue = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].hue_filter;}
-       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].duracion!=null){this.tiempoEfecto = this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].duracion;}
-       //if(this.animacion.subanimacion[this.desarrolladorService.subanimacionSeleccionadoIndex].num_frames!=null){this.stepsEfecto = this.animacion.subanimacion[this.desarrolladorService.sub].num_frames;}
-       //if(this.animacion.subanimacion[this.indexSubanimacion].sprite_id!=null){this.spriteId = this.animacion.subanimacion[this.indexSubanimacion].sprite_id;}
-
-       console.log("EJECUTANDO ANIMACION")
-		if(!this.loop){
-			this.estadoAnimacion = "inicio";
-		}
+        if(!this.loop){
+            this.estadoAnimacion = "inicio";
+        }
 
     }
 

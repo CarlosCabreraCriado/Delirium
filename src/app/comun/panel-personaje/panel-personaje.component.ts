@@ -31,7 +31,7 @@ export class PanelPersonaje implements OnInit {
     public hechizosAprendidos = [];
     public hechizosEquipados = [];
     public sesion: any;
-    public indexHeroeSesion: number;
+    public estadoApp: any;
     public hechizoSeleccionadoIndex = null;
 
 	constructor(private cdr: ChangeDetectorRef, private appService: AppService) {}
@@ -45,8 +45,10 @@ export class PanelPersonaje implements OnInit {
 		this.perks= await this.appService.getPerks();
 		this.hechizos= await this.appService.getHechizos();
 		this.buff= await this.appService.getBuff();
-		this.heroeSeleccionado= await this.appService.getHeroeSeleccionado();
 		this.sesion= await this.appService.getSesion();
+		this.estadoApp= await this.appService.getEstadoApp();
+        
+		this.heroeSeleccionado= this.sesion.jugadores[this.estadoApp.jugadorPropioSesionIndex].personaje;
 
 		//Inicia el renderizado de los sprites de hechizos:
 		this.renderizarImagenHechizos();
@@ -63,17 +65,15 @@ export class PanelPersonaje implements OnInit {
 		console.log(this.perfil)
         console.log(this.hechizos)
         console.log(this.heroeSeleccionado)
-        
-        this.indexHeroeSesion = this.sesion.render.heroes.findIndex(i => i.nombre == this.heroeSeleccionado.personaje) 
 
-        console.log("Index Heroe",this.indexHeroeSesion,this.heroeSeleccionado)
+        console.log("Index Heroe", this.estadoApp.heroePropioSesionIndex, this.heroeSeleccionado)
 
         for(var i = 0; i < this.perfil.heroes[0].hechizos.aprendidos.length; i++){
-          this.hechizosAprendidos.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[0].hechizos.aprendidos[i]))
+          this.hechizosAprendidos.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[this.estadoApp.heroePropioPerfilIndex].hechizos.aprendidos[i]))
         }
 
         for(var i = 0; i < this.perfil.heroes[0].hechizos.equipados.length; i++){
-          this.hechizosEquipados.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[0].hechizos.equipados[i]))
+          this.hechizosEquipados.push(this.hechizos.hechizos.find(j => j.id == this.perfil.heroes[this.estadoApp.heroePropioPerfilIndex].hechizos.equipados[i]))
         }
 
 		console.log("APRENDIDOS:")
@@ -135,22 +135,6 @@ export class PanelPersonaje implements OnInit {
 		return;
 	}
 
-	seleccionarHeroe(index){
-		this.heroeSeleccionado = this.perfil.heroes[index];
-
-		//Añadir parametros al heroe:
-		this.heroeSeleccionado["descripcion"] = this.clases["clases"].find(i=>i.clase==this.heroeSeleccionado.clase.toLowerCase())["descripcion"]
-
-		this.heroeSeleccionado["idImagen"] = this.perfil.heroes[index].idImagen;
-
-		console.log("HEROE SELECCIONADO");
-		console.log(this.heroeSeleccionado);
-
-		this.appService.setHeroeSeleccionado(this.perfil.heroes[index])
-		this.renderizarImagenHechizos();
-		this.mostrarSeleccionHeroe=false;
-	}
-
 	renderizarOpcionSeleccionada(pantalla:string){
 		var clase = "";
 		if(pantalla == this.pantalla){
@@ -169,8 +153,8 @@ export class PanelPersonaje implements OnInit {
             hechizosEquipadosIDs.push(this.hechizosEquipados[i].id);
         }
 
-        console.warn("EQUIPados: ",hechizosEquipadosIDs)
-        this.appService.setHechizosEquipados(this.appService.personajePropioSesionIndex,hechizosEquipadosIDs);
+        console.warn("EQUIPADOS: ",hechizosEquipadosIDs)
+        this.appService.setHechizosEquipados(this.estadoApp.jugadorPropioSesionIndex, hechizosEquipadosIDs);
         return;
     }
 

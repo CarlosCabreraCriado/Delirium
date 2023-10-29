@@ -1,5 +1,6 @@
 import { Injectable, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 import { AppService } from '../../app.service';
+import { LogicService } from '../../logic.service';
 import { LoggerService } from '../logger/logger.service';
 import { PausaService } from '../pausa/pausa.service';
 import { EventosService } from '../../eventos.service';
@@ -14,7 +15,7 @@ import { Subscription } from "rxjs";
 
 //import { ElectronService } from 'ngx-electron';
 import { RenderMazmorra} from './render.class';
-
+ 
 interface EstadoControl {
       estado: string,
       esTurnoPropio: boolean,
@@ -123,6 +124,8 @@ export class MazmorraService {
   public seleccionarHeroes: boolean= false;
   public seleccionarEnemigos: boolean= false;
 
+  public activarInterfaz: boolean = true;
+
   //OPCIONESE DE DEBUG:
   private restringirAcciones = false;
   private restringirRecurso = true;
@@ -150,7 +153,7 @@ export class MazmorraService {
   //Emision de eventos
   @Output() subscripcionMazmorra: EventEmitter<string> = new EventEmitter();
 
-    constructor(private zone: NgZone, private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) {
+    constructor(private logicService: LogicService, private zone: NgZone, private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
   }
 
@@ -313,6 +316,9 @@ export class MazmorraService {
         this.perfil= await this.appService.getPerfil();
         this.mazmorra= await this.appService.getMazmorra();
 
+        console.log("Mazmorra:")
+        console.log(this.mazmorra)
+
         //COMPROBANDO CARGA DE MAZMORRA:
         if((!this.mazmorra?.nombreId) || (this.sesion.render.mazmorra.nombreIdMazmorra != this.mazmorra.nombreId)){
             this.mazmorra = await this.appService.peticionCargarMazmorra(this.sesion.render.mazmorra.nombreIdMazmorra);
@@ -351,13 +357,20 @@ export class MazmorraService {
         console.log(" CONFIGURANDO MAZMORRA");
         console.log("-------------------------");
 
-
         //Inicializa la mazmorra si no se ha iniciado:
         if(!this.sesion.render.mazmorra.iniciada){
 
             var salaInicialEvento = this.eventosService.getSalaOpenInicio();
-
             this.sesion.render.mazmorra.interactuado = [];
+
+            //Calcula el nivel de la mazmorra:
+            var nivelMedio = 0;
+            for(var i = 0; i < this.sesion.render.heroes.length; i++){
+                nivelMedio += this.sesion.render.heroes[i].nivel;
+            }
+
+            this.sesion.render.mazmorra.nivel = Math.ceil(nivelMedio/this.sesion.render.heroes.length);
+            console.warn("Nivel Mazmorra: ", this.sesion.render.mazmorra.nivel);
 
             if(salaInicialEvento == null){
                 this.sesion.render.mazmorra.salasDescubiertas = [];
@@ -420,14 +433,14 @@ export class MazmorraService {
 
     //Calcular estadisticas Heroes:
     for (var i = 0; i < this.sesion.jugadores.length; i++) {
-      this.calcularEstadisticasBase("heroe",i);
+      this.sesion.render.heroes[i]["estadisticasBase"] = this.logicService.calcularEstadisticasBaseHeroe(this.sesion.jugadores[i].personaje);
       this.sesion.render.heroes[i].estadisticas=this.sesion.render.heroes[i].estadisticasBase;
       this.actualizarEscudo("heroes", i);
     }
 
     //Calcular estadisticas Enemigos:
     for (var i = 0; i < this.sesion.render.enemigos.length; i++) {
-      this.calcularEstadisticasBase("enemigo",i);
+      this.sesion.render.enemigos[i]["estadisticasBase"] = this.logicService.calcularEstadisticasBaseEnemigo(this.sesion.render.enemigos[i]);
       this.sesion.render.enemigos[i].estadisticas=this.sesion.render.enemigos[i].estadisticasBase;
       this.actualizarEscudo("enemigos", i);
     }
@@ -538,6 +551,7 @@ export class MazmorraService {
         }
     }
 
+    this.sesion.render.mazmorra.iniciada = true;
 
     //Mostrar Mazmorra:
     this.mostrarMazmorra= true;
@@ -547,10 +561,12 @@ export class MazmorraService {
     //Centrar Vista Mazmorra:
     setTimeout(()=>{
       this.subscripcionMazmorra.emit("centrarMazmorra");
-      for(var i = 0; i < this.sesion.render.enemigos[i]; i++){
+      for(var i = 0; i < this.sesion.render.enemigos.length; i++){
         if(this.sesion.render.enemigos[i].turno){
             console.warn("ACTIVANDO ENEMIGO");
             this.activarEnemigo(i);
+            this.subscripcionMazmorra.emit("habilitarInterfaz");
+            this.forceRender()
         }
       }
     },1000)
@@ -696,7 +712,7 @@ export class MazmorraService {
     this.interfazService.desactivarInterfaz();
 
     //Activa Monstruos si es su turno:
-      for(var i = 0; i < this.sesion.render.enemigos[i]; i++){
+      for(var i = 0; i < this.sesion.render.enemigos.length; i++){
         if(this.sesion.render.enemigos[i].turno){
             console.warn("ACTIVANDO ENEMIGO");
             this.activarEnemigo(i);
@@ -745,6 +761,7 @@ export class MazmorraService {
 
       if(turnoHeroe){
         await this.lanzarBuffos();
+        console.error("FIN LANZAMIENTO BUFFS");
         this.regenerarEnergia();
       }
 
@@ -762,12 +779,14 @@ export class MazmorraService {
 
     
     //Agregar nuevo registro de analisis:
+    /*
     for(var i=0; i <this.sesion.render.numHeroes;i++){
       this.sesion.render.estadisticas[i].daño.push(0);
       this.sesion.render.estadisticas[i].heal.push(0);
       this.sesion.render.estadisticas[i].escudo.push(0);
       this.sesion.render.estadisticas[i].agro.push(0);
     }
+    */
 
     //Paso de turno Con modificador por muerte de enemigo:
     if(this.turnoModificado){
@@ -912,12 +931,13 @@ export class MazmorraService {
 
         //Si se ha recibido hash hacer comprobació:
         if(this.hashRecibido){
+          console.error("ANTERIOR")
           this.checkHash(this.hashRecibido);
         }else{
           this.flagCheckHash = true;
         }
-        console.warn("PASO TERMINADO")
 
+        console.warn("PASO TERMINADO")
         this.forceRender();
     }
 
@@ -937,6 +957,7 @@ export class MazmorraService {
         console.log("---> HASH OK <---");
       }else{
         console.error("HASH ERROR --> Actual: ",this.hash," Recibido: ",hashRecibido);
+        console.error("LOCAL: ",this.sesion)
         this.socketService.enviarSocket("getSinc",{peticion: "getSinc", comando: "getSinc", contenido: this.hash});
 
       }
@@ -946,6 +967,7 @@ export class MazmorraService {
     setHashRecibido(hash){
       this.hashRecibido = hash;
       if(this.flagCheckHash){
+          console.error("POSTERIOR")
         this.checkHash(this.hashRecibido);
       }
       return;
@@ -1111,6 +1133,7 @@ export class MazmorraService {
   cambiarSala(sala:number,config?: any):void{
 
       console.warn(sala,config);
+
       if(!this.comandoSocketActivo && !config?.inicializacion){
         this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "cambiarSala", valor: sala});
         //this.emisor=false;
@@ -1169,7 +1192,7 @@ export class MazmorraService {
         nombre: enemigosAdd[i].nombre,
         enemigo_id: enemigosAdd[i].enemigo_id,
         tipo_enemigo_id: enemigosAdd[i].tipo_enemigo_id,
-        nivel: enemigosAdd[i].nivel,
+        nivel: this.sesion.render.mazmorra.nivel+enemigosAdd[i].nivel,
         familia: this.enemigos.find(k => k.id === enemigosAdd[i].tipo_enemigo_id).familia.toLowerCase(),
         turno: false,
         color: colorSeleccionado,
@@ -1221,7 +1244,7 @@ export class MazmorraService {
 
     //Calcular estadisticas Enemigos:
     for (var i = 0; i < this.sesion.render.enemigos.length; i++) {
-      this.calcularEstadisticasBase("enemigo",i);
+      this.sesion.render.enemigos[i]["estadisticasBase"] = this.logicService.calcularEstadisticasBaseEnemigo(this.sesion.render.enemigos[i]);
       this.sesion.render.enemigos[i].estadisticas=this.sesion.render.enemigos[i].estadisticasBase;
     }
 
@@ -1234,177 +1257,6 @@ export class MazmorraService {
     this.subscripcionMazmorra.emit("centrarMazmorra");
 
   }//Fin Cambiar Sala
-
-  //Calcular Estadisticas:
-  calcularEstadisticasBase(caster:string, indexCaster:number):void{
-
-        if(caster!="heroe"&& caster!="enemigo"){console.error("Error de argumento en 'calcularEstadisticas'");return;}
-
-        var nivel;
-        var estadisticas = {
-          vidaMaxima: 0,
-          pa: 0,
-          ad: 0,
-          ap: 0,
-          armadura: 0,
-          critico: 0,
-          potenciaCritico: 0,
-          probabilidadCritico: 0,
-          probabilidadCriticoPercent: 0,
-          resistenciaMagica: 0,
-          vitalidad: 0,
-          reduccionArmadura: 0,
-          reduccionResistencia: 0
-        }
-
-        //---------------------
-        //  CALCULO HEROE
-        //---------------------
-    if(caster=="heroe"){
-
-            nivel = this.sesion.jugadores[indexCaster].personaje.nivel;
-
-      //Calcula estadisticas BASE HEROE:
-            estadisticas.pa = this.parametros.heroes.base.pa + nivel * this.parametros.heroes.escalado.pa
-            estadisticas.ad = this.parametros.heroes.base.ad + nivel * this.parametros.heroes.escalado.ad
-            estadisticas.ap = this.parametros.heroes.base.ap + nivel * this.parametros.heroes.escalado.ap
-            estadisticas.critico = this.parametros.heroes.base.critico + nivel * this.parametros.heroes.escalado.critico
-
-            estadisticas.armadura = this.parametros.heroes.base.armadura + nivel * this.parametros.heroes.escalado.armadura
-           estadisticas.vitalidad = this.parametros.heroes.base.vitalidad + nivel * this.parametros.heroes.escalado.vitalidad
-            estadisticas.resistenciaMagica = this.parametros.heroes.base.resistenciaMagica + nivel * this.parametros.heroes.escalado.resistenciaMagica
-
-            //Añadir estadisticas de objetos equipados:
-            for(var i = 0; i < this.sesion.jugadores[indexCaster].personaje.objetos.equipado.length; i++){
-                estadisticas.pa = estadisticas.pa + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.PA
-                estadisticas.ad = estadisticas.ad + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.AD
-                estadisticas.ap = estadisticas.ap + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.AP
-                estadisticas.critico = estadisticas.critico + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.critico
-
-                estadisticas.armadura = estadisticas.armadura + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.armadura
-                estadisticas.vitalidad = estadisticas.vitalidad + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.vitalidad
-                estadisticas.resistenciaMagica = estadisticas.resistenciaMagica + this.sesion.jugadores[indexCaster].personaje.objetos.equipado[i].estadisticas.resistencia_magica
-            }
-
-
-            //Calculo de la vida Maxima (HEROE):
-
-            //PROBABILIDAD CRITICO:
-            var criticoMaxPercent = this.parametros.criticoMax;
-            var criticoMinPercent = this.parametros.criticoMin;
-            var criticoMin = this.parametros.heroes.base["critico"]+(nivel*this.parametros.heroes.escalado["critico"]);
-            var criticoMax = criticoMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
-            var potenciaMin = this.parametros.potenciaCriticoMin;
-
-            var estadisticaPrincipal = 0;
-            if(estadisticas.ad > estadisticas.ap){
-              estadisticaPrincipal = estadisticas.ad;
-            }else{
-              estadisticaPrincipal = estadisticas.ap;
-            }
-
-            var probabilidadCritico = criticoMinPercent+((estadisticas.critico-criticoMin)/(criticoMax-criticoMin))*(criticoMaxPercent-criticoMinPercent);
-            var potenciaCritico = ((estadisticaPrincipal+estadisticas.critico-criticoMin)*(1+criticoMinPercent*(potenciaMin-1))-estadisticaPrincipal*(1-probabilidadCritico))/(estadisticaPrincipal*probabilidadCritico);
-            //var potenciaCritico = ((estadisticas.critico-criticoMin)/(estadisticaPrincipal*(probabilidadCritico-criticoMinPercent)))+potenciaMin;
-
-
-            probabilidadCritico = Math.round(probabilidadCritico * 100) / 100;
-            potenciaCritico = Math.round(potenciaCritico * 100) / 100;
-            estadisticas.probabilidadCritico = probabilidadCritico;
-            estadisticas.probabilidadCriticoPercent = Math.round(probabilidadCritico*100);
-            estadisticas.potenciaCritico = potenciaCritico;
-
-            //RANGOS ARMADURA:
-            var armaduraMaxPercent = this.parametros.armaduraMax;
-            var armaduraMinPercent = this.parametros.armaduraMin;
-            var armMin = this.parametros.heroes.base["armadura"]+(nivel*this.parametros.heroes.escalado["armadura"]);
-            var armMax = armMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
-
-            var reduccionArmadura = armaduraMinPercent+((estadisticas.armadura-armMin)/(armMax-armMin))*(armaduraMaxPercent-armaduraMinPercent);
-            reduccionArmadura = Math.round(reduccionArmadura * 100) / 100;
-            estadisticas.reduccionArmadura = reduccionArmadura;
-
-            //RANGOS RESISTENCIA:
-            var resistenciaMaxPercent = this.parametros.armaduraMax;
-            var resistenciaMinPercent = this.parametros.armaduraMin;
-            var resMin = this.parametros.heroes.base["resistenciaMagica"]+(nivel*this.parametros.heroes.escalado["resistenciaMagica"]);
-            var resMax = resMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
-
-            var reduccionResistencia = resistenciaMinPercent+((estadisticas.resistenciaMagica-resMin)/(resMax-resMin))*(resistenciaMaxPercent-resistenciaMinPercent);
-            reduccionResistencia = Math.round(reduccionResistencia * 100) / 100;
-            estadisticas.reduccionResistencia = reduccionResistencia;
-
-            //RANGOS VITALIDAD:
-            var vitMin = this.parametros.heroes.base["vitalidad"]+(nivel*this.parametros.heroes.escalado["vitalidad"]);
-            var vitMax = vitMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
-
-            var vidaBase = this.parametros.ratioVitalidadBase * vitMin;
-            var vidaAdicional = (vidaBase*(armaduraMinPercent-armaduraMaxPercent)*((estadisticas.vitalidad-vitMin)/(vitMax-vitMin)))/((armaduraMaxPercent-armaduraMinPercent)*(((estadisticas.vitalidad-vitMin)/(vitMax-vitMin))+((estadisticas.armadura-armMin)/(armMax-armMin)))+armaduraMinPercent-1);
-
-            estadisticas.vidaMaxima = vidaBase+vidaAdicional;
-            estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
-
-            estadisticas.pa = 0;
-
-            //Copiar estadisticas en RENDER:
-            this.sesion.render.heroes[indexCaster].estadisticasBase = estadisticas;
-
-    }
-
-        //---------------------
-        //  CALCULO ENEMIGO
-        //---------------------
-        if(caster=="enemigo"){
-
-      //Calcula estadisticas ENEMIGO:
-            var indexTipoEnemigo = this.enemigos.findIndex(j => j.id === this.sesion.render.enemigos[indexCaster].enemigo_id);
-
-            nivel = Number(this.sesion.render.enemigos[indexCaster].nivel);
-
-            estadisticas.pa = this.enemigos[indexTipoEnemigo].estadisticas.pa + nivel * this.enemigos[indexTipoEnemigo].escalado.pa_esc;
-            estadisticas.ad = this.enemigos[indexTipoEnemigo].estadisticas.ad + nivel * this.enemigos[indexTipoEnemigo].escalado.ad_esc;
-            estadisticas.ap = this.enemigos[indexTipoEnemigo].estadisticas.ap + nivel * this.enemigos[indexTipoEnemigo].escalado.ap_esc;
-            estadisticas.critico = this.enemigos[indexTipoEnemigo].estadisticas.critico + nivel * this.enemigos[indexTipoEnemigo].escalado.critico_esc;
-
-            estadisticas.armadura = this.enemigos[indexTipoEnemigo].estadisticas.armadura + nivel * this.enemigos[indexTipoEnemigo].escalado.armadura_esc;
-            estadisticas.vitalidad = this.enemigos[indexTipoEnemigo].estadisticas.vitalidad + nivel * this.enemigos[indexTipoEnemigo].escalado.vitalidad_esc;
-            estadisticas.resistenciaMagica = this.enemigos[indexTipoEnemigo].estadisticas.resistencia_magica + nivel * this.enemigos[indexTipoEnemigo].escalado.resistencia_magica_esc;
-
-            //RANGOS ARMADURA:
-            var armaduraMaxPercent = this.parametros.armaduraMax;
-            var armaduraMinPercent = this.parametros.armaduraMin;
-            var armMin = this.parametros.enemigos.base["armadura"]+(nivel*this.parametros.enemigos.escalado["armadura"]);
-            var armMax = armMin + (this.parametros.enemigos.baseRango+ nivel * this.parametros.enemigos.escaladoRango)
-
-            var reduccionArmadura = armaduraMinPercent+((estadisticas.armadura-armMin)/(armMax-armMin))*(armaduraMaxPercent-armaduraMinPercent);
-            reduccionArmadura = Math.round(reduccionArmadura * 100) / 100;
-            estadisticas.reduccionArmadura = reduccionArmadura;
-
-            //RANGOS RESISTENCIA:
-            var resistenciaMaxPercent = this.parametros.armaduraMax;
-            var resistenciaMinPercent = this.parametros.armaduraMin;
-            var resMin = this.parametros.enemigos.base["resistenciaMagica"]+(nivel*this.parametros.enemigos.escalado["resistenciaMagica"]);
-            var resMax = resMin + (this.parametros.enemigos.baseRango+ nivel * this.parametros.enemigos.escaladoRango)
-
-            var reduccionResistencia = resistenciaMinPercent+((estadisticas.resistenciaMagica-resMin)/(resMax-resMin))*(resistenciaMaxPercent-resistenciaMinPercent);
-            reduccionResistencia = Math.round(reduccionResistencia * 100) / 100;
-            estadisticas.reduccionResistencia = reduccionResistencia;
-
-            //RANGOS VITALIDAD:
-            var vitMin = this.parametros.enemigos.base["vitalidad"]+ (nivel * this.parametros.enemigos.escalado["vitalidad"]);
-            var vitMax = vitMin + this.parametros.enemigos.baseRango + (nivel * this.parametros.enemigos.escaladoRango);
-
-            var vidaBase = this.parametros.ratioVitalidadBase * vitMin;
-            var vidaAdicional = (vidaBase*(armaduraMinPercent-armaduraMaxPercent)*((estadisticas.vitalidad-vitMin)/(vitMax-vitMin))) / ((armaduraMaxPercent-armaduraMinPercent)*(((estadisticas.vitalidad-vitMin)/(vitMax-vitMin))+((estadisticas.armadura-armMin)/(armMax-armMin)))+armaduraMinPercent-1);
-
-            estadisticas.vidaMaxima = vidaBase+vidaAdicional;
-            estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
-
-            //Copiar estadisticas en RENDER:
-            this.sesion.render.enemigos[indexCaster].estadisticasBase = estadisticas;
-    }
-
-  }
 
   /*  ----------------------------------------------
       MANEJO DE OBJETIVOS
@@ -1881,6 +1733,7 @@ export class MazmorraService {
             objetivo = "heroes";
             indexObjetivo= objetivoHeroes.slice(-1);
         }
+            indexObjetivo= indexObjetivo[0];
 
         //-----------------------------------------
         // (RECURSIVO) EJECUCIÓN SOBRE UN OBJETIVO
@@ -2076,27 +1929,30 @@ export class MazmorraService {
         hechizo["escudo_salida"] = hechizo["escudo_salida"]*potenciaFortuna;
       }
 
+        hechizo["daño_salida"] = this.logicService.redondeo(hechizo["daño_salida"]);
+        hechizo["heal_salida"] = this.logicService.redondeo(hechizo["heal_salida"]);
+        hechizo["escudo_salida"] = this.logicService.redondeo(hechizo["escudo_salida"]);
+
+    var statusHechizo = "(NORMAL)"
     if(hechizo.critico || hechizo.fortuna){
       if(hechizo.critico && !hechizo.fortuna){
-        this.loggerService.log("------ SALIDA (CRITICO) ------- ","teal");
+        statusHechizo = "(CRITICO)"
       }else if(!hechizo.critico && hechizo.fortuna){
-        this.loggerService.log("------ SALIDA  (Fortuna)------- ","teal");
+        statusHechizo = "(FORTUNA)"
       }else{
-        this.loggerService.log("------ SALIDA  (Fortuna + Critico)------- ","teal");
+        statusHechizo = "(FORTUNA + CRITICO)"
       }
-    }else{
-      this.loggerService.log("------ SALIDA ------- ","teal");
     }
 
     //Logger:
     if(hechizo.daño_salida>0){
-      this.loggerService.log("-----> Daño: "+ hechizo["daño_salida"],"orangered");
+      this.loggerService.log("[Salida] -----> Daño "+statusHechizo+": "+ hechizo["daño_salida"],"orangered");
     }
     if(hechizo.heal_salida>0){
-      this.loggerService.log("-----> Heal: "+hechizo["heal_salida"],"lawngreen");
+      this.loggerService.log("[Salida] -----> Heal "+statusHechizo+": "+hechizo["heal_salida"],"lawngreen");
     }
     if(hechizo.escudo_salida>0){
-      this.loggerService.log("-----> Escudo: "+hechizo["escudo_salida"]);
+      this.loggerService.log("[Salida] -----> Escudo "+statusHechizo+": "+hechizo["escudo_salida"]);
     }
 
         return hechizo;
@@ -2179,13 +2035,16 @@ export class MazmorraService {
 
             //Añadir valores a stats:
             this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas[primerTipoStat] += buff["statIncrease"][primerTipoStat];
-            this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas["reduccionArmadura"] = this.calcularReduccionArmadura(this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas["armadura"], this.sesion.render[tipoObjetivo][indexObjetivo].nivel);
+
+            this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas["reduccionArmadura"] = this.logicService.calcularReduccionArmadura(tipoObjetivo, this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas["armadura"], this.sesion.render[tipoObjetivo][indexObjetivo].nivel);
+
+            this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas["reduccionResistencia"] = this.logicService.calcularReduccionResistencia(tipoObjetivo, this.sesion.render[tipoObjetivo][indexObjetivo].estadisticas["resistenciaMagica"], this.sesion.render[tipoObjetivo][indexObjetivo].nivel);
 
         }//FIN FOR EJECUCION POR INSTRUCCION DE STAT INC
         return buff;
     }//FIN SetStatIncreaseBuff
 
-    modificacionBuffSalida(tipoCaster:string,indexCaster:number,buff:any):any{
+    modificacionBuffSalida(tipoCaster:"heroes"|"enemigos",indexCaster:number,buff:any):any{
 
         //CREA DATOS DE SALIDA:
         var potenciaCritico = 1;
@@ -2232,27 +2091,30 @@ export class MazmorraService {
         buff["escudo_t_salida"] = buff["escudo_t_salida"]*potenciaFortuna;
       }
 
+        buff["daño_t_salida"] = this.logicService.redondeo(buff["daño_t_salida"]);
+        buff["heal_t_salida"] = this.logicService.redondeo(buff["heal_t_salida"]);
+        buff["escudo_t_salida"] = this.logicService.redondeo(buff["escudo_t_salida"]);
+
     //Logger:
+    var statusBuff = "(NORMAL)"
     if(buff.critico || buff.fortuna){
       if(buff.critico && !buff.fortuna){
-        this.loggerService.log("------ SALIDA BUFF (CRITICO) ------- ","teal");
+        statusBuff = "(CRITICO)"
       }else if(!buff.critico && buff.fortuna){
-        this.loggerService.log("------ SALIDA BUFF  (Fortuna)------- ","teal");
+        statusBuff = "(FORTUNA)"
       }else{
-        this.loggerService.log("------ SALIDA BUFF  (Fortuna + Critico)------- ","teal");
+        statusBuff = "(FORTUNA + CRITICO)"
       }
-    }else{
-      this.loggerService.log("------ SALIDA BUFF ------- ","teal");
     }
 
     if(buff.daño_t_salida>0){
-      this.loggerService.log("-----> Daño: "+ buff["daño_t_salida"],"orangered");
+      this.loggerService.log("[Salida] -----> Daño "+statusBuff+": "+ buff["daño_t_salida"],"orangered");
     }
     if(buff.heal_t_salida>0){
-      this.loggerService.log("-----> Heal: "+buff["heal_t_salida"],"lawngreen");
+      this.loggerService.log("[Salida] -----> Heal "+statusBuff+": "+buff["heal_t_salida"],"lawngreen");
     }
     if(buff.escudo_t_salida>0){
-      this.loggerService.log("-----> Escudo: "+buff["escudo_t_salida"]);
+      this.loggerService.log("[Salida] -----> Escudo "+statusBuff+": "+buff["escudo_t_salida"]);
     }
 
         return buff;
@@ -2261,38 +2123,53 @@ export class MazmorraService {
     //------------------------
     // MODIFICACIONES ENTRADA
     //-----------------------
-    modificacionHechizoEntrada(objetivo:"enemigo"|"heroe",indexObjetivo:number,hechizo:any):any{
+    modificacionHechizoEntrada(objetivo:"enemigos"|"heroes",indexObjetivo:number,hechizo:any):any{
 
         var armaduraMaxPercent = this.parametros.armaduraMax;
         var armaduraMinPercent = this.parametros.armaduraMin;
         var armadura = 0;
+        var resistencia = 0;
         var min = 0;
         var max = 0;
 
         switch(objetivo){
 
             //(CUALQUIERA) --> HEROE
-            case "heroe":
+            case "heroes":
                 armadura = this.sesion.render.heroes[indexObjetivo].estadisticas.armadura;
-                min = this.parametros.heroes.base["armadura"]+(hechizo.nivelCaster*this.parametros.heroes.escalado["armadura"]);
-                max = min + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ hechizo.nivelCaster * this.parametros.objetos.escalado)
+                resistencia = this.sesion.render.heroes[indexObjetivo].estadisticas.resistenciaMagica;
                 break;
 
             //(CUALQUIERA) --> ENEMIGO
-            case "enemigo":
+            case "enemigos":
                 armadura = this.sesion.render.enemigos[indexObjetivo].estadisticas.armadura;
-                min = this.parametros.enemigos.base["armadura"]+ (hechizo.nivelCaster * this.parametros.enemigos.escalado["armadura"]);
-                max = min + this.parametros.enemigos.baseRango + (hechizo.nivelCaster * this.parametros.enemigos.escaladoRango);
+                resistencia = this.sesion.render.enemigos[indexObjetivo].estadisticas.resistenciaMagica;
                 break;
         }
+        
 
-        //var reduccionArmadura = armaduraMinPercent + ((armadura-min)/(max-min))*(armaduraMaxPercent-armaduraMinPercent)
-        var reduccionArmadura = this.calcularReduccionArmadura(armadura, hechizo.nivelCaster);
+        var reduccionArmadura = this.logicService.calcularReduccionArmadura(objetivo, armadura, hechizo.nivelCaster);
+        var reduccionResistencia = this.logicService.calcularReduccionResistencia(objetivo, resistencia, hechizo.nivelCaster);
 
-        hechizo["daño_bloqueado"] = hechizo["daño_salida"] * (reduccionArmadura);
-        hechizo["daño_entrante"] = hechizo["daño_salida"] * (1-reduccionArmadura);
+        var reduccionAplicada = 0;
+        console.warn("HECHIZO", hechizo)
+
+        if(hechizo.tipo == "Mágico"){
+            reduccionAplicada = reduccionResistencia;
+        }else{
+            reduccionAplicada = reduccionArmadura;
+        }
+
+
+        hechizo["daño_bloqueado"] = hechizo["daño_salida"] * (reduccionAplicada);
+        hechizo["daño_entrante"] = hechizo["daño_salida"] * (1-reduccionAplicada);
         hechizo["heal_entrante"] = hechizo["heal_salida"];
         hechizo["escudo_entrante"] = hechizo["escudo_salida"];
+
+        hechizo["daño_bloqueado"] = this.logicService.redondeo(hechizo["daño_bloqueado"]);
+        hechizo["daño_entrante"] = this.logicService.redondeo(hechizo["daño_entrante"]);
+        hechizo["heal_entrante"] = this.logicService.redondeo(hechizo["heal_entrante"]);
+        hechizo["escudo_entrante"] = this.logicService.redondeo(hechizo["escudo_entrante"]);
 
         //Evitar daño negativo:
         if(hechizo["daño_entrante"] < 0){
@@ -2303,7 +2180,7 @@ export class MazmorraService {
         this.loggerService.log("------ ENTRADA ------- ","teal");
         }
         if(hechizo["daño_entrante"]){
-        this.loggerService.log("-----> Daño Entrante: "+ hechizo["daño_entrante"]+" ("+hechizo["daño_bloqueado"]+" Bloqueado)","orangered");
+        this.loggerService.log("-----> Daño Entrante: "+ hechizo["daño_entrante"]+" ("+hechizo["daño_bloqueado"]+" Bloqueado)["+(reduccionAplicada*100)+"%]","orangered");
         }
         if(hechizo["heal_entrante"]){
         this.loggerService.log("-----> Heal Entrante: "+ hechizo["heal_entrante"],"orangered");
@@ -2320,6 +2197,7 @@ export class MazmorraService {
         var armaduraMaxPercent = this.parametros.armaduraMax;
         var armaduraMinPercent = this.parametros.armaduraMin;
         var armadura = 0;
+        var resistencia = 0;
         var min = 0;
         var max = 0;
 
@@ -2328,27 +2206,40 @@ export class MazmorraService {
             //(CUALQUIERA) --> HEROE
             case "heroes":
                 armadura = this.sesion.render.heroes[indexObjetivo].estadisticas.armadura;
-                min = this.parametros.heroes.base["armadura"]+(buff.nivelCaster*this.parametros.heroes.escalado["armadura"]);
-                max = min + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ buff.nivelCaster * this.parametros.objetos.escalado)
+                resistencia = this.sesion.render.heroes[indexObjetivo].estadisticas.resistenciaMagica;
                 break;
 
             //(CUALQUIERA) --> ENEMIGO
             case "enemigos":
                 armadura = this.sesion.render.enemigos[indexObjetivo].estadisticas.armadura;
-                min = this.parametros.enemigos.base["armadura"]+ (buff.nivelCaster * this.parametros.enemigos.escalado["armadura"]);
-                max = min + this.parametros.enemigos.baseRango + (buff.nivelCaster * this.parametros.enemigos.escaladoRango);
+                resistencia = this.sesion.render.enemigos[indexObjetivo].estadisticas.resistenciaMagica;
                 break;
         }
 
-        var reduccionArmadura = armaduraMinPercent + ((armadura-min)/(max-min))*(armaduraMaxPercent-armaduraMinPercent)
+        var reduccionArmadura = this.logicService.calcularReduccionArmadura(tipoObjetivo, armadura, buff.nivelCaster);
+        var reduccionResistencia = this.logicService.calcularReduccionResistencia(tipoObjetivo, resistencia, buff.nivelCaster);
 
-        buff["daño_t_bloqueado"] = buff["daño_t_salida"] * (reduccionArmadura);
-        buff["daño_t_entrante"] = buff["daño_t_salida"] * (1-reduccionArmadura);
+        var reduccionAplicada = 0;
+        console.warn("BUFF", buff)
+
+        if(buff.tipo == "Mágico"){
+            reduccionAplicada = reduccionResistencia;
+        }else{
+            reduccionAplicada = reduccionArmadura;
+        }
+
+        buff["daño_t_bloqueado"] = buff["daño_t_salida"] * (reduccionAplicada);
+        buff["daño_t_entrante"] = buff["daño_t_salida"] * (1-reduccionAplicada);
         buff["heal_t_entrante"] = buff["heal_t_salida"];
         buff["escudo_t_entrante"] = buff["escudo_t_salida"];
 
-    this.loggerService.log("------ ENTRADA ------- ","teal");
-    this.loggerService.log("-----> Daño_T Entrante: "+ buff["daño_t_entrante"]+" ("+buff["daño_t_bloqueado"]+" Bloqueado)","orangered");
+        buff["daño_t_bloqueado"] = this.logicService.redondeo(buff["daño_t_bloqueado"]);
+        buff["daño_t_entrante"] = this.logicService.redondeo(buff["daño_t_entrante"]);
+        buff["heal_t_entrante"] = this.logicService.redondeo(buff["heal_t_entrante"]);
+        buff["escudo_t_entrante"] = this.logicService.redondeo(buff["escudo_t_entrante"]);
+
+    this.loggerService.log("------ ENTRADA BUFF ------- ","teal");
+    this.loggerService.log("-----> Daño_T Entrante (TOTAL): "+ buff["daño_t_entrante"]+" ("+buff["daño_t_bloqueado"]+" Bloqueado)["+(reduccionAplicada*100)+"%]","orangered");
         return buff;
 
     }
@@ -2430,23 +2321,24 @@ export class MazmorraService {
     this.estadoControl.critico=false;
 
     //LOGGER && ANALITICS
-    this.loggerService.log("------ ENTRADA ------- ","teal");
+    
+    //this.loggerService.log("------ ENTRADA ------- ","teal");
     if(hechizo.daño_entrante>0){
-      this.loggerService.log("-----> Daño: "+ hechizo.daño_entrante,"orangered");
+      //this.loggerService.log("-----> Daño: "+ hechizo.daño_entrante,"orangered");
       if(tipoCaster=="heroes"){
         this.sesion.render.estadisticas[indexCaster].daño[this.sesion.render.estadisticas[indexCaster].daño.length-1] += hechizo.daño_entrante;
       }
     }
 
     if(hechizo.heal_entrante>0){
-      this.loggerService.log("-----> Heal: "+hechizo.heal_entrante,"lawngreen");
+      //this.loggerService.log("-----> Heal: "+hechizo.heal_entrante,"lawngreen");
       if(tipoCaster=="heroes"){
         this.sesion.render.estadisticas[indexCaster].heal[this.sesion.render.estadisticas[indexCaster].heal.length-1] += hechizo.heal_entrante;
       }
     }
 
     if(hechizo.escudo_entrante>0){
-      this.loggerService.log("-----> Escudo: "+hechizo.escudo_entrante);
+      //this.loggerService.log("-----> Escudo: "+hechizo.escudo_entrante);
       if(tipoCaster=="heroes"){
         this.sesion.render.estadisticas[indexCaster].escudo[this.sesion.render.estadisticas[indexCaster].escudo.length-1] += hechizo.escudo_entrante;
       }
@@ -2578,10 +2470,12 @@ export class MazmorraService {
         //--------------------------------
         buff = this.modificacionBuffSalida(hechizo.tipoCaster,hechizo.indexCaster,buff);
 
+        console.warn("BUFF SALIDA: ",buff)
         //--------------------------------
         // 2) MODIFICACIÓN DE ENTRADA BUFF
         //--------------------------------
         buff = this.modificacionBuffEntrada(tipoObjetivo,indexObjetivo,buff)
+        console.warn("BUFF ENTRADA: ",buff)
 
         //--------------------------------
         // 3) APLICAR STAT INCREASE
@@ -2684,6 +2578,7 @@ export class MazmorraService {
             var indexObjetivoProvisional = i;
             setTimeout(()=>{
                 this.sesion.render["enemigos"][indexObjetivoProvisional].mostrarAnimacion= false;
+                this.forceRender()
             }, 1000*(this.sesion.render["enemigos"][indexObjetivoProvisional].animacion.duracion));
         }//Fin Animacion
 
@@ -2716,25 +2611,54 @@ export class MazmorraService {
           this.sesion.render.interfaz.enemigoMuerto.push(i);
           aplicarBuffos.enemigos[i] = [];
         }else{
-
           //Elimina el ultimo Buff aplicado de la cola de aplicación:
           aplicarBuffos.enemigos[i].splice(aplicarBuffos.enemigos[i].length-1, 1);
         }
+          this.forceRender()
       }
+
     }
 
     //Aplicar buffos en los heroes:
     for(var i=0; i <aplicarBuffos.heroes.length; i++){
+
       //Heroe con buffos pendientes:
       if(aplicarBuffos.heroes[i].length>0){
+
+        //Salta la aplicación Si el objetivo está abatido:
+        if(this.sesion.render.heroes[i].vida==0){
+            aplicarBuffos.heroes[i] = [];
+            this.sesion.render.heroes[i].buff = [];
+            continue;
+        }
 
         //Verificar el indice del Buff:
         var indiceBuff = aplicarBuffos.heroes[i].length-1;
 
         //Iniciar Animacion Buffo:
-        this.sesion.render.heroes[i].animacion = this.buff.find(j => j.id==aplicarBuffos.heroes[i][aplicarBuffos.heroes[i].length-1]).animacion_id;
+        //---------------------------
+        // 1)  INICIA ANIMACION:
+        //---------------------------
+        var animacionId =this.buff.find(j => j.id==aplicarBuffos.heroes[i][aplicarBuffos.heroes[i].length-1]).animacion_id;
+        var animacion = this.animaciones.find(i => i.id== animacionId);
+        if(typeof animacion == "undefined"){
+            console.warn("No se puede reproducir la animación porque no se encuentra el id asociado")
+        }else{
 
-        //Ejecutar funciones de hechizo:
+            //Activa Animacion:
+            this.sesion.render["heroes"][i].animacion= animacion;
+            this.sesion.render["heroes"][i].mostrarAnimacion= true;
+
+            //Desactivar Animacion:
+            var indexObjetivoProvisional = i;
+            setTimeout(()=>{
+                this.sesion.render["heroes"][indexObjetivoProvisional].mostrarAnimacion= false;
+                this.forceRender()
+            }, 1000*(this.sesion.render["heroes"][indexObjetivoProvisional].animacion.duracion));
+        }//Fin Animacion
+
+
+        //Ejecutar FUNCION al Buffo:
         this.ejecutarFuncionBuffHeroe(this.buff.find(j => j.id==aplicarBuffos.heroes[i][aplicarBuffos.heroes[i].length-1]).funcion,i,this.sesion.render.heroes[i].buff[indiceBuff]);
 
         //Aplica efectos finales BUFF al ENEMIGO:
@@ -2767,6 +2691,7 @@ export class MazmorraService {
           //Elimina el ultimo Buff aplicado:
           aplicarBuffos.heroes[i].splice(aplicarBuffos.heroes[i].length-1, 1);
         }
+        this.forceRender()
       }
     }
 
@@ -2791,6 +2716,7 @@ export class MazmorraService {
             await this.aplicarBuffos(aplicarBuffos, resolveGlobal);
       }, this.velocidadBuff);
     }else{
+        
       //Elimina a los enemigos que hayan muerto por buff:
       this.enemigoMuerto(-1);
 
@@ -2800,8 +2726,9 @@ export class MazmorraService {
 
       if(resolveGlobal){
          resolveGlobal(true)
+         console.error("RESOLVE GLOBAL")
       }else{
-        resolve(true)
+        //resolve(true)
       }
     }
 
@@ -3300,7 +3227,6 @@ export class MazmorraService {
           //Timeout para esperar al socket de los jugadores:
           setTimeout(()=> {
             this.activarEnemigo(comando.valor["indexEnemigo"])
-            this.forceRender()
           },1500)
         });
 
@@ -3538,6 +3464,8 @@ export class MazmorraService {
             console.warn("Enemigos con index ",indexEnemigoActivado," no encontrado. Evitando activar acciones de enemigo");
         }
 
+        this.forceRender();
+
     }
 
     activarDialogo(){
@@ -3645,21 +3573,6 @@ export class MazmorraService {
     return;
   }
 
-  calcularReduccionArmadura(armadura: number, nivel: number){
-            //RANGOS ARMADURA:
-            var armaduraMaxPercent = this.parametros.armaduraMax;
-            var armaduraMinPercent = this.parametros.armaduraMin;
-            var armMin = this.parametros.heroes.base["armadura"]+(nivel*this.parametros.heroes.escalado["armadura"]);
-            var armMax = armMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
-
-            var reduccionArmadura = armaduraMinPercent+((armadura-armMin)/(armMax-armMin))*(armaduraMaxPercent-armaduraMinPercent);
-            reduccionArmadura = Math.round(reduccionArmadura * 100) / 100;
-            if(reduccionArmadura > 1){
-              reduccionArmadura = 1;
-            }
-            return reduccionArmadura;
-  }
-
   activarTemporizador(){
     if(!this.habilitarTemporizador){return;}
     this.tiempoActual = this.tiempoMaxTurno;
@@ -3702,9 +3615,15 @@ export class MazmorraService {
                 }
                 this.sesion.render.mazmorra["interactuado"].push(elementoId);
                 this.eventosService.ejecutarEvento(eventoId,"Mazmorra");
+                this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "actualizarInteractuado", contenido: this.sesion.render.mazmorra["interactuado"]});
           }
         })
 
+    }
+
+    actualizarInteractuado(arrayInteractuado){
+        this.sesion.render.mazmorra["interactuado"] = arrayInteractuado;
+        return;
     }
 
     abandonarMazmorra(){
@@ -3720,10 +3639,8 @@ export class MazmorraService {
         }
         this.sesion.render.mazmorra.iniciada = false;
         this.appService.setSesion(this.sesion);
-        this.appService.setEstadoApp("inmap");
-
+        this.appService.setPantallaApp("inmap");
     }
-
 
 }
 

@@ -13,6 +13,7 @@ export class SeleccionPersonajeComponent implements OnInit {
 
     public heroeSeleccionado = null;
     public heroes: any[] = [];
+    public badge: number[] = [null,null,null]
     private appServiceSuscripcion: Subscription
 
 	constructor(private appService: AppService) {}
@@ -51,23 +52,24 @@ export class SeleccionPersonajeComponent implements OnInit {
     }
     
     renderBadge(){
+
         for(var i = 0; i < this.heroes.length; i++){
             if(this.heroes[i].clase == undefined){continue}
             switch(this.heroes[i].clase){
                 case "guerrero":
-                    this.heroes[i]["badgeId"]= 1;
+                    this.badge[i]= 1;
                     break;
                 case "hechicero":
-                    this.heroes[i]["badgeId"]= 2;
+                    this.badge[i]= 2;
                     break;
                 case "cazador":
-                    this.heroes[i]["badgeId"]= 3;
+                    this.badge[i]= 3;
                     break;
                 case "ladrón":
-                    this.heroes[i]["badgeId"]= 5;
+                    this.badge[i]= 5;
                     break;
                 case "sacerdote":
-                    this.heroes[i]["badgeId"]= 4;
+                    this.badge[i]= 4;
                     break;
             }
         }

@@ -9,10 +9,11 @@
 
 <app-ajustes></app-ajustes>
 
-<app-index *ngIf="appService.estadoApp == 'index'"></app-index>
-<seleccionPersonajeComponent *ngIf="appService.estadoApp == 'seleccionPersonaje'"></seleccionPersonajeComponent>
-<app-inmap *ngIf="appService.estadoApp == 'inmap'"></app-inmap>
-<app-mazmorra *ngIf="appService.estadoApp == 'mazmorra'"></app-mazmorra>
-<app-desarrollador *ngIf="appService.estadoApp == 'desarrollador'"></app-desarrollador>
+<app-index *ngIf="estadoApp.pantalla == 'index'"></app-index>
+
+<seleccionPersonajeComponent *ngIf="estadoApp.pantalla == 'seleccionPersonaje'"></seleccionPersonajeComponent>
+<app-inmap *ngIf="estadoApp.pantalla == 'inmap'"></app-inmap>
+<app-mazmorra *ngIf="estadoApp.pantalla == 'mazmorra'"></app-mazmorra>
+<app-desarrollador *ngIf="estadoApp.pantalla == 'desarrollador'"></app-desarrollador>
 
 <!--<router-outlet></router-outlet>-->

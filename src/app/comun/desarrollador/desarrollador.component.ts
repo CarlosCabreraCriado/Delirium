@@ -160,7 +160,7 @@ export class DesarrolladorComponent implements OnInit{
 
         //Obtener Sesion del servicio Electron Storage:
         this.appService.setSesion(await window.electronAPI.getSesion());
-        this.appService.actualizarIndexHeroe();
+        this.appService.actualizarEstadoApp();
 
         //Suscripcion de cambios formulario InMapGeneral:
         this.formInMapGeneral.valueChanges.subscribe((val) =>{

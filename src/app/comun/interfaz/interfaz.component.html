@@ -57,19 +57,19 @@
 		</div>
 
 		<div class="contenedorHechizos">
-      <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==0}" (click)="seleccionarHechizo(0)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">
+      <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==0}" (click)="interfazService.clickHechizo(0)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">
         <div *ngIf="interfazService.hechizosEquipadosCooldown[0] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[0]}}</div>
       </div>
-			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==1}"(click)="seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}">
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==1}"(click)="interfazService.clickHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}">
         <div *ngIf="interfazService.hechizosEquipadosCooldown[1] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[1]}}</div>
       </div>
-			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==2}"(click)="seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}">
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==2}"(click)="interfazService.clickHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}">
         <div *ngIf="interfazService.hechizosEquipadosCooldown[2] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[2]}}</div>
       </div>
-			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==3}"(click)="seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}">
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==3}"(click)="interfazService.clickHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}">
         <div *ngIf="interfazService.hechizosEquipadosCooldown[3] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[3]}}</div>
       </div>
-			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==4}"(click)="seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}">
+			<div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==4}"(click)="interfazService.clickHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}">
         <div *ngIf="interfazService.hechizosEquipadosCooldown[4] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[4]}}</div>
       </div>
 		</div>
@@ -92,19 +92,19 @@
 		<div class="opcionesGenerales Texto3">
 
             <div class="contenedorHechizos">
-              <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==0}" (click)="seleccionarHechizo(0)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">
+              <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==0}" (click)="interfazService.clickHechizo(0)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[0]+'.png) ','background-size': '100%'}">
                 <div *ngIf="interfazService.hechizosEquipadosCooldown[0] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[0]}}</div>
               </div>
-                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==1}"(click)="seleccionarHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}">
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==1}"(click)="interfazService.clickHechizo(1)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[1]+'.png) ','background-size': '100%'}">
                 <div *ngIf="interfazService.hechizosEquipadosCooldown[1] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[1]}}</div>
               </div>
-                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==2}"(click)="seleccionarHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}">
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==2}"(click)="interfazService.clickHechizo(2)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[2]+'.png) ','background-size': '100%'}">
                 <div *ngIf="interfazService.hechizosEquipadosCooldown[2] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[2]}}</div>
               </div>
-                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==3}"(click)="seleccionarHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}">
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==3}"(click)="interfazService.clickHechizo(3)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[3]+'.png) ','background-size': '100%'}">
                 <div *ngIf="interfazService.hechizosEquipadosCooldown[3] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[3]}}</div>
               </div>
-                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': hechizoSeleccionadoIndex==4}"(click)="seleccionarHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}">
+                    <div class="hechizo hechizo1 Texto1" [ngClass]="{'animacionFocus': interfazService.indexHechizoSeleccionado==4}"(click)="interfazService.clickHechizo(4)" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.hechizosEquipadosImagenID[4]+'.png) ','background-size': '100%'}">
                 <div *ngIf="interfazService.hechizosEquipadosCooldown[4] != 0" class="cooldown">{{interfazService.hechizosEquipadosCooldown[4]}}</div>
               </div>
             </div>
@@ -123,7 +123,7 @@
 	</div><!-- FIN PANEL OPCIONES HECHIZO DETALLE -->
 
 	<div class="contenedorBotones">
-        <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || hechizoSeleccionadoIndex == null || !interfazService.esTurno || interfazService.hechizosEquipadosCooldown[hechizoSeleccionadoIndex] != 0}" [tipoBoton]="2" (click)="lanzarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>
+        <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || interfazService.indexHechizoSeleccionado == null || !interfazService.esTurno || interfazService.hechizosEquipadosCooldown[interfazService.indexHechizoSeleccionado] != 0}" [tipoBoton]="2" (click)="interfazService.seleccionarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>
             <atributoComponent class="boton" [tipo]="'energia'" [valor]="interfazService.energiaDisponible"></atributoComponent>
 		<botonComponent mat-button [tipoBoton]="2" (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
 	</div>
@@ -173,12 +173,12 @@
             <!-- ARMADURA -->
             <div class="atributo">
                 <img class="icono" src="./assets/Iconos/Icono-Armadura.png"/>
-                <div class="texto">Armadura: {{interfazService.renderDetalle.estadisticas.armadura}} ({{interfazService.renderDetalle.estadisticas.reduccionArmadura*100}}%)</div>
+                <div class="texto">Armadura: {{interfazService.renderDetalle.estadisticas.armadura}} ({{interfazService.renderDetalle.estadisticas.reduccionArmaduraPercent}}%)</div>
             </div>
             <!-- RESISTENCIA -->
             <div class="atributo">
                 <img class="icono" src="./assets/Iconos/Icono-Resistencia-Magica.png"/>
-                <div class="texto">Resistencia: {{interfazService.renderDetalle.estadisticas.resistenciaMagica}} ({{interfazService.renderDetalle.estadisticas.reduccionResistencia*100}}%)</div>
+                <div class="texto">Resistencia: {{interfazService.renderDetalle.estadisticas.resistenciaMagica}} ({{interfazService.renderDetalle.estadisticas.reduccionResistenciaPercent}}%)</div>
             </div>
             <!-- DAÑO FÍSICO -->
             <div class="atributo">

@@ -33,6 +33,7 @@ export class InMapService {
 
     //Importar Sesion:
     public sesion: any;
+    public estadoApp: any;
 
     //Variables Comunicaciones:
     public comandoSocketActivo:boolean= false;
@@ -41,13 +42,10 @@ export class InMapService {
     private flagCheckHash: boolean;
 
     //Estados Inmap:
-    public heroeSeleccionado: any;
-    public heroeSeleccionadoPerfilIndex: number;
-    public heroePropioSesionIndex: number;
-    public estadoInMap = "global";
     public estadoControlInMap: EstadoControlInMap;
     public mensajeControl: string = "Esto es un mensaje";
     public movimientoRestante: number = 0;
+    public estadoInMap = "region";
 
     //Noche:
     public mostrarNoche: boolean = false;
@@ -63,6 +61,9 @@ export class InMapService {
 
   constructor(private mapaGeneralService: MapaGeneralService, private appService: AppService,private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
+        this.appService.estadoApp$.subscribe(estadoApp => {
+            this.estadoApp = estadoApp;
+        });
     }
 
     async cargarPerfil(){
@@ -73,7 +74,7 @@ export class InMapService {
         console.log(this.cuenta);
         if(!this.cuenta){
             this.appService.setControl("index");
-            this.appService.setEstadoApp("index");
+            this.appService.setPantallaApp("index");
         }
 
         //Carga el perfil:
@@ -105,25 +106,12 @@ export class InMapService {
         this.animaciones= await this.appService.getAnimaciones();
     }
 
-    importarHeroeSeleccionado(){
-        this.heroeSeleccionado = this.appService.getHeroeSeleccionado();
-    }
-
-
     async iniciarInMap(){
 
         console.log("INICIANDO INMAP SERVICE")
-        //Auto Seleccion de primer heroe:
-        if(this.heroeSeleccionado == null){
-            this.appService.setHeroeSeleccionado(this.perfil.heroes[0])
-        }
-
-        this.heroeSeleccionado = this.appService.getHeroeSeleccionado();
-        this.heroeSeleccionadoPerfilIndex = this.appService.getHeroeSeleccionadoPerfilIndex();
-        this.heroePropioSesionIndex = this.appService.getHeroePropioSesionIndex();
 
         console.log("Heroe Seleccionado")
-        console.log(this.heroeSeleccionado)
+        //console.log(this.heroeSeleccionado)
 
         //CARGAR SESION:
         //this.sesion= await this.appService.getSesion();
@@ -138,7 +126,7 @@ export class InMapService {
         }
 
         //INICIA MENSAJE Y MOVIMIENTOS:
-        if(this.sesion.render.heroes[this.heroePropioSesionIndex].turno){
+        if(this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex].turno){
             this.movimientoRestante = this.parametros["movimientoInMap"];
             this.mensajeControl = "Es tu turno.";
         }else{
@@ -182,11 +170,8 @@ export class InMapService {
 
     realizarMovimientoInMap(direccion:"NorEste"|"SurEste"|"SurOeste"|"NorOeste"){
         
-        var indexHeroePropioSesion = this.appService.getHeroePropioSesionIndex();
-
-
         //VERIFICAR SI ES TURNO DEL HEROE:
-        if(!this.sesion.render.heroes[indexHeroePropioSesion]["turno"] && !this.comandoSocketActivo){
+        if(!this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex]["turno"] && !this.comandoSocketActivo){
             console.error("BLOQUEANDO MOVIMIENTO TURNO NO VALIDO")
             return;
         }
@@ -196,7 +181,7 @@ export class InMapService {
         
         //ENVIO DE COMANDO SOCKET:
         if(!this.comandoSocketActivo){
-            this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "realizarMovimientoInMap", valor: direccion});
+            this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "realizarMovimientoInMap", valor: { direccion: direccion, coordX: this.sesion.render.inmap.posicion_x, coordY: this.sesion.render.inmap.posicion_y}});
         }
 
         //EJECUCION DEL MOVIMIENTO:
@@ -210,8 +195,12 @@ export class InMapService {
 
     }
 
+    desplazarCoordenada(posicionX,posicionY){
+        this.mapaGeneralService.desplazarCoordenada(posicionX,posicionY)
+    }
+
     checkTurnoPropio(){
-        if(this.sesion.render.heroes[this.appService.getHeroePropioSesionIndex()]["turno"]){
+        if(this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex]["turno"]){
             return true;
         }
             return false;
@@ -252,7 +241,7 @@ export class InMapService {
 
         //ACTUALIZA MENSAJE CONTROL:
         //INICIA MENSAJE Y MOVIMIENTOS:
-        if(this.sesion.render.heroes[this.heroePropioSesionIndex].turno){
+        if(this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex].turno){
             this.movimientoRestante = this.parametros["movimientoInMap"];
             this.mensajeControl = "Es tu turno.";
         }else{

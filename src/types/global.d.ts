@@ -15,6 +15,10 @@ export interface IElectronAPI {
   getPerfil: () => Promise<any>,
   setPerfil: (any) => Promise<void>,
 
+  //Gestion de Mazmorra:
+  getMazmorra: () => Promise<any>,
+  setMazmorra: (any) => Promise<void>,
+
   //Gestion de datos:
   getDatosJuego: () => Promise<any>,
   setDatosJuego: (datos:any) => Promise<void>,

@@ -10,7 +10,7 @@ export class InterfazService {
 
     //GENERAL:
     public mostrarInterfaz: boolean= false;
-    private pantallaInterfaz: string= "Hechizos";
+    public pantallaInterfaz: string= "Hechizos";
     private bloquearInterfaz: boolean= true;
     public esTurno: boolean = false;
 
@@ -87,7 +87,7 @@ export class InterfazService {
 
     setPantallaInterfaz(val):void{
         this.pantallaInterfaz= val;
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
       return;
     }
 
@@ -118,6 +118,12 @@ export class InterfazService {
 
     getPantallaInterfaz():any{
       return this.pantallaInterfaz;
+    }
+
+    setMostrarInterfaz(val){
+        this.mostrarInterfaz = val
+        this.observarInterfaz.next("reloadInterfaz")
+        return;
     }
 
     activarInterfazAccionesEnemigo(renderEnemigos:any, renderHeroes:any, indexEnemigoActivado:number):void{
@@ -278,7 +284,7 @@ export class InterfazService {
             break;
         }
 
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
 
         return;
     }
@@ -351,7 +357,7 @@ export class InterfazService {
         this.hechizosEquipadosEnergia = hechizosEquipadosEnergia;
         this.hechizosEquipadosCooldown = hechizosEquipadosCooldown;
         this.pantallaInterfaz= "Hechizos";
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
         console.warn("REnder: ",this.renderHeroeHechizo)
         return;
     }
@@ -361,7 +367,7 @@ export class InterfazService {
         this.costePorMovimiento = costeMovimiento;
         this.energiaDisponible = energiaDisponible;
         this.pantallaInterfaz= "movimiento";
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
         return;
     }
 
@@ -370,7 +376,7 @@ export class InterfazService {
         this.probabilidadCriticoPercent = Math.round(this.probabilidadCritico*100);
         console.warn("PROBABILIDAD: ",probabilidadCritico)
         this.pantallaInterfaz= "fortuna";
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
         return;
     }
 
@@ -378,9 +384,15 @@ export class InterfazService {
         console.warn("RENDER DETALLE: ",renderDetalle);
         this.tipoDetalle = tipo;
         this.renderDetalle = Object.assign({},renderDetalle);
+
         this.renderDetalle.estadisticas.probabilidadCriticoPercent = Math.round(this.renderDetalle.estadisticas.probabilidadCritico*100);
+
+        this.renderDetalle.estadisticas["reduccionArmaduraPercent"] = Math.round(this.renderDetalle.estadisticas.reduccionArmadura*100);
+        this.renderDetalle.estadisticas["reduccionResistenciaPercent"] = Math.round(this.renderDetalle.estadisticas.reduccionResistencia*100);
+
+        this.renderDetalle.estadisticas.potenciaCritico = Math.round(this.renderDetalle.estadisticas.potenciaCritico*100)/100;
         this.pantallaInterfaz= "detalle";
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
         return;
     }
 
@@ -388,7 +400,7 @@ export class InterfazService {
 
       if(resultadoFortuna=="normal"){
         this.iniciarCritico(false);
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
       }
 
       if(resultadoFortuna=="fallo"){
@@ -398,7 +410,7 @@ export class InterfazService {
 
       if(resultadoFortuna=="fortuna"){
         this.iniciarCritico(true);
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
       }
 
         return;
@@ -422,13 +434,14 @@ export class InterfazService {
     }
 
     desactivarInterfaz():void{
-      this.mostrarInterfaz = false;
+        this.setMostrarInterfaz(false);
       return;
     }
 
     cancelarHechizo(){
        this.setObjetivoSeleccionado(false)
        this.observarInterfaz.next({comando: "cancelar",valor: "cancelar"});
+       this.mostrarDetalleHechizo= false;
        this.desactivarInterfaz();
        return;
     }
@@ -458,14 +471,14 @@ export class InterfazService {
       return;
     }
 
-    selectHechizo(indexHechizo:number){
+    clickHechizo(indexHechizo:number){
         this.indexHechizoSeleccionado = indexHechizo;
         this.idHechizoSeleccionado = this.hechizosEquipadosID[this.indexHechizoSeleccionado];
         this.energiaHechizo = this.hechizosEquipadosEnergia[indexHechizo];
     }
 
-    seleccionarHechizo(numHechizo):void{
-        this.indexHechizoSeleccionado = numHechizo;
+    seleccionarHechizo():void{
+        //this.indexHechizoSeleccionado = numHechizo;
         this.idHechizoSeleccionado = this.hechizosEquipadosID[this.indexHechizoSeleccionado];
         this.observarInterfaz.next({comando: "seleccionarHechizo",valor: this.hechizosEquipadosID[this.indexHechizoSeleccionado]});
         return;
@@ -473,23 +486,26 @@ export class InterfazService {
 
     setObjetivoSeleccionado(val: boolean){
         this.objetivoSeleccionado= val;
+        this.observarInterfaz.next("reloadInterfaz")
     }
 
     lanzarHechizo():void{
         this.setObjetivoSeleccionado(false)
+        this.mostrarDetalleHechizo= false;
         this.observarInterfaz.next({comando: "checkFortuna",valor: ""});
         //this.desactivarInterfaz();
         return;
     }
 
     detalleHechizo(indexHechizo):void{
-        this.selectHechizo(indexHechizo);
+        this.clickHechizo(indexHechizo);
         this.mostrarDetalleHechizo= true;
         return;
     }
 
     setBloquearInterfaz(val:boolean){
         this.bloquearInterfaz = val;
+        this.observarInterfaz.next("reloadInterfaz")
     }
 
     modificarMovimiento(cantidad){
@@ -504,7 +520,7 @@ export class InterfazService {
     activarHeroeAbatido(indexHeroeAbatido){
         this.indexHeroeAbatido = indexHeroeAbatido;
         this.pantallaInterfaz= "Abatido";
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
         return;
     }
 
@@ -512,7 +528,7 @@ export class InterfazService {
         this.estadisticas = estadisticas;
         this.jugadores = jugadores;
         this.pantallaInterfaz= "Estadisticas";
-        this.mostrarInterfaz = true;
+        this.setMostrarInterfaz(true);
         return;
     }
 

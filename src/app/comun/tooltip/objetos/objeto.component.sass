@@ -1,7 +1,91 @@
 
+@import '../../../../variables.sass'
 
 .tooltip
+  position: fixed
+  background-color: $colorFondo2
+  border-radius: 7px
+  color: $colorTexto 
+  border: 2px solid $colorBorde
+  font-family: Arial
+  padding: 3px 6px
+  font-size: 13px
+  margin-top: 5px
+  z-index: 100
+
+  //height: 25vh
+  //width: 10vw
+
+.tooltip::before 
+  position: absolute
+  content: ""
+  width: 0
+  height: 0
   
+//Posicionamiento Tooltip:
+.top
+  transform: translateX(-50%)
 
+.top::before
+  left: calc(50% - 10px)
+  bottom: -10px
+  border-left: 10px solid transparent
+  border-right: 10px solid transparent
+  border-top: 10px solid $colorBorde 
 
+.bottom
+  transform: translateX(-50%)
 
+.bottom::before
+  left: calc(50% - 10px)
+  top: -10px
+  border-left: 10px solid transparent
+  border-right: 10px solid transparent
+  border-bottom: 10px solid $colorBorde 
+
+.left
+  transform: translateY(-50%)
+
+.left::before
+  top: calc(50% - 10px)
+  right: -20px
+  border-bottom: 10px solid transparent
+  border-top: 10px solid transparent
+  border-right: 10px solid transparent
+  border-left: 10px solid $colorBorde 
+
+.right
+  transform: translateY(-50%)
+
+.right::before
+  top: calc(50% - 10px)
+  left: -20px
+  border-bottom: 10px solid transparent
+  border-top: 10px solid transparent
+  border-left: 10px solid transparent
+  border-right: 10px solid $colorBorde 
+
+.nombre
+
+.contenedorEstadisticas
+  position: relative
+  display: flex
+  width: 100%
+  .estadistica
+    position: relative
+    display: flex
+    width: 100%
+    height: 10vh
+    justify-content: center
+    align-items: center
+    .icono
+      position: relative
+      height: 1.5em
+      
+#botonTooltip
+  position: relative
+  height: 2.5em
+  display: block
+  margin: 5px auto
+
+  

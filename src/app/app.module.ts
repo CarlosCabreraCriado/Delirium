@@ -17,6 +17,7 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { MatStepperModule} from '@angular/material/stepper';
 import { DragDropModule} from '@angular/cdk/drag-drop';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { TooltipModule } from './comun/tooltip/tooltip.module';
 
 //Extras
 //import { NgxElectronModule } from 'ngx-electron';
@@ -120,7 +121,6 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         ConfiguracionComponent,
         SocialComponent,
         CrearHeroeComponent,
-        BotonComponent,
         FrameComponent,
         CheckboxComponent,
         InMapComponent,
@@ -176,7 +176,8 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         MatDialogModule,
         MatStepperModule,
         DragDropModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        TooltipModule
     ],
     providers: [ScreenOrientation,ElectronService],
     bootstrap: [AppComponent]

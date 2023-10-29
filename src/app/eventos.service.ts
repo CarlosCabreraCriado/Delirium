@@ -22,12 +22,16 @@ export class EventosService {
     public salaOpenInicio: number = null;
 
     private sesion: any; 
+    private estadoApp: any; 
 
     @Output() eventoMazmorraEmitter: EventEmitter<any> = new EventEmitter();
 
     constructor(private appService: AppService, private dialog: MatDialog) {
         //Observar Sesion:
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
+        this.appService.estadoApp$.subscribe(estadoApp => {
+            this.estadoApp = estadoApp;
+        });
     }
 
     setEventos(eventos: any){
@@ -43,6 +47,9 @@ export class EventosService {
     async actualizarEventos(){
         this.eventos = await this.appService.getEventos();
         var mazmorra = await this.appService.getMazmorra();
+
+
+
         console.warn("CARGANDO EVENTOS MAZMORRA: ",mazmorra)
         if(mazmorra){
             this.eventosMazmorra = mazmorra["eventos"];
@@ -118,13 +125,13 @@ export class EventosService {
             case "Dialogo":
                 //Preprocesado de Orden:
                 if(orden.tipoPersonajeDerecha == "self"){
-                    var heroeIndex = this.appService.getHeroePropioSesionIndex();
+                    var heroeIndex = this.estadoApp.heroePropioSesionIndex;
                     orden.tipoPersonajeDerecha = "heroes";
                     orden.imagenPersonajeDerecha = this.sesion.render.heroes[heroeIndex]["id_imagen"];
                     orden.nombrePersonajeDerecha = this.sesion.render.heroes[heroeIndex]["nombre"];
                 }
                 if(orden.tipoPersonajeIzquierda == "self"){
-                    var heroeIndex = this.appService.getHeroePropioSesionIndex();
+                    var heroeIndex = this.estadoApp.heroePropioSesionIndex;
                     orden.tipoPersonajeIzquierda = "heroes";
                     orden.imagenPersonajeIzquierda = this.sesion.render.heroes[heroeIndex]["id_imagen"];
                     orden.nombrePersonajeIzquierda = this.sesion.render.heroes[heroeIndex]["nombre"];
