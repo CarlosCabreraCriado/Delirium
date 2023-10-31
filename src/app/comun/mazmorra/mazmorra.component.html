@@ -166,8 +166,8 @@
      ************************************************* -->
 <div *ngIf="mazmorraService.cargaCompleta" class="Panel Barra-Accion" [ngClass]="renderIndividual()">
 	<!-- Panel de mensajes -->
-    <div *ngIf="true" id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':this.mazmorraService.sesion.render.interfaz.barraAccion.mostrar}">
-        {{this.mazmorraService.sesion.render.interfaz.barraAccion.mensajeAccion}}
+    <div *ngIf="true" id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':this.mazmorraService.barraAccion.mostrar}">
+        {{this.mazmorraService.barraAccion.mensajeAccion}}
     </div>
 
 </div>

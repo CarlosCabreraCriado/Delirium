@@ -780,11 +780,11 @@ export const datosIniciales = [{
           50
         ],
         "equipados": [
-          11,
-          12,
-          13,
-          14,
-          15
+          41,
+          42,
+          43,
+          44,
+          45
         ]
       },
     "misiones": [],

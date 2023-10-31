@@ -1173,7 +1173,7 @@ export class AppService {
         });
     }
 
-      async reloadDatos(){
+    async reloadDatos(){
 
         var token = await this.getToken()
         console.log("Usando token: ",token)
@@ -1190,7 +1190,7 @@ export class AppService {
               },(err) => {
                 //this.loggerService.log("Error de adquisición de datos","red");
               });
-      }
+    }
 
     iniciaSesion(sesion: any, forzarReload?:boolean){
 

@@ -124,6 +124,7 @@ export class MazmorraService {
   public seleccionarEnemigos: boolean= false;
 
   public activarInterfaz: boolean = true;
+  public barraAccion: any;
 
   //OPCIONESE DE DEBUG:
   private restringirAcciones = false;
@@ -396,12 +397,6 @@ export class MazmorraService {
 
         //Inicializando variables de render:
         this.sesion.render.interfaz = {
-          barraAccion: {
-            mensajeAccion: "Partida Iniciada",
-            mostrar: false,
-            nombreTurno: this.sesion.render.heroes[0].nombre,
-            claseTurno: "/Clases/"+this.sesion.render.heroes[0].clase.toLowerCase()
-          },
           objetivoPredefinido: {
             enemigos: [],
             heroes: []
@@ -409,6 +404,13 @@ export class MazmorraService {
           heroeMuerto: [],
           enemigoMuerto: []
         }
+
+        this.barraAccion = {
+            mensajeAccion: "Partida Iniciada",
+            mostrar: false,
+            nombreTurno: this.sesion.render.heroes[0].nombre,
+            claseTurno: "/Clases/"+this.sesion.render.heroes[0].clase.toLowerCase()
+          }
 
     //Calcular estadisticas Heroes:
     for (var i = 0; i < this.sesion.jugadores.length; i++) {
@@ -516,7 +518,7 @@ export class MazmorraService {
 
     this.cargaCompleta=true;
 
-    if(this.sesion.render.interfaz.barraAccion.mostrar){
+    if(this.barraAccion.mostrar){
       this.appService.setControl("bloqueoMensaje");
       setTimeout(()=>{
               this.mostrarBarraAccion(false);
@@ -566,7 +568,7 @@ export class MazmorraService {
 
 
     mostrarBarraAccion(mostrar: boolean){
-      this.sesion.render.interfaz.barraAccion.mostrar = mostrar;
+      this.barraAccion.mostrar = mostrar;
       this.forceRender();
       return;
     }
@@ -712,6 +714,8 @@ export class MazmorraService {
 
   }
 
+  private delay = ms => new Promise(res => setTimeout(res, ms));
+
   //Funcion principal de paso de turno:
   async pasarTurno() {
 
@@ -752,6 +756,9 @@ export class MazmorraService {
 
       if(turnoHeroe){
         await this.lanzarBuffos();
+        this.forceRender();
+        //await this.delay(1000);
+        await this.delay(1000);
         console.error("FIN LANZAMIENTO BUFFS");
         this.regenerarEnergia();
       }
@@ -846,7 +853,6 @@ export class MazmorraService {
         this.iniciarTurno("enemigos",0);
         this.activarEnemigo(0);
         this.checkTurno();
-        //this.sesion.render.interfaz.barraAccion.claseTurno="/Enemigos/"+this.sesion.render.enemigos[0].nombre.toLowerCase();
       }else{
         console.warn("HEROE -> HEROE[0] (Cambio de ronda)");
         this.sesion.render.turno++;
@@ -914,7 +920,7 @@ export class MazmorraService {
     //Servicios de mensajes y loggs:
     this.mensajeAccion("Turno de "+this.sesion.render[tipoTurno][indexTurno].nombre,2000);
     this.loggerService.log("-------------- Turno de "+this.sesion.render[tipoTurno][indexTurno].nombre+" ------------------");
-    this.sesion.render.interfaz.barraAccion.nombreTurno=this.sesion.render[tipoTurno][indexTurno].nombre;
+    this.barraAccion.nombreTurno=this.sesion.render[tipoTurno][indexTurno].nombre;
 
     return;
   } //Fin iniciarTurno
@@ -993,7 +999,7 @@ export class MazmorraService {
 
   //Muestra mensaje en barra de acción y bloquea input:
   mensajeAccion(mensaje: string, tiempoMensaje: number):void{
-    this.sesion.render.interfaz.barraAccion.mensajeAccion = mensaje;
+    this.barraAccion.mensajeAccion = mensaje;
     this.mostrarBarraAccion(true);
     this.appService.setControl("bloqueoMensaje");
     setTimeout(()=>{
@@ -1626,7 +1632,7 @@ export class MazmorraService {
 
     //Bloquea los inputs:
     this.appService.setControl("bloqueoHechizo");
-    this.sesion.render.interfaz.barraAccion.mensajeAccion = "Procesando...";
+    this.barraAccion.mensajeAccion = "Procesando...";
     this.mostrarBarraAccion(true);
 
     //Construccion de Configuración de Hechizo:
@@ -1905,6 +1911,7 @@ export class MazmorraService {
           this.loggerService.log("--> Iniciando Hechizo encadenado (ID: "+hechizo.hechizo_encadenado_id+")","yellow");
 
           this.seleccionObjetivo(hechizo.hechizo_encadenado_id);
+          
         }else{
           //Desbloquea y termina la aplicación de Hechizos:
           this.appService.setControl("desbloqueoHechizo");
@@ -2563,7 +2570,7 @@ export class MazmorraService {
     return new Promise(async (resolve) => {
     //Bloquea los inputs:
     this.appService.setControl("bloqueoBuff");
-    this.sesion.render.interfaz.barraAccion.mensajeAccion = "Procesando...";
+    this.barraAccion.mensajeAccion = "Procesando...";
     this.mostrarBarraAccion(true);
 
     //Mensaje de palicación de buffos:
