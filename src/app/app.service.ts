@@ -159,7 +159,7 @@ export class AppService {
         }, 1000);
 
         setTimeout(()=>{
-              this.mostrarPantallacarga(false);
+                this.mostrarPantallacarga(false);
                 if(pantalla=="mazmorra"){
                     this.observarAppService.next("reloadMazmorraService");
                 }
@@ -1151,7 +1151,6 @@ export class AppService {
         });
     }
 
-     
     iniciaSesion(sesion: any, forzarReload?:boolean){
 
         console.warn("INICIANDO SESION:")

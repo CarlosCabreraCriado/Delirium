@@ -144,6 +144,7 @@ export class MapaGeneralComponent implements OnInit {
               case "cargaMapaCompleta":
                     console.warn("CARGA COMPLETA")
                     this.mapaCargado = true;
+                    this.inmapService.cargaMapaCompleta();
                     this.cdr.detectChanges();
                     setTimeout(()=>{
                         this.mostrarNubes = false;

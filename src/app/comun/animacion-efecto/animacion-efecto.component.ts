@@ -120,12 +120,10 @@ export class AnimacionEfectoComponent implements OnChanges, OnInit {
         this.efectoSonido.load();
         this.efectoSonido.play();
         this.efectoSonido.volume= 1;
-        console.error("SONANDO")
         }
 
    ngOnChanges(changes: SimpleChanges) {
 
-       console.log(changes)
     if(((changes.mostrarAnimacion && changes.mostrarAnimacion?.firstChange == false) ||
         (changes.animacion && changes.animacion?.firstChange == false))
         && this.mostrarAnimacion == true){

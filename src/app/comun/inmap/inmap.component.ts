@@ -5,6 +5,7 @@ import { AppService } from '../../app.service';
 import { InMapService } from './inmap.service';
 import { Subscription } from "rxjs";
 import { SocketService } from '../socket/socket.service';
+import { EventosService} from '../../eventos.service'
 
 @Component({
   selector: 'app-inmap',
@@ -15,42 +16,45 @@ import { SocketService } from '../socket/socket.service';
 
 export class InMapComponent implements OnInit {
 
-	public pantalla: string = "Inmap";
-	private idCuenta: string;
+    public pantalla: string = "Inmap";
+    private idCuenta: string;
     private cuenta: any = null;
     public sesion: any;
     public estadoApp: any;
 
-	//Declara Suscripcion Evento Socket:
+    //Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription = null;
 
-	//Declara Suscripcion Evento AppService:
-	private appServiceSuscripcion: Subscription = null;
+    private appServiceSuscripcion: Subscription = null;
 
-	constructor(private cdr: ChangeDetectorRef, private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
+    //Declara Suscripcion Evento EventosService:
+    private eventosSuscripcion: Subscription;
+
+    constructor(private eventosService: EventosService, private cdr: ChangeDetectorRef, private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
         this.appService.estadoApp$.subscribe(estadoApp => {
             this.estadoApp = estadoApp;
         });
     }
 
-	async ngOnInit(){
+    async ngOnInit(){
 
        console.warn("INICIANDO INMAP")
        this.cuenta = await this.appService.getCuenta();
 
-		//Observar Eventos AppService:
-		this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
-			(val) => {
-				switch(val){
-					case "actualizarHeroeSeleccionado":
-						//this.inmapService.importarHeroeSeleccionado();
-						//this.inmapService.iniciarInMap();
-						break;
+        //Observar Eventos AppService:
+        this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
+            (val) => {
+                switch(val){
+                    case "actualizarHeroeSeleccionado":
+                        //this.inmapService.importarHeroeSeleccionado();
+                        //this.inmapService.iniciarInMap();
+                        break;
                     case "triggerChangeDetection":
                         //console.error("TRIGGER CHANGE DETECTION")
                         //this.cdr.detectChanges();
                         break;
+
                     case "reloadInMapService":
                         this.inmapService.iniciarInMap();
                         break;
@@ -58,16 +62,16 @@ export class InMapComponent implements OnInit {
                     case "triggerChangeDetection":
                         this.cdr.detectChanges();
                         break;
-				}
+                }
             this.cdr.detectChanges();
-		});
+        });
 
-		//Suscripcion Socket:
-      	this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
+        //Suscripcion Socket:
+        this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
 
-      		if(data.emisor== this.cuenta.usuario){return;}
+            if(data.emisor== this.cuenta.usuario){return;}
 
-      		switch(data.peticion){
+            switch(data.peticion){
 
             case "checkSinc":
                 if(this.sesion.estadoSesion == "inmap"){
@@ -118,71 +122,83 @@ export class InMapComponent implements OnInit {
                 this.inmapService.desactivarComandoSocket();
             break;
 
-      		}
-            this.cdr.detectChanges();
-      	}); //FIN SOCKET SUSCRIPTION:
+            }
+        }); //FIN SOCKET SUSCRIPTION:
 
-		//Comprueba el Logueo carga el perfil en Servicio InMap:
-		this.inmapService.cargarPerfil().then(() => {
+        //suscripcion Eventos:
+        this.eventosSuscripcion = this.eventosService.eventoInMapEmitter.subscribe((val) => {
+            switch(val.comando){
+                case "finalizarTutorial":
+                    this.inmapService.finalizarTutorial(); 
+                    break;
+            }
+        }); //FIN EVENTO SUSCRIPTION:
+
+        //Comprueba el Logueo carga el perfil en Servicio InMap:
+        this.inmapService.cargarPerfil().then(() => {
 
             //Get id Cuenta;
             console.log("Cargando Cuenta");
             this.idCuenta = this.inmapService.getIDCuenta();
 
         }).then(() => {
-    		//Importar Datos Generales al servicio Inmap:
-	    	this.inmapService.importarDatosGenerales();
+            //Importar Datos Generales al servicio Inmap:
+            this.inmapService.importarDatosGenerales();
 
         }).then(() => {
             //Cargar Grupo:
             console.log("Iniciando Inmap: ");
             this.inmapService.iniciarInMap();
         });
-	}
 
-	ngOnDestroy(){
+        this.cdr.detectChanges();
+
+    }
+
+    ngOnDestroy(){
         console.warn("Destruyendo INMAP");
         this.appServiceSuscripcion.unsubscribe();
         this.socketSubscripcion.unsubscribe();
-	}
+    }
 
-	abrirConfiguracion(){
-		this.appService.mostrarConfiguracion("", {})
-		return;
-	}
+    abrirConfiguracion(){
+        this.appService.mostrarConfiguracion("", {})
+        return;
+    }
 
-	abrirSocial(){
-		this.appService.mostrarSocial("", {})
-		return;
-	}
+    abrirSocial(){
+        this.appService.mostrarSocial("", {})
+        return;
+    }
 
-	comandoPanelGeneral(pantalla:string){
-		this.cambiarPantalla(pantalla);
-	}
+    comandoPanelGeneral(pantalla:string){
+        this.cambiarPantalla(pantalla);
+    }
 
-	comandoPanelControl(comando:any){
-		//Si se pulsa el centro accede a mazmorra:
-		if(comando=="centro"){
+    comandoPanelControl(comando:any){
+        //Si se pulsa el centro accede a mazmorra:
+        if(comando=="centro"){
             this.appService.iniciarMazmorra("Bastion");
-		}
-	}
+        }
+    }
 
-	cambiarPantalla(nombrePantalla:string):void{
-		//Realiza el cambio de pantalla:
-		if(this.pantalla == nombrePantalla){
-			this.pantalla = 'Inmap';
-		}else{
-			this.pantalla=nombrePantalla;
-		}
-		return;
-	}
+    cambiarPantalla(nombrePantalla:string):void{
+        //Realiza el cambio de pantalla:
+        if(this.pantalla == nombrePantalla){
+            this.pantalla = 'Inmap';
+        }else{
+            this.pantalla=nombrePantalla;
+        }
+        return;
+    }
 
-	camelize(texto: string){
- 		return texto.toLowerCase().charAt(0).toUpperCase() + texto.toLowerCase().slice(1);
-	}
+    camelize(texto: string){
+        return texto.toLowerCase().charAt(0).toUpperCase() + texto.toLowerCase().slice(1);
+    }
 
 
 }
+
 
 
 

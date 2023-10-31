@@ -45,6 +45,8 @@ export class LogicService {
           multiplicadorDanoTipoArmadura: 1,
           multiplicadorDanoTipoArmaduraPercent: 100,
           potenciaCritico: 0,
+          potenciaCriticoFisico: 0,
+          potenciaCriticoMagico: 0,
           probabilidadCritico: 0,
           probabilidadCriticoPercent: 0,
           resistenciaMagica: 0,
@@ -58,9 +60,6 @@ export class LogicService {
         //---------------------
         //  CALCULO ESTADISTICAS HEROE
         //---------------------
-
-        console.warn("Clases: ", this.clases)
-        console.warn("Personaje: ", personaje)
 
         var indexClase = null;
         switch(personaje.clase){
@@ -124,39 +123,46 @@ export class LogicService {
         estadisticas.multiplicadorDanoTipoArmadura = multiplicadorDañoTipoArmadura;
         estadisticas.multiplicadorDanoTipoArmaduraPercent = this.redondeo(100*(multiplicadorDañoTipoArmadura-1));
 
-        console.error("Personaje: ",personaje)
-        console.error("Stats: ",estadisticas)
-
         //Calculo de la vida Maxima (HEROE):
 
         //PROBABILIDAD CRITICO:
         var criticoMaxPercent = this.parametros.criticoMax;
         var criticoMinPercent = this.parametros.criticoMin;
         var criticoMin = this.parametros.heroes.base["critico"]+(nivel*this.parametros.heroes.escalado["critico"]);
-        //var criticoMax = criticoMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
 
         var criticoMax = criticoMin + (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado) * (this.parametros.objetos.distribucionArmadura * this.parametros.objetos.tipoObjArmaduraMax +
     this.parametros.objetos.distribucionArma * this.parametros.objetos.tipoObjArmaOfensivaMax)
 
         var potenciaMin = this.parametros.potenciaCriticoMin;
 
-        var estadisticaPrincipal = 0;
-        if(estadisticas.ad > estadisticas.ap){
-          estadisticaPrincipal = estadisticas.ad;
-        }else{
-          estadisticaPrincipal = estadisticas.ap;
-        }
+        var sumaOfensiva = estadisticas.ad + estadisticas.ap;
 
         var probabilidadCritico = criticoMinPercent+((estadisticas.critico-criticoMin)/(criticoMax-criticoMin))*(criticoMaxPercent-criticoMinPercent);
-        var potenciaCritico = ((estadisticaPrincipal+estadisticas.critico-criticoMin)*(1+criticoMinPercent*(potenciaMin-1))-estadisticaPrincipal*(1-probabilidadCritico))/(estadisticaPrincipal*probabilidadCritico);
-        //var potenciaCritico = ((estadisticas.critico-criticoMin)/(estadisticaPrincipal*(probabilidadCritico-criticoMinPercent)))+potenciaMin;
 
+        var potenciaCritico = ((sumaOfensiva+estadisticas.critico-criticoMin)*(1+criticoMinPercent*(potenciaMin-1))-sumaOfensiva*(1-probabilidadCritico))/(sumaOfensiva*probabilidadCritico);
+        var potenciaCriticoFisico = potenciaCritico*(estadisticas.ad/sumaOfensiva);
+        var potenciaCriticoMagico = potenciaCritico*(estadisticas.ap/sumaOfensiva);
+
+        if(potenciaCriticoFisico < 1){
+            potenciaCriticoFisico = 1;
+            potenciaCriticoMagico = potenciaCritico - 1;
+        }
+
+        if(potenciaCriticoMagico < 1){
+            potenciaCriticoMagico = 1;
+            potenciaCriticoFisico = potenciaCritico - 1;
+        }
 
         probabilidadCritico = Math.round(probabilidadCritico * 100) / 100;
         potenciaCritico = Math.round(potenciaCritico * 100) / 100;
         estadisticas.probabilidadCritico = probabilidadCritico;
         estadisticas.probabilidadCriticoPercent = Math.round(probabilidadCritico*100);
         estadisticas.potenciaCritico = potenciaCritico;
+        estadisticas.potenciaCriticoFisico = potenciaCriticoFisico;
+        estadisticas.potenciaCriticoMagico = potenciaCriticoMagico;
+
+        estadisticas.potenciaCriticoFisico = potenciaCritico;
+        estadisticas.potenciaCriticoMagico = potenciaCritico;
 
         //RANGOS ARMADURA:
         var armaduraMaxPercent = this.parametros.armaduraMax;
@@ -200,7 +206,6 @@ export class LogicService {
         estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
 
         estadisticas.pa = 0
-        console.log("Estadisticas Calculadas: ",estadisticas)
         return estadisticas;
 
   }
@@ -230,7 +235,7 @@ export class LogicService {
         //  CALCULO ENEMIGO
         //---------------------
 
-      //Calcula estadisticas ENEMIGO:
+        //Calcula estadisticas ENEMIGO:
             var indexTipoEnemigo = this.enemigos.findIndex( i => i.id == enemigo.enemigo_id);
 
             nivel = Number(enemigo.nivel);
@@ -256,19 +261,6 @@ export class LogicService {
 
             estadisticas.reduccionArmaduraPercent = Math.round(reduccionArmadura*100);
 
-            console.warn("REDUC: ",reduccionArmadura)
-            console.warn("NIVEL: ",nivel)
-            console.warn("ESTADIST: ",estadisticas)
-            console.warn("Index Tipo: ",indexTipoEnemigo)
-
-            console.warn("%ARmin: ",armaduraMinPercent)
-            console.warn("%ARmax: ",armaduraMaxPercent)
-
-            console.warn("Armadura: ",estadisticas.armadura)
-
-            console.warn("ARmin: ",armMin)
-            console.warn("ARmax: ",armMax)
-
             //RANGOS RESISTENCIA:
             var resistenciaMaxPercent = this.parametros.armaduraMax;
             var resistenciaMinPercent = this.parametros.armaduraMin;
@@ -291,7 +283,6 @@ export class LogicService {
             estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
 
             estadisticas.pa = 0
-            console.log("Estadisticas Enemigo Calculadas: ",estadisticas)
             return estadisticas;
 
   } //Fin calcular estadisticas Base Enemigo
@@ -306,12 +297,10 @@ export class LogicService {
 
             switch(tipoObjetivo){
                 case "heroes":
-                    console.error("HEROE")
                     armMin = this.parametros.heroes.base["armadura"]+(nivel*this.parametros.heroes.escalado["armadura"]);
                     armMax = armMin + this.parametros.objetos.tipoObjetoMax * (this.parametros.objetos.base+ nivel * this.parametros.objetos.escalado)
                     break;
                 case "enemigos":
-                    console.error("ENEMIGO")
                     armMin = this.parametros.enemigos.base["armadura"]+(nivel*this.parametros.enemigos.escalado["armadura"]);
                     armMax = armMin + (this.parametros.enemigos.baseRango+ nivel * this.parametros.enemigos.escaladoRango)
                     break;
@@ -319,17 +308,6 @@ export class LogicService {
 
             var reduccionArmadura = armaduraMinPercent+((armadura-armMin)/(armMax-armMin))*(armaduraMaxPercent-armaduraMinPercent);
             reduccionArmadura = Math.round(reduccionArmadura * 100) / 100;
-
-            console.warn("REDUC: ",reduccionArmadura)
-            console.warn("NIVEL: ",nivel)
-
-            console.warn("%ARmin: ",armaduraMinPercent)
-            console.warn("%ARmax: ",armaduraMaxPercent)
-
-            console.warn("Armadura: ",armadura)
-
-            console.warn("ARmin: ",armMin)
-            console.warn("ARmax: ",armMax)
 
             if(reduccionArmadura > 1){
               reduccionArmadura = 1;

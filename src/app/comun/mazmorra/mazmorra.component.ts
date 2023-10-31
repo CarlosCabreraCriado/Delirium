@@ -83,7 +83,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   ----------------------------------------------*/
   async ngOnInit(){
 
-       console.error("INICIANDO MAZMORRA")
+    console.warn("INICIANDO COMPONENTE MAZMORRA...")
     this.appService.mostrarPantallacarga(true);
 
     this.mazmorraService.setDispositivo(this.appService.getDispositivo());
@@ -317,7 +317,8 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.cambiarSala(val.valor);
                     break;
                 case "abandonarMazmorra":
-                    this.mazmorraService.abandonarMazmorra();
+                    //this.mazmorraService.abandonarMazmorra();
+                    this.socketService.enviarSocket("abandonarMazmorra",{});
                     break;
             }
         });

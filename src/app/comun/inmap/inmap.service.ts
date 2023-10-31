@@ -3,6 +3,7 @@ import { Injectable, OnInit, Output, EventEmitter} from '@angular/core';
 import { Subscription } from "rxjs";
 import { AppService } from '../../app.service';
 import { SocketService } from '../socket/socket.service';
+import { EventosService } from '../../eventos.service';
 import { MapaGeneralService } from "../mapa-general/mapaGeneral.service"
 
 interface EstadoControlInMap {
@@ -59,7 +60,7 @@ export class InMapService {
     //Emision de eventos
     @Output() subscripcionInMapService: EventEmitter<string> = new EventEmitter();
 
-  constructor(private mapaGeneralService: MapaGeneralService, private appService: AppService,private socketService:SocketService) {
+  constructor(private eventosService: EventosService, private mapaGeneralService: MapaGeneralService, private appService: AppService,private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
         this.appService.estadoApp$.subscribe(estadoApp => {
             this.estadoApp = estadoApp;
@@ -143,9 +144,19 @@ export class InMapService {
         //REDIRIGE A ASFALOTH POR DEFECTO:
         this.mapaGeneralService.cargarRegion("Asfaloth");
         this.estadoInMap = "region";
+    }
+
+    async cargaMapaCompleta(){
+
+        //INICIA EL EVENTO DE TUTORIAL:
+        await this.eventosService.actualizarEventos();
+        if(this.sesion.variablesMundo["tutorial"] == "true" && this.estadoApp.pantalla == "inmap" && this.sesion.render.inmap.posicion_x == 56 && this.sesion.render.inmap.posicion_y == 48){
+            this.eventosService.ejecutarEvento(1,"General");
+        }
 
         //REDIRIGIR A MAZMORRA:
         //this.iniciarPartida("Bastion");
+        
     }
 
     toggleInMap(){ //Se activa desde el boton de Region:
@@ -228,7 +239,9 @@ export class InMapService {
         //DETECTA SI ES EL ULTIMO HEROE:
         if(indexTurnoHeroe == this.sesion.render.heroes.length-1){
             // INICIA NOCHE
-            this.mostrarNoche= true;
+            if(this.sesion.variablesMundo["tutorial"] != "true"){
+                this.mostrarNoche= true;
+            }
             setTimeout(()=>{
                 this.mostrarNoche= false;
             },16000)
@@ -306,6 +319,11 @@ export class InMapService {
 
     triggerChangeDetection(){
       this.subscripcionInMapService.emit("triggerChangeDetection");
+    }
+
+    finalizarTutorial(){
+        console.error("TUTORIAL FINALIZADO!");
+        this.mapaGeneralService.cargarRegion("Asfaloth",{forzarHttp: true});
     }
 
 }

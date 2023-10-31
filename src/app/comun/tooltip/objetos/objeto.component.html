@@ -46,7 +46,16 @@
             <img class="icono" src="../../../../assets/Iconos/critico.png">
             {{objeto.estadisticas.critico}}
         </div>
+
     </div>
+
+        <div class="efecto Texto2" *ngIf="objeto.tipo=='Pesada'">
+            Pesado: -5% Daño Total 
+        </div>
+
+        <div class="efecto Texto2" *ngIf="objeto.tipo=='Ligera'">
+            Ligero: +5% Daño Total
+        </div>
 
         <ng-container *ngIf="tooltipTextoBoton=='Desequipar'"(click)="pulsarBoton()">
             <botonComponent id="botonTooltip" (click)="pulsarBoton()" [texto]="tooltipTextoBoton" [tipoBoton]="2" [color]="'rojo'" class="botonUnico"></botonComponent>
@@ -55,6 +64,5 @@
         <ng-container *ngIf="tooltipTextoBoton=='Equipar'"(click)="pulsarBoton()">
             <botonComponent id="botonTooltip" (click)="pulsarBoton()" [texto]="tooltipTextoBoton" [tipoBoton]="2" [color]="'verde'" class="botonUnico"></botonComponent>
         </ng-container>
-
 
 </div>

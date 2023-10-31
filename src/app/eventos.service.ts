@@ -25,6 +25,7 @@ export class EventosService {
     private estadoApp: any; 
 
     @Output() eventoMazmorraEmitter: EventEmitter<any> = new EventEmitter();
+    @Output() eventoInMapEmitter: EventEmitter<any> = new EventEmitter();
 
     constructor(private appService: AppService, private dialog: MatDialog) {
         //Observar Sesion:
@@ -48,8 +49,6 @@ export class EventosService {
         this.eventos = await this.appService.getEventos();
         var mazmorra = await this.appService.getMazmorra();
 
-
-
         console.warn("CARGANDO EVENTOS MAZMORRA: ",mazmorra)
         if(mazmorra){
             this.eventosMazmorra = mazmorra["eventos"];
@@ -59,9 +58,6 @@ export class EventosService {
     }
 
     ejecutarEvento(idEvento:number,tipoEvento?:string,tipoEventoRandom?:string){
-
-        console.warn("EVENTOOOO: ",idEvento,tipoEvento,tipoEventoRandom)
-        console.warn("Evento Mazmorra: ",this.eventosMazmorra);
 
         //Cargar Datos de eventos a ejecutar:
         switch(tipoEvento){
@@ -85,7 +81,6 @@ export class EventosService {
 
         if(!this.eventoEjecutando){console.error("No se encuentra evento con ID: "+idEvento);return;}
 
-        console.warn("Ejecutando: ",this.eventoEjecutando);
         this.ejecutarOrden(0);
     } 
 
@@ -170,7 +165,6 @@ export class EventosService {
                     //Ejecuta Encadenado:
                     if(result > 0){
                         var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
-                        console.warn("ENCADENANDO: ",indexEncadenado);
                         this.ejecutarOrden(indexEncadenado);
                         return;
                     }
@@ -204,7 +198,6 @@ export class EventosService {
                     //Ejecuta Encadenado:
                     if(result > 0){
                         var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
-                        console.warn("ENCADENANDO: ",indexEncadenado);
                         this.ejecutarOrden(indexEncadenado);
                         return;
                     }
@@ -239,7 +232,6 @@ export class EventosService {
                     //Ejecuta Encadenado:
                     if(result > 0){
                         var indexEncadenado = this.eventoEjecutando.ordenes.findIndex(i => i.id==result)
-                        console.warn("ENCADENANDO: ",indexEncadenado);
                         this.ejecutarOrden(indexEncadenado);
                         return;
                     }
@@ -277,8 +269,6 @@ export class EventosService {
     ejecutarOrdenVariable(indexOrden){
 
         var orden = this.eventoEjecutando.ordenes[indexOrden];
-        console.warn("EJECUTANDO VARIABLE: ",orden);
-        console.warn("SESION",this.sesion);
 
         // Comando Variable:
         switch(orden["comando"]){
@@ -288,6 +278,11 @@ export class EventosService {
                 break;
             case "remove":
                 this.sesion.variablesMundo[orden.variableTarget] = null;
+                if(orden.variableTarget=="tutorial"){
+                    console.warn("FINN TUTOO")
+                    this.eventoInMapEmitter.emit({comando: "finalizarTutorial"})
+                }
+                break;
             case "removeAll":
                 this.sesion.variablesMundo = {};
                 break;
@@ -302,14 +297,12 @@ export class EventosService {
                 this.sesion.variablesMundo[orden.variableTarget]= valorInicial * valorOperador;
                 break;
         }
-
+        this.ejecutarOrden(indexOrden+1)
     }
 
     ejecutarOrdenCondicion(indexOrden){
 
         var orden = this.eventoEjecutando.ordenes[indexOrden];
-        console.warn("EJECUTANDO CONDICION: ",orden);
-        console.warn("SESION",this.sesion);
 
         var condicionSuperada = null;
 
@@ -419,7 +412,7 @@ export class EventosService {
     }//Fin ejecutarOrdenCondicion
     
     finalizarEvento(){
-        console.warn("Evento Finalizado");
+        //console.warn("Evento Finalizado");
         this.eventoEjecutando = null;
         this.indexOrdenEjecutando = 0;
         return;

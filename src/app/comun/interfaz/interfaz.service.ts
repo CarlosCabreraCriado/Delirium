@@ -301,6 +301,8 @@ export class InterfazService {
             hechizo_id: this.indexHechizoAccion
         }
 
+        console.log(accion)
+
         this.ultimaAccion = tipoAccion;
         switch(tipoAccion){
             case "mover":

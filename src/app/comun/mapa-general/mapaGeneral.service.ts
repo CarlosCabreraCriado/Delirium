@@ -3,6 +3,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { AppService } from '../../app.service';
 import { TriggerService } from "../../trigger.service"
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class MapaGeneralService {
       return;
   }
 
-  async cargarRegion(zona:string){
+  async cargarRegion(zona:string, config?:any){
 
         console.warn("CARGAR REGION: ",zona);
         if(zona== undefined || zona== null || zona==""){ console.error("Zona no valida"); return;} 
@@ -72,13 +73,39 @@ export class MapaGeneralService {
         this.eventoMapaGeneral.emit("cargarMapa");
 
         //Solicita la carga de la region a la appService:
-        this.region = await this.appService.peticionHttpRegion(zona);
+        //this.region = Object.assign(new Object({}),await this.appService.peticionHttpRegion(zona));
+
+        this.region= cloneDeep(await this.appService.peticionHttpRegion(zona));
 
         this.regionCargada = zona;
         //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
         
         var radioVision = this.radioRenderIsometrico;
         this.renderIsometrico = [];
+
+        if(this.sesion.variablesMundo["tutorial"] == "true" && !this.desarrollador){
+            console.error("FORMATEANDO TUTORIAL")
+            for(var i = 0; i < this.region.dimensionX; i++){
+                for(var j = 0; j < this.region.dimensionY; j++){
+                    this.region.isometrico[i][j]["atravesable"]= false;
+                }
+            }
+            //Casillas Atravesables Tutorial:
+            this.region.isometrico[56][48]["atravesable"]= true;
+            this.region.isometrico[56][49]["atravesable"]= true;
+            this.region.isometrico[56][50]["atravesable"]= true;
+            this.region.isometrico[57][50]["atravesable"]= true;
+            this.region.isometrico[58][50]["atravesable"]= true;
+            this.region.isometrico[59][50]["atravesable"]= true;
+            this.region.isometrico[59][49]["atravesable"]= true;
+            this.region.isometrico[59][51]["atravesable"]= true;
+            this.region.isometrico[60][50]["atravesable"]= true;
+            this.region.isometrico[61][50]["atravesable"]= true;
+            this.region.isometrico[62][50]["atravesable"]= true;
+            this.region.isometrico[63][50]["atravesable"]= true;
+            this.region.isometrico[63][49]["atravesable"]= true;
+            this.region.isometrico[62][49]["atravesable"]= true;
+        }
 
         if(!this.desarrollador){
             var coordenadaMinX = this.sesion.render.inmap.posicion_x - radioVision;
@@ -117,6 +144,7 @@ export class MapaGeneralService {
             }
         }
 
+
         //Verifica los posibles movimientos:
         this.eventoMapaGeneral.emit("verificarMovimiento");
 
@@ -139,7 +167,9 @@ export class MapaGeneralService {
 
   regularizarRegion(){
       console.log("REGULARIZANDO RENDER ISOMETRICO")
+
       for(var i=0; i < this.region.isometrico.length; i++){
+      /*
           this.region.isometrico[i].forEach(function(v){
               delete v.probabilidadEventoCamino
               delete v.categoriaEventoCamino
@@ -149,35 +179,64 @@ export class MapaGeneralService {
               delete v.indicadorPeligro
               delete v.indicadorTerrenoDificil
           })
+        */
           
         for(var j=0; j < this.region.isometrico[i].length; j++){
+
             this.region.isometrico[i][j]["probabilidadEvento"] = 0;
-            this.region.isometrico[i][j]["categoriaEvento"] = "camino";
-            this.region.isometrico[i][j]["indicador"] = null;
+            //this.region.isometrico[i][j]["categoriaEvento"] = "camino";
+            //this.region.isometrico[i][j]["indicador"] = null;
             this.region.isometrico[i][j]["eventoInspeccion"] = 0;
-            this.region.isometrico[i][j]["eventoInspeccion"] = 0;
-            this.region.isometrico[i][j]["ubicacionEspecial"] = null;
+            //this.region.isometrico[i][j]["ubicacionEspecial"] = null;
             this.region.isometrico[i][j]["checkMisiones"] = [];
-            this.region.isometrico[i][j]["nombre"] = null;
-            this.region.isometrico[i][j]["descripcion"] = null;
+            //this.region.isometrico[i][j]["nombre"] = null;
+            //this.region.isometrico[i][j]["descripcion"] = null;
+            this.region.isometrico[i][j]["atravesable"] = true;
 
             //Defecto Mar:
             if(this.region.isometrico[i][j].tileImage == 122){ 
                 this.region.isometrico[i][j].atravesable = false;
             }
+
             //Defecto Montaña:
             if(this.region.isometrico[i][j].tileImage == 14){ 
                 this.region.isometrico[i][j].atravesable = false;
             }
+
             if(this.region.isometrico[i][j].tileImage == 118){ 
                 this.region.isometrico[i][j].atravesable = false;
             }
+
+            //Caminos
+            if(
+                this.region.isometrico[i][j].tileImageOverlay == 104 ||
+                this.region.isometrico[i][j].tileImageOverlay == 105 ||
+                this.region.isometrico[i][j].tileImageOverlay == 106 ||
+                this.region.isometrico[i][j].tileImageOverlay == 107 ||
+                this.region.isometrico[i][j].tileImageOverlay == 108 ||
+                this.region.isometrico[i][j].tileImageOverlay == 109 
+              ){ 
+                this.region.isometrico[i][j].atravesable = true;
+                this.region.isometrico[i][j]["categoriaEvento"] = "camino";
+                this.region.isometrico[i][j]["probabilidadEvento"] = 0.15;
+            }
+
             //Bosque;
-            if(this.region.isometrico[i][j].tileImage == 118){ 
+            if(
+                this.region.isometrico[i][j].tileImage == 118 ||
+                this.region.isometrico[i][j].tileImage == 47  ||
+                this.region.isometrico[i][j].tileImage == 113 ||
+                this.region.isometrico[i][j].tileImage == 200 ||
+                this.region.isometrico[i][j].tileImage == 208 
+              ){ 
                 this.region.isometrico[i][j].tipoTerreno = "bosque";
+                this.region.isometrico[i][j]["categoriaEvento"] = "bosque";
+                this.region.isometrico[i][j]["probabilidadEvento"] = 0.33;
             }
         }
+
       }
+
       console.log("REGION REGULARIZADA: ");
       console.log(this.region)
   }
