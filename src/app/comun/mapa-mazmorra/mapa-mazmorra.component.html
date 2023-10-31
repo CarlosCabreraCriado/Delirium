@@ -19,7 +19,7 @@
                 <div *ngFor="let elementoIsometrico of isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="clickElemento(elementoIsometrico)" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
                     <img  class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
                     <ng-container *ngIf="elementoIsometrico.enemigoId">
-                        <img [ngStyle]= "renderizarEnemigoIsometrico(elementoIsometrico)" class="imagenEnemigoIsometrico" src="./assets/Enemigos/gnoll/1.png">
+                        <img [ngStyle]= "renderizarEnemigoIsometrico(elementoIsometrico)" class="imagenEnemigoIsometrico" src="./assets/Enemigos/{{elementoIsometrico.pathEnemigo}}">
                     </ng-container>
                 </div>
               </div>

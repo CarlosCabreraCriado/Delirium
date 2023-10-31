@@ -1069,17 +1069,30 @@ export class AppService {
                 indexActivacionEnemigo: 0
             }
 
-            //Inicializa Posición Si se inicia el tutorial:
-            if(heroeSeleccionado.tutorial){
-                this._sesion.value["render"]["inmap"]= {
-                    posicion_x: 61,
-                    posicion_y: 50,
-                    region: "Asfaloth"
+            console.error(heroeSeleccionado)
+            if(heroeSeleccionado.mundos[0]){
+                this._sesion.value["variablesMundo"] = heroeSeleccionado.mundos[0] 
+            }else{
+                this._sesion.value["variablesMundo"] = {
+                    tutorial: "true"
                 }
             }
 
-            this._sesion.value["variablesMundo"] = {
-                tutorial: "true"
+            //Inicializa Posición Si se inicia el tutorial:
+            if(this._sesion.value["variablesMundo"]["tutorial"] == "true"){
+                //COORDENADAS INICIO TUTORIAL:
+                this._sesion.value["render"]["inmap"]= {
+                    posicion_x: 56,
+                    posicion_y: 48,
+                    region: "Asfaloth"
+                }
+            }else{
+                //COORDENADAS INICIO SIN TUTORIAL:
+                this._sesion.value["render"]["inmap"]= {
+                    posicion_x: 63,
+                    posicion_y: 49,
+                    region: "Asfaloth"
+                }
             }
 
             this._sesion.value.online = true;
@@ -1091,6 +1104,15 @@ export class AppService {
         this.actualizarEstadoApp();
         this.setSesion(this._sesion.value);
         this.setPantallaApp("inmap");
+    }
+
+    async peticionGuardarPerfil(){
+
+        this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex].mundos = [this._sesion.value.variablesMundo];
+        console.warn("GUARDANDO PERFIL: ",this.perfil)
+
+        var token = await this.getToken();
+        return this.http.post(this.ipRemota+"/deliriumAPI/guardarPerfil",{perfil: this.perfil, token: token}).toPromise();
     }
 
     async iniciarMazmorra(nombreIdMazmorra,salaOpenId?){
@@ -1150,6 +1172,25 @@ export class AppService {
           }
         });
     }
+
+      async reloadDatos(){
+
+        var token = await this.getToken()
+        console.log("Usando token: ",token)
+
+        this.http.post(this.ipRemota+"/deliriumAPI/cargarDatosJuego",{token: token}).subscribe((data) => {
+
+            console.log("Datos: ")
+            console.log(data)
+                if(data){
+                  this.setDatosJuego(data);
+                  window.location.reload();
+                }
+
+              },(err) => {
+                //this.loggerService.log("Error de adquisición de datos","red");
+              });
+      }
 
     iniciaSesion(sesion: any, forzarReload?:boolean){
 

@@ -41,7 +41,7 @@ export class MapaGeneralService {
       return;
   }
 
-  async cargarRegion(zona:string, config?:any){
+  async cargarRegion(zona:string){
 
         console.warn("CARGAR REGION: ",zona);
         if(zona== undefined || zona== null || zona==""){ console.error("Zona no valida"); return;} 
@@ -84,7 +84,6 @@ export class MapaGeneralService {
         this.renderIsometrico = [];
 
         if(this.sesion.variablesMundo["tutorial"] == "true" && !this.desarrollador){
-            console.error("FORMATEANDO TUTORIAL")
             for(var i = 0; i < this.region.dimensionX; i++){
                 for(var j = 0; j < this.region.dimensionY; j++){
                     this.region.isometrico[i][j]["atravesable"]= false;
@@ -114,12 +113,45 @@ export class MapaGeneralService {
             var coordenadaMaxY = this.sesion.render.inmap.posicion_y + radioVision+1;
 
             //Bloqueo de valores de coordenadas:
-            if(coordenadaMinX < 0){ coordenadaMinX = 0; }
-            if(coordenadaMinY < 0){ coordenadaMinY = 0; }
-            if(coordenadaMaxX > this.region.isometrico.length){ coordenadaMaxX = this.region.isometrico.length; }
-            if(coordenadaMaxY > this.region.isometrico.length){ coordenadaMaxY = this.region.isometrico.length; }
+            //if(coordenadaMinX < 0){ coordenadaMinX = 0; }
+            //if(coordenadaMinY < 0){ coordenadaMinY = 0; }
+            //if(coordenadaMaxX > this.region.isometrico.length){ coordenadaMaxX = this.region.isometrico.length; }
+            //if(coordenadaMaxY > this.region.isometrico.length){ coordenadaMaxY = this.region.isometrico.length; }
+
+            var slice = [];
+
             for(var i = coordenadaMinX; i < coordenadaMaxX; i++){
-                this.renderIsometrico.push(this.region.isometrico[i].slice(coordenadaMinY,coordenadaMaxY))
+                slice = [];
+
+                if(this.region.isometrico[i]){
+
+                    var sliceAnterior = [];
+                    var slicePosterior = [];
+                    slice = this.region.isometrico[i].slice(coordenadaMinY,coordenadaMaxY)
+
+                    if(coordenadaMinY < 0){
+                        for(var j=0; j < (coordenadaMinY*(-1)); j++){
+                            sliceAnterior.push(this.crearTileFinMapa(0,0))
+                        }
+                        slice = this.region.isometrico[i].slice(0,coordenadaMaxY) 
+                    }
+                    if(coordenadaMaxY > this.region.isometrico[0].length){
+                        for(var j=0; j < (coordenadaMaxY-this.region.isometrico[0].length); j++){
+                            slicePosterior.push(this.crearTileFinMapa(0,0))
+                        }
+                        slice = this.region.isometrico[i].slice(coordenadaMinY,this.region.isometrico[0].length) 
+                    }
+
+                    slice= sliceAnterior.concat(slice).concat(slicePosterior);
+
+                }else{
+                    for(var j=0; j < coordenadaMaxY-coordenadaMinY; j++){
+                        slice.push(this.crearTileFinMapa(0,0))
+                    }
+                }
+                
+                this.renderIsometrico.push(slice);
+
             }
         }else{
             //Si es el panel de desarrollador:
@@ -298,6 +330,31 @@ export class MapaGeneralService {
       }
   }
 
+  crearTileFinMapa(posicionX:number,posicionY:number){
+      return {
+            "coordenadaX": posicionX,
+            "coodenadaY": posicionY,
+            "tileImage": 122,
+            "tipoTerreno": "mar",
+            "atravesable": false,
+            "indicadorTerronoDificil": false,
+            "nombre": null,
+            "descripcion": null,
+            "animacionId": 0,
+            "estado": "",
+            "inspeccionable": false,
+            "mensajeInspeccion": "",
+            "tileImageOverlay": 0,
+            "probabilidadEvento": 0,
+            "categoriaEvento": "mar",
+            "indicador": null,
+            "eventoInspeccion": 0,
+            "ubicacionEspecial": null,
+            "triggersInMapEventos": [],
+            "triggersInMapMisiones": [],
+            "checkMisiones": []
+        }
+  }
 
 }
 

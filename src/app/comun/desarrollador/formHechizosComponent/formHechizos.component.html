@@ -46,7 +46,7 @@
                     <div class="selector formObjetivo">
                       <mat-form-field appearance="legacy">
                         <mat-label>Target</mat-label>
-                        <mat-select value="{{objetivo_Hechizos.value}}">
+                        <mat-select [formControl]="objetivo_Hechizos">
                             <mat-option value="EU">Enemigo Unico</mat-option>
                             <mat-option value="AU">Aliado Unico</mat-option>
                             <mat-option value="AL">Self</mat-option>
@@ -61,7 +61,7 @@
                     <div class="selector formTipoDaño">
                       <mat-form-field appearance="legacy">
                         <mat-label>Tipo Daño</mat-label>
-                        <mat-select value="{{tipo_dano_Hechizos.value}}">
+                        <mat-select [formControl]="tipo_dano_Hechizos">
                             <mat-option value="Físico">Físico</mat-option>
                             <mat-option value="Mágico">Mágico</mat-option>
                         </mat-select>

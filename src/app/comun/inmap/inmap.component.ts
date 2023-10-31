@@ -159,6 +159,11 @@ export class InMapComponent implements OnInit {
         console.warn("Destruyendo INMAP");
         this.appServiceSuscripcion.unsubscribe();
         this.socketSubscripcion.unsubscribe();
+        this.eventosSuscripcion.unsubscribe();
+    }
+
+    reloadDatos(){
+        this.appService.reloadDatos();
     }
 
     abrirConfiguracion(){

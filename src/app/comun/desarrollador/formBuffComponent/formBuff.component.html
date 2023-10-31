@@ -42,7 +42,7 @@
                     <div class="selector formObjetivo">
                       <mat-form-field appearance="legacy">
                         <mat-label>Ventaja/Desventaja</mat-label>
-                        <mat-select value="{{tipo_Buff.value}}">
+                        <mat-select [formControl]="tipo_Buff">
                             <mat-option value="Ventaja">Ventaja</mat-option>
                             <mat-option value="Desventaja">Desventaja</mat-option>
                         </mat-select>
@@ -52,7 +52,7 @@
                     <div class="selector formTipoDaño">
                       <mat-form-field appearance="legacy">
                         <mat-label>Tipo Daño</mat-label>
-                        <mat-select value="{{tipo_dano_Buff.value}}">
+                        <mat-select [formControl]="tipo_dano_Buff">
                             <mat-option value="Físico">Físico</mat-option>
                             <mat-option value="Mágico">Mágico</mat-option>
                         </mat-select>

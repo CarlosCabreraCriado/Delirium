@@ -187,9 +187,15 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     break;
 
                   case "lanzarHechizo":
-                    console.log("Sincronizando hechizo");
+                    console.log("Sincronizando Lanzar hechizo");
                     console.log(data.contenido);
                     this.mazmorraService.lanzarHechizo(data.contenido);
+                  break;
+
+                  case "fallarHechizo":
+                    console.log("Hechizo Fallado");
+                    console.log(data.contenido);
+                    this.mazmorraService.fallarHechizo(data.contenido);
                   break;
 
                   case "actualizarInteractuado":
@@ -888,7 +894,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     }
 
     reloadDatos(){
-      this.mazmorraService.reloadDatos();
+      this.appService.reloadDatos();
     }
 
 

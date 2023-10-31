@@ -1834,12 +1834,14 @@ export class DungeonBuilderComponent {
         var salaEnemigo = 0;
         var flagSeleccionado= false;
         var tipoCasillaSeleccion = null;
+        var pathEnemigo = "";
 
         //Si se trata de una deseleccion:
         if(valor == 0){
             for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
                 if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
                   this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].enemigoId = valor;
+                  this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].pathEnemigo = "";
                   this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
                 }
             }
@@ -1872,10 +1874,12 @@ export class DungeonBuilderComponent {
         }
 
         //SI NO SE ENCUENTRA ID O ESTA EN SALA INCORRECTA:
+        var tipoEnemigoId = null;
         for(var i=0; i <this.mazmorra.salas.length; i++){
             for(var j=0; j < this.mazmorra.salas[i].enemigos.length; j++){
             if(this.mazmorra.salas[i].enemigos[j].enemigo_id == valor){
                 enemigoValido = true;
+                tipoEnemigoId = this.mazmorra.salas[i].enemigos[j].tipo_enemigo_id;
                 if(salaEnemigo != this.mazmorra.salas[i].id){
                     this.mensajeErrorAsignacion("Error: El enemigo tiene que estar en su sala asignada.");
                     return;
@@ -1898,12 +1902,21 @@ export class DungeonBuilderComponent {
             }
         }
 
+        //Determinando Path de imagen:
+        var tipoEnemigo = this.enemigos.find(i => i.id==tipoEnemigoId);
+        if(!tipoEnemigo){
+            this.mensajeErrorAsignacion("Error: No se ha encontrado el tipo enemigo ID = "+tipoEnemigoId);
+            return;
+        }
+        
+        var pathEnemigo = tipoEnemigo.familia+"/"+tipoEnemigo.imagen_id+".png";
 
         //Asignando ID ENEMIGO;
         for(var i=0; i <this.mazmorra.isometrico.MapSave.Placeables.Placeable.length; i++){
             if(this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado){
               this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].enemigoId = valor;
               this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].seleccionado = false;
+              this.mazmorra.isometrico.MapSave.Placeables.Placeable[i].pathEnemigo = pathEnemigo;
             }
         }
 

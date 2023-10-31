@@ -32,7 +32,7 @@ private confirmation: boolean = false;
             this.data.contenido = this.data.contenido.replaceAll("\n","</br>");
             this.textosDialogo = this.data.contenido.split("$");
         }
-        console.warn("textosDialogo: ",this.textosDialogo)
+
         this.indexTextoMostrado = 0;
         this.opciones = [];
         if(this.textosDialogo.length == 1){

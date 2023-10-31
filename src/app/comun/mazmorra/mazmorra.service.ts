@@ -9,7 +9,6 @@ import { InterfazService } from '../interfaz/interfaz.service';
 import { Subject } from 'rxjs';
 import * as cloneDeep from 'lodash/cloneDeep';
 //import { cloneDeep } from 'lodash/cloneDeep';
-import { HttpClient } from "@angular/common/http"
 import { SocketService } from '../socket/socket.service';
 import { Subscription } from "rxjs";
 
@@ -153,28 +152,8 @@ export class MazmorraService {
   //Emision de eventos
   @Output() subscripcionMazmorra: EventEmitter<string> = new EventEmitter();
 
-    constructor(private logicService: LogicService, private zone: NgZone, private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private http:HttpClient,private socketService:SocketService) {
+    constructor(private logicService: LogicService, private zone: NgZone, private appService: AppService/*, private electronService: ElectronService*/, private loggerService: LoggerService, private pausaService: PausaService,private rngService: RngService, private interfazService: InterfazService,private eventosService: EventosService, private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
-  }
-
-  async reloadDatos(){
-
-    var token = await this.appService.getToken()
-    console.log("Usando token: ",token)
-
-    this.http.post(this.appService.ipRemota+"/deliriumAPI/cargarDatosJuego",{token: token}).subscribe((data) => {
-
-        console.log("Datos: ")
-        console.log(data)
-            if(data){
-              this.appService.setDatosJuego(data);
-              this.loggerService.log("Adquisición de datos exitosa","yellow");
-              window.location.reload();
-            }
-
-          },(err) => {
-            this.loggerService.log("Error de adquisición de datos","red");
-          });
   }
 
   /*  ----------------------------------------------
@@ -491,10 +470,14 @@ export class MazmorraService {
         this.sesion.render.estadisticasTotal = [];
     }
         
-    if(this.sesion.render.estadisticasTotal.length==0){
+    if(!this.sesion.render.mazmorra.iniciada){
+        this.sesion.render.estadisticasTotal = [];
+    }
+
+    if(this.sesion.render.estadisticasTotal.length < this.sesion.render.heroes.length){
       //Inicializar Analisis de estadisticas TOTAL si no esta inicializado:
       this.sesion.render.estadisticasTotal = [];
-      for(var i=0; i < this.sesion.render.numHeroes; i++){
+      for(var i=0; i < this.sesion.render.heroes.length; i++){
           this.sesion.render.estadisticasTotal.push({
               daño: 0,
               heal: 0,
@@ -1600,6 +1583,40 @@ export class MazmorraService {
     return configuracionHechizo;
   }
 
+  fallarHechizo(consumoEnergia: number){
+        //Consume energia:
+        var indexHeroeTurno = -1;
+        for(var i = 0; i < this.sesion.render.heroes.length; i++){
+            if(this.sesion.render.heroes[i].turno){
+                indexHeroeTurno = i;
+                break;
+            }
+        }
+
+        this.sesion.render.heroes[indexHeroeTurno].energia -= consumoEnergia;
+
+        if(this.sesion.render.heroes[indexHeroeTurno].energia <0){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
+        }
+        if(this.sesion.render.heroes[indexHeroeTurno].energia>100){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 100;
+        }
+        if(this.sesion.render.heroes[indexHeroeTurno].energia==undefined
+        || this.sesion.render.heroes[indexHeroeTurno].energia==null){
+            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
+        }
+
+        this.sesion.render.heroes[indexHeroeTurno].energiaFutura = this.sesion.render.heroes[indexHeroeTurno].energia + this.parametros.regenEnergiaTurno;
+
+        //Verificar valores de energiaFutura en los rangos:
+        if(this.sesion.render.heroes[indexHeroeTurno].energiaFutura < 0){
+            this.sesion.render.heroes[indexHeroeTurno].energiaFutura = 0;
+        }
+        if(this.sesion.render.heroes[indexHeroeTurno].energiaFutura > 100){
+            this.sesion.render.heroes[indexHeroeTurno].energiaFutura = 100;
+        }
+  }
+
   lanzarHechizo(configuracionHechizo?: ConfiguracionHechizo){
 
     return new Promise((resolve) => {
@@ -1938,6 +1955,10 @@ export class MazmorraService {
                 break;
         }
 
+        hechizo["daño_salida"] *= this.parametros.ratioDano;
+        hechizo["heal_salida"] *= this.parametros.ratioHeal;
+        hechizo["escudo_salida"] *= this.parametros.ratioEscudo;
+
     //Modificación por critico:
       if(hechizo.critico && tipoCaster == "heroes"){
         console.warn("MODIFICANDO POR CRITICO");
@@ -2103,6 +2124,10 @@ export class MazmorraService {
     buff["daño_t_salida"]= buff["daño_t_salida"]/buff["duracion"];
     buff["heal_t_salida"]= buff["heal_t_salida"]/buff["duracion"];
     buff["escudo_t_salida"]= buff["escudo_t_salida"]/buff["duracion"];
+
+    buff["daño_t_salida"] *= this.parametros.ratioDanoBuff;
+    buff["heal_t_salida"] *= this.parametros.ratioHealBuff;
+    buff["escudo_t_salida"] *= this.parametros.ratioEscudoBuff;
 
     //Modificación por critico:
       if(buff.critico && tipoCaster == "heroes"){
@@ -2367,25 +2392,23 @@ export class MazmorraService {
     if(hechizo.daño_entrante>0){
       //this.loggerService.log("-----> Daño: "+ hechizo.daño_entrante,"orangered");
       if(tipoCaster=="heroes"){
-        this.sesion.render.estadisticas[indexCaster].daño[this.sesion.render.estadisticas[indexCaster].daño.length-1] += hechizo.daño_entrante;
+          this.sesion.render.estadisticasTotal[indexCaster]["daño"] += hechizo.daño_entrante;
       }
     }
 
     if(hechizo.heal_entrante>0){
       //this.loggerService.log("-----> Heal: "+hechizo.heal_entrante,"lawngreen");
       if(tipoCaster=="heroes"){
-        this.sesion.render.estadisticas[indexCaster].heal[this.sesion.render.estadisticas[indexCaster].heal.length-1] += hechizo.heal_entrante;
+        this.sesion.render.estadisticasTotal[indexCaster]["heal"] += hechizo.heal_entrante;
       }
     }
 
     if(hechizo.escudo_entrante>0){
       //this.loggerService.log("-----> Escudo: "+hechizo.escudo_entrante);
       if(tipoCaster=="heroes"){
-        this.sesion.render.estadisticas[indexCaster].escudo[this.sesion.render.estadisticas[indexCaster].escudo.length-1] += hechizo.escudo_entrante;
+        this.sesion.render.estadisticasTotal[indexCaster]["escudo"] += hechizo.escudo_entrante;
       }
     }
-
-    this.calcularEstadisticasTotales();
 
     //Elimina al enemigo si esta muerto:
         if(tipoObjetivo=="enemigos"){
@@ -2834,18 +2857,19 @@ export class MazmorraService {
     if(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].heal_t>0){
       this.loggerService.log("-----> Heal: "+this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].heal_t,"lawngreen");
       if(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(0,1)=="H"){
-        this.sesion.render.estadisticas[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))].heal[this.sesion.render.estadisticas[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))].heal.length-1] += this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].heal_t;
+
+        this.sesion.render.estadisticasTotal[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))]["heal"] += this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].heal_t;
+
       }
     }
         //this.sesion.render.estadisticas[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))].daño[this.sesion.render.estadisticas[parseInt(this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].origen.slice(1))].daño.length-1]+= this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].daño_t_entrante;
     if(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].escudo_t>0){
       this.loggerService.log("-----> Escudo: "+this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].escudo_t);
       if(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(0,1)=="H"){
-        this.sesion.render.estadisticas[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))].escudo[this.sesion.render.estadisticas[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))].escudo.length-1] += this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].escudo_t;
+        this.sesion.render.estadisticasTotal[parseInt(this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].origen.slice(1))]["escudo"] += this.sesion.render.heroes[indiceHeroe].buff[indiceBuff].escudo_t;
       }
     }
 
-    this.calcularEstadisticasTotales();
 
   }//Fin aplicar buff Final heroe
 
@@ -2898,7 +2922,8 @@ export class MazmorraService {
 
             //Guardar en estadisticas de daño:
       if(buff.tipoCaster=="heroes"){
-                this.sesion.render.estadisticas[buff.indexCaster].daño[this.sesion.render.estadisticas[buff.indexCaster].daño.length-1]+= buff.daño_t_entrante;
+
+                this.sesion.render.estadisticasTotal[buff.indexCaster]["daño"] += buff.daño_t_entrante;
       }
     }
 
@@ -2912,7 +2937,6 @@ export class MazmorraService {
       this.loggerService.log("-----> Escudo (Buffo): "+this.sesion.render.enemigos[indiceEnemigo].buff[indiceBuff].escudo_t_entrante);
     }
 
-    this.calcularEstadisticasTotales();
 
     //Evaluar enemigo muerto:
     if(this.sesion.render.enemigos[indiceEnemigo].vida <0){
@@ -3288,38 +3312,8 @@ export class MazmorraService {
 
       case "fallarHechizo":
 
-        //Consume energia:
-        var indexHeroeTurno = -1;
-        for(var i = 0; i < this.sesion.render.heroes.length; i++){
-            if(this.sesion.render.heroes[i].turno){
-                indexHeroeTurno = i;
-                break;
-            }
-        }
-
-        this.sesion.render.heroes[indexHeroeTurno].energia -= comando.valor.energia;
-
-        if(this.sesion.render.heroes[indexHeroeTurno].energia <0){
-            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
-        }
-        if(this.sesion.render.heroes[indexHeroeTurno].energia>100){
-            this.sesion.render.heroes[indexHeroeTurno].energia = 100;
-        }
-        if(this.sesion.render.heroes[indexHeroeTurno].energia==undefined
-        || this.sesion.render.heroes[indexHeroeTurno].energia==null){
-            this.sesion.render.heroes[indexHeroeTurno].energia = 0;
-        }
-
-        this.sesion.render.heroes[indexHeroeTurno].energiaFutura = this.sesion.render.heroes[indexHeroeTurno].energia + this.parametros.regenEnergiaTurno;
-
-        //Verificar valores de energiaFutura en los rangos:
-        if(this.sesion.render.heroes[indexHeroeTurno].energiaFutura < 0){
-            this.sesion.render.heroes[indexHeroeTurno].energiaFutura = 0;
-        }
-        if(this.sesion.render.heroes[indexHeroeTurno].energiaFutura > 100){
-            this.sesion.render.heroes[indexHeroeTurno].energiaFutura = 100;
-        }
-        
+        this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "fallarHechizo", contenido: comando.valor.energia});
+        this.fallarHechizo(comando.valor.energia);
         this.cancelarObjetivo();
 
         //CHECK TUTORIAL:
@@ -3605,36 +3599,6 @@ export class MazmorraService {
     return;
   }
 
-  calcularEstadisticasTotales(){
-
-    //Inicializa a 0 las estadisticas totales:
-    for(var i= 0; i < this.sesion.render.estadisticas.length; i++){
-        this.sesion.render.estadisticasTotal[i]["daño"] = 0;
-        this.sesion.render.estadisticasTotal[i]["heal"] = 0;
-        this.sesion.render.estadisticasTotal[i]["escudo"] = 0;
-        this.sesion.render.estadisticasTotal[i]["agro"] = 0;
-    }
-
-    //Calcula las estadisticas totales por jugador:
-    for(var i= 0; i < this.sesion.render.estadisticasTotal.length; i++){
-
-        //Sumar las estadisticas del registro de turnos:
-        for(var j= 0; j < this.sesion.render.estadisticas[i]["daño"].length; j++){
-            this.sesion.render.estadisticasTotal[i]["daño"] += this.sesion.render.estadisticas[i]["daño"][j]
-            this.sesion.render.estadisticasTotal[i]["heal"] += this.sesion.render.estadisticas[i]["heal"][j]
-            this.sesion.render.estadisticasTotal[i]["escudo"] += this.sesion.render.estadisticas[i]["escudo"][j]
-            this.sesion.render.estadisticasTotal[i]["agro"] += this.sesion.render.estadisticas[i]["agro"][j]
-        }
-
-        //Redondea las estadisticas totales
-        this.sesion.render.estadisticasTotal[i]["heal"]= Number(this.sesion.render.estadisticasTotal[i]["heal"].toFixed(2))
-        this.sesion.render.estadisticasTotal[i]["escudo"]= Number(this.sesion.render.estadisticasTotal[i]["escudo"].toFixed(2))
-        this.sesion.render.estadisticasTotal[i]["agro"]= Number(this.sesion.render.estadisticasTotal[i]["agro"].toFixed(2))
-        this.sesion.render.estadisticasTotal[i]["daño"]= Number(this.sesion.render.estadisticasTotal[i]["daño"].toFixed(2))
-    }
-
-    return;
-  }
 
   activarTemporizador(){
     if(!this.habilitarTemporizador){return;}

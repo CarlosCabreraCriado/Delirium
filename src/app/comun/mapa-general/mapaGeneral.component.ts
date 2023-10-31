@@ -51,28 +51,28 @@ export class MapaGeneralComponent implements OnInit {
     private bloqueoMovimiento: boolean = false;
     private direccionMovimientoPermitido: boolean[] = [true,true,true,true];
 
-	@Input() tileImgSeleccionado: number;
-	@Input() herramientaInMap: string;
-	@Input() opcionesDesarrolloInMap: any;
+    @Input() tileImgSeleccionado: number;
+    @Input() herramientaInMap: string;
+    @Input() opcionesDesarrolloInMap: any;
 
-	@Input() desarrollo: boolean = false;
-	@Input() mostrarNiebla: boolean = true;
-	@Input() mostrarNieblaFija: boolean = false;
-	@Input() mostrarInfranqueable: boolean = false;
-	@Input() mostrarTriggers: boolean = false;
-	@Input() mostrarCentro: boolean = false;
-	@Input() esTurnoPropio: boolean = false;
-	@Input() escalaMapaIsometrico: number = 1;
+    @Input() desarrollo: boolean = false;
+    @Input() mostrarNiebla: boolean = true;
+    @Input() mostrarNieblaFija: boolean = false;
+    @Input() mostrarInfranqueable: boolean = false;
+    @Input() mostrarTriggers: boolean = false;
+    @Input() mostrarCentro: boolean = false;
+    @Input() esTurnoPropio: boolean = false;
+    @Input() escalaMapaIsometrico: number = 1;
 
-	@Input() coordenadas: Coordenadas = null; //PENDINTE DECOMISION
-	@Input() radioRenderIsometrico: number;
+    @Input() coordenadas: Coordenadas = null; //PENDINTE DECOMISION
+    @Input() radioRenderIsometrico: number;
 
     //Emisores de eventos:
     @Output() tileCopiado = new EventEmitter<number>();
     @Output() tileSeleccionado = new EventEmitter<{x: number, y: number, xAntigua: number, yAntigua: number, ignoraGuardado: boolean}>();
 
-  	@ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
-  	@ViewChild('pinchZoom',{static: false}) private pinchZoom: PinchZoomComponent;
+    @ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
+    @ViewChild('pinchZoom',{static: false}) private pinchZoom: PinchZoomComponent;
 
     //Suscripciones:
     private appServiceSuscripcion: Subscription
@@ -80,7 +80,7 @@ export class MapaGeneralComponent implements OnInit {
 
     public sesion: any;
 
-	constructor(private mapaGeneralService: MapaGeneralService, private cdr: ChangeDetectorRef, public appService: AppService, public triggerService: TriggerService, private inmapService: InMapService) {
+    constructor(private mapaGeneralService: MapaGeneralService, private cdr: ChangeDetectorRef, public appService: AppService, public triggerService: TriggerService, private inmapService: InMapService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
     }
 
@@ -347,7 +347,36 @@ export class MapaGeneralComponent implements OnInit {
                 //Añadir ROW NORESTE:
                 this.bloqueoMovimiento = true;
 
-                var clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(minRenderY,maxRenderY+1);
+                var clone = null; 
+                if(minRenderX-1 < 0){
+                    clone = []
+                    for(var i = 0; i < ((2*this.mapaGeneralService.radioRenderIsometrico)+1); i++){
+                        clone.push(this.mapaGeneralService.crearTileFinMapa(minRenderX-1,i));
+                    }
+                }else{
+
+                    var sliceAnterior = [];
+                    var slicePosterior = [];
+
+                    clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(minRenderY,maxRenderY+1);
+
+                    if(minRenderY < 0){
+                        for(var j=0; j < (minRenderY*(-1)); j++){
+                            sliceAnterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
+                        }
+                        clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(0,maxRenderY+1) 
+                    }
+                    if(maxRenderY > this.mapaGeneralService.region.isometrico[0].length){
+                        for(var j=0; j <= (maxRenderY-this.mapaGeneralService.region.isometrico[0].length); j++){
+                            slicePosterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
+                        }
+                        clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(minRenderY,this.mapaGeneralService.region.isometrico[0].length) 
+                    }
+
+                    clone= sliceAnterior.concat(clone).concat(slicePosterior);
+
+                }
+
                 this.animacionAddRow = true;
 
                 console.log("MOVIENDO")
@@ -372,7 +401,36 @@ export class MapaGeneralComponent implements OnInit {
                 //Añadir ROW SUROESTE:
                 this.bloqueoMovimiento = true;
 
-                var clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(minRenderY,maxRenderY+1);
+                var clone = null; 
+                if(!this.mapaGeneralService.region.isometrico[maxRenderX+1]){
+                    clone = []
+                    for(var i = 0; i < ((2*this.mapaGeneralService.radioRenderIsometrico)+1); i++){
+                        clone.push(this.mapaGeneralService.crearTileFinMapa(minRenderX+1,i));
+                    }
+                }else{
+
+                    var sliceAnterior = [];
+                    var slicePosterior = [];
+
+                    clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(minRenderY,maxRenderY+1);
+
+                    if(minRenderY < 0){
+                        for(var j=0; j < (minRenderY*(-1)); j++){
+                            sliceAnterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
+                        }
+                        clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(0,maxRenderY+1) 
+                    }
+                    if(maxRenderY > this.mapaGeneralService.region.isometrico[0].length){
+                        for(var j=0; j <= (maxRenderY-this.mapaGeneralService.region.isometrico[0].length); j++){
+                            slicePosterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
+                        }
+                        clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(minRenderY,this.mapaGeneralService.region.isometrico[0].length) 
+                    }
+
+                    clone= sliceAnterior.concat(clone).concat(slicePosterior);
+
+                }
+
                 this.animacionDeleteRow = true;
 
                 console.log("MOVIENDO")
@@ -408,9 +466,32 @@ export class MapaGeneralComponent implements OnInit {
                     });
                   this.animacionAddColumn = false;
                     for(var i = 0; i <= maxRenderY-minRenderY; i++){
-                        this.mapaGeneralService.renderIsometrico[i].push(
-                            this.mapaGeneralService.region.isometrico[minRenderX+i][maxRenderY+1]
-                        )
+
+                        if((maxRenderY+1) >= this.mapaGeneralService.region.isometrico[this.sesion.render.inmap.posicion_x].length){
+                            this.mapaGeneralService.renderIsometrico[i].push(
+                                this.mapaGeneralService.crearTileFinMapa(minRenderX+i,maxRenderY+1)
+                            )
+                        }else{
+
+                            if(this.mapaGeneralService.region.isometrico[minRenderX+i] && this.mapaGeneralService.region.isometrico[minRenderX+i][maxRenderY+1]){
+                                this.mapaGeneralService.renderIsometrico[i].push(
+                                    this.mapaGeneralService.region.isometrico[minRenderX+i][maxRenderY+1]
+                                )
+                            }else{
+                                this.mapaGeneralService.renderIsometrico[i].push(
+                                    this.mapaGeneralService.crearTileFinMapa(0,0)
+                                )
+                            }
+
+                            /*
+                            this.mapaGeneralService.renderIsometrico[i].push(
+                                this.mapaGeneralService.region.isometrico[minRenderX+i][maxRenderY+1]
+                            )
+                            */
+
+                        }
+
+                            
                     }
 
                     for(var i = 0; i <= maxRenderY-minRenderY; i++){
@@ -439,9 +520,33 @@ export class MapaGeneralComponent implements OnInit {
 
                     this.animacionDeleteColumn = false;
                     for(var i = 0; i <= maxRenderY-minRenderY; i++){
+
+                        if((minRenderY-1) < 0){
+                            console.log("RECONSTRUYENDO")
+                            this.mapaGeneralService.renderIsometrico[i].unshift(
+                                this.mapaGeneralService.crearTileFinMapa(minRenderX+i,maxRenderY+1)
+                            )
+
+                        }else{
+
+                            if(this.mapaGeneralService.region.isometrico[minRenderX+i] && this.mapaGeneralService.region.isometrico[minRenderX+i][minRenderY-1]){
+                                this.mapaGeneralService.renderIsometrico[i].unshift(
+                                    this.mapaGeneralService.region.isometrico[minRenderX+i][minRenderY-1]
+                                )
+                            }else{
+                                this.mapaGeneralService.renderIsometrico[i].unshift(
+                                    this.mapaGeneralService.crearTileFinMapa(0,0)
+                                )
+                            }
+
+                        }
+
+                        /*
                         this.mapaGeneralService.renderIsometrico[i].unshift(
                             this.mapaGeneralService.region.isometrico[minRenderX+i][minRenderY-1]
                         )
+                        */
+
                     }
 
                     for(var i = 0; i <= maxRenderY-minRenderY; i++){
