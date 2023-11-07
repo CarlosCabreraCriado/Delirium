@@ -94,7 +94,7 @@
 	<!--      ICONO RELOAD    -->
 	<!--   ******************* -->
 
-  <img id="iconoReload" src="../../../assets/desarrollador/reload.png" (click)="reloadDatos()"/>
+  <img id="iconoReload" src="../../../assets/desarrollador/reload.png" (click)="appService.reloadPage()"/>
 
 	<!--   ******************* -->
 	<!--      Social    -->
@@ -146,7 +146,7 @@
 
     <panelControlComponent (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"
             [tipo]="'mazmorra'"
-            [vida]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].vida"
+            [vida]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].puntosVida"
             [energia]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energia"
             [energiaFutura]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energiaFutura"
             [turno]= "mazmorraService.estadoControl.esTurnoPropio"

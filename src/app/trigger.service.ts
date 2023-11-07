@@ -84,37 +84,37 @@ export class TriggerService {
         if(triggerActivo["condicionInicial"]["activado"]){
             switch(triggerActivo["condicionInicial"]["operador"]){
                 case "==":
-                    if(!(this.sesion.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
+                    if(!(this.sesion.render.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
                         == triggerActivo["condicionInicial"]["valorComparado"])){
                         return;
                     }
                     break;
                 case "!=":
-                    if(!(this.sesion.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
+                    if(!(this.sesion.render.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
                         != triggerActivo["condicionInicial"]["valorComparado"])){
                         return;
                     }
                     break;
                 case "menor":
-                    if(!(this.sesion.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
+                    if(!(this.sesion.render.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
                         < triggerActivo["condicionInicial"]["valorComparado"])){
                         return;
                     }
                     break;
                 case "mayor":
-                    if(!(this.sesion.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
+                    if(!(this.sesion.render.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
                         > triggerActivo["condicionInicial"]["valorComparado"])){
                         return;
                     }
                     break;
                 case "menorIgual":
-                    if(!(this.sesion.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
+                    if(!(this.sesion.render.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
                         <= triggerActivo["condicionInicial"]["valorComparado"])){
                         return;
                     }
                     break;
                 case "mayorIgual":
-                    if(!(this.sesion.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
+                    if(!(this.sesion.render.variablesMundo[triggerActivo["condicionInicial"]["variable"]]
                         >= triggerActivo["condicionInicial"]["valorComparado"])){
                         return;
                     }

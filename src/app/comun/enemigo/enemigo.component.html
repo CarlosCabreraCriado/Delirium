@@ -11,11 +11,11 @@
     <div class="marcaColor" [ngStyle]="{'background': renderEnemigo.color}"></div>
 
         <appAnimacionEfecto #animacionEfecto [loop]="false" [animacion]="renderEnemigo.animacion" [mostrarAnimacion]="renderEnemigo.mostrarAnimacion"></appAnimacionEfecto>
-        <appAnimacionNumero #animacionNumero [enemigo]="renderEnemigo" [enemigoVida]="renderEnemigo.vida" [enemigoIndex]="indexEnemigo"></appAnimacionNumero>
 
 	</div>
 
     <div class="wrapperDesplegable">
+        <appAnimacionNumero id="animacionNumero" #animacionNumero [enemigo]="renderEnemigo" [enemigoVida]="renderEnemigo.puntosVida" [enemigoIndex]="indexEnemigo"></appAnimacionNumero>
         <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
             <div class="frameDetalle"></div>
             <div class="nombreEnemigo Texto4">{{renderEnemigo.nombre}}</div>

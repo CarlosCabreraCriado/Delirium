@@ -50,11 +50,18 @@
     </div>
 
         <div class="efecto Texto2" *ngIf="objeto.tipo=='Pesada'">
-            Pesado: -5% Daño Total 
+            Defensivo: +2.5% Defensa Total 
+        </div>
+
+        <div class="efecto Texto2" *ngIf="objeto.tipo=='Pesada'">
+            Defensivo: -2.5% Daño Total 
         </div>
 
         <div class="efecto Texto2" *ngIf="objeto.tipo=='Ligera'">
-            Ligero: +5% Daño Total
+            Agresivo: +2.5% Daño Total
+        </div>
+        <div class="efecto Texto2" *ngIf="objeto.tipo=='Ligera'">
+            Agresivo: -2.5% Defensa Total
         </div>
 
         <ng-container *ngIf="tooltipTextoBoton=='Desequipar'"(click)="pulsarBoton()">

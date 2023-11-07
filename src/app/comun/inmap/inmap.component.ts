@@ -25,10 +25,14 @@ export class InMapComponent implements OnInit {
     //Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription = null;
 
+    //Declara Suscripcion InmapService:
+    private subscripcionInMapService: Subscription = null;
+
+    //Declara Suscripcion AppService:
     private appServiceSuscripcion: Subscription = null;
 
     //Declara Suscripcion Evento EventosService:
-    private eventosSuscripcion: Subscription;
+    private eventosSuscripcion: Subscription = null;
 
     constructor(private eventosService: EventosService, private cdr: ChangeDetectorRef, private dialog: MatDialog, public appService: AppService, public inmapService: InMapService, private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
@@ -61,6 +65,7 @@ export class InMapComponent implements OnInit {
 
                     case "triggerChangeDetection":
                         this.cdr.detectChanges();
+                        console.error("TRIGGER CHANGE DETECTION")
                         break;
                 }
             this.cdr.detectChanges();
@@ -78,6 +83,11 @@ export class InMapComponent implements OnInit {
                     this.inmapService.setHashRecibido(data.contenido);
                 }
             break;
+
+            case "iniciarPartida":
+                this.inmapService.iniciarPartida(data.contenido);
+                this.cdr.detectChanges();
+                break;
 
             case "comandoPartida":
                 console.warn("Peticion: "+data.peticion);
@@ -134,6 +144,18 @@ export class InMapComponent implements OnInit {
             }
         }); //FIN EVENTO SUSCRIPTION:
 
+        //suscripcion InmapService:
+        this.subscripcionInMapService = this.inmapService.subscripcionInMapService.subscribe((val) => {
+            switch(val){
+                /*
+                case "triggerChangeDetection":
+                    this.cdr.detectChanges();
+                    console.error("TRIGGER CHANGE DETECTION",this.sesion)
+                    break;
+                    */
+            }
+        }); //FIN EVENTO SUSCRIPTION:
+
         //Comprueba el Logueo carga el perfil en Servicio InMap:
         this.inmapService.cargarPerfil().then(() => {
 
@@ -160,6 +182,7 @@ export class InMapComponent implements OnInit {
         this.appServiceSuscripcion.unsubscribe();
         this.socketSubscripcion.unsubscribe();
         this.eventosSuscripcion.unsubscribe();
+        this.subscripcionInMapService.unsubscribe();
     }
 
     reloadDatos(){

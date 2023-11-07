@@ -179,9 +179,13 @@ export class AppComponent implements OnInit{
                 case "solicitudReclutarServer":
                     this.appService.procesarSolicitudReclutar(data);
                 break
+
                 case "actualizarHechizosEquipados":
                     this.appService.setHechizosEquipados(data.personajeIndex,data.hechizosEquipadosIDs);
                     break;
+
+
+
             }//FIN SWITCH
             this.appService.desactivarComandoSocket();
         });

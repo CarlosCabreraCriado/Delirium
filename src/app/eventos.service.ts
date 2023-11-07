@@ -274,27 +274,27 @@ export class EventosService {
         switch(orden["comando"]){
             case "add":
             case "modificar":
-                this.sesion.variablesMundo[orden.variableTarget] = orden.valorNuevo;
+                this.sesion.render.variablesMundo[orden.variableTarget] = orden.valorNuevo;
                 break;
             case "remove":
-                this.sesion.variablesMundo[orden.variableTarget] = null;
+                this.sesion.render.variablesMundo[orden.variableTarget] = null;
                 if(orden.variableTarget=="tutorial"){
                     console.warn("FINN TUTOO")
                     this.eventoInMapEmitter.emit({comando: "finalizarTutorial"})
                 }
                 break;
             case "removeAll":
-                this.sesion.variablesMundo = {};
+                this.sesion.render.variablesMundo = {};
                 break;
             case "suma":
                 var valorInicial = Number(this.sesion.variablesMundo[orden.variableTarget]);
                 var valorOperador = Number(orden.valorOperador);
-                this.sesion.variablesMundo[orden.variableTarget]= valorInicial + valorOperador;
+                this.sesion.render.variablesMundo[orden.variableTarget]= valorInicial + valorOperador;
                 break;
             case "multiplica":
-                var valorInicial = Number(this.sesion.variablesMundo[orden.variableTarget]);
+                var valorInicial = Number(this.sesion.render.variablesMundo[orden.variableTarget]);
                 var valorOperador = Number(orden.valorOperador);
-                this.sesion.variablesMundo[orden.variableTarget]= valorInicial * valorOperador;
+                this.sesion.render.variablesMundo[orden.variableTarget]= valorInicial * valorOperador;
                 break;
         }
         this.ejecutarOrden(indexOrden+1)
@@ -309,7 +309,7 @@ export class EventosService {
         // Comando Variable:
         switch(orden["operador"]){
             case "==":
-                if(this.sesion.variablesMundo[orden.variable] == orden.valorVariable){
+                if(this.sesion.render.variablesMundo[orden.variable] == orden.valorVariable){
                     condicionSuperada = true;
                 }else{
                     condicionSuperada = false;
@@ -317,35 +317,35 @@ export class EventosService {
                 break;
 
             case "<":
-                if(Number(this.sesion.variablesMundo[orden.variable]) < Number(orden.valorVariable)){
+                if(Number(this.sesion.render.variablesMundo[orden.variable]) < Number(orden.valorVariable)){
                     condicionSuperada = true;
                 }else{
                     condicionSuperada = false;
                 }
                 break;
             case ">":
-                if(Number(this.sesion.variablesMundo[orden.variable]) > Number(orden.valorVariable)){
+                if(Number(this.sesion.render.variablesMundo[orden.variable]) > Number(orden.valorVariable)){
                     condicionSuperada = true;
                 }else{
                     condicionSuperada = false;
                 }
                 break;
             case "!=":
-                if(Number(this.sesion.variablesMundo[orden.variable]) != Number(orden.valorVariable)){
+                if(Number(this.sesion.render.variablesMundo[orden.variable]) != Number(orden.valorVariable)){
                     condicionSuperada = true;
                 }else{
                     condicionSuperada = false;
                 }
                 break;
             case "<=":
-                if(Number(this.sesion.variablesMundo[orden.variable]) <= Number(orden.valorVariable)){
+                if(Number(this.sesion.render.variablesMundo[orden.variable]) <= Number(orden.valorVariable)){
                     condicionSuperada = true;
                 }else{
                     condicionSuperada = false;
                 }
                 break;
             case ">=":
-                if(Number(this.sesion.variablesMundo[orden.variable]) >= Number(orden.valorVariable)){
+                if(Number(this.sesion.render.variablesMundo[orden.variable]) >= Number(orden.valorVariable)){
                     condicionSuperada = true;
                 }else{
                     condicionSuperada = false;

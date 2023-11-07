@@ -426,7 +426,7 @@ export class AppService {
       console.log(datosJuego);
 
       if(!this.ionic){
-      window.electronAPI.setDatosJuego(datosJuego)
+        window.electronAPI.setDatosJuego(datosJuego)
       }
 
       return;
@@ -497,11 +497,14 @@ export class AppService {
 
 
   setHechizosEquipados(indexPersonaje, hechizosEquipadosIDs){
-      this._sesion.value.jugadores[this._estadoApp.value.jugadorPropioSesionIndex].personaje.hechizos.equipados = hechizosEquipadosIDs;
+
+      this._sesion.value.jugadores[indexPersonaje].personaje.hechizos.equipados = hechizosEquipadosIDs;
+
       if(indexPersonaje == this._estadoApp.value.heroePropioSesionIndex){
         this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex].hechizos.equipados = hechizosEquipadosIDs;
         this.setPerfil(this.perfil);
       }
+
       if(!this.comandoSocketActivo){
         this.socketService.enviarSocket("actualizarHechizosEquipados",{personajeIndex: this._estadoApp.value.heroePropioSesionIndex, hechizosEquipadosIDs: hechizosEquipadosIDs});
       }
@@ -671,7 +674,11 @@ export class AppService {
           console.log(result)
 
       if(result === "cerrarSesion") {
-              this.logout();
+            this.logout();
+      }
+
+      if(result === "abandonarPartida") {
+            this.abandonarPartida();
       }
 
       if(result === "Developer Tool") {
@@ -680,6 +687,10 @@ export class AppService {
 
       if(result === "ForzarSync") {
         this.observarAppService.next("ForzarSync");
+      }
+
+      if(result === "Data Sync") {
+          this.reloadDatos();
       }
 
       if(result === "MultiControl") {
@@ -945,8 +956,10 @@ export class AppService {
     }
 
     abandonarPartida(){
-      this.observarAppService.next("AbandonarPartida");
-      return;
+      //this.observarAppService.next("AbandonarPartida");
+        console.warn("Abandonando Partida...")
+        this.socketService.enviarSocket("abandonarPartida",{});
+        return;
     }
 
     abrirEvento(){
@@ -1029,6 +1042,7 @@ export class AppService {
                   acciones: 2,
                   recursoEspecial: 0,
                   estadisticas: {
+                    vidaMaxima: null,
                     armadura: null,
                     resistenciaMagica: null,
                     vitalidad: null,
@@ -1050,6 +1064,7 @@ export class AppService {
             }
 
             heroeRender["estadisticas"] = this.logicService.calcularEstadisticasBaseHeroe(heroeSeleccionado);
+            heroeRender["puntosVida"] = heroeRender["estadisticas"]["vidaMaxima"];
 
             this._sesion.value["render"]= {
                 heroes: [heroeRender],
@@ -1069,17 +1084,16 @@ export class AppService {
                 indexActivacionEnemigo: 0
             }
 
-            console.error(heroeSeleccionado)
             if(heroeSeleccionado.mundos[0]){
-                this._sesion.value["variablesMundo"] = heroeSeleccionado.mundos[0] 
+                this._sesion.value["render"]["variablesMundo"] = heroeSeleccionado.mundos[0] 
             }else{
-                this._sesion.value["variablesMundo"] = {
+                this._sesion.value["render"]["variablesMundo"] = {
                     tutorial: "true"
                 }
             }
 
             //Inicializa Posición Si se inicia el tutorial:
-            if(this._sesion.value["variablesMundo"]["tutorial"] == "true"){
+            if(this._sesion.value["render"]["variablesMundo"]["tutorial"] == "true"){
                 //COORDENADAS INICIO TUTORIAL:
                 this._sesion.value["render"]["inmap"]= {
                     posicion_x: 56,
@@ -1108,7 +1122,7 @@ export class AppService {
 
     async peticionGuardarPerfil(){
 
-        this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex].mundos = [this._sesion.value.variablesMundo];
+        this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex].mundos = [this._sesion.value.render.variablesMundo];
         console.warn("GUARDANDO PERFIL: ",this.perfil)
 
         var token = await this.getToken();
@@ -1173,22 +1187,33 @@ export class AppService {
         });
     }
 
+    reloadPage(){
+        window.location.reload();
+    }
+
     async reloadDatos(){
 
+        this.mostrarPantallacarga(true);
         var token = await this.getToken()
         console.log("Usando token: ",token)
+        console.log("RELOAD DATOS JUEGO: ",token)
 
         this.http.post(this.ipRemota+"/deliriumAPI/cargarDatosJuego",{token: token}).subscribe((data) => {
-
-            console.log("Datos: ")
-            console.log(data)
+                console.log("Datos: ")
+                console.log(data)
                 if(data){
                   this.setDatosJuego(data);
-                  window.location.reload();
                 }
 
+                setTimeout(()=>{
+                    //this.mostrarPantallacarga(false);
+                    this.reloadPage()
+                }, 3000);
+
               },(err) => {
-                //this.loggerService.log("Error de adquisición de datos","red");
+                setTimeout(()=>{
+                    this.mostrarPantallacarga(false);
+                }, 2000);
               });
     }
 

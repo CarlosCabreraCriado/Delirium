@@ -573,8 +573,12 @@ export class MapaGeneralComponent implements OnInit {
       if(this.mapaGeneralService.renderIsometrico[centro+1][centro]["atravesable"]){movimiento[2]=true}
       if(this.mapaGeneralService.renderIsometrico[centro][centro-1]["atravesable"]){movimiento[3]=true}
 
-      this.direccionMovimientoPermitido = movimiento;
+      if(!this.sesion.iniciada){
+           movimiento = [false,false,false,false]; 
+      }
 
+      this.direccionMovimientoPermitido = movimiento;
+      this.cdr.detectChanges();
   } // Fin Check Movimiento Valido
 
 } //Fin Componente

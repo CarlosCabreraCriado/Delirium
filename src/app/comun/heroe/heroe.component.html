@@ -45,12 +45,12 @@
 
         <appAnimacionEfecto #animacionEfecto [loop]="false" [animacion]="renderHeroe.animacion" [mostrarAnimacion]="renderHeroe.mostrarAnimacion"></appAnimacionEfecto>
 
-        <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.vida"></appAnimacionNumero>
 
 	</div>
 
     <!-- DETALLE -->
     <div class="wrapperDesplegable">
+        <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.puntosVida"></appAnimacionNumero>
         <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
             <div class="fondoDetalle">
                 <div class="frameDetalle"></div>

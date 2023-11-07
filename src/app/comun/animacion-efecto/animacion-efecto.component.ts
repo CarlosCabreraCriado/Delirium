@@ -118,9 +118,9 @@ export class AnimacionEfectoComponent implements OnChanges, OnInit {
     efectoSonidoPlay(sonido:any): void{
         this.efectoSonido.src = "./assets/sounds/"+sonido.id+"."+sonido.extension;
         this.efectoSonido.load();
-        this.efectoSonido.play();
         this.efectoSonido.volume= 1;
-        }
+        this.efectoSonido.play();
+    }
 
    ngOnChanges(changes: SimpleChanges) {
 

@@ -43,18 +43,15 @@ export class LogicService {
           critico_base: 0,
           armadura: 0,
           multiplicadorDanoTipoArmadura: 1,
-          multiplicadorDanoTipoArmaduraPercent: 100,
+          multiplicadorDefensaTipoArmadura: 1,
           potenciaCritico: 0,
           potenciaCriticoFisico: 0,
           potenciaCriticoMagico: 0,
           probabilidadCritico: 0,
-          probabilidadCriticoPercent: 0,
           resistenciaMagica: 0,
           vitalidad: 0,
           reduccionArmadura: 0,
-          reduccionArmaduraPercent: 0,
           reduccionResistencia: 0,
-          reduccionResistenciaPercent: 0
         }
 
         //---------------------
@@ -75,6 +72,7 @@ export class LogicService {
             case "sacerdote":
                 indexClase = 3
                 break;
+            case "ladrón":
             case "ladron":
                 indexClase = 4
                 break;
@@ -96,6 +94,8 @@ export class LogicService {
 
         //Añadir estadisticas de objetos equipados:
         var multiplicadorDañoTipoArmadura = 1;
+        var multiplicadorDefensaTipoArmadura = 1;
+
         for(var i = 0; i < personaje.objetos.equipado.length; i++){
             if(personaje.objetos.equipado[i] == null){continue;}
             estadisticas.pa = estadisticas.pa + personaje.objetos.equipado[i].estadisticas.PA
@@ -106,9 +106,15 @@ export class LogicService {
             estadisticas.armadura = estadisticas.armadura + personaje.objetos.equipado[i].estadisticas.armadura
             estadisticas.vitalidad = estadisticas.vitalidad + personaje.objetos.equipado[i].estadisticas.vitalidad
             estadisticas.resistenciaMagica = estadisticas.resistenciaMagica + personaje.objetos.equipado[i].estadisticas.resistencia_magica
-            if(personaje.objetos.equipado[i].tipo == "Pesada"){multiplicadorDañoTipoArmadura += this.parametros.objetos.modificadorDanoPesada}
+
             if(personaje.objetos.equipado[i].tipo == "Ligera"){multiplicadorDañoTipoArmadura += this.parametros.objetos.modificadorDanoLigera}
+            if(personaje.objetos.equipado[i].tipo == "Pesada"){multiplicadorDañoTipoArmadura += this.parametros.objetos.modificadorDanoPesada}
+            if(personaje.objetos.equipado[i].tipo == "Pesada"){multiplicadorDefensaTipoArmadura += this.parametros.objetos.modificadorDefensaPesada}
+            if(personaje.objetos.equipado[i].tipo == "Ligera"){multiplicadorDefensaTipoArmadura += this.parametros.objetos.modificadorDefensaLigera}
         }
+
+        multiplicadorDañoTipoArmadura = Math.round(multiplicadorDañoTipoArmadura * 100) / 100;
+        multiplicadorDefensaTipoArmadura = Math.round(multiplicadorDefensaTipoArmadura * 100) / 100;
 
         estadisticas.pa_base = estadisticas.pa
         estadisticas.ap_base = estadisticas.ap
@@ -120,8 +126,11 @@ export class LogicService {
         estadisticas.ad = this.redondeo(estadisticas.ad * multiplicadorDañoTipoArmadura);
         estadisticas.critico = this.redondeo(estadisticas.critico * multiplicadorDañoTipoArmadura);
 
+        estadisticas.vitalidad = this.redondeo(estadisticas.vitalidad * multiplicadorDefensaTipoArmadura);
+        estadisticas.armadura = this.redondeo(estadisticas.armadura * multiplicadorDefensaTipoArmadura);
+        estadisticas.resistenciaMagica = this.redondeo(estadisticas.resistenciaMagica * multiplicadorDefensaTipoArmadura);
+        estadisticas.multiplicadorDefensaTipoArmadura = multiplicadorDefensaTipoArmadura;
         estadisticas.multiplicadorDanoTipoArmadura = multiplicadorDañoTipoArmadura;
-        estadisticas.multiplicadorDanoTipoArmaduraPercent = this.redondeo(100*(multiplicadorDañoTipoArmadura-1));
 
         //Calculo de la vida Maxima (HEROE):
 
@@ -156,7 +165,6 @@ export class LogicService {
         probabilidadCritico = Math.round(probabilidadCritico * 100) / 100;
         potenciaCritico = Math.round(potenciaCritico * 100) / 100;
         estadisticas.probabilidadCritico = probabilidadCritico;
-        estadisticas.probabilidadCriticoPercent = Math.round(probabilidadCritico*100);
         estadisticas.potenciaCritico = potenciaCritico;
         estadisticas.potenciaCriticoFisico = potenciaCriticoFisico;
         estadisticas.potenciaCriticoMagico = potenciaCriticoMagico;
@@ -176,7 +184,6 @@ export class LogicService {
 
         reduccionArmadura = Math.round(reduccionArmadura * 100) / 100;
         estadisticas.reduccionArmadura = reduccionArmadura;
-        estadisticas.reduccionArmaduraPercent = Math.round(reduccionArmadura*100);
 
         //RANGOS RESISTENCIA:
         var resistenciaMaxPercent = this.parametros.armaduraMax;
@@ -189,7 +196,6 @@ export class LogicService {
         var reduccionResistencia = resistenciaMinPercent+((estadisticas.resistenciaMagica-resMin)/(resMax-resMin))*(resistenciaMaxPercent-resistenciaMinPercent);
         reduccionResistencia = Math.round(reduccionResistencia * 100) / 100;
         estadisticas.reduccionResistencia = reduccionResistencia;
-        estadisticas.reduccionResistenciaPercent = Math.round(reduccionResistencia*100);
 
         //RANGOS VITALIDAD:
         var vitMin = this.parametros.heroes.base["vitalidad"]+(nivel*this.parametros.heroes.escalado["vitalidad"]);
@@ -222,21 +228,18 @@ export class LogicService {
           critico: 0,
           potenciaCritico: 0,
           probabilidadCritico: 0,
-          probabilidadCriticoPercent: 0,
           resistenciaMagica: 0,
           vitalidad: 0,
           reduccionArmadura: 0,
-          reduccionArmaduraPercent: 0,
-          reduccionResistencia: 0,
-          reduccionResistenciaPercent: 0
+          reduccionResistencia: 0
         }
 
         //---------------------
         //  CALCULO ENEMIGO
         //---------------------
 
-        //Calcula estadisticas ENEMIGO:
-            var indexTipoEnemigo = this.enemigos.findIndex( i => i.id == enemigo.enemigo_id);
+            //Calcula estadisticas ENEMIGO:
+            var indexTipoEnemigo = this.enemigos.findIndex( i => i.id == enemigo.tipo_enemigo_id);
 
             nivel = Number(enemigo.nivel);
 
@@ -259,7 +262,6 @@ export class LogicService {
             reduccionArmadura = Math.round(reduccionArmadura * 100) / 100;
             estadisticas.reduccionArmadura = reduccionArmadura;
 
-            estadisticas.reduccionArmaduraPercent = Math.round(reduccionArmadura*100);
 
             //RANGOS RESISTENCIA:
             var resistenciaMaxPercent = this.parametros.armaduraMax;
@@ -270,7 +272,6 @@ export class LogicService {
             var reduccionResistencia = resistenciaMinPercent+((estadisticas.resistenciaMagica-resMin)/(resMax-resMin))*(resistenciaMaxPercent-resistenciaMinPercent);
             reduccionResistencia = Math.round(reduccionResistencia * 100) / 100;
             estadisticas.reduccionResistencia = reduccionResistencia;
-            estadisticas.reduccionResistenciaPercent = Math.round(reduccionResistencia*100);
 
             //RANGOS VITALIDAD:
             var vitMin = this.parametros.enemigos.base["vitalidad"]+ (nivel * this.parametros.enemigos.escalado["vitalidad"]);
@@ -283,6 +284,7 @@ export class LogicService {
             estadisticas.vidaMaxima = Math.round(estadisticas.vidaMaxima * 10) / 10;
 
             estadisticas.pa = 0
+
             return estadisticas;
 
   } //Fin calcular estadisticas Base Enemigo

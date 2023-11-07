@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { RenderReticula } from './renderReticula.class';
 import { Subject } from "rxjs";
 import * as XLSX from 'xlsx';
+import * as cloneDeep from 'lodash/cloneDeep';
 import { TipoDatos } from "./tiposDesarrollador.class"
 import { directorioAssets } from "./propiedadesAssets"
 import { datosDefecto } from "./datosDefecto"
@@ -639,26 +640,26 @@ export class DesarrolladorService implements OnInit{
 
             case "Animaciones":
               console.error("AÑADIENDO")
-                this.animaciones.animaciones.push(Object.assign({},datosDefecto.animaciones));
+                this.animaciones.animaciones.push(cloneDeep(datosDefecto.animaciones));
                 this.animaciones.animaciones.at(-1)["id"]= this.findAvailableID(this.animaciones.animaciones);
                 this.animaciones.animaciones.at(-1)["nombre"]= "Animacion "+this.animaciones.animaciones.length;
             break;
 
             case "Enemigos":
-                this.enemigos.enemigos.push(Object.assign({},datosDefecto.enemigos));
+                this.enemigos.enemigos.push(cloneDeep(datosDefecto.enemigos));
                 this.enemigos.enemigos.at(-1)["id"]= this.findAvailableID(this.enemigos.enemigos);
                 this.enemigos.enemigos.at(-1)["nombre"]= "Enemigos "+this.enemigos.enemigos.length;
             break;
 
             case "Eventos":
-                this.eventos.eventos.push(Object.assign({},datosDefecto.eventos));
+                this.eventos.eventos.push(cloneDeep(datosDefecto.eventos));
                 console.error(this.findAvailableID(this.eventos.eventos));
                 this.eventos.eventos.at(-1)["id"]= this.findAvailableID(this.eventos.eventos);
                 this.eventos.eventos.at(-1)["nombre"]= "Evento "+this.eventos.eventos.length;
             break;
 
             case "Misiones":
-                this.misiones.misiones.push(Object.assign({},datosDefecto.misiones));
+                this.misiones.misiones.push(cloneDeep(datosDefecto.misiones));
                 this.misiones.misiones.at(-1)["id"]= this.findAvailableID(this.misiones.misiones);
                 this.misiones.misiones.at(-1)["nombre"]= "Mision "+this.misiones.misiones.length;
             break;
@@ -777,8 +778,8 @@ export class DesarrolladorService implements OnInit{
     console.warn("ANIMACION:",this.animaciones.animaciones[indexAnimacion])
       this.animacionSeleccionadoIndex= indexAnimacion;
 
-      this.subanimaciones = this.animaciones.animaciones[indexAnimacion].subanimaciones;
-      this.sonidos = this.animaciones.animaciones[indexAnimacion].sonidos;
+      this.subanimaciones = cloneDeep(this.animaciones.animaciones[indexAnimacion].subanimaciones);
+      this.sonidos = cloneDeep(this.animaciones.animaciones[indexAnimacion].sonidos);
 
       this.subanimacionSeleccionadoIndex= 0;
 

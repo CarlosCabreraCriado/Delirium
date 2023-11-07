@@ -183,6 +183,12 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
                   case "realizarMovimiento":
                     this.mazmorraService.realizarMovimiento(data.contenido)
+                    this.mazmorraService.cancelarObjetivo();
+                    this.cdr.detectChanges();
+                    break;
+
+                  case "lanzarGolpeOportunidad":
+                    this.mazmorraService.lanzarGolpeOportunidad(data.contenido)
                     this.cdr.detectChanges();
                     break;
 

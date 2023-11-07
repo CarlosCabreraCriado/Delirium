@@ -83,7 +83,7 @@ export class MapaGeneralService {
         var radioVision = this.radioRenderIsometrico;
         this.renderIsometrico = [];
 
-        if(this.sesion.variablesMundo["tutorial"] == "true" && !this.desarrollador){
+        if(this.sesion.render.variablesMundo["tutorial"] == "true" && !this.desarrollador){
             for(var i = 0; i < this.region.dimensionX; i++){
                 for(var j = 0; j < this.region.dimensionY; j++){
                     this.region.isometrico[i][j]["atravesable"]= false;
@@ -354,6 +354,10 @@ export class MapaGeneralService {
             "triggersInMapMisiones": [],
             "checkMisiones": []
         }
+  }
+
+  verificarMovimiento(){
+    this.eventoMapaGeneral.emit("verificarMovimiento");
   }
 
 }

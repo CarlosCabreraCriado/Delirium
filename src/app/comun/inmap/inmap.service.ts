@@ -124,7 +124,7 @@ export class InMapService {
 
         //Inicializa el grupo:
         if(this.sesion.iniciada == false){
-            this.sesion.iniciada = true;
+            //this.sesion.iniciada = true;
             this.socketService.enviarSocket("actualizarSesion",{peticion: "actualizarSesion", comando: "actualizarSesion", contenido: this.sesion});
         }
 
@@ -158,7 +158,7 @@ export class InMapService {
         }
         this.primeraCargaInMap = false;
         /*
-        if(this.sesion.variablesMundo["tutorial"] == "true" && this.estadoApp.pantalla == "inmap" && this.sesion.render.inmap.posicion_x == 56 && this.sesion.render.inmap.posicion_y == 48){
+        if(this.sesion.render.variablesMundo["tutorial"] == "true" && this.estadoApp.pantalla == "inmap" && this.sesion.render.inmap.posicion_x == 56 && this.sesion.render.inmap.posicion_y == 48){
             this.eventosService.ejecutarEvento(1,"General");
         }
         */
@@ -182,11 +182,13 @@ export class InMapService {
 
     }
 
-    iniciarPartida(nombreIdMazmorra: string):void{
+    /*
+    iniciarMazmorra(nombreIdMazmorra: string):void{
         //INICIANDO MAZMORRA:
         console.warn("INICIANDO...",nombreIdMazmorra)
         this.appService.iniciarMazmorra(nombreIdMazmorra);
     }
+    */
 
     realizarMovimientoInMap(direccion:"NorEste"|"SurEste"|"SurOeste"|"NorOeste"){
         
@@ -220,6 +222,7 @@ export class InMapService {
     }
 
     checkTurnoPropio(){
+        if(!this.sesion.render.heroes){return false;}
         if(this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex]["turno"]){
             return true;
         }
@@ -248,7 +251,7 @@ export class InMapService {
         //DETECTA SI ES EL ULTIMO HEROE:
         if(indexTurnoHeroe == this.sesion.render.heroes.length-1){
             // INICIA NOCHE
-            if(this.sesion.variablesMundo["tutorial"] != "true"){
+            if(this.sesion.render.variablesMundo["tutorial"] != "true"){
                 this.mostrarNoche= true;
             }
             setTimeout(()=>{
@@ -337,6 +340,30 @@ export class InMapService {
         this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
         this.socketService.enviarSocket("checkSinc",{peticion: "checkSinc", comando: "checkSinc", contenido: this.hash});
 
+    }
+
+    peticionIniciarPartida(){
+
+        const dialogoConfirmarUnirse = this.appService.mostrarDialogo("Confirmacion",{titulo: "¿Quieres iniciar la partida?", contenido: "Compruebe que todos los jugadores estén dentro del grupo antes de iniciar la partida."});
+
+        dialogoConfirmarUnirse.afterClosed().subscribe(result => {
+          console.log('Fin dialogo confirmacion Reclutamiento', result);
+          if(result){
+            this.sesion.iniciada = true;
+            this.socketService.enviarSocket("iniciarPartida",{peticion: "iniciarPartida", comando: "actualizarSesion", contenido: this.sesion});
+            this.iniciarPartida();
+          }
+        });
+    }
+
+    iniciarPartida(sesion?:any){
+        console.warn("INICIANDO PARTIDA...")
+        if(sesion){
+            this.sesion = sesion;
+        }
+        this.mapaGeneralService.verificarMovimiento();
+        this.appService.setSesion(this.sesion);
+        this.triggerService.checkTrigger("entrarCasilla",{posicion_x: this.sesion.render.inmap.posicion_x, posicion_y: this.sesion.render.inmap.posicion_y})
     }
 
 }

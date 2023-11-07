@@ -58,7 +58,7 @@
 	<!--      ICONO RELOAD    -->
 	<!--   ******************* -->
 
-  <img id="iconoReload" src="../../../assets/desarrollador/reload.png" (click)="reloadDatos()"/>
+  <img id="iconoReload" src="../../../assets/desarrollador/reload.png" (click)="appService.reloadPage()"/>
 
 	<!--   ******************* -->
 	<!--      Desarrollador    -->
@@ -79,20 +79,24 @@
 	<!--      Panel Control    -->
 	<!--   ******************* -->
 
-	<panelControlComponent id="panelControl"
+    <panelControlComponent id="panelControl" *ngIf="sesion.iniciada"
         [tipo]="'inMap'" 
         [mensajeControl]="inmapService.mensajeControl" 
         [movimientoRestante]="inmapService.movimientoRestante" 
         (comandoPanelControl)="comandoPanelControl($event)" >
-
     </panelControlComponent>
+
+    <div id="botonIniciarPartida" *ngIf="!sesion.iniciada">
+        <botonComponent mat-button (click)="inmapService.peticionIniciarPartida()" [ngClass]="{'botonDeshabilitado': !sesion.jugadores[estadoApp.jugadorPropioSesionIndex]?.lider}" [texto]="'Iniciar Aventura'" [tipoBoton]="2" [color]="'naranja'"></botonComponent>
+    </div>
+    
 
 	<!--   ******************* -->
 	<!--      Paneles Heroes   -->
 	<!--   ******************* -->
 	<div id="contenedorHeroes">
 
-        <heroeComponent *ngFor="let heroe of this.inmapService.sesion.render.heroes; let i = index" [desplegable]="true" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
+        <heroeComponent *ngFor="let heroe of this.inmapService.sesion.render.heroes; let i = index" [desplegable]="true" [lider]="sesion.jugadores[i].lider" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
 
 	</div>
 

@@ -53,7 +53,6 @@ export class InterfazService {
     public critico:boolean = false;
     private noCritico:boolean = false;
     public probabilidadCritico: number = 0;
-    public probabilidadCriticoPercent: number = 0;
 
     //MAZMORRA:
     private enemigos: any;
@@ -198,7 +197,6 @@ export class InterfazService {
                     }
                     break;
                 }
-
             }//fin for i
 
             //Verifica que haya objetivos posibles:
@@ -375,7 +373,6 @@ export class InterfazService {
 
     activarInterfazRNG(probabilidadCritico):void{
         this.probabilidadCritico = probabilidadCritico;
-        this.probabilidadCriticoPercent = Math.round(this.probabilidadCritico*100);
         console.warn("PROBABILIDAD: ",probabilidadCritico)
         this.pantallaInterfaz= "fortuna";
         this.setMostrarInterfaz(true);
@@ -387,10 +384,7 @@ export class InterfazService {
         this.tipoDetalle = tipo;
         this.renderDetalle = Object.assign({},renderDetalle);
 
-        this.renderDetalle.estadisticas.probabilidadCriticoPercent = Math.round(this.renderDetalle.estadisticas.probabilidadCritico*100);
 
-        this.renderDetalle.estadisticas["reduccionArmaduraPercent"] = Math.round(this.renderDetalle.estadisticas.reduccionArmadura*100);
-        this.renderDetalle.estadisticas["reduccionResistenciaPercent"] = Math.round(this.renderDetalle.estadisticas.reduccionResistencia*100);
 
         this.renderDetalle.estadisticas.potenciaCritico = Math.round(this.renderDetalle.estadisticas.potenciaCritico*100)/100;
         this.pantallaInterfaz= "detalle";
@@ -449,9 +443,21 @@ export class InterfazService {
     }
 
     realizarMovimiento(){
+       this.pantallaInterfaz= "golpeOportunidad";
+       this.observarInterfaz.next({comando: "golpeOportunidad"});
+       //this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento});
+       //this.desactivarInterfaz();
+       return;
+    }
+
+    lanzarGolpeOportunidad(){
+       this.observarInterfaz.next({comando: "lanzarGolpeOportunidad"});
+       this.desactivarInterfaz();
+    }
+
+    cancelarGolpeOportunidad(){
        this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento});
        this.desactivarInterfaz();
-       return;
     }
 
     cancelarMovimiento(){
@@ -545,6 +551,7 @@ export class InterfazService {
         this.observarInterfaz.next({comando: "reanimar",valor: {heroeIndex: this.indexHeroeAbatido}});
         this.desactivarInterfaz();
       }else{
+        this.observarInterfaz.next({comando: "fallarReanimar",valor: {heroeIndex: this.indexHeroeAbatido}});
         this.desactivarInterfaz();
       }
 
