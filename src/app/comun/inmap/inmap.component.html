@@ -88,7 +88,7 @@
         (comandoPanelControl)="comandoPanelControl($event)" >
     </panelControlComponent>
 
-    <div id="botonIniciarPartida" *ngIf="!sesion.iniciada">
+    <div id="botonIniciarPartida" *ngIf="!sesion.iniciada && inmapService.estadoInMap =='region'">
         <botonComponent mat-button (click)="inmapService.peticionIniciarPartida()" [ngClass]="{'botonDeshabilitado': !sesion.jugadores[estadoApp.jugadorPropioSesionIndex]?.lider}" [texto]="'Iniciar Aventura'" [tipoBoton]="2" [color]="'naranja'"></botonComponent>
     </div>
     
