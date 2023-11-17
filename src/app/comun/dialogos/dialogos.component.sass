@@ -314,12 +314,15 @@
         .decoracionSuperior
           position: absolute
           height: 100%
-      botonComponent
+      .botonUnico
         position: absolute
         width: 20%
         height: 10%
         bottom: 5%
-        right: 5%
+        &.siguiente
+          right: 5%
+        &.retroceder
+          right: 30%
       frameComponent
         position: absolute
         z-index: 1
@@ -415,12 +418,16 @@
         .decoracionSuperior
           position: absolute
           height: 100%
-      botonComponent
+      .botonUnico
         position: absolute
         width: 20%
         height: 10%
         bottom: 5%
-        right: 5%
+        &.siguiente
+          right: 5%
+        &.retroceder
+          right: 30%
+          
       frameComponent
         position: absolute
         z-index: 1

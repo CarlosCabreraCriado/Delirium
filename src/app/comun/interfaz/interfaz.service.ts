@@ -1,6 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { LogicService } from "../../logic.service"
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,13 @@ export class InterfazService {
     public pantallaInterfaz: string= "Hechizos";
     private bloquearInterfaz: boolean= true;
     public esTurno: boolean = false;
+    public flagTutorial: boolean = false;
+    public estadoTutorial: string = null;
 
     //Detalle:
     public tipoDetalle: "heroe"|"enemigo";
     public renderDetalle: any;
+    public buffDetalleSeleccionado: number= 0;
 
     //HEROE ABATIDO:
     public indexHeroeAbatido: number;
@@ -53,6 +57,7 @@ export class InterfazService {
     public critico:boolean = false;
     private noCritico:boolean = false;
     public probabilidadCritico: number = 0;
+    public probabilidadCriticoPercent: string = "";
 
     //MAZMORRA:
     private enemigos: any;
@@ -82,12 +87,20 @@ export class InterfazService {
     // Observable string streams
     observarInterfaz$ = this.observarInterfaz.asObservable();
 
-    constructor() { }
+    constructor(private logicService: LogicService) { }
 
     setPantallaInterfaz(val):void{
         this.pantallaInterfaz= val;
         this.setMostrarInterfaz(true);
       return;
+    }
+
+    setTutorial(val:boolean){
+        this.flagTutorial = val;
+    }
+
+    setEstadoTutorial(val:string){
+        this.estadoTutorial = val;
     }
 
     setHechizos(val){
@@ -373,6 +386,8 @@ export class InterfazService {
 
     activarInterfazRNG(probabilidadCritico):void{
         this.probabilidadCritico = probabilidadCritico;
+        this.probabilidadCriticoPercent = Math.round(probabilidadCritico*100)+" %";
+
         console.warn("PROBABILIDAD: ",probabilidadCritico)
         this.pantallaInterfaz= "fortuna";
         this.setMostrarInterfaz(true);
@@ -381,11 +396,9 @@ export class InterfazService {
 
     activarInterfazDetalle(tipo: "enemigo"|"heroe",renderDetalle:any):void{
         console.warn("RENDER DETALLE: ",renderDetalle);
+        this.buffDetalleSeleccionado = 0;
         this.tipoDetalle = tipo;
         this.renderDetalle = Object.assign({},renderDetalle);
-
-
-
         this.renderDetalle.estadisticas.potenciaCritico = Math.round(this.renderDetalle.estadisticas.potenciaCritico*100)/100;
         this.pantallaInterfaz= "detalle";
         this.setMostrarInterfaz(true);
@@ -443,10 +456,13 @@ export class InterfazService {
     }
 
     realizarMovimiento(){
-       this.pantallaInterfaz= "golpeOportunidad";
-       this.observarInterfaz.next({comando: "golpeOportunidad"});
-       //this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento});
-       //this.desactivarInterfaz();
+        if(this.flagTutorial){
+            this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento});
+            this.desactivarInterfaz();
+        }else{
+            this.pantallaInterfaz= "golpeOportunidad";
+            this.observarInterfaz.next({comando: "golpeOportunidad"});
+        }
        return;
     }
 
@@ -456,7 +472,7 @@ export class InterfazService {
     }
 
     cancelarGolpeOportunidad(){
-       this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento});
+       this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento, puntosMovimiento: this.puntosMovimiento});
        this.desactivarInterfaz();
     }
 

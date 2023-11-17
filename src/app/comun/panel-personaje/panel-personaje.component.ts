@@ -11,7 +11,7 @@ import { AppService } from '../../app.service';
 
 export class PanelPersonaje implements OnInit {
 
-	public pantalla = "General";
+	public pantalla = "Habilidades";
 	public mostrarSeleccionHeroe = false;
 
 	public idImagenHechizo= [5,1,2,3,4];

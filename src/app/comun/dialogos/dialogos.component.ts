@@ -3,6 +3,8 @@ import { Component , Inject, ViewChild,  ElementRef, OnInit } from '@angular/cor
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { BotonComponent } from '../boton/boton.component';
 import { FrameComponent } from '../frame/frame.component';
+import { SocketService } from '../socket/socket.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'dialogoComponent',
@@ -22,14 +24,38 @@ private confirmation: boolean = false;
     public textosDialogo: string[] = [];
     public indexTextoMostrado: number = 0;
     public opciones: any = [];
+    private indexOpcionSeleccionada: number = null;
+    private estadoJugadores: boolean[] = [];
+    private jugadorPropioSesionIndex: number = null;
 
-	constructor(public dialogRef: MatDialogRef<DialogoComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+    //Declara Suscripcion Evento Socket:
+    private socketSubscripcion: Subscription = null;
+
+	constructor(private socketService: SocketService, public dialogRef: MatDialogRef<DialogoComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
     ngOnInit(){
-        console.warn("Iniciando Dialogo:",this.data)
+
+        //Inicializa el estado de los jugadores:
+        this.jugadorPropioSesionIndex = 0;
+        this.estadoJugadores = [false];
+        this.indexOpcionSeleccionada = null;
+    
+        if(this.data["numJugadores"] != undefined && this.data["jugadorPropioSesionIndex"] != undefined ){
+            this.estadoJugadores = new Array(Number(this.data["numJugadores"])).fill(false);
+            this.jugadorPropioSesionIndex = this.data["jugadorPropioSesionIndex"];
+
+            if(typeof this.jugadorPropioSesionIndex != "number"){
+                console.error("Error: Dialogo Index jugador no es un numero");
+            }
+        }
+
+        //console.warn("Iniciando Dialogo:",this.data)
         this.textosDialogo = [];
         if(this.data.contenido){
             this.data.contenido = this.data.contenido.replaceAll("\n","</br>");
+            this.data.contenido = this.data.contenido.replaceAll("$bold$","<b>")
+            this.data.contenido = this.data.contenido.replaceAll("$/$","</b>")
+
             this.textosDialogo = this.data.contenido.split("$");
         }
 
@@ -39,6 +65,34 @@ private confirmation: boolean = false;
             this.opciones = this.data.opciones;
         }
 
+        //Suscripcion Socket:
+        this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
+            switch(data.peticion){
+                case "comandoPartida":
+                    switch(data.comando){
+
+                        case "terminarDialogo":
+                            //Cambiar flag de jugador:
+                            this.estadoJugadores[data.contenido] = true;
+                            for(var i = 0; i < this.estadoJugadores.length; i++){
+                                if(!this.estadoJugadores[i]){return;}
+                            }
+                            if(this.indexOpcionSeleccionada == null){
+                                this.dialogRef.close(this.data.ordenEncadenado)
+                            }else{
+                                this.dialogRef.close(this.opciones[this.indexOpcionSeleccionada].ordenIdEncadanado)
+                            }
+                        break;
+                    }
+
+                break;
+            }
+        }); //FIN SOCKET SUSCRIPTION:
+
+    }
+
+    ngOnDestroy(){
+        this.socketSubscripcion.unsubscribe();
     }
 
     onAcceptClick(): void {
@@ -73,10 +127,29 @@ private confirmation: boolean = false;
             return;
 
         }else{
-            this.dialogRef.close(this.data.ordenEncadenado)
+            if(this.data["desarrollo"]){
+                this.dialogRef.close(this.data.ordenEncadenado)
+            }else{
+                this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "terminarDialogo", contenido: this.jugadorPropioSesionIndex});
+            }
             return;
         }
+
 //[mat-dialog-close]="data.ordenEncadenado"
+    }
+
+    seleccionarOpcion(indexOpcion: number){
+        this.indexOpcionSeleccionada = indexOpcion;
+        if(this.estadoJugadores.length == 0){
+            this.dialogRef.close(this.opciones[this.indexOpcionSeleccionada].ordenIdEncadanado)
+        }else{
+            this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "terminarDialogo", contenido: this.jugadorPropioSesionIndex});
+        }
+    }
+
+    retroceder(){
+        this.indexTextoMostrado--;
+        return;
     }
         
 

@@ -162,7 +162,7 @@ export const datosIniciales = [{
           1,
           2,
           3,
-          4,
+          8,
           5
         ]
       },
@@ -311,7 +311,7 @@ export const datosIniciales = [{
           11,
           12,
           13,
-          14,
+          20,
           15
         ]
       },
@@ -459,9 +459,9 @@ export const datosIniciales = [{
         "equipados": [
           21,
           22,
-          23,
           24,
-          25
+          25,
+          27
         ]
     },
     "misiones": [],
@@ -633,8 +633,8 @@ export const datosIniciales = [{
           31,
           32,
           33,
-          34,
-          35
+          36,
+          38
         ]
       },
     "misiones": [],

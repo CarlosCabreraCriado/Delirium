@@ -7,7 +7,7 @@
 
 	<div class="contenedorImagen" (click)="toggleDesplegable()">
 		<div class="frameImagen"></div>
-		<img class="imagenEnemigo" src="../../../assets/Enemigos/{{renderEnemigo.familia}}/{{renderEnemigo.tipo_enemigo_id}}.png">
+		<img class="imagenEnemigo" src="../../../assets/Enemigos/{{renderEnemigo.familia}}/{{renderEnemigo.imagen_id}}.png">
     <div class="marcaColor" [ngStyle]="{'background': renderEnemigo.color}"></div>
 
         <appAnimacionEfecto #animacionEfecto [loop]="false" [animacion]="renderEnemigo.animacion" [mostrarAnimacion]="renderEnemigo.mostrarAnimacion"></appAnimacionEfecto>

@@ -3,23 +3,19 @@
 @import "../../../breakpoints.scss"
 
 
-.contenedorBarra
+#contenedorBarra
     position: absolute
+    box-sizing: border-box
+    border: #f3b95c 1px solid
+    box-shadow: inset 0px 0px 10px 0px rgb(0 0 0 / 80%)
     width: 100%
     height: 100%
-
-    .barra
+    overflow: hidden
+    border-radius: 5px/50%
+    #barra
         position: absolute
-        top: 10%
         width: 100%
         height: 100%
-        .frameBarra
-            position: absolute
-            display: block
-            top: 0
-            left: 0
-            height: 100%
-            width: 100%
 
         .fondoBarra
             position: absolute
@@ -30,11 +26,13 @@
             &.escudo
                 background-color: white
             &.Vida
-                background-image: url("../../../assets/Background/Fondo-Vida.png")
-            &.Mana
-                background-image: url("../../../assets/Background/Fondo-Mana.png")
+                //background-image: url("../../../assets/Background/Fondo-Vida.png")
+                background-color: #c10027
             &.Energia
-                background-image: url("../../../assets/Background/Fondo-Energia.png")
+                background-color: #efac00
+                //background-image: url("../../../assets/Background/Fondo-Energia.png")
+            //&.Mana
+                //background-image: url("../../../assets/Background/Fondo-Mana.png")
 
     .contenedorCirculo
         position: absolute

@@ -66,6 +66,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   private mostrarPantallaCarga:boolean = true;
   public pantalla: string = "Inmap";
   private idCuenta: string;
+  public mostrarHistorial: boolean = false;
 
   //Variables Renderizado:
   private autoGuardado:any;
@@ -89,7 +90,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     this.mazmorraService.setDispositivo(this.appService.getDispositivo());
     this.mazmorraService.cuenta = this.appService.getCuenta().then((result) => {return result});
 
-        this.mazmorraService.iniciarMazmorra();
+    this.mazmorraService.iniciarMazmorra();
 
     if(this.appService.control!="mazmorra"){this.appService.setControl("mazmorra")}
 
@@ -182,8 +183,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                   break;
 
                   case "realizarMovimiento":
-                    this.mazmorraService.realizarMovimiento(data.contenido)
-                    this.mazmorraService.cancelarObjetivo();
+                    this.mazmorraService.realizarMovimiento(data.contenido.valor,data.contenido.puntosMovimiento)
                     this.cdr.detectChanges();
                     break;
 
@@ -325,6 +325,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
         //suscripcion Eventos:
         this.eventosSuscripcion = this.eventosService.eventoMazmorraEmitter.subscribe((val) => {
             switch(val.comando){
+                case "forceRender":
+                    this.cdr.detectChanges()
+                    break;
                 case "openSala":
                     this.mazmorraService.cambiarSala(val.valor);
                     break;
@@ -865,6 +868,22 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     return style;
   }
+
+    renderFlechaTutorial():string{
+
+        if(this.mazmorraService.sesion.render.variablesMundo["tuto_movimiento"]=="true"){
+            return "verticalDown iconoMovimiento"
+        }
+
+        if(this.mazmorraService.sesion.render.variablesMundo["tuto_ataque"]=="true"){
+            return "verticalDown iconoAtaque"
+        }
+
+        if(this.mazmorraService.sesion.render.variablesMundo["tuto_paso_turno"]=="true"){
+            return "verticalDown iconoTurno"
+        }
+
+    }
 
     centrarMazmorra(){
         console.log("Centrando")

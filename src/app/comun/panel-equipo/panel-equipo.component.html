@@ -18,6 +18,13 @@
 			<div class="columna">
 				
 				<div class="estadistica">
+					<img src="../../../assets/Iconos/Icono-Vitalidad.png">
+					<div class="textoEstadisticas Texto3 Arial">
+                            Vitalidad <br>{{estadisticas.vitalidad}} 
+					</div>
+				</div>	
+
+				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Armadura.png">
 					<div class="textoEstadisticas Texto3 Arial">
                             Armadura
@@ -32,15 +39,16 @@
 					</div>
 				</div>
 
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Vitalidad.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                            Vitalidad <br>{{estadisticas.vitalidad}} 
-					</div>
-				</div>	
 			</div>	
 
 			<div class="columna">
+
+				<div class="estadistica">
+					<img src="../../../assets/Iconos/critico.png">
+					<div class="textoEstadisticas Texto3 Arial">
+                        Critico <br>{{estadisticas.critico}}
+					</div>
+				</div>	
 
 				<div class="estadistica">
 					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
@@ -56,12 +64,6 @@
 					</div>
 				</div>
 
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/critico.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                        Critico <br>{{estadisticas.critico}}
-					</div>
-				</div>	
 
                 <!--
 				<div class="estadistica">
@@ -129,7 +131,6 @@
                 <div id="containerEliminar"
                     cdkDropList
                     #eliminarObjeto="cdkDropList"
-                    [cdkDropListConnectedTo]="[listaInventario]"
                     >
                     <img  
                         id="botonEliminarObjeto"    
@@ -217,7 +218,7 @@
 		<div id="contenedorInventario">
 			<creditoComponent id="credito" [gemas]= "100" [monedas]= "200"></creditoComponent>
 			<img class="icono bolsa" src="../../../assets/Iconos/Icono-Bolsa.png" (click)="cambiarPestanaInventario('Bolsa')"/>
-			<div class="contenedor bolsa" [ngStyle]="{'z-index': zindexBolsa}">	
+			<div class="contenedor bolsa">
 				<div class="contenedorReticula">
 
 					<div class="reticula">
@@ -243,7 +244,7 @@
 			</div>
 				
 			<img class="icono banco" src="../../../assets/Iconos/Icono-Banco.png" (click)="cambiarPestanaInventario('Banco')" />
-			<div class="contenedor banco"[ngStyle]="{'z-index': zindexBanco}">	
+			<div class="contenedor banco">
 				<div class="contenedorReticula">
 
 					<div class="reticula">

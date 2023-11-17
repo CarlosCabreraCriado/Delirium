@@ -5,27 +5,27 @@
 
 <div class="contenedorPanelGeneral"> 
 	
-	<div class="contenedorBotonGeneral primerBotonGeneral" (click)="cambiarPantalla('Personaje')">
+	<div class="contenedorBotonGeneral primerBotonGeneral" [ngClass]="{'panelAbierto': pantalla!=null}"(click)="cambiarPantalla('Personaje')">
         <img [ngClass]="{'seleccionado': pantalla=='Personaje'}" class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Personaje.png" />	
 		<div class="textoPanelGeneral Texto2">Personaje</div>
 	</div>
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Equipo')">
+	<div class="contenedorBotonGeneral" [ngClass]="{'panelAbierto': pantalla!=null}" (click)="cambiarPantalla('Equipo')">
         <img [ngClass]="{'seleccionado': pantalla=='Equipo'}" class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Equipo.png" />	
 		<div class="textoPanelGeneral Texto2">Equipo</div>
 	</div>
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Mazmorra')">
+	<div class="contenedorBotonGeneral" [ngClass]="{'panelAbierto': pantalla!=null}" (click)="cambiarPantalla('Mazmorra')">
         <img [ngClass]="{'seleccionado': pantalla=='Mazmorra'}"class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Mazmorra.png" />	
-		<div class="textoPanelGeneral Texto2">Mazmorra</div>
+		<div class="textoPanelGeneral Texto2">Ubicaciones</div>
 	</div>
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Diario')">
+	<div class="contenedorBotonGeneral" [ngClass]="{'panelAbierto': pantalla!=null}" (click)="cambiarPantalla('Diario')">
         <img [ngClass]="{'seleccionado': pantalla=='Diario'}"class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Diario.png" />	
 		<div class="textoPanelGeneral Texto2">Diario</div>
 	</div>
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Tienda')">
+	<div class="contenedorBotonGeneral" [ngClass]="{'panelAbierto': pantalla!=null}" (click)="cambiarPantalla('Tienda')">
         <img [ngClass]="{'seleccionado': pantalla=='Tienda'}"class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Tienda.png" />	
 		<div class="textoPanelGeneral Texto2">Tienda</div>
 	</div>

@@ -266,6 +266,10 @@ export class PanelEquipoComponent {
     return nombreNuevo.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
+  cambiarPestanaInventario(val){
+      return;
+  }
+
   desequipar(indexObjetoEquipado){
       var objetoDesequipado = this.perfil.heroes[this.estadoApp.heroePropioPerfilIndex].objetos.equipado[indexObjetoEquipado];
 

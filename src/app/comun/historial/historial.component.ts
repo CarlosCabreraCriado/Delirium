@@ -1,30 +1,21 @@
 
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
+import { AppService } from '../../app.service';
 
 @Component({
-  selector: 'panelGeneralComponent',
-  templateUrl: './panel-general.component.html',
-  styleUrls: ['./panel-general.component.sass']
+  selector: 'historialComponent',
+  templateUrl: './historial.component.html',
+  styleUrls: ['./historial.component.sass']
 })
 
-export class PanelGeneralComponent {
+export class HistorialComponent {
 
+    public historial: any;
 
-	//Emision de eventos
-	@Output() comandoPanelGeneral: EventEmitter<any> = new EventEmitter();
-
-	constructor() {}
-	
-    public pantalla = null; 
-
-	cambiarPantalla(pantalla:string){
-        if(this.pantalla==pantalla){
-            this.pantalla = null
-        }else{
-            this.pantalla = pantalla;
-        }
-		this.comandoPanelGeneral.next(pantalla);
-	}
+    constructor(private appService: AppService) {
+        console.error("CAMBIO SESION")
+        this.appService.sesion$.subscribe(sesion => this.historial = sesion.render.historial);
+    }
 
 }
 

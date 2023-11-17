@@ -136,6 +136,8 @@
                 Interfaz Objetivo
          ************************************************* -->
 
+    <img id="flechaTutorial" class="verticalUp iconoObjetivo" *ngIf="interfazService.flagTutorial && interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo'" src="../../../assets/ui/icons/Icon_07.png">
+
     <div  id="contenedorInterfazObjetivo" class="borde1" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo' || interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
         <div class="tituloInterfaz Texto1">Seleccionar objetivo:  </div>
 
@@ -162,44 +164,89 @@
 
             <heroeComponent class="personaje" *ngIf="this.interfazService.tipoDetalle=='heroe'" [renderHeroe]="this.interfazService.renderDetalle" [desplegadoDefecto]="false" [seleccionable]="false"></heroeComponent>
 
+            <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="interfazService.renderDetalle.vida" [escudo]="interfazService.renderDetalle.escudo" class="barra"></barraComponent>
+            <div class="detallePuntosVida Arial Texto3">
+            [ {{interfazService.renderDetalle.puntosVida| number : '1.0-1'}} / {{interfazService.renderDetalle.estadisticas.vidaMaxima| number : '1.0-1'}} ] ({{interfazService.renderDetalle.vida| number : '1.0-1'}}%)
+            </div>
         </div>
 
-        <div class="contenedorAtributos Arial">
+        <div class="contenedorAtributos Arial Texto3">
             <!-- VIDA MAX -->
-            <div class="atributo">
+            <div class="atributo vitalidad">
                 <img class="icono" src="./assets/Iconos/Icono-Vitalidad.png"/>
-                <div class="texto">Vitalidad: {{interfazService.renderDetalle.estadisticas.vitalidad| number : '1.0-1'}} ({{interfazService.renderDetalle.estadisticas.vidaMaxima| number : '1.0-1'}})</div>
+                <div class="texto">Vitalidad:<br/> 
+                    {{interfazService.renderDetalle.estadisticas.vitalidad| number : '1.0-1'}} ({{interfazService.renderDetalle.estadisticas.vidaMaxima| number : '1.0-1'}})</div>
             </div>
             <!-- ARMADURA -->
-            <div class="atributo">
+            <div class="atributo armadura">
                 <img class="icono" src="./assets/Iconos/Icono-Armadura.png"/>
-                <div class="texto">Armadura: {{interfazService.renderDetalle.estadisticas.armadura}} ({{ interfazService.renderDetalle.estadisticas.reduccionArmadura*100 | number : '1.0-2'}}%)</div>
+                <div class="texto">Armadura: <br/>
+                    {{interfazService.renderDetalle.estadisticas.armadura}} ({{ interfazService.renderDetalle.estadisticas.reduccionArmadura*100 | number : '1.0-2'}}%)</div>
             </div>
             <!-- RESISTENCIA -->
-            <div class="atributo">
+            <div class="atributo resistencia">
                 <img class="icono" src="./assets/Iconos/Icono-Resistencia-Magica.png"/>
-                <div class="texto">Resistencia: {{interfazService.renderDetalle.estadisticas.resistenciaMagica | number: '1.0-2'}} ({{ interfazService.renderDetalle.estadisticas.reduccionResistencia*100 | number : '1.0-2'}}%)</div>
+                <div class="texto">Resistencia: <br/> 
+                    {{interfazService.renderDetalle.estadisticas.resistenciaMagica | number: '1.0-2'}} ({{ interfazService.renderDetalle.estadisticas.reduccionResistencia*100 | number : '1.0-2'}}%)</div>
             </div>
             <!-- DAÑO FÍSICO -->
-            <div class="atributo">
+            <div class="atributo fisico">
                 <img class="icono" src="./assets/Iconos/Icono-Dano-Fisico.png"/>
-                <div class="texto">Daño Físico: {{interfazService.renderDetalle.estadisticas.ad | number : '1.0-1'}}</div>
+                <div class="texto">Físico: <br/>
+                    {{interfazService.renderDetalle.estadisticas.ad | number : '1.0-1'}}</div>
             </div>
             <!-- DAÑO MÁGICO -->
-            <div class="atributo">
+            <div class="atributo magico">
                 <img class="icono" src="./assets/Iconos/Icono-Dano-Magico.png"/>
-                <div class="texto">Daño Mágico: {{interfazService.renderDetalle.estadisticas.ap | number : '1.0-1'}}</div>
+                <div class="texto">Mágico:<br/>
+                   {{interfazService.renderDetalle.estadisticas.ap | number : '1.0-1'}}</div>
             </div>
             <!-- DAÑO CRITICO -->
-            <div class="atributo">
+            <div class="atributo critico">
                 <img class="icono" src="./assets/Iconos/critico.png"/>
-                <div class="texto">Critico: {{interfazService.renderDetalle.estadisticas.critico | number : '1.0-1'}} ({{interfazService.renderDetalle.estadisticas.probabilidadCritico*100 | number : '1.0-1'}}%) [x{{interfazService.renderDetalle.estadisticas.potenciaCritico | number : '1.0-1'}}]</div>
+                <div class="texto">Critico: <br/>
+                    {{interfazService.renderDetalle.estadisticas.critico | number : '1.0-1'}} ({{interfazService.renderDetalle.estadisticas.probabilidadCritico*100 | number : '1.0-1'}}%) [x{{interfazService.renderDetalle.estadisticas.potenciaCritico | number : '1.0-1'}}]</div>
             </div>
         </div>
 
-        <div class="contenedorBotones">
-            <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.desactivarInterfaz()" [texto]="'Cerrar'" [color]="'rojo'" class="boton"></botonComponent>
+        <div class="contenedorSinBuff Texto1"*ngIf="!interfazService.renderDetalle.buff[0]">
+            No hay efectos
         </div>
+
+        <div class="contenedorBuff"*ngIf="interfazService.renderDetalle.buff[0]">
+            <div *ngFor="let buffSeleccionado of interfazService.renderDetalle.buff; let i = index" class="buff" [ngClass]="{'animacionFocus focusGris': interfazService.buffDetalleSeleccionado == i}" (click)="interfazService.buffDetalleSeleccionado = i" >
+                <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{buffSeleccionado.imagen_id}}.png"/>
+                <!-- Indicador Duración -->
+                <div class="contenedorDuracion Texto3">
+                    <img class="fondoIndicador" [ngClass]="{'ventaja': buffSeleccionado.tipo == 'Ventaja'}" src="assets/ui/icons/fondo-vida.png"/>
+                    <div class="valorIndicador">{{buffSeleccionado.duracion}}</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="contenedorDetalleBuff">
+            <!-- BUFF -->
+            <div *ngIf="interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado]" class="detalleBuff" >
+                <div class="contenedorTituloBuff">
+                    
+                    <div class="imagenBuff animacionFocus focusGris" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado].imagen_id+'.png) '}">
+                    </div>
+                        <!--
+                    <img class="imagenBuff" style.background="../../../assets/Habilidades/Spell/{{interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado].imagen_id}}.png"/>
+                        -->
+                    <div class="titulo Texto1">{{interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado].nombre}}</div>
+
+                </div>
+                <div class="contenedorDescripcionBuff Arial"
+                    [innerHtml]="interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado].descripcion">
+                </div>
+                
+            </div>
+
+        </div>
+
+        <img (click)="interfazService.desactivarInterfaz()" class="cruzCerrar" src="./assets/ui/icons/Icon_05.png">
 
     </div>
 
@@ -384,7 +431,7 @@
         </div>
 
         <div class="contenedorAtributos">
-      <atributoComponent class="atributo" [tipo]="'critico'" [valor]="this.interfazService.probabilidadCriticoPercent+'%'"></atributoComponent>
+            <atributoComponent class="atributo" [tipo]="'critico'" [valor]="this.interfazService.probabilidadCriticoPercent"></atributoComponent>
         </div>
 
     </div>
@@ -410,7 +457,7 @@
             </div>
 
             <div class="valor">
-                <atributoComponent [tipo]="'movimiento'" [valor]="this.interfazService.valorAccion"></atributoComponent>
+                <atributoComponent class="atributo Texto1" [tipo]="'movimiento'" [valor]="this.interfazService.valorAccion"></atributoComponent>
             </div>
 
             <div class="flecha">
@@ -450,7 +497,7 @@
             </div>
 
             <div class="valor">
-                <atributoComponent [tipo]="'alcance'" [valor]="this.interfazService.valorAccion"></atributoComponent>
+                <atributoComponent class="atributo Texto1" [tipo]="'alcance'" [valor]="this.interfazService.valorAccion"></atributoComponent>
             </div>
 
             <div class="heroe">

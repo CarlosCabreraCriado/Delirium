@@ -351,6 +351,44 @@ export class LogicService {
         return Math.round(valor * 100) / 100;
   }
 
+  parsearDescripcion(descripcion,config?):string{
+
+        //Formateo de color:
+        descripcion = descripcion.replaceAll("$fisico$","<mark class='fisico'>")
+        descripcion = descripcion.replaceAll("$magico$","<mark class='magico'>")
+        descripcion = descripcion.replaceAll("$heal$","<mark class='heal'>")
+        descripcion = descripcion.replaceAll("$escudo$","<mark class='escudo'>")
+        descripcion = descripcion.replaceAll("$debuff$","<mark class='violeta'>")
+        descripcion = descripcion.replaceAll("$buff$","<mark class='amarillo'>")
+        descripcion = descripcion.replaceAll("$amarillo$","<mark class='amarillo'>")
+        descripcion = descripcion.replaceAll("$/$","</mark>")
+
+        var stringDaño= "";
+        var stringHeal= "";
+        var stringEscudo= "";
+
+        if(config?.tipo == "buff"){
+
+            if(config.dano_t){
+                stringDaño = config.dano_t+ "por paso de turno "
+                descripcion = descripcion.replaceAll("#Daño",stringDaño)
+            }
+
+            if(config.heal_t){
+                stringHeal = config.heal_t+ "por paso de turno "
+                descripcion = descripcion.replaceAll("#Heal",stringHeal)
+            }
+
+            if(config.escugo_t){
+                stringEscudo = config.escudo_t+ "por paso de turno "
+                descripcion = descripcion.replaceAll("#Escudo",stringEscudo)
+            }
+
+        }
+
+
+        return descripcion;
+  }
 
 }
 

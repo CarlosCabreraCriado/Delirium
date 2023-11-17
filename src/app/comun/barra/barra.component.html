@@ -3,12 +3,14 @@
 <!--      Barra Component   -->
 <!--   ******************* -->
 
-<div class="contenedorBarra">
+<div id="contenedorBarra">
 
-	<div class="barra">
+	<div id="barra">
 		<div class="fondoBarra" [ngClass]="tipo" [style.width]="valor+'%'"></div>
 		<div *ngIf="tipo=='Vida'" class="fondoBarra escudo" [style.width]="escudo+'%'"></div>
+        <!--
 		<img class="frameBarra" src="../../../assets/Frames/Frame-Barra-Heroe.png"/>
+        -->
 	</div>
 
 	<div class="contenedorCirculo" [ngClass]="tipo" *ngIf="badge">

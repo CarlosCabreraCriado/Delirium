@@ -10,14 +10,14 @@
 #tiempo
   position: absolute
   z-index: 5
-  left: 35vw
+  left: 38vw
   top: 2vh
-  width: 30vw
+  width: 25vw
   .temporizador
     position: absolute
     width: 10%
     left: 50%
-    margin-left: -4%
+    margin-left: -5%
     top: 32%
     font-size: 25px
     text-align: center
@@ -28,14 +28,44 @@
     position: absolute
     height: 35%
     width: 27%
-    top: 39%
+    top: 38%
     left: 64%
   .botonToggleInMap
     position: absolute
     height: 35%
     width: 27%
-    top: 39%
-    left: 11%
+    top: 38%
+    left: 9%
+
+#flechaTutorial
+  position: absolute
+  z-index: 20
+  width: 8%
+  display: none
+
+  &.verticalDown
+    animation: movimientoFlechaVerticalDown 1s ease infinite 
+    display: block
+  &.verticalUp
+    animation: movimientoFlechaVerticalUp 1s ease infinite 
+    display: block
+  &.horizontalLeft
+    animation: movimientoFlechaHorizontalLeft 1s ease infinite 
+    display: block
+  &.horizontalRight
+    animation: movimientoFlechaHorizontalRight 1s ease infinite 
+    display: block
+
+  &.iconoMovimiento
+    right: 58%
+    top: 58%
+  &.iconoAtaque
+    left: 58%
+    top: 58%
+  &.iconoTurno
+    left: 46%
+    top: 50%
+
 
 #pause
   color: white
@@ -196,31 +226,46 @@
 #iconoConfiguracion
     position: absolute
     z-index: 5
-    bottom: 5%
+    top: 1%
     left: 2%
-    height: 10%
+    height: 8%
+
+#contenedorHistorial
+    position: absolute
+    top: 46%
+    left: -2%
+    height: 7%
+    z-index: 13
+    border-radius: 100%
+    background-color: $colorFondo1
+    border: 2px solid $colorTexto
+    #iconoHistorial
+      position: relative
+      width: 100%
+      height: 100%
+
 
 #iconoEstadisticas
     position: absolute
     z-index: 5
     bottom: 5%
-    left: 10%
+    left: 5%
     height: 10%
 
 #iconoLogs
     position: absolute
     z-index: 5
     bottom: 5%
-    left: 17%
+    left: 15%
     width: 4%
     filter: invert(0.7)
 
 #iconoReload
     position: absolute
     z-index: 5
-    bottom: 5%
-    right: 30%
-    width: 4%
+    top: 2%
+    left: 10%
+    width: 3%
     filter: invert(0.7)
 
 
@@ -258,9 +303,18 @@
       position: absolute
       width: 100%
       height: 100%
-      z-index: 10
+      z-index: 14
       top: 0
       left: 0
+
+#historial
+  position: absolute
+  z-index: 13
+  transition: transform 1s
+  &.mostrarHistorial
+    transform: translateX(0vw)
+  &.ocultarHistorial
+    transform: translateX(-12vw)
 
 
 #contenedorHeroes
@@ -280,7 +334,7 @@
     position: absolute
     display: flex
     flex-direction: column
-    left: 1%
+    left: 3%
     top: 10%
     height: 70%
     gap: 10px
@@ -1215,9 +1269,37 @@ $highlightObjetivoColor: red
   100%
     background: rgba(211, 211, 211, 0)
 
+@keyframes movimientoFlechaVerticalDown
+  0%
+    transform: translateY(0%) rotate(90deg)
+  50%
+    transform: translateY(10%) rotate(90deg)
+  100%
+    transform: translateY(0%) rotate(90deg)
 
+@keyframes movimientoFlechaVerticalUp
+  0%
+    transform: translateY(0%) rotate(-90deg)
+  50%
+    transform: translateY(10%) rotate(-90deg)
+  100%
+    transform: translateY(0%) rotate(-90deg)
 
+@keyframes movimientoFlechaHorizontalRight
+  0%
+    transform: translateX(0%) rotate(0deg)
+  50%
+    transform: translateX(10%) rotate(0deg)
+  100%
+    transform: translateX(0%) rotate(0deg)
 
+@keyframes movimientoFlechaHorizontalLeft
+  0%
+    transform: translateX(0%) rotate(180deg)
+  50%
+    transform: translateX(10%) rotate(180deg)
+  100%
+    transform: translateX(0%) rotate(180deg)
 
 
 

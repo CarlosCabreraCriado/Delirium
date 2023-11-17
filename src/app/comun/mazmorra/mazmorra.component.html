@@ -13,6 +13,12 @@
         </div>
 
 		<!--   ******************* -->
+		<!--      FLECHA TUTORIAL  -->
+		<!--   ******************* -->
+        <img id="flechaTutorial" *ngIf="mazmorraService.flagTutorial" [ngClass]="renderFlechaTutorial()" src="../../../assets/ui/icons/Icon_07.png">
+
+
+		<!--   ******************* -->
 		<!--      PANEL GENERAL    -->
 		<!--   ******************* -->
 
@@ -43,15 +49,29 @@
 		</div>
 	</div>
 
+    <!--   ******************* -->
+    <!--      HISTORIAL        -->
+    <!--   ******************* -->
+    <historialComponent id="historial"
+        [ngClass]="{
+            'mostrarHistorial': mostrarHistorial, 
+            'ocultarHistorial': !mostrarHistorial
+            }">
+    </historialComponent>
+
+
 	<!--   ******************* -->
 	<!--      Tiempo    -->
 	<!--   ******************* -->
 
     <div id="tiempo">
 	    <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
+        <!--
       <div class="temporizador">{{mazmorraService.tiempoActual}}</div>
+        -->
+        <div class="temporizador">0</div>
 	    <botonComponent mat-button (click)="centrarMazmorra()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
-	    <botonComponent mat-button (click)="appService.verInMap()" [texto]="'Mapa'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+	    <botonComponent mat-button [texto]="'Mapa'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
     </div>
 
 <!--   ************************** -->
@@ -70,13 +90,22 @@
 	<!--        Credito      -->
 	<!--   ******************* -->
 
+    <!--
 <creditoComponent id="creditoMapa" [gemas]= "0" [monedas]= "0"></creditoComponent>
+    -->
 
 	<!--   ******************* -->
 	<!--      Configuracion    -->
 	<!--   ******************* -->
 
 	<img id="iconoConfiguracion" src="../../../assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
+
+	<!--   ******************* -->
+	<!--      Boton Historial    -->
+	<!--   ******************* -->
+    <div id="contenedorHistorial">
+	    <img id="iconoHistorial" src="../../../assets/Iconos/Icono-Misiones.png" (click)="mostrarHistorial = !mostrarHistorial"/>
+    </div>
 
 	<!--   ******************* -->
 	<!--      ESTADISTICAS    -->

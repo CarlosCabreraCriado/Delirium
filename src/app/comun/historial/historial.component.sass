@@ -2,79 +2,97 @@
 @import "../../../variables.sass"
 @import "../../../breakpoints.scss"
 
-.contenedorPanelGeneral
+#panelLateralHistorial
+  position: absolute
+  z-index: 13
+  width: 12vw
+  height: 100vh
+  background: $colorFondo1
+  color: $colorTexto
+  .titulo
+    position: relative
+    width: 100%
+    text-align: center
+
+  .contenedorScroll
     position: absolute
+    width: 100%
+    height: 90%
     display: flex
     flex-direction: column
-    justify-content: space-evenly
-    top: 0
-    left: 0
-    width: 12%
-    height: 100%
-    background-color: $colorFondo1
-    @include media("<=tablet")
-        width: 15%
-    @include media("<=phone")
-        width: 12%
+    flex-wrap: nowrap
+    align-items: center
+    justify-content: flex-start
+    overflow-y: scroll
+    scrollbar-width: none
+    &::-webkit-scrollbar
+      display: none
+    
+    .turno
+      position: relative
+      margin-bottom: 10px
+      width: 90%
+      background-color: $colorFondo2
+      box-shadow: inset 0px 0px 15px 0px rgba(0,0,0,0.8)
+      border-radius: 20px
+      transition: all 1s
 
-    .framePanelGeneral
-        position: absolute
-        top: 0
-        left: 0
-        z-index: 10
-        width: 100%
-        height: 100%
-        background-color: #262222
-        background-size: 100% 100%
-        border-image: url("/assets/ui/frame/fr_02.png")
-        border-image-slice: 35 35 35 35
-        border-image-width: 5px 0px 5px 5px
-        border-image-outset: 0px 0px 0px 0px
-        border-image-repeat: stretch stretch
-        border-style: solid
-        box-sizing: border-box
-        -webkit-box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.75)
-        -moz-box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.75)
-        box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.75)
-        
-    .contenedorBotonGeneral
+      .contenedorPersonajeTurno
         position: relative
-        display: flex
-        flex-direction: column
-        height: 18% 
+        height: 15vh
+        aspect-ratio: 1
+        margin: auto
+        .imagenPersonaje
+          position: absolute
+          width: 100%
+          height: 100%
+
+      .orden
+        position: relative
         width: 100%
-        z-index: 11
+        height: 6vh
+        margin: 5px 0
+        display: flex
+        justify-content: space-evenly
         align-items: center
+        transition: all 1s
+        &.ataque
+          background: linear-gradient(180deg, #700808, transparent)
+        &.movimiento
+          background: linear-gradient(180deg, #686102, transparent)
 
-        .iconoPanelGeneral
-            position: relative
-            height: 70%
+        .iconoOrden
+          position: relative
+          height: 100%
+          aspect-ratio: 1
 
-        .seleccionado
-          filter: drop-shadow(0px 0px 10px rgba(205,219,83,1))
+        .iconoTipoDano
+          position: relative
+          height: 1em 
+          aspect-ratio: 1
 
-        .textoPanelGeneral
-            position: relative
-            text-align: center
-            color: white
-            width: 100%
-            line-height: 1em
+        .iconoEnemigo
+          position: relative
+          height: 100%
+          aspect-ratio: 1
+          border-style: solid
+          border-width: 1px
+          border-radius: 2px
+          border-color: transparent
+          &.yellow
+            border-color: yellow
+          &.white
+            border-color: white
+          &.grey
+            border-color: grey
+          &.purple
+            border-color: purple
 
-    .fondoPestana
-        position: absolute
-        width: 11.1%
-        height: 22%
-        left: 1% 
-        top: 21%
-        border-top: 1px solid
-        border-left: 1px solid
-        border-bottom: 1px solid
-        background-size: 100% 100% 
-        background-color: #231c1c
-        background-size: 100% 100% 
-        box-sizing: border-box
-        border-radius: 5px 0px 0px 5px
-        -webkit-box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
-        -moz-box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
-        box-shadow: -10px 0px 10px -5px rgba(0,0,0,0.75)
+        .valor
+
+
+      img
+        position: relative
+  
+  
 

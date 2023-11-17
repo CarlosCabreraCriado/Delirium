@@ -159,7 +159,10 @@
             </div>
 
             <div class="textoDialogo Texto2 Arial" [innerHtml]="textosDialogo[indexTextoMostrado]"></div>
-            <botonComponent *ngIf="this.opciones.length == 0" class="botonSiguiente Arial" mat-button   [tipoBoton]="2" [texto]="'Siguiente'" [vacio]="false" [color]="'naranja'"></botonComponent>
+            <botonComponent *ngIf="this.opciones.length == 0 && this.estadoJugadores[this.jugadorPropioSesionIndex] == false" class="botonSiguiente Arial" mat-button   [tipoBoton]="2" [texto]="'Siguiente'" [vacio]="false" [color]="'naranja'"></botonComponent>
+
+            <botonComponent *ngIf="this.estadoJugadores[this.jugadorPropioSesionIndex] == true" class="botonSiguiente botonDeshabilitado Arial" mat-button   [tipoBoton]="2" [texto]="'Esperando...'" [vacio]="false" [color]="'naranja'"></botonComponent>
+
             <img class="decoracion" src="../../../assets/ui/decor/dcr_04.png"/>
             <!--
             <div class="contenedorBandera izquierda">
@@ -171,9 +174,9 @@
         </div>
 
         <!-- Opciones -->
-        <div class="contenedorOpciones">
+        <div class="contenedorOpciones" *ngIf="this.estadoJugadores[this.jugadorPropioSesionIndex] == false">
             <div *ngFor="let opcion of opciones; let i = index" class="opcion">
-                <botonComponent class="botonOpcion Arial" mat-button  [mat-dialog-close]="opcion.ordenIdEncadanado" [tipoBoton]="2" [texto]="opcion.textoOpcion" [vacio]="true" [color]="'rojo'"></botonComponent>
+                <botonComponent class="botonOpcion Arial" mat-button  (click)="seleccionarOpcion(i)" [tipoBoton]="2" [texto]="opcion.textoOpcion" [vacio]="true" [color]="'rojo'"></botonComponent>
             </div>
         </div>
 
@@ -202,7 +205,6 @@
 <!--   ******************************** -->
 <!--         DIALOGO NARRADOR IMG      -->
 <!--   ******************************** -->
-
 <div id="narradorImg" *ngIf="data.tipoDialogo == 'NarradorImg'">
 
     <!-- ContenedorCentral -->
@@ -222,9 +224,12 @@
             <div class="contenido Texto3 Arial"[innerHtml]="textosDialogo[indexTextoMostrado]"></div>
         </div>
 
-        <botonComponent mat-button  [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico"></botonComponent>
+        <botonComponent *ngIf="indexTextoMostrado != 0" mat-button [tipoBoton]="2"[color]="'rojo'" [texto]="'Retroceder'" (click)="retroceder()" class="botonUnico retroceder"></botonComponent>
+
+        <botonComponent mat-button  [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico siguiente"></botonComponent>
         <frameComponent [tipoFondo]="'papiro'"></frameComponent>
     </div> <!-- Fin Contenedor Central -->
+
 </div>
 
 <!--   ******************************** -->
@@ -263,7 +268,9 @@
         </div>
         -->
 
-        <botonComponent mat-button [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico"></botonComponent>
+        <botonComponent *ngIf="indexTextoMostrado != 0" mat-button [tipoBoton]="2"[color]="'rojo'" [texto]="'Retroceder'" (click)="retroceder()" class="botonUnico retroceder"></botonComponent>
+
+        <botonComponent mat-button [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico siguiente"></botonComponent>
         <frameComponent [tipoFondo]="'papiro'"></frameComponent>
     </div> <!-- Fin Contenedor Central -->
 </div>

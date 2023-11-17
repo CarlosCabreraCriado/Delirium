@@ -1,35 +1,62 @@
 
 <!--   ******************* -->
-<!--       Panel General   -->
+<!--       HISTORIAL       -->
 <!--   ******************* -->
 
-<div class="contenedorPanelGeneral"> 
-	
-	<div class="contenedorBotonGeneral primerBotonGeneral" (click)="cambiarPantalla('Personaje')">
-        <img [ngClass]="{'seleccionado': pantalla=='Personaje'}" class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Personaje.png" />	
-		<div class="textoPanelGeneral Texto2">Personaje</div>
-	</div>
+<div id="panelLateralHistorial"> 
+    
+    <div class="titulo">
+        Historial
+    </div>
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Equipo')">
-        <img [ngClass]="{'seleccionado': pantalla=='Equipo'}" class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Equipo.png" />	
-		<div class="textoPanelGeneral Texto2">Equipo</div>
-	</div>
+    <div class="contenedorScroll">
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Mazmorra')">
-        <img [ngClass]="{'seleccionado': pantalla=='Mazmorra'}"class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Mazmorra.png" />	
-		<div class="textoPanelGeneral Texto2">Mazmorra</div>
-	</div>
+        <div *ngFor="let turno of historial; let i = index" class="turno Arial">
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Diario')">
-        <img [ngClass]="{'seleccionado': pantalla=='Diario'}"class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Diario.png" />	
-		<div class="textoPanelGeneral Texto2">Diario</div>
-	</div>
+            <div class="contenedorPersonajeTurno">
+                <img  class="imagenPersonaje" src="../../../assets/{{turno.pathImagenObjetivo}}"/>
+            </div>
 
-	<div class="contenedorBotonGeneral" (click)="cambiarPantalla('Tienda')">
-        <img [ngClass]="{'seleccionado': pantalla=='Tienda'}"class="iconoPanelGeneral" src="../../../assets/Iconos/Icono-Tienda.png" />	
-		<div class="textoPanelGeneral Texto2">Tienda</div>
-	</div>
+            <ng-container *ngFor="let accion of turno.acciones; let j = index">
 
-	<div class="framePanelGeneral"></div>
-	
+                <div *ngIf="accion.tipo == 'movimiento'" class="orden movimiento">
+                    <img class="iconoOrden" src="../assets/Iconos/09.png">
+                    <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
+                    <div class="valor">{{accion.valor}}</div>
+                </div>
+
+                <ng-container *ngIf="accion.tipo == 'hechizo'">
+
+                    <div  class="orden ataque">
+                        <img class="iconoOrden" src="../assets/Habilidades/Spell/{{accion.imagenHechizo}}.png">
+                    </div>
+
+                    <ng-container *ngFor="let efecto of accion.efectos; let k = index">
+
+                        <div *ngIf="efecto?.tipo == 'hechizo'" class="orden desgloseAtaque">
+                            <div class="valor">{{efecto.valor| number : '1.0-1'}}</div>
+                            <img *ngIf="efecto.tipoEfecto == 'Físico'" class="iconoTipoDano" src="../assets/Iconos/Icono-Dano-Fisico.png">
+                            <img *ngIf="efecto.tipoEfecto == 'Mágico'" class="iconoTipoDano" src="../assets/Iconos/Icono-Dano-Magico.png">
+                            <img *ngIf="efecto.tipoEfecto == 'Escudo'" class="iconoTipoDano" src="../assets/Iconos/Icono-Escudo.png">
+                            <img *ngIf="efecto.tipoEfecto == 'Heal'" class="iconoTipoDano" src="../assets/Iconos/Icono-Curacion.png">
+                            <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
+                            <img class="iconoEnemigo" [ngClass]="efecto.colorObjetivo" src="../assets/{{efecto.pathImagenObjetivo}}">
+                        </div>
+
+                        <div *ngIf="efecto?.tipo == 'buff'" class="orden desgloseAtaque">
+                            <img class="iconoOrden" src="../assets/Habilidades/Spell/{{efecto.imagenBuff}}.png">
+                            <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
+                            <img class="iconoEnemigo" [ngClass]="efecto.colorObjetivo" src="../assets/{{efecto.pathImagenObjetivo}}">
+                        </div>
+                    </ng-container>
+
+                </ng-container>
+
+            </ng-container>
+
+        </div>
+
+    </div>
+
 </div>
+

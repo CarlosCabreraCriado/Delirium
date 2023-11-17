@@ -710,16 +710,16 @@ export class AppService {
         console.error("LOGOUT")
         this.mostrarPantallacarga(true);
 
-    setTimeout(()=>{
-            this.setToken(null)
-            this.setPerfil(null)
-            this.setCuenta(null)
-            //this.setSesion(null)
-            this.observarAppService.next("desconectarSocket");
-            this.socketService.desconectar();
-            this.setControl("index");
-            this.setPantallaApp("index");
-    }, 1000);
+        setTimeout(()=>{
+                this.setToken(null)
+                this.setPerfil(null)
+                this.setCuenta(null)
+                //this.setSesion(null)
+                this.observarAppService.next("desconectarSocket");
+                this.socketService.desconectar();
+                this.setControl("index");
+                this.setPantallaApp("index");
+        }, 1000);
     }
 
     mostrarSocial(tipoDialogo:string, config:any):any{
@@ -939,6 +939,10 @@ export class AppService {
 
     getSesion(){
         return this._sesion.value;
+    }
+
+    getNumJugadores():number{
+        return this._sesion.value.jugadores.length;
     }
 
     getDispositivo(){
@@ -1191,12 +1195,21 @@ export class AppService {
         window.location.reload();
     }
 
+    async peticionHttpEventos() {
+        var token = await this.getToken();
+        return this.http.post(this.ipRemota+"/deliriumAPI/cargarEventos",{token: token}).toPromise();
+    }
+
     async reloadDatos(){
 
         this.mostrarPantallacarga(true);
         var token = await this.getToken()
         console.log("Usando token: ",token)
         console.log("RELOAD DATOS JUEGO: ",token)
+
+        var eventos = await this.peticionHttpEventos();
+        this.setEventos(eventos[0]);
+        console.error("EVENTOS: ",eventos);
 
         this.http.post(this.ipRemota+"/deliriumAPI/cargarDatosJuego",{token: token}).subscribe((data) => {
                 console.log("Datos: ")

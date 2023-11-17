@@ -49,7 +49,6 @@ export class EventosService {
         this.eventos = await this.appService.getEventos();
         var mazmorra = await this.appService.getMazmorra();
 
-        console.warn("CARGANDO EVENTOS MAZMORRA: ",mazmorra)
         if(mazmorra){
             this.eventosMazmorra = mazmorra["eventos"];
         }else{
@@ -86,8 +85,10 @@ export class EventosService {
 
     ejecutarOrden(indexOrden:number){
         //Verifica que se pueda ejecutar
-        if(!this.eventoEjecutando.ordenes){this.finalizarEvento();return;}
+        if(this.eventoEjecutando == null){this.finalizarEvento();return;}
+        if(!this.eventoEjecutando?.ordenes){this.finalizarEvento();return;}
         if(indexOrden >= this.eventoEjecutando.ordenes.length){this.finalizarEvento();return;}
+        if(indexOrden < 0){this.finalizarEvento();return;}
 
         //Identificar tipo Orden:
         var tipoOrden = this.eventoEjecutando.ordenes[indexOrden].tipo;
@@ -215,8 +216,8 @@ export class EventosService {
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
-                    console.log('Fin del dialogo');
-                    console.log(result)
+                    //console.log('Fin del dialogo');
+                    //console.log(result)
 
                     //Ejecuta siguiente evento:
                     if(result == null || result == undefined || result == 0){
@@ -413,12 +414,15 @@ export class EventosService {
     
     finalizarEvento(){
         //console.warn("Evento Finalizado");
+        this.eventoMazmorraEmitter.emit({comando: "forceRender"})
         this.eventoEjecutando = null;
         this.indexOrdenEjecutando = 0;
         return;
     }
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
+        var desarrollo = false;
+        if(this.estadoApp.pantalla == "desarrollador"){desarrollo = true;}
         const dialogRef = this.dialog.open(DialogoComponent,{
           width: "100px", 
           panelClass: [tipoDialogo, "generalContainer"],
@@ -428,6 +432,9 @@ export class EventosService {
               inputLabel: config.inputLabel,
               deshabilitado: config.deshabilitado,
               tipoDialogo: tipoDialogo, 
+              numJugadores: this.sesion.jugadores.length,
+              jugadorPropioSesionIndex: this.estadoApp.jugadorPropioSesionIndex,
+              desarrollo: desarrollo,
               titulo: config.titulo, 
               contenido: config.contenido,
               tipoImagen: config.tipoImagen,

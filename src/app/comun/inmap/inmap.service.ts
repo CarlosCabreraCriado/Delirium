@@ -153,15 +153,18 @@ export class InMapService {
         //INICIA EL EVENTO DE TUTORIAL:
         await this.eventosService.actualizarEventos();
 
-        if(this.estadoApp.pantalla== "inmap" && this.primeraCargaInMap){
+        if(this.estadoApp.pantalla== "inmap" && this.sesion.render.inmap.posicion_x == 56 && this.sesion.render.inmap.posicion_y == 48){
             this.triggerService.checkTrigger("entrarCasilla",{posicion_x: this.sesion.render.inmap.posicion_x, posicion_y: this.sesion.render.inmap.posicion_y})
         }
+
         this.primeraCargaInMap = false;
-        /*
-        if(this.sesion.render.variablesMundo["tutorial"] == "true" && this.estadoApp.pantalla == "inmap" && this.sesion.render.inmap.posicion_x == 56 && this.sesion.render.inmap.posicion_y == 48){
-            this.eventosService.ejecutarEvento(1,"General");
+
+        if(this.sesion.render.variablesMundo["tutorial"] == "true" && this.estadoApp.pantalla == "inmap"){
+            this.sesion.iniciada = true;
+            this.mapaGeneralService.verificarMovimiento();
+            //this.eventosService.ejecutarEvento(1,"General");
+            //this.iniciarPartida();
         }
-        */
 
         //REDIRIGIR A MAZMORRA:
         //this.iniciarPartida("Bastion");
@@ -334,12 +337,13 @@ export class InMapService {
     }
 
     finalizarTutorial(){
-        this.mapaGeneralService.cargarRegion("Asfaloth");
+        //this.mapaGeneralService.cargarRegion("Asfaloth");
         this.appService.peticionGuardarPerfil();
 
         this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
         this.socketService.enviarSocket("checkSinc",{peticion: "checkSinc", comando: "checkSinc", contenido: this.hash});
 
+        this.appService.reloadPage();
     }
 
     peticionIniciarPartida(){

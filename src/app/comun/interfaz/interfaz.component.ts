@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input,  ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { InterfazService } from './interfaz.service';
 import { Subscription } from "rxjs";
 
@@ -7,7 +7,8 @@ import { Subscription } from "rxjs";
   selector: 'app-interfaz',
   templateUrl: './interfaz.component.html',
   styleUrls: ['./interfaz.component.sass'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 
 export class InterfazComponent implements OnInit {
