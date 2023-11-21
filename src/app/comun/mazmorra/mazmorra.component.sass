@@ -218,20 +218,18 @@
 
 #panelControl
     position: absolute
-    //display: none
-    bottom: 34%
-    right: -12%
-    width: 40%
-    height: 30%
-    transform: rotateZ(270deg)
-    margin-left: -20%
+    top: 30%
+    height: 40%
+    aspect-ratio: 1
+    right: 0% 
+    z-index: 2
 
 #iconoConfiguracion
     position: absolute
     z-index: 5
-    top: 1%
+    top: 3%
     right: 1%
-    height: 8%
+    width: 5%
 
 #contenedorHistorial
     position: absolute
@@ -259,15 +257,15 @@
 #iconoLogs
     position: absolute
     z-index: 5
-    bottom: 5%
-    left: 15%
+    bottom: 15%
+    right: 1%
     width: 4%
     filter: invert(0.7)
 
 #iconoReload
     position: absolute
     z-index: 5
-    bottom: 8%
+    bottom: 3%
     right: 1%
     width: 4%
     filter: invert(0.7)
@@ -326,11 +324,11 @@
     //display: none
     display: flex
     flex-direction: row
+    justify-content: space-around
     padding-left: 3%
     bottom: 1% 
     height: 20%
     width: 90%
-    gap: 7%
     .panelHeroe
         position: relative
         display: block
@@ -346,7 +344,6 @@
     padding-top: 1%
     padding-bottom: 5%
     background: linear-gradient(180deg, #232226, transparent)
-    z-index: 1
     .panelEnemigo
         position: relative
         display: block
@@ -354,6 +351,17 @@
 
 #fondoCombate
     position: absolute
+    width: 100%
+    height: 100%
+    background: rgb(131,58,180)
+    background: linear-gradient(180deg, rgba(131, 58, 180, 0) 0%, rgb(86 4 4 / 38%) 45%, rgb(106 131 149 / 32%) 51%, rgba(252, 176, 69, 0) 100%)
+    z-index: 1
+    waveComponent
+        position: absolute
+        display: block
+        width: 100%
+        height: 10%
+        top: 43%
 
 //------------------------------Enemigos-------------------------
 

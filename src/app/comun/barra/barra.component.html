@@ -22,13 +22,13 @@
         </svg>
         -->
 
-        <ng-container *ngIf="tipo == 'Vida'">
+        <ng-container *ngIf="tipo == 'Vida' && orientacion== 'radial'">
         <svg  class="radial" viewBox="0 0 54 80" xmlns="http://www.w3.org/2000/svg">
               <path fill="#c10027" stroke="#ff9900" stroke-width="1" d="m 40 0 a 4 4 90 0 0 0 80 L 40 80 a 1 1 0 0 1 -5 -88 Z L 80 40 L 40 80 L 80 40" />
         </svg>
         </ng-container>
 
-        <ng-container *ngIf="tipo == 'Energia'">
+        <ng-container *ngIf="tipo == 'Energia' && orientacion== 'radial'">
         <svg  class="radial" viewBox="0 0 54 80" xmlns="http://www.w3.org/2000/svg">
               <path fill="#edc522" stroke="#ff9900" stroke-width="1" d="m 70 15 q 20 25 0 50 L 75 70 Q 99 40 75 10 Z" />
         </svg>

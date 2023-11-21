@@ -17,6 +17,7 @@ export class PanelControlComponent {
 	@Input() habilitar:boolean = true;
 	@Input() movimientoRestante:number = 0;
 	@Input() mensajeControl:string = "";
+	@Input() orientacion:string = "vertical";
 
 	//Emision de eventos
 	@Output() comandoPanelControl: EventEmitter<any> = new EventEmitter();

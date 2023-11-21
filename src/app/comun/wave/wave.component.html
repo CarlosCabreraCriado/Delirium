@@ -1,42 +1,41 @@
 
 <!--   ******************* -->
-<!--      Social    -->
+<!--      Wave Component    -->
 <!--   ******************* -->
 
-<div class= "contenedor borde1">
+<div id='footer-navmenu'>
+    <svg class='wave-animation' preserveAspectRatio='none' viewBox='0 24 150 28' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+        <defs>
 
-	<h1 class="title Texto1">Reclutar</h1>
-		
-    <botonComponent mat-button [tipoBoton]="2" [texto]="'Añadir amigo'" [color]="'verde'" class="boton botonAddAmigo"></botonComponent>
+            <path d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z' id='gentle-wave'/>
 
-	<botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" [color]="'rojo'" class="boton botonCerrar"></botonComponent>
+            <filter id="glow">
+                <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"></fegaussianblur>
+                <femerge>
+                    <femergenode in="coloredBlur"></femergenode>
+                    <femergenode in="coloredBlur"></femergenode>
+                    <femergenode in="coloredBlur"></femergenode>
+                    <femergenode in="SourceGraphic"></femergenode>
+                </femerge>
+            </filter>
 
-	<hr class="divisor"/>
 
-	<div class="contenedorPestanas">
-		<div class="pestana Texto2 seleccionado">Amigos</div>
-		<div class="pestana Texto2">Peticiones</div>
-		<div class="pestana Texto2">Solicitudes</div>
-	</div>
+        </defs>
 
-	<hr class="divisor"/>
+        <mask id="mascara">
+            <path d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z' fill="white" id='gentle-wave'/>
+        </mask>
 
-	<div class="contenedorOpciones">
-		
-		<!--PANEL OPCIONES GENERAL -->
-		<div class="opcionesGenerales Texto3">
+        <path style="filter: url(#glow)" d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z' id='gentle-wave'/>
 
-			<div class="amigo Texto3" *ngFor="let amigo of this.perfil.amigos; let i = index">
-                <div class="nombre Texto2">{{amigo.usuario}}</div>
-				<div class="contenedorBotonInvitar">
-		            <botonComponent mat-button (click)="reclutar(amigo.usuario)" [texto]="'Reclutar'" [color]="'naranja'" [tipoBoton]="2" class="botonInvitar"></botonComponent>
-				</div>
-			</div>
-			
-		</div>
-
-	</div>
-	
-
+        <g  class='wave-bg'>
+            <use stroke-width="2"  stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='0'/>
+            <use stroke-width="1"  stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='2'/>
+            <use stroke-width="0.5" stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='3'/>
+            <use stroke-width="0.5" stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='6'/>
+        </g>
+    </svg>
 </div>
+
+
 
