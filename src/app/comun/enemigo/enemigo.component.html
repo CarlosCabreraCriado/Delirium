@@ -14,8 +14,9 @@
 
 	</div>
 
-    <div class="wrapperDesplegable">
+    <div *ngIf="tipoDesplegable == 'horizontal'" id="wrapperDesplegableHorizontal">
         <appAnimacionNumero id="animacionNumero" #animacionNumero [enemigo]="renderEnemigo" [enemigoVida]="renderEnemigo.puntosVida" [enemigoIndex]="indexEnemigo"></appAnimacionNumero>
+
         <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
             <div class="frameDetalle"></div>
             <div class="nombreEnemigo Texto4">{{renderEnemigo.nombre}}</div>
@@ -29,6 +30,22 @@
                 </div>
             </div>
         </div>
+
     </div>
+
+
+    <div *ngIf="tipoDesplegable == 'vertical' && desplegadoDefecto == true" id="wrapperDesplegableVertical">
+        <appAnimacionNumero id="animacionNumero" #animacionNumero [enemigo]="renderEnemigo" [enemigoVida]="renderEnemigo.puntosVida" [enemigoIndex]="indexEnemigo"></appAnimacionNumero>
+
+        <barraComponent [badge]="false" [orientacion]="'vertical'" [tipo]="'Vida'" [valor]="renderEnemigo.vida" [escudo]="renderEnemigo.escudo" class="barra"></barraComponent>
+
+        <div class="Buffos-DeBuffos-Enemigo">
+            <div *ngFor="let buff of renderEnemigo.buff; let j = index"  class="contenedorBuffo">
+                <div [ngStyle]="renderizarEstiloBuffosEnemigos(renderEnemigo.buff[j])" [ngClass]="renderizarClaseBuffosEnemigos(j)" ></div>
+            </div>
+        </div>
+
+    </div>
+
 
 </div>

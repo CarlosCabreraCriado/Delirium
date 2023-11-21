@@ -16,6 +16,7 @@ export class BarraComponent {
 	@Input() valor: number;
 	@Input() escudo: number;
 	@Input() badge: boolean = false;
+	@Input() orientacion: string = "horizontal";
 
 	constructor() {}
 

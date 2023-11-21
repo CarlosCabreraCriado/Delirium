@@ -1,0 +1,42 @@
+
+<!--   ******************* -->
+<!--      Social    -->
+<!--   ******************* -->
+
+<div class= "contenedor borde1">
+
+	<h1 class="title Texto1">Reclutar</h1>
+		
+    <botonComponent mat-button [tipoBoton]="2" [texto]="'Añadir amigo'" [color]="'verde'" class="boton botonAddAmigo"></botonComponent>
+
+	<botonComponent mat-button [mat-dialog-close] [tipoBoton]="2" [texto]="'Cerrar'" [color]="'rojo'" class="boton botonCerrar"></botonComponent>
+
+	<hr class="divisor"/>
+
+	<div class="contenedorPestanas">
+		<div class="pestana Texto2 seleccionado">Amigos</div>
+		<div class="pestana Texto2">Peticiones</div>
+		<div class="pestana Texto2">Solicitudes</div>
+	</div>
+
+	<hr class="divisor"/>
+
+	<div class="contenedorOpciones">
+		
+		<!--PANEL OPCIONES GENERAL -->
+		<div class="opcionesGenerales Texto3">
+
+			<div class="amigo Texto3" *ngFor="let amigo of this.perfil.amigos; let i = index">
+                <div class="nombre Texto2">{{amigo.usuario}}</div>
+				<div class="contenedorBotonInvitar">
+		            <botonComponent mat-button (click)="reclutar(amigo.usuario)" [texto]="'Reclutar'" [color]="'naranja'" [tipoBoton]="2" class="botonInvitar"></botonComponent>
+				</div>
+			</div>
+			
+		</div>
+
+	</div>
+	
+
+</div>
+

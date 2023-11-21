@@ -16,6 +16,7 @@ export class EnemigoComponent implements OnInit{
     @Input() seleccionable: boolean;
     @Input() desplegable: boolean = false;
     @Input() desplegadoDefecto: boolean = true;
+    @Input() tipoDesplegable: string = "vertical";
 
   public estadoDesplegado: boolean= true;
 

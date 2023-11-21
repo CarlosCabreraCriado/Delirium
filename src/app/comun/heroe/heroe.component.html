@@ -49,7 +49,7 @@
 	</div>
 
     <!-- DETALLE -->
-    <div class="wrapperDesplegable">
+    <div id="wrapperDesplegableHorizontal" *ngIf="tipoDesplegable == 'horizontal'">
         <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.puntosVida"></appAnimacionNumero>
         <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
             <div class="fondoDetalle">
@@ -73,11 +73,26 @@
                 <div *ngFor="let buff of renderHeroe.buff; let j = index"  class="buffo">
                   <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{renderHeroe.buff[j].imagen_id}}.png">
                     <div class="contadorDuracion">{{renderHeroe.buff[j].duracion}}</div>
-                </div>
+               </div>
             </div>
 
         </div>
     </div>
 
+
+    <div id="wrapperDesplegableRadial" *ngIf="tipoDesplegable == 'radial'">
+        <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.puntosVida"></appAnimacionNumero>
+
+        <!-- BARRAS -->
+        <div class="contenedorBarras">
+            <div class="wrapperBarras">
+                <barraComponent [badge]="false" [orientacion]="'radial'" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
+                <barraComponent [badge]="false" [orientacion]="'radial'" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+            </div>
+            <div class="separadorMarco"></div>
+        </div>
+
+        
+    </div>
 </div>
 
