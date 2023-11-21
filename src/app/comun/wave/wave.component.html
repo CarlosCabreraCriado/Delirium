@@ -1,0 +1,41 @@
+
+<!--   ******************* -->
+<!--      Wave Component    -->
+<!--   ******************* -->
+
+<div id='footer-navmenu'>
+    <svg class='wave-animation' preserveAspectRatio='none' viewBox='0 24 150 28' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+        <defs>
+
+            <path d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z' id='gentle-wave'/>
+
+            <filter id="glow">
+                <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"></fegaussianblur>
+                <femerge>
+                    <femergenode in="coloredBlur"></femergenode>
+                    <femergenode in="coloredBlur"></femergenode>
+                    <femergenode in="coloredBlur"></femergenode>
+                    <femergenode in="SourceGraphic"></femergenode>
+                </femerge>
+            </filter>
+
+
+        </defs>
+
+        <mask id="mascara">
+            <path d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z' fill="white" id='gentle-wave'/>
+        </mask>
+
+        <path style="filter: url(#glow)" d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z' id='gentle-wave'/>
+
+        <g  class='wave-bg'>
+            <use stroke-width="2"  stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='0'/>
+            <use stroke-width="1"  stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='2'/>
+            <use stroke-width="0.5" stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='3'/>
+            <use stroke-width="0.5" stroke='white' fill="none" x='50' xlink:href='#gentle-wave' y='6'/>
+        </g>
+    </svg>
+</div>
+
+
+

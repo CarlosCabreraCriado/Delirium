@@ -7,12 +7,17 @@
   height: 100%
   aspect-ratio: 1
 
+#animacionNumero
+  position: absolute
+  bottom: 100%
+  pointer-events: none
+
 .contenedorHeroe
     position: relative
     width: 100%
     height: 100%
     transition: left 1s, width 1s
-    pointer-events: none
+    //pointer-events: none
     z-index: 6
 
     .frameCirculo
@@ -33,7 +38,9 @@
 
         .imagenPersonaje
             position: absolute
-            height: 80%
+            top: 10%
+            height: 150%
+            clip-path: circle(35% at 50% 27%)
 
         .contenedorIcono
             position: absolute
@@ -119,7 +126,7 @@
                 text-align: center
                 color: white
 
-    .wrapperDesplegable
+    #wrapperDesplegableHorizontal
       position: absolute
       top: 0
       right: 50%
@@ -128,80 +135,88 @@
       overflow: hidden
       z-index: 1
 
-    .contenedorDetalle
-      position: absolute
-      top: 0
-      right: -100%
-      height: 100%
-      width: 100%
-      transition: 1s
-      &.desplegado
-        right: 0
+      .contenedorDetalle
+        position: absolute
+        top: 0
+        right: -100%
+        height: 100%
+        width: 100%
         transition: 1s
+        &.desplegado
+          right: 0
+          transition: 1s
 
-    .frameCirculo
-      pointer-events: all
+      .frameCirculo
+        pointer-events: all
 
-    .nombre
-        position: absolute
-        color: white
-        width: 60%
-        height: 20%
-        top: 7%
-        left: 16%
-        text-align: center
-
-    .iconoLider
-        position: absolute
-        width: 8%
-        top: 0%
-        left: 50%
-
-    .contenedorBarras
-        position: absolute
-        display: flex
-        flex-direction: row
-        justify-content: flex-end
-        align-items: center
-        width: 100%
-        height: 100%
-        z-index: 2
-        &.expandido
-          width: 53%
-        &.retraido
-          width: 0%
-        .separadorMarco
-          position: relative
-          display: inline-block
-          height: 100%
-          aspect-ratio: 0.4
-
-        .wrapperBarras
-          position: relative
-          display: inline-flex
-          flex-direction: column
+      .nombre
+          position: absolute
+          color: white
           width: 60%
-          height: 45%
-          .barra
-              position: relative
-              width: 100%
-              height: 30%
-              margin-bottom: 1%
+          height: 20%
+          top: 7%
+          left: 16%
+          text-align: center
 
-    .fondoDetalle
-        position: absolute
-        width: 100%
-        height: 100%
-        left: 0
-        background-image: url("../../../assets/Background/Fondo-Heroe.png")
-        background-size: 100% 100%
+      .iconoLider
+          position: absolute
+          width: 8%
+          top: 0%
+          left: 50%
 
-        .frameDetalle
-            position: absolute
-            width: 100%
+      .contenedorBarras
+          position: absolute
+          display: flex
+          flex-direction: row
+          justify-content: flex-end
+          align-items: center
+          width: 100%
+          height: 100%
+          z-index: 2
+          &.expandido
+            width: 53%
+          &.retraido
+            width: 0%
+          .separadorMarco
+            position: relative
+            display: inline-block
             height: 100%
-            background-image: url("../../../assets/Frames/Frame-Heroe-Detalle.png")
-            background-size: 100% 100%
+            aspect-ratio: 0.4
+
+          .wrapperBarras
+            position: relative
+            display: inline-flex
+            flex-direction: column
+            width: 60%
+            height: 45%
+            .barra
+                position: relative
+                width: 100%
+                height: 30%
+                margin-bottom: 1%
+
+      .fondoDetalle
+          position: absolute
+          width: 100%
+          height: 100%
+          left: 0
+          background-image: url("../../../assets/Background/Fondo-Heroe.png")
+          background-size: 100% 100%
+
+          .frameDetalle
+              position: absolute
+              width: 100%
+              height: 100%
+              background-image: url("../../../assets/Frames/Frame-Heroe-Detalle.png")
+              background-size: 100% 100%
+
+    #wrapperDesplegableRadial
+      position: absolute
+      bottom: 0
+      right: 0%
+      height: 100%
+      width: 130%
+      z-index: 1
 
 #contenedorBuffos
   position: absolute

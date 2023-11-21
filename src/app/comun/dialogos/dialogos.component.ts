@@ -61,9 +61,11 @@ private confirmation: boolean = false;
 
         this.indexTextoMostrado = 0;
         this.opciones = [];
+        
         if(this.textosDialogo.length == 1){
             this.opciones = this.data.opciones;
         }
+
 
         //Suscripcion Socket:
         this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
@@ -115,6 +117,7 @@ private confirmation: boolean = false;
 
         //Si hay opciones Deshabilita el paso de dialogo:
         if(this.opciones?.length > 0){
+            console.error(this.opciones,this.estadoJugadores)
             return;
 
         //Si no hay opciones y todavia quedan dialogos por mostrar:
@@ -124,6 +127,7 @@ private confirmation: boolean = false;
             if(this.indexTextoMostrado == this.textosDialogo.length-1){
                 this.opciones = this.data.opciones;
             }
+            console.error(this.opciones,this.estadoJugadores)
             return;
 
         }else{
@@ -132,6 +136,9 @@ private confirmation: boolean = false;
             }else{
                 this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "terminarDialogo", contenido: this.jugadorPropioSesionIndex});
             }
+
+            console.error(this.opciones,this.estadoJugadores)
+
             return;
         }
 

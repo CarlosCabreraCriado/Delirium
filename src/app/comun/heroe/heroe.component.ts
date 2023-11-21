@@ -22,6 +22,7 @@ export class HeroeComponent implements OnInit {
 	@Input() desplegable: boolean = false;
 	@Input() pantalla: string = "mazmorra";
 	@Input() desplegadoDefecto: boolean = true;
+    @Input() tipoDesplegable: string = "radial";
 
     public estadoDesplegado: boolean= true;
 

@@ -2,14 +2,16 @@
 @import "../../../variables.sass"
 @import "../../../breakpoints.scss"
 
-#contenedorControlMazmorra
+#contenedorControlMazmorraHorizontal
     position: absolute
     width: 100%
     height: 100%
     color: white
     z-index: 6
     background-image: url("../../../assets/Iconos/fondo-badge.png")
-    background-size: cover
+    background-size: auto 100%
+    background-position: right
+    background-repeat: no-repeat
 
     .contenedorEnergia
       position: absolute
@@ -74,30 +76,30 @@
       height: 100%
       text-align: center
 
-#contenedorBotonCentral
-    position: absolute
-    display: flex
-    align-items: center
-    justify-content: center
-    height: 80%
-    aspect-ratio: 1
-    top: 0
-    left: 35%
-    z-index: 7
-    .diamante
+    #contenedorBotonCentral
+      position: absolute
+      display: flex
+      align-items: center
+      justify-content: center
+      height: 80%
+      aspect-ratio: 1
+      top: 0
+      left: 35%
+      z-index: 7
+      .diamante
 
-      position: absolute
-      height: 70%
-      filter: grayscale(1)
-      &.activo
-        filter: grayscale(0)
+        position: absolute
+        height: 70%
+        filter: grayscale(1)
+        &.activo
+          filter: grayscale(0)
 
-    .marcoDiamante
-      position: absolute
-      height: 100%
-    .fondoDiamante
-      position: absolute
-      height: 120%
+      .marcoDiamante
+        position: absolute
+        height: 100%
+      .fondoDiamante
+        position: absolute
+        height: 120%
 
 
 .frameAnimacionesFrame
@@ -115,6 +117,106 @@
   width: 100%
   height: 200%
   left: -1%
+
+#contenedorControlMazmorraVertical
+    position: absolute
+    width: 100%
+    height: 100%
+    color: white
+    z-index: 6
+    background-image: url("../../../assets/Iconos/fondo-badge.png")
+    background-size: cover
+    //border: red dashed 2px
+
+    #contenedorBotonCentral
+      position: absolute
+      display: flex
+      align-items: center
+      justify-content: center
+      height: 50%
+      aspect-ratio: 1
+      top: 25%
+      left: 0%
+      z-index: 7
+      .diamante
+        position: absolute
+        height: 70%
+        filter: grayscale(1)
+        &.activo
+          filter: grayscale(0)
+
+    .marcoDiamante
+      position: absolute
+      height: 100%
+    .fondoDiamante
+      position: absolute
+      height: 120%
+
+    .contenedorEnergia
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 2em 
+      left: 30%
+      aspect-ratio: 1
+      bottom: 4% 
+      z-index: 8
+
+    .contenedorEnergiaFutura
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 1.5em 
+      left: 50%
+      top: 43%
+      aspect-ratio: 1
+      z-index: 8
+
+    .contenedorVida
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 2em 
+      top: 4% 
+      left: 30%
+      aspect-ratio: 1
+      z-index: 8
+
+    .fondoIndicador
+      position: absolute
+      width: 100%
+      height: 100%
+
+    .valorIndicador
+      position: absolute
+      display: flex
+      align-items: center
+      justify-content: center
+      color: white
+      width: 100%
+      height: 100%
+      text-align: center
+
+    .contenedorBotonLateral
+        position: absolute
+        height: 50%
+        aspect-ratio: 1
+        right: 0
+        z-index: 7
+        .icono
+          position: absolute
+          width: 100%
+          height: 100%
+          filter: grayscale(0.5)
+          &.activo
+            filter: grayscale(0)
+        &.derecho
+            bottom: 0
+        &.izquierdo
+            top: 0
 
 #contenedorControlInMap
   position: absolute

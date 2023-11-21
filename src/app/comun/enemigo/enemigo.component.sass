@@ -7,8 +7,14 @@
   height: 100%
   aspect-ratio: 1
 
+#animacionNumero
+  position: absolute
+  top: 100%
+  pointer-events: none
+
 .contenedorEnemigo
   position: absolute
+  display: flex
   width: 100%
   height: 100%
   z-index: 6
@@ -18,6 +24,8 @@
     height: 100%
     aspect-ratio: 1
     background-color: $colorFondo1
+    -webkit-box-shadow: -11px 9px 20px 0px rgba(0,0,0,0.75)
+    -moz-box-shadow: -11px 9px 20px 0px rgba(0,0,0,0.75)
     .imagenEnemigo
       position: absolute
       height: 100%
@@ -37,7 +45,7 @@
         background-image: url("../../../assets/Frames/Frame-Enemigo.png")
         background-size: 100% 100%
 
-  .wrapperDesplegable
+  #wrapperDesplegableHorizontal
     position: absolute
     top: 0
     left: 100%
@@ -45,77 +53,102 @@
     width: 150%
     overflow: hidden
 
-  .contenedorDetalle
-    position: absolute
-    background-color: $colorFondo1
-    top: 0
-    left: -100%
-    height: 100%
-    width: 100%
-    transition: 1s
-    &.desplegado
-      left: 0
-      transition: 1s
-
-    .frameDetalle
-        position: absolute
-        width: 100%
-        height: 100%
-        background-image: url("../../../assets/Frames/Frame-Detalle-Enemigo.png")
-        background-size: 100% 100%
-
-    .nombreEnemigo
+    .contenedorDetalle
       position: absolute
+      background-color: $colorFondo1
+      top: 0
+      left: -100%
+      height: 100%
       width: 100%
-      text-align: center
-      color: white
-    .barra
-      position: absolute
-      width: 80%
-      left: 15%
-      height: 20%
-      top: 30%
+      transition: 1s
+      &.desplegado
+        left: 0
+        transition: 1s
 
-    .Buffos-DeBuffos-Enemigo
-      position: absolute
-      display: flex
-      justify-content: center
-      left: 5%
-      top: 60%
-      height: 30%
-      width: 90%
-
-      .contenedorBuffo
-        position: relative
-        height: 100%
-        aspect-ratio: 1
-
-        .contadorDuracion
+      .frameDetalle
           position: absolute
           width: 100%
           height: 100%
-          display: flex
-          z-index: 2
-          justify-content: center
-          align-items: center
-          color: black
+          background-image: url("../../../assets/Frames/Frame-Detalle-Enemigo.png")
+          background-size: 100% 100%
 
-        .Buffo-Enemigo
-          position: absolute
-          top: 0
-          left: 0
-          width: 100%
-          vertical-align: top
-          line-height: 32px
-          color: black
-          text-align: center
-          padding-top: 100%
-          overflow: hidden
+      .nombreEnemigo
+        position: absolute
+        width: 100%
+        text-align: center
+        color: white
+      .barra
+        position: absolute
+        width: 80%
+        left: 15%
+        height: 20%
+        top: 30%
 
-        .buff
-          border: 2px solid green
-        .debuf
-          border: 2px solid red
+      .Buffos-DeBuffos-Enemigo
+        position: absolute
+        display: flex
+        justify-content: center
+        left: 5%
+        top: 60%
+        height: 30%
+        width: 90%
+
+        .contenedorBuffo
+          position: relative
+          height: 100%
+          aspect-ratio: 1
+
+          .contadorDuracion
+            position: absolute
+            width: 100%
+            height: 100%
+            display: flex
+            z-index: 2
+            justify-content: center
+            align-items: center
+            color: black
+
+          .Buffo-Enemigo
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            vertical-align: top
+            line-height: 32px
+            color: black
+            text-align: center
+            padding-top: 100%
+            overflow: hidden
+
+          .buff
+            border: 2px solid green
+          .debuf
+            border: 2px solid red
+
+  #wrapperDesplegableVertical
+    position: relative
+    height: 100%
+    width: -webkit-fill-available 
+
+    .barra
+      position: relative
+      display: inline-block
+      height: 100%
+      width: 30%
+
+    .Buffos-DeBuffos-Enemigo
+      position: absolute
+      display: inline-flex
+      vertical-align: top
+      flex-direction: column
+      flex-wrap: wrap
+      height: 100%
+      width: 70%
+
+      .contenedorBuffo
+        position: relative
+        height: 33.33%
+        aspect-ratio: 1
 
 //------------------------------------------------------------------
 //---------------------Efectos Generales----------------------------
