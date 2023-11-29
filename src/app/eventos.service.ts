@@ -21,8 +21,8 @@ export class EventosService {
     public indexOrdenEjecutando: number= 0;
     public salaOpenInicio: number = null;
 
-    private sesion: any; 
-    private estadoApp: any; 
+    private sesion: any;
+    private estadoApp: any;
 
     @Output() eventoMazmorraEmitter: EventEmitter<any> = new EventEmitter();
     @Output() eventoInMapEmitter: EventEmitter<any> = new EventEmitter();
@@ -63,6 +63,7 @@ export class EventosService {
             case undefined:
             case "General":
                 this.eventoEjecutando = this.eventos.eventos.find(i => i.id==idEvento);
+                console.warn(this.eventoEjecutando)
                 break;
             case "Random":
                 if(!tipoEventoRandom){console.error("Error Ejecutando Evento: Tipo Evento Random no definido.");return;}
@@ -81,9 +82,10 @@ export class EventosService {
         if(!this.eventoEjecutando){console.error("No se encuentra evento con ID: "+idEvento);return;}
 
         this.ejecutarOrden(0);
-    } 
+    }
 
     ejecutarOrden(indexOrden:number){
+        console.warn("EJECUTANDO ORDEN:", indexOrden, this.eventoEjecutando)
         //Verifica que se pueda ejecutar
         if(this.eventoEjecutando == null){this.finalizarEvento();return;}
         if(!this.eventoEjecutando?.ordenes){this.finalizarEvento();return;}
@@ -114,7 +116,7 @@ export class EventosService {
     }
 
     ejecutarOrdenDialogo(indexOrden:number){
-        var tipoDialogo = this.eventoEjecutando.ordenes[indexOrden].tipoDialogo; 
+        var tipoDialogo = this.eventoEjecutando.ordenes[indexOrden].tipoDialogo;
         var orden = this.eventoEjecutando.ordenes[indexOrden];
 
         switch(tipoDialogo){
@@ -134,18 +136,18 @@ export class EventosService {
                 }
                 var dialogRef = this.mostrarDialogo("Dialogo",{
                     titulo: orden.titulo,
-                    contenido: orden.contenido, 
+                    contenido: orden.contenido,
                     opciones: orden.opciones,
                     interlocutor: orden.interlocutor,
-                    ordenEncadenado: orden.ordenEncadenado, 
-                    mostrarPersonajeDerecha: orden.mostrarPersonajeDerecha, 
+                    ordenEncadenado: orden.ordenEncadenado,
+                    mostrarPersonajeDerecha: orden.mostrarPersonajeDerecha,
                     mostrarPersonajeIzquierda: orden.mostrarPersonajeIzquierda,
-                    tipoPersonajeDerecha: orden.tipoPersonajeDerecha, 
-                    tipoPersonajeIzquierda: orden.tipoPersonajeIzquierda, 
-                    imagenPersonajeDerecha: orden.imagenPersonajeDerecha, 
-                    imagenPersonajeIzquierda: orden.imagenPersonajeIzquierda, 
-                    nombrePersonajeDerecha: orden.nombrePersonajeDerecha, 
-                    nombrePersonajeIzquierda: orden.nombrePersonajeIzquierda 
+                    tipoPersonajeDerecha: orden.tipoPersonajeDerecha,
+                    tipoPersonajeIzquierda: orden.tipoPersonajeIzquierda,
+                    imagenPersonajeDerecha: orden.imagenPersonajeDerecha,
+                    imagenPersonajeIzquierda: orden.imagenPersonajeIzquierda,
+                    nombrePersonajeDerecha: orden.nombrePersonajeDerecha,
+                    nombrePersonajeIzquierda: orden.nombrePersonajeIzquierda
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
@@ -175,7 +177,7 @@ export class EventosService {
             case "NarradorImg":
                 var dialogRef = this.mostrarDialogo("NarradorImg",{
                     titulo: orden.titulo,
-                    contenido: orden.contenido, 
+                    contenido: orden.contenido,
                     tipoImagen: orden.tipoImagen,
                     ordenEncadenado: orden.ordenEncadenado,
                     imagenId: orden.imagenId
@@ -203,24 +205,25 @@ export class EventosService {
                         return;
                     }
                 });
-                
+
                 break;
 
             case "Diapositiva":
                 var dialogRef = this.mostrarDialogo("Diapositiva",{
                     titulo: orden.titulo,
-                    contenido: orden.contenido, 
+                    contenido: orden.contenido,
                     tipoImagen: orden.tipoImagen,
                     ordenEncadenado: orden.ordenEncadenado,
                     imagenId: orden.imagenId
                 })
 
                 dialogRef.afterClosed().subscribe(result => {
-                    //console.log('Fin del dialogo');
-                    //console.log(result)
+                    console.log('Fin del dialogo');
+                    console.log(result)
 
                     //Ejecuta siguiente evento:
                     if(result == null || result == undefined || result == 0){
+
                         this.ejecutarOrden(indexOrden+1);
                         return;
                     }
@@ -237,7 +240,7 @@ export class EventosService {
                         return;
                     }
                 });
-                
+
                 break;
         }
     }
@@ -379,9 +382,9 @@ export class EventosService {
                         this.ejecutarEvento(orden.encadenadoTrue)
                         break;
                 }
-            }   
+            }
         }
-        
+
         //ENCADENADO FALSO:
         if(!condicionSuperada){
             if(orden.encadenadoFalse == null){
@@ -406,12 +409,12 @@ export class EventosService {
                         this.ejecutarEvento(orden.encadenadoFalse)
                         break;
                 }
-            }   
+            }
 
         }
 
     }//Fin ejecutarOrdenCondicion
-    
+
     finalizarEvento(){
         //console.warn("Evento Finalizado");
         this.eventoMazmorraEmitter.emit({comando: "forceRender"})
@@ -424,32 +427,32 @@ export class EventosService {
         var desarrollo = false;
         if(this.estadoApp.pantalla == "desarrollador"){desarrollo = true;}
         const dialogRef = this.dialog.open(DialogoComponent,{
-          width: "100px", 
+          width: "100px",
           panelClass: [tipoDialogo, "generalContainer"],
-          backdropClass: "fondoDialogo", 
-          disableClose:true, 
+          backdropClass: "fondoDialogo",
+          disableClose:true,
           data: {
               inputLabel: config.inputLabel,
               deshabilitado: config.deshabilitado,
-              tipoDialogo: tipoDialogo, 
+              tipoDialogo: tipoDialogo,
               numJugadores: this.sesion.jugadores.length,
               jugadorPropioSesionIndex: this.estadoApp.jugadorPropioSesionIndex,
               desarrollo: desarrollo,
-              titulo: config.titulo, 
+              titulo: config.titulo,
               contenido: config.contenido,
               tipoImagen: config.tipoImagen,
               imagenId: config.imagenId,
-              opciones: config.opciones, 
+              opciones: config.opciones,
               interlocutor: config.interlocutor,
               ordenEncadenado: config.ordenEncadenado,
-              mostrarPersonajeDerecha: config.mostrarPersonajeDerecha, 
+              mostrarPersonajeDerecha: config.mostrarPersonajeDerecha,
               mostrarPersonajeIzquierda: config.mostrarPersonajeIzquierda,
-              tipoPersonajeDerecha: config.tipoPersonajeDerecha, 
-              tipoPersonajeIzquierda: config.tipoPersonajeIzquierda, 
-              imagenPersonajeDerecha: config.imagenPersonajeDerecha, 
-              imagenPersonajeIzquierda: config.imagenPersonajeIzquierda, 
-              nombrePersonajeDerecha: config.nombrePersonajeDerecha, 
-              nombrePersonajeIzquierda: config.nombrePersonajeIzquierda 
+              tipoPersonajeDerecha: config.tipoPersonajeDerecha,
+              tipoPersonajeIzquierda: config.tipoPersonajeIzquierda,
+              imagenPersonajeDerecha: config.imagenPersonajeDerecha,
+              imagenPersonajeIzquierda: config.imagenPersonajeIzquierda,
+              nombrePersonajeDerecha: config.nombrePersonajeDerecha,
+              nombrePersonajeIzquierda: config.nombrePersonajeIzquierda
           }
         });
         return dialogRef;

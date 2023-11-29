@@ -82,16 +82,16 @@
     <!--   ******************* -->
 
     <panelControlComponent id="panelControl" *ngIf="sesion.iniciada"
-        [tipo]="'inMap'" 
-        [mensajeControl]="inmapService.mensajeControl" 
-        [movimientoRestante]="inmapService.movimientoRestante" 
+        [tipo]="'inMap'"
+        [mensajeControl]="inmapService.mensajeControl"
+        [movimientoRestante]="inmapService.movimientoRestante"
         (comandoPanelControl)="comandoPanelControl($event)" >
     </panelControlComponent>
 
     <div id="botonIniciarPartida" *ngIf="!sesion.iniciada && inmapService.estadoInMap =='region'">
         <botonComponent mat-button (click)="inmapService.peticionIniciarPartida()" [ngClass]="{'botonDeshabilitado': !sesion.jugadores[estadoApp.jugadorPropioSesionIndex]?.lider}" [texto]="'Iniciar Aventura'" [tipoBoton]="2" [color]="'naranja'"></botonComponent>
     </div>
-    
+
 
     <!--   ******************* -->
     <!--      Paneles Heroes   -->
@@ -119,13 +119,15 @@
         </mapaGeneralComponent>
     </div>
 
+    <img id="brujula" src="../../../assets/Mapa/brujula.png"/>
+
 </div> <!-- Fin Contenedor Main Window -->
 
     <!--   ******************* -->
     <!--          NOCHE      -->
     <!--   ******************* -->
     <div id="contenedorNoche" *ngIf="inmapService.mostrarNoche">
-        <img src="../assets/Iconos/luna.png" class="imagenLuna"/> 
+        <img src="../assets/Iconos/luna.png" class="imagenLuna"/>
 
         <div class="contenedorTextoNoche">
             <div class="textoNoche slide1 visible"> Empieza a anochecer... </div>

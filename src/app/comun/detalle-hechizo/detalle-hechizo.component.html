@@ -24,10 +24,10 @@
 
         <!-- Atributos -->
         <div class="atributosHechizos">
-            <atributoComponent class="atributoHechizo" [tipo]="'alcance'" [valor]="hechizoSeleccionado.distancia"></atributoComponent>
             <atributoComponent class="atributoHechizo" [tipo]="'energia'" [valor]="hechizoSeleccionado.recurso"></atributoComponent>
-            <atributoComponent class="atributoHechizo" [tipo]="'alcance'" [valor]="hechizoSeleccionado.cooldown"></atributoComponent>
-            <atributoComponent class="atributoHechizo" [tipo]="'alcance'" [valor]="'-'"></atributoComponent>
+            <atributoComponent class="atributoHechizo" [tipo]="'alcance'" [valor]="hechizoSeleccionado.distancia"></atributoComponent>
+            <atributoComponent class="atributoHechizo" [tipo]="'cooldown'" [valor]="hechizoSeleccionado.cooldown"></atributoComponent>
+            <atributoComponent class="atributoHechizo" [tipo]="'aoe'" [valor]="'-'"></atributoComponent>
         </div>
     </div> <!-- FIN DETALLE HECHIZO -->
 
@@ -41,7 +41,7 @@
             <div class="contenedorDescripcionBuff Arial"
                 [innerHtml]="buffSeleccionado.descripcion">
             </div>
-            
+
         </div>
-    
+
 </div>

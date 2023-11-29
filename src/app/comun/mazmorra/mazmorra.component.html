@@ -54,7 +54,7 @@
     <!--   ******************* -->
     <historialComponent id="historial"
         [ngClass]="{
-            'mostrarHistorial': mostrarHistorial, 
+            'mostrarHistorial': mostrarHistorial,
             'ocultarHistorial': !mostrarHistorial
             }">
     </historialComponent>
@@ -136,8 +136,16 @@
 		<!--   ******************* -->
 		<!--       BOTONES TEST    -->
 		<!--   ******************* -->
+    <!--
+	<img id="test1" src="../../../assets/Iconos/07.png" (click)="this.toggleModoMazmorra()"/>
+    -->
+
+  <div id="botonToggleMazmorra" [ngClass]="{'modoMapa': this.modoMazmorra=='mapa', 'modoCombate': this.modoMazmorra== 'combate'}" (click)="this.toggleModoMazmorra()">
+      <div class="side-a"></div>
+      <div class="side-b"></div>
+  </div>
+
         <!--
-	<img id="test1" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarEnemigo(0)"/>
 	<img id="test2" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarDialogo()"/>
 	<img id="iconoCentrar" src="../../../assets/Iconos/07.png" (click)="this.centrarMazmorra()"/>
 
@@ -167,13 +175,28 @@
 
 <appHeroesInfo></appHeroesInfo>
 
+     <!-- *************************************************
+            MAPA MAZMORRA
+     ************************************************* -->
+
+  <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
+	<mapaMazmorraComponent #mapaMazmorra id="mapaMazmorra"
+      (eventoClickElemento)="clickElemento($event)"
+      [isometrico]="this.mazmorraService.mazmorra.isometrico"
+      [renderEnemigos]="this.mazmorraService.sesion?.render.enemigos"
+      [renderMazmorra]= "this.mazmorraService.sesion?.render.mazmorra"
+      [escalaIsometrico]="0.3"
+      [salasDescubiertas]="this.mazmorraService.sesion.render.mazmorra.salasDescubiertas">
+  </mapaMazmorraComponent>
+  </ng-container>
+
 	<!--   ******************* -->
 	<!--      Panel Control    -->
 	<!--   ******************* -->
-
     <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
 
     <panelControlComponent (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"
+            [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}"
             [tipo]="'mazmorra'"
             [vida]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].puntosVida"
             [energia]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energia"
@@ -190,6 +213,12 @@
 
 <experienciaComponent id="experiencia"></experienciaComponent>
 
+    <div id="fondoCombate" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
+        <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
+        <div class="degradadoFondo"></div>
+        <waveComponent></waveComponent>
+    </div>
+
 <!-- *************************************************
             Panel Acción
      ************************************************* -->
@@ -204,45 +233,24 @@
 	<!--   ******************* -->
 	<!--      Paneles Heroes   -->
 	<!--   ******************* -->
-	<div id="contenedorHeroes">
-
+	<div id="contenedorHeroes" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
         <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-		      <heroeComponent *ngFor="let heroe of this.mazmorraService.sesion.render.heroes; let i = index" [desplegable]="false" [indexHeroe]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
+		      <heroeComponent *ngFor="let heroe of this.mazmorraService.sesion.render.heroes; let i = index" [desplegable]="false" [modoMazmorra]="modoMazmorra" [indexHeroe]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
         </ng-container>
-
 	</div>
 
 	<!--   ******************* -->
 	<!--     Paneles Enemigos  -->
 	<!--   ******************* -->
 
-	<div id="contenedorEnemigos">
+  <div id="contenedorEnemigos" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
         <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
           <enemigoComponent *ngFor="let enemigo of this.mazmorraService.sesion.render.enemigos; let i = index" [desplegable]="false" [indexEnemigo]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
         </ng-container>
 	</div>
 
 
-    <div id="fondoCombate">
-        <waveComponent></waveComponent>
-    </div>
 
-     <!-- *************************************************
-            MAPA MAZMORRA
-     ************************************************* -->
-
-<!--
-  <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-	<mapaMazmorraComponent #mapaMazmorra id="mapaMazmorra"
-      (eventoClickElemento)="clickElemento($event)"
-      [isometrico]="this.mazmorraService.mazmorra.isometrico"
-      [renderEnemigos]="this.mazmorraService.sesion?.render.enemigos"
-      [renderMazmorra]= "this.mazmorraService.sesion?.render.mazmorra"
-      [escalaIsometrico]="0.3"
-      [salasDescubiertas]="this.mazmorraService.sesion.render.mazmorra.salasDescubiertas">
-  </mapaMazmorraComponent>
-  </ng-container>
--->
 
 </div>
 

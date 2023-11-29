@@ -6,6 +6,7 @@ import { SocketService } from '../socket/socket.service';
 import { EventosService } from '../../eventos.service';
 import { TriggerService } from '../../trigger.service';
 import { MapaGeneralService } from "../mapa-general/mapaGeneral.service"
+import { LogicService } from "../../logic.service"
 
 interface EstadoControlInMap {
       estado: string,
@@ -62,7 +63,7 @@ export class InMapService {
     //Emision de eventos
     @Output() subscripcionInMapService: EventEmitter<string> = new EventEmitter();
 
-  constructor(private triggerService: TriggerService, private eventosService: EventosService, private mapaGeneralService: MapaGeneralService, private appService: AppService,private socketService:SocketService) {
+  constructor(private logicService: LogicService, private triggerService: TriggerService, private eventosService: EventosService, private mapaGeneralService: MapaGeneralService, private appService: AppService,private socketService:SocketService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
         this.appService.estadoApp$.subscribe(estadoApp => {
             this.estadoApp = estadoApp;
@@ -168,7 +169,7 @@ export class InMapService {
 
         //REDIRIGIR A MAZMORRA:
         //this.iniciarPartida("Bastion");
-        
+
     }
 
     toggleInMap(){ //Se activa desde el boton de Region:
@@ -194,7 +195,7 @@ export class InMapService {
     */
 
     realizarMovimientoInMap(direccion:"NorEste"|"SurEste"|"SurOeste"|"NorOeste"){
-        
+
         //VERIFICAR SI ES TURNO DEL HEROE:
         if(!this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex]["turno"] && !this.comandoSocketActivo){
             console.error("BLOQUEANDO MOVIMIENTO TURNO NO VALIDO")
@@ -203,7 +204,7 @@ export class InMapService {
 
         //VERIFICA SI TIENE MOVIMENTOS RESTANTES:
         // PENDIENTE DE IMPLEMENTAR CONDICION
-        
+
         //ENVIO DE COMANDO SOCKET:
         if(!this.comandoSocketActivo){
             this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "realizarMovimientoInMap", valor: { direccion: direccion, coordX: this.sesion.render.inmap.posicion_x, coordY: this.sesion.render.inmap.posicion_y}});
@@ -368,6 +369,28 @@ export class InMapService {
         this.mapaGeneralService.verificarMovimiento();
         this.appService.setSesion(this.sesion);
         this.triggerService.checkTrigger("entrarCasilla",{posicion_x: this.sesion.render.inmap.posicion_x, posicion_y: this.sesion.render.inmap.posicion_y})
+    }
+
+    descansarPosada(){
+      //Restaurando vida heroes:
+      var indexJugador = -1;
+      for(var i = 0; i < this.sesion.render.heroes.length; i++){
+        this.sesion.render.heroes[i].buff = [];
+        this.sesion.render.heroes[i].vida = 100;
+        this.sesion.render.heroes[i].energia = 100;
+        this.sesion.render.heroes[i].energiaFutura = 0;
+        this.sesion.render.heroes[i].escudo = 0;
+        this.sesion.render.heroes[i].cooldown =[0,0,0,0,0];
+        indexJugador = Number(this.sesion.jugadores.findIndex(j => j.usuario == this.sesion.render.heroes[i].usuario))
+        if(indexJugador<0){
+          console.error("Index Jugador no encontrado");
+        }
+        this.sesion.render.heroes[i]["estadisticas"] = this.logicService.calcularEstadisticasBaseHeroe(this.sesion.jugadores[indexJugador].personaje);
+        this.sesion.render.heroes[i]["puntosVida"] = this.sesion.render.heroes[i]["estadisticas"]["vidaMaxima"];
+
+      }
+
+      return;
     }
 
 }

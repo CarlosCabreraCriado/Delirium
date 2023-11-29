@@ -67,6 +67,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   public pantalla: string = "Inmap";
   private idCuenta: string;
   public mostrarHistorial: boolean = false;
+  public modoMazmorra: "mapa" | "combate" = "mapa";
 
   //Variables Renderizado:
   private autoGuardado:any;
@@ -208,6 +209,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                       this.mazmorraService.actualizarInteractuado(data.contenido);
                       break;
 
+                  case "ejecutarEventoMazmorra":
+                      this.mazmorraService.ejecutarEventoMazmorra(data.contenido);
+                      break;
+
                   case "lanzarHechizoEnemigo":
                     console.warn("LANZANDO HECHIZO ENEMIGO: ",data)
                     //this.mazmorraService.seleccionarEnemigos = false;
@@ -329,7 +334,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.cdr.detectChanges()
                     break;
                 case "openSala":
-                    this.mazmorraService.cambiarSala(val.valor);
+                    this.mazmorraService.cambiarSala(val.valor, {triggerPorEventoComun: true});
                     break;
                 case "abandonarMazmorra":
                     //this.mazmorraService.abandonarMazmorra();
@@ -871,16 +876,20 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     renderFlechaTutorial():string{
 
+        if(this.mazmorraService.sesion.render.variablesMundo["tutorial"]=="true" && this.modoMazmorra=="mapa"){
+            return "verticalDown iconoModoMapa"
+        }
+
         if(this.mazmorraService.sesion.render.variablesMundo["tuto_movimiento"]=="true"){
-            return "verticalDown iconoMovimiento"
+            return "horizontalRight iconoMovimiento"
         }
 
         if(this.mazmorraService.sesion.render.variablesMundo["tuto_ataque"]=="true"){
-            return "verticalDown iconoAtaque"
+            return "horizontalRight iconoAtaque"
         }
 
         if(this.mazmorraService.sesion.render.variablesMundo["tuto_paso_turno"]=="true"){
-            return "verticalDown iconoTurno"
+            return "horizontalRight iconoTurno"
         }
 
     }
@@ -906,7 +915,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               case "interactuar":
               case "exploracion":
               case "inspeccionable":
-                this.mazmorraService.lanzarEventoMazmorra(elemento.especial,elemento.mensaje,elemento.eventoId,elemento.Id); 
+                this.mazmorraService.lanzarEventoMazmorra(elemento.especial,elemento.mensaje,elemento.eventoId,elemento.Id);
                 break;
 
       }
@@ -922,6 +931,17 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       this.appService.reloadDatos();
     }
 
+    toggleModoMazmorra(){
+
+      if(this.modoMazmorra == "combate"){
+        this.modoMazmorra = "mapa";
+        this.cdr.detectChanges();
+        //this.centrarMazmorra();
+      }else{
+        this.modoMazmorra = "combate";
+        this.cdr.detectChanges();
+      }
+    }
 
 
 }

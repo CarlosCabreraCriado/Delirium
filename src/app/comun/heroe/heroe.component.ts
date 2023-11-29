@@ -22,14 +22,17 @@ export class HeroeComponent implements OnInit {
 	@Input() desplegable: boolean = false;
 	@Input() pantalla: string = "mazmorra";
 	@Input() desplegadoDefecto: boolean = true;
-    @Input() tipoDesplegable: string = "radial";
+  @Input() tipoDesplegable: string = "radial";
+  @Input() modoMazmorra: string = "mapa";
 
-    public estadoDesplegado: boolean= true;
+  public estadoDesplegado: boolean= true;
+  public identificador: string = "";
 
 	constructor() {}
 
     ngOnInit(){
         this.estadoDesplegado = this.desplegadoDefecto
+        this.identificador = this.renderHeroe.nombre.replace(/\W/g,'_')
     }
 
     toggleDesplegable(){

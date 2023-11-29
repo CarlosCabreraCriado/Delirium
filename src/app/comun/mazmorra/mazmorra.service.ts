@@ -14,7 +14,7 @@ import { Subscription } from "rxjs";
 
 //import { ElectronService } from 'ngx-electron';
 import { RenderMazmorra} from './render.class';
- 
+
 interface EstadoControl {
       estado: string,
       esTurnoPropio: boolean,
@@ -372,7 +372,7 @@ export class MazmorraService {
                 this.sesion.render.mazmorra.salasDescubiertas.push(salaInicialEvento);
             }
         }
-        
+
          this.estadoControl = {
               estado: "seleccionAccion",
               esTurnoPropio: false,
@@ -397,7 +397,7 @@ export class MazmorraService {
               enemigoMuerto: []
         }
 
-        this.estadoControl.heroePropioIndex = this.sesion.jugadores.findIndex(i => i.usuario==this.cuenta.usuario);
+        this.estadoControl.heroePropioIndex = Number(this.sesion.render.heroes.findIndex(i => i.usuario == this.cuenta.usuario))
 
         //Inicialización de personaje:
         this.personaje = {
@@ -420,6 +420,7 @@ export class MazmorraService {
       this.sesion.render.heroes[i]["estadisticasBase"] = this.logicService.calcularEstadisticasBaseHeroe(this.sesion.jugadores[i].personaje);
       this.sesion.render.heroes[i].estadisticas=this.sesion.render.heroes[i].estadisticasBase;
       this.actualizarEscudo("heroes", i);
+      this.recalcularEnergiaFutura(i);
     }
 
     //Calcular estadisticas Enemigos:
@@ -443,6 +444,7 @@ export class MazmorraService {
     this.checkTurno();
     this.checkTurnoPropio();
     this.sesion.render.numHeroes= this.sesion.jugadores.length;
+    this.appService.actualizarEstadoApp();
 
     //Inicializacion de flag de control enemigo:
     if(this.estadoControl.esTurnoEnemigo){
@@ -478,7 +480,7 @@ export class MazmorraService {
     if(this.sesion.render.estadisticasTotal == undefined){
         this.sesion.render.estadisticasTotal = [];
     }
-        
+
     if(!this.sesion.render.mazmorra.iniciada){
         this.sesion.render.estadisticasTotal = [];
     }
@@ -519,6 +521,9 @@ export class MazmorraService {
     if(this.sesion.render.variablesMundo["tutorial"]=="true"){
         this.flagTutorial = true;
         this.interfazService.setTutorial(true);
+        await this.eventosService.actualizarEventos();
+
+        this.eventosService.ejecutarEvento(2,"General")
         //this.interfazService.setEstadoTutorial();
     }
 
@@ -542,7 +547,7 @@ export class MazmorraService {
 
     //Inicializar Canvas Isometrico:
     this.appService.renderizarCanvasIsometrico();
-    
+
     //INICIAR SALAS DESCUBIERTAS:
     if(!this.sesion.render.mazmorra.iniciada){
         for(var i = 0; i < this.sesion.render.mazmorra.salasDescubiertas.length; i++){
@@ -562,7 +567,13 @@ export class MazmorraService {
         this.sesion.render.historial= [objetoHistorial];
     }
 
-    this.sesion.render.mazmorra.iniciada = true;
+    //Elimina Flag iniciada y actualiza el estado del render:
+    if(!this.sesion.render.mazmorra.iniciada){
+      if(this.estadoControl.esTurnoPropio){
+          console.warn("Actualizando Sesion:")
+          this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this.sesion.render});
+      }
+    }
 
     //Mostrar Mazmorra:
     this.mostrarMazmorra= true;
@@ -571,12 +582,14 @@ export class MazmorraService {
     this.appService.setSesion(this.sesion);
 
     //Inicializacion de evento inicial Mazmorra:
-    console.warn()
-    if(this.mazmorra.general.evento_start_id){
+    if(!this.sesion.render.mazmorra.iniciada && this.mazmorra.general.evento_start_id && this.sesion.render.variablesMundo["tutorial"]!="true"){
         await this.eventosService.actualizarEventos();
-        this.eventosService.ejecutarEvento(this.mazmorra.general.evento_start_id,"General")
+        this.eventosService.ejecutarEvento(this.mazmorra.general.evento_start_id,"Mazmorra")
     }
 
+    if(!this.sesion.render.mazmorra.iniciada){
+      this.sesion.render.mazmorra.iniciada = true;
+    }
 
     //Centrar Vista Mazmorra:
     setTimeout(()=>{
@@ -766,6 +779,7 @@ export class MazmorraService {
                 return;
             }
       }
+
       if(this.sesion.render.variablesMundo.tuto_paso_turno == "true"){
            this.eventosService.ejecutarEvento(7,"General")
       }
@@ -815,7 +829,7 @@ export class MazmorraService {
         }
       }
     }
-    
+
     //Agregar nuevo registro de analisis:
     /*
     for(var i=0; i <this.sesion.render.numHeroes;i++){
@@ -1105,7 +1119,7 @@ export class MazmorraService {
   }
 
   //Gestiona el cambio de sala:
-  addEnemigo(idEnemigo:number):void{ //DECOMISION 
+  addEnemigo(idEnemigo:number):void{ //DECOMISION
 
     //Añade los enemigos de la nueva sala a la instancia:
     var enemigoAdd= this.enemigos.find(j => j.id == idEnemigo);
@@ -1143,7 +1157,7 @@ export class MazmorraService {
         escudo: 0,
         agro: [],
         buff:[],
-        
+
         estadisticas: {
           armadura: enemigoAdd.armadura,
           vitalidad: enemigoAdd.vitalidad,
@@ -1198,16 +1212,16 @@ export class MazmorraService {
 
       console.warn(sala,config);
 
-      if(!this.comandoSocketActivo && !config?.inicializacion){
+      if(!this.comandoSocketActivo && !config?.inicializacion && !config?.triggerPorEventoComun){
         this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "cambiarSala", valor: sala});
         //this.emisor=false;
       }
 
     //Añade los enemigos de la nueva sala a la instancia:
-        console.log("CAMBIANDO SALA: ")
-        console.log(this.mazmorra)
-        console.log("ENEMIGOS:")
-        console.log(this.enemigos)
+    console.log("CAMBIANDO SALA: ")
+    console.log(this.mazmorra)
+    console.log("ENEMIGOS:")
+    console.log(this.enemigos)
 
     var enemigosAdd= this.mazmorra.salas.find(j => j.id == sala).enemigos;
     console.warn("EnemigosAdd: ",enemigosAdd)
@@ -1215,15 +1229,18 @@ export class MazmorraService {
     this.loggerService.log("--------------Cambiando Sala------------------");
     this.loggerService.log("Cambiando de sala: "+sala);
 
+    //DETECTA SI YA SE HA INICIALIZADO.
+    if(this.sesion.render.mazmorra.salasDescubiertas.indexOf(sala)!=-1 && !config?.inicializacion){
+      console.error("Sala ya inicializada.")
+      return;
+    }
+
     //Revelar salas:
     if(!config?.inicializacion){
         this.sesion.render.mazmorra.salasDescubiertas.push(sala);
-    }
-
-    if(config?.inicializacion){
+    }else{
         this.sesion.render.enemigos = [];
     }
-
     console.log(enemigosAdd)
 
     for(var i=0; i <enemigosAdd.length;i++){
@@ -1859,7 +1876,7 @@ export class MazmorraService {
     this.loggerService.log("*** "+this.sesion.render[caster][indexCaster].nombre+ " --> "+this.sesion.render[objetivo][indexObjetivo].nombre,"pink");
 
         //-----------------------------------------
-        // 0) INICIALIZACION DE VARIABLES DE HISTORIAL 
+        // 0) INICIALIZACION DE VARIABLES DE HISTORIAL
         //-----------------------------------------
         //Inicialización del efecto en el historial:
         var accionesLength = this.sesion.render.historial[0].acciones.length-1;
@@ -2049,7 +2066,7 @@ export class MazmorraService {
           this.loggerService.log("--> Iniciando Hechizo encadenado (ID: "+hechizo.hechizo_encadenado_id+")","yellow");
           this.estadoControl.rngEncadenado = true;
           this.seleccionObjetivo(hechizo.hechizo_encadenado_id);
-          
+
         }else{
           //Desbloquea y termina la aplicación de Hechizos:
           this.appService.setControl("desbloqueoHechizo");
@@ -2355,7 +2372,7 @@ export class MazmorraService {
                 resistencia = this.sesion.render.enemigos[indexObjetivo].estadisticas.resistenciaMagica;
                 break;
         }
-        
+
 
         var reduccionArmadura = this.logicService.calcularReduccionArmadura(objetivo, armadura, hechizo.nivelCaster);
         var reduccionResistencia = this.logicService.calcularReduccionResistencia(objetivo, resistencia, hechizo.nivelCaster);
@@ -2540,7 +2557,7 @@ export class MazmorraService {
     this.estadoControl.critico=false;
 
     //LOGGER && ANALITICS
-    
+
     //this.loggerService.log("------ ENTRADA ------- ","teal");
     if(hechizo.daño_entrante>0){
       //this.loggerService.log("-----> Daño: "+ hechizo.daño_entrante,"orangered");
@@ -2941,7 +2958,7 @@ export class MazmorraService {
             await this.aplicarBuffos(aplicarBuffos, resolveGlobal);
       }, this.velocidadBuff);
     }else{
-        
+
       //Elimina a los enemigos que hayan muerto por buff:
       this.enemigoMuerto(-1);
 
@@ -3566,7 +3583,7 @@ export class MazmorraService {
   }
 
   construirGolpeOportunidad(): any{
-        var objetoGolpeOportunidad = []; 
+        var objetoGolpeOportunidad = [];
         var arrayAccionesPosibles = [];
         for(var i = 0; i < this.estadoControl.objetivosEnemigos.length; i++){
 
@@ -3577,7 +3594,7 @@ export class MazmorraService {
                 hechizoId: arrayAccionesPosibles[Math.floor(Math.random()*arrayAccionesPosibles.length)].hechizo_id
             });
 
-        } 
+        }
 
         console.warn("Golpe Oportunidad: ", objetoGolpeOportunidad);
         return objetoGolpeOportunidad;
@@ -3592,7 +3609,7 @@ export class MazmorraService {
             console.warn("Fin Golpe de Oportunidad");
             return;
         }
-        
+
         if(objetoGolpeOportunidad[0].indexEnemigo == undefined || objetoGolpeOportunidad[0].hechizoId == undefined){
             console.error("Error ejecutando Golpe oportunidad (undefined): ",objetoGolpeOportunidad);
             return;
@@ -3810,7 +3827,7 @@ export class MazmorraService {
             return;}
 
       //Evita la activación si no le toca la activación al heroe:
-      if( this.estadoControl.heroePropioIndex!=this.sesion.render.indexActivacionEnemigo && !this.permitirMultiControl){ 
+      if( this.estadoControl.heroePropioIndex!=this.sesion.render.indexActivacionEnemigo && !this.permitirMultiControl){
           return; }
 
         console.warn("Activando Enemigos: ",indexEnemigoActivado,"(Index)",this.sesion.render.indexActivacionEnemigo,"(IndexActivacion)");
@@ -3969,7 +3986,7 @@ export class MazmorraService {
   }
 
     lanzarEventoMazmorra(tipo,mensaje,eventoId,elementoId){
-        
+
         const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: mensaje,contenido: "Para realizar esta accion tienes que estar adyacente a la ubicación y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
 
         dialogo.afterClosed().subscribe(async (result) => {
@@ -3982,9 +3999,16 @@ export class MazmorraService {
                 this.sesion.render.mazmorra["interactuado"].push(elementoId);
                 this.eventosService.ejecutarEvento(eventoId,"Mazmorra");
                 this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "actualizarInteractuado", contenido: this.sesion.render.mazmorra["interactuado"]});
+                this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "ejecutarEventoMazmorra", contenido: eventoId });
           }
         })
 
+    }
+
+    ejecutarEventoMazmorra(eventoId){
+      if(this.sesion.render.variablesMundo["tutorial"]!="true"){
+        this.eventosService.ejecutarEvento(eventoId,"Mazmorra");
+      }
     }
 
     actualizarInteractuado(arrayInteractuado){

@@ -7,6 +7,13 @@
   width: 100vw
   height: 100vh
 
+#test1
+  position: absolute
+  width: 10%
+  left: 5%
+  top: 40%
+  z-index: 10
+
 #tiempo
   position: absolute
   display: none
@@ -45,27 +52,30 @@
   display: none
 
   &.verticalDown
-    animation: movimientoFlechaVerticalDown 1s ease infinite 
+    animation: movimientoFlechaVerticalDown 1s ease infinite
     display: block
   &.verticalUp
-    animation: movimientoFlechaVerticalUp 1s ease infinite 
+    animation: movimientoFlechaVerticalUp 1s ease infinite
     display: block
   &.horizontalLeft
-    animation: movimientoFlechaHorizontalLeft 1s ease infinite 
+    animation: movimientoFlechaHorizontalLeft 1s ease infinite
     display: block
   &.horizontalRight
-    animation: movimientoFlechaHorizontalRight 1s ease infinite 
+    animation: movimientoFlechaHorizontalRight 1s ease infinite
     display: block
 
+  &.iconoModoMapa
+    right: 75%
+    top: 23%
   &.iconoMovimiento
-    right: 58%
-    top: 58%
+    right: 9%
+    top: 33%
   &.iconoAtaque
-    left: 58%
-    top: 58%
+    right: 9%
+    top: 54%
   &.iconoTurno
-    left: 46%
-    top: 50%
+    right: 20%
+    top: 43%
 
 
 #pause
@@ -221,8 +231,11 @@
     top: 30%
     height: 40%
     aspect-ratio: 1
-    right: 0% 
+    right: 0%
     z-index: 2
+    transition: transform 1s
+    &.modoMapa
+      transform: translateX(100%)
 
 #iconoConfiguracion
     position: absolute
@@ -250,9 +263,9 @@
 #iconoEstadisticas
     position: absolute
     z-index: 5
-    bottom: 5%
-    left: 5%
-    height: 10%
+    top: 15%
+    right: 1%
+    width: 5%
 
 #iconoLogs
     position: absolute
@@ -326,9 +339,14 @@
     flex-direction: row
     justify-content: space-around
     padding-left: 3%
-    bottom: 1% 
+    bottom: 1%
     height: 20%
     width: 90%
+    transition: transform 1s
+    //z-index: 2
+    &.modoMapa
+      transform: translateY(120%)
+      //z-index: 2
     .panelHeroe
         position: relative
         display: block
@@ -344,6 +362,11 @@
     padding-top: 1%
     padding-bottom: 5%
     background: linear-gradient(180deg, #232226, transparent)
+    transition: transform 1s
+    //z-index: 2
+    &.modoMapa
+      transform: translateY(-100%)
+      //z-index: 2
     .panelEnemigo
         position: relative
         display: block
@@ -353,15 +376,38 @@
     position: absolute
     width: 100%
     height: 100%
-    background: rgb(131,58,180)
-    background: linear-gradient(180deg, rgba(131, 58, 180, 0) 0%, rgb(86 4 4 / 38%) 45%, rgb(106 131 149 / 32%) 51%, rgba(252, 176, 69, 0) 100%)
-    z-index: 1
+    background-color: $colorFondo
+    pointer-events: all
+    opacity: 1
+    transition: opacity 1s
+    &.modoMapa
+      pointer-events: none
+      opacity: 0
     waveComponent
         position: absolute
         display: block
         width: 100%
         height: 10%
         top: 43%
+    .degradadoFondo
+        position: absolute
+        width: 100%
+        height: 100%
+        background: rgb(131,58,180)
+        background: linear-gradient(180deg, rgba(131, 58, 180, 0) 0%, rgb(86 4 4 / 38%) 45%, rgb(106 131 149 / 32%) 51%, rgba(252, 176, 69, 0) 100%)
+    .fondoPapiro
+        position: absolute
+        width: 100%
+        height: 100%
+        opacity: 0.4
+
+#mapaMazmorra
+    opacity: 1
+    pointer-events: all
+    display: block
+    &.modoMapa
+      opacity: 1
+      pointer-events: all
 
 //------------------------------Enemigos-------------------------
 
@@ -1321,7 +1367,76 @@ $highlightObjetivoColor: red
   100%
     transform: translateX(0%) rotate(180deg)
 
+//********************
+//  ANIMACIÓN CRÍTICO
+//********************
 
+#botonToggleMazmorra
+  position: absolute
+  width: 10%
+  left: 5%
+  top: 40%
+  aspect-ratio: 1
+  z-index: 10
+  cursor: pointer
+
+#botonToggleMazmorra div
+  width: 100%
+  height: 100%
+  -webkit-border-radius: 50%
+     -moz-border-radius: 50%
+          border-radius: 50%
+  -webkit-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4)
+     -moz-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4)
+          box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4)
+
+.side-b
+  background-image: url("../../../assets/Iconos/07.png")
+  background-size: 100%
+  pointer-events: none
+
+.side-a
+  background-image: url("../../../assets/Iconos/Icono-Misiones.png")
+  background-size: 100%
+  pointer-events: none
+
+#botonToggleMazmorra
+  transition: -webkit-transform 1s ease-in
+  -webkit-transform-style: preserve-3d
+
+#botonToggleMazmorra div
+  position: absolute
+  -webkit-backface-visibility: hidden
+
+.side-a
+  z-index: 100
+
+.side-b
+  -webkit-transform: rotateY(-180deg)
+
+#botonToggleMazmorra.modoMapa
+  -webkit-animation: flipMapa 1s ease-out 0s forwards
+  -moz-animation: flipMapa 1s ease-out 0s forwards
+  -o-animation: flipMapa 1s ease-out 0s forwards
+  animation: flipMapa 1s ease-out 0s forwards
+
+#botonToggleMazmorra.modoCombate
+  -webkit-animation: flipCombate 1s ease-out 0s forwards
+  -moz-animation: flipCombate 1s ease-out 0s forwards
+  -o-animation: flipCombate 1s ease-out 0s forwards
+  animation: flipCombate 1s ease-out 0s forwards
+
+@keyframes flipCombate
+  from
+    transform: rotateY(0)
+  to
+    transform: rotateY(180deg)
+
+@keyframes flipMapa
+  from
+    transform: rotateY(180deg)
+  to
+    transform: rotateY(0deg)
 
 
 

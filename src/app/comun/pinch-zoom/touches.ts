@@ -85,7 +85,7 @@ export class Touches {
             // Window
             if (listener === "resize") {
                 if (action === 'addEventListener') {
-                    window.addEventListener(listener, this[handler], false);
+                    window.addEventListener(listener, this[handler], {passive: true});
                 }
                 if (action === 'removeEventListener') {
                     window.removeEventListener(listener, this[handler], false);
@@ -93,7 +93,7 @@ export class Touches {
             // Document
             } else if (listener === 'mouseup' || listener === "mousemove") {
                 if (action === 'addEventListener') {
-                    document.addEventListener(listener, this[handler], false);
+                    document.addEventListener(listener, this[handler], {passive: true});
                 }
                 if (action === 'removeEventListener') {
                     document.removeEventListener(listener, this[handler], false);
@@ -101,7 +101,7 @@ export class Touches {
             // Element
             } else {
                 if (action === 'addEventListener') {
-                    this.element.addEventListener(listener, this[handler], false);
+                    this.element.addEventListener(listener, this[handler], {passive: true});
                 }
                 if (action === 'removeEventListener') {
                     this.element.removeEventListener(listener, this[handler], false);
@@ -112,7 +112,7 @@ export class Touches {
 
     addEventListeners(listener: string) {
         const handler: MouseHandler = this._mouseListeners[listener];
-        window.addEventListener(listener, this[handler], false);
+        window.addEventListener(listener, this[handler], {passive: true});
     }
 
     removeEventListeners(listener: string) {
@@ -215,7 +215,7 @@ export class Touches {
 
     handleMousemove = (event: any) => {
         //event.preventDefault();
-        
+
         if (!this.isMousedown) {
             return;
         }

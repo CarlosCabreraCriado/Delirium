@@ -33,7 +33,7 @@
 #tiempo
   position: absolute
   z-index: 5
-  left: 38vw 
+  left: 38vw
   top: 2vh
   width: 25vw
   .barraTiempo
@@ -72,12 +72,12 @@
         height: 100%
         background-image: url("../../../assets/Frames/Frame-Panel-General.png")
         background-size: 100% 100%
-        
+
     .contenedorBotonGeneral
         position: relative
         display: flex
         flex-direction: column
-        height: 18% 
+        height: 18%
         width: 100%
         z-index: 101
         margin-top: 1vh
@@ -86,7 +86,7 @@
         justify-content: center
         &.primerBotonGeneral
             margin-top: 3vh
-        
+
         .iconoPanelGeneral
             position: relative
             height: 80%
@@ -110,7 +110,7 @@
     @include media("<=phone")
         left: 12%
         width: 88%
-    
+
     #ContenedorMapa
       position: absolute
       z-index: 2
@@ -128,11 +128,20 @@
           @include media("<=smphone")
               top: 15%
 
+    #brujula
+      position: absolute
+      width: 15%
+      bottom: 8%
+      left: 5%
+      mix-blend-mode: color-burn
+      z-index: 10
+
+
     #creditoMapa
       position: absolute
       z-index: 5
       top: 2%
-      left: 2% 
+      left: 2%
       width: 20%
       height: 8%
 
@@ -140,7 +149,7 @@
       position: absolute
       z-index: 5
       top: 2%
-      left: 35% 
+      left: 35%
       width: 30%
 
     #panelControl
@@ -165,12 +174,12 @@
         position: absolute
         width: 100%
         height: 100%
-     
+
     #experiencia
       position: absolute
       z-index: 5
       bottom: 0%
-      left: 0% 
+      left: 0%
       width: 100%
       height: 3%
 
@@ -201,7 +210,7 @@
         top: 30%
         left: 5%
 
-    #contenedorHeroes 
+    #contenedorHeroes
         position: absolute
         display: flex
         flex-direction: column
@@ -223,7 +232,7 @@
             width: 100%
             margin-top: 2vh
             pointer-events: none
-    
+
 #ContenedorPaneles
     .panel
       position: absolute
@@ -243,7 +252,7 @@
   justify-content: center
   align-items: center
   animation: fadeInNoche 16s ease
-  animation-fill-mode: forwards 
+  animation-fill-mode: forwards
 
   .imagenLuna
     position: relative
@@ -252,7 +261,7 @@
     opacity: 0
     animation: fadeInNoche 16s ease
     animation-delay: 2s
-    animation-fill-mode: forwards 
+    animation-fill-mode: forwards
 
   .contenedorTextoNoche
     position: relative
@@ -270,12 +279,12 @@
       &.slide1
         animation: fadeSlideNoche 6s ease
         animation-delay: 2s
-        animation-fill-mode: forwards 
+        animation-fill-mode: forwards
 
       &.slide2
         animation: fadeSlideNoche 18s ease
         animation-delay: 8s
-        animation-fill-mode: forwards 
+        animation-fill-mode: forwards
 
 @keyframes fadeInNoche
   0%

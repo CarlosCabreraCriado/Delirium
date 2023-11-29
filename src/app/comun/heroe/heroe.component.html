@@ -30,11 +30,11 @@
 
 		<div class="contenedorFrameRol">
       <!--<img class="iconoRol" src="../../../assets/Iconos/Rol-{{marcador}}.png"/>-->
-			<div *ngIf="renderHeroe.clase=='Hechicero'" class="icono azul"></div>
-			<div *ngIf="renderHeroe.clase=='Guerrero'" class="icono rojo"></div>
-			<div *ngIf="renderHeroe.clase=='Cazador'" class="icono verde"></div>
-      <div *ngIf="renderHeroe.clase=='Ladrón'" class="icono negro"></div>
-			<div *ngIf="renderHeroe.clase=='Sacerdote'" class="icono blanco"></div>
+			<div *ngIf="renderHeroe.clase=='hechicero'" class="icono azul"></div>
+			<div *ngIf="renderHeroe.clase=='guerrero'" class="icono rojo"></div>
+			<div *ngIf="renderHeroe.clase=='cazador'" class="icono verde"></div>
+      <div *ngIf="renderHeroe.clase=='ladrón'" class="icono negro"></div>
+			<div *ngIf="renderHeroe.clase=='sacerdote'" class="icono blanco"></div>
 			<img class="frameRol Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 		</div>
 
@@ -62,7 +62,7 @@
             <!-- BARRAS -->
             <div class="contenedorBarras">
                 <div class="wrapperBarras">
-                    <barraComponent [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
+                    <barraComponent [identificador]="renderHeroe.nombre" [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
                     <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
                 </div>
                 <div class="separadorMarco"></div>
@@ -80,18 +80,24 @@
     </div>
 
 
-    <div id="wrapperDesplegableRadial" *ngIf="tipoDesplegable == 'radial'">
+    <div id="wrapperDesplegableRadial" *ngIf="tipoDesplegable == 'radial' && estadoDesplegado==true">
 
         <!-- BARRAS -->
         <div class="contenedorBarras">
             <div class="wrapperBarras">
-                <barraComponent [badge]="false" [orientacion]="'radial'" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
-                <barraComponent [badge]="false" [orientacion]="'radial'" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+                <barraComponent [identificador]="identificador" [badge]="false" [orientacion]="'radial'" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
+                <barraComponent [identificador]="identificador" [badge]="false" [orientacion]="'radial'" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
             </div>
             <div class="separadorMarco"></div>
         </div>
 
-        
+            <!-- Buff -->
+            <div id="contenedorBuffos" *ngIf="desplegadoDefecto" [ngClass]="{'ocultar': modoMazmorra=='mapa'}">
+                <div *ngFor="let buff of renderHeroe.buff; let j = index"  class="buffo">
+                  <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{renderHeroe.buff[j].imagen_id}}.png">
+               </div>
+            </div>
+
     </div>
 </div>
 

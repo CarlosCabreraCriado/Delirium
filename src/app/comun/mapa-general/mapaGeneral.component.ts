@@ -50,6 +50,7 @@ export class MapaGeneralComponent implements OnInit {
     private tileSize: number = 48;
     private bloqueoMovimiento: boolean = false;
     private direccionMovimientoPermitido: boolean[] = [true,true,true,true];
+    private flagEvitarCentrado: boolean = true;
 
     @Input() tileImgSeleccionado: number;
     @Input() herramientaInMap: string;
@@ -93,10 +94,16 @@ export class MapaGeneralComponent implements OnInit {
               case "centrarMapa":
                     console.log("Centrando Mapa Global...")
                     //this.pinchZoom.pinchZoom.centeringImage();
+                    if(this.flagEvitarCentrado){
+                      this.flagEvitarCentrado=false;
+                      return;
+                    }
+
                     this.pinchZoom.pinchZoom.moveX = 0
                     this.pinchZoom.pinchZoom.moveY = 0
                     this.pinchZoom.pinchZoom.scale= 1
-                    //this.pinchZoom.pinchZoom.setZoom({scale: 1, center:[0,0]})
+
+                    //this.pinchZoom.pinchZoom.setZoom({scale: 1.5, center:[100,100]})
                     this.cdr.detectChanges();
                   break;
 
@@ -145,6 +152,10 @@ export class MapaGeneralComponent implements OnInit {
                     console.warn("CARGA COMPLETA")
                     this.mapaCargado = true;
                     this.inmapService.cargaMapaCompleta();
+                    this.pinchZoom.pinchZoom.scale= 2
+                    this.pinchZoom.pinchZoom.moveX = -0.5*this.pinchZoom.getNativeElementWidth()
+                    this.pinchZoom.pinchZoom.moveY = -0.5*this.pinchZoom.getNativeElementHeight()
+                      //this.pinchZoom.pinchZoom.setZoom({scale: 2, center:[-453,253]})
                     this.cdr.detectChanges();
                     setTimeout(()=>{
                         this.mostrarNubes = false;
@@ -347,7 +358,7 @@ export class MapaGeneralComponent implements OnInit {
                 //Añadir ROW NORESTE:
                 this.bloqueoMovimiento = true;
 
-                var clone = null; 
+                var clone = null;
                 if(minRenderX-1 < 0){
                     clone = []
                     for(var i = 0; i < ((2*this.mapaGeneralService.radioRenderIsometrico)+1); i++){
@@ -364,13 +375,13 @@ export class MapaGeneralComponent implements OnInit {
                         for(var j=0; j < (minRenderY*(-1)); j++){
                             sliceAnterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
                         }
-                        clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(0,maxRenderY+1) 
+                        clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(0,maxRenderY+1)
                     }
                     if(maxRenderY > this.mapaGeneralService.region.isometrico[0].length){
                         for(var j=0; j <= (maxRenderY-this.mapaGeneralService.region.isometrico[0].length); j++){
                             slicePosterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
                         }
-                        clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(minRenderY,this.mapaGeneralService.region.isometrico[0].length) 
+                        clone = this.mapaGeneralService.region.isometrico[minRenderX-1].slice(minRenderY,this.mapaGeneralService.region.isometrico[0].length)
                     }
 
                     clone= sliceAnterior.concat(clone).concat(slicePosterior);
@@ -390,6 +401,7 @@ export class MapaGeneralComponent implements OnInit {
                     this.animacionAddRow = false
                     this.mapaGeneralService.renderIsometrico.pop()
                     this.mapaGeneralService.renderIsometrico.unshift(clone)
+                    this.checkUbicacionEspecial(this.sesion.render.inmap.posicion_x,this.sesion.render.inmap.posicion_y);
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -401,7 +413,7 @@ export class MapaGeneralComponent implements OnInit {
                 //Añadir ROW SUROESTE:
                 this.bloqueoMovimiento = true;
 
-                var clone = null; 
+                var clone = null;
                 if(!this.mapaGeneralService.region.isometrico[maxRenderX+1]){
                     clone = []
                     for(var i = 0; i < ((2*this.mapaGeneralService.radioRenderIsometrico)+1); i++){
@@ -418,13 +430,13 @@ export class MapaGeneralComponent implements OnInit {
                         for(var j=0; j < (minRenderY*(-1)); j++){
                             sliceAnterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
                         }
-                        clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(0,maxRenderY+1) 
+                        clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(0,maxRenderY+1)
                     }
                     if(maxRenderY > this.mapaGeneralService.region.isometrico[0].length){
                         for(var j=0; j <= (maxRenderY-this.mapaGeneralService.region.isometrico[0].length); j++){
                             slicePosterior.push(this.mapaGeneralService.crearTileFinMapa(0,0))
                         }
-                        clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(minRenderY,this.mapaGeneralService.region.isometrico[0].length) 
+                        clone = this.mapaGeneralService.region.isometrico[maxRenderX+1].slice(minRenderY,this.mapaGeneralService.region.isometrico[0].length)
                     }
 
                     clone= sliceAnterior.concat(clone).concat(slicePosterior);
@@ -444,6 +456,7 @@ export class MapaGeneralComponent implements OnInit {
                     this.animacionDeleteRow = false;
                     this.mapaGeneralService.renderIsometrico.push(clone)
                     this.mapaGeneralService.renderIsometrico.shift()
+                    this.checkUbicacionEspecial(this.sesion.render.inmap.posicion_x,this.sesion.render.inmap.posicion_y);
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -491,12 +504,13 @@ export class MapaGeneralComponent implements OnInit {
 
                         }
 
-                            
+
                     }
 
                     for(var i = 0; i <= maxRenderY-minRenderY; i++){
                         this.mapaGeneralService.renderIsometrico[i].shift()
                     }
+                    this.checkUbicacionEspecial(this.sesion.render.inmap.posicion_x,this.sesion.render.inmap.posicion_y);
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -553,6 +567,7 @@ export class MapaGeneralComponent implements OnInit {
                         this.mapaGeneralService.renderIsometrico[i].pop()
                     }
 
+                    this.checkUbicacionEspecial(this.sesion.render.inmap.posicion_x,this.sesion.render.inmap.posicion_y);
                     this.checkMovimientoValido();
                     this.bloqueoMovimiento = false;
                     this.cdr.detectChanges();
@@ -574,13 +589,22 @@ export class MapaGeneralComponent implements OnInit {
       if(this.mapaGeneralService.renderIsometrico[centro][centro-1]["atravesable"]){movimiento[3]=true}
 
       if(!this.sesion.iniciada){
-           movimiento = [false,false,false,false]; 
+           movimiento = [false,false,false,false];
       }
 
       this.direccionMovimientoPermitido = movimiento;
       this.cdr.detectChanges();
   } // Fin Check Movimiento Valido
 
+  checkUbicacionEspecial(posicion_x,posicion_y){
+
+      switch(this.mapaGeneralService.renderIsometrico[this.mapaGeneralService.radioRenderIsometrico][this.mapaGeneralService.radioRenderIsometrico]["ubicacionEspecial"]){
+        case "posada":
+          this.inmapService.descansarPosada();
+          break;
+      }
+
+  }
 } //Fin Componente
 
 

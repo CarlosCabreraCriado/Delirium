@@ -11,7 +11,7 @@
 
     <h1 *ngIf="!interfazService.mostrarDetalleHechizo" class="title Texto1">Lanzar Hechizo</h1>
 
-    <!-- 
+    <!--
     <hr class="divisor"/>
 
     <div class="contenedorPestanas">
@@ -29,29 +29,29 @@
         <div class="opcionesGenerales Texto3">
 
         <div class="contenedorAtributo">
-            <atributoComponent class="atributo" 
-                [tipo]="'energia'" 
-                [valor]="'VER'"
+            <atributoComponent class="atributo"
+                [tipo]="'ver'"
+                [valor]="'info.'"
                 (click)="interfazService.detalleHechizo(0)">
             </atributoComponent>
-            <atributoComponent class="atributo" 
-                [tipo]="'energia'" 
-                [valor]="'VER'"
+            <atributoComponent class="atributo"
+                [tipo]="'ver'"
+                [valor]="'info.'"
                 (click)="interfazService.detalleHechizo(1)">
             </atributoComponent>
-            <atributoComponent class="atributo" 
-                [tipo]="'energia'" 
-                [valor]="'VER'"
+            <atributoComponent class="atributo"
+                [tipo]="'ver'"
+                [valor]="'info.'"
                 (click)="interfazService.detalleHechizo(2)">
             </atributoComponent>
-            <atributoComponent class="atributo" 
-                [tipo]="'energia'" 
-                [valor]="'VER'"
+            <atributoComponent class="atributo"
+                [tipo]="'ver'"
+                [valor]="'info.'"
                 (click)="interfazService.detalleHechizo(3)">
             </atributoComponent>
-            <atributoComponent class="atributo" 
-                [tipo]="'energia'" 
-                [valor]="'VER'"
+            <atributoComponent class="atributo"
+                [tipo]="'ver'"
+                [valor]="'info.'"
                 (click)="interfazService.detalleHechizo(4)">
             </atributoComponent>
         </div>
@@ -136,7 +136,7 @@
                 Interfaz Objetivo
          ************************************************* -->
 
-    <img id="flechaTutorial" class="verticalUp iconoObjetivo" *ngIf="interfazService.flagTutorial && interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo'" src="../../../assets/ui/icons/Icon_07.png">
+    <img id="flechaTutorial" class="horizontalRight iconoObjetivo" *ngIf="interfazService.flagTutorial && interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo'" src="../../../assets/ui/icons/Icon_07.png">
 
     <div  id="contenedorInterfazObjetivo" class="borde1" *ngIf="interfazService.pantallaInterfaz=='seleccionObjetivoEnemigo' || interfazService.pantallaInterfaz=='seleccionObjetivoAliado'">
         <div class="tituloInterfaz Texto1">Seleccionar objetivo:  </div>
@@ -174,7 +174,7 @@
             <!-- VIDA MAX -->
             <div class="atributo vitalidad">
                 <img class="icono" src="./assets/Iconos/Icono-Vitalidad.png"/>
-                <div class="texto">Vitalidad:<br/> 
+                <div class="texto">Vitalidad:<br/>
                     {{interfazService.renderDetalle.estadisticas.vitalidad| number : '1.0-1'}} ({{interfazService.renderDetalle.estadisticas.vidaMaxima| number : '1.0-1'}})</div>
             </div>
             <!-- ARMADURA -->
@@ -186,7 +186,7 @@
             <!-- RESISTENCIA -->
             <div class="atributo resistencia">
                 <img class="icono" src="./assets/Iconos/Icono-Resistencia-Magica.png"/>
-                <div class="texto">Resistencia: <br/> 
+                <div class="texto">Resistencia: <br/>
                     {{interfazService.renderDetalle.estadisticas.resistenciaMagica | number: '1.0-2'}} ({{ interfazService.renderDetalle.estadisticas.reduccionResistencia*100 | number : '1.0-2'}}%)</div>
             </div>
             <!-- DAÑO FÍSICO -->
@@ -204,7 +204,7 @@
             <!-- DAÑO CRITICO -->
             <div class="atributo critico">
                 <img class="icono" src="./assets/Iconos/critico.png"/>
-                <div class="texto">Critico: <br/>
+                <div class="texto">Crítico: <br/>
                     {{interfazService.renderDetalle.estadisticas.critico | number : '1.0-1'}} ({{interfazService.renderDetalle.estadisticas.probabilidadCritico*100 | number : '1.0-1'}}%) [x{{interfazService.renderDetalle.estadisticas.potenciaCritico | number : '1.0-1'}}]</div>
             </div>
         </div>
@@ -229,7 +229,7 @@
             <!-- BUFF -->
             <div *ngIf="interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado]" class="detalleBuff" >
                 <div class="contenedorTituloBuff">
-                    
+
                     <div class="imagenBuff animacionFocus focusGris" [ngStyle]="{'background':'url(./assets/Habilidades/Spell/'+interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado].imagen_id+'.png) '}">
                     </div>
                         <!--
@@ -241,7 +241,7 @@
                 <div class="contenedorDescripcionBuff Arial"
                     [innerHtml]="interfazService.renderDetalle.buff[interfazService.buffDetalleSeleccionado].descripcion">
                 </div>
-                
+
             </div>
 
         </div>
@@ -332,7 +332,7 @@
         <div class="tituloInterfaz Texto1">Golpe de oportunidad</div>
 
         <div class="hechizo hechizo1 Texto1" [ngStyle]="{'background':'url(./assets/Iconos/07.png) ','background-size': '100%'}"></div>
-        
+
         <div class="textoExplicativo Arial">
             Selecciona los enemigos de los que te has separado con tu movimiento.
         </div>

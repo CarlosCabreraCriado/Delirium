@@ -14,25 +14,25 @@ export class TriggerService {
     public triggerRegion: any;
     public mostrarEvento:boolean= false;
     private estado:string="default";
-    private sesion: any; 
+    private sesion: any;
 
-  constructor(private eventosService: EventosService, private appService: AppService) { 
+  constructor(private eventosService: EventosService, private appService: AppService) {
         //Observar Sesion:
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
   }
 
   setTriggerRegion(triggersRegion: any){
-    console.warn("CARGANDO TRIGGERS REGIÓN: ",triggersRegion); 
+    console.warn("CARGANDO TRIGGERS REGIÓN: ",triggersRegion);
     this.triggerRegion = triggersRegion;
     this.eventosService.actualizarEventos();
   }
 
   checkTrigger(activacion: string,config?:any){
       console.warn("CHECK Trigger: ",activacion,config)
-      //Validar la activación: 
+      //Validar la activación:
       switch(activacion){
           case "entrarCasilla":
-                this.verificarEntrarCasilla(config["posicion_x"],config["posicion_y"]); 
+                this.verificarEntrarCasilla(config["posicion_x"],config["posicion_y"]);
               break;
           case "cambioVariable":
               break;
@@ -60,6 +60,10 @@ export class TriggerService {
   }//Fin Check Trigger
 
   verificarEntrarCasilla(posicion_x,posicion_y){
+
+      //Efectos especiales de casilla:
+
+
       for(var i=0; i < this.triggerRegion.length; i++){
           if((this.triggerRegion[i]["posicion_x"]== posicion_x) && (this.triggerRegion[i]["posicion_y"]==posicion_y)){
             this.ejecutarTrigger("region",i);
@@ -75,7 +79,7 @@ export class TriggerService {
             break;
             default:
                 console.error("ERROR Tipo Trigger no declarado en EjecutarTrigger");
-            break; 
+            break;
         }
 
         console.warn("TRIGGER ACTIVADO: ",triggerActivo);

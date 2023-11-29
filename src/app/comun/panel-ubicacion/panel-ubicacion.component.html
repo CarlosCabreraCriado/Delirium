@@ -56,23 +56,26 @@
 
                 <div class="contenedorGrupo">
 
-                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
-                    <heroeComponent *ngFor="let heroe of this.sesion.render.heroes; let i = index" [desplegable]="false" [desplegadoDefecto]="false" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
+                    <div *ngFor="let heroe of this.sesion.render.heroes; let i = index" class="contenedorReclutar">
+                    <heroeComponent  [desplegable]="false" [desplegadoDefecto]="false" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
                     <div class="texto Texto1">{{this.sesion.render.heroes[0].nombre}}</div>
                     </div>
 
-                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar" (click)="reclutarHeroe()">
+                    <div *ngIf="this.sesion.render.heroes.length < 2" class="contenedorReclutar" (click)="reclutarHeroe()">
                         <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
                         <div class="texto Texto1">Reclutar</div>
                     </div>
-                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+
+                    <div *ngIf="this.sesion.render.heroes.length < 3" class="contenedorReclutar">
                         <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
                         <div class="texto Texto1">Reclutar</div>
                     </div>
-                    <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
+
+                    <div *ngIf="this.sesion.render.heroes.length < 4" class="contenedorReclutar">
                         <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
                         <div class="texto Texto1">Reclutar</div>
                     </div>
+
                     <div *ngIf="this.sesion.render.heroes.length < 5" class="contenedorReclutar">
                         <img class="imagenAdd" src="assets/General/Simbolo_Mas.svg"/>
                         <div class="texto Texto1">Reclutar</div>
@@ -83,7 +86,7 @@
             </ng-container>
 
         </div>
-		
+
 	</div>
 
 </div>

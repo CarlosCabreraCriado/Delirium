@@ -163,6 +163,8 @@
 
             <botonComponent *ngIf="this.estadoJugadores[this.jugadorPropioSesionIndex] == true" class="botonSiguiente botonDeshabilitado Arial" mat-button   [tipoBoton]="2" [texto]="'Esperando...'" [vacio]="false" [color]="'naranja'"></botonComponent>
 
+            <img *ngIf="this.estadoJugadores[this.jugadorPropioSesionIndex] == true" class="iconoForzarFinDialogo" src="../../../assets/desarrollador/reload.png" (click)="this.forzarEnvioTerminarDialogo()">
+
             <img class="decoracion" src="../../../assets/ui/decor/dcr_04.png"/>
             <!--
             <div class="contenedorBandera izquierda">

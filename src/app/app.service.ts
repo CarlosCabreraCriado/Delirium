@@ -75,7 +75,7 @@ export class AppService {
 
     //Variables de sesion:
     private _sesion = new BehaviorSubject<any>({});
-    public sesion$ = this._sesion.asObservable(); 
+    public sesion$ = this._sesion.asObservable();
 
     //Variables de estadoApp:
     private _estadoApp = new BehaviorSubject<EstadoApp>({
@@ -86,7 +86,7 @@ export class AppService {
         heroePropioPerfilIndex: null
     });
 
-    public estadoApp$ = this._estadoApp.asObservable(); 
+    public estadoApp$ = this._estadoApp.asObservable();
 
     //Variables de datos:
     public perfil:any;
@@ -246,15 +246,15 @@ export class AppService {
         return;
     }
 
-    actualizarJugador(heroePerfil, indexJugador){
+    actualizarJugador(heroePerfil, indexJugadorSesion, indexHeroeSesion){
 
-        var estadisticasAntiguas = this.logicService.calcularEstadisticasBaseHeroe(this._sesion.value.jugadores[indexJugador].personaje);
+        var estadisticasAntiguas = this.logicService.calcularEstadisticasBaseHeroe(this._sesion.value.jugadores[indexJugadorSesion].personaje);
         var estadisticasNuevas = this.logicService.calcularEstadisticasBaseHeroe(heroePerfil);
 
         //Asignar nuevas estadisticas Base:
-        this._sesion.value.jugadores[indexJugador].personaje = heroePerfil;
-        this._sesion.value.render.heroes[indexJugador]["estadisticasBase"] = this.logicService.calcularEstadisticasBaseHeroe(heroePerfil);
-        
+        this._sesion.value.jugadores[indexJugadorSesion].personaje = heroePerfil;
+        this._sesion.value.render.heroes[indexHeroeSesion]["estadisticasBase"] = this.logicService.calcularEstadisticasBaseHeroe(heroePerfil);
+
         //Detectar Diferencial de estadisticas:
         var diferencialEstadisticas = estadisticasAntiguas;
         for(var key in estadisticasAntiguas){
@@ -264,9 +264,9 @@ export class AppService {
         }
 
         //Actualizar render de estadisticas de heroe:
-        for(var key in this._sesion.value.render.heroes[indexJugador].estadisticas){
-            if(this._sesion.value.render.heroes[indexJugador].estadisticas.hasOwnProperty(key)){
-                this._sesion.value.render.heroes[indexJugador].estadisticas[key] = this._sesion.value.render.heroes[indexJugador].estadisticas[key] + diferencialEstadisticas[key];
+        for(var key in this._sesion.value.render.heroes[indexHeroeSesion].estadisticas){
+            if(this._sesion.value.render.heroes[indexHeroeSesion].estadisticas.hasOwnProperty(key)){
+                this._sesion.value.render.heroes[indexHeroeSesion].estadisticas[key] = this._sesion.value.render.heroes[indexHeroeSesion].estadisticas[key] + diferencialEstadisticas[key];
             }
         }
 
@@ -282,8 +282,14 @@ export class AppService {
             console.warn("HASH PERSONAJE --> OK")
         }else{
             console.warn("HASH PERSONAJE --> DESINC")
-            this.socketService.enviarSocket("sincPersonaje",{heroePerfil: this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex], indexJugador: this._estadoApp.value.heroePropioPerfilIndex});
-            this.actualizarJugador(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex],this._estadoApp.value.heroePropioPerfilIndex);
+            this.socketService.enviarSocket("sincPersonaje",
+              {
+                heroePerfil: this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex],
+                indexJugadorSesion: this._estadoApp.value.jugadorPropioSesionIndex,
+                indexHeroeSesion: this._estadoApp.value.heroePropioSesionIndex
+              });
+
+            this.actualizarJugador(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex],this._estadoApp.value.jugadorPropioSesionIndex,this._estadoApp.value.heroePropioSesionIndex);
         }
 
     }
@@ -500,13 +506,13 @@ export class AppService {
 
       this._sesion.value.jugadores[indexPersonaje].personaje.hechizos.equipados = hechizosEquipadosIDs;
 
-      if(indexPersonaje == this._estadoApp.value.heroePropioSesionIndex){
+      if(indexPersonaje == this._estadoApp.value.jugadorPropioSesionIndex){
         this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex].hechizos.equipados = hechizosEquipadosIDs;
         this.setPerfil(this.perfil);
       }
 
       if(!this.comandoSocketActivo){
-        this.socketService.enviarSocket("actualizarHechizosEquipados",{personajeIndex: this._estadoApp.value.heroePropioSesionIndex, hechizosEquipadosIDs: hechizosEquipadosIDs});
+        this.socketService.enviarSocket("actualizarHechizosEquipados",{personajeIndex: this._estadoApp.value.jugadorPropioSesionIndex, hechizosEquipadosIDs: hechizosEquipadosIDs});
       }
   }
 
@@ -761,9 +767,9 @@ export class AppService {
         console.warn("UNIENDO")
         this.socketService.enviarSocket("unirseSesion",
             {
-                idSocketAnfitrion: solicitante["idSolicitante"], 
-                idSesionAnfitrion: solicitante["idSesionSolicitante"], 
-                datosJugador: this._sesion.value.jugadores[this._estadoApp.value.jugadorPropioSesionIndex], 
+                idSocketAnfitrion: solicitante["idSolicitante"],
+                idSesionAnfitrion: solicitante["idSesionSolicitante"],
+                datosJugador: this._sesion.value.jugadores[this._estadoApp.value.jugadorPropioSesionIndex],
                 datosRenderHeroe: this._sesion.value.render.heroes[this._estadoApp.value.heroePropioSesionIndex]
             });
     }
@@ -1020,7 +1026,7 @@ export class AppService {
         console.warn(heroeSeleccionado);
 
         this._sesion.value.estadoSesion = "inmap";
-        
+
         //Configurar Sesion:
         if(this._sesion.value.iniciada==false){
 
@@ -1089,7 +1095,7 @@ export class AppService {
             }
 
             if(heroeSeleccionado.mundos[0]){
-                this._sesion.value["render"]["variablesMundo"] = heroeSeleccionado.mundos[0] 
+                this._sesion.value["render"]["variablesMundo"] = heroeSeleccionado.mundos[0]
             }else{
                 this._sesion.value["render"]["variablesMundo"] = {
                     tutorial: "true"
@@ -1117,7 +1123,7 @@ export class AppService {
             this._sesion.value.iniciada = false;
 
         }//Fin configuracion de sesion
-            
+
         //Cambiar a pantalla InMap:
         this.actualizarEstadoApp();
         this.setSesion(this._sesion.value);
@@ -1152,6 +1158,7 @@ export class AppService {
         //Cambia de componente:
         this.setControl("mazmorra");
         this.setPantallaApp("mazmorra",salaOpenId);
+
     }
 
     async peticionCargarMazmorra(nombreIdMazmorra: string){

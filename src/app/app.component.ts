@@ -173,7 +173,7 @@ export class AppComponent implements OnInit{
                 break
 
                 case "serverEnviaJugador":
-                    this.appService.actualizarJugador(data.contenido, data.indexJugador)
+                    this.appService.actualizarJugador(data.contenido, data.indexJugadorSesion, data.indexHeroeSesion)
                 break
 
                 case "solicitudReclutarServer":

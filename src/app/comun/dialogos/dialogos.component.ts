@@ -1,6 +1,6 @@
- 
+
 import { Component , Inject, ViewChild,  ElementRef, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BotonComponent } from '../boton/boton.component';
 import { FrameComponent } from '../frame/frame.component';
 import { SocketService } from '../socket/socket.service';
@@ -16,10 +16,10 @@ export class DialogoComponent implements OnInit {
 
 private confirmation: boolean = false;
 
-  	@ViewChild('crearCorreo',{static: false}) crearCorreoElement:ElementRef; 
-  	@ViewChild('crearUsuario',{static: false}) crearUsuarioElement:ElementRef; 
-  	@ViewChild('crearPassword',{static: false}) crearPasswordElement:ElementRef; 
-  	@ViewChild('crearPassword2',{static: false}) crearPassword2Element:ElementRef; 
+  	@ViewChild('crearCorreo',{static: false}) crearCorreoElement:ElementRef;
+  	@ViewChild('crearUsuario',{static: false}) crearUsuarioElement:ElementRef;
+  	@ViewChild('crearPassword',{static: false}) crearPasswordElement:ElementRef;
+  	@ViewChild('crearPassword2',{static: false}) crearPassword2Element:ElementRef;
 
     public textosDialogo: string[] = [];
     public indexTextoMostrado: number = 0;
@@ -27,6 +27,7 @@ private confirmation: boolean = false;
     private indexOpcionSeleccionada: number = null;
     private estadoJugadores: boolean[] = [];
     private jugadorPropioSesionIndex: number = null;
+    private contadorForzarCierre: number = 0;
 
     //Declara Suscripcion Evento Socket:
     private socketSubscripcion: Subscription = null;
@@ -39,7 +40,8 @@ private confirmation: boolean = false;
         this.jugadorPropioSesionIndex = 0;
         this.estadoJugadores = [false];
         this.indexOpcionSeleccionada = null;
-    
+        this.contadorForzarCierre = 0;
+
         if(this.data["numJugadores"] != undefined && this.data["jugadorPropioSesionIndex"] != undefined ){
             this.estadoJugadores = new Array(Number(this.data["numJugadores"])).fill(false);
             this.jugadorPropioSesionIndex = this.data["jugadorPropioSesionIndex"];
@@ -61,11 +63,10 @@ private confirmation: boolean = false;
 
         this.indexTextoMostrado = 0;
         this.opciones = [];
-        
+
         if(this.textosDialogo.length == 1){
             this.opciones = this.data.opciones;
         }
-
 
         //Suscripcion Socket:
         this.socketSubscripcion = this.socketService.eventoSocket.subscribe(async(data) => {
@@ -79,8 +80,10 @@ private confirmation: boolean = false;
                             for(var i = 0; i < this.estadoJugadores.length; i++){
                                 if(!this.estadoJugadores[i]){return;}
                             }
+
                             if(this.indexOpcionSeleccionada == null){
-                                this.dialogRef.close(this.data.ordenEncadenado)
+                                console.warn("OPCION ENCADENADO", this.data.ordenEncadenado)
+                                this.dialogRef.close(this.data.ordenEncadenado);
                             }else{
                                 this.dialogRef.close(this.opciones[this.indexOpcionSeleccionada].ordenIdEncadanado)
                             }
@@ -117,7 +120,6 @@ private confirmation: boolean = false;
 
         //Si hay opciones Deshabilita el paso de dialogo:
         if(this.opciones?.length > 0){
-            console.error(this.opciones,this.estadoJugadores)
             return;
 
         //Si no hay opciones y todavia quedan dialogos por mostrar:
@@ -127,17 +129,15 @@ private confirmation: boolean = false;
             if(this.indexTextoMostrado == this.textosDialogo.length-1){
                 this.opciones = this.data.opciones;
             }
-            console.error(this.opciones,this.estadoJugadores)
             return;
 
         }else{
             if(this.data["desarrollo"]){
                 this.dialogRef.close(this.data.ordenEncadenado)
             }else{
+                console.warn("TERMINANDO DIALOGO")
                 this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "terminarDialogo", contenido: this.jugadorPropioSesionIndex});
             }
-
-            console.error(this.opciones,this.estadoJugadores)
 
             return;
         }
@@ -154,11 +154,23 @@ private confirmation: boolean = false;
         }
     }
 
+    forzarEnvioTerminarDialogo(){
+          this.contadorForzarCierre++;
+          this.socketService.enviarSocket("comandoPartida",{peticion: "comandoPartida", comando: "terminarDialogo", contenido: this.jugadorPropioSesionIndex});
+          if(this.contadorForzarCierre > 3){
+              if(this.indexOpcionSeleccionada == null){
+                  this.dialogRef.close(this.data.ordenEncadenado)
+              }else{
+                  this.dialogRef.close(this.opciones[this.indexOpcionSeleccionada].ordenIdEncadanado)
+              }
+          }
+    }
+
     retroceder(){
         this.indexTextoMostrado--;
         return;
     }
-        
+
 
 }
 

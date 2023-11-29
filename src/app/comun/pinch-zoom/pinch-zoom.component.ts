@@ -212,6 +212,14 @@ export class PinchZoomComponent implements OnDestroy, OnInit {
         this.detectLimitZoom();
     }
 
+    getNativeElementWidth(){
+      return this.elementRef.nativeElement.clientWidth
+    }
+
+    getNativeElementHeight(){
+      return this.elementRef.nativeElement.clientHeight
+    }
+
     ngOnChanges(changes:SimpleChanges) {
 
         if(this.pinchZoom){

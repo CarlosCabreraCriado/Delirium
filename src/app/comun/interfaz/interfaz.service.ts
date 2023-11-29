@@ -154,6 +154,9 @@ export class InterfazService {
         //----------------------------------
         // SELECCIÓN DE OBJETIVO
         // ---------------------------------
+        if(typeof this.objetivoDefinido !== "undefined" && this.renderHeroes[this.objetivoDefinido].vida==0){
+          this.objetivoDefinido = undefined;
+        }
 
         if(typeof this.objetivoDefinido === "undefined"){
 
@@ -189,6 +192,7 @@ export class InterfazService {
                    }
                 }
 
+                console.warn("arrayCandidatos:", arrayCandidatos);
 
                 //Itera entrando aleatoriamente por los candidatos:
                 if(arrayCandidatos.length < 1){candidatoEmpatado=true}
@@ -202,6 +206,8 @@ export class InterfazService {
                         j--;
                     }
                 }
+
+                console.warn("Candidato Validos:", candidatoValido);
 
                 //Verifica si se ha encontrado un valido:
                 if(candidatoValido != null){
@@ -231,7 +237,6 @@ export class InterfazService {
         var indexAccion = 0;
         var flagCumple = true;
         var iteracion = 0;
-        var primeraAccion = 0;
 
         do{
             //Asigna accion aleatoria:

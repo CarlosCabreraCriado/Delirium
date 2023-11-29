@@ -5,7 +5,7 @@ import { Component , Input , ChangeDetectionStrategy} from '@angular/core';
   selector: 'barraComponent',
   templateUrl: './barra.component.html',
   styleUrls: ['./barra.component.sass'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 
 })
 
@@ -17,6 +17,9 @@ export class BarraComponent {
 	@Input() escudo: number;
 	@Input() badge: boolean = false;
 	@Input() orientacion: string = "horizontal";
+  @Input() identificador: string;
+
+  public valorRadial: number = 0;
 
 	constructor() {}
 

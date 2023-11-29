@@ -29,6 +29,7 @@ export class MapaMazmorraComponent implements OnInit{
     private posicionMax_y: number
     private posicionMin_x: number
     private posicionMin_y: number
+    private zIndexMin: number
 
     private vw: number = 0;
     private vh: number = 0;
@@ -42,6 +43,14 @@ export class MapaMazmorraComponent implements OnInit{
       this.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
       this.vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
       this.renderizarCanvasIsometrico();
+
+      this.zIndexMin = this.isometrico.MapSave.Placeables.Placeable[0].Position.z
+      for(var i= 0; i < this.isometrico.MapSave.Placeables.Placeable.length; i++){
+        if(this.isometrico.MapSave.Placeables.Placeable[i].Position.z < this.zIndexMin){
+          this.zIndexMin = this.isometrico.MapSave.Placeables.Placeable[i].Position.z;
+        }
+      }
+
       this.intervaloRepaint = setInterval(() => {
             if(this.flagRePaint){
                 this.renderX++;
@@ -52,7 +61,7 @@ export class MapaMazmorraComponent implements OnInit{
             this.estiloContenedorIsometrico = {
                 "width": this.renderX +"px",
                 "height": this.renderY +"px"
-                
+
             }
             this.cdr.detectChanges();
         },2000)
@@ -164,7 +173,7 @@ export class MapaMazmorraComponent implements OnInit{
         var left= ((parseFloat(elemento.Position.x)-this.posicionMin_x)*this.escalaIsometrico/*-parseFloat(elemento.VisibilityColliderStackingOffset.x)*/) + "px";
         style["left"]= left.replace(/,/g,".")
 
-        var zIndex= (parseFloat(elemento.Position.z)+100)*10
+        var zIndex= (parseFloat(elemento.Position.z)+Math.abs(this.zIndexMin)+1)*100
         style["z-index"]= Math.floor(zIndex)
 
         if(elemento.Mirror=="true"){
@@ -202,7 +211,7 @@ export class MapaMazmorraComponent implements OnInit{
 
         //Renderizar Seleccion:
         if(elemento.seleccionado){
-            style["filter"] = "sepia(100%) saturate(100)";
+            //style["filter"] = "sepia(100%) saturate(100)";
         }
 
         //Aplicar filtro de Seleccion:
@@ -227,7 +236,7 @@ export class MapaMazmorraComponent implements OnInit{
            }
        }
        return style;
-        
+
     }
 
     clickElemento(elemento){
