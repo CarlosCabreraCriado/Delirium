@@ -23,23 +23,23 @@
             </div>
 
 			<form  id="formularioGeneral" [formGroup]="formClase">
-				  <mat-form-field appearance="legacy"  class="formId">
+				  <mat-form-field  class="formId">
 					<mat-label>ID</mat-label>
                     <input matInput disabled value="{{id_Clase.value}}">
 				  </mat-form-field>
 
-				  <mat-form-field appearance="legacy" class="formNombre">
+				  <mat-form-field class="formNombre">
 					<mat-label>Nombre Clase</mat-label>
 					<input matInput disabled value="{{nombre_Clase.value}}">
 				  </mat-form-field>
 
-				  <mat-form-field appearance="legacy" class="formDescripcion">
+				  <mat-form-field class="formDescripcion">
 					<mat-label>Descripción de Clase</mat-label>
 					<input matInput formControlName="descripcion">
 				  </mat-form-field>
 
                     <div class="selector formTipoArmadura">
-                      <mat-form-field appearance="legacy">
+                      <mat-form-field>
                         <mat-label>Armadura</mat-label>
                         <mat-select formControlName="tipoArmadura">
                             <mat-option value="Ligera">Ligera</mat-option>
@@ -60,27 +60,27 @@
 
                 <div class="tituloSeccion">Estadisticas Base:</div>
                 <form  id="formularioEstadisticas" [formGroup]="formEstadisticas">
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Armadura</mat-label>
                         <input matInput type="number" min="0" formControlName="armadura">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Mag. Resist</mat-label>
                         <input matInput type="number" min="0" formControlName="resistencia_magica">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Vitalidad</mat-label>
                         <input matInput type="number" min="0" formControlName="vitalidad">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>AP</mat-label>
                         <input matInput type="number" min="0" formControlName="AP">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>AD</mat-label>
                         <input matInput type="number" min="0" formControlName="AD">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Critico</mat-label>
                         <input matInput type="number" min="0" formControlName="critico">
                       </mat-form-field>
@@ -88,27 +88,27 @@
 
                 <div class="tituloSeccion">Escalado:</div>
                 <form  id="formularioEstadisticas" [formGroup]="formEscalado">
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Armadura_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="armadura_esc">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Mag. Resist_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="resistencia_magica_esc">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Vitalidad_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="vitalidad_esc">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>AP_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="AP_esc">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>AD_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="AD_esc">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Critico_ESC</mat-label>
                         <input matInput type="number" min="0" formControlName="critico_esc">
                       </mat-form-field>

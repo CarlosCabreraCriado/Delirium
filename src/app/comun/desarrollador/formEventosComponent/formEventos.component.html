@@ -28,12 +28,12 @@
 
                   <img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="eliminarEvento()"/>
 
-                  <mat-form-field appearance="legacy">
+                  <mat-form-field>
                     <mat-label>Nombre Evento</mat-label>
                     <input matInput placeholder="Nombre_Evento" formControlName="nombre">
                   </mat-form-field>
 
-                  <mat-form-field appearance="legacy">
+                  <mat-form-field>
                     <mat-label>Evento ID</mat-label>
                     <input matInput placeholder="ID" formControlName="id">
                   </mat-form-field>
@@ -44,17 +44,17 @@
                 <img class="botonEliminarOrden" src="./assets/desarrollador/papelera.svg" (click)="eliminarOrden()"/>
 
                 <div class="contenedorCabeceraOrden">
-                  <mat-form-field appearance="legacy" class="formNombreOrden">
+                  <mat-form-field class="formNombreOrden">
                     <mat-label>Nombre Orden</mat-label>
                     <input matInput placeholder="Nombre" formControlName="nombre">
                   </mat-form-field>
 
-                  <mat-form-field appearance="legacy" class="formCategoriaOrden">
+                  <mat-form-field class="formCategoriaOrden">
                     <mat-label>Tipo Orden</mat-label>
                     <input matInput placeholder="null" formControlName="tipo">
                   </mat-form-field>
 
-                  <mat-form-field appearance="legacy" class="formIdOrden">
+                  <mat-form-field class="formIdOrden">
                     <mat-label>ID Orden</mat-label>
                     <input matInput type="number" formControlName="id">
                   </mat-form-field>
@@ -67,7 +67,7 @@
                     <!-- Orden Condición -->
                     <form *ngIf="tipoOrdenSeleccionada=='condicion'" class="formularioGeneral" [formGroup]="formOrdenCondicion">
                       <div  class="contenedorTipoOrden">
-                          <mat-form-field appearance="legacy" class="formParametro">
+                          <mat-form-field class="formParametro">
                             <mat-label>Variable</mat-label>
                             <input matInput placeholder="" formControlName="variable">
                           </mat-form-field>
@@ -84,7 +84,7 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formParametro">
+                          <mat-form-field class="formParametro">
                             <mat-label>Valor Variable</mat-label>
                             <input matInput placeholder="" formControlName="valorVariable">
                           </mat-form-field>
@@ -101,7 +101,7 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formParametro">
+                          <mat-form-field class="formParametro">
                             <mat-label>Encadenado True</mat-label>
                             <input matInput type="number" placeholder="" formControlName="encadenadoTrue">
                           </mat-form-field>
@@ -118,7 +118,7 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formParametro">
+                          <mat-form-field class="formParametro">
                             <mat-label>Encadenado False</mat-label>
                             <input matInput placeholder="" type="number" formControlName="encadenadoFalse">
                           </mat-form-field>
@@ -155,17 +155,17 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Variable Target</mat-label>
                             <input matInput placeholder="" formControlName="variableTarget">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Valor Nuevo</mat-label>
                             <input matInput placeholder="" formControlName="valorNuevo">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Valor Operador</mat-label>
                             <input matInput placeholder="" type="number" formControlName="valorOperador">
                           </mat-form-field>
@@ -189,12 +189,12 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Misión ID</mat-label>
                             <input matInput type="number" min="1" placeholder="" formControlName="misionId">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Tarea ID</mat-label>
                             <input matInput type="number" min="1" placeholder="" formControlName="tareaId">
                           </mat-form-field>
@@ -214,12 +214,12 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Trigger ID</mat-label>
                             <input matInput type="number" min="1" placeholder="" formControlName="triggerId">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Trigger</mat-label>
                             <input matInput placeholder="" formControlName="trigger">
                           </mat-form-field>
@@ -245,12 +245,12 @@
                           <!-- INPUTS TIPO DIALOGO: DIALOGO -->
                           <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='Dialogo'">
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Titulo</mat-label>
                                 <textarea matInput placeholder="" formControlName="titulo"></textarea>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Contenido</mat-label>
                                 <textarea matInput placeholder="" formControlName="contenido"></textarea>
                               </mat-form-field>
@@ -269,7 +269,7 @@
                               </div>
                               </ng-container>
 
-                              <mat-form-field appearance="legacy">
+                              <mat-form-field>
                                 <mat-label>Interlocutor</mat-label>
                                 <mat-select formControlName="interlocutor">
                                     <mat-option value="null">Ninguno</mat-option>
@@ -281,7 +281,7 @@
                               <!-- Inicio Personaje Izquierda -->
                               <mat-checkbox  formControlName="mostrarPersonajeIzquierda">Mostrar Personaje Izquierda</mat-checkbox>
                               <ng-container *ngIf="mostrarPersonajeIzquierda_Orden_Dialogo.value">
-                              <mat-form-field appearance="legacy">
+                              <mat-form-field>
                                 <mat-label>Tipo Personaje</mat-label>
                                 <mat-select formControlName="tipoPersonajeIzquierda">
                                     <mat-option value="npc">NPC</mat-option>
@@ -289,11 +289,11 @@
                                     <mat-option value="self">Self</mat-option>
                                 </mat-select>
                               </mat-form-field>
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Imagen ID:</mat-label>
                                 <input matInput type="number" placeholder="" formControlName="imagenPersonajeIzquierda"/>
                               </mat-form-field>
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Nombre:</mat-label>
                                 <input matInput placeholder="" formControlName="nombrePersonajeIzquierda"/>
                               </mat-form-field>
@@ -302,7 +302,7 @@
                               <!-- Inicio Personaje Derecha -->
                               <mat-checkbox  formControlName="mostrarPersonajeDerecha">Mostrar Personaje Derecha</mat-checkbox>
                               <ng-container *ngIf="mostrarPersonajeDerecha_Orden_Dialogo.value">
-                              <mat-form-field appearance="legacy">
+                              <mat-form-field>
                                 <mat-label>Tipo Personaje</mat-label>
                                 <mat-select formControlName="tipoPersonajeDerecha">
                                     <mat-option value="npc">NPC</mat-option>
@@ -310,17 +310,17 @@
                                     <mat-option value="self">Self</mat-option>
                                 </mat-select>
                               </mat-form-field>
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Imagen ID:</mat-label>
                                 <input matInput type="number" placeholder="" formControlName="imagenPersonajeDerecha"/>
                               </mat-form-field>
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Nombre:</mat-label>
                                 <input matInput placeholder="" formControlName="nombrePersonajeDerecha"/>
                               </mat-form-field>
                               </ng-container>
 
-                              <mat-form-field appearance="legacy" class="formParametro">
+                              <mat-form-field class="formParametro">
                                 <mat-label>Orden Encadenado ID:</mat-label>
                                 <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
@@ -330,17 +330,17 @@
                           <!-- INPUTS TIPO DIALOGO: NarradorImg -->
                           <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='NarradorImg'">
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Titulo</mat-label>
                                 <textarea matInput placeholder="" formControlName="titulo"></textarea>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Contenido</mat-label>
                                 <textarea matInput placeholder="" formControlName="contenido"></textarea>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy">
+                              <mat-form-field>
                                 <mat-label>Tipo Imagen</mat-label>
                                 <mat-select formControlName="tipoImagen">
                                     <mat-option value="illustration">Ilustracion</mat-option>
@@ -348,12 +348,12 @@
                                 </mat-select>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Imagen ID:</mat-label>
                                 <input matInput type="number" placeholder="" formControlName="imagenId"/>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy" class="formParametro">
+                              <mat-form-field class="formParametro">
                                 <mat-label>Orden Encadenado ID</mat-label>
                                 <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
@@ -363,17 +363,17 @@
                           <!-- INPUTS TIPO DIALOGO: DIAPOSITIVA -->
                           <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='Diapositiva'">
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Titulo</mat-label>
                                 <textarea matInput placeholder="" formControlName="titulo"></textarea>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Contenido</mat-label>
                                 <textarea matInput placeholder="" formControlName="contenido"></textarea>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy">
+                              <mat-form-field>
                                 <mat-label>Tipo Imagen</mat-label>
                                 <mat-select formControlName="tipoImagen">
                                     <mat-option value="illustration">Ilustracion</mat-option>
@@ -381,12 +381,12 @@
                                 </mat-select>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy" class="formDuracion">
+                              <mat-form-field class="formDuracion">
                                 <mat-label>Imagen ID:</mat-label>
                                 <input matInput type="number" placeholder="" formControlName="imagenId"/>
                               </mat-form-field>
 
-                              <mat-form-field appearance="legacy" class="formParametro">
+                              <mat-form-field class="formParametro">
                                 <mat-label>Orden Encadenado ID</mat-label>
                                 <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
@@ -407,7 +407,7 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Hechizo ID</mat-label>
                             <input matInput placeholder="" type="number" min="1" formControlName="hechizoId">
                           </mat-form-field>
@@ -424,12 +424,12 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Heroe Objetivo ID</mat-label>
                             <input matInput placeholder="" formControlName="heroeObjetivoId">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Enemigo Objetivo ID</mat-label>
                             <input matInput placeholder="" formControlName="enemigoObjetivoId">
                           </mat-form-field>
@@ -456,12 +456,12 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Oro</mat-label>
                             <input matInput placeholder="" type="number" min="0" formControlName="oro">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Exp</mat-label>
                             <input matInput placeholder="" type="number" min="0" formControlName="exp">
                           </mat-form-field>
@@ -481,12 +481,12 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>ID Enemigo</mat-label>
                             <input matInput placeholder="" type="number" min="1" formControlName="idEnemigo">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Tipo Enemigo</mat-label>
                             <input matInput placeholder="" formControlName="tipoEnemigo">
                           </mat-form-field>
@@ -507,12 +507,12 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Mazmorra nombreID</mat-label>
                             <input matInput placeholder="" formControlName="mazmorraId">
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Sala Open ID</mat-label>
                             <input matInput placeholder="" type="number" min="1" formControlName="salaOpenId">
                           </mat-form-field>
@@ -541,7 +541,7 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Nombre Asset</mat-label>
                             <input matInput placeholder="" formControlName="nombreAsset">
                           </mat-form-field>
@@ -563,7 +563,7 @@
                             </mat-select>
                           </mat-form-field>
 
-                          <mat-form-field appearance="legacy" class="formDuracion">
+                          <mat-form-field class="formDuracion">
                             <mat-label>Dias</mat-label>
                             <input matInput placeholder="" type="number" min="1" formControlName="dias">
                           </mat-form-field>

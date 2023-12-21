@@ -1,6 +1,6 @@
 
 import { Component , Inject, ViewChild} from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA} from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { BotonComponent } from '../boton/boton.component';
 import { AppService } from '../../app.service';
 import { SocketService } from '../../comun/socket/socket.service';

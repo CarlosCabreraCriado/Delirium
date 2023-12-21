@@ -36,23 +36,23 @@
             </div>
 
 			<form  id="formularioGeneral" [formGroup]="formMision">
-				  <mat-form-field appearance="legacy"  class="formId">
+				  <mat-form-field  class="formId">
 					<mat-label>ID</mat-label>
                     <input matInput disabled value="{{id_Mision.value}}">
 				  </mat-form-field>
 
-				  <mat-form-field appearance="legacy" class="formNombre">
+				  <mat-form-field class="formNombre">
 					<mat-label>Titulo Misión</mat-label>
 					<input matInput formControlName="titulo">
 				  </mat-form-field>
 
-				  <mat-form-field appearance="legacy" class="formDescripcion">
+				  <mat-form-field class="formDescripcion">
 					<mat-label>Descripción</mat-label>
 					<input matInput formControlName="descripcion">
 				  </mat-form-field>
 
                     <div class="selector formTipoArmadura">
-                      <mat-form-field appearance="legacy">
+                      <mat-form-field>
                         <mat-label>Tipo</mat-label>
                         <mat-select formControlName="tipo">
                             <mat-option value="Principal">Principal</mat-option>
@@ -73,15 +73,15 @@
                 <ng-container *ngIf="opcionSeleccionada=='Propiedades'">
                 <div class="tituloSeccion">Propiedades</div>
                 <form  id="formularioEstadisticas" [formGroup]="formPropiedades">
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Nivel Recomendado</mat-label>
                         <input matInput type="number" min="1" formControlName="nivel_recomendado">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Capítulo</mat-label>
                         <input matInput type="number" min="1" formControlName="capitulo">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Epígrafe</mat-label>
                         <input matInput type="number" min="0" formControlName="epigrafe">
                       </mat-form-field>
@@ -91,16 +91,16 @@
                 <ng-container *ngIf="opcionSeleccionada=='Objetivos'">
                 <div class="tituloSeccion">Objetivos</div>
                 <form  id="formularioEstadisticas" [formGroup]="formObjetivos">
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>ID</mat-label>
                         <input matInput disabled type="number" min="0" formControlName="id">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Texto</mat-label>
                         <input matInput formControlName="texto">
                       </mat-form-field>
                     <div class="selector campo">
-                      <mat-form-field appearance="legacy">
+                      <mat-form-field>
                         <mat-label>Tipo</mat-label>
                         <mat-select formControlName="tipo">
                             <mat-option value="Cuenta">Cuenta</mat-option>
@@ -108,7 +108,7 @@
                         </mat-select>
                       </mat-form-field>
                     </div>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>Cuenta Max</mat-label>
                         <input matInput type="number" min="0" formControlName="cuentaMax">
                       </mat-form-field>
@@ -121,19 +121,19 @@
                 <ng-container *ngIf="opcionSeleccionada=='Recompensas'">
                 <div class="tituloSeccion">Recompensas</div>
                 <form  id="formularioRecompensas" [formGroup]="formRecompensas">
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>ORO</mat-label>
                         <input matInput disabled type="number" min="0" formControlName="oro">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>EXP</mat-label>
                         <input matInput disabled type="number" min="0" formControlName="exp">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>ORO Repeticion Mod</mat-label>
                         <input matInput disabled type="number" min="0" formControlName="oro_repeticion_mod">
                       </mat-form-field>
-                      <mat-form-field appearance="legacy"  class="campo">
+                      <mat-form-field  class="campo">
                         <mat-label>EXP Repeticion Mod</mat-label>
                         <input matInput disabled type="number" min="0" formControlName="exp_repeticion_mod">
                       </mat-form-field>

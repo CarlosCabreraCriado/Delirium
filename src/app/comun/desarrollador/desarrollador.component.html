@@ -162,13 +162,13 @@
             <form *ngIf="desarrolladorService.opcionPropiedades==='general'" class="formularioGeneral subanimacion" [formGroup]="formInMapGeneral">
 
                 <!--Campo-->
-                  <mat-form-field appearance="legacy">
+                  <mat-form-field>
                     <mat-label>Nombre: </mat-label>
                     <input matInput placeholder="Nombre" formControlName="inMapNombre">
                   </mat-form-field>
 
                 <!--Campo-->
-                  <mat-form-field appearance="legacy">
+                  <mat-form-field>
                     <mat-label>Descripcion: </mat-label>
                     <textarea matInput placeholder="Descripcion" formControlName="inMapDescripcion"></textarea>
                   </mat-form-field>
@@ -213,7 +213,7 @@
                 <mat-checkbox formControlName="inMapInspeccionable"></mat-checkbox>
 
                 <!--Campo-->
-                <mat-form-field appearance="legacy">
+                <mat-form-field>
                     <mat-label>Mensaje Inspección: </mat-label>
                     <textarea matInput placeholder="Mensaje Insp." formControlName="inMapMensajeInsapeccionable"></textarea>
                 </mat-form-field>
@@ -238,13 +238,13 @@
             <form *ngIf="desarrolladorService.opcionPropiedades==='trigger'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTrigger">
 
                 <!--Campo-->
-                  <mat-form-field appearance="legacy">
+                  <mat-form-field>
                     <mat-label>Probabilidad Random: </mat-label>
                     <input matInput placeholder="0" formControlName="inMapProbabilidadRandom">
                   </mat-form-field>
 
                 <!--Campo-->
-                  <mat-form-field appearance="legacy">
+                  <mat-form-field>
                     <mat-label>Categoria Random:</mat-label>
                     <input matInput placeholder="Camino" formControlName="inMapCategoriaRandom">
                   </mat-form-field>

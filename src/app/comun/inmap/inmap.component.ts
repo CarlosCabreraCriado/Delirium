@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
-import { MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { InMapService } from './inmap.service';
 import { Subscription } from "rxjs";

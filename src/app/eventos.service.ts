@@ -3,7 +3,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 //import { Eventos } from './eventos.class';
 import { AppService } from './app.service';
 import { DialogoComponent } from './comun/dialogos/dialogos.component';
-import { MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 @Injectable({

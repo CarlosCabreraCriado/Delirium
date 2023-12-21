@@ -281,7 +281,7 @@
             <div *ngIf="mostrarPanelAsignarSala" class="contenedorSeleccion" [formGroup]="formAsignarSala">
                 <div class="texto">Asignar Sala:</div>
                 <div class="contenedorOpcionesSeleccion">
-                    <mat-form-field appearance="legacy" class="campoFormulario formularioSeleccion">
+                    <mat-form-field class="campoFormulario formularioSeleccion">
                         <mat-label>Id Sala:</mat-label>
                         <input type="number" min="0" matInput placeholder="Id_Sala" formControlName="asignar_id_sala">
                     </mat-form-field>
@@ -295,7 +295,7 @@
                 <div class="texto">Asignar Enemigo:</div>
                 <div class="contenedorOpcionesSeleccion">
                 <!--Campo Enemigo ID -->
-                  <mat-form-field appearance="legacy"class="campoFormulario formularioSeleccion">
+                  <mat-form-fieldclass="campoFormulario formularioSeleccion">
                     <mat-label>Enemigo ID: </mat-label>
                     <input matInput type="number" min="0" placeholder="Nombre" formControlName="enemigoId">
                   </mat-form-field>
@@ -337,13 +337,13 @@
                   </mat-form-field>
 
                 <!--Campo Mensaje -->
-                  <mat-form-field appearance="legacy"class="campoFormulario formularioSeleccion">
+                  <mat-form-fieldclass="campoFormulario formularioSeleccion">
                     <mat-label>Mensaje Previo: </mat-label>
                     <textarea matInput placeholder="Mensaje" formControlName="mensaje"></textarea>
                   </mat-form-field>
 
                 <!--Campo Evento Encadenado -->
-                  <mat-form-field appearance="legacy"class="campoFormulario formularioSeleccion">
+                  <mat-form-fieldclass="campoFormulario formularioSeleccion">
                     <mat-label>Evento encadenado ID: </mat-label>
                     <input matInput type="number" placeholder="eventoID" formControlName="eventoId">
                   </mat-form-field>
@@ -362,39 +362,39 @@
 
           <form class="formularioGeneral" [formGroup]="formGeneral">
             <div class="columna">
-              <mat-form-field appearance="legacy" class="campoFormulario">
+              <mat-form-field class="campoFormulario">
                 <mat-label>Nombre mazmorra</mat-label>
                 <input matInput placeholder="Nombre" formControlName="nombre">
               </mat-form-field>
 
-              <mat-form-field appearance="legacy" class="campoFormulario">
+              <mat-form-field class="campoFormulario">
                 <mat-label>Nivel</mat-label>
                 <input matInput type="number" placeholder="mazmorra.general[0].nivel" formControlName="nivel" min="0">
               </mat-form-field>
 
-              <mat-form-field appearance="legacy" class="campoFormulario descripcion">
+              <mat-form-field class="campoFormulario descripcion">
                 <mat-label>Descripción</mat-label>
                 <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
               </mat-form-field>
             </div>
             
             <div class="columna">
-              <mat-form-field appearance="legacy" class="campoFormulario">
+              <mat-form-field class="campoFormulario">
                 <mat-label>Imagen ID</mat-label>
                 <input matInput type="number" placeholder="ID" formControlName="imagen_id">
               </mat-form-field>
 
-              <mat-form-field appearance="legacy" class="campoFormulario">
+              <mat-form-field class="campoFormulario">
                 <mat-label>Evento Start ID</mat-label>
                 <input matInput  type="number" placeholder="ID" formControlName="evento_start_id" min="0">
               </mat-form-field>
 
-              <mat-form-field appearance="legacy" class="campoFormulario">
+              <mat-form-field class="campoFormulario">
                 <mat-label>Evento finish ID</mat-label>
                 <input matInput type="number" placeholder="ID" formControlName="evento_finish_id" min="0">
               </mat-form-field>
 
-              <mat-form-field appearance="legacy" class="campoFormulario">
+              <mat-form-field class="campoFormulario">
                 <mat-label>Loot Finish ID</mat-label>
                 <input matInput type="number" placeholder="ID" formControlName="loot_finish_id" min="0">
               </mat-form-field>
@@ -419,17 +419,17 @@
 
             <div class="contenedorFormularioSala" *ngIf="salaSeleccionadaId!=0">
               <div class="columna">
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Sala ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Nombre</mat-label>
                   <input matInput placeholder="Nombre" formControlName="nombre">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario descripcion">
+                <mat-form-field class="campoFormulario descripcion">
                   <mat-label>Descripción</mat-label>
                   <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
                 </mat-form-field>
@@ -440,17 +440,17 @@
                    Num-Eventos -->
 
               <div class="columna">
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Evento Inicial ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_inicial_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Evento Final ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Evento Final ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
                 </mat-form-field>
@@ -513,37 +513,37 @@
               </div>
 
               <div class="columna">
-                <mat-form-field  appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label >Enemigo ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="enemigo_id" min="0">
                 </mat-form-field>
 
-                 <mat-form-field appearance="legacy" class="campoFormulario">
+                 <mat-form-field class="campoFormulario">
                   <mat-label>Tipo Enemigo ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="tipo_enemigo_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Nombre</mat-label>
                   <input matInput placeholder="Nombre" formControlName="nombre">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Sala ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="salaId" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Imagen ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="imagen_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Nivel</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="nivel" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Loot ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="loot_id" min="0">
                 </mat-form-field>
@@ -554,32 +554,32 @@
                    Num-Eventos -->
 
               <div class="columna">
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Buffo Perma ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="buffo_perma_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Evento Muerte ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_muerte_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Evento Spawn ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_spawn_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Evento Intervalo ID</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_intervalo_id" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Evento Intervalo Tiempo (PT)</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="evento_intervalo_tiempo" min="0">
                 </mat-form-field>
 
-                <mat-form-field appearance="legacy" class="campoFormulario">
+                <mat-form-field class="campoFormulario">
                   <mat-label>Loot Prob.</mat-label>
                   <input matInput type="number" placeholder="0" formControlName="loot_prob" min="0">
                 </mat-form-field>

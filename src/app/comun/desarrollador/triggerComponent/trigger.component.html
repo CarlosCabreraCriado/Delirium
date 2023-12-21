@@ -29,7 +29,7 @@
         <form [formGroup]="formActivador">
           <ng-template matStepLabel>Activador</ng-template>
             <div class="contenedorDual">
-              <mat-form-field class="campo" appearance="legacy">
+              <mat-form-field class="campo">
                 <mat-label>Activador</mat-label>
                 <mat-select formControlName="activador">
                     <mat-option value="entrarCasilla">Entrar Casilla</mat-option>
@@ -68,7 +68,7 @@
                 <input matInput formControlName="variable" [required]="activado">
             </mat-form-field>
 
-            <mat-form-field class="campo" appearance="legacy">
+            <mat-form-field class="campo">
                 <mat-label>Operador</mat-label>
                 <mat-select formControlName="operador">
                     <mat-option value="==">=</mat-option>
@@ -111,7 +111,7 @@
             </div>
 
             <div class="contenedorDual">
-            <mat-form-field  class="campo" appearance="legacy">
+            <mat-form-field  class="campo">
                 <mat-label>Comando Pre</mat-label>
                 <mat-select formControlName="comandoPre">
                     <mat-option value="addVar">Add Variable</mat-option>
@@ -148,7 +148,7 @@
                 <input matInput formControlName="variable" [required]="activado">
             </mat-form-field>
 
-            <mat-form-field class="campo" appearance="legacy">
+            <mat-form-field class="campo">
                 <mat-label>Operador</mat-label>
                 <mat-select formControlName="operador">
                     <mat-option value="=">=</mat-option>
@@ -170,7 +170,7 @@
             <div class="contenedorCondicion">
             <h3>Condición True </h3>
             <div formGroupName="condicionTrue">
-                <mat-form-field  class="campo" appearance="legacy">
+                <mat-form-field  class="campo">
                     <mat-label>Comando True</mat-label>
                     <mat-select formControlName="comando">
                         <mat-option value="addVar">Add Variable</mat-option>
@@ -192,7 +192,7 @@
             <div class="contenedorCondicion">
             <h3>Condición False</h3>
             <div formGroupName="condicionFalse">
-                <mat-form-field  class="campo" appearance="legacy">
+                <mat-form-field  class="campo">
                     <mat-label>Comando False</mat-label>
                     <mat-select formControlName="comando">
                         <mat-option value="addVar">Add Variable</mat-option>
