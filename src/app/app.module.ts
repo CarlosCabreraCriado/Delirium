@@ -21,7 +21,7 @@ import { TooltipModule } from './comun/tooltip/tooltip.module';
 
 //Extras
 //import { NgxElectronModule } from 'ngx-electron';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
+//import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 //Declaración de componentes:
@@ -169,7 +169,6 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         IonicStorageModule.forRoot(),
         BrowserAnimationsModule,
         HttpClientModule,
-        NgJsonEditorModule,
         SocketIoModule.forRoot(config),
         MatFormFieldModule,
         MatInputModule,
