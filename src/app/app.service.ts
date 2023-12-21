@@ -7,7 +7,7 @@ import { DialogoComponent } from './comun/dialogos/dialogos.component';
 import { ConfiguracionComponent } from './comun/configuracion/configuracion.component';
 import { SocialComponent } from './comun/social/social.component';
 import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
-import { MatDialog} from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import { Storage } from '@ionic/storage-angular';
 import { environment } from '../environments/environment'
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';

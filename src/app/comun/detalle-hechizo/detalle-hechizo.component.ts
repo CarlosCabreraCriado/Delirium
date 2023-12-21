@@ -1,6 +1,6 @@
 
 import { Component , Input, OnChanges, SimpleChanges, ViewEncapsulation} from '@angular/core';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatLegacySlideToggleModule as MatSlideToggleModule} from '@angular/material/legacy-slide-toggle';
 
 @Component({
   selector: 'detalleHechizoComponent',

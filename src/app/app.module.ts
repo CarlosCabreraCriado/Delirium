@@ -8,15 +8,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http"
 
 //Angular material:
-import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatInputModule} from '@angular/material/input';
-import { MatSelectModule} from '@angular/material/select';
-import { MatCheckboxModule} from '@angular/material/checkbox';
+import { MatLegacyFormFieldModule as MatFormFieldModule} from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule} from '@angular/material/legacy-input';
+import { MatLegacySelectModule as MatSelectModule} from '@angular/material/legacy-select';
+import { MatLegacyCheckboxModule as MatCheckboxModule} from '@angular/material/legacy-checkbox';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { MatDialogModule} from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule} from '@angular/material/legacy-dialog';
 import { MatStepperModule} from '@angular/material/stepper';
 import { DragDropModule} from '@angular/cdk/drag-drop';
-import { MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleModule as MatSlideToggleModule} from '@angular/material/legacy-slide-toggle';
 import { TooltipModule } from './comun/tooltip/tooltip.module';
 
 //Extras
