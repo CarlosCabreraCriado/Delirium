@@ -540,7 +540,7 @@ export class AppService {
         if(mostrar){
             if(this.dialogoReconectar == undefined){
                 this.dialogoReconectar = this.dialog.open(DialogoComponent,{
-                width: "100px", panelClass: ["Reconectar", "generalContainer"], backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "Reconectar", titulo: "Reconectando con el servidor...", contenido: "Se ha producido un error en la sincronización del web socket. Tratando de reconectar...",opciones: null, personajeDerecha: null, personajeIzquierda: null, inputLabel: null}
+                panelClass: ["Reconectar", "generalContainer"], backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "Reconectar", titulo: "Reconectando con el servidor...", contenido: "Se ha producido un error en la sincronización del web socket. Tratando de reconectar...",opciones: null, personajeDerecha: null, personajeIzquierda: null, inputLabel: null}
                 });
             }
         }else{
@@ -555,7 +555,7 @@ export class AppService {
 
     mostrarDialogo(tipoDialogo:string, config:any):any{
       const dialogRef = this.dialog.open(DialogoComponent,{
-          width: "100px", panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, personajeDerecha: config.personajeDerecha, personajeIzquierda: config.personajeIzquierda, inputLabel: config.inputLabel,deshabilitado: config.deshabilitado}
+          panelClass: [tipoDialogo, "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido,opciones: config.opciones, personajeDerecha: config.personajeDerecha, personajeIzquierda: config.personajeIzquierda, inputLabel: config.inputLabel,deshabilitado: config.deshabilitado}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -567,7 +567,7 @@ export class AppService {
 
     mostrarCrearCuenta():any{
       const dialogRef = this.dialog.open(DialogoComponent,{
-          width: "100px", panelClass: ["containerCrearCuenta", "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "CrearCuenta"}
+          panelClass: ["containerCrearCuenta", "generalContainer"],backdropClass: "fondoDialogo", disableClose:true, data: {tipoDialogo: "CrearCuenta"}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -588,7 +588,7 @@ export class AppService {
         }
 
       const dialogCrearHeroe = this.dialog.open(CrearHeroeComponent,{
-          width: "100px",panelClass: [tipoDialogo, "contenedorCrearHeroe"],backdropClass: "fondoCrearHeroe", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+          panelClass: [tipoDialogo, "contenedorCrearHeroe"],backdropClass: "fondoCrearHeroe", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
         });
 
         dialogCrearHeroe.afterClosed().subscribe(result => {
@@ -731,7 +731,7 @@ export class AppService {
     mostrarSocial(tipoDialogo:string, config:any):any{
 
       const dialogSocial = this.dialog.open(SocialComponent,{
-          width: "100px",panelClass: [tipoDialogo, "contenedorSocial"],backdropClass: "fondoSocial", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
+          panelClass: [tipoDialogo, "contenedorSocial"],backdropClass: "fondoSocial", disableClose:true, data: {tipoDialogo: tipoDialogo, titulo: config.titulo, contenido: config.contenido, inputLabel: config.inputLabel}
         });
 
         dialogSocial.afterClosed().subscribe(result => {
