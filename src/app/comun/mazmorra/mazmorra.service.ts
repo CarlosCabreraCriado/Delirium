@@ -2539,7 +2539,7 @@ export class MazmorraService {
     //Redondeo de vida:
     this.sesion.render[tipoObjetivo][indexObjetivo].vida = Math.round(this.sesion.render[tipoObjetivo][indexObjetivo].vida * 100) / 100;
 
-    if(this.sesion.render[tipoObjetivo][indexObjetivo].vida.isNaN()){
+    if(isNaN(this.sesion.render[tipoObjetivo][indexObjetivo].vida)){
         console.error("VIDA NAN");
     }
 

@@ -30,6 +30,12 @@ $angular-warn: mat.define-palette(mat.$red-palette)
 
 $angular-dark-theme: mat.define-dark-theme( ( color: ( primary: $angular-primary, accent: $angular-accent, warn: $angular-warn,),))
 
+.generalContainer
+  .mat-mdc-dialog-container
+    .mdc-dialog__container
+      .mat-mdc-dialog-surface
+        background-color: transparent
+
 .darkMode
   @include mat.all-component-colors($angular-dark-theme)
 

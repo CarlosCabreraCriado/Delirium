@@ -427,10 +427,12 @@ export class EventosService {
         var desarrollo = false;
         if(this.estadoApp.pantalla == "desarrollador"){desarrollo = true;}
         const dialogRef = this.dialog.open(DialogoComponent,{
-          width: "100px",
           panelClass: [tipoDialogo, "generalContainer"],
           backdropClass: "fondoDialogo",
           disableClose:true,
+          width: "100%",
+          height: "100%",
+          maxWidth: "100vw",
           data: {
               inputLabel: config.inputLabel,
               deshabilitado: config.deshabilitado,

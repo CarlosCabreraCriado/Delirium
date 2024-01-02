@@ -127,124 +127,117 @@
   position: absolute
   width: 100%
   height: 100%
-::ng-deep .Dialogo
-  .mat-dialog-container
-    position: absolute !important
-    width: 100%
+  .contenedorPersonaje
+    position: absolute
+    display: flex
+    align-content: flex-start
+    flex-direction: column
+    justify-content: center
+    width: 25%
     height: 100%
-    background: none
-    .contenedorPersonaje
-      position: absolute
-      display: flex
-      align-content: flex-start
-      flex-direction: column
-      justify-content: center
-      width: 25%
-      height: 100%
-      &.primero
-        left: 0%
-      &.segundo
-        right: 0%
+    &.primero
+      left: 0%
+    &.segundo
+      right: 0%
+    img
+      position: relative
+      width: 100%
+    .placaNombre
+      position: relative
+      width: 100%
+      height: 15%
       img
-        position: relative
+        position: absolute
         width: 100%
-      .placaNombre
-        position: relative
+        height: 100%
+      .nombrePersonaje
+        position: absolute
+        color: black
+        display: flex
         width: 100%
-        height: 15%
+        height: 75%
+        align-items: center
+        justify-content: center
+  .contenedorCentral
+    position: absolute
+    display: flex
+    flex-wrap: nowrap
+    align-items: center
+    justify-content: flex-start
+    flex-direction: column
+    width: 50%
+    height: 100%
+    right: 25%
+    .contenedorTexto
+      position: relative
+      display: flex
+      flex-wrap: nowrap
+      flex-direction: column
+      align-items: center
+      width: 100%
+      margin-top: 15px
+      color: black
+      padding: 3%
+
+      .texto
+        position: relative
+        z-index: 2
+        margin-left: 5%
+        margin-right: 5%
+        margin-bottom: 3%
+      .contenedorTitulo
+        position: relative
+        z-index: 2
+        width: 90%
+        margin-top: 5px
+        text-align: center
+        background-image: url("../../../assets/ui/paper/ppr_01.png")
+        background-size: 100% 100%
+      .textoDialogo
+        padding: 3%
+      .botonSiguiente
+        position: relative
+        width: 30%
+        height: 10vh
+      .iconoForzarFinDialogo
+        position: absolute
+        width: 5%
+        bottom: 5%
+        right: 2%
+      .decoracion
+        position: absolute
+        height: 20%
+        top: -20%
+        z-index: -1
+      .contenedorBandera
+        position: absolute
+        width: 38%
+        padding-top: 17%
+        top: 30%
+        &.izquierda
+          transform: rotate(90deg)
+          left: 0%
+        &.derecha
+          transform: rotate(-90deg)
+          right: 0%
         img
           position: absolute
           width: 100%
           height: 100%
-        .nombrePersonaje
-          position: absolute
-          color: black
-          display: flex
-          width: 100%
-          height: 75%
-          align-items: center
-          justify-content: center
-
-    .contenedorCentral
-      position: absolute
+    .contenedorOpciones
+      position: relative
       display: flex
-      flex-wrap: nowrap
-      align-items: center
-      justify-content: flex-start
-      flex-direction: column
-      width: 50%
-      height: 100%
-      right: 25%
-      .contenedorTexto
+      justify-content: center
+      flex-wrap: wrap
+      width: 100%
+      height: inherit
+      padding: 5% 0
+      .opcion
         position: relative
-        display: flex
-        flex-wrap: nowrap
-        flex-direction: column
-        align-items: center
+        color: $colorTexto
         width: 100%
-        margin-top: 15px
-        color: black
-        padding: 3%
-
-        .texto
-          position: relative
-          z-index: 2
-          margin-left: 5%
-          margin-right: 5%
-          margin-bottom: 3%
-        .contenedorTitulo
-          position: relative
-          z-index: 2
-          width: 90%
-          margin-top: 5px
-          text-align: center
-          background-image: url("../../../assets/ui/paper/ppr_01.png")
-          background-size: 100% 100%
-        .textoDialogo
-          padding: 3%
-        .botonSiguiente
-          position: relative
-          width: 30%
-          height: 10vh
-        .iconoForzarFinDialogo
-          position: absolute
-          width: 5%
-          bottom: 5%
-          right: 2%
-        .decoracion
-          position: absolute
-          height: 20%
-          top: -20%
-          z-index: -1
-        .contenedorBandera
-          position: absolute
-          width: 38%
-          padding-top: 17%
-          top: 30%
-          &.izquierda
-            transform: rotate(90deg)
-            left: 0%
-          &.derecha
-            transform: rotate(-90deg)
-            right: 0%
-          img
-            position: absolute
-            width: 100%
-            height: 100%
-      .contenedorOpciones
-        position: relative
-        display: flex
-        justify-content: center
-        flex-wrap: wrap
-        width: 100%
-        height: inherit
-        padding: 5% 0
-        .opcion
-          position: relative
-          color: $colorTexto
-          width: 100%
-          margin: 5px 0px
-          max-height: 10vh
+        margin: 5px 0px
+        max-height: 10vh
 
 // MENSAJE NARRADOR IMG:
 #narradorImg
