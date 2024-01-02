@@ -158,6 +158,7 @@
         height: 75%
         align-items: center
         justify-content: center
+
   .contenedorCentral
     position: absolute
     display: flex
@@ -244,285 +245,267 @@
   position: absolute
   width: 100%
   height: 100%
-::ng-deep .NarradorImg
-  .mat-dialog-container
-    position: absolute !important
-    width: 100%
-    height: 100%
-    background: none
+  .contenedorCentral
+    position: absolute
+    z-index: 2
+    top: 5%
+    left: 5%
+    width: 90%
+    height: 90%
     div
       z-index: 2
-    .contenedorCentral
+    .contenedorImagen
       position: absolute
-      z-index: 2
-      top: 5%
-      left: 5%
-      width: 90%
-      height: 90%
-      .contenedorImagen
-        position: absolute
-        display: flex
-        align-items: center
-        justify-content: center
-        width: 50%
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 50%
+      height: 100%
+      -webkit-mask-image: url("../../../assets/mascaras/2.png")
+      mask-image: url("../../../assets/mascaras/2.png")
+      mask-repeat: no-repeat
+      -webkit-mask-position-x: center
+      -webkit-mask-position-y: center
+      mask-size: 100% 90%
+      img
+        position: relative
         height: 100%
-        -webkit-mask-image: url("../../../assets/mascaras/2.png")
-        mask-image: url("../../../assets/mascaras/2.png")
-        mask-repeat: no-repeat
-        -webkit-mask-position-x: center
-        -webkit-mask-position-y: center
-        mask-size: 100% 90%
+        max-width: 200%
+        animation-name: paralax
+        animation-duration: 20s
+        animation-iteration-count: infinite
+        animation-direction: alternate
+        animation-timing-function: ease-in-out
+    .contenedorTexto
+      position: absolute
+      display: flex
+      flex-direction: column
+      width: 50%
+      left: 48%
+      height: 75%
+      margin-top: 15px
+      color: black
+      .contenedorTitulo
+        display: flex
+        justify-content: center
+        align-items: center
+        margin: 2% 3%
         img
           position: relative
-          height: 100%
-          max-width: 200%
-          animation-name: paralax
-          animation-duration: 20s
-          animation-iteration-count: infinite
-          animation-direction: alternate
-          animation-timing-function: ease-in-out
-      .contenedorTexto
+          width: 20%
+          &.derecha
+            transform: scaleX(-1)
+      .contenido
+        margin: 0% 3%
+        overflow-y: scroll
+        scrollbar-width: none
+        &::-webkit-scrollbar
+          display: none
+    .contenedorDecoracion
+      position: absolute
+      display: flex
+      justify-content: center
+      width: 100%
+      height: 10%
+      top: -7%
+      .decoracionSuperior
         position: absolute
-        display: flex
-        flex-direction: column
-        width: 50%
-        left: 48%
-        height: 75%
-        margin-top: 15px
-        color: black
-        .contenedorTitulo
-          display: flex
-          justify-content: center
-          align-items: center
-          margin: 2% 3%
-          img
-            position: relative
-            width: 20%
-            &.derecha
-              transform: scaleX(-1)
-        .contenido
-          margin: 0% 3%
-          overflow-y: scroll
-          scrollbar-width: none
-          &::-webkit-scrollbar
-            display: none
-      .contenedorDecoracion
-        position: absolute
-        display: flex
-        justify-content: center
-        width: 100%
-        height: 10%
-        top: -7%
-        .decoracionSuperior
-          position: absolute
-          height: 100%
-      .botonUnico
-        position: absolute
-        width: 20%
-        height: 10%
-        bottom: 5%
-        &.siguiente
-          right: 5%
-        &.retroceder
-          right: 30%
-      frameComponent
-        position: absolute
-        z-index: 1
-        width: 100%
         height: 100%
-        top: 0
-        div
-          z-index: 1
+    .botonUnico
+      position: absolute
+      width: 20%
+      height: 10%
+      bottom: 5%
+      &.siguiente
+        right: 5%
+      &.retroceder
+        right: 30%
+    frameComponent
+      position: absolute
+      z-index: 1
+      width: 100%
+      height: 100%
+      top: 0
+      div
+        z-index: 1
 
 // MENSAJE DIAPOSITIVA:
 #diapositiva
   position: absolute
   width: 100%
   height: 100%
-::ng-deep .Diapositiva
-  .mat-dialog-container
-    position: absolute !important
-    width: 100%
-    height: 100%
-    background: none
+  .contenedorCentral
+    position: absolute
+    z-index: 2
+    top: 5%
+    left: 5%
+    width: 90%
+    height: 90%
     div
       z-index: 2
-    .contenedorCentral
+    .contenedorImagen
       position: absolute
-      z-index: 2
-      top: 5%
-      left: 5%
-      width: 90%
-      height: 90%
-      .contenedorImagen
-        position: absolute
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 50%
+      height: 100%
+      .imagen
+        position: relative
+        max-height: 70%
+        max-width: 85%
+        z-index: 2
+        border-image: url("../../../assets/ui/frame/fr_02.png")
+        border-width: 19px
+        border-image-slice: 36 36 36 36
+        border-image-width: 20px 20px 20px 20px
+        border-image-outset: 0px 0px 0px 0px
+        border-image-repeat: stretch stretch
+        border-style: solid
+    .contenedorTexto
+      position: absolute
+      display: flex
+      flex-direction: column
+      width: 50%
+      left: 48%
+      height: 75%
+      margin-top: 15px
+      color: black
+      .contenedorTitulo
         display: flex
-        align-items: center
         justify-content: center
-        width: 50%
-        height: 100%
-        .imagen
-          position: relative
-          max-height: 70%
-          max-width: 85%
-          z-index: 2
-          border-image: url("../../../assets/ui/frame/fr_02.png")
-          border-width: 19px
-          border-image-slice: 36 36 36 36
-          border-image-width: 20px 20px 20px 20px
-          border-image-outset: 0px 0px 0px 0px
-          border-image-repeat: stretch stretch
-          border-style: solid
-      .contenedorTexto
-        position: absolute
-        display: flex
-        flex-direction: column
-        width: 50%
-        left: 48%
-        height: 75%
-        margin-top: 15px
-        color: black
-        .contenedorTitulo
-          display: flex
-          justify-content: center
-          align-items: center
-          margin: 2% 3%
-          img
-            position: relative
-            width: 20%
-            &.derecha
-              transform: scaleX(-1)
-        .contenido
-          margin: 0% 3%
-          overflow-y: scroll
-          scrollbar-width: none
-          &::-webkit-scrollbar
-            display: none
-      .contenedorControlSlide
-        position: absolute
-        display: flex
-        height: 7%
-        bottom: 6%
-        width: 70%
-        flex-direction: row
-        flex-wrap: nowrap
-        justify-content: flex-end
+        align-items: center
+        margin: 2% 3%
         img
           position: relative
-          height: 100%
-          margin: 0 2px
-          &.seleccionada
-            background-image: url("../../../assets/ui/check_box/chb_01.png")
-
-      .contenedorDecoracion
-        position: absolute
-        display: flex
-        justify-content: center
-        width: 100%
-        height: 10%
-        top: -7%
-        .decoracionSuperior
-          position: absolute
-          height: 100%
-      .botonUnico
-        position: absolute
-        width: 20%
-        height: 10%
-        bottom: 5%
-        &.siguiente
-          right: 5%
-        &.retroceder
-          right: 30%
-
-      frameComponent
-        position: absolute
-        z-index: 1
-        width: 100%
+          width: 20%
+          &.derecha
+            transform: scaleX(-1)
+      .contenido
+        margin: 0% 3%
+        overflow-y: scroll
+        scrollbar-width: none
+        &::-webkit-scrollbar
+          display: none
+    .contenedorControlSlide
+      position: absolute
+      display: flex
+      height: 7%
+      bottom: 6%
+      width: 70%
+      flex-direction: row
+      flex-wrap: nowrap
+      justify-content: flex-end
+      img
+        position: relative
         height: 100%
-        top: 0
-        div
-          z-index: 1
+        margin: 0 2px
+        &.seleccionada
+          background-image: url("../../../assets/ui/check_box/chb_01.png")
+
+    .contenedorDecoracion
+      position: absolute
+      display: flex
+      justify-content: center
+      width: 100%
+      height: 10%
+      top: -7%
+      .decoracionSuperior
+        position: absolute
+        height: 100%
+    .botonUnico
+      position: absolute
+      width: 20%
+      height: 10%
+      bottom: 5%
+      &.siguiente
+        right: 5%
+      &.retroceder
+        right: 30%
+
+    frameComponent
+      position: absolute
+      z-index: 1
+      width: 100%
+      height: 100%
+      top: 0
+      div
+        z-index: 1
 
 // MENSAJE DIAPOSITIVA:
 #mision
   position: absolute
   width: 100%
   height: 100%
-::ng-deep .Mision
-  .mat-dialog-container
-    position: absolute !important
+  .contenedorCentral
+    position: absolute
+    z-index: 2
+    top: 0%
+    left: 0%
     width: 100%
     height: 100%
-    background: none
     div
       z-index: 2
-    .contenedorCentral
+  .fondoLibro
+    position: absolute
+    z-index: 1
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    img
       position: absolute
-      z-index: 2
-      top: 0%
-      left: 0%
       width: 100%
       height: 100%
-    .fondoLibro
-      position: absolute
-      z-index: 1
-      width: 100%
-      height: 100%
-      top: 0
-      left: 0
-      img
-        position: absolute
-        width: 100%
+  .titulo
+    text-align: center
+  .contenedorMision
+    position: absolute
+    width: 37%
+    height: 60%
+    top: 15%
+    left: 10%
+    color: black
+    .tarea
+      position: relative
+      display: flex
+      height: 10%
+      margin: 10px 0
+      align-items: center
+      checkboxComponent
+        position: relative
         height: 100%
-    .titulo
-      text-align: center
-    .contenedorMision
-      position: absolute
-      width: 37%
-      height: 60%
-      top: 15%
-      left: 10%
-      color: black
-      .tarea
+        margin-left: 5%
+      .textoTarea
+        margin-left: 10px
+  .contenedorRecompensa
+    position: absolute
+    width: 38%
+    height: 60%
+    top: 15%
+    left: 51%
+    color: black
+    .contenedorObjetos
+      position: relative
+      width: 100%
+      display: flex
+      flex-wrap: wrap
+      justify-content: center
+      .objeto
         position: relative
-        display: flex
-        height: 10%
-        margin: 10px 0
-        align-items: center
-        checkboxComponent
+        width: 20%
+        margin: 2% 2%
+        img
           position: relative
-          height: 100%
-          margin-left: 5%
-        .textoTarea
-          margin-left: 10px
-    .contenedorRecompensa
-      position: absolute
-      width: 38%
-      height: 60%
-      top: 15%
-      left: 51%
-      color: black
-      .contenedorObjetos
-        position: relative
-        width: 100%
-        display: flex
-        flex-wrap: wrap
-        justify-content: center
-        .objeto
-          position: relative
-          width: 20%
-          margin: 2% 2%
-          img
-            position: relative
-            width: 100%
+          width: 100%
 
-      botonComponent
-        position: absolute
-        bottom: 0
-        width: 50%
-        height: 10%
-        margin-left: -25%
-        left: 50%
+    botonComponent
+      position: absolute
+      bottom: 0
+      width: 50%
+      height: 10%
+      margin-left: -25%
+      left: 50%
 
 #confirmacion
   .wrapper

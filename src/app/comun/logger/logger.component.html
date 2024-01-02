@@ -1,14 +1,15 @@
 
 
-<div *ngIf="loggerService.mostrarLogger"  class="contenedorLogger">
-	<div #contenedorMensajes class="contenedorMensajes">
-		<ul *ngFor="let mensaje of loggerService.logger; let i = index" class="mensajeLogger" [style.color]="loggerService.loggerColor[i]">{{mensaje}}</ul>
-	</div>
-
-<div class="contenedorComandos">
- 	{{loggerService.comando}}<div style="display: inline-block;">_</div>
-	</div>
-
-  <img id="iconoCerrarLogs" src="../../../assets/ui/icons/Icon_05.png" (click)="cerrarLogger()"/>
-
-</div>
+@if (loggerService.mostrarLogger) {
+  <div  class="contenedorLogger">
+    <div #contenedorMensajes class="contenedorMensajes">
+      @for (mensaje of loggerService.logger; track mensaje; let i = $index) {
+        <ul class="mensajeLogger" [style.color]="loggerService.loggerColor[i]">{{mensaje}}</ul>
+      }
+    </div>
+    <div class="contenedorComandos">
+      {{loggerService.comando}}<div style="display: inline-block;">_</div>
+    </div>
+    <img id="iconoCerrarLogs" src="../../../assets/ui/icons/Icon_05.png" (click)="cerrarLogger()"/>
+  </div>
+}

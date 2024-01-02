@@ -1,27 +1,33 @@
 
-<!-- Diseño Fondo --> 
+<!-- Diseño Fondo -->
 
-<!-- Pantalla de Inicio --> 
+<!-- Pantalla de Inicio -->
 <div id="contenedorDesarrollador">
 
   <!-- *************************************************
-        MENSAJES
-     ************************************************* -->
-  <div id="mensaje" *ngIf="desarrolladorService.mostrarMensaje">
-    <div class="contenedorMensaje">
-      <div class="titulo Texto3">{{desarrolladorService.mensaje}}</div>
-      <div *ngIf="desarrolladorService.mostrarSpinner" class="lds-dual-ring"></div>
-      <div *ngIf="desarrolladorService.mostrarBotonAceptar" class="botonAceptar" (click)="desarrolladorService.mostrarMensaje=false">Aceptar</div>
+  MENSAJES
+  ************************************************* -->
+  @if (desarrolladorService.mostrarMensaje) {
+    <div id="mensaje">
+      <div class="contenedorMensaje">
+        <div class="titulo Texto3">{{desarrolladorService.mensaje}}</div>
+        @if (desarrolladorService.mostrarSpinner) {
+          <div class="lds-dual-ring"></div>
+        }
+        @if (desarrolladorService.mostrarBotonAceptar) {
+          <div class="botonAceptar" (click)="desarrolladorService.mostrarMensaje=false">Aceptar</div>
+        }
+      </div>
     </div>
-  </div>
+  }
 
   <!-- *************************************************
-        BARRA INICIO
-     ************************************************* -->
+  BARRA INICIO
+  ************************************************* -->
 
   <div id="barraInicio">
-    <div id="contenedorLogo"> 
-      <img class="logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo"> 
+    <div id="contenedorLogo">
+      <img class="logo" src="assets/General/Logo-Delirium3.png" alt="Delirium Logo">
     </div>
 
     <div class="botonContainer" (click)="desarrolladorService.setPanel('inmap')">
@@ -44,466 +50,452 @@
       <div class="usuario">{{desarrolladorService.cuenta.nombre}}</div>
       <div class="version">v{{appService.version}}</div>
     </div>
-    
+
   </div> <!-- Fin Barra Inicio -->
-  
+
   <!-- *************************************************
-        WORKSPACE
-     ************************************************* -->
+  WORKSPACE
+  ************************************************* -->
   <div id="workspace">
 
     <img src="assets/General/bug.png" class="iconoBug" alt="Icono Bug">
     <img src="assets/desarrollador/reload.png" class="iconoReload" alt="Icono reload" (click)="desarrolladorService.reloadDatos(true)">
 
-     
-  <!-- *************************************************
-        PANEL INMAP
-     ************************************************* -->
-    <div *ngIf="desarrolladorService.panel=='inmap'" id="panelInmap">
 
+    <!-- *************************************************
+    PANEL INMAP
+    ************************************************* -->
+    @if (desarrolladorService.panel=='inmap') {
+      <div id="panelInmap">
         <!-- Fondo Mapa -->
         <div class="fondo" id="fondo">
-            <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
+          <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
         </div>
-
         <!-- Panel Izquiedo Isometrico -->
         <div class="contenedorPanelLateral izquierda">
-
-            <div class="tituloSeccion">Modo:</div>
-            <div class="selector">
-                <div class="opcion">Normal</div>
-                <div class="opcion seleccionado">Editar</div>
-            </div>
-
-            <div class="tituloSeccion">Zoom:</div>
-            <div class="selector">
-                <div class="opcion ZoomIn" (click)="zoomMapaIsometrico(-0.1)">--</div>
-                <div class="opcion ZoomIn" (click)="zoomMapaIsometrico(-0.01)">-</div>
-                <div class="opcion ZoomIn">{{escalaMapaIsometrico}}</div>
-                <div class="opcion ZoomOut" (click)="zoomMapaIsometrico(0.01)">+</div>
-                <div class="opcion ZoomOut" (click)="zoomMapaIsometrico(0.1)">++</div>
-            </div>
-
-            <div class="tituloSeccion">Posición:</div>
-            <div class="selectorPosicion">
-                <div class="formPosicionX">X: {{coordenadaSeleccionadaX}}</div>
-                <div class="formPosicionY">Y: {{coordenadaSeleccionadaY}}</div>
-                <div class="botonIr" (click)="posicionarMapaIsometrico()">Posicionar</div>
-            </div>
-
-            <div class="tituloSeccion">Guardar:</div>
-            <div class="selector">
-                <div class="opcion" (click)="desarrolladorService.guardarInMap()">Guardar</div>
-                <div class="opcion">Cargar</div>
-            </div>
-
-            <!-- Opciones de configuracion -->
-            <mat-label>Mostrar Niebla: </mat-label>
-            <mat-checkbox [(ngModel)]="mostrarNieblaGuerra"></mat-checkbox>
-
-            <mat-label>Mostrar Infranqueable: </mat-label>
-            <mat-checkbox  [(ngModel)]="mostrarInfranqueable"></mat-checkbox>
-
-            <mat-label>Mostrar Triggers: </mat-label>
-            <mat-checkbox  [(ngModel)]="mostrarTriggers"></mat-checkbox>
-
+          <div class="tituloSeccion">Modo:</div>
+          <div class="selector">
+            <div class="opcion">Normal</div>
+            <div class="opcion seleccionado">Editar</div>
+          </div>
+          <div class="tituloSeccion">Zoom:</div>
+          <div class="selector">
+            <div class="opcion ZoomIn" (click)="zoomMapaIsometrico(-0.1)">--</div>
+            <div class="opcion ZoomIn" (click)="zoomMapaIsometrico(-0.01)">-</div>
+            <div class="opcion ZoomIn">{{escalaMapaIsometrico}}</div>
+            <div class="opcion ZoomOut" (click)="zoomMapaIsometrico(0.01)">+</div>
+            <div class="opcion ZoomOut" (click)="zoomMapaIsometrico(0.1)">++</div>
+          </div>
+          <div class="tituloSeccion">Posición:</div>
+          <div class="selectorPosicion">
+            <div class="formPosicionX">X: {{coordenadaSeleccionadaX}}</div>
+            <div class="formPosicionY">Y: {{coordenadaSeleccionadaY}}</div>
+            <div class="botonIr" (click)="posicionarMapaIsometrico()">Posicionar</div>
+          </div>
+          <div class="tituloSeccion">Guardar:</div>
+          <div class="selector">
+            <div class="opcion" (click)="desarrolladorService.guardarInMap()">Guardar</div>
+            <div class="opcion">Cargar</div>
+          </div>
+          <!-- Opciones de configuracion -->
+          <mat-label>Mostrar Niebla: </mat-label>
+          <mat-checkbox [(ngModel)]="mostrarNieblaGuerra"></mat-checkbox>
+          <mat-label>Mostrar Infranqueable: </mat-label>
+          <mat-checkbox  [(ngModel)]="mostrarInfranqueable"></mat-checkbox>
+          <mat-label>Mostrar Triggers: </mat-label>
+          <mat-checkbox  [(ngModel)]="mostrarTriggers"></mat-checkbox>
         </div>
-
         <!-- Panel Derecho Isometrico -->
         <div class="contenedorPanelLateral derecha">
-
-            <div class="tituloSeccion">Herramienta:</div>
-            <div class="selector">
-                <div class="opcion" [ngClass]="renderizarSelector('add')" (click)="desarrolladorService.seleccionarHerramientaInMap('add')">Add</div>
-                <div class="opcion" [ngClass]="renderizarSelector('eliminar')" (click)="desarrolladorService.seleccionarHerramientaInMap('eliminar')">Eliminar</div>
+          <div class="tituloSeccion">Herramienta:</div>
+          <div class="selector">
+            <div class="opcion" [ngClass]="renderizarSelector('add')" (click)="desarrolladorService.seleccionarHerramientaInMap('add')">Add</div>
+            <div class="opcion" [ngClass]="renderizarSelector('eliminar')" (click)="desarrolladorService.seleccionarHerramientaInMap('eliminar')">Eliminar</div>
+          </div>
+          <div class="tituloSeccion">Tile:</div>
+          <div class="selector">
+            <div class="tile" (click)="desarrolladorService.abrirSelectorImagen('tile')">
+              <img class="iconoTile" src="./assets/Mapa/Tiles/{{desarrolladorService.tileImgSeleccionado}}.png">
             </div>
-
-            <div class="tituloSeccion">Tile:</div>
-            <div class="selector">
-                <div class="tile" (click)="desarrolladorService.abrirSelectorImagen('tile')">
-                    <img class="iconoTile" src="./assets/Mapa/Tiles/{{desarrolladorService.tileImgSeleccionado}}.png">
-                </div>
-            </div>
-
-            <div class="selector">
-                <div class="opcion" [ngClass]="renderizarSelector('base')" (click)="desarrolladorService.seleccionarHerramientaInMap('base')">Base</div>
-                <div class="opcion" [ngClass]="renderizarSelector('overlay')" (click)="desarrolladorService.seleccionarHerramientaInMap('overlay')">Overlay</div>
-            </div>
-
+          </div>
+          <div class="selector">
+            <div class="opcion" [ngClass]="renderizarSelector('base')" (click)="desarrolladorService.seleccionarHerramientaInMap('base')">Base</div>
+            <div class="opcion" [ngClass]="renderizarSelector('overlay')" (click)="desarrolladorService.seleccionarHerramientaInMap('overlay')">Overlay</div>
+          </div>
         </div> <!-- Fin Panel Derecho Isometrico -->
-    
         <!-- Fondo Mapa -->
         <div id="contenedorMapa" #canvasMapa class="bordeDesarrollador">
-            <mapaGeneralComponent id="mapaGeneralComponent"
-                (tileCopiado)="copiarTile($event)" 
-                (tileSeleccionado)="seleccionarTile($event)" 
-                [tileImgSeleccionado]="desarrolladorService.tileImgSeleccionado"
-                [desarrollo]="true"
-                [herramientaInMap]="desarrolladorService.opcionesDesarrolloInMap.herramientaInMap"
-                [escalaMapaIsometrico]="escalaMapaIsometrico"
-                [mostrarInfranqueable]="mostrarInfranqueable"
-                [mostrarNiebla]="mostrarNieblaGuerra"
-                [mostrarTriggers]="mostrarTriggers"
-                [opcionesDesarrolloInMap]="desarrolladorService.opcionesDesarrolloInMap">
-            </mapaGeneralComponent>
+          <mapaGeneralComponent id="mapaGeneralComponent"
+            (tileCopiado)="copiarTile($event)"
+            (tileSeleccionado)="seleccionarTile($event)"
+            [tileImgSeleccionado]="desarrolladorService.tileImgSeleccionado"
+            [desarrollo]="true"
+            [herramientaInMap]="desarrolladorService.opcionesDesarrolloInMap.herramientaInMap"
+            [escalaMapaIsometrico]="escalaMapaIsometrico"
+            [mostrarInfranqueable]="mostrarInfranqueable"
+            [mostrarNiebla]="mostrarNieblaGuerra"
+            [mostrarTriggers]="mostrarTriggers"
+            [opcionesDesarrolloInMap]="desarrolladorService.opcionesDesarrolloInMap">
+          </mapaGeneralComponent>
         </div>
-
-    <!--Panel Inferior-->
-    <div id="panelHerramientaInferiorInmap">
-
-        <div class="selector">
+        <!--Panel Inferior-->
+        <div id="panelHerramientaInferiorInmap">
+          <div class="selector">
             <div class="opcion" [ngClass]="renderizarSelector('general')" (click)="desarrolladorService.seleccionarHerramientaInMap('general')">General</div>
             <div class="opcion" [ngClass]="renderizarSelector('terreno')" (click)="desarrolladorService.seleccionarHerramientaInMap('terreno')">Terreno</div>
             <div class="opcion" [ngClass]="renderizarSelector('trigger')" (click)="desarrolladorService.seleccionarHerramientaInMap('trigger')">Trigger</div>
             <div class="opcion" [ngClass]="renderizarSelector('misiones')" (click)="desarrolladorService.seleccionarHerramientaInMap('misiones')">Misiones</div>
-        </div>
-
-            <!-- Formulario General-->
-            <form *ngIf="desarrolladorService.opcionPropiedades==='general'" class="formularioGeneral subanimacion" [formGroup]="formInMapGeneral">
-
-                <!--Campo-->
-                  <mat-form-field>
-                    <mat-label>Nombre: </mat-label>
-                    <input matInput placeholder="Nombre" formControlName="inMapNombre">
-                  </mat-form-field>
-
-                <!--Campo-->
-                  <mat-form-field>
-                    <mat-label>Descripcion: </mat-label>
-                    <textarea matInput placeholder="Descripcion" formControlName="inMapDescripcion"></textarea>
-                  </mat-form-field>
-
-                <!--Campo-->
-                  <mat-form-field appearance="fill">
-                    <mat-label>Indicador: </mat-label>
-                    <mat-select [formControl]="inMapIndicador">
-                        <mat-option value="null">null</mat-option>
-                        <mat-option value="Ciudad">Ciudad</mat-option>
-                        <mat-option value="Pueblo">Pueblo</mat-option>
-                        <mat-option value="Portal">Portal</mat-option>
-                        <mat-option value="Viaje">Viaje rápido</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-
-            </form>
-
-            <!-- Formulario Terreno -->
-            <form *ngIf="desarrolladorService.opcionPropiedades==='terreno'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTerreno">
-
-                <!--Campo-->
-                  <mat-form-field appearance="fill">
-                    <mat-label>Tipo Terreno: </mat-label>
-                    <mat-select [formControl]="inMapTipoTerreno">
-                        <mat-option value="normal">Normal</mat-option>
-                        <mat-option value="camino">Camino</mat-option>
-                        <mat-option value="pueblo">Pueblo</mat-option>
-                        <mat-option value="ciudad">Ciudad</mat-option>
-                        <mat-option value="montaña">Montaña</mat-option>
-                        <mat-option value="bosque">Bosque</mat-option>
-                        <mat-option value="peligroso">Peligroso</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-
-                <!--Campo-->
-                <mat-label>Atravesable: </mat-label>
-                <mat-checkbox formControlName="inMapAtravesable"></mat-checkbox>
-
-                <!--Campo-->
-                <mat-label>Inspeccionable: </mat-label>
-                <mat-checkbox formControlName="inMapInspeccionable"></mat-checkbox>
-
-                <!--Campo-->
-                <mat-form-field>
-                    <mat-label>Mensaje Inspección: </mat-label>
-                    <textarea matInput placeholder="Mensaje Insp." formControlName="inMapMensajeInsapeccionable"></textarea>
-                </mat-form-field>
-
-                <!--Campo-->
-                  <mat-form-field appearance="fill">
-                    <mat-label>Indicador: </mat-label>
-                    <mat-select [formControl]="inMapUbicacionEspecial">
-                        <mat-option value="null">null</mat-option>
-                        <mat-option value="portal">Portal</mat-option>
-                        <mat-option value="herrero">Herrero</mat-option>
-                        <mat-option value="armero">Armero</mat-option>
-                        <mat-option value="instructor">Instructor</mat-option>
-                        <mat-option value="mercado">Mercado</mat-option>
-                        <mat-option value="posada">Posada</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-
-            </form>
-
-            <!-- Formulario Trigger-->
-            <form *ngIf="desarrolladorService.opcionPropiedades==='trigger'"  class="formularioGeneral subanimacion" [formGroup]="formInMapTrigger">
-
-                <!--Campo-->
-                  <mat-form-field>
-                    <mat-label>Probabilidad Random: </mat-label>
-                    <input matInput placeholder="0" formControlName="inMapProbabilidadRandom">
-                  </mat-form-field>
-
-                <!--Campo-->
-                  <mat-form-field>
-                    <mat-label>Categoria Random:</mat-label>
-                    <input matInput placeholder="Camino" formControlName="inMapCategoriaRandom">
-                  </mat-form-field>
-
-                <!--Campo-->
-                <div class="contenedorCampoRelacional campoAnimacion campo">
-                    <img class="imagenCampoRelacional" (click)="abrirTrigger('inmap-evento')" src="./assets/desarrollador/trigger.png"/>
-                </div>
-
-                <!--Campo
-                  <mat-form-field appearance="legacy">
-                    <mat-label>Loot Prob:</mat-label>
-                    <input matInput placeholder="0" formControlName="inMapLootProb">
-                  </mat-form-field>
-
-                  <mat-form-field appearance="legacy">
-                    <mat-label>Loot ID:</mat-label>
-                    <input matInput placeholder="0" formControlName="inMapLootId">
-                  </mat-form-field>
-                    -->
-
-            </form>
-
-            <!-- Formulario Misiones-->
-            <form *ngIf="desarrolladorService.opcionPropiedades==='misiones'"  class="formularioGeneral subanimacion" >
-
-                <!--Campo-->
-                <div class="contenedorCampoRelacional campoAnimacion campo">
-                    <img class="imagenCampoRelacional" (click)="abrirTrigger('inmap-mision')" src="./assets/desarrollador/mision.png"/>
-                </div>
-
-            </form>
-    </div> <!-- FIN Panel INMAP Inferior -->
-
-
-    </div> <!-- Final INMAP -->
-
-   
-<!-- *************************************************
-        Dungeon Builder
-     ************************************************* -->
-
-    <dungeonBuilderComponent></dungeonBuilderComponent>
-     
-<!-- *************************************************
-        PANEL DATOS
-     ************************************************* -->
-
-    <div *ngIf="desarrolladorService.panel=='import/export'" id="panelDatos">
-      <div class="contenedorBarraAccion">
-        <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('ver')" (click)="desarrolladorService.seleccionarAccionDato('ver');">VER</div>
-        <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('subir')" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
-        <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('modificar')" (click)="desarrolladorService.seleccionarAccionDato('modificar');">MODIFICAR</div>
-      </div>
-      <div class="botonCambiarDatos" (click)="desarrolladorService.toggleDatosOficiales()">
-        Datos oficiales: {{appService.activarDatosOficiales}}
-      </div>
-      <div class="contenedorArchivos">
-        <div class="tituloArchivo">ARCHIVOS: </div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Stats')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Hechizos')" (click)="desarrolladorService.seleccionarArchivoDato('Hechizos');">HECHIZOS</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Enemigos')" (click)="desarrolladorService.seleccionarArchivoDato('Enemigos');">ENEMIGOS</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Buff')" (click)="desarrolladorService.seleccionarArchivoDato('Buff');">BUFF</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Objetos')"(click)="desarrolladorService.seleccionarArchivoDato('Objetos');">OBJETOS</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Animaciones')" (click)="desarrolladorService.seleccionarArchivoDato('Animaciones');">ANIMACIONES</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Parametros')" (click)="desarrolladorService.seleccionarArchivoDato('Parametros');">PARAMETROS</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Perfil')"(click)="desarrolladorService.seleccionarArchivoDato('Perfil');">PERFIL</div>
-        <div class="archivo" [ngClass]="renderDatoSeleccionado('Personajes')"(click)="desarrolladorService.seleccionarArchivoDato('Personajes');">PERSONAJES</div>
-      </div>
-
-      <!-- Estado Datos-VER -->
-      <div *ngIf="desarrolladorService.estadoDatos=='ver'" class="contenedorOpcion ver">
-        <json-editor [options]="editorVerOptions" [data]="desarrolladorService.archivoDato"></json-editor>
-      </div>
-      
-      <!-- Estado Datos-SUBIR -->
-      <div *ngIf="desarrolladorService.estadoDatos=='subir' && desarrolladorService.archivoSeleccionado!='null'" class="contenedorOpcion subir">
-
-        <!-- Pantalla Datos-Subir -->
-        <div class="pantallaSubir" *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='subir'">
-          <div class="titulo texto1">{{desarrolladorService.archivoSeleccionado.toUpperCase()}}</div>
-          <input id="botonSubirExcel" type="file" name="file" (change)="desarrolladorService.incluirArchivo($event)" multiple="false" accept=".xlsx"/>
-          <label for="botonSubirExcel">
-            <img class="iconoSubir" src="assets/desarrollador/subir.png"/>
-            <div class="textoBotonSubirExcel">SELECCIONE UN ARCHIVO</div>
-          </label>
-        </div>
-
-        <!-- Pantalla Datos-Info -->
-        <div class="pantallaInfo" *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='info'">
-
-          <div class="contenedorInfoDatos">
-            <img class="icono" src="assets/desarrollador/excel.png"/>
-            <img class="botonCerrar" src="assets/desarrollador/cerrar.png" (click)="desarrolladorService.cancelarArchivo()">
-            <div class="titulo texto1">{{desarrolladorService.archivoSeleccionado.toUpperCase()}}</div>
-      
-            <div class="contenedorVerificacion">
-              <div *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].verificado==true" class="contenedorInfoVerificacion">
-                <img class="iconoVerificado" src="assets/desarrollador/exito.png">
-                <div class="textoVerificacion Texto3"> Archivo verificado</div>
-              </div>
-
-              <div *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].error==true" class="contenedorInfoVerificacion">
-                <img class="iconoVerificado" src="assets/desarrollador/cerrar.png">
-                <div class="textoVerificacion Texto3"> ERROR</div>
-              </div>
-              
-              <div class="botonVerificar Texto3" (click)="desarrolladorService.verificarDatos()">VERIFICAR ARCHIVO</div>
-
-
-            </div>
-              <!--
-              <div class="contenedorVerificacion">
-                <img class="iconoVerificado" src="assets/desarrollador/error.png">
-                Archivo verificado
-              </div>
-              -->
-            <div *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].verificado==true" class="botonCambiarEstadisticas" (click)="desarrolladorService.subirArchivo()">SUBIR ARCHIVO</div>
           </div>
-
-        </div>
-
-        <!-- Pantalla Datos-Info -->
-        <div class="pantallaSubido" *ngIf="desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='subido'">
-          <div class="contenedorSubido">
-            <div class="titulo texto1">SUBIDO CON EXITO: {{desarrolladorService.archivoSeleccionado.toUpperCase()}} </div>
-            <img class="icono" src="assets/desarrollador/exito.png">
-            <div class="botonVolver Texto3" (click)="desarrolladorService.cancelarArchivo()">VOLVER A SUBIR</div>
-          </div>
-
-        </div>
-
-      
-      </div>
-      
-      <!-- Estado Datos-MODIFICAR -->
-      <div *ngIf="desarrolladorService.estadoDatos=='modificar'" class="contenedorOpcion modificar">
-        <json-editor [options]="editorModificarOptions" [data]="desarrolladorService.archivoDato" (change)="desarrolladorService.modificarDatos($event)"></json-editor>
-      </div>
-
-    </div>
-     
-<!-- *************************************************
-        PANEL DATOS
-     ************************************************* -->
-    <div *ngIf="desarrolladorService.panel=='datos'" id="panelDatos">
-
-      <div class="contenedorTipoDatos tipo">
-        <img class="icono" src="./assets/desarrollador/clases.png" [ngClass]="renderIconoDatosSeleccionado('Clases')" (click)="desarrolladorService.setEstadoDatos('Clases')"/>
-        <img class="icono" src="./assets/desarrollador/objetos.png" [ngClass]="renderIconoDatosSeleccionado('Objetos')" (click)="desarrolladorService.setEstadoDatos('Objetos')"/>
-        <img class="icono" src="./assets/desarrollador/perks.png" [ngClass]="renderIconoDatosSeleccionado('Perks')" (click)="desarrolladorService.setEstadoDatos('Perks')"/>
-        <img class="icono" src="./assets/desarrollador/hechizo.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.setEstadoDatos('Hechizos')"/>
-        <img class="icono" src="./assets/desarrollador/buff.png" [ngClass]="renderIconoDatosSeleccionado('Buff')" (click)="desarrolladorService.setEstadoDatos('Buff')"/>
-        <img class="icono" src="./assets/desarrollador/animacion.png" [ngClass]="renderIconoDatosSeleccionado('Animaciones')" (click)="desarrolladorService.setEstadoDatos('Animaciones')"/>
-        <img class="icono" src="./assets/desarrollador/enemigo.png" [ngClass]="renderIconoDatosSeleccionado('Enemigos')" (click)="desarrolladorService.setEstadoDatos('Enemigos')"/>
-        <img class="icono" src="./assets/desarrollador/trigger.png" [ngClass]="renderIconoDatosSeleccionado('Eventos')" (click)="desarrolladorService.setEstadoDatos('Eventos')"/>
-        <img class="icono" src="./assets/desarrollador/mision.png" [ngClass]="renderIconoDatosSeleccionado('Misiones')" (click)="desarrolladorService.setEstadoDatos('Misiones')"/>
-      </div>
-
-      <div class="contenedorTipoDatos subtipo">
-
-        <ng-container *ngIf="desarrolladorService.estadoHerramientaDatos=='Clases'"> 
-            <img class="icono" src="./assets/Emblemas/1.png" [ngClass]="renderClaseSeleccionada('Guerrero')" (click)="desarrolladorService.seleccionarClase('Guerrero')"/>
-            <img class="icono" src="./assets/Emblemas/2.png" [ngClass]="renderClaseSeleccionada('Hechicero')" (click)="desarrolladorService.seleccionarClase('Hechicero')"/>
-            <img class="icono" src="./assets/Emblemas/3.png" [ngClass]="renderClaseSeleccionada('Cazador')" (click)="desarrolladorService.seleccionarClase('Cazador')"/>
-            <img class="icono" src="./assets/Emblemas/4.png" [ngClass]="renderClaseSeleccionada('Sacerdote')" (click)="desarrolladorService.seleccionarClase('Sacerdote')"/>
-            <img class="icono" src="./assets/Emblemas/5.png" [ngClass]="renderClaseSeleccionada('Ladrón')" (click)="desarrolladorService.seleccionarClase('Ladrón')"/>
-        </ng-container> 
-
-        <ng-container *ngIf="desarrolladorService.estadoHerramientaDatos=='Objetos'"> 
-        <img class="icono" src="./assets/Iconos/indicadores/008.png" [ngClass]="renderTipoObjetoSeleccionado('Equipo')" (click)="desarrolladorService.seleccionarTipoObjeto('Equipo')"/>
-        <img class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoObjetoSeleccionado('Consumible')" (click)="desarrolladorService.seleccionarTipoObjeto('Consumible')"/>
-        </ng-container> 
-
-        <ng-container *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'"> 
-            <div class="icono" src="./assets/Iconos/indicadores/008.png" [ngClass]="renderTipoEventoSeleccionado('General')" (click)="desarrolladorService.seleccionarTipoEvento('General')">General</div>
-            <div class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoEventoSeleccionado('Variables')" (click)="desarrolladorService.seleccionarTipoEvento('Variables')">Variables</div>
-            <div class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoEventoSeleccionado('Random')" (click)="desarrolladorService.seleccionarTipoEvento('Random')">Random</div>
-        </ng-container> 
-
-      </div> <!-- FIN SUBCONTAINER -->
-
-      <img class="botonGuardar" src="./assets/desarrollador/guardar.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.guardarPanelDatos()"/>
-
-      <div class="contenedorCentral">
-
-      <formClasesComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Clases'"></formClasesComponent>
-      <formObjetosComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Objetos'"></formObjetosComponent>
-      <formPerksComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Perks'"></formPerksComponent>
-      <formHechizosComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Hechizos'"></formHechizosComponent>
-      <formBuffComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'"></formBuffComponent>
-      <formAnimacionesComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'"></formAnimacionesComponent>
-      <formEnemigosComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Enemigos'"></formEnemigosComponent>
-
-      <ng-container *ngIf="desarrolladorService.estadoHerramientaDatos=='Eventos'">
-        <formEventosComponent *ngIf="desarrolladorService.tipoEventoSeleccionado=='General'" [eventos]="desarrolladorService.eventos.eventos" (eventosChange)="desarrolladorService.eventos.eventos=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
-
-        <formEventosComponent *ngIf="desarrolladorService.tipoEventoSeleccionado=='Variables'" [eventos]="desarrolladorService.eventos.eventosVariables" (eventosChange)="desarrolladorService.eventos.eventosVariables=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
-
-        <formEventosComponent *ngIf="desarrolladorService.tipoEventoSeleccionado=='Random'" [eventos]="desarrolladorService.eventos.eventosRandom[tipoEventoRandom]" (eventosChange)="desarrolladorService.eventos.eventosRandom[tipoEventoRandom]=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
-
-        <form *ngIf="desarrolladorService.tipoEventoSeleccionado=='Random'" id="formularioEventoRandom" [formGroup]="formEventoRandom">
-            <!--Campo-->
+          <!-- Formulario General-->
+          @if (desarrolladorService.opcionPropiedades==='general') {
+            <form class="formularioGeneral subanimacion" [formGroup]="formInMapGeneral">
+              <!--Campo-->
+              <mat-form-field>
+                <mat-label>Nombre: </mat-label>
+                <input matInput placeholder="Nombre" formControlName="inMapNombre">
+              </mat-form-field>
+              <!--Campo-->
+              <mat-form-field>
+                <mat-label>Descripcion: </mat-label>
+                <textarea matInput placeholder="Descripcion" formControlName="inMapDescripcion"></textarea>
+              </mat-form-field>
+              <!--Campo-->
               <mat-form-field appearance="fill">
-                <mat-label>Tipo Evento Random: </mat-label>
-                <mat-select formControlName="tipoEventoRandom">
-                    <mat-option value="camino">Camino</mat-option>
-                    <mat-option value="bosque">Bosque</mat-option>
-                    <mat-option value="costa">Costa</mat-option>
-                    <mat-option value="ciudad">Ciudad</mat-option>
-                    <mat-option value="montaña">Montaña</mat-option>
-                    <mat-option value="ruina">Ruina</mat-option>
-                    <mat-option value="nieve">Nieve</mat-option>
-                    <mat-option value="lava">Lava</mat-option>
-                    <mat-option value="pueblo">Pueblo</mat-option>
+                <mat-label>Indicador: </mat-label>
+                <mat-select [formControl]="inMapIndicador">
+                  <mat-option value="null">null</mat-option>
+                  <mat-option value="Ciudad">Ciudad</mat-option>
+                  <mat-option value="Pueblo">Pueblo</mat-option>
+                  <mat-option value="Portal">Portal</mat-option>
+                  <mat-option value="Viaje">Viaje rápido</mat-option>
                 </mat-select>
               </mat-form-field>
-        </form>
-
-      </ng-container>
-
-      <formMisionesComponent class="componenteFormulario" *ngIf="desarrolladorService.estadoHerramientaDatos=='Misiones'"></formMisionesComponent>
-
-      </div>
-
-    </div> <!-- Fin Panel Datos -->
-
-  </div> <!-- Fin Workspace -->
-
-  <!-- SELECTOR DE IMAGENES -->
-  <div id="SelectorImagenes" *ngIf="desarrolladorService.mostrarSelectorImagen">
-      <div class="frame">
-          <div class="titulo">Seleccione una imagen:</div>
-            <img (click)="desarrolladorService.mostrarSelectorImagen = false" class="botonCerrar" src="./assets/desarrollador/cerrar.png"/>
-          <div class="contenedorImagenes">
-              <div *ngFor="let imagenes of desarrolladorService.imagenes; let i= index" class="imagen">
-                  <img (click)="desarrolladorService.seleccionarImagen(i+1)" src="./assets/{{desarrolladorService.pathImagenes}}/{{imagenes}}.png"/>
+            </form>
+          }
+          <!-- Formulario Terreno -->
+          @if (desarrolladorService.opcionPropiedades==='terreno') {
+            <form  class="formularioGeneral subanimacion" [formGroup]="formInMapTerreno">
+              <!--Campo-->
+              <mat-form-field appearance="fill">
+                <mat-label>Tipo Terreno: </mat-label>
+                <mat-select [formControl]="inMapTipoTerreno">
+                  <mat-option value="normal">Normal</mat-option>
+                  <mat-option value="camino">Camino</mat-option>
+                  <mat-option value="pueblo">Pueblo</mat-option>
+                  <mat-option value="ciudad">Ciudad</mat-option>
+                  <mat-option value="montaña">Montaña</mat-option>
+                  <mat-option value="bosque">Bosque</mat-option>
+                  <mat-option value="peligroso">Peligroso</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!--Campo-->
+              <mat-label>Atravesable: </mat-label>
+              <mat-checkbox formControlName="inMapAtravesable"></mat-checkbox>
+              <!--Campo-->
+              <mat-label>Inspeccionable: </mat-label>
+              <mat-checkbox formControlName="inMapInspeccionable"></mat-checkbox>
+              <!--Campo-->
+              <mat-form-field>
+                <mat-label>Mensaje Inspección: </mat-label>
+                <textarea matInput placeholder="Mensaje Insp." formControlName="inMapMensajeInsapeccionable"></textarea>
+              </mat-form-field>
+              <!--Campo-->
+              <mat-form-field appearance="fill">
+                <mat-label>Indicador: </mat-label>
+                <mat-select [formControl]="inMapUbicacionEspecial">
+                  <mat-option value="null">null</mat-option>
+                  <mat-option value="portal">Portal</mat-option>
+                  <mat-option value="herrero">Herrero</mat-option>
+                  <mat-option value="armero">Armero</mat-option>
+                  <mat-option value="instructor">Instructor</mat-option>
+                  <mat-option value="mercado">Mercado</mat-option>
+                  <mat-option value="posada">Posada</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
+          }
+          <!-- Formulario Trigger-->
+          @if (desarrolladorService.opcionPropiedades==='trigger') {
+            <form  class="formularioGeneral subanimacion" [formGroup]="formInMapTrigger">
+              <!--Campo-->
+              <mat-form-field>
+                <mat-label>Probabilidad Random: </mat-label>
+                <input matInput placeholder="0" formControlName="inMapProbabilidadRandom">
+              </mat-form-field>
+              <!--Campo-->
+              <mat-form-field>
+                <mat-label>Categoria Random:</mat-label>
+                <input matInput placeholder="Camino" formControlName="inMapCategoriaRandom">
+              </mat-form-field>
+              <!--Campo-->
+              <div class="contenedorCampoRelacional campoAnimacion campo">
+                <img class="imagenCampoRelacional" (click)="abrirTrigger('inmap-evento')" src="./assets/desarrollador/trigger.png"/>
               </div>
-          </div>
+              <!--Campo
+              <mat-form-field appearance="legacy">
+                <mat-label>Loot Prob:</mat-label>
+                <input matInput placeholder="0" formControlName="inMapLootProb">
+              </mat-form-field>
+              <mat-form-field appearance="legacy">
+                <mat-label>Loot ID:</mat-label>
+                <input matInput placeholder="0" formControlName="inMapLootId">
+              </mat-form-field>
+              -->
+            </form>
+          }
+          <!-- Formulario Misiones-->
+          @if (desarrolladorService.opcionPropiedades==='misiones') {
+            <form  class="formularioGeneral subanimacion" >
+              <!--Campo-->
+              <div class="contenedorCampoRelacional campoAnimacion campo">
+                <img class="imagenCampoRelacional" (click)="abrirTrigger('inmap-mision')" src="./assets/desarrollador/mision.png"/>
+              </div>
+            </form>
+          }
+        </div> <!-- FIN Panel INMAP Inferior -->
       </div>
-  </div>
-  
-<!-- *************************************************
-        CONSOLA
-     ************************************************* -->
-  <div id="consola" *ngIf="desarrolladorService.panel!='inmap'">
-    <div class="tituloConsola">
-      Consola
-    </div> 
+      } <!-- Final INMAP -->
 
-    <div #contenedorMensajes class="contenedorMensajes ">
-      <ul *ngFor="let mensaje of desarrolladorService.logger; let i = index" class="mensajeLogger" [style.color]="desarrolladorService.loggerColor[i]">{{mensaje}}</ul>
-    </div>
 
-  </div> <!-- Fin Consola -->
-    
+      <!-- *************************************************
+      Dungeon Builder
+      ************************************************* -->
 
-</div>
- 
- 
+      <dungeonBuilderComponent></dungeonBuilderComponent>
+
+      <!-- *************************************************
+      PANEL DATOS
+      ************************************************* -->
+
+      @if (desarrolladorService.panel=='import/export') {
+        <div id="panelDatos">
+          <div class="contenedorBarraAccion">
+            <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('ver')" (click)="desarrolladorService.seleccionarAccionDato('ver');">VER</div>
+            <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('subir')" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
+            <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('modificar')" (click)="desarrolladorService.seleccionarAccionDato('modificar');">MODIFICAR</div>
+          </div>
+          <div class="botonCambiarDatos" (click)="desarrolladorService.toggleDatosOficiales()">
+            Datos oficiales: {{appService.activarDatosOficiales}}
+          </div>
+          <div class="contenedorArchivos">
+            <div class="tituloArchivo">ARCHIVOS: </div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Stats')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Hechizos')" (click)="desarrolladorService.seleccionarArchivoDato('Hechizos');">HECHIZOS</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Enemigos')" (click)="desarrolladorService.seleccionarArchivoDato('Enemigos');">ENEMIGOS</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Buff')" (click)="desarrolladorService.seleccionarArchivoDato('Buff');">BUFF</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Objetos')"(click)="desarrolladorService.seleccionarArchivoDato('Objetos');">OBJETOS</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Animaciones')" (click)="desarrolladorService.seleccionarArchivoDato('Animaciones');">ANIMACIONES</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Parametros')" (click)="desarrolladorService.seleccionarArchivoDato('Parametros');">PARAMETROS</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Perfil')"(click)="desarrolladorService.seleccionarArchivoDato('Perfil');">PERFIL</div>
+            <div class="archivo" [ngClass]="renderDatoSeleccionado('Personajes')"(click)="desarrolladorService.seleccionarArchivoDato('Personajes');">PERSONAJES</div>
+          </div>
+          <!-- Estado Datos-VER -->
+          @if (desarrolladorService.estadoDatos=='ver') {
+            <div class="contenedorOpcion ver">
+              <json-editor [options]="editorVerOptions" [data]="desarrolladorService.archivoDato"></json-editor>
+            </div>
+          }
+          <!-- Estado Datos-SUBIR -->
+          @if (desarrolladorService.estadoDatos=='subir' && desarrolladorService.archivoSeleccionado!='null') {
+            <div class="contenedorOpcion subir">
+              <!-- Pantalla Datos-Subir -->
+              @if (desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='subir') {
+                <div class="pantallaSubir">
+                  <div class="titulo texto1">{{desarrolladorService.archivoSeleccionado.toUpperCase()}}</div>
+                  <input id="botonSubirExcel" type="file" name="file" (change)="desarrolladorService.incluirArchivo($event)" multiple="false" accept=".xlsx"/>
+                  <label for="botonSubirExcel">
+                    <img class="iconoSubir" src="assets/desarrollador/subir.png"/>
+                    <div class="textoBotonSubirExcel">SELECCIONE UN ARCHIVO</div>
+                  </label>
+                </div>
+              }
+              <!-- Pantalla Datos-Info -->
+              @if (desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='info') {
+                <div class="pantallaInfo">
+                  <div class="contenedorInfoDatos">
+                    <img class="icono" src="assets/desarrollador/excel.png"/>
+                    <img class="botonCerrar" src="assets/desarrollador/cerrar.png" (click)="desarrolladorService.cancelarArchivo()">
+                    <div class="titulo texto1">{{desarrolladorService.archivoSeleccionado.toUpperCase()}}</div>
+                    <div class="contenedorVerificacion">
+                      @if (desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].verificado==true) {
+                        <div class="contenedorInfoVerificacion">
+                          <img class="iconoVerificado" src="assets/desarrollador/exito.png">
+                          <div class="textoVerificacion Texto3"> Archivo verificado</div>
+                        </div>
+                      }
+                      @if (desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].error==true) {
+                        <div class="contenedorInfoVerificacion">
+                          <img class="iconoVerificado" src="assets/desarrollador/cerrar.png">
+                          <div class="textoVerificacion Texto3"> ERROR</div>
+                        </div>
+                      }
+                      <div class="botonVerificar Texto3" (click)="desarrolladorService.verificarDatos()">VERIFICAR ARCHIVO</div>
+                    </div>
+                    <!--
+                    <div class="contenedorVerificacion">
+                      <img class="iconoVerificado" src="assets/desarrollador/error.png">
+                      Archivo verificado
+                    </div>
+                    -->
+                    @if (desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].verificado==true) {
+                      <div class="botonCambiarEstadisticas" (click)="desarrolladorService.subirArchivo()">SUBIR ARCHIVO</div>
+                    }
+                  </div>
+                </div>
+              }
+              <!-- Pantalla Datos-Info -->
+              @if (desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].estado=='subido') {
+                <div class="pantallaSubido">
+                  <div class="contenedorSubido">
+                    <div class="titulo texto1">SUBIDO CON EXITO: {{desarrolladorService.archivoSeleccionado.toUpperCase()}} </div>
+                    <img class="icono" src="assets/desarrollador/exito.png">
+                    <div class="botonVolver Texto3" (click)="desarrolladorService.cancelarArchivo()">VOLVER A SUBIR</div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+          <!-- Estado Datos-MODIFICAR -->
+          @if (desarrolladorService.estadoDatos=='modificar') {
+            <div class="contenedorOpcion modificar">
+              <json-editor [options]="editorModificarOptions" [data]="desarrolladorService.archivoDato" (change)="desarrolladorService.modificarDatos($event)"></json-editor>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- *************************************************
+      PANEL DATOS
+      ************************************************* -->
+      @if (desarrolladorService.panel=='datos') {
+        <div id="panelDatos">
+          <div class="contenedorTipoDatos tipo">
+            <img class="icono" src="./assets/desarrollador/clases.png" [ngClass]="renderIconoDatosSeleccionado('Clases')" (click)="desarrolladorService.setEstadoDatos('Clases')"/>
+            <img class="icono" src="./assets/desarrollador/objetos.png" [ngClass]="renderIconoDatosSeleccionado('Objetos')" (click)="desarrolladorService.setEstadoDatos('Objetos')"/>
+            <img class="icono" src="./assets/desarrollador/perks.png" [ngClass]="renderIconoDatosSeleccionado('Perks')" (click)="desarrolladorService.setEstadoDatos('Perks')"/>
+            <img class="icono" src="./assets/desarrollador/hechizo.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.setEstadoDatos('Hechizos')"/>
+            <img class="icono" src="./assets/desarrollador/buff.png" [ngClass]="renderIconoDatosSeleccionado('Buff')" (click)="desarrolladorService.setEstadoDatos('Buff')"/>
+            <img class="icono" src="./assets/desarrollador/animacion.png" [ngClass]="renderIconoDatosSeleccionado('Animaciones')" (click)="desarrolladorService.setEstadoDatos('Animaciones')"/>
+            <img class="icono" src="./assets/desarrollador/enemigo.png" [ngClass]="renderIconoDatosSeleccionado('Enemigos')" (click)="desarrolladorService.setEstadoDatos('Enemigos')"/>
+            <img class="icono" src="./assets/desarrollador/trigger.png" [ngClass]="renderIconoDatosSeleccionado('Eventos')" (click)="desarrolladorService.setEstadoDatos('Eventos')"/>
+            <img class="icono" src="./assets/desarrollador/mision.png" [ngClass]="renderIconoDatosSeleccionado('Misiones')" (click)="desarrolladorService.setEstadoDatos('Misiones')"/>
+          </div>
+          <div class="contenedorTipoDatos subtipo">
+            @if (desarrolladorService.estadoHerramientaDatos=='Clases') {
+              <img class="icono" src="./assets/Emblemas/1.png" [ngClass]="renderClaseSeleccionada('Guerrero')" (click)="desarrolladorService.seleccionarClase('Guerrero')"/>
+              <img class="icono" src="./assets/Emblemas/2.png" [ngClass]="renderClaseSeleccionada('Hechicero')" (click)="desarrolladorService.seleccionarClase('Hechicero')"/>
+              <img class="icono" src="./assets/Emblemas/3.png" [ngClass]="renderClaseSeleccionada('Cazador')" (click)="desarrolladorService.seleccionarClase('Cazador')"/>
+              <img class="icono" src="./assets/Emblemas/4.png" [ngClass]="renderClaseSeleccionada('Sacerdote')" (click)="desarrolladorService.seleccionarClase('Sacerdote')"/>
+              <img class="icono" src="./assets/Emblemas/5.png" [ngClass]="renderClaseSeleccionada('Ladrón')" (click)="desarrolladorService.seleccionarClase('Ladrón')"/>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Objetos') {
+              <img class="icono" src="./assets/Iconos/indicadores/008.png" [ngClass]="renderTipoObjetoSeleccionado('Equipo')" (click)="desarrolladorService.seleccionarTipoObjeto('Equipo')"/>
+              <img class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoObjetoSeleccionado('Consumible')" (click)="desarrolladorService.seleccionarTipoObjeto('Consumible')"/>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Eventos') {
+              <div class="icono" src="./assets/Iconos/indicadores/008.png" [ngClass]="renderTipoEventoSeleccionado('General')" (click)="desarrolladorService.seleccionarTipoEvento('General')">General</div>
+              <div class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoEventoSeleccionado('Variables')" (click)="desarrolladorService.seleccionarTipoEvento('Variables')">Variables</div>
+              <div class="icono" src="./assets/Iconos/indicadores/002.png" [ngClass]="renderTipoEventoSeleccionado('Random')" (click)="desarrolladorService.seleccionarTipoEvento('Random')">Random</div>
+            }
+          </div> <!-- FIN SUBCONTAINER -->
+          <img class="botonGuardar" src="./assets/desarrollador/guardar.png" [ngClass]="renderIconoDatosSeleccionado('Hechizos')" (click)="desarrolladorService.guardarPanelDatos()"/>
+          <div class="contenedorCentral">
+            @if (desarrolladorService.estadoHerramientaDatos=='Clases') {
+              <formClasesComponent class="componenteFormulario"></formClasesComponent>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Objetos') {
+              <formObjetosComponent class="componenteFormulario"></formObjetosComponent>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Perks') {
+              <formPerksComponent class="componenteFormulario"></formPerksComponent>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Hechizos') {
+              <formHechizosComponent class="componenteFormulario"></formHechizosComponent>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Buff') {
+              <formBuffComponent class="componenteFormulario"></formBuffComponent>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Animaciones') {
+              <formAnimacionesComponent class="componenteFormulario"></formAnimacionesComponent>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Enemigos') {
+              <formEnemigosComponent class="componenteFormulario"></formEnemigosComponent>
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Eventos') {
+              @if (desarrolladorService.tipoEventoSeleccionado=='General') {
+                <formEventosComponent [eventos]="desarrolladorService.eventos.eventos" (eventosChange)="desarrolladorService.eventos.eventos=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
+              }
+              @if (desarrolladorService.tipoEventoSeleccionado=='Variables') {
+                <formEventosComponent [eventos]="desarrolladorService.eventos.eventosVariables" (eventosChange)="desarrolladorService.eventos.eventosVariables=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
+              }
+              @if (desarrolladorService.tipoEventoSeleccionado=='Random') {
+                <formEventosComponent [eventos]="desarrolladorService.eventos.eventosRandom[tipoEventoRandom]" (eventosChange)="desarrolladorService.eventos.eventosRandom[tipoEventoRandom]=$event" class="componenteFormulario" (testEventoEmitter)="testEvento($event)"></formEventosComponent>
+              }
+              @if (desarrolladorService.tipoEventoSeleccionado=='Random') {
+                <form id="formularioEventoRandom" [formGroup]="formEventoRandom">
+                  <!--Campo-->
+                  <mat-form-field appearance="fill">
+                    <mat-label>Tipo Evento Random: </mat-label>
+                    <mat-select formControlName="tipoEventoRandom">
+                      <mat-option value="camino">Camino</mat-option>
+                      <mat-option value="bosque">Bosque</mat-option>
+                      <mat-option value="costa">Costa</mat-option>
+                      <mat-option value="ciudad">Ciudad</mat-option>
+                      <mat-option value="montaña">Montaña</mat-option>
+                      <mat-option value="ruina">Ruina</mat-option>
+                      <mat-option value="nieve">Nieve</mat-option>
+                      <mat-option value="lava">Lava</mat-option>
+                      <mat-option value="pueblo">Pueblo</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </form>
+              }
+            }
+            @if (desarrolladorService.estadoHerramientaDatos=='Misiones') {
+              <formMisionesComponent class="componenteFormulario"></formMisionesComponent>
+            }
+          </div>
+        </div>
+        } <!-- Fin Panel Datos -->
+
+      </div> <!-- Fin Workspace -->
+
+      <!-- SELECTOR DE IMAGENES -->
+      @if (desarrolladorService.mostrarSelectorImagen) {
+        <div id="SelectorImagenes">
+          <div class="frame">
+            <div class="titulo">Seleccione una imagen:</div>
+            <img (click)="desarrolladorService.mostrarSelectorImagen = false" class="botonCerrar" src="./assets/desarrollador/cerrar.png"/>
+            <div class="contenedorImagenes">
+              @for (imagenes of desarrolladorService.imagenes; track imagenes; let i = $index) {
+                <div class="imagen">
+                  <img (click)="desarrolladorService.seleccionarImagen(i+1)" src="./assets/{{desarrolladorService.pathImagenes}}/{{imagenes}}.png"/>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- *************************************************
+      CONSOLA
+      ************************************************* -->
+      @if (desarrolladorService.panel!='inmap') {
+        <div id="consola">
+          <div class="tituloConsola">
+            Consola
+          </div>
+          <div #contenedorMensajes class="contenedorMensajes ">
+            @for (mensaje of desarrolladorService.logger; track mensaje; let i = $index) {
+              <ul class="mensajeLogger" [style.color]="desarrolladorService.loggerColor[i]">{{mensaje}}</ul>
+            }
+          </div>
+        </div>
+        } <!-- Fin Consola -->
+
+
+      </div>
+
+
 
 

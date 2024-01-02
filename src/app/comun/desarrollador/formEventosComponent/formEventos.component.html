@@ -3,78 +3,77 @@
 <!--       FORM EVENTOS    -->
 <!--   ******************* -->
 
-        <!-- LISTA EVENTOS -->
-        <panelSelectorComponent
-            [datos]="eventos"
-            [tipo]="'Eventos'"
-            [titulo]="'Eventos'"
-            [botonAdd]="true"
-            [lateral]="'izquierda'"
-            [botonEliminarRelacion]="false"
-            [indexSeleccionado]="eventoSeleccionadoIndex"
-            (addElementoEmitter)="addEvento()"
-            (selector)="seleccionarEvento($event)"
-            (copiar)="copiarEvento($event)"
-            >
-        </panelSelectorComponent>
+<!-- LISTA EVENTOS -->
+<panelSelectorComponent
+  [datos]="eventos"
+  [tipo]="'Eventos'"
+  [titulo]="'Eventos'"
+  [botonAdd]="true"
+  [lateral]="'izquierda'"
+  [botonEliminarRelacion]="false"
+  [indexSeleccionado]="eventoSeleccionadoIndex"
+  (addElementoEmitter)="addEvento()"
+  (selector)="seleccionarEvento($event)"
+  (copiar)="copiarEvento($event)"
+  >
+</panelSelectorComponent>
 
-        <!-- Boton TEST EVENTO -->
-        <botonComponent class="botonTest" (click)="testEvento()" mat-button [tipoBoton]="2" [texto]="'TEST'" [color]="'naranja'"></botonComponent>
+<!-- Boton TEST EVENTO -->
+<botonComponent class="botonTest" (click)="testEvento()" mat-button [tipoBoton]="2" [texto]="'TEST'" [color]="'naranja'"></botonComponent>
 
-        <!-- CENTRAL DATOS EVENTOS -->
-        <div id="visualizadorEventos" >
+<!-- CENTRAL DATOS EVENTOS -->
+<div id="visualizadorEventos" >
 
-            <form  class="formularioGeneral evento" [formGroup]="formEvento">
+  <form  class="formularioGeneral evento" [formGroup]="formEvento">
 
-                  <img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="eliminarEvento()"/>
+    <img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="eliminarEvento()"/>
 
-                  <mat-form-field>
-                    <mat-label>Nombre Evento</mat-label>
-                    <input matInput placeholder="Nombre_Evento" formControlName="nombre">
-                  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Nombre Evento</mat-label>
+      <input matInput placeholder="Nombre_Evento" formControlName="nombre">
+    </mat-form-field>
 
-                  <mat-form-field>
-                    <mat-label>Evento ID</mat-label>
-                    <input matInput placeholder="ID" formControlName="id">
-                  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Evento ID</mat-label>
+      <input matInput placeholder="ID" formControlName="id">
+    </mat-form-field>
 
-            </form>
+  </form>
 
-            <form *ngIf="ordenSeleccionadaIndex!=null" class="formularioGeneral orden" [formGroup]="formOrden">
-                <img class="botonEliminarOrden" src="./assets/desarrollador/papelera.svg" (click)="eliminarOrden()"/>
+  @if (ordenSeleccionadaIndex!=null) {
+    <form class="formularioGeneral orden" [formGroup]="formOrden">
+      <img class="botonEliminarOrden" src="./assets/desarrollador/papelera.svg" (click)="eliminarOrden()"/>
+      <div class="contenedorCabeceraOrden">
+        <mat-form-field class="formNombreOrden">
+          <mat-label>Nombre Orden</mat-label>
+          <input matInput placeholder="Nombre" formControlName="nombre">
+        </mat-form-field>
+        <mat-form-field class="formCategoriaOrden">
+          <mat-label>Tipo Orden</mat-label>
+          <input matInput placeholder="null" formControlName="tipo">
+        </mat-form-field>
+        <mat-form-field class="formIdOrden">
+          <mat-label>ID Orden</mat-label>
+          <input matInput type="number" formControlName="id">
+        </mat-form-field>
+      </div>
+    </form>
+  }
 
-                <div class="contenedorCabeceraOrden">
-                  <mat-form-field class="formNombreOrden">
-                    <mat-label>Nombre Orden</mat-label>
-                    <input matInput placeholder="Nombre" formControlName="nombre">
-                  </mat-form-field>
+  <!-- Parametros de Orden -->
+  <div  class="contenedorParametrosOrden">
 
-                  <mat-form-field class="formCategoriaOrden">
-                    <mat-label>Tipo Orden</mat-label>
-                    <input matInput placeholder="null" formControlName="tipo">
-                  </mat-form-field>
-
-                  <mat-form-field class="formIdOrden">
-                    <mat-label>ID Orden</mat-label>
-                    <input matInput type="number" formControlName="id">
-                  </mat-form-field>
-                </div>
-            </form>
-
-                  <!-- Parametros de Orden -->
-                  <div  class="contenedorParametrosOrden">
-
-                    <!-- Orden Condición -->
-                    <form *ngIf="tipoOrdenSeleccionada=='condicion'" class="formularioGeneral" [formGroup]="formOrdenCondicion">
-                      <div  class="contenedorTipoOrden">
-                          <mat-form-field class="formParametro">
-                            <mat-label>Variable</mat-label>
-                            <input matInput placeholder="" formControlName="variable">
-                          </mat-form-field>
-
-                          <mat-form-field appearance="fill">
-                            <mat-label>Operador</mat-label>
-                            <mat-select [formControl]="operador_Orden_Condicion">
+    <!-- Orden Condición -->
+    @if (tipoOrdenSeleccionada=='condicion') {
+      <form class="formularioGeneral" [formGroup]="formOrdenCondicion">
+        <div  class="contenedorTipoOrden">
+          <mat-form-field class="formParametro">
+            <mat-label>Variable</mat-label>
+            <input matInput placeholder="" formControlName="variable">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Operador</mat-label>
+            <mat-select [formControl]="operador_Orden_Condicion">
                                 <mat-option value="==">Igual</mat-option>
                                 <mat-option value="<">Menor</mat-option>
                                 <mat-option value=">">Mayor</mat-option>
@@ -138,9 +137,11 @@
 
                       </div> <!-- Fin Orden Condición -->
                     </form>
+}
 
                     <!-- Orden Variable -->
-                    <form *ngIf="tipoOrdenSeleccionada=='variable'" class="formularioGeneral" [formGroup]="formOrdenVariable">
+                    @if (tipoOrdenSeleccionada=='variable') {
+<form class="formularioGeneral" [formGroup]="formOrdenVariable">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -172,9 +173,11 @@
 
                       </div> <!-- Fin Orden Variable -->
                     </form>
+}
 
                     <!-- Orden Misión -->
-                    <form *ngIf="tipoOrdenSeleccionada=='mision'" class="formularioGeneral" [formGroup]="formOrdenMision">
+                    @if (tipoOrdenSeleccionada=='mision') {
+<form class="formularioGeneral" [formGroup]="formOrdenMision">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -201,9 +204,11 @@
 
                       </div> <!-- Fin Orden Misión -->
                     </form>
+}
 
                     <!-- Orden Trigger -->
-                    <form *ngIf="tipoOrdenSeleccionada=='trigger'" class="formularioGeneral" [formGroup]="formOrdenTrigger">
+                    @if (tipoOrdenSeleccionada=='trigger') {
+<form class="formularioGeneral" [formGroup]="formOrdenTrigger">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -226,9 +231,11 @@
 
                       </div> <!-- Fin Orden Trigger -->
                     </form>
+}
 
                     <!-- Orden Diálogo -->
-                    <form  *ngIf="tipoOrdenSeleccionada=='dialogo'" class="formularioGeneral" [formGroup]="formOrdenDialogo">
+                    @if (tipoOrdenSeleccionada=='dialogo') {
+<form  class="formularioGeneral" [formGroup]="formOrdenDialogo">
                       <div  class="contenedorTipoOrdenDialogo">
 
                           <mat-form-field appearance="fill" >
@@ -243,7 +250,8 @@
                           </mat-form-field>
 
                           <!-- INPUTS TIPO DIALOGO: DIALOGO -->
-                          <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='Dialogo'">
+                          @if (tipoDialogo_Orden_Dialogo.value=='Dialogo') {
+
 
                               <mat-form-field class="formDuracion">
                                 <mat-label>Titulo</mat-label>
@@ -257,7 +265,8 @@
 
                               <button (click)="addOpcion()">Añadir Opción</button>
                               <ng-container formArrayName="opciones">
-                              <div  *ngFor="let opcion of opciones.controls; let i = index">
+                              @for (opcion of opciones.controls; track opcion; let i = $index) {
+<div >
                                 <ng-container [formGroup]="opcion">
                                     Opción {{i+1}}:
                                     <div class="contenedorOpcion">
@@ -267,6 +276,7 @@
                                     </div>
                                 </ng-container>
                               </div>
+}
                               </ng-container>
 
                               <mat-form-field>
@@ -280,7 +290,8 @@
 
                               <!-- Inicio Personaje Izquierda -->
                               <mat-checkbox  formControlName="mostrarPersonajeIzquierda">Mostrar Personaje Izquierda</mat-checkbox>
-                              <ng-container *ngIf="mostrarPersonajeIzquierda_Orden_Dialogo.value">
+                              @if (mostrarPersonajeIzquierda_Orden_Dialogo.value) {
+
                               <mat-form-field>
                                 <mat-label>Tipo Personaje</mat-label>
                                 <mat-select formControlName="tipoPersonajeIzquierda">
@@ -297,11 +308,13 @@
                                 <mat-label>Nombre:</mat-label>
                                 <input matInput placeholder="" formControlName="nombrePersonajeIzquierda"/>
                               </mat-form-field>
-                              </ng-container>
+                              
+}
 
                               <!-- Inicio Personaje Derecha -->
                               <mat-checkbox  formControlName="mostrarPersonajeDerecha">Mostrar Personaje Derecha</mat-checkbox>
-                              <ng-container *ngIf="mostrarPersonajeDerecha_Orden_Dialogo.value">
+                              @if (mostrarPersonajeDerecha_Orden_Dialogo.value) {
+
                               <mat-form-field>
                                 <mat-label>Tipo Personaje</mat-label>
                                 <mat-select formControlName="tipoPersonajeDerecha">
@@ -318,17 +331,20 @@
                                 <mat-label>Nombre:</mat-label>
                                 <input matInput placeholder="" formControlName="nombrePersonajeDerecha"/>
                               </mat-form-field>
-                              </ng-container>
+                              
+}
 
                               <mat-form-field class="formParametro">
                                 <mat-label>Orden Encadenado ID:</mat-label>
                                 <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
 
-                          </ng-container>
+                          
+}
 
                           <!-- INPUTS TIPO DIALOGO: NarradorImg -->
-                          <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='NarradorImg'">
+                          @if (tipoDialogo_Orden_Dialogo.value=='NarradorImg') {
+
 
                               <mat-form-field class="formDuracion">
                                 <mat-label>Titulo</mat-label>
@@ -358,10 +374,12 @@
                                 <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
 
-                          </ng-container> <!-- Fin tipo dialogo NarradorImg -->
+                          
+} <!-- Fin tipo dialogo NarradorImg -->
 
                           <!-- INPUTS TIPO DIALOGO: DIAPOSITIVA -->
-                          <ng-container *ngIf="tipoDialogo_Orden_Dialogo.value=='Diapositiva'">
+                          @if (tipoDialogo_Orden_Dialogo.value=='Diapositiva') {
+
 
                               <mat-form-field class="formDuracion">
                                 <mat-label>Titulo</mat-label>
@@ -391,13 +409,16 @@
                                 <input matInput type="number" min="0" placeholder="" formControlName="ordenEncadenado">
                               </mat-form-field>
 
-                          </ng-container> <!-- Fin tipo dialogo Diapositiva -->
+                          
+} <!-- Fin tipo dialogo Diapositiva -->
 
                       </div> <!-- Fin Orden Diálogo -->
                     </form>
+}
 
                     <!-- Orden Hechizo -->
-                    <form *ngIf="tipoOrdenSeleccionada=='hechizo'" class="formularioGeneral " [formGroup]="formOrdenHechizo">
+                    @if (tipoOrdenSeleccionada=='hechizo') {
+<form class="formularioGeneral " [formGroup]="formOrdenHechizo">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -436,9 +457,11 @@
 
                       </div> <!-- Fin Orden Hechizo -->
                     </form>
+}
 
                     <!-- Orden Loot -->
-                    <form *ngIf="tipoOrdenSeleccionada=='loot'" class="formularioGeneral " [formGroup]="formOrdenLoot">
+                    @if (tipoOrdenSeleccionada=='loot') {
+<form class="formularioGeneral " [formGroup]="formOrdenLoot">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -468,9 +491,11 @@
 
                       </div> <!-- Fin Orden Loot -->
                     </form>
+}
 
                     <!-- Orden Enemigo -->
-                    <form *ngIf="tipoOrdenSeleccionada=='enemigo'" class="formularioGeneral " [formGroup]="formOrdenEnemigo">
+                    @if (tipoOrdenSeleccionada=='enemigo') {
+<form class="formularioGeneral " [formGroup]="formOrdenEnemigo">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -493,9 +518,11 @@
 
                       </div> <!-- Fin Orden Enemigo -->
                     </form>
+}
 
                     <!-- Orden Mazmorra -->
-                    <form  *ngIf="tipoOrdenSeleccionada=='mazmorra'" class="formularioGeneral " [formGroup]="formOrdenMazmorra">
+                    @if (tipoOrdenSeleccionada=='mazmorra') {
+<form  class="formularioGeneral " [formGroup]="formOrdenMazmorra">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -519,9 +546,11 @@
 
                       </div> <!-- Fin Orden Mazmorra -->
                     </form>
+}
 
                     <!-- Orden Multimedia -->
-                    <form  *ngIf="tipoOrdenSeleccionada=='multimedia'" class="formularioGeneral " [formGroup]="formOrdenMultimedia">
+                    @if (tipoOrdenSeleccionada=='multimedia') {
+<form  class="formularioGeneral " [formGroup]="formOrdenMultimedia">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -548,9 +577,11 @@
 
                       </div> <!-- Fin Orden Multimedia -->
                     </form>
+}
 
                     <!-- Orden Tiempo -->
-                    <form  *ngIf="tipoOrdenSeleccionada=='tiempo'" class="formularioGeneral " [formGroup]="formOrdenTiempo">
+                    @if (tipoOrdenSeleccionada=='tiempo') {
+<form  class="formularioGeneral " [formGroup]="formOrdenTiempo">
                       <div  class="contenedorTipoOrden">
 
                           <mat-form-field appearance="fill">
@@ -570,14 +601,19 @@
 
                       </div> <!-- Fin Orden Tiempo -->
                     </form>
+}
                   </div> <!-- Fin Parametros Orden -->
 
             <!-- Inicio panel Ordenes -->
             <div class="contenedorSubLista contenedorOrdenes">
                 <div class="tituloSubLista">Ordenes:</div>
-                <ng-container *ngIf="eventos[eventoSeleccionadoIndex]?.ordenes">
-                <div *ngFor="let orden of eventos[eventoSeleccionadoIndex].ordenes; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado(i)" (click)="seleccionarOrden(i)" (auxclick)="copiarOrden($event,i)">[{{orden.id}}] {{orden.nombre}} </div>
-                </ng-container>
+                @if (eventos[eventoSeleccionadoIndex]?.ordenes) {
+
+                @for (orden of eventos[eventoSeleccionadoIndex].ordenes; track orden; let i = $index) {
+<div  class="elemento" [ngClass]="renderListaSeleccionado(i)" (click)="seleccionarOrden(i)" (auxclick)="copiarOrden($event,i)">[{{orden.id}}] {{orden.nombre}} </div>
+}
+                
+}
             </div>
 
             <div class="contenedorBotonesOrdenarOrdenes">
@@ -590,12 +626,16 @@
         <!-- LISTA TIPOS ORDENES EVENTOS -->
       <div class="contenedorLateral derecha">
         <div class="titulo">Ordenes Evento:</div>
-        <div class="lista" *ngIf="eventos[eventoSeleccionadoIndex]">
-            <div *ngFor="let orden of this.tiposOrdenes; let i=index"  class="hechizo" (click)="addOrden(formatearTipoOrden(orden))">
+        @if (eventos[eventoSeleccionadoIndex]) {
+<div class="lista">
+            @for (orden of this.tiposOrdenes; track orden; let i = $index) {
+<div  class="hechizo" (click)="addOrden(formatearTipoOrden(orden))">
                 <img class="imagen" src="./assets/desarrollador/{{formatearTipoOrden(orden)}}.png">
                 <div [ngStyle]= "renderizarOrdenSeleccionada(orden)" class="nombre">{{orden}}</div>
                 <img class="imagen" src="./assets/desarrollador/{{formatearTipoOrden(orden)}}.png">
             </div>
+}
         </div>
+}
       </div> <!-- Fin contenedor lateral derecha -->
 

@@ -5,43 +5,43 @@
 
 <div class="contenedorDetalleHechizo">
 
-    <div class="detalleHechizo">
-        <!-- Toggle detalle -->
-        <div class="contenedorToggleDetalle">
-            <mat-slide-toggle class="toggleDetalle" (click)="toggleDetalle()" ([ngModel])="mostrarDetalle">Detalle</mat-slide-toggle>
-        </div>
+  <div class="detalleHechizo">
+    <!-- Toggle detalle -->
+    <div class="contenedorToggleDetalle">
+      <mat-slide-toggle class="toggleDetalle" (click)="toggleDetalle()" ([ngModel])="mostrarDetalle">Detalle</mat-slide-toggle>
+    </div>
 
-        <!-- Imagen -->
-        <div class="contenedorImagenHechizo">
-            <img class="imagenHechizo" src="../../../assets/Habilidades/Spell/{{hechizoSeleccionado.imagen_id}}.png"/>
-        </div>
+    <!-- Imagen -->
+    <div class="contenedorImagenHechizo">
+      <img class="imagenHechizo" src="../../../assets/Habilidades/Spell/{{hechizoSeleccionado.imagen_id}}.png"/>
+    </div>
 
-        <!-- Titulo y descripción -->
-        <div class="titulo Texto1">{{hechizoSeleccionado.nombre}}</div>
-        <div class="descripcionHechizo Arial Texto2"
-             [innerHtml]="hechizoSeleccionado.descripcion">
-        </div>
+    <!-- Titulo y descripción -->
+    <div class="titulo Texto1">{{hechizoSeleccionado.nombre}}</div>
+    <div class="descripcionHechizo Arial Texto2"
+      [innerHtml]="hechizoSeleccionado.descripcion">
+    </div>
 
-        <!-- Atributos -->
-        <div class="atributosHechizos">
-            <atributoComponent class="atributoHechizo" [tipo]="'energia'" [valor]="hechizoSeleccionado.recurso"></atributoComponent>
-            <atributoComponent class="atributoHechizo" [tipo]="'alcance'" [valor]="hechizoSeleccionado.distancia"></atributoComponent>
-            <atributoComponent class="atributoHechizo" [tipo]="'cooldown'" [valor]="hechizoSeleccionado.cooldown"></atributoComponent>
-            <atributoComponent class="atributoHechizo" [tipo]="'aoe'" [valor]="'-'"></atributoComponent>
-        </div>
-    </div> <!-- FIN DETALLE HECHIZO -->
+    <!-- Atributos -->
+    <div class="atributosHechizos">
+      <atributoComponent class="atributoHechizo" [tipo]="'energia'" [valor]="hechizoSeleccionado.recurso"></atributoComponent>
+      <atributoComponent class="atributoHechizo" [tipo]="'alcance'" [valor]="hechizoSeleccionado.distancia"></atributoComponent>
+      <atributoComponent class="atributoHechizo" [tipo]="'cooldown'" [valor]="hechizoSeleccionado.cooldown"></atributoComponent>
+      <atributoComponent class="atributoHechizo" [tipo]="'aoe'" [valor]="'-'"></atributoComponent>
+    </div>
+  </div> <!-- FIN DETALLE HECHIZO -->
 
-        <!-- BUFF -->
-        <div *ngFor="let buffSeleccionado of buffsSeleccionados; let i = index" class="detalleBuff" >
-            <div class="contenedorTituloBuff">
-                <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{buffSeleccionado.imagen_id}}.png"/>
-                <div class="titulo Texto1">{{buffSeleccionado.nombre}}</div>
-            </div>
-
-            <div class="contenedorDescripcionBuff Arial"
-                [innerHtml]="buffSeleccionado.descripcion">
-            </div>
-
-        </div>
+  <!-- BUFF -->
+  @for (buffSeleccionado of buffsSeleccionados; track buffSeleccionado; let i = $index) {
+    <div class="detalleBuff" >
+      <div class="contenedorTituloBuff">
+        <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{buffSeleccionado.imagen_id}}.png"/>
+        <div class="titulo Texto1">{{buffSeleccionado.nombre}}</div>
+      </div>
+      <div class="contenedorDescripcionBuff Arial"
+        [innerHtml]="buffSeleccionado.descripcion">
+      </div>
+    </div>
+  }
 
 </div>

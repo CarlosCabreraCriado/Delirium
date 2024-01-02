@@ -3,48 +3,50 @@
 <!--   PANEL DUNGEON BUILDER  -->
 <!--   ********************** -->
 
-      <!-- CONTENEDOR DUNGEON BUILDER  -->
-      <div class="contenedorDungeonBuilder" *ngIf="desarrolladorService.panel=='mazmorra'">
-
-  <!-- *************************************************
-        PANEL CARGAR MAZMORRA
-     ************************************************* -->
-    <div *ngIf="!mazmorraInicializada" id="panelMazmorraInicio">
-      <div class="titulo">DUNGEON BUILDER</div>
-      <div class="botonNuevaMazmorra" (click)="nuevaMazmorra()">
-        <img src="assets/desarrollador/add.svg">
-        <div >NUEVA</div>
-      </div>
-      <div class="botonCargarMazmorra" (click)="cargarMazmorra()">
-        <img src="assets/desarrollador/load-file.png">
-        <div>CARGAR</div>
-      </div>
-
-      <div *ngIf="mostrarCargarMazmorra" class="contenedorCargarMazmorra">
-        <img class="iconoCerrar" src="assets/desarrollador/cerrar.png" (click)="mostrarCargarMazmorra=false">
-        Seleccione una mazmorra:
-        <div class="contenedorMazmorras">
-          <div *ngFor="let mazmorra of listaMazmorra; let i = index" class="cargarMazmorra" (click)="seleccionarMazmorra(i)">
-            {{mazmorra.nombreId}}
-          </div>
+<!-- CONTENEDOR DUNGEON BUILDER  -->
+@if (desarrolladorService.panel=='mazmorra') {
+  <div class="contenedorDungeonBuilder">
+    <!-- *************************************************
+    PANEL CARGAR MAZMORRA
+    ************************************************* -->
+    @if (!mazmorraInicializada) {
+      <div id="panelMazmorraInicio">
+        <div class="titulo">DUNGEON BUILDER</div>
+        <div class="botonNuevaMazmorra" (click)="nuevaMazmorra()">
+          <img src="assets/desarrollador/add.svg">
+          <div >NUEVA</div>
         </div>
+        <div class="botonCargarMazmorra" (click)="cargarMazmorra()">
+          <img src="assets/desarrollador/load-file.png">
+          <div>CARGAR</div>
+        </div>
+        @if (mostrarCargarMazmorra) {
+          <div class="contenedorCargarMazmorra">
+            <img class="iconoCerrar" src="assets/desarrollador/cerrar.png" (click)="mostrarCargarMazmorra=false">
+            Seleccione una mazmorra:
+            <div class="contenedorMazmorras">
+              @for (mazmorra of listaMazmorra; track mazmorra; let i = $index) {
+                <div class="cargarMazmorra" (click)="seleccionarMazmorra(i)">
+                  {{mazmorra.nombreId}}
+                </div>
+              }
+            </div>
+          </div>
+        }
       </div>
-    </div>
-
-  <!-- *************************************************
-        PANEL MAZMORRA
-     ************************************************* -->
-    <div *ngIf="mazmorraInicializada" id="panelMazmorra">
-
-  <!-- *************************************************
-       BOTONES SUPERIORES
-     ************************************************* -->
-
-      <img class="iconoEliminar" src="assets/desarrollador/papelera.svg" (click)="eliminarMazmorra()">
-      <img class="iconoGuardar" src="assets/desarrollador/guardar.png" (click)="guardarMazmorra()">
-      <img class="iconoCerrar" src="assets/desarrollador/cerrar.png" (click)="cerrarMazmorra()">
-
-      <div class="contenedorPanelParametros">
+    }
+    <!-- *************************************************
+    PANEL MAZMORRA
+    ************************************************* -->
+    @if (mazmorraInicializada) {
+      <div id="panelMazmorra">
+        <!-- *************************************************
+        BOTONES SUPERIORES
+        ************************************************* -->
+        <img class="iconoEliminar" src="assets/desarrollador/papelera.svg" (click)="eliminarMazmorra()">
+        <img class="iconoGuardar" src="assets/desarrollador/guardar.png" (click)="guardarMazmorra()">
+        <img class="iconoCerrar" src="assets/desarrollador/cerrar.png" (click)="cerrarMazmorra()">
+        <div class="contenedorPanelParametros">
           <div class="boton" (click)="setEstadoMazmorra('general')">GENERAL</div>
           <div class="boton" (click)="setEstadoMazmorra('salas')">SALAS</div>
           <div class="boton" (click)="setEstadoMazmorra('enemigos')">ENEMIGOS</div>
@@ -55,553 +57,540 @@
           <div class="boton" (click)="setEstadoMazmorra('isometrico')">
             <img src="assets/desarrollador/vista-isometrica.png">
           </div>
-      </div>
-
-  <!-- *************************************************
-        PANEL IZQUIERDO
-     ************************************************* -->
-    <div class="panelIzquierdo" *ngIf="estadoPanelIzquierdo!=null">
-
-        <div *ngIf="estadoPanelIzquierdo=='reticula'||estadoPanelIzquierdo=='isometrico'" class="contenedorPanelIzquierdo">
-
-            <div class="contenedorTitulo">HERRAMIENTAS</div>
-
-            <!-- Herramientas Reticula -->
-            <div *ngIf="estadoPanelIzquierdo=='reticula'" class="contenedorPanelIzquierdo">
-               <img class="herramienta" src="assets/desarrollador/zoom-out.png" (click)="zoomOut()">
-               <img class="herramienta" src="assets/desarrollador/zoom-in.png" (click)="zoomIn()">
-               <img class="herramienta" src="assets/desarrollador/pointer.png" (click)="seleccionarHerramienta('seleccion')"/>
-               <img class="herramienta" src="assets/desarrollador/add.svg" (click)="seleccionarHerramienta('add')"/>
-               <img class="herramienta" src="assets/desarrollador/reload.png" (click)="seleccionarHerramienta('rotar')"/>
-               <img class="herramienta" src="assets/desarrollador/papelera.svg" (click)="seleccionarHerramienta('eliminar')"/>
-               <img class="herramienta" src="assets/desarrollador/subir.png" (click)="seleccionarHerramienta('subir')"/>
-
-              <!-- Subir Archivo Isometrico -->
-              <input id="botonSubirIsometrico" type="file" name="file" (change)="incluirIsometrico($event)" multiple="false" accept=".json"/>
-              <label for="botonSubirIsometrico">
-                <img class="iconoSubir" src="assets/desarrollador/vista-isometrica.png"/>
-              </label>
-
-            </div>
-
-              <!-- Herramientas Isometrico -->
-            <div *ngIf="estadoPanelIzquierdo=='isometrico'" class="contenedorPanelIzquierdo">
-               <img class="herramienta" src="assets/desarrollador/zoom-out.png" (click)="zoomOut()">
-               <img class="herramienta" src="assets/desarrollador/zoom-in.png" (click)="zoomIn()">
-
-               <img class="herramienta" src="assets/desarrollador/pointer.png" (click)="deseleccionarTodo()"/>
-
-              <!-- Subir Archivo Isometrico -->
-              <input id="botonSubirIsometrico" type="file" name="file" (change)="incluirIsometrico($event)" multiple="false" accept=".json"/>
-              <label for="botonSubirIsometrico">
-                <img class="iconoSubir" src="assets/desarrollador/vista-isometrica.png"/>
-              </label>
-
-            </div>
         </div>
-
-            <div *ngIf="estadoPanelIzquierdo=='enemigos'" class="contenedorPanelIzquierdo">
+        <!-- *************************************************
+        PANEL IZQUIERDO
+        ************************************************* -->
+        @if (estadoPanelIzquierdo!=null) {
+          <div class="panelIzquierdo">
+            @if (estadoPanelIzquierdo=='reticula'||estadoPanelIzquierdo=='isometrico') {
+              <div class="contenedorPanelIzquierdo">
+                <div class="contenedorTitulo">HERRAMIENTAS</div>
+                <!-- Herramientas Reticula -->
+                @if (estadoPanelIzquierdo=='reticula') {
+                  <div class="contenedorPanelIzquierdo">
+                    <img class="herramienta" src="assets/desarrollador/zoom-out.png" (click)="zoomOut()">
+                    <img class="herramienta" src="assets/desarrollador/zoom-in.png" (click)="zoomIn()">
+                    <img class="herramienta" src="assets/desarrollador/pointer.png" (click)="seleccionarHerramienta('seleccion')"/>
+                    <img class="herramienta" src="assets/desarrollador/add.svg" (click)="seleccionarHerramienta('add')"/>
+                    <img class="herramienta" src="assets/desarrollador/reload.png" (click)="seleccionarHerramienta('rotar')"/>
+                    <img class="herramienta" src="assets/desarrollador/papelera.svg" (click)="seleccionarHerramienta('eliminar')"/>
+                    <img class="herramienta" src="assets/desarrollador/subir.png" (click)="seleccionarHerramienta('subir')"/>
+                    <!-- Subir Archivo Isometrico -->
+                    <input id="botonSubirIsometrico" type="file" name="file" (change)="incluirIsometrico($event)" multiple="false" accept=".json"/>
+                    <label for="botonSubirIsometrico">
+                      <img class="iconoSubir" src="assets/desarrollador/vista-isometrica.png"/>
+                    </label>
+                  </div>
+                }
+                <!-- Herramientas Isometrico -->
+                @if (estadoPanelIzquierdo=='isometrico') {
+                  <div class="contenedorPanelIzquierdo">
+                    <img class="herramienta" src="assets/desarrollador/zoom-out.png" (click)="zoomOut()">
+                    <img class="herramienta" src="assets/desarrollador/zoom-in.png" (click)="zoomIn()">
+                    <img class="herramienta" src="assets/desarrollador/pointer.png" (click)="deseleccionarTodo()"/>
+                    <!-- Subir Archivo Isometrico -->
+                    <input id="botonSubirIsometrico" type="file" name="file" (change)="incluirIsometrico($event)" multiple="false" accept=".json"/>
+                    <label for="botonSubirIsometrico">
+                      <img class="iconoSubir" src="assets/desarrollador/vista-isometrica.png"/>
+                    </label>
+                  </div>
+                }
+              </div>
+            }
+            @if (estadoPanelIzquierdo=='enemigos') {
+              <div class="contenedorPanelIzquierdo">
                 <div class="panelEnemigos">
                   <div class="titulo"> Enemigos </div>
                   <div class="contenedorEnemigos">
-
-
-                    <div *ngFor="let sala of mazmorra.salas; let i=index" class="sala" >
+                    @for (sala of mazmorra.salas; track sala; let i = $index) {
+                      <div class="sala" >
                         Sala {{sala.id}}: {{sala.nombre}}
-                        <div *ngFor="let enemigo of mazmorra.salas[i].enemigos; let j=index" class="enemigo" (click)="seleccionarEnemigoMazmorra(enemigo.enemigo_id)">{{enemigo.nombre}}</div>
+                        @for (enemigo of mazmorra.salas[i].enemigos; track enemigo; let j = $index) {
+                          <div class="enemigo" (click)="seleccionarEnemigoMazmorra(enemigo.enemigo_id)">{{enemigo.nombre}}</div>
+                        }
                         <div class="add"(click)="crearEnemigo(i)">Añadir</div>
-                    </div>
+                      </div>
+                    }
+                  </div>
                 </div>
-            </div>
-        </div>
-
-      </div> <!-- Fin Panel Izquierdo -->
-
-    <!-- *************************************************
-        PANEL DERECHO
-     ************************************************* -->
-      <div class="panelDerecho" *ngIf="estadoPanelDerecho!=null">
-
-          <div *ngIf="estadoPanelDerecho=='reticula' && herramientaReticula=='add'">
-            <div class="contenedorTitulo">AÑADIR</div>
-
-            <div class="contenedorPanelDerecho">
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x6.svg" (click)="addPieza('6x6')"/>
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_T.svg" (click)="addPieza('T')"/>
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_X.svg" (click)="addPieza('X')"/>
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x1.svg" (click)="addPieza('2x1')"/>
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x2.svg" (click)="addPieza('2x2')"/>
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_L.svg" (click)="addPieza('L')"/>
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x4.svg" (click)="addPieza('6x4')"/>
-               <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_4x2.svg" (click)="addPieza('4x2')"/>
-            </div>
-          </div> <!-- Fin panel añadir -->
-
-        <div *ngIf="herramientaReticula=='seleccionar'">
-            <div class="contenedorTitulo">SELECCIÓN</div>
-            <div class="contenedorPanelDerecho">
-                Hola
-            </div>
-        </div>  <!-- Fin panel selecionar -->
-
-        <!-- PANEL DERECHO ISOMETRICO -->
-        <div *ngIf="estadoPanelDerecho=='isometrico'">
-            <div class="contenedorTitulo">ISOMÉTRICO</div>
-            <div class="contenedorPanelDerecho">
-                <div class="tituloSeccion">Capas:</div>
-                    <!-- Capa Grid -->
-                    <div class="subtituloSeccion">
-                        <img *ngIf="!mostrarGrid" src="./assets/desarrollador/uncheck.png" (click)="toggleVerCapaIsometrico('grid')"/>
-                        <img *ngIf="mostrarGrid" src="./assets/desarrollador/check.png" (click)="toggleVerCapaIsometrico('grid')"/>
-                        <div class="texto">Grid</div>
-                    </div>
-
-                    <!-- Capa decorado -->
-                    <div class="subtituloSeccion">
-                        <img *ngIf="!mostrarDecorado" src="./assets/desarrollador/uncheck.png" (click)="toggleVerCapaIsometrico('decorado')"/>
-                        <img *ngIf="mostrarDecorado" src="./assets/desarrollador/check.png" (click)="toggleVerCapaIsometrico('decorado')"/>
-                        <div class="texto">Decorado</div>
-                    </div>
-
-                <!-- Seccion Salas -->
-                <div class="tituloSeccion">Salas:</div>
-
-                    <!-- Capa Sala -->
-
-                    <div class="subtituloSeccion">
-                        <img *ngIf="!mostrarSalaNula" src="./assets/desarrollador/uncheck.png" (click)="mostrarSalaNula = !mostrarSalaNula"/>
-                        <img *ngIf="mostrarSalaNula" src="./assets/desarrollador/check.png" (click)="mostrarSalaNula = !mostrarSalaNula"/>
-                        <div class="texto">Sin asignar (ID: 0)</div>
-                    </div>
-
-                    <div *ngFor="let sala of mazmorra.salas; let i=index" class="subtituloSeccion">
-                        <img *ngIf="!mazmorra.salas[i].mostrarIsometrico" src="./assets/desarrollador/uncheck.png" (click)="mazmorra.salas[i].mostrarIsometrico = !mazmorra.salas[i].mostrarIsometrico"/>
-                        <img *ngIf="mazmorra.salas[i].mostrarIsometrico" src="./assets/desarrollador/check.png" (click)="mazmorra.salas[i].mostrarIsometrico = !mazmorra.salas[i].mostrarIsometrico"/>
-                        <div class="texto">{{sala.nombre}} (ID: {{sala.id}})</div>
-                    </div>
-
-                <!-- Seccion Propiedades -->
-                <div class="tituloSeccion">Selección:</div>
-
-
-            </div>
-        </div>  <!-- Fin panel DERECHO -->
-
-      </div>
-
-      <!-- FLECHAS MAZMORRA CELDAS -->
-      <!--
-      <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder superior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('up')">
-      <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder inferior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('down')">
-      <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder derecha" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('right')">
-      <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder izquierda" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('left')">
-      -->
-
-    <!-- *************************************************
-        PANEL RETICULA
-     ************************************************* -->
-      <!-- Contenedor Reticula -->
-      <div  *ngIf="estadoMazmorra=='reticula'" class="contenedorReticula">
-        <div *ngFor="let visorFila of visorFila; let i = index" class="filaReticula" [style.height]="renderAltoSector()">
-          <div *ngIf="i>=limiteReticulaYMin && i<=limiteReticulaYMax || !activarLimiteReticula">
-            <div *ngFor="let visorColumna of visorColumna; let j = index" class="cuadradoReticula"
-            [style.background-color]="renderReticula.celdas[visorFila[i]][visorColumna[j]].color"
-            [style.border-top]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[0]"
-            [style.border-right]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[1]"
-            [style.border-bottom]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[2]"
-            [style.border-left]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[3]"
-            [style.width]="renderAnchoSector()"
-            [ngClass]="renderizarSector(i,j)">
-              <div *ngIf="j>=limiteReticulaXMin && j<=limiteReticulaXMax || !activarLimiteReticula" (click)="clickSector(visorFila[i],visorColumna[j])">
-                <!--({{renderReticula.celdas[visorFila[i]][visorColumna[j]].X}},{{renderReticula.celdas[visorFila[i]][visorColumna[j]].Y}})-->
               </div>
-            </div>
+            }
           </div>
-        </div>
-      </div>
-
-    <!-- *************************************************
-        PANEL ISOMETRICO
-     ************************************************* -->
-      <!-- Contenedor Isometrico -->
-      <div  *ngIf="estadoMazmorra=='isometrico'" class="contenedorIsometrico">
-
-          <div *ngIf="mazmorra.isometrico==null" class="mensajeIsometricoVacio"> No hay datos de mapa isométrico</div>
-
-          <div *ngIf="mazmorra.isometrico!=null" class="canvasIsometrico">
-
-            <div *ngFor="let elementoIsometrico of mazmorra.isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)=seleccionarElementoIsometrico(i) [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
-                <img class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
-                <ng-container *ngIf="elementoIsometrico.enemigoId">
-                    <img class="imagenEnemigoIsometrico" src="./assets/Enemigos/{{elementoIsometrico.pathEnemigo}}">
-                </ng-container>
-
-            </div>
+          } <!-- Fin Panel Izquierdo -->
+          <!-- *************************************************
+          PANEL DERECHO
+          ************************************************* -->
+          @if (estadoPanelDerecho!=null) {
+            <div class="panelDerecho">
+              @if (estadoPanelDerecho=='reticula' && herramientaReticula=='add') {
+                <div>
+                  <div class="contenedorTitulo">AÑADIR</div>
+                  <div class="contenedorPanelDerecho">
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x6.svg" (click)="addPieza('6x6')"/>
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_T.svg" (click)="addPieza('T')"/>
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_X.svg" (click)="addPieza('X')"/>
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x1.svg" (click)="addPieza('2x1')"/>
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_2x2.svg" (click)="addPieza('2x2')"/>
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_L.svg" (click)="addPieza('L')"/>
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_6x4.svg" (click)="addPieza('6x4')"/>
+                    <img class="piezaTablero" [style.transform]="'rotate('+rotacion+'deg)'" src="assets/Mazmorras/Tablero/Piezas Tablero_4x2.svg" (click)="addPieza('4x2')"/>
+                  </div>
+                </div>
+                } <!-- Fin panel añadir -->
+                @if (herramientaReticula=='seleccionar') {
+                  <div>
+                    <div class="contenedorTitulo">SELECCIÓN</div>
+                    <div class="contenedorPanelDerecho">
+                      Hola
+                    </div>
+                  </div>
+                  }  <!-- Fin panel selecionar -->
+                  <!-- PANEL DERECHO ISOMETRICO -->
+                  @if (estadoPanelDerecho=='isometrico') {
+                    <div>
+                      <div class="contenedorTitulo">ISOMÉTRICO</div>
+                      <div class="contenedorPanelDerecho">
+                        <div class="tituloSeccion">Capas:</div>
+                        <!-- Capa Grid -->
+                        <div class="subtituloSeccion">
+                          @if (!mostrarGrid) {
+                            <img src="./assets/desarrollador/uncheck.png" (click)="toggleVerCapaIsometrico('grid')"/>
+                          }
+                          @if (mostrarGrid) {
+                            <img src="./assets/desarrollador/check.png" (click)="toggleVerCapaIsometrico('grid')"/>
+                          }
+                          <div class="texto">Grid</div>
+                        </div>
+                        <!-- Capa decorado -->
+                        <div class="subtituloSeccion">
+                          @if (!mostrarDecorado) {
+                            <img src="./assets/desarrollador/uncheck.png" (click)="toggleVerCapaIsometrico('decorado')"/>
+                          }
+                          @if (mostrarDecorado) {
+                            <img src="./assets/desarrollador/check.png" (click)="toggleVerCapaIsometrico('decorado')"/>
+                          }
+                          <div class="texto">Decorado</div>
+                        </div>
+                        <!-- Seccion Salas -->
+                        <div class="tituloSeccion">Salas:</div>
+                        <!-- Capa Sala -->
+                        <div class="subtituloSeccion">
+                          @if (!mostrarSalaNula) {
+                            <img src="./assets/desarrollador/uncheck.png" (click)="mostrarSalaNula = !mostrarSalaNula"/>
+                          }
+                          @if (mostrarSalaNula) {
+                            <img src="./assets/desarrollador/check.png" (click)="mostrarSalaNula = !mostrarSalaNula"/>
+                          }
+                          <div class="texto">Sin asignar (ID: 0)</div>
+                        </div>
+                        @for (sala of mazmorra.salas; track sala; let i = $index) {
+                          <div class="subtituloSeccion">
+                            @if (!mazmorra.salas[i].mostrarIsometrico) {
+                              <img src="./assets/desarrollador/uncheck.png" (click)="mazmorra.salas[i].mostrarIsometrico = !mazmorra.salas[i].mostrarIsometrico"/>
+                            }
+                            @if (mazmorra.salas[i].mostrarIsometrico) {
+                              <img src="./assets/desarrollador/check.png" (click)="mazmorra.salas[i].mostrarIsometrico = !mazmorra.salas[i].mostrarIsometrico"/>
+                            }
+                            <div class="texto">{{sala.nombre}} (ID: {{sala.id}})</div>
+                          </div>
+                        }
+                        <!-- Seccion Propiedades -->
+                        <div class="tituloSeccion">Selección:</div>
+                      </div>
+                    </div>
+                    }  <!-- Fin panel DERECHO -->
+                  </div>
+                }
+                <!-- FLECHAS MAZMORRA CELDAS -->
+                <!--
+                <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder superior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('up')">
+                <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder inferior" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('down')">
+                <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder derecha" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('right')">
+                <img *ngIf="estadoMazmorra!='parametros'" class="flechaDungeonBuilder izquierda" src="assets/Mazmorras/Tablero/FlechaDungeonBuilder.svg" (click)="moverReticula('left')">
+                -->
+                <!-- *************************************************
+                PANEL RETICULA
+                ************************************************* -->
+                <!-- Contenedor Reticula -->
+                @if (estadoMazmorra=='reticula') {
+                  <div  class="contenedorReticula">
+                    @for (visorFila of visorFila; track visorFila; let i = $index) {
+                      <div class="filaReticula" [style.height]="renderAltoSector()">
+                        @if (i>=limiteReticulaYMin && i<=limiteReticulaYMax || !activarLimiteReticula) {
+                          <div>
+                            @for (visorColumna of visorColumna; track visorColumna; let j = $index) {
+                              <div class="cuadradoReticula"
+                                [style.background-color]="renderReticula.celdas[visorFila[i]][visorColumna[j]].color"
+                                [style.border-top]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[0]"
+                                [style.border-right]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[1]"
+                                [style.border-bottom]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[2]"
+                                [style.border-left]="renderReticula.celdas[visorFila[i]][visorColumna[j]].border[3]"
+                                [style.width]="renderAnchoSector()"
+                                [ngClass]="renderizarSector(i,j)">
+                                @if (j>=limiteReticulaXMin && j<=limiteReticulaXMax || !activarLimiteReticula) {
+                                  <div (click)="clickSector(visorFila[i],visorColumna[j])">
+                                    <!--({{renderReticula.celdas[visorFila[i]][visorColumna[j]].X}},{{renderReticula.celdas[visorFila[i]][visorColumna[j]].Y}})-->
+                                  </div>
+                                }
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+                <!-- *************************************************
+                PANEL ISOMETRICO
+                ************************************************* -->
+                <!-- Contenedor Isometrico -->
+                @if (estadoMazmorra=='isometrico') {
+                  <div  class="contenedorIsometrico">
+                    @if (mazmorra.isometrico==null) {
+                      <div class="mensajeIsometricoVacio"> No hay datos de mapa isométrico</div>
+                    }
+                    @if (mazmorra.isometrico!=null) {
+                      <div class="canvasIsometrico">
+                        @for (elementoIsometrico of mazmorra.isometrico.MapSave.Placeables.Placeable; track elementoIsometrico; let i = $index) {
+                          <div class="elementoIsometrico" (click)=seleccionarElementoIsometrico(i) [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
+                            <img class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
+                            @if (elementoIsometrico.enemigoId) {
+                              <img class="imagenEnemigoIsometrico" src="./assets/Enemigos/{{elementoIsometrico.pathEnemigo}}">
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                    <!--Panel Inferior-->
+                    <div id="panelHerramientaInferiorDungeonBuilder">
+                      <div class="selector">
+                        <div class="opcion">Parametros</div>
+                      </div>
+                      <div class="contenedorInferior">
+                        <!-- Boton ASIGNAR SALA -->
+                        <botonComponent class="botonAsignar" (click)="botonAsignar('sala')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR SALA'" [color]="'naranja'"></botonComponent>
+                        <!-- Boton ASIGNAR TIPO -->
+                        <botonComponent class="botonAsignar" (click)="botonAsignar('tipo')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR TIPO'" [color]="'naranja'"></botonComponent>
+                        <!-- Boton ASIGNAR ENEMIGO -->
+                        <botonComponent class="botonAsignar" (click)="botonAsignar('enemigo')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR ENEMIGO'" [color]="'naranja'"></botonComponent>
+                        <!-- Boton ASIGNAR ESPECIAL -->
+                        <botonComponent class="botonAsignar" (click)="botonAsignar('especial')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR ESPECIAL'" [color]="'naranja'"></botonComponent>
+                      </div>
+                      <!--Campo Evento Inspeccion
+                      <mat-label>Inspeccionable: </mat-label>
+                      <mat-checkbox formControlName="inMapInspeccionable"></mat-checkbox>
+                      -->
+                    </div> <!-- FIN Panel INMAP Inferior -->
+                  </div>
+                }
+                <!-- *************************************************
+                PANEL ASIGNAR PROPIEDADES ISOMETRICO
+                ************************************************* -->
+                <!-- Contenedor Selectores Propiedades -->
+                @if (estadoMazmorra=='isometrico') {
+                  <div id="contenedorSelectorPropiedades">
+                    <!-- Boton Asignar Sala -->
+                    @if (mostrarPanelAsignarSala) {
+                      <div class="contenedorSeleccion" [formGroup]="formAsignarSala">
+                        <div class="texto">Asignar Sala:</div>
+                        <div class="contenedorOpcionesSeleccion">
+                          <mat-form-field class="campoFormulario formularioSeleccion">
+                            <mat-label>Id Sala:</mat-label>
+                            <input type="number" min="0" matInput placeholder="Id_Sala" formControlName="asignar_id_sala">
+                          </mat-form-field>
+                        </div>
+                        <div class="boton" (click)="asignarSala()">Asignar</div>
+                        <div class="boton" (click)="mostrarPanelAsignarSala=false">Cancelar</div>
+                      </div>
+                    }
+                    <!-- Boton Asignar Enemigo -->
+                    @if (mostrarPanelAsignarEnemigo) {
+                      <div class="contenedorSeleccion" [formGroup]="formAsignarEnemigo">
+                        <div class="texto">Asignar Enemigo:</div>
+                        <div class="contenedorOpcionesSeleccion">
+                          <!--Campo Enemigo ID -->
+                          <mat-form-field class="campoFormulario formularioSeleccion">
+                            <mat-label>Enemigo ID: </mat-label>
+                            <input matInput type="number" min="0" placeholder="Nombre" formControlName="enemigoId">
+                          </mat-form-field>
+                        </div>
+                        <div class="boton" (click)="asignarEnemigo()">Asignar</div>
+                        <div class="boton" (click)="mostrarPanelAsignarEnemigo=false">Cancelar</div>
+                      </div>
+                    }
+                    <!-- Boton Asignar Tipo -->
+                    @if (mostrarPanelAsignarTipo) {
+                      <div class="contenedorSeleccion" [formGroup]="formAsignarTipo">
+                        <div class="texto">Asignar Tipo:</div>
+                        <div class="contenedorOpcionesSeleccion">
+                          <!--Campo Especial -->
+                          <mat-form-field appearance="fill"class="campoFormulario formularioSeleccion">
+                            <mat-label>Tipo: </mat-label>
+                            <mat-select formControlName="tipo">
+                              <mat-option value="decorado">Decorado</mat-option>
+                              <mat-option value="grid">Grid</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="boton" (click)="asignarTipo()">Asignar</div>
+                        <div class="boton" (click)="mostrarPanelAsignarTipo=false">Cancelar</div>
+                      </div>
+                    }
+                    <!-- Boton Asignar Especial -->
+                    @if (mostrarPanelAsignarEspecial) {
+                      <div class="contenedorSeleccion" [formGroup]="formAsignarEspecial">
+                        <div class="texto">Asignar Especial:</div>
+                        <div class="contenedorOpcionesSeleccion">
+                          <!--Campo Especial -->
+                          <mat-form-field appearance="fill"class="campoFormulario formularioSeleccion">
+                            <mat-label>Tipo Especial: </mat-label>
+                            <mat-select formControlName="especial">
+                              <mat-option value="null">Ninguno</mat-option>
+                              <mat-option value="inspeccionable">Inspeccion</mat-option>
+                              <mat-option value="exploracion">Exploración</mat-option>
+                              <mat-option value="interactuar">Interactuar</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <!--Campo Mensaje -->
+                          <mat-form-field class="campoFormulario formularioSeleccion">
+                            <mat-label>Mensaje Previo: </mat-label>
+                            <textarea matInput placeholder="Mensaje" formControlName="mensaje"></textarea>
+                          </mat-form-field>
+                          <!--Campo Evento Encadenado -->
+                          <mat-form-field class="campoFormulario formularioSeleccion">
+                            <mat-label>Evento encadenado ID: </mat-label>
+                            <input matInput type="number" placeholder="eventoID" formControlName="eventoId">
+                          </mat-form-field>
+                        </div>
+                        <div class="boton" (click)="asignarEspecial()">Asignar</div>
+                        <div class="boton" (click)="mostrarPanelAsignarEspecial=false">Cancelar</div>
+                      </div>
+                    }
+                  </div>
+                }
+                <!-- *************************************************
+                PANEL GENERAL
+                ************************************************* -->
+                @if (estadoMazmorra=='general') {
+                  <div class="contenidoParametros">
+                    <form class="formularioGeneral" [formGroup]="formGeneral">
+                      <div class="columna">
+                        <mat-form-field class="campoFormulario">
+                          <mat-label>Nombre mazmorra</mat-label>
+                          <input matInput placeholder="Nombre" formControlName="nombre">
+                        </mat-form-field>
+                        <mat-form-field class="campoFormulario">
+                          <mat-label>Nivel</mat-label>
+                          <input matInput type="number" placeholder="mazmorra.general[0].nivel" formControlName="nivel" min="0">
+                        </mat-form-field>
+                        <mat-form-field class="campoFormulario descripcion">
+                          <mat-label>Descripción</mat-label>
+                          <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
+                        </mat-form-field>
+                      </div>
+                      <div class="columna">
+                        <mat-form-field class="campoFormulario">
+                          <mat-label>Imagen ID</mat-label>
+                          <input matInput type="number" placeholder="ID" formControlName="imagen_id">
+                        </mat-form-field>
+                        <mat-form-field class="campoFormulario">
+                          <mat-label>Evento Start ID</mat-label>
+                          <input matInput  type="number" placeholder="ID" formControlName="evento_start_id" min="0">
+                        </mat-form-field>
+                        <mat-form-field class="campoFormulario">
+                          <mat-label>Evento finish ID</mat-label>
+                          <input matInput type="number" placeholder="ID" formControlName="evento_finish_id" min="0">
+                        </mat-form-field>
+                        <mat-form-field class="campoFormulario">
+                          <mat-label>Loot Finish ID</mat-label>
+                          <input matInput type="number" placeholder="ID" formControlName="loot_finish_id" min="0">
+                        </mat-form-field>
+                      </div>
+                    </form>
+                  </div>
+                }
+                <!-- FORMULARIO DE SALAS -->
+                @if (estadoMazmorra=='salas') {
+                  <div class="contenidoParametros">
+                    <form class="formularioSalas" [formGroup]="formSala">
+                      <div class="panelSalas">
+                        <div class="titulo"> Salas </div>
+                        <div class="contenedorSalas">
+                          @for (sala of mazmorra.salas; track sala; let i = $index) {
+                            <div class="sala" (click)=seleccionarSala(sala.id)>{{sala.nombre}}</div>
+                          }
+                        </div>
+                        <div class="botonAddSala" (click)="crearSala()">Añadir Sala</div>
+                      </div>
+                      @if (salaSeleccionadaId==0) {
+                        <div class="contenedorFormularioSala seleccioneSala"> <--- Selecciona una sala</div>
+                      }
+                      @if (salaSeleccionadaId!=0) {
+                        <div class="contenedorFormularioSala">
+                          <div class="columna">
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Sala ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Nombre</mat-label>
+                              <input matInput placeholder="Nombre" formControlName="nombre">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario descripcion">
+                              <mat-label>Descripción</mat-label>
+                              <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
+                            </mat-form-field>
+                          </div>
+                          <!-- Num_Enemigos
+                          Num_Eventos
+                          Num-Eventos -->
+                          <div class="columna">
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Evento Inicial ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="evento_inicial_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Evento Final ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Evento Final ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
+                            </mat-form-field>
+                            <mat-checkbox  formControlName="salaInicial">Sala inicial: </mat-checkbox>
+                          </div>
+                          <div class="botonOpcionParametros" (click)="eliminarSala(salaSeleccionadaId)">Eliminar Sala</div>
+                        </div>
+                      }
+                    </form>
+                  </div>
+                }
+                <!-- FORMULARIO DE ENEMIGOS -->
+                @if (estadoMazmorra=='enemigos') {
+                  <div class="contenidoParametros">
+                    <form class="formularioEnemigos" [formGroup]="formEnemigos">
+                      <!--
+                      Enemigo_ID
+                      Num_Sala
+                      Nombre
+                      Imagen_ID
+                      Nivel
+                      Loot_ID
+                      Loot_Prob
+                      Buffo_Perma_ID
+                      Evento_Muerte_ID
+                      Evento_Spawn_ID
+                      Evento_Intervalo_ID
+                      Evento_Intervalos_Tiempo
+                      -->
+                      @if (mostrarTipoEnemigo) {
+                        <div class="panelTipoEnemigo">
+                          <div class="titulo">Selecciona un tipo de enemigo: </div>
+                          <img class="botonCerrar" src="./assets/desarrollador/cerrar.png" (click)="cerrarSeleccionarEnemigo()">
+                          <div class="contenedorTipoEnemigo">
+                            @for (tipoEnemigo of enemigos; track tipoEnemigo) {
+                              <div  class="tipoEnemigo" (click)="seleccionarTipoEnemigo(tipoEnemigo.id)">
+                                <img class="imagenTipoEnemigo" src="./assets/Enemigos/{{tipoEnemigo.familia}}/{{tipoEnemigo.imagen_id}}.png">
+                                <div class="nombreTipoEnemigo">{{tipoEnemigo.nombre}}</div>
+                              </div>
+                            }
+                          </div>
+                        </div>
+                      }
+                      @if (enemigoSeleccionadoId==0) {
+                        <div class="contenedorFormularioEnemigo seleccioneEnemigo"> <--- Seleccione un enemigo</div>
+                      }
+                      @if (enemigoSeleccionadoId!=0) {
+                        <div class="contenedorFormularioEnemigo">
+                          <div class="panelEnemigoGeneral">
+                            <div class="contenedorImagenEnemigo">
+                              <img src="./assets/Enemigos/{{tipoEnemigoSeleccionado.familia}}/{{mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex].imagen_id}}.png">
+                            </div>
+                            <div class="contenedorInformacionEnemigo">
+                              <div class="nombreEnemigo">{{tipoEnemigoSeleccionado.nombre}}</div>
+                              <div class="boton botonEstadisticas" (click)="mostrarEstadisticasEnemigo()">Estadisticas</div>
+                              <div class="boton botonTipoEnemigo" (click)="abrirSeleccionarTipoEnemigo()">Tipo Enemigo</div>
+                            </div>
+                          </div>
+                          <div class="columna">
+                            <mat-form-field class="campoFormulario">
+                              <mat-label >Enemigo ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="enemigo_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Tipo Enemigo ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="tipo_enemigo_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Nombre</mat-label>
+                              <input matInput placeholder="Nombre" formControlName="nombre">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Sala ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="salaId" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Imagen ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="imagen_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Nivel</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="nivel" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Loot ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="loot_id" min="0">
+                            </mat-form-field>
+                          </div>
+                          <!-- Num_Enemigos
+                          Num_Eventos
+                          Num-Eventos -->
+                          <div class="columna">
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Buffo Perma ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="buffo_perma_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Evento Muerte ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="evento_muerte_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Evento Spawn ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="evento_spawn_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Evento Intervalo ID</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="evento_intervalo_id" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Evento Intervalo Tiempo (PT)</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="evento_intervalo_tiempo" min="0">
+                            </mat-form-field>
+                            <mat-form-field class="campoFormulario">
+                              <mat-label>Loot Prob.</mat-label>
+                              <input matInput type="number" placeholder="0" formControlName="loot_prob" min="0">
+                            </mat-form-field>
+                          </div>
+                          <img src="./assets/desarrollador/papelera.svg" class="botonEliminarEnemigo" (click)="eliminarEnemigo()"/>
+                        </div>
+                      }
+                    </form>
+                  </div>
+                }
+                <!-- FORMULARIO DE ENEMIGOS -->
+                @if (estadoMazmorra=='eventos') {
+                  <div class="contenidoParametros">
+                    <formEventosComponent
+                      [eventos]="mazmorra.eventos"
+                      [esMazmorra]="true"
+                      (eventosChange)="mazmorra.eventos=$event"
+                    (testEventoEmitter)="testEvento($event)" class="formularioEventos"></formEventosComponent>
+                  </div>
+                }
+              </div>
+            }
           </div>
-
-
-        <!--Panel Inferior-->
-        <div id="panelHerramientaInferiorDungeonBuilder">
-
-            <div class="selector">
-                <div class="opcion">Parametros</div>
-            </div>
-
-            <div class="contenedorInferior">
-                <!-- Boton ASIGNAR SALA -->
-                <botonComponent class="botonAsignar" (click)="botonAsignar('sala')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR SALA'" [color]="'naranja'"></botonComponent>
-
-                <!-- Boton ASIGNAR TIPO -->
-                <botonComponent class="botonAsignar" (click)="botonAsignar('tipo')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR TIPO'" [color]="'naranja'"></botonComponent>
-
-                <!-- Boton ASIGNAR ENEMIGO -->
-                <botonComponent class="botonAsignar" (click)="botonAsignar('enemigo')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR ENEMIGO'" [color]="'naranja'"></botonComponent>
-
-                <!-- Boton ASIGNAR ESPECIAL -->
-                <botonComponent class="botonAsignar" (click)="botonAsignar('especial')" mat-button [tipoBoton]="2" [texto]="'ASIGNAR ESPECIAL'" [color]="'naranja'"></botonComponent>
-            </div>
-
-                    <!--Campo Evento Inspeccion
-                    <mat-label>Inspeccionable: </mat-label>
-                    <mat-checkbox formControlName="inMapInspeccionable"></mat-checkbox>
-                    -->
-
-        </div> <!-- FIN Panel INMAP Inferior -->
-
-      </div>
-
-    <!-- *************************************************
-        PANEL ASIGNAR PROPIEDADES ISOMETRICO
-     ************************************************* -->
-
-          <!-- Contenedor Selectores Propiedades -->
-          <div *ngIf="estadoMazmorra=='isometrico'" id="contenedorSelectorPropiedades">
-
-            <!-- Boton Asignar Sala -->
-            <div *ngIf="mostrarPanelAsignarSala" class="contenedorSeleccion" [formGroup]="formAsignarSala">
-                <div class="texto">Asignar Sala:</div>
-                <div class="contenedorOpcionesSeleccion">
-                    <mat-form-field class="campoFormulario formularioSeleccion">
-                        <mat-label>Id Sala:</mat-label>
-                        <input type="number" min="0" matInput placeholder="Id_Sala" formControlName="asignar_id_sala">
-                    </mat-form-field>
-                </div>
-                <div class="boton" (click)="asignarSala()">Asignar</div>
-                <div class="boton" (click)="mostrarPanelAsignarSala=false">Cancelar</div>
-            </div>
-
-            <!-- Boton Asignar Enemigo -->
-             <div *ngIf="mostrarPanelAsignarEnemigo" class="contenedorSeleccion" [formGroup]="formAsignarEnemigo">
-                <div class="texto">Asignar Enemigo:</div>
-                <div class="contenedorOpcionesSeleccion">
-                <!--Campo Enemigo ID -->
-                  <mat-form-field class="campoFormulario formularioSeleccion">
-                    <mat-label>Enemigo ID: </mat-label>
-                    <input matInput type="number" min="0" placeholder="Nombre" formControlName="enemigoId">
-                  </mat-form-field>
-                </div>
-                <div class="boton" (click)="asignarEnemigo()">Asignar</div>
-                <div class="boton" (click)="mostrarPanelAsignarEnemigo=false">Cancelar</div>
-              </div>
-
-            <!-- Boton Asignar Tipo -->
-             <div *ngIf="mostrarPanelAsignarTipo" class="contenedorSeleccion" [formGroup]="formAsignarTipo">
-                <div class="texto">Asignar Tipo:</div>
-                <div class="contenedorOpcionesSeleccion">
-                <!--Campo Especial -->
-                  <mat-form-field appearance="fill"class="campoFormulario formularioSeleccion">
-                    <mat-label>Tipo: </mat-label>
-                    <mat-select formControlName="tipo">
-                        <mat-option value="decorado">Decorado</mat-option>
-                        <mat-option value="grid">Grid</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="boton" (click)="asignarTipo()">Asignar</div>
-                <div class="boton" (click)="mostrarPanelAsignarTipo=false">Cancelar</div>
-              </div>
-
-            <!-- Boton Asignar Especial -->
-             <div *ngIf="mostrarPanelAsignarEspecial" class="contenedorSeleccion" [formGroup]="formAsignarEspecial">
-                <div class="texto">Asignar Especial:</div>
-                <div class="contenedorOpcionesSeleccion">
-                <!--Campo Especial -->
-                  <mat-form-field appearance="fill"class="campoFormulario formularioSeleccion">
-                    <mat-label>Tipo Especial: </mat-label>
-                    <mat-select formControlName="especial">
-                        <mat-option value="null">Ninguno</mat-option>
-                        <mat-option value="inspeccionable">Inspeccion</mat-option>
-                        <mat-option value="exploracion">Exploración</mat-option>
-                        <mat-option value="interactuar">Interactuar</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-
-                <!--Campo Mensaje -->
-                  <mat-form-field class="campoFormulario formularioSeleccion">
-                    <mat-label>Mensaje Previo: </mat-label>
-                    <textarea matInput placeholder="Mensaje" formControlName="mensaje"></textarea>
-                  </mat-form-field>
-
-                <!--Campo Evento Encadenado -->
-                  <mat-form-field class="campoFormulario formularioSeleccion">
-                    <mat-label>Evento encadenado ID: </mat-label>
-                    <input matInput type="number" placeholder="eventoID" formControlName="eventoId">
-                  </mat-form-field>
-                </div>
-                <div class="boton" (click)="asignarEspecial()">Asignar</div>
-                <div class="boton" (click)="mostrarPanelAsignarEspecial=false">Cancelar</div>
-              </div>
-
-          </div>
-
-    <!-- *************************************************
-        PANEL GENERAL
-     ************************************************* -->
-
-        <div *ngIf="estadoMazmorra=='general'" class="contenidoParametros">
-
-          <form class="formularioGeneral" [formGroup]="formGeneral">
-            <div class="columna">
-              <mat-form-field class="campoFormulario">
-                <mat-label>Nombre mazmorra</mat-label>
-                <input matInput placeholder="Nombre" formControlName="nombre">
-              </mat-form-field>
-
-              <mat-form-field class="campoFormulario">
-                <mat-label>Nivel</mat-label>
-                <input matInput type="number" placeholder="mazmorra.general[0].nivel" formControlName="nivel" min="0">
-              </mat-form-field>
-
-              <mat-form-field class="campoFormulario descripcion">
-                <mat-label>Descripción</mat-label>
-                <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
-              </mat-form-field>
-            </div>
-
-            <div class="columna">
-              <mat-form-field class="campoFormulario">
-                <mat-label>Imagen ID</mat-label>
-                <input matInput type="number" placeholder="ID" formControlName="imagen_id">
-              </mat-form-field>
-
-              <mat-form-field class="campoFormulario">
-                <mat-label>Evento Start ID</mat-label>
-                <input matInput  type="number" placeholder="ID" formControlName="evento_start_id" min="0">
-              </mat-form-field>
-
-              <mat-form-field class="campoFormulario">
-                <mat-label>Evento finish ID</mat-label>
-                <input matInput type="number" placeholder="ID" formControlName="evento_finish_id" min="0">
-              </mat-form-field>
-
-              <mat-form-field class="campoFormulario">
-                <mat-label>Loot Finish ID</mat-label>
-                <input matInput type="number" placeholder="ID" formControlName="loot_finish_id" min="0">
-              </mat-form-field>
-            </div>
-          </form>
-
-        </div>
-
-          <!-- FORMULARIO DE SALAS -->
-        <div *ngIf="estadoMazmorra=='salas'" class="contenidoParametros">
-          <form class="formularioSalas" [formGroup]="formSala">
-
-            <div class="panelSalas">
-              <div class="titulo"> Salas </div>
-              <div class="contenedorSalas">
-                <div *ngFor="let sala of mazmorra.salas; let i=index" class="sala" (click)=seleccionarSala(sala.id)>{{sala.nombre}}</div>
-              </div>
-              <div class="botonAddSala" (click)="crearSala()">Añadir Sala</div>
-            </div>
-
-            <div class="contenedorFormularioSala seleccioneSala" *ngIf="salaSeleccionadaId==0"> <--- Selecciona una sala</div>
-
-            <div class="contenedorFormularioSala" *ngIf="salaSeleccionadaId!=0">
-              <div class="columna">
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Sala ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Nombre</mat-label>
-                  <input matInput placeholder="Nombre" formControlName="nombre">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario descripcion">
-                  <mat-label>Descripción</mat-label>
-                  <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
-                </mat-form-field>
-              </div>
-
-              <!-- Num_Enemigos
-                   Num_Eventos
-                   Num-Eventos -->
-
-              <div class="columna">
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Evento Inicial ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="evento_inicial_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Evento Final ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Evento Final ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="evento_final_id" min="0">
-                </mat-form-field>
-
-                <mat-checkbox  formControlName="salaInicial">Sala inicial: </mat-checkbox>
-
-              </div>
-
-              <div class="botonOpcionParametros" (click)="eliminarSala(salaSeleccionadaId)">Eliminar Sala</div>
-
-            </div>
-
-          </form>
-        </div>
-
-          <!-- FORMULARIO DE ENEMIGOS -->
-        <div *ngIf="estadoMazmorra=='enemigos'" class="contenidoParametros">
-          <form class="formularioEnemigos" [formGroup]="formEnemigos">
-
-        <!--
-          Enemigo_ID
-          Num_Sala
-          Nombre
-          Imagen_ID
-          Nivel
-          Loot_ID
-          Loot_Prob
-
-          Buffo_Perma_ID
-          Evento_Muerte_ID
-          Evento_Spawn_ID
-          Evento_Intervalo_ID
-          Evento_Intervalos_Tiempo
-        -->
-
-            <div *ngIf="mostrarTipoEnemigo" class="panelTipoEnemigo">
-              <div class="titulo">Selecciona un tipo de enemigo: </div>
-              <img class="botonCerrar" src="./assets/desarrollador/cerrar.png" (click)="cerrarSeleccionarEnemigo()">
-              <div class="contenedorTipoEnemigo">
-                <div *ngFor="let tipoEnemigo of enemigos; let index = i"  class="tipoEnemigo" (click)="seleccionarTipoEnemigo(tipoEnemigo.id)">
-                    <img class="imagenTipoEnemigo" src="./assets/Enemigos/{{tipoEnemigo.familia}}/{{tipoEnemigo.imagen_id}}.png">
-                  <div class="nombreTipoEnemigo">{{tipoEnemigo.nombre}}</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="contenedorFormularioEnemigo seleccioneEnemigo" *ngIf="enemigoSeleccionadoId==0"> <--- Seleccione un enemigo</div>
-
-            <div class="contenedorFormularioEnemigo" *ngIf="enemigoSeleccionadoId!=0">
-
-              <div class="panelEnemigoGeneral">
-                <div class="contenedorImagenEnemigo">
-                    <img src="./assets/Enemigos/{{tipoEnemigoSeleccionado.familia}}/{{mazmorra.salas[this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex].imagen_id}}.png">
-                </div>
-                <div class="contenedorInformacionEnemigo">
-                  <div class="nombreEnemigo">{{tipoEnemigoSeleccionado.nombre}}</div>
-                  <div class="boton botonEstadisticas" (click)="mostrarEstadisticasEnemigo()">Estadisticas</div>
-                  <div class="boton botonTipoEnemigo" (click)="abrirSeleccionarTipoEnemigo()">Tipo Enemigo</div>
-                </div>
-              </div>
-
-              <div class="columna">
-                <mat-form-field class="campoFormulario">
-                  <mat-label >Enemigo ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="enemigo_id" min="0">
-                </mat-form-field>
-
-                 <mat-form-field class="campoFormulario">
-                  <mat-label>Tipo Enemigo ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="tipo_enemigo_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Nombre</mat-label>
-                  <input matInput placeholder="Nombre" formControlName="nombre">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Sala ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="salaId" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Imagen ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="imagen_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Nivel</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="nivel" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Loot ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="loot_id" min="0">
-                </mat-form-field>
-              </div>
-
-              <!-- Num_Enemigos
-                   Num_Eventos
-                   Num-Eventos -->
-
-              <div class="columna">
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Buffo Perma ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="buffo_perma_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Evento Muerte ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="evento_muerte_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Evento Spawn ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="evento_spawn_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Evento Intervalo ID</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="evento_intervalo_id" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Evento Intervalo Tiempo (PT)</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="evento_intervalo_tiempo" min="0">
-                </mat-form-field>
-
-                <mat-form-field class="campoFormulario">
-                  <mat-label>Loot Prob.</mat-label>
-                  <input matInput type="number" placeholder="0" formControlName="loot_prob" min="0">
-                </mat-form-field>
-              </div>
-
-              <img src="./assets/desarrollador/papelera.svg" class="botonEliminarEnemigo" (click)="eliminarEnemigo()"/>
-
-            </div>
-          </form>
-        </div>
-
-        <!-- FORMULARIO DE ENEMIGOS -->
-        <div *ngIf="estadoMazmorra=='eventos'" class="contenidoParametros">
-            <formEventosComponent
-                [eventos]="mazmorra.eventos"
-                [esMazmorra]="true"
-                (eventosChange)="mazmorra.eventos=$event"
-                (testEventoEmitter)="testEvento($event)" class="formularioEventos"></formEventosComponent>
-        </div>
-
-    </div>
-
-    </div> <!-- FIN CONTENEDOR DUNGEON BUILDER  -->
+          } <!-- FIN CONTENEDOR DUNGEON BUILDER  -->
 
 

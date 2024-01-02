@@ -1,11 +1,12 @@
 
 
 
-<div *ngFor="let subanimacion of animacion.subanimaciones; let i=index"
-		class="animacionEfecto activo oculto"
-		[@animacionEfecto]="{value: estadoAnimacion, params: {tiempoEfectoParam: subanimacion.duracion, stepsParam: subanimacion.num_frames, delayEfectoParam: subanimacion.delay}}"
-		(@animacionEfecto.start)="inicioAnimacion(i);"
-		(@animacionEfecto.done)="finAnimacion(i);"
+@for (subanimacion of animacion.subanimaciones; track subanimacion; let i = $index) {
+  <div
+    class="animacionEfecto activo oculto"
+    [@animacionEfecto]="{value: estadoAnimacion, params: {tiempoEfectoParam: subanimacion.duracion, stepsParam: subanimacion.num_frames, delayEfectoParam: subanimacion.delay}}"
+    (@animacionEfecto.start)="inicioAnimacion(i);"
+    (@animacionEfecto.done)="finAnimacion(i);"
         [ngStyle]="{
                 'filter': 'hue-rotate('+subanimacion.hue_filter+'deg)',
                 'background-image':'url(./assets/Efectos/'+subanimacion.sprite_id+'.png)',
@@ -13,7 +14,7 @@
                 'transform': 'translateX('+subanimacion.offset_x+'%) translateY('+subanimacion.offset_y+'%) scaleX('+subanimacion.scaleX+') scaleY('+subanimacion.scaleY+') rotate('+subanimacion.rotate+'deg)'
 
               }"
-		>
-
-</div>
+    >
+  </div>
+}
 

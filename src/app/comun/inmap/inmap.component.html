@@ -6,7 +6,7 @@
 
 <!-- Diseño Fondo -->
 <div class="fondo" id="fondo">
-    <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
+  <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
 </div>
 
 <!--   ******************* -->
@@ -15,16 +15,20 @@
 
 <panelGeneralComponent id="PanelGeneral" (comandoPanelGeneral)="comandoPanelGeneral($event)"></panelGeneralComponent>
 
-    <!--   ******************* -->
-    <!--      Tiempo    -->
-    <!--   ******************* -->
+<!--   ******************* -->
+<!--      Tiempo    -->
+<!--   ******************* -->
 
-    <div id="tiempo">
-        <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
-        <botonComponent mat-button (click)="appService.centrarMapa()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
-        <botonComponent *ngIf="inmapService.estadoInMap=='global'" mat-button (click)="inmapService.toggleInMap()" [texto]="'Región'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
-        <botonComponent *ngIf="inmapService.estadoInMap=='region'" mat-button (click)="inmapService.toggleInMap()" [texto]="'Global'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
-    </div>
+<div id="tiempo">
+  <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
+  <botonComponent mat-button (click)="appService.centrarMapa()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
+  @if (inmapService.estadoInMap=='global') {
+    <botonComponent mat-button (click)="inmapService.toggleInMap()" [texto]="'Región'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+  }
+  @if (inmapService.estadoInMap=='region') {
+    <botonComponent mat-button (click)="inmapService.toggleInMap()" [texto]="'Global'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+  }
+</div>
 
 <!--   ************************** -->
 <!--    CONTENEDOR MAIN WINDOW    -->
@@ -33,132 +37,149 @@
 <div id="contenedorMainWindow">
 
 
-    <!--   ******************* -->
-    <!--        Credito      -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--        Credito      -->
+  <!--   ******************* -->
 
-    <!--
-    <creditoComponent id="creditoMapa" [gemas]= "0" [monedas]= "0"></creditoComponent>
-    -->
+  <!--
+  <creditoComponent id="creditoMapa" [gemas]= "0" [monedas]= "0"></creditoComponent>
+  -->
 
 
-    <!--   ******************* -->
-    <!--      Configuracion    -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--      Configuracion    -->
+  <!--   ******************* -->
 
-    <img id="iconoConfiguracion" src="../../../assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
+  <img id="iconoConfiguracion" src="../../../assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
 
-    <!--   ******************* -->
-    <!--      Social    -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--      Social    -->
+  <!--   ******************* -->
 
-    <!--
-    <img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="abrirSocial()"/>
-    -->
+  <!--
+  <img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="abrirSocial()"/>
+  -->
 
-    <!--   ******************* -->
-    <!--      ICONO RELOAD    -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--      ICONO RELOAD    -->
+  <!--   ******************* -->
 
   <img id="iconoReload" src="../../../assets/desarrollador/reload.png" (click)="appService.reloadPage()"/>
 
-    <!--   ******************* -->
-    <!--      Desarrollador    -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--      Desarrollador    -->
+  <!--   ******************* -->
 
-    <!--
-    <img id="botonAbrirEvento" src="../../../assets/desarrollador/animacion.png" (click)="appService.centrarRegion()"/>
-    -->
+  <!--
+  <img id="botonAbrirEvento" src="../../../assets/desarrollador/animacion.png" (click)="appService.centrarRegion()"/>
+  -->
 
 
-    <!--   ******************* -->
-    <!--        Experiencia    -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--        Experiencia    -->
+  <!--   ******************* -->
 
-    <experienciaComponent id="experiencia"></experienciaComponent>
+  <experienciaComponent id="experiencia"></experienciaComponent>
 
-    <!--   ******************* -->
-    <!--      Panel Control    -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--      Panel Control    -->
+  <!--   ******************* -->
 
-    <panelControlComponent id="panelControl" *ngIf="sesion.iniciada"
-        [tipo]="'inMap'"
-        [mensajeControl]="inmapService.mensajeControl"
-        [movimientoRestante]="inmapService.movimientoRestante"
-        (comandoPanelControl)="comandoPanelControl($event)" >
+  @if (sesion.iniciada) {
+    <panelControlComponent id="panelControl"
+      [tipo]="'inMap'"
+      [mensajeControl]="inmapService.mensajeControl"
+      [movimientoRestante]="inmapService.movimientoRestante"
+      (comandoPanelControl)="comandoPanelControl($event)" >
     </panelControlComponent>
+  }
 
-    <div id="botonIniciarPartida" *ngIf="!sesion.iniciada && inmapService.estadoInMap =='region'">
-        <botonComponent mat-button (click)="inmapService.peticionIniciarPartida()" [ngClass]="{'botonDeshabilitado': !sesion.jugadores[estadoApp.jugadorPropioSesionIndex]?.lider}" [texto]="'Iniciar Aventura'" [tipoBoton]="2" [color]="'naranja'"></botonComponent>
+  @if (!sesion.iniciada && inmapService.estadoInMap =='region') {
+    <div id="botonIniciarPartida">
+      <botonComponent mat-button (click)="inmapService.peticionIniciarPartida()" [ngClass]="{'botonDeshabilitado': !sesion.jugadores[estadoApp.jugadorPropioSesionIndex]?.lider}" [texto]="'Iniciar Aventura'" [tipoBoton]="2" [color]="'naranja'"></botonComponent>
     </div>
+  }
 
 
-    <!--   ******************* -->
-    <!--      Paneles Heroes   -->
-    <!--   ******************* -->
-    <div id="contenedorHeroes">
+  <!--   ******************* -->
+  <!--      Paneles Heroes   -->
+  <!--   ******************* -->
+  <div id="contenedorHeroes">
 
-        <heroeComponent *ngFor="let heroe of this.inmapService.sesion.render.heroes; let i = index" [desplegable]="true" [lider]="sesion.jugadores[i].lider" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
+    @for (heroe of this.inmapService.sesion.render.heroes; track heroe; let i = $index) {
+      <heroeComponent [desplegable]="true" [lider]="sesion.jugadores[i].lider" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
+    }
 
-    </div>
+  </div>
 
-    <!--   ******************* -->
-    <!--          MAPA         -->
-    <!--   ******************* -->
+  <!--   ******************* -->
+  <!--          MAPA         -->
+  <!--   ******************* -->
 
-    <div id="ContenedorMapa">
-        <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
-        <mapaGeneralComponent id="mapaGeneralComponent"
-                              (comandoMapaGeneral)="comandoPanelGeneral($event)"
-                              [coordenadas]="sesion.render.inmap"
-                              [radioRenderIsometrico]="6"
-                              [herramientaInMap]="'InMap'"
-                              [esTurnoPropio]="inmapService.checkTurnoPropio()"
-                              [mostrarNiebla]="true">
-                                <!--appService.estadoInMap=='region'-->
-        </mapaGeneralComponent>
-    </div>
+  <div id="ContenedorMapa">
+    <!--<img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>-->
+    <mapaGeneralComponent id="mapaGeneralComponent"
+      (comandoMapaGeneral)="comandoPanelGeneral($event)"
+      [coordenadas]="sesion.render.inmap"
+      [radioRenderIsometrico]="6"
+      [herramientaInMap]="'InMap'"
+      [esTurnoPropio]="inmapService.checkTurnoPropio()"
+      [mostrarNiebla]="true">
+      <!--appService.estadoInMap=='region'-->
+    </mapaGeneralComponent>
+  </div>
 
-    <img id="brujula" src="../../../assets/Mapa/brujula.png"/>
+  <img id="brujula" src="../../../assets/Mapa/brujula.png"/>
 
 </div> <!-- Fin Contenedor Main Window -->
 
-    <!--   ******************* -->
-    <!--          NOCHE      -->
-    <!--   ******************* -->
-    <div id="contenedorNoche" *ngIf="inmapService.mostrarNoche">
-        <img src="../assets/Iconos/luna.png" class="imagenLuna"/>
-
-        <div class="contenedorTextoNoche">
-            <div class="textoNoche slide1 visible"> Empieza a anochecer... </div>
-            <div class="textoNoche slide2 visible"> La noche está tranquila... </div>
-        </div>
+<!--   ******************* -->
+<!--          NOCHE      -->
+<!--   ******************* -->
+@if (inmapService.mostrarNoche) {
+  <div id="contenedorNoche">
+    <img src="../assets/Iconos/luna.png" class="imagenLuna"/>
+    <div class="contenedorTextoNoche">
+      <div class="textoNoche slide1 visible"> Empieza a anochecer... </div>
+      <div class="textoNoche slide2 visible"> La noche está tranquila... </div>
     </div>
+  </div>
+}
 
-    <!--   ******************* -->
-    <!--          PANELES      -->
-    <!--   ******************* -->
+<!--   ******************* -->
+<!--          PANELES      -->
+<!--   ******************* -->
 
-    <div id="ContenedorPaneles">
-        {{pantalla}}
-        <div class="panel panelPersonaje" *ngIf="this.pantalla == 'Personaje'">
-            <panelPersonajeComponent></panelPersonajeComponent>
-        </div>
-
-        <div class="panel panelPersonaje" *ngIf="pantalla == 'Equipo'">
-            <panelEquipoComponent></panelEquipoComponent>
-        </div>
-
-        <div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
-            <panelUbicacionComponent [sesion]="this.inmapService.sesion"></panelUbicacionComponent>
-        </div>
-
-        <div class="panel panelMazmorra" *ngIf="pantalla =='Diario'">
-            <panelDiarioComponent></panelDiarioComponent>
-        </div>
-
-        <div class="panel panelMazmorra" *ngIf="pantalla =='Tienda'">
-            <panelTiendaComponent></panelTiendaComponent>
-        </div>
+<div id="ContenedorPaneles">
+  {{pantalla}}
+  @if (this.pantalla == 'Personaje') {
+    <div class="panel panelPersonaje">
+      <panelPersonajeComponent></panelPersonajeComponent>
     </div>
+  }
+
+  @if (pantalla == 'Equipo') {
+    <div class="panel panelPersonaje">
+      <panelEquipoComponent></panelEquipoComponent>
+    </div>
+  }
+
+  @if (pantalla =='Mazmorra') {
+    <div class="panel panelMazmorra">
+      <panelUbicacionComponent [sesion]="this.inmapService.sesion"></panelUbicacionComponent>
+    </div>
+  }
+
+  @if (pantalla =='Diario') {
+    <div class="panel panelMazmorra">
+      <panelDiarioComponent></panelDiarioComponent>
+    </div>
+  }
+
+  @if (pantalla =='Tienda') {
+    <div class="panel panelMazmorra">
+      <panelTiendaComponent></panelTiendaComponent>
+    </div>
+  }
+</div>
 

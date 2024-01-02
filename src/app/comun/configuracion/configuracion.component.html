@@ -3,122 +3,112 @@
 <!--      INICIO    -->
 <!--   ******************* -->
 
-<div *ngIf="estadoConfiguracion == 'inicio'" id="contenedorInicial" class="borde1">
-
+@if (estadoConfiguracion == 'inicio') {
+  <div id="contenedorInicial" class="borde1">
     <h1 class="title Texto1 Arial">Opciones</h1>
-
-        <div class="opcion">
-            <botonComponent mat-button (click)="estadoConfiguracion = 'configuracion'" [texto]="'Configuración'" [tipoBoton]="2" [color]="'verde'" class="boton Arial"></botonComponent>
-        </div>
-
-        <div class="opcion">
-            <botonComponent mat-button (click)="estadoConfiguracion = 'developer'" [texto]="'Developer'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
-      </div>
-
-        <div class="opcion">
-        <botonComponent mat-button [mat-dialog-close]="'abandonarMazmorra'" [texto]="'Abandonar Mazmorra'" [tipoBoton]="2" [color]="'rojo'" class="boton Arial"></botonComponent>
-        </div>
-
-        <div class="opcion">
-        <botonComponent mat-button [mat-dialog-close]="'abandonarPartida'" [texto]="'Abandonar Partida'" [tipoBoton]="2" [color]="'rojo'" class="boton Arial"></botonComponent>
-        </div>
-
-        <div class="opcion">
-        <botonComponent mat-button [mat-dialog-close]="'cerrarSesion'" [texto]="'Cerrar Sesión'" [tipoBoton]="2" [color]="'rojo'" class="boton Arial"></botonComponent>
-        </div>
-
-</div>
+    <div class="opcion">
+      <botonComponent mat-button (click)="estadoConfiguracion = 'configuracion'" [texto]="'Configuración'" [tipoBoton]="2" [color]="'verde'" class="boton Arial"></botonComponent>
+    </div>
+    <div class="opcion">
+      <botonComponent mat-button (click)="estadoConfiguracion = 'developer'" [texto]="'Developer'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
+    </div>
+    <div class="opcion">
+      <botonComponent mat-button [mat-dialog-close]="'abandonarMazmorra'" [texto]="'Abandonar Mazmorra'" [tipoBoton]="2" [color]="'rojo'" class="boton Arial"></botonComponent>
+    </div>
+    <div class="opcion">
+      <botonComponent mat-button [mat-dialog-close]="'abandonarPartida'" [texto]="'Abandonar Partida'" [tipoBoton]="2" [color]="'rojo'" class="boton Arial"></botonComponent>
+    </div>
+    <div class="opcion">
+      <botonComponent mat-button [mat-dialog-close]="'cerrarSesion'" [texto]="'Cerrar Sesión'" [tipoBoton]="2" [color]="'rojo'" class="boton Arial"></botonComponent>
+    </div>
+  </div>
+}
 
 <!--   ******************* -->
 <!--      DEVELOPER    -->
 <!--   ******************* -->
 
-<div *ngIf="estadoConfiguracion == 'developer'" id="contenedorInicial" class="borde1">
-
+@if (estadoConfiguracion == 'developer') {
+  <div id="contenedorInicial" class="borde1">
     <h1 class="title Texto1 Arial">Desarrollador</h1>
-
-        <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'Developer Tool'" [texto]="'Developer Tool'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
-        </div>
-
-        <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'MultiControl'" [texto]="'MultiControl'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
-        </div>
-
-        <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'Data Sync'" [texto]="'Data Sync'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
-        </div>
-
-        <!--
-        <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'ForzarSync'" [texto]="'ForzarSync'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
-        </div>
-        -->
-
-</div>
+    <div class="opcion">
+      <botonComponent mat-button [mat-dialog-close]="'Developer Tool'" [texto]="'Developer Tool'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
+    </div>
+    <div class="opcion">
+      <botonComponent mat-button [mat-dialog-close]="'MultiControl'" [texto]="'MultiControl'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
+    </div>
+    <div class="opcion">
+      <botonComponent mat-button [mat-dialog-close]="'Data Sync'" [texto]="'Data Sync'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
+    </div>
+    <!--
+    <div class="opcion">
+      <botonComponent mat-button [mat-dialog-close]="'ForzarSync'" [texto]="'ForzarSync'" [tipoBoton]="2" [color]="'naranja'" class="boton Arial"></botonComponent>
+    </div>
+    -->
+  </div>
+}
 
 <!--   ******************* -->
 <!--      CONFIGURACION    -->
 <!--   ******************* -->
 
-<div *ngIf="estadoConfiguracion == 'configuracion'" id="contenedorInicial" class="borde1">
-
+@if (estadoConfiguracion == 'configuracion') {
+  <div id="contenedorInicial" class="borde1">
     <h1 class="title Texto1 Arial">Configuración</h1>
-
-
-</div>
+  </div>
+}
 
 <!--   ******************* -->
 <!--   Configuracion ANTIGUO  -->
-<!--   ******************* 
+<!--   *******************
 
 <div *ngIf="estadoConfiguracion == 'developer'" class= "contenedor borde1">
 
-    <h1 class="title Texto2">Configuración</h1>
+  <h1 class="title Texto2">Configuración</h1>
 
-    <hr class="divisor"/>
+  <hr class="divisor"/>
 
-    <img id="iconoCerrarLogs" src="../../../assets/ui/icons/Icon_05.png" [mat-dialog-close]/>
+  <img id="iconoCerrarLogs" src="../../../assets/ui/icons/Icon_05.png" [mat-dialog-close]/>
 
-    <div class="contenedorPestanas">
-        <div class="pestana Texto2 seleccionado">General</div>
-        <div class="pestana Texto2">Sonido</div>
-        <div class="pestana Texto2">Gráficos</div>
-    </div>
+  <div class="contenedorPestanas">
+    <div class="pestana Texto2 seleccionado">General</div>
+    <div class="pestana Texto2">Sonido</div>
+    <div class="pestana Texto2">Gráficos</div>
+  </div>
 
-    <hr class="divisor"/>
+  <hr class="divisor"/>
 
-    <div class="contenedorOpciones">
+  <div class="contenedorOpciones">
 
-        <div class="opcionesGenerales Texto3">
+    <div class="opcionesGenerales Texto3">
 
 
-            <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'Developer Tool'" [texto]="'Developer Tool'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+      <div class="opcion">
+        <botonComponent mat-button [mat-dialog-close]="'Developer Tool'" [texto]="'Developer Tool'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
       </div>
 
       <div class="opcion">Versión: 0.2.3 ({{data.contenido}})</div>
 
-            <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'MultiControl'" [texto]="'MultiControl'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+      <div class="opcion">
+        <botonComponent mat-button [mat-dialog-close]="'MultiControl'" [texto]="'MultiControl'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
       </div>
 
-            <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'ForzarSync'" [texto]="'ForzarSync'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+      <div class="opcion">
+        <botonComponent mat-button [mat-dialog-close]="'ForzarSync'" [texto]="'ForzarSync'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
       </div>
 
-            <div class="opcion">
-            <botonComponent mat-button [mat-dialog-close]="'cerrarSesion'" [texto]="'Cerrar Sesión'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
-            </div>
-
-        </div>
+      <div class="opcion">
+        <botonComponent mat-button [mat-dialog-close]="'cerrarSesion'" [texto]="'Cerrar Sesión'" [tipoBoton]="2" [color]="'naranja'" class="boton"></botonComponent>
+      </div>
 
     </div>
 
-    <div class="contenedorBotones">
-        <botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [tipoBoton]="2" [color]="'verde'" class="boton"></botonComponent>
-        <botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [tipoBoton]="2" [color]="'rojo'" class="boton"></botonComponent>
-    </div>
+  </div>
+
+  <div class="contenedorBotones">
+    <botonComponent mat-button [mat-dialog-close] [texto]="'Aplicar'" [tipoBoton]="2" [color]="'verde'" class="boton"></botonComponent>
+    <botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [tipoBoton]="2" [color]="'rojo'" class="boton"></botonComponent>
+  </div>
 
 </div>
 -->

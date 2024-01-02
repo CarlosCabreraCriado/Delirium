@@ -3,60 +3,65 @@
 <!--       HISTORIAL       -->
 <!--   ******************* -->
 
-<div id="panelLateralHistorial"> 
-    
-    <div class="titulo">
-        Historial
-    </div>
+<div id="panelLateralHistorial">
 
-    <div class="contenedorScroll">
+  <div class="titulo">
+    Historial
+  </div>
 
-        <div *ngFor="let turno of historial; let i = index" class="turno Arial">
+  <div class="contenedorScroll">
 
-            <div class="contenedorPersonajeTurno">
-                <img  class="imagenPersonaje" src="../../../assets/{{turno.pathImagenObjetivo}}"/>
-            </div>
-
-            <ng-container *ngFor="let accion of turno.acciones; let j = index">
-
-                <div *ngIf="accion.tipo == 'movimiento'" class="orden movimiento">
-                    <img class="iconoOrden" src="../assets/Iconos/09.png">
-                    <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
-                    <div class="valor">{{accion.valor}}</div>
-                </div>
-
-                <ng-container *ngIf="accion.tipo == 'hechizo'">
-
-                    <div  class="orden ataque">
-                        <img class="iconoOrden" src="../assets/Habilidades/Spell/{{accion.imagenHechizo}}.png">
-                    </div>
-
-                    <ng-container *ngFor="let efecto of accion.efectos; let k = index">
-
-                        <div *ngIf="efecto?.tipo == 'hechizo'" class="orden desgloseAtaque">
-                            <div class="valor">{{efecto.valor| number : '1.0-1'}}</div>
-                            <img *ngIf="efecto.tipoEfecto == 'Físico'" class="iconoTipoDano" src="../assets/Iconos/Icono-Dano-Fisico.png">
-                            <img *ngIf="efecto.tipoEfecto == 'Mágico'" class="iconoTipoDano" src="../assets/Iconos/Icono-Dano-Magico.png">
-                            <img *ngIf="efecto.tipoEfecto == 'Escudo'" class="iconoTipoDano" src="../assets/Iconos/Icono-Escudo.png">
-                            <img *ngIf="efecto.tipoEfecto == 'Heal'" class="iconoTipoDano" src="../assets/Iconos/Icono-Curacion.png">
-                            <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
-                            <img class="iconoEnemigo" [ngClass]="efecto.colorObjetivo" src="../assets/{{efecto.pathImagenObjetivo}}">
-                        </div>
-
-                        <div *ngIf="efecto?.tipo == 'buff'" class="orden desgloseAtaque">
-                            <img class="iconoOrden" src="../assets/Habilidades/Spell/{{efecto.imagenBuff}}.png">
-                            <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
-                            <img class="iconoEnemigo" [ngClass]="efecto.colorObjetivo" src="../assets/{{efecto.pathImagenObjetivo}}">
-                        </div>
-                    </ng-container>
-
-                </ng-container>
-
-            </ng-container>
-
+    @for (turno of historial; track turno; let i = $index) {
+      <div class="turno Arial">
+        <div class="contenedorPersonajeTurno">
+          <img  class="imagenPersonaje" src="../../../assets/{{turno.pathImagenObjetivo}}"/>
         </div>
+        @for (accion of turno.acciones; track accion; let j = $index) {
+          @if (accion.tipo == 'movimiento') {
+            <div class="orden movimiento">
+              <img class="iconoOrden" src="../assets/Iconos/09.png">
+              <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
+              <div class="valor">{{accion.valor}}</div>
+            </div>
+          }
+          @if (accion.tipo == 'hechizo') {
+            <div  class="orden ataque">
+              <img class="iconoOrden" src="../assets/Habilidades/Spell/{{accion.imagenHechizo}}.png">
+            </div>
+            @for (efecto of accion.efectos; track efecto; let k = $index) {
+              @if (efecto?.tipo == 'hechizo') {
+                <div class="orden desgloseAtaque">
+                  <div class="valor">{{efecto.valor| number : '1.0-1'}}</div>
+                  @if (efecto.tipoEfecto == 'Físico') {
+                    <img class="iconoTipoDano" src="../assets/Iconos/Icono-Dano-Fisico.png">
+                  }
+                  @if (efecto.tipoEfecto == 'Mágico') {
+                    <img class="iconoTipoDano" src="../assets/Iconos/Icono-Dano-Magico.png">
+                  }
+                  @if (efecto.tipoEfecto == 'Escudo') {
+                    <img class="iconoTipoDano" src="../assets/Iconos/Icono-Escudo.png">
+                  }
+                  @if (efecto.tipoEfecto == 'Heal') {
+                    <img class="iconoTipoDano" src="../assets/Iconos/Icono-Curacion.png">
+                  }
+                  <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
+                  <img class="iconoEnemigo" [ngClass]="efecto.colorObjetivo" src="../assets/{{efecto.pathImagenObjetivo}}">
+                </div>
+              }
+              @if (efecto?.tipo == 'buff') {
+                <div class="orden desgloseAtaque">
+                  <img class="iconoOrden" src="../assets/Habilidades/Spell/{{efecto.imagenBuff}}.png">
+                  <img class="iconoTipoDano" src="../assets/ui/icons/Icon_07.png">
+                  <img class="iconoEnemigo" [ngClass]="efecto.colorObjetivo" src="../assets/{{efecto.pathImagenObjetivo}}">
+                </div>
+              }
+            }
+          }
+        }
+      </div>
+    }
 
-    </div>
+  </div>
 
 </div>
 

@@ -3,9 +3,13 @@
 <!--         CHECKBOX       -->
 <!--   ******************* -->
 
-<div id="checkbox" *ngIf="tipo==1" [ngClass]="color">
+@if (tipo==1) {
+  <div id="checkbox" [ngClass]="color">
     <img class="base" src="../../../assets/ui/check_box/chb_02.png">
-    <img *ngIf="seleccionado" class="seleccionado" src="../../../assets/ui/check_box/chb_01.png">
-</div>
+    @if (seleccionado) {
+      <img class="seleccionado" src="../../../assets/ui/check_box/chb_01.png">
+    }
+  </div>
+}
 
 

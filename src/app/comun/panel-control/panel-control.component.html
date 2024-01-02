@@ -4,126 +4,121 @@
 <!--   ******************* -->
 
 <!-- Control MAZMORRA  HORIZONTAL-->
-<div id="contenedorControlMazmorraHorizontal" *ngIf="tipo=='mazmorra' && orientacion=='horizontal'">
-
+@if (tipo=='mazmorra' && orientacion=='horizontal') {
+  <div id="contenedorControlMazmorraHorizontal">
     <div class="frameAnimacionesFrame shaderFondo" [ngClass]="{'shaderFuego': turno}"></div>
-
     <!-- Boton Central -->
     <div id="contenedorBotonCentral" >
-        <img class="fondoDiamante" src="assets/Iconos/fondo-badge.png"/>
-
-        <div class="frameAnimacionesFrame" *ngIf="turno">
+      <img class="fondoDiamante" src="assets/Iconos/fondo-badge.png"/>
+      @if (turno) {
+        <div class="frameAnimacionesFrame">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
-
-        <img class="marcoDiamante" src="assets/Iconos/marco-diamante.png"/>
-        <img class="diamante" [ngClass]="{'activo': turno || habilitar}" (click)="enviarComando('centro')" src="assets/Iconos/diamante.png"/>
-        <!--<img  class="icono" src="assets/Iconos/Icono-Gema.png"/>-->
+      }
+      <img class="marcoDiamante" src="assets/Iconos/marco-diamante.png"/>
+      <img class="diamante" [ngClass]="{'activo': turno || habilitar}" (click)="enviarComando('centro')" src="assets/Iconos/diamante.png"/>
+      <!--<img  class="icono" src="assets/Iconos/Icono-Gema.png"/>-->
     </div>
-
     <!-- Boton Lateral Derecho -->
     <div class="contenedorBotonLateral derecho" (click)="enviarComando('derecha')">
-        <div class="frameAnimacionesFrame" *ngIf="turno">
+      @if (turno) {
+        <div class="frameAnimacionesFrame">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
-        <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/06.png"/>
+      }
+      <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/06.png"/>
     </div>
-
     <!-- Boton Lateral Izquierdo -->
     <div class="contenedorBotonLateral izquierdo" (click)="enviarComando('izquierda')">
-        <div class="frameAnimacionesFrame" *ngIf="turno">
+      @if (turno) {
+        <div class="frameAnimacionesFrame">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
-            <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/09.png"/>
+      }
+      <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/09.png"/>
     </div>
-
     <!-- Indicador Vida -->
     <div class="contenedorVida">
-        <img class="fondoIndicador" src="assets/ui/icons/fondo-vida.png"/>
-        <div class="valorIndicador Texto1">{{vida | number : '1.0-0'}}</div>
+      <img class="fondoIndicador" src="assets/ui/icons/fondo-vida.png"/>
+      <div class="valorIndicador Texto1">{{vida | number : '1.0-0'}}</div>
     </div>
-
     <!-- Indicador Energia -->
     <div class="contenedorEnergia">
-        <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
-        <div class="valorIndicador Texto1">{{energia}}</div>
+      <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
+      <div class="valorIndicador Texto1">{{energia}}</div>
     </div>
-
     <!-- Indicador Energia Futura -->
     <div class="contenedorEnergiaFutura">
-        <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
-        <div class="valorIndicador Texto2">{{energiaFutura}}</div>
+      <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
+      <div class="valorIndicador Texto2">{{energiaFutura}}</div>
     </div>
-
-</div>
+  </div>
+}
 
 <!-- Control MAZMORRA VERTICAL-->
-<div id="contenedorControlMazmorraVertical" *ngIf="tipo=='mazmorra' && orientacion=='vertical'">
-
+@if (tipo=='mazmorra' && orientacion=='vertical') {
+  <div id="contenedorControlMazmorraVertical">
     <div class="frameAnimacionesFrame shaderFondo" [ngClass]="{'shaderFuego': turno}"></div>
-
     <!-- Indicador Vida -->
     <div class="contenedorVida">
-        <img class="fondoIndicador" src="assets/ui/icons/fondo-vida.png"/>
-        <div class="valorIndicador Texto1">{{vida | number : '1.0-0'}}</div>
+      <img class="fondoIndicador" src="assets/ui/icons/fondo-vida.png"/>
+      <div class="valorIndicador Texto1">{{vida | number : '1.0-0'}}</div>
     </div>
-
     <!-- Indicador Energia -->
     <div class="contenedorEnergia">
-        <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
-        <div class="valorIndicador Texto1">{{energia}}</div>
+      <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
+      <div class="valorIndicador Texto1">{{energia}}</div>
     </div>
-
     <!-- Indicador Energia Futura -->
     <div class="contenedorEnergiaFutura">
-        <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
-        <div class="valorIndicador Texto2">{{energiaFutura}}</div>
+      <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
+      <div class="valorIndicador Texto2">{{energiaFutura}}</div>
     </div>
-
     <!-- Boton Central -->
     <div id="contenedorBotonCentral" >
-        <img class="fondoDiamante" src="assets/Iconos/fondo-badge.png"/>
-
-        <div class="frameAnimacionesFrame" *ngIf="turno">
+      <img class="fondoDiamante" src="assets/Iconos/fondo-badge.png"/>
+      @if (turno) {
+        <div class="frameAnimacionesFrame">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
-
-        <img class="marcoDiamante" src="assets/Iconos/marco-diamante.png"/>
-        <img class="diamante" [ngClass]="{'activo': turno || habilitar}" (click)="enviarComando('centro')" src="assets/Iconos/diamante.png"/>
-        <!--<img  class="icono" src="assets/Iconos/Icono-Gema.png"/>-->
+      }
+      <img class="marcoDiamante" src="assets/Iconos/marco-diamante.png"/>
+      <img class="diamante" [ngClass]="{'activo': turno || habilitar}" (click)="enviarComando('centro')" src="assets/Iconos/diamante.png"/>
+      <!--<img  class="icono" src="assets/Iconos/Icono-Gema.png"/>-->
     </div>
-
     <!-- Boton Lateral Derecho -->
     <div class="contenedorBotonLateral derecho" (click)="enviarComando('derecha')">
-        <div class="frameAnimacionesFrame" *ngIf="turno">
+      @if (turno) {
+        <div class="frameAnimacionesFrame">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
-        <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/06.png"/>
+      }
+      <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/06.png"/>
     </div>
-
     <!-- Boton Lateral Izquierdo -->
     <div class="contenedorBotonLateral izquierdo" (click)="enviarComando('izquierda')">
-        <div class="frameAnimacionesFrame" *ngIf="turno">
+      @if (turno) {
+        <div class="frameAnimacionesFrame">
           <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
         </div>
-            <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/09.png"/>
+      }
+      <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/09.png"/>
     </div>
-
-</div>
+  </div>
+}
 
 <!-- Control INMAP -->
-<div id="contenedorControlInMap" *ngIf="tipo=='inMap'">
+@if (tipo=='inMap') {
+  <div id="contenedorControlInMap">
     <div class="fondoDetalle">
     </div>
-
     <!-- Indicador Movimientos Restantes -->
     <div class="contenedorMovimientosRestantes">
-        <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
-        <div class="valorIndicador Texto1">{{movimientoRestante}}</div>
+      <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
+      <div class="valorIndicador Texto1">{{movimientoRestante}}</div>
     </div>
-
     <div class="texto">
-        {{mensajeControl}}
+      {{mensajeControl}}
     </div>
-
-</div>
+  </div>
+}

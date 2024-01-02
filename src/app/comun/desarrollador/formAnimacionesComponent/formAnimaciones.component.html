@@ -3,24 +3,31 @@
 <!--    FORM ANIMACIONES   -->
 <!--   ******************* -->
 
-		<!-- LISTA ANIMACIONES -->
-      <div class="contenedorLateral izquierda">
-        <div class="titulo"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">Animaciones: </div>
-		<div class="lista"*ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
-			<div *ngFor="let animacion of this.desarrolladorService.animaciones.animaciones; let i=index" [ngClass]="renderListaSeleccionado('animaciones',i)" class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
+<!-- LISTA ANIMACIONES -->
+<div class="contenedorLateral izquierda">
+  @if (desarrolladorService.estadoHerramientaDatos=='Animaciones') {
+<div class="titulo>Animaciones: </div>
+}
+		@if (desarrolladorService.estadoHerramientaDatos=='Animaciones') {
+<div class="lista>
+			@for (animacion of this.desarrolladorService.animaciones.animaciones; track animacion; let i = $index) {
+<div [ngClass]="renderListaSeleccionado('animaciones',i)" class="hechizo" (click)="desarrolladorService.seleccionarAnimacion(i)">
 				<div class="nombre">{{animacion.nombre}}</div>
 				<!-- <img class="imagenHechizo" src="./assets/Efectos/{{animacion.sprite_id}}.png">-->
 			</div>
+}
             <!-- Boton Add -->
             <div class="botonAddLista" (click)="desarrolladorService.addDato()">
                 Añadir
             </div>
 		</div>
+}
 
 	  </div> <!-- FIN CONTENEDOR LISTA IZQUIERDA -->
 
 		<!-- CENTRAL DATOS ANIMACION -->
-		<div id="visualizadorAnimaciones" *ngIf="desarrolladorService.estadoHerramientaDatos=='Animaciones'">
+		@if (desarrolladorService.estadoHerramientaDatos=='Animaciones') {
+<div id="visualizadorAnimaciones">
 			<div class="contenedorImagen">
 				<div (click)="desarrolladorService.abrirSelectorImagen('buff')" class="fondoAnimacion"></div>
 
@@ -137,7 +144,9 @@
 			<div class="contenedorSubLista contenedorSubanimacion">
 
 				<div class="tituloSubLista">Subanimación</div>
-				<div *ngFor="let subanimacion of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].subanimaciones; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('subanimacion',i)" (click)="desarrolladorService.seleccionarSubanimacion(i)">{{subanimacion.nombre}} </div>
+				@for (subanimacion of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].subanimaciones; track subanimacion; let i = $index) {
+<div  class="elemento" [ngClass]="renderListaSeleccionado('subanimacion',i)" (click)="desarrolladorService.seleccionarSubanimacion(i)">{{subanimacion.nombre}} </div>
+}
 			</div>
 				<div class="botonAdd botonSubanimacion" (click)="desarrolladorService.addSubanimacion()">Añadir</div>
 
@@ -145,26 +154,35 @@
 			<div class="contenedorSubLista contenedorSonido">
 
 				<div class="tituloSubLista">Sonidos</div>
-				<div *ngFor="let sonido of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].sonidos; let i=index"  class="elemento" [ngClass]="renderListaSeleccionado('sonido',i)" (click)="desarrolladorService.seleccionarSonido(i)">{{sonido.nombre}}</div>
+				@for (sonido of this.desarrolladorService.animaciones.animaciones[desarrolladorService.animacionSeleccionadoIndex].sonidos; track sonido; let i = $index) {
+<div  class="elemento" [ngClass]="renderListaSeleccionado('sonido',i)" (click)="desarrolladorService.seleccionarSonido(i)">{{sonido.nombre}}</div>
+}
 			</div>
 			<div class="botonAdd botonSonidos" (click)="desarrolladorService.addSonido()">Añadir</div>
 
 		</div>
+}
         <!-- FIN VISUALIZACIÓN ANIMACIONES -->
 
 
 	<!-- LISTA SONIDOS -->
 	  <div class="contenedorLateral derecha">
-        <div class="titulo"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">Sonidos: </div>
-		<div class="lista"*ngIf="desarrolladorService.estadoPanelDatosDerecha=='Sonidos'">
+        @if (desarrolladorService.estadoPanelDatosDerecha=='Sonidos') {
+<div class="titulo>Sonidos: </div>
+}
+		@if (desarrolladorService.estadoPanelDatosDerecha=='Sonidos') {
+<div class="lista>
 			<div class="hechizo" (click)="desarrolladorService.eliminarSonidoAnimacion()">
 				<img class="imagen" src="./assets/desarrollador/papelera.svg">
 				<div class="nombre">Eliminar sonido</div>
 			</div>
-			<div *ngFor="let sonido of this.desarrolladorService.animaciones.sonidos; let i=index"  class="hechizo" (click)="desarrolladorService.asignarSonidoAnimacion(i)" [ngClass]="renderListaSeleccionado('listaSonidos',i)" >
+			@for (sonido of this.desarrolladorService.animaciones.sonidos; track sonido; let i = $index) {
+<div  class="hechizo" (click)="desarrolladorService.asignarSonidoAnimacion(i)" [ngClass]="renderListaSeleccionado('listaSonidos',i)" >
 				<img class="imagen" src="./assets/Habilidades/Spell/283.png">
 				<div class="nombre">{{sonido.nombre}}</div>
 			</div>
+}
 		</div>
+}
 	  </div> <!-- Fin contenedor lateral derecha -->
 

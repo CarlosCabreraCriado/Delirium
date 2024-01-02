@@ -4,28 +4,30 @@
 <!--   ******************* -->
 <div id="contenedorMapaMazmorra">
 
-        <pinch-zoom #pinchZoom id="pinch-zoom"
-            [limitPan]="false"
-            [minPanScale]="1"
-            [renderX]="renderX"
-            [renderY]="renderY"
-            [disableZoomControl]="'disable'"
-            [double-tap]="false"
-            [limit-zoom]="10">
+  <pinch-zoom #pinchZoom id="pinch-zoom"
+    [limitPan]="false"
+    [minPanScale]="1"
+    [renderX]="renderX"
+    [renderY]="renderY"
+    [disableZoomControl]="'disable'"
+    [double-tap]="false"
+    [limit-zoom]="10">
 
-          <!-- Contenedor Isometrico -->
-          <div #canvasIsometrico class="contenedorIsometrico" [ngStyle]= "this.estiloContenedorIsometrico">
-              <div  class="canvasIsometrico" [ngStyle]= "this.estiloIsometrico">
+    <!-- Contenedor Isometrico -->
+    <div #canvasIsometrico class="contenedorIsometrico" [ngStyle]= "this.estiloContenedorIsometrico">
+      <div  class="canvasIsometrico" [ngStyle]= "this.estiloIsometrico">
 
-                <div *ngFor="let elementoIsometrico of isometrico.MapSave.Placeables.Placeable; let i= index" class="elementoIsometrico" (click)="clickElemento(elementoIsometrico)" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
-                    <img  class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
-                    <ng-container *ngIf="elementoIsometrico.enemigoId">
-                        <img [ngStyle]= "renderizarEnemigoIsometrico(elementoIsometrico)" class="imagenEnemigoIsometrico" src="./assets/Enemigos/{{elementoIsometrico.pathEnemigo}}">
-                    </ng-container>
-                </div>
-
-              </div>
+        @for (elementoIsometrico of isometrico.MapSave.Placeables.Placeable; track elementoIsometrico; let i = $index) {
+          <div class="elementoIsometrico" (click)="clickElemento(elementoIsometrico)" [ngStyle]= "renderizarElementoIsometrico(elementoIsometrico)">
+            <img  class="imagenElementoIsometrico" src="{{elementoIsometrico.ImagePath}}">
+            @if (elementoIsometrico.enemigoId) {
+              <img [ngStyle]= "renderizarEnemigoIsometrico(elementoIsometrico)" class="imagenEnemigoIsometrico" src="./assets/Enemigos/{{elementoIsometrico.pathEnemigo}}">
+            }
           </div>
-     </pinch-zoom>
+        }
+
+      </div>
+    </div>
+  </pinch-zoom>
 
 </div>

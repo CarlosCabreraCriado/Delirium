@@ -1,9 +1,11 @@
 
 
-<div *ngIf="mostrarMensaje" id="PantallaMensaje" [style.opacity]="opacidad">
-	<div class="contenedorMensaje">
-		<div class="titulo">Bug Log</div>
-		<div class="mensajeTexto Texto2">Bug Log</div>
-		<div class="mensajeOpcion Texto2" (click)="cerrarMensaje()">OK</div>	
-	</div>
-</div>
+@if (mostrarMensaje) {
+  <div id="PantallaMensaje" [style.opacity]="opacidad">
+    <div class="contenedorMensaje">
+      <div class="titulo">Bug Log</div>
+      <div class="mensajeTexto Texto2">Bug Log</div>
+      <div class="mensajeOpcion Texto2" (click)="cerrarMensaje()">OK</div>
+    </div>
+  </div>
+}

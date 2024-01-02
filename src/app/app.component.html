@@ -11,11 +11,21 @@
 
 <app-ajustes></app-ajustes>
 
-<app-index *ngIf="estadoApp.pantalla == 'index'"></app-index>
+@if (estadoApp.pantalla == 'index') {
+  <app-index></app-index>
+}
 
-<seleccionPersonajeComponent *ngIf="estadoApp.pantalla == 'seleccionPersonaje'"></seleccionPersonajeComponent>
-<app-inmap *ngIf="estadoApp.pantalla == 'inmap'"></app-inmap>
-<app-mazmorra *ngIf="estadoApp.pantalla == 'mazmorra'"></app-mazmorra>
-<app-desarrollador *ngIf="estadoApp.pantalla == 'desarrollador'"></app-desarrollador>
+@if (estadoApp.pantalla == 'seleccionPersonaje') {
+  <seleccionPersonajeComponent></seleccionPersonajeComponent>
+}
+@if (estadoApp.pantalla == 'inmap') {
+  <app-inmap></app-inmap>
+}
+@if (estadoApp.pantalla == 'mazmorra') {
+  <app-mazmorra></app-mazmorra>
+}
+@if (estadoApp.pantalla == 'desarrollador') {
+  <app-desarrollador></app-desarrollador>
+}
 
 <!--<router-outlet></router-outlet>-->

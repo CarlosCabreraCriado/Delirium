@@ -1,78 +1,90 @@
 
-    <!--   ******************* -->
-        <!--     DISEÑO DE FONDO   -->
-        <!--   ******************* -->
-        <!-- Diseño Fondo -->
-        <div class="fondo" id="fondo">
-            <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
-                <!-- Video Fondo -->
-                <!--<video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/General/papiro.jpg">
-                    <source src="./assets/videos/particulas.mp4" type="video/mp4"/>
-                </video>
-				-->
-        </div>
+<!--   ******************* -->
+<!--     DISEÑO DE FONDO   -->
+<!--   ******************* -->
+<!-- Diseño Fondo -->
+<div class="fondo" id="fondo">
+  <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
+  <!-- Video Fondo -->
+  <!--<video *ngIf="appService.dispositivo=='Desktop'" autoplay class="videoParticulas visible" id="videoParticulas" loop muted poster="./assets/General/papiro.jpg">
+  <source src="./assets/videos/particulas.mp4" type="video/mp4"/>
+</video>
+-->
+</div>
 
-		<!--   ******************* -->
-		<!--      FLECHA TUTORIAL  -->
-		<!--   ******************* -->
-        <img id="flechaTutorial" *ngIf="mazmorraService.flagTutorial" [ngClass]="renderFlechaTutorial()" src="../../../assets/ui/icons/Icon_07.png">
+<!--   ******************* -->
+<!--      FLECHA TUTORIAL  -->
+<!--   ******************* -->
+@if (mazmorraService.flagTutorial) {
+  <img id="flechaTutorial" [ngClass]="renderFlechaTutorial()" src="../../../assets/ui/icons/Icon_07.png">
+}
 
 
-		<!--   ******************* -->
-		<!--      PANEL GENERAL    -->
-		<!--   ******************* -->
+<!--   ******************* -->
+<!--      PANEL GENERAL    -->
+<!--   ******************* -->
 
-		<panelGeneralComponent id="PanelGeneral" (comandoPanelGeneral)="comandoPanelGeneral($event)"></panelGeneralComponent>
+<panelGeneralComponent id="PanelGeneral" (comandoPanelGeneral)="comandoPanelGeneral($event)"></panelGeneralComponent>
 
-	<!--   ******************* -->
-	<!--          PANELES      -->
-	<!--   ******************* -->
+<!--   ******************* -->
+<!--          PANELES      -->
+<!--   ******************* -->
 
-	<div id="ContenedorPaneles">
-		<div class="panel panelPersonaje" *ngIf="pantalla =='Personaje'">
-			<panelPersonajeComponent></panelPersonajeComponent>
-		</div>
+<div id="ContenedorPaneles">
+  @if (pantalla =='Personaje') {
+    <div class="panel panelPersonaje">
+      <panelPersonajeComponent></panelPersonajeComponent>
+    </div>
+  }
 
-		<div class="panel panelPersonaje" *ngIf="pantalla =='Equipo'">
-			<panelEquipoComponent></panelEquipoComponent>
-		</div>
-		<div class="panel panelMazmorra" *ngIf="pantalla =='Mazmorra'">
-			<panelUbicacionComponent [sesion]="this.mazmorraService.sesion"></panelUbicacionComponent>
-		</div>
+  @if (pantalla =='Equipo') {
+    <div class="panel panelPersonaje">
+      <panelEquipoComponent></panelEquipoComponent>
+    </div>
+  }
+  @if (pantalla =='Mazmorra') {
+    <div class="panel panelMazmorra">
+      <panelUbicacionComponent [sesion]="this.mazmorraService.sesion"></panelUbicacionComponent>
+    </div>
+  }
 
-		<div class="panel panelMazmorra" *ngIf="pantalla =='Diario'">
-			<panelDiarioComponent></panelDiarioComponent>
-		</div>
+  @if (pantalla =='Diario') {
+    <div class="panel panelMazmorra">
+      <panelDiarioComponent></panelDiarioComponent>
+    </div>
+  }
 
-		<div class="panel panelMazmorra" *ngIf="pantalla =='Tienda'">
-			<panelTiendaComponent></panelTiendaComponent>
-		</div>
-	</div>
+  @if (pantalla =='Tienda') {
+    <div class="panel panelMazmorra">
+      <panelTiendaComponent></panelTiendaComponent>
+    </div>
+  }
+</div>
 
-    <!--   ******************* -->
-    <!--      HISTORIAL        -->
-    <!--   ******************* -->
-    <historialComponent id="historial"
+<!--   ******************* -->
+<!--      HISTORIAL        -->
+<!--   ******************* -->
+<historialComponent id="historial"
         [ngClass]="{
             'mostrarHistorial': mostrarHistorial,
             'ocultarHistorial': !mostrarHistorial
             }">
-    </historialComponent>
+</historialComponent>
 
 
-	<!--   ******************* -->
-	<!--      Tiempo    -->
-	<!--   ******************* -->
+<!--   ******************* -->
+<!--      Tiempo    -->
+<!--   ******************* -->
 
-    <div id="tiempo">
-	    <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
-        <!--
-      <div class="temporizador">{{mazmorraService.tiempoActual}}</div>
-        -->
-        <div class="temporizador">0</div>
-	    <botonComponent mat-button (click)="centrarMazmorra()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
-	    <botonComponent mat-button [texto]="'Mapa'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
-    </div>
+<div id="tiempo">
+  <img class="barraTiempo" src="../../../assets/tiempo/panel-tiempo.png">
+  <!--
+  <div class="temporizador">{{mazmorraService.tiempoActual}}</div>
+  -->
+  <div class="temporizador">0</div>
+  <botonComponent mat-button (click)="centrarMazmorra()" [texto]="'Centrar'" [tipoBoton]="2" [color]="'violeta'" class="botonCentrar"></botonComponent>
+  <botonComponent mat-button [texto]="'Mapa'" [tipoBoton]="2" [color]="'violeta'" class="botonToggleInMap"></botonComponent>
+</div>
 
 <!--   ************************** -->
 <!--    CONTENEDOR MAIN WINDOW    -->
@@ -80,174 +92,179 @@
 
 <div id="contenedorMainWindow">
 
-        <!--   ******************* -->
-        <!--     LOOGER            -->
-        <!--   ******************* -->
+  <!--   ******************* -->
+  <!--     LOOGER            -->
+  <!--   ******************* -->
 
-<appLogger [renderMazmorra]="renderMazmorra" [sesion]="mazmorraService.sesion"></appLogger>
+  <appLogger [renderMazmorra]="renderMazmorra" [sesion]="mazmorraService.sesion"></appLogger>
 
-	<!--   ******************* -->
-	<!--        Credito      -->
-	<!--   ******************* -->
+  <!--   ******************* -->
+  <!--        Credito      -->
+  <!--   ******************* -->
 
-    <!--
-<creditoComponent id="creditoMapa" [gemas]= "0" [monedas]= "0"></creditoComponent>
-    -->
+  <!--
+  <creditoComponent id="creditoMapa" [gemas]= "0" [monedas]= "0"></creditoComponent>
+  -->
 
-	<!--   ******************* -->
-	<!--      Configuracion    -->
-	<!--   ******************* -->
+  <!--   ******************* -->
+  <!--      Configuracion    -->
+  <!--   ******************* -->
 
-	<img id="iconoConfiguracion" src="../../../assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
+  <img id="iconoConfiguracion" src="../../../assets/Iconos/Icono-Configuracion.png" (click)="abrirConfiguracion()"/>
 
-	<!--   ******************* -->
-	<!--      Boton Historial    -->
-	<!--   ******************* -->
-    <div id="contenedorHistorial">
-	    <img id="iconoHistorial" src="../../../assets/Iconos/Icono-Misiones.png" (click)="mostrarHistorial = !mostrarHistorial"/>
-    </div>
+  <!--   ******************* -->
+  <!--      Boton Historial    -->
+  <!--   ******************* -->
+  <div id="contenedorHistorial">
+    <img id="iconoHistorial" src="../../../assets/Iconos/Icono-Misiones.png" (click)="mostrarHistorial = !mostrarHistorial"/>
+  </div>
 
-	<!--   ******************* -->
-	<!--      ESTADISTICAS    -->
-	<!--   ******************* -->
+  <!--   ******************* -->
+  <!--      ESTADISTICAS    -->
+  <!--   ******************* -->
 
-	<img id="iconoEstadisticas" src="../../../assets/Iconos/Icono-Estadisticas.png" (click)="abrirEstadisticas()"/>
+  <img id="iconoEstadisticas" src="../../../assets/Iconos/Icono-Estadisticas.png" (click)="abrirEstadisticas()"/>
 
-	<!--   ******************* -->
-	<!--      ICONO LOG    -->
-	<!--   ******************* -->
+  <!--   ******************* -->
+  <!--      ICONO LOG    -->
+  <!--   ******************* -->
 
   <img id="iconoLogs" src="../../../assets/General/tool.png" (click)="abrirLogger()"/>
 
-	<!--   ******************* -->
-	<!--      ICONO RELOAD    -->
-	<!--   ******************* -->
+  <!--   ******************* -->
+  <!--      ICONO RELOAD    -->
+  <!--   ******************* -->
 
   <img id="iconoReload" src="../../../assets/desarrollador/reload.png" (click)="appService.reloadPage()"/>
 
-	<!--   ******************* -->
-	<!--      Social    -->
-	<!--   ******************* -->
+  <!--   ******************* -->
+  <!--      Social    -->
+  <!--   ******************* -->
 
-    <!--
-	<img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="this.appService.funcionDesarrollo()"/>
-    -->
+  <!--
+  <img id="iconoSocial" src="../../../assets/Iconos/Icono-Social.png" (click)="this.appService.funcionDesarrollo()"/>
+  -->
 
-		<!--   ******************* -->
-		<!--       BOTONES TEST    -->
-		<!--   ******************* -->
-    <!--
-	<img id="test1" src="../../../assets/Iconos/07.png" (click)="this.toggleModoMazmorra()"/>
-    -->
+  <!--   ******************* -->
+  <!--       BOTONES TEST    -->
+  <!--   ******************* -->
+  <!--
+  <img id="test1" src="../../../assets/Iconos/07.png" (click)="this.toggleModoMazmorra()"/>
+  -->
 
   <div id="botonToggleMazmorra" [ngClass]="{'modoMapa': this.modoMazmorra=='mapa', 'modoCombate': this.modoMazmorra== 'combate'}" (click)="this.toggleModoMazmorra()">
-      <div class="side-a"></div>
-      <div class="side-b"></div>
+    <div class="side-a"></div>
+    <div class="side-b"></div>
   </div>
 
-        <!--
-	<img id="test2" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarDialogo()"/>
-	<img id="iconoCentrar" src="../../../assets/Iconos/07.png" (click)="this.centrarMazmorra()"/>
+  <!--
+  <img id="test2" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarDialogo()"/>
+  <img id="iconoCentrar" src="../../../assets/Iconos/07.png" (click)="this.centrarMazmorra()"/>
 
-        -->
+  -->
 
-        <!--   ******************* -->
-        <!--     INTERFAZ PANEL         -->
-        <!--   ******************* -->
+  <!--   ******************* -->
+  <!--     INTERFAZ PANEL         -->
+  <!--   ******************* -->
 
-        <app-interfaz #interfazComponent [activarInterfaz]="mazmorraService.activarInterfaz"></app-interfaz>
+  <app-interfaz #interfazComponent [activarInterfaz]="mazmorraService.activarInterfaz"></app-interfaz>
 
-        <!--   ******************* -->
-        <!--     RNG PANEL         -->
-        <!--   ******************* -->
+  <!--   ******************* -->
+  <!--     RNG PANEL         -->
+  <!--   ******************* -->
 
-<app-rng></app-rng>
+  <app-rng></app-rng>
 
-        <!--   ******************* -->
-        <!--     EVENTOS PANEL     -->
-        <!--   ******************* -->
+  <!--   ******************* -->
+  <!--     EVENTOS PANEL     -->
+  <!--   ******************* -->
 
-<app-eventos></app-eventos>
+  <app-eventos></app-eventos>
 
-        <!--   ******************* -->
-        <!--     INFO HEROES PANEL     -->
-        <!--   ******************* -->
+  <!--   ******************* -->
+  <!--     INFO HEROES PANEL     -->
+  <!--   ******************* -->
 
-<appHeroesInfo></appHeroesInfo>
+  <appHeroesInfo></appHeroesInfo>
 
-     <!-- *************************************************
-            MAPA MAZMORRA
-     ************************************************* -->
+  <!-- *************************************************
+  MAPA MAZMORRA
+  ************************************************* -->
 
-  <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-	<mapaMazmorraComponent #mapaMazmorra id="mapaMazmorra"
+  @if (this.mazmorraService.mostrarMazmorra) {
+    <mapaMazmorraComponent #mapaMazmorra id="mapaMazmorra"
       (eventoClickElemento)="clickElemento($event)"
       [isometrico]="this.mazmorraService.mazmorra.isometrico"
       [renderEnemigos]="this.mazmorraService.sesion?.render.enemigos"
       [renderMazmorra]= "this.mazmorraService.sesion?.render.mazmorra"
       [escalaIsometrico]="0.3"
       [salasDescubiertas]="this.mazmorraService.sesion.render.mazmorra.salasDescubiertas">
-  </mapaMazmorraComponent>
-  </ng-container>
+    </mapaMazmorraComponent>
+  }
 
-	<!--   ******************* -->
-	<!--      Panel Control    -->
-	<!--   ******************* -->
-    <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-
+  <!--   ******************* -->
+  <!--      Panel Control    -->
+  <!--   ******************* -->
+  @if (this.mazmorraService.mostrarMazmorra) {
     <panelControlComponent (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"
-            [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}"
-            [tipo]="'mazmorra'"
-            [vida]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].puntosVida"
-            [energia]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energia"
-            [energiaFutura]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energiaFutura"
-            [turno]= "mazmorraService.estadoControl.esTurnoPropio"
-            [habilitar]="mazmorraService.estadoControl.esTurnoPropio || mazmorraService.permitirMultiControl" >
+      [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}"
+      [tipo]="'mazmorra'"
+      [vida]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].puntosVida"
+      [energia]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energia"
+      [energiaFutura]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energiaFutura"
+      [turno]= "mazmorraService.estadoControl.esTurnoPropio"
+      [habilitar]="mazmorraService.estadoControl.esTurnoPropio || mazmorraService.permitirMultiControl" >
     </panelControlComponent>
+  }
 
-    </ng-container>
+  <!--   ******************* -->
+  <!--        Experiencia    -->
+  <!--   ******************* -->
 
-		<!--   ******************* -->
-		<!--        Experiencia    -->
-		<!--   ******************* -->
+  <experienciaComponent id="experiencia"></experienciaComponent>
 
-<experienciaComponent id="experiencia"></experienciaComponent>
+  <div id="fondoCombate" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
+    <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
+    <div class="degradadoFondo"></div>
+    <waveComponent></waveComponent>
+  </div>
 
-    <div id="fondoCombate" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
-        <img alt="Fondo-papiro" class="fondoPapiro" src="./assets/General/Fondo-Papiro.png"/>
-        <div class="degradadoFondo"></div>
-        <waveComponent></waveComponent>
+  <!-- *************************************************
+  Panel Acción
+  ************************************************* -->
+  @if (mazmorraService.cargaCompleta) {
+    <div class="Panel Barra-Accion" [ngClass]="renderIndividual()">
+      <!-- Panel de mensajes -->
+      @if (true) {
+        <div id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':this.mazmorraService.barraAccion.mostrar}">
+          {{this.mazmorraService.barraAccion.mensajeAccion}}
+        </div>
+      }
     </div>
+  }
 
-<!-- *************************************************
-            Panel Acción
-     ************************************************* -->
-<div *ngIf="mazmorraService.cargaCompleta" class="Panel Barra-Accion" [ngClass]="renderIndividual()">
-	<!-- Panel de mensajes -->
-    <div *ngIf="true" id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':this.mazmorraService.barraAccion.mostrar}">
-        {{this.mazmorraService.barraAccion.mensajeAccion}}
-    </div>
+  <!--   ******************* -->
+  <!--      Paneles Heroes   -->
+  <!--   ******************* -->
+  <div id="contenedorHeroes" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
+    @if (this.mazmorraService.mostrarMazmorra) {
+      @for (heroe of this.mazmorraService.sesion.render.heroes; track heroe; let i = $index) {
+        <heroeComponent [desplegable]="false" [modoMazmorra]="modoMazmorra" [indexHeroe]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
+      }
+    }
+  </div>
 
-</div>
-
-	<!--   ******************* -->
-	<!--      Paneles Heroes   -->
-	<!--   ******************* -->
-	<div id="contenedorHeroes" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
-        <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-		      <heroeComponent *ngFor="let heroe of this.mazmorraService.sesion.render.heroes; let i = index" [desplegable]="false" [modoMazmorra]="modoMazmorra" [indexHeroe]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
-        </ng-container>
-	</div>
-
-	<!--   ******************* -->
-	<!--     Paneles Enemigos  -->
-	<!--   ******************* -->
+  <!--   ******************* -->
+  <!--     Paneles Enemigos  -->
+  <!--   ******************* -->
 
   <div id="contenedorEnemigos" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
-        <ng-container *ngIf="this.mazmorraService.mostrarMazmorra">
-          <enemigoComponent *ngFor="let enemigo of this.mazmorraService.sesion.render.enemigos; let i = index" [desplegable]="false" [indexEnemigo]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
-        </ng-container>
-	</div>
+    @if (this.mazmorraService.mostrarMazmorra) {
+      @for (enemigo of this.mazmorraService.sesion.render.enemigos; track enemigo; let i = $index) {
+        <enemigoComponent [desplegable]="false" [indexEnemigo]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
+      }
+    }
+  </div>
 
 
 

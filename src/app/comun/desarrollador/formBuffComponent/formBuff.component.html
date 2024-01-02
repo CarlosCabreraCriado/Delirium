@@ -3,164 +3,148 @@
 <!--         Plantilla       -->
 <!--   ******************* -->
 
-        <!-- LISTA HECHIZOS -->
-        <panelSelectorComponent
-            [tipo]="'Buff'"
-            [titulo]="'Buff'"
-            [botonAdd]="true"
-            [lateral]="'izquierda'"
-            [botonEliminarRelacion]="false"
-            (addElementoEmitter)="addBuff()"
-            (selector)="seleccionarBuff($event)"
-            >
-        </panelSelectorComponent>
+<!-- LISTA HECHIZOS -->
+<panelSelectorComponent
+  [tipo]="'Buff'"
+  [titulo]="'Buff'"
+  [botonAdd]="true"
+  [lateral]="'izquierda'"
+  [botonEliminarRelacion]="false"
+  (addElementoEmitter)="addBuff()"
+  (selector)="seleccionarBuff($event)"
+  >
+</panelSelectorComponent>
 
-	<!-- CENTRAL DATOS BUFF -->
-	<div id="visualizador" *ngIf="desarrolladorService.estadoHerramientaDatos=='Buff'">
-			<div class="contenedorImagen">
-				<img (click)="desarrolladorService.abrirSelectorImagen('Buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
-			</div>
-			<form  class="formularioGeneral" [formGroup]="formBuff">
+<!-- CENTRAL DATOS BUFF -->
+@if (desarrolladorService.estadoHerramientaDatos=='Buff') {
+  <div id="visualizador">
+    <div class="contenedorImagen">
+      <img (click)="desarrolladorService.abrirSelectorImagen('Buff')" class="imagen" src="./assets/Habilidades/Spell/{{desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].imagen_id}}.png"/>
+    </div>
+    <form  class="formularioGeneral" [formGroup]="formBuff">
+      <img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarBuff()"/>
+      <mat-form-field class="formId">
+        <mat-label>ID</mat-label>
+        <input matInput placeholder="ID" type="number" formControlName="id">
+      </mat-form-field>
+      <mat-form-field class="formNombre">
+        <mat-label>Nombre hechizo</mat-label>
+        <input matInput placeholder="Nombre" formControlName="nombre">
+      </mat-form-field>
+      <mat-form-field class="formDescripcion">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput placeholder="Descripción" formControlName="descripcion"></textarea>
+      </mat-form-field>
+      <div class="selector formObjetivo">
+        <mat-form-field>
+          <mat-label>Ventaja/Desventaja</mat-label>
+          <mat-select [formControl]="tipo_Buff">
+            <mat-option value="Ventaja">Ventaja</mat-option>
+            <mat-option value="Desventaja">Desventaja</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="selector formTipoDaño">
+        <mat-form-field>
+          <mat-label>Tipo Daño</mat-label>
+          <mat-select [formControl]="tipo_dano_Buff">
+            <mat-option value="Físico">Físico</mat-option>
+            <mat-option value="Mágico">Mágico</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="formTriple daño">
+        <mat-form-field class="pa">
+          <mat-label>Daño</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_t">
+        </mat-form-field>
+        <mat-form-field class="ad">
+          <mat-label>AD</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_esc_AD">
+        </mat-form-field>
+        <mat-form-field class="ap">
+          <mat-label>AP</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_esc_AP">
+        </mat-form-field>
+      </div>
+      <div class="formTriple heal">
+        <mat-form-field class="pa">
+          <mat-label>Heal</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="heal_t">
+        </mat-form-field>
+        <mat-form-field class="ad">
+          <mat-label>AD</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Heal directo" formControlName="heal_esc_AD">
+        </mat-form-field>
+        <mat-form-field class="ap">
+          <mat-label>AP</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="heal_esc_AP">
+        </mat-form-field>
+      </div>
+      <div class="formTriple escudo">
+        <mat-form-field class="pa">
+          <mat-label>Escudo</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Escudo directo" formControlName="escudo_t">
+        </mat-form-field>
+        <mat-form-field class="ad">
+          <mat-label>AD</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="escudo_esc_AD">
+        </mat-form-field>
+        <mat-form-field class="ap">
+          <mat-label>AP</mat-label>
+          <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="escudo_esc_AP">
+        </mat-form-field>
+      </div>
+      <mat-form-field class="formAmenaza">
+        <mat-label>Duración</mat-label>
+        <input matInput placeholder="Schema" formControlName="duracion">
+      </mat-form-field>
+      <!--
+      <mat-form-field appearance="legacy" class="formEnergia">
+        <mat-label>Heal T</mat-label>
+        <input matInput placeholder="Schema" formControlName="heal_t">
+      </mat-form-field>
+      <mat-form-field appearance="legacy" class="formPoder">
+        <mat-label>Escudo T</mat-label>
+        <input matInput placeholder="Schema" formControlName="escudo_t">
+      </mat-form-field>
+      -->
+      <mat-form-field class="formStatInc">
+        <mat-label>Stat Inc</mat-label>
+        <input matInput placeholder="Schema" formControlName="stat_inc">
+      </mat-form-field>
+      <mat-form-field class="formStatIncInicial">
+        <mat-label>Stat Inc Inicial</mat-label>
+        <input matInput placeholder="Schema" formControlName="stat_inc_inicial">
+      </mat-form-field>
+      <mat-form-field class="formStatIncT">
+        <mat-label>Stat Inc T</mat-label>
+        <input matInput placeholder="Schema" formControlName="stat_inc_t">
+      </mat-form-field>
+    </form>
+    <div class="contenedorCampoRelacional campoAnimacion">
+      <div class="titulo">Animacion:</div>
+      <div >
+        @if (this.desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].animacion_id!=null) {
+          <img class="imagenCampoRelacional" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
+        }
+        @if (this.desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].animacion_id==null) {
+          <img class="imagenCampoRelacional" [ngClass]="renderBotonAddSeleccionado('Animacion')" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/add.svg"/>
+        }
+      </div>
+    </div>
+  </div>
+  }       <!-- FIN VISUALIZACIÓN BUFF -->
 
-				<img class="botonEliminar" src="./assets/desarrollador/papelera.svg" (click)="desarrolladorService.eliminarBuff()"/>
-
-				  <mat-form-field class="formId">
-					<mat-label>ID</mat-label>
-					<input matInput placeholder="ID" type="number" formControlName="id">
-				  </mat-form-field>
-
-				  <mat-form-field class="formNombre">
-					<mat-label>Nombre hechizo</mat-label>
-					<input matInput placeholder="Nombre" formControlName="nombre">
-				  </mat-form-field>
-
-				  <mat-form-field class="formDescripcion">
-					<mat-label>Descripción</mat-label>
-                    <textarea matInput placeholder="Descripción" formControlName="descripcion"></textarea>
-				  </mat-form-field>
-
-                    <div class="selector formObjetivo">
-                      <mat-form-field>
-                        <mat-label>Ventaja/Desventaja</mat-label>
-                        <mat-select [formControl]="tipo_Buff">
-                            <mat-option value="Ventaja">Ventaja</mat-option>
-                            <mat-option value="Desventaja">Desventaja</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-
-                    <div class="selector formTipoDaño">
-                      <mat-form-field>
-                        <mat-label>Tipo Daño</mat-label>
-                        <mat-select [formControl]="tipo_dano_Buff">
-                            <mat-option value="Físico">Físico</mat-option>
-                            <mat-option value="Mágico">Mágico</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-
-                  <div class="formTriple daño">
-                      <mat-form-field class="pa">
-                        <mat-label>Daño</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_t">
-                      </mat-form-field>
-
-                      <mat-form-field class="ad">
-                        <mat-label>AD</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_esc_AD">
-                      </mat-form-field>
-
-                      <mat-form-field class="ap">
-                        <mat-label>AP</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="daño_esc_AP">
-                      </mat-form-field>
-                  </div>
-
-                  <div class="formTriple heal">
-                      <mat-form-field class="pa">
-                        <mat-label>Heal</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="heal_t">
-                      </mat-form-field>
-
-                      <mat-form-field class="ad">
-                        <mat-label>AD</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Heal directo" formControlName="heal_esc_AD">
-                      </mat-form-field>
-
-                      <mat-form-field class="ap">
-                        <mat-label>AP</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="heal_esc_AP">
-                      </mat-form-field>
-                  </div>
-
-                  <div class="formTriple escudo">
-                      <mat-form-field class="pa">
-                        <mat-label>Escudo</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Escudo directo" formControlName="escudo_t">
-                      </mat-form-field>
-
-                      <mat-form-field class="ad">
-                        <mat-label>AD</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="escudo_esc_AD">
-                      </mat-form-field>
-
-                      <mat-form-field class="ap">
-                        <mat-label>AP</mat-label>
-                        <input matInput type="number" min="0" step="0.1" placeholder="Daño directo" formControlName="escudo_esc_AP">
-                      </mat-form-field>
-                  </div>
-
-				  <mat-form-field class="formAmenaza">
-					<mat-label>Duración</mat-label>
-					<input matInput placeholder="Schema" formControlName="duracion">
-				  </mat-form-field>
-
-                  <!--
-				  <mat-form-field appearance="legacy" class="formEnergia">
-					<mat-label>Heal T</mat-label>
-					<input matInput placeholder="Schema" formControlName="heal_t">
-				  </mat-form-field>
-
-				  <mat-form-field appearance="legacy" class="formPoder">
-					<mat-label>Escudo T</mat-label>
-					<input matInput placeholder="Schema" formControlName="escudo_t">
-				  </mat-form-field>
-                  -->
-
-				  <mat-form-field class="formStatInc">
-					<mat-label>Stat Inc</mat-label>
-					<input matInput placeholder="Schema" formControlName="stat_inc">
-				  </mat-form-field>
-
-				  <mat-form-field class="formStatIncInicial">
-					<mat-label>Stat Inc Inicial</mat-label>
-					<input matInput placeholder="Schema" formControlName="stat_inc_inicial">
-				  </mat-form-field>
-
-				  <mat-form-field class="formStatIncT">
-					<mat-label>Stat Inc T</mat-label>
-					<input matInput placeholder="Schema" formControlName="stat_inc_t">
-				  </mat-form-field>
-
-			</form>
-
-            <div class="contenedorCampoRelacional campoAnimacion">
-                <div class="titulo">Animacion:</div>
-                    <div >
-                        <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].animacion_id!=null" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/animacion.png"/>
-
-                        <img class="imagenCampoRelacional" *ngIf="this.desarrolladorService.buff.buff[desarrolladorService.buffSeleccionadoIndex].animacion_id==null" [ngClass]="renderBotonAddSeleccionado('Animacion')" (click)="desarrolladorService.setEstadoPanelDerecho('Animaciones')" src="./assets/desarrollador/add.svg"/>
-                    </div>
-            </div>
-		</div>       <!-- FIN VISUALIZACIÓN BUFF -->
-
-        <!-- LISTA ANIMACION RELACIONAL -->
-        <panelSelectorComponent *ngIf="desarrolladorService.estadoPanelDatosDerecha=='Animaciones'"
-            [tipo]="'Animacion_relacionada_buff'"
-            [titulo]="'ANIMACION RELACIONADA'"
-            [botonAdd]="false"
-            [lateral]="'derecha'"
-            [botonEliminarRelacion]="false"
-            >
-        </panelSelectorComponent>
+  <!-- LISTA ANIMACION RELACIONAL -->
+  @if (desarrolladorService.estadoPanelDatosDerecha=='Animaciones') {
+    <panelSelectorComponent
+      [tipo]="'Animacion_relacionada_buff'"
+      [titulo]="'ANIMACION RELACIONADA'"
+      [botonAdd]="false"
+      [lateral]="'derecha'"
+      [botonEliminarRelacion]="false"
+      >
+    </panelSelectorComponent>
+  }
 

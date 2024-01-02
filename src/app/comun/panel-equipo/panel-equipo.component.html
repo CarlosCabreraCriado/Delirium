@@ -5,273 +5,273 @@
 
 <div class="contenedorPanelEquipo">
 
-	<div class="fondoPanel"></div>
-	<div class="fondoPestana"></div>
+  <div class="fondoPanel"></div>
+  <div class="fondoPestana"></div>
 
-	<!-- PANEL INTERNO -->
-	<div id="contenedorPanelInterno">
-		<div class="fondoPanelInterior"></div>
+  <!-- PANEL INTERNO -->
+  <div id="contenedorPanelInterno">
+    <div class="fondoPanelInterior"></div>
 
-		<div class="titulo Texto1">Estadisticas</div>
+    <div class="titulo Texto1">Estadisticas</div>
 
-		<div class="containerEstadisticas">
-			<div class="columna">
+    <div class="containerEstadisticas">
+      <div class="columna">
 
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Vitalidad.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                            Vitalidad <br>{{estadisticas.vitalidad}}
-					</div>
-				</div>
+        <div class="estadistica">
+          <img src="../../../assets/Iconos/Icono-Vitalidad.png">
+          <div class="textoEstadisticas Texto3 Arial">
+            Vitalidad <br>{{estadisticas.vitalidad}}
+          </div>
+        </div>
 
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Armadura.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                            Armadura
-                            <br>{{estadisticas.armadura}}
-					</div>
-				</div>
-
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Resistencia-Magica.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                            Resist. Mágica <br>{{estadisticas.resistenciaMagica}}
-					</div>
-				</div>
-
-			</div>
-
-			<div class="columna">
-
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/critico.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                        Crítico <br>{{estadisticas.critico}}
-					</div>
-				</div>
-
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                        Daño Físico <br>{{estadisticas.ad}}
-					</div>
-				</div>
-
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Dano-Magico.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                        Daño Mágico <br>{{estadisticas.ap}}
-					</div>
-				</div>
-
-
-                <!--
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                        Daño Físico <br>{{estadisticas.ad_base}}
-                        <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmadura}}%] ({{estadisticas.ad}})</ng-container>
-					</div>
-				</div>
-
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/Icono-Dano-Magico.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                        Daño Mágico <br>{{estadisticas.ap_base}}
-                        <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmadura}}%] ({{estadisticas.ap}})</ng-container>
-					</div>
-				</div>
-
-				<div class="estadistica">
-					<img src="../../../assets/Iconos/critico.png">
-					<div class="textoEstadisticas Texto3 Arial">
-                        Critico <br>{{estadisticas.critico_base}}
-                        <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmadura}}%] ({{estadisticas.critico}})</ng-container>
-					</div>
-				</div>
-                -->
-
-			</div>
-		</div>
-
-		<div class="titulo Texto1">Inventario</div>
-
-        <!-- CONTENEDOR INVENTARIO -->
-		<div id="contenedorInventario2" class="Texto2">
-
-            <!-- LISTA INVENTARIO DRAG AND DROP -->
-            <div id="listaInventario" #dropListContainer class="listaInventario" cdkDropListGroup>
-
-                <div id="contenedorListaItems">
-
-                    <div *ngFor="let objeto of perfil?.heroes[estadoApp.heroePropioPerfilIndex].objetos.inventario; let i = index"
-                        tooltip
-                        (accionBotonTooltip)="equipar(i)"
-                        [tooltipTextoBoton]="'Equipar'"
-                        [tooltipObjeto]="objeto"
-                        tooltipPosition="top"
-
-                        cdkDropList
-                        [cdkDropListData]="i"
-                        class="contenedorImagen">
-
-                            <img
-                                cdkDrag
-                                (cdkDragEntered)="dragEntered($event)"
-                                [cdkDragData]="i"
-                                (cdkDragDropped)="dragDropped($event)"
-                                (cdkDragMoved)="dragMoved($event)"
-                                class="imagen" src="../../../assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png"/>
-
-                            <img *cdkDragPreview class="imagen" src="../../../assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png"/>
-
-                    </div>
-                </div>
-
-                <div id="containerEliminar"
-                    cdkDropList
-                    #eliminarObjeto="cdkDropList"
-                    >
-                    <img
-                        id="botonEliminarObjeto"
-                        class="imagenEliminar" src="../../../assets/desarrollador/papelera.svg"/>
-                </div>
+        <div class="estadistica">
+          <img src="../../../assets/Iconos/Icono-Armadura.png">
+          <div class="textoEstadisticas Texto3 Arial">
+            Armadura
+            <br>{{estadisticas.armadura}}
             </div>
+          </div>
 
-            <!-- GRID -->
-            <div id="contenedorReticula">
-                <div class="celda" *ngFor="let celda of [].constructor(10)"></div>
+          <div class="estadistica">
+            <img src="../../../assets/Iconos/Icono-Resistencia-Magica.png">
+            <div class="textoEstadisticas Texto3 Arial">
+              Resist. Mágica <br>{{estadisticas.resistenciaMagica}}
             </div>
+          </div>
 
-        </div> <!-- Fin contenedor Inventario -->
+        </div>
 
-	</div>
+        <div class="columna">
+
+          <div class="estadistica">
+            <img src="../../../assets/Iconos/critico.png">
+            <div class="textoEstadisticas Texto3 Arial">
+              Crítico <br>{{estadisticas.critico}}
+            </div>
+          </div>
+
+          <div class="estadistica">
+            <img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
+            <div class="textoEstadisticas Texto3 Arial">
+              Daño Físico <br>{{estadisticas.ad}}
+            </div>
+          </div>
+
+          <div class="estadistica">
+            <img src="../../../assets/Iconos/Icono-Dano-Magico.png">
+            <div class="textoEstadisticas Texto3 Arial">
+              Daño Mágico <br>{{estadisticas.ap}}
+            </div>
+          </div>
 
 
-	<!-- PANEL EXTERNO -->
-	<div id="contenedorExterno">
+          <!--
+          <div class="estadistica">
+            <img src="../../../assets/Iconos/Icono-Dano-Fisico.png">
+            <div class="textoEstadisticas Texto3 Arial">
+              Daño Físico <br>{{estadisticas.ad_base}}
+              <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmadura}}%] ({{estadisticas.ad}})</ng-container>
+            </div>
+          </div>
 
-		<div class="titulo Texto1">Equipo</div>
+          <div class="estadistica">
+            <img src="../../../assets/Iconos/Icono-Dano-Magico.png">
+            <div class="textoEstadisticas Texto3 Arial">
+              Daño Mágico <br>{{estadisticas.ap_base}}
+              <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmadura}}%] ({{estadisticas.ap}})</ng-container>
+            </div>
+          </div>
 
-		<div class="contenedorEquipo">
+          <div class="estadistica">
+            <img src="../../../assets/Iconos/critico.png">
+            <div class="textoEstadisticas Texto3 Arial">
+              Critico <br>{{estadisticas.critico_base}}
+              <ng-container *ngIf="estadisticas.multiplicadorDanoTipoArmadura != 1"> [{{estadisticas.multiplicadorDanoTipoArmadura}}%] ({{estadisticas.critico}})</ng-container>
+            </div>
+          </div>
+          -->
 
-			<div class="casco">
-				<div class="reticulaPequena">
-                    <ng-container  *ngIf="equipado[0]!=null">
-                        <img tooltip (accionBotonTooltip)="desequipar(0)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[0]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[0]}}"/>
-                    </ng-container>
-                        <div class="frameItem"></div>
-				</div>
-			</div>
+        </div>
+      </div>
 
-			<div class="pechera">
-				<div class="reticulaPequena">
-                    <ng-container *ngIf="equipado[1]!=null">
-                        <img tooltip (accionBotonTooltip)="desequipar(1)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[1]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[1]}}"/>
-                    </ng-container>
-					<div class="frameItem"></div>
-				</div>
-			</div>
+      <div class="titulo Texto1">Inventario</div>
 
-			<div class="arma1">
-				<div class="reticulaGrande">
-                    <ng-container *ngIf="equipado[4]!=null">
-                        <img tooltip (accionBotonTooltip)="desequipar(4)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[4]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[4]}}"/>
-                    </ng-container>
-					<div class="frameItem"></div>
-				</div>
-			</div>
+      <!-- CONTENEDOR INVENTARIO -->
+      <div id="contenedorInventario2" class="Texto2">
 
-			<div class="heroe">
-			    <img class="imagenPersonaje" src="../../../assets/Paneles/Equipo/Maniqui.png"/>
-			</div>
+        <!-- LISTA INVENTARIO DRAG AND DROP -->
+        <div id="listaInventario" #dropListContainer class="listaInventario" cdkDropListGroup>
 
-			<div class="pantalon">
-				<div class="reticulaPequena Derecha">
-                    <ng-container *ngIf="equipado[2]!=null">
-                        <img tooltip (accionBotonTooltip)="desequipar(2)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[2]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[2]}}"/>
-                    </ng-container>
-					<div class="frameItem"></div>
-				</div>
-			</div>
+          <div id="contenedorListaItems">
 
-			<div class="botas">
-				<div class="reticulaPequena Derecha">
-                    <ng-container *ngIf="equipado[3]!=null">
-                        <img tooltip (accionBotonTooltip)="desequipar(3)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[3]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[3]}}"/>
-                    </ng-container>
-					<div class="frameItem"></div>
-				</div>
-			</div>
+            @for (objeto of perfil?.heroes[estadoApp.heroePropioPerfilIndex].objetos.inventario; track objeto; let i = $index) {
+              <div
+                tooltip
+                (accionBotonTooltip)="equipar(i)"
+                [tooltipTextoBoton]="'Equipar'"
+                [tooltipObjeto]="objeto"
+                tooltipPosition="top"
+                cdkDropList
+                [cdkDropListData]="i"
+                class="contenedorImagen">
+                <img
+                  cdkDrag
+                  (cdkDragEntered)="dragEntered($event)"
+                  [cdkDragData]="i"
+                  (cdkDragDropped)="dragDropped($event)"
+                  (cdkDragMoved)="dragMoved($event)"
+                  class="imagen" src="../../../assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png"/>
+                <img *cdkDragPreview class="imagen" src="../../../assets/Items/{{formatearNombre(objeto.pieza)}}/{{objeto.imagen_id}}.png"/>
+              </div>
+            }
+          </div>
 
-			<div class="arma2">
-				<div class="reticulaGrande">
-                    <ng-container *ngIf="equipado[5]!=null">
-                        <img tooltip (accionBotonTooltip)="desequipar(5)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[5]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[5]}}"/>
-                    </ng-container>
-					<div class="frameItem"></div>
-				</div>
-			</div>
-		</div>
+          <div id="containerEliminar"
+            cdkDropList
+            #eliminarObjeto="cdkDropList"
+            >
+            <img
+              id="botonEliminarObjeto"
+              class="imagenEliminar" src="../../../assets/desarrollador/papelera.svg"/>
+          </div>
+        </div>
 
-		<!-- Inventario -->
-		<div id="contenedorInventario">
-			<creditoComponent id="credito" [gemas]= "100" [monedas]= "200"></creditoComponent>
-			<img class="icono bolsa" src="../../../assets/Iconos/Icono-Bolsa.png" (click)="cambiarPestanaInventario('Bolsa')"/>
-			<div class="contenedor bolsa">
-				<div class="contenedorReticula">
+        <!-- GRID -->
+        <div id="contenedorReticula">
+          @for (celda of [].constructor(10); track celda) {
+            <div class="celda"></div>
+          }
+        </div>
 
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/arco/4.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/miscelaneo/7.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/miscelaneo/3.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/pechera/8.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/miscelaneo/33.png"/>
-					</div>
-					<div class="reticula"></div>
-					<div class="reticula"></div>
-					<div class="reticula"></div>
+      </div> <!-- Fin contenedor Inventario -->
 
-				</div>
-			</div>
+    </div>
 
-			<img class="icono banco" src="../../../assets/Iconos/Icono-Banco.png" (click)="cambiarPestanaInventario('Banco')" />
-			<div class="contenedor banco">
-				<div class="contenedorReticula">
 
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/daga/1.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/miscelaneo/28.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/miscelaneo/2.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/pechera/1.png"/>
-					</div>
-					<div class="reticula">
-						<img class="objeto" src="../../../assets/Items/miscelaneo/29.png"/>
-					</div>
-					<div class="reticula"></div>
-					<div class="reticula"></div>
-					<div class="reticula"></div>
+    <!-- PANEL EXTERNO -->
+    <div id="contenedorExterno">
 
-				</div>
-			</div>
-		</div>
+      <div class="titulo Texto1">Equipo</div>
 
-	</div>
+      <div class="contenedorEquipo">
 
-</div>
+        <div class="casco">
+          <div class="reticulaPequena">
+            @if (equipado[0]!=null) {
+              <img tooltip (accionBotonTooltip)="desequipar(0)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[0]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[0]}}"/>
+            }
+            <div class="frameItem"></div>
+          </div>
+        </div>
+
+        <div class="pechera">
+          <div class="reticulaPequena">
+            @if (equipado[1]!=null) {
+              <img tooltip (accionBotonTooltip)="desequipar(1)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[1]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[1]}}"/>
+            }
+            <div class="frameItem"></div>
+          </div>
+        </div>
+
+        <div class="arma1">
+          <div class="reticulaGrande">
+            @if (equipado[4]!=null) {
+              <img tooltip (accionBotonTooltip)="desequipar(4)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[4]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[4]}}"/>
+            }
+            <div class="frameItem"></div>
+          </div>
+        </div>
+
+        <div class="heroe">
+          <img class="imagenPersonaje" src="../../../assets/Paneles/Equipo/Maniqui.png"/>
+        </div>
+
+        <div class="pantalon">
+          <div class="reticulaPequena Derecha">
+            @if (equipado[2]!=null) {
+              <img tooltip (accionBotonTooltip)="desequipar(2)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[2]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[2]}}"/>
+            }
+            <div class="frameItem"></div>
+          </div>
+        </div>
+
+        <div class="botas">
+          <div class="reticulaPequena Derecha">
+            @if (equipado[3]!=null) {
+              <img tooltip (accionBotonTooltip)="desequipar(3)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[3]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[3]}}"/>
+            }
+            <div class="frameItem"></div>
+          </div>
+        </div>
+
+        <div class="arma2">
+          <div class="reticulaGrande">
+            @if (equipado[5]!=null) {
+              <img tooltip (accionBotonTooltip)="desequipar(5)" [tooltipTextoBoton]="'Desequipar'" [tooltipObjeto]="equipado[5]" tooltipPosition="right" src="../../../assets/Items/{{pathImagenEquipado[5]}}"/>
+            }
+            <div class="frameItem"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventario -->
+      <div id="contenedorInventario">
+        <creditoComponent id="credito" [gemas]= "100" [monedas]= "200"></creditoComponent>
+        <img class="icono bolsa" src="../../../assets/Iconos/Icono-Bolsa.png" (click)="cambiarPestanaInventario('Bolsa')"/>
+        <div class="contenedor bolsa">
+          <div class="contenedorReticula">
+
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/arco/4.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/miscelaneo/7.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/miscelaneo/3.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/pechera/8.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/miscelaneo/33.png"/>
+            </div>
+            <div class="reticula"></div>
+            <div class="reticula"></div>
+            <div class="reticula"></div>
+
+          </div>
+        </div>
+
+        <img class="icono banco" src="../../../assets/Iconos/Icono-Banco.png" (click)="cambiarPestanaInventario('Banco')" />
+        <div class="contenedor banco">
+          <div class="contenedorReticula">
+
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/daga/1.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/miscelaneo/28.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/miscelaneo/2.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/pechera/1.png"/>
+            </div>
+            <div class="reticula">
+              <img class="objeto" src="../../../assets/Items/miscelaneo/29.png"/>
+            </div>
+            <div class="reticula"></div>
+            <div class="reticula"></div>
+            <div class="reticula"></div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 
 

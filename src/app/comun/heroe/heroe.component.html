@@ -5,99 +5,122 @@
 
 <div class="contenedorHeroe" [ngClass]="renderizarMarcoHeroe()">
 
-    <!-- FRAME CIRCULO -->
-    <div class="frameCirculo">
+  <!-- FRAME CIRCULO -->
+  <div class="frameCirculo">
 
     <div [ngClass]="renderizarObjetivoHeroe()"></div>
 
-    <div class="frameAnimacionesFrame" *ngIf="renderHeroe.vida==0 && !renderHeroe.controlEnemigos">
-      <img class="spriteFuego shaderAbatido" src="../../../assets/Efectos/35.png"/>
-    </div>
+    @if (renderHeroe.vida==0 && !renderHeroe.controlEnemigos) {
+      <div class="frameAnimacionesFrame">
+        <img class="spriteFuego shaderAbatido" src="../../../assets/Efectos/35.png"/>
+      </div>
+    }
 
-    <img *ngIf="renderHeroe.vida==0" class="imagenAbatido" src="../../../assets/ui/icons/Icon_01.png"/>
+    @if (renderHeroe.vida==0) {
+      <img class="imagenAbatido" src="../../../assets/ui/icons/Icon_01.png"/>
+    }
 
-    <div class="frameAnimacionesFrame" *ngIf="renderHeroe.turno">
-      <img class="spriteElectrico" src="../../../assets/Efectos/37.png"/>
-    </div>
+    @if (renderHeroe.turno) {
+      <div class="frameAnimacionesFrame">
+        <img class="spriteElectrico" src="../../../assets/Efectos/37.png"/>
+      </div>
+    }
 
-    <div class="frameAnimacionesFrame" *ngIf="renderHeroe.controlEnemigos">
-      <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
-    </div>
+    @if (renderHeroe.controlEnemigos) {
+      <div class="frameAnimacionesFrame">
+        <img class="spriteFuego" src="../../../assets/Efectos/35.png"/>
+      </div>
+    }
 
-		<img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>
+    <img  class="imagenPersonaje" src="../../../assets/Personajes/heroes/{{renderHeroe.id_imagen}}.png"/>
 
     <img (click)="toggleDesplegable()"  src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
 
-		<div class="contenedorFrameRol">
+    <div class="contenedorFrameRol">
       <!--<img class="iconoRol" src="../../../assets/Iconos/Rol-{{marcador}}.png"/>-->
-			<div *ngIf="renderHeroe.clase=='hechicero'" class="icono azul"></div>
-			<div *ngIf="renderHeroe.clase=='guerrero'" class="icono rojo"></div>
-			<div *ngIf="renderHeroe.clase=='cazador'" class="icono verde"></div>
-      <div *ngIf="renderHeroe.clase=='ladrón'" class="icono negro"></div>
-			<div *ngIf="renderHeroe.clase=='sacerdote'" class="icono blanco"></div>
-			<img class="frameRol Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
-		</div>
-
-		<div class="contenedorFrameNivel">
-			<div class="nivel Texto2">{{renderHeroe.nivel}}</div>
-			<img class="frameNivel Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
-		</div>
-
-        <appAnimacionEfecto #animacionEfecto [loop]="false" [animacion]="renderHeroe.animacion" [mostrarAnimacion]="renderHeroe.mostrarAnimacion"></appAnimacionEfecto>
-
-        <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.puntosVida"></appAnimacionNumero>
-
-	</div>
-
-    <!-- DETALLE -->
-    <div id="wrapperDesplegableHorizontal" *ngIf="tipoDesplegable == 'horizontal'">
-        <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
-            <div class="fondoDetalle">
-                <div class="frameDetalle"></div>
-            </div>
-
-            <div class="nombre Texto4">{{renderHeroe.nombre}}</div>
-
-            <img *ngIf="lider==true" class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>
-            <!-- BARRAS -->
-            <div class="contenedorBarras">
-                <div class="wrapperBarras">
-                    <barraComponent [identificador]="renderHeroe.nombre" [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
-                    <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
-                </div>
-                <div class="separadorMarco"></div>
-            </div>
-
-            <!-- Buff -->
-            <div id="contenedorBuffos">
-                <div *ngFor="let buff of renderHeroe.buff; let j = index"  class="buffo">
-                  <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{renderHeroe.buff[j].imagen_id}}.png">
-                    <div class="contadorDuracion">{{renderHeroe.buff[j].duracion}}</div>
-               </div>
-            </div>
-
-        </div>
+      @if (renderHeroe.clase=='hechicero') {
+        <div class="icono azul"></div>
+      }
+      @if (renderHeroe.clase=='guerrero') {
+        <div class="icono rojo"></div>
+      }
+      @if (renderHeroe.clase=='cazador') {
+        <div class="icono verde"></div>
+      }
+      @if (renderHeroe.clase=='ladrón') {
+        <div class="icono negro"></div>
+      }
+      @if (renderHeroe.clase=='sacerdote') {
+        <div class="icono blanco"></div>
+      }
+      <img class="frameRol Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
     </div>
 
+    <div class="contenedorFrameNivel">
+      <div class="nivel Texto2">{{renderHeroe.nivel}}</div>
+      <img class="frameNivel Texto1" src="../../../assets/Frames/Frame-Heroe-Circulo.png"/>
+    </div>
 
-    <div id="wrapperDesplegableRadial" *ngIf="tipoDesplegable == 'radial' && estadoDesplegado==true">
+    <appAnimacionEfecto #animacionEfecto [loop]="false" [animacion]="renderHeroe.animacion" [mostrarAnimacion]="renderHeroe.mostrarAnimacion"></appAnimacionEfecto>
 
+    <appAnimacionNumero #animacionNumero [enemigo]="renderHeroe" [enemigoVida]="renderHeroe.puntosVida"></appAnimacionNumero>
+
+  </div>
+
+  <!-- DETALLE -->
+  @if (tipoDesplegable == 'horizontal') {
+    <div id="wrapperDesplegableHorizontal">
+      <div class="contenedorDetalle" [ngClass]="{'desplegado': estadoDesplegado}">
+        <div class="fondoDetalle">
+          <div class="frameDetalle"></div>
+        </div>
+        <div class="nombre Texto4">{{renderHeroe.nombre}}</div>
+        @if (lider==true) {
+          <img class="iconoLider" src="../../../assets/Iconos/Icono-Lider.png"/>
+        }
         <!-- BARRAS -->
         <div class="contenedorBarras">
-            <div class="wrapperBarras">
-                <barraComponent [identificador]="identificador" [badge]="false" [orientacion]="'radial'" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
-                <barraComponent [identificador]="identificador" [badge]="false" [orientacion]="'radial'" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
-            </div>
-            <div class="separadorMarco"></div>
+          <div class="wrapperBarras">
+            <barraComponent [identificador]="renderHeroe.nombre" [badge]="false" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
+            <barraComponent [badge]="false" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+          </div>
+          <div class="separadorMarco"></div>
         </div>
-
-            <!-- Buff -->
-            <div id="contenedorBuffos" *ngIf="desplegadoDefecto" [ngClass]="{'ocultar': modoMazmorra=='mapa'}">
-                <div *ngFor="let buff of renderHeroe.buff; let j = index"  class="buffo">
-                  <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{renderHeroe.buff[j].imagen_id}}.png">
-               </div>
+        <!-- Buff -->
+        <div id="contenedorBuffos">
+          @for (buff of renderHeroe.buff; track buff; let j = $index) {
+            <div  class="buffo">
+              <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{renderHeroe.buff[j].imagen_id}}.png">
+              <div class="contadorDuracion">{{renderHeroe.buff[j].duracion}}</div>
             </div>
-
+          }
+        </div>
+      </div>
     </div>
+  }
+
+
+  @if (tipoDesplegable == 'radial' && estadoDesplegado==true) {
+    <div id="wrapperDesplegableRadial">
+      <!-- BARRAS -->
+      <div class="contenedorBarras">
+        <div class="wrapperBarras">
+          <barraComponent [identificador]="identificador" [badge]="false" [orientacion]="'radial'" [tipo]="'Vida'" [valor]="renderHeroe.vida" [escudo]="renderHeroe.escudo" class="barra"></barraComponent>
+          <barraComponent [identificador]="identificador" [badge]="false" [orientacion]="'radial'" [tipo]="'Energia'" [valor]="renderHeroe.energia" class="barra"></barraComponent>
+        </div>
+        <div class="separadorMarco"></div>
+      </div>
+      <!-- Buff -->
+      @if (desplegadoDefecto) {
+        <div id="contenedorBuffos" [ngClass]="{'ocultar': modoMazmorra=='mapa'}">
+          @for (buff of renderHeroe.buff; track buff; let j = $index) {
+            <div  class="buffo">
+              <img class="imagenBuff" src="../../../assets/Habilidades/Spell/{{renderHeroe.buff[j].imagen_id}}.png">
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
 </div>
 

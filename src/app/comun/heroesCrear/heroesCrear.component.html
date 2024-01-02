@@ -5,84 +5,76 @@
 <!--   ******************* -->
 
 
-<div *ngIf="heroesCrearService.mostrarHeroesCrear" id="contenedorHeroesCrear">
-  <!-- Diseño Fondo -->
-  <img class="fondoPanel" src="assets/heroesInfo/Fondo.png">
-  <img class="bordeSuperior" src="assets/heroesInfo/BarraBorde.png">
-  <img class="bordeInferior" src="assets/heroesInfo/BarraBorde.png">
-  <img class="botonCerrar" src="assets/heroesInfo/BotonCerrar.png" (click)="heroesCrearService.mostrarHeroesCrear=false; panelSeleccionado='inicial';">
-
-  <!-- Panel Izquierdo -->
-
-  <div class="contenedorPanelIzquierdo">
-    <img class="fondoIzquierdo" src="assets/heroesInfo/FondoIzquierdo.png">
-    <!--<img class="iconoClase" src="assets/Clases/{{heroesCrearService.renderCrearHeroes.clase.toLowerCase()}}.png">-->
-    <div class="Texto2" id ="nombreTitulo">Nombre</div>
-    <input type="text" size=30 class="Texto3" id="nombreEscritura" placeholder="eg. Khadros" name="nombrePersonaje">
-    <div class="Texto2" id ="personajeTitulo">Personajes</div>
-    <div class="contenedorImagenPersonaje">
-      <!--<img *ngFor="let personaje of appService.personajes; let i = index" class="iconoPersonaje" src="assets/Clases/minotauro.png" (click)="seleccionarPanel('minotauro')" >-->
-      <img  class="iconoPersonaje" src="assets/Clases/minotauro.png" (click)="seleccionarPanel('minotauro')" >
-      <img  class="iconoPersonaje" src="assets/Clases/clerigo.png" (click)="seleccionarPanel('clerigo')" >
-      <img  class="iconoPersonaje" src="assets/Clases/hechicero.png" (click)="seleccionarPanel('hechicero')" >
-      <img  class="iconoPersonaje" src="assets/Clases/chronomante.png" (click)="seleccionarPanel('chronomante')" >
-      <img  *ngIf="panelSeleccionado!='inicial'" class= "imagenPersonaje" src="assets/Personajes/minotauro.png" >
+@if (heroesCrearService.mostrarHeroesCrear) {
+  <div id="contenedorHeroesCrear">
+    <!-- Diseño Fondo -->
+    <img class="fondoPanel" src="assets/heroesInfo/Fondo.png">
+    <img class="bordeSuperior" src="assets/heroesInfo/BarraBorde.png">
+    <img class="bordeInferior" src="assets/heroesInfo/BarraBorde.png">
+    <img class="botonCerrar" src="assets/heroesInfo/BotonCerrar.png" (click)="heroesCrearService.mostrarHeroesCrear=false; panelSeleccionado='inicial';">
+    <!-- Panel Izquierdo -->
+    <div class="contenedorPanelIzquierdo">
+      <img class="fondoIzquierdo" src="assets/heroesInfo/FondoIzquierdo.png">
+      <!--<img class="iconoClase" src="assets/Clases/{{heroesCrearService.renderCrearHeroes.clase.toLowerCase()}}.png">-->
+      <div class="Texto2" id ="nombreTitulo">Nombre</div>
+      <input type="text" size=30 class="Texto3" id="nombreEscritura" placeholder="eg. Khadros" name="nombrePersonaje">
+      <div class="Texto2" id ="personajeTitulo">Personajes</div>
+      <div class="contenedorImagenPersonaje">
+        <!--<img *ngFor="let personaje of appService.personajes; let i = index" class="iconoPersonaje" src="assets/Clases/minotauro.png" (click)="seleccionarPanel('minotauro')" >-->
+        <img  class="iconoPersonaje" src="assets/Clases/minotauro.png" (click)="seleccionarPanel('minotauro')" >
+        <img  class="iconoPersonaje" src="assets/Clases/clerigo.png" (click)="seleccionarPanel('clerigo')" >
+        <img  class="iconoPersonaje" src="assets/Clases/hechicero.png" (click)="seleccionarPanel('hechicero')" >
+        <img  class="iconoPersonaje" src="assets/Clases/chronomante.png" (click)="seleccionarPanel('chronomante')" >
+        @if (panelSeleccionado!='inicial') {
+          <img  class= "imagenPersonaje" src="assets/Personajes/minotauro.png" >
+        }
+      </div>
     </div>
-
+    <!-- Panel Derecho -->
+    <div class="contenedorPanelDerecho">
+      @if (panelSeleccionado=='inicial') {
+        <div class="panelPersonaje">
+          <!-- Papiro Superior -->
+          <div class="papiroSuperior">
+            <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
+            <div class="seccionSuperior">
+              <div id= "tituloCreacion" class="titulo Texto2">Creación de Personaje</div>
+              <img id="imagenBoceto" src="assets/heroesInfo/BocetoPersonaje.png">
+              <div id= "textoCreacion" class="titulo Texto3">Seleccione el nuevo héroe de Delirium y el nombre por el que le conocerán</div>
+            </div>
+          </div>
+          <div class="papiroInferior">
+            <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
+            <div id="cancelar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false; panelSeleccionado='inicial';">Cancelar</div>
+            <div id="guardar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false;">Guardar</div>
+          </div>
+        </div>
+      }
+      <!-- Panel Personaje -->
+      @if (panelSeleccionado!='inicial') {
+        <div class="panelPersonaje">
+          <!-- Papiro Superior -->
+          <div class="papiroSuperior">
+            <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
+            <img src="assets/heroesInfo/Separador.png" class="separador">
+            <div class="seccionSuperior">
+              <div class="titulo Texto2">Historia</div>
+              <div class="texto Texto4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis preti</div>
+            </div>
+            <div class="seccionInferior">
+              <div class="titulo Texto2">Descripción</div>
+              <div class="texto Texto4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis preti</div>
+              <div class="titulo Texto2">Roles</div>
+              <div class="texto Texto4">Tanque DPS</div>
+            </div>
+          </div>
+          <div class="papiroInferior">
+            <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
+            <div id="cancelar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false; panelSeleccionado='inicial';"> Cancelar </div>
+            <div id="guardar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false;"> Guardar </div>
+          </div>
+        </div>
+      }
+    </div>
   </div>
-
-  <!-- Panel Derecho -->
-  <div class="contenedorPanelDerecho">
-
-    <div *ngIf="panelSeleccionado=='inicial'" class="panelPersonaje">
-
-      <!-- Papiro Superior -->
-      <div class="papiroSuperior">
-        
-        <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
-        <div class="seccionSuperior">
-          <div id= "tituloCreacion" class="titulo Texto2">Creación de Personaje</div>
-          <img id="imagenBoceto" src="assets/heroesInfo/BocetoPersonaje.png">
-          <div id= "textoCreacion" class="titulo Texto3">Seleccione el nuevo héroe de Delirium y el nombre por el que le conocerán</div>
-        </div>
-      </div>
-
-      <div class="papiroInferior">
-        <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
-        <div id="cancelar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false; panelSeleccionado='inicial';">Cancelar</div>
-        <div id="guardar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false;">Guardar</div>
-
-      </div>
-
-    </div>
-    <!-- Panel Personaje -->
-    <div *ngIf="panelSeleccionado!='inicial'" class="panelPersonaje">
-
-      <!-- Papiro Superior -->
-      <div class="papiroSuperior">
-        <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
-        <img src="assets/heroesInfo/Separador.png" class="separador">
-        <div class="seccionSuperior">
-          <div class="titulo Texto2">Historia</div>
-          <div class="texto Texto4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis preti</div>
-        </div>
-        <div class="seccionInferior">
-          <div class="titulo Texto2">Descripción</div>
-          <div class="texto Texto4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis preti</div>
-          <div class="titulo Texto2">Roles</div>
-          <div class="texto Texto4">Tanque DPS</div>
-        </div>
-
-
-      </div>
-
-      <div class="papiroInferior">
-        <img src="assets/heroesInfo/PergaminoSeccion.png" class="fondoPapiro">
-        <div id="cancelar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false; panelSeleccionado='inicial';"> Cancelar </div>
-        <div id="guardar" class="crearOpciones Texto2" (click)="heroesCrearService.mostrarHeroesCrear=false;"> Guardar </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
+}

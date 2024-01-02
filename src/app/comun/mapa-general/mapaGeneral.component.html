@@ -3,110 +3,129 @@
 <!--         Componente Mapa General       -->
 <!--   *********************************** -->
 
-    <!-- NUBES FONDO -->
-    <div id="nubes" *ngIf="mostrarNubes" >
-      <img src="../../../assets/Mapa/nubes.jpg">
-    </div>
+<!-- NUBES FONDO -->
+@if (mostrarNubes) {
+  <div id="nubes" >
+    <img src="../../../assets/Mapa/nubes.jpg">
+  </div>
+}
 
 
-    <div id="contenedorMapa" [ngClass]="{'mostrarNubes': !mapaCargado}" #canvasMapa class="bordeDesarrollador">
+<div id="contenedorMapa" [ngClass]="{'mostrarNubes': !mapaCargado}" #canvasMapa class="bordeDesarrollador">
 
-        <!-- Fondo Mapa -->
-        <div id="fondoMar">
-            <img class="mar" src="./assets/General/Fondo-Papiro.png"/>
+  <!-- Fondo Mapa -->
+  <div id="fondoMar">
+    <img class="mar" src="./assets/General/Fondo-Papiro.png"/>
+  </div>
+
+  <pinch-zoom #pinchZoom id="pinch-zoom" [ngClass]="{'niebla': mostrarNieblaFija} "
+    [limitPan]="false"
+    [minPanScale]="1"
+    [disableZoomControl]="'disable'"
+    [double-tap]="false"
+    [limit-zoom]="10"
+    >
+
+    @if (mostrarCentro) {
+      <div id="marcadorCentro"></div>
+    }
+
+    <!-- Mapa Global -->
+    @if (appService.estadoInMap=='global') {
+      <div class="contenedorMapaGlobal">
+        <div class="contenedorMascara">
+          <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
+          <div class="contenedorMarcadoresZonas">
+            <img class="marcador zona1 animate__animated animate__infinite animate__pulse" src="../../../assets/Mapa/indicador.png" (click)="mapaGeneralService.cargarRegion('Asfaloth')">
+          </div>
         </div>
+      </div>
+    }
 
-        <pinch-zoom #pinchZoom id="pinch-zoom" [ngClass]="{'niebla': mostrarNieblaFija} "
-            [limitPan]="false"
-            [minPanScale]="1"
-            [disableZoomControl]="'disable'"
-            [double-tap]="false"
-            [limit-zoom]="10"
-            >
-
-            <div *ngIf="mostrarCentro" id="marcadorCentro"></div>
-
-            <!-- Mapa Global -->
-            <div *ngIf="appService.estadoInMap=='global'" class="contenedorMapaGlobal">
-
-                <div class="contenedorMascara">
-                    <img class="mapaMundo" src="../../../assets/Mapa/Mapa-Mundo.png"/>
-                    <div class="contenedorMarcadoresZonas">
-                        <img class="marcador zona1 animate__animated animate__infinite animate__pulse" src="../../../assets/Mapa/indicador.png" (click)="mapaGeneralService.cargarRegion('Asfaloth')">
-                    </div>
+    <!-- Mapa Isometrico -->
+    @if (appService.estadoInMap=='region') {
+      <div [ngClass]="{'niebla': mostrarNiebla}" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
+        <div class="wrapper" [ngStyle]="{'transform': 'scale('+mapaGeneralService.escalaIsometrico+') translate('+traslacionIsometricoX+'px, '+traslacionIsometricoY+'px)'}">
+          <div class="floor">
+            <!-- rotateX(55deg) rotateZ(45deg) -->
+            @if (!desarrollo) {
+              <div class="player" [ngStyle]="{'transform': 'translate('+(50*mapaGeneralService.radioRenderIsometrico)+'px, '+(50*mapaGeneralService.radioRenderIsometrico)+'px)'}">
+                <!-- player 1 -->
+                <!-- Flecha NorEste -->
+                <div class="player">
+                  <animacionFocusComponent></animacionFocusComponent>
                 </div>
-
-            </div>
-
-            <!-- Mapa Isometrico -->
-            <div [ngClass]="{'niebla': mostrarNiebla}" *ngIf="appService.estadoInMap=='region'" [style.transform]="'scale('+escalaMapaIsometrico+','+escalaMapaIsometrico+')'" class="contenedorMapaIsometrico">
-
-                <div class="wrapper" [ngStyle]="{'transform': 'scale('+mapaGeneralService.escalaIsometrico+') translate('+traslacionIsometricoX+'px, '+traslacionIsometricoY+'px)'}">
-
-            <div class="floor">
-                <!-- rotateX(55deg) rotateZ(45deg) -->
-
-                  <div *ngIf="!desarrollo" class="player" [ngStyle]="{'transform': 'translate('+(50*mapaGeneralService.radioRenderIsometrico)+'px, '+(50*mapaGeneralService.radioRenderIsometrico)+'px)'}">
-                     <!-- player 1 -->
-                     <!-- Flecha NorEste -->
-                     <div class="player">
-                         <animacionFocusComponent></animacionFocusComponent>
-                     </div>
-
-                     <img class="flecha norte" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorEste')" *ngIf="direccionMovimientoPermitido[0] && !bloqueoMovimiento && esTurnoPropio"/>
-                     <!-- Flecha NorOeste -->
-                     <img class="flecha oeste" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorOeste')" *ngIf="direccionMovimientoPermitido[3] && !bloqueoMovimiento && esTurnoPropio"/>
-                     <!-- Flecha SurEste -->
-                     <img class="flecha este" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurEste')" *ngIf="direccionMovimientoPermitido[1] && !bloqueoMovimiento && esTurnoPropio"/>
-                     <!-- Flecha SurOeste -->
-                     <img class="flecha sur" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurOeste')" *ngIf="direccionMovimientoPermitido[2] && !bloqueoMovimiento && esTurnoPropio"/>
-
-                     <!-- Flecha NorEste -->
+                @if (direccionMovimientoPermitido[0] && !bloqueoMovimiento && esTurnoPropio) {
+                  <img class="flecha norte" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorEste')"/>
+                }
+                <!-- Flecha NorOeste -->
+                @if (direccionMovimientoPermitido[3] && !bloqueoMovimiento && esTurnoPropio) {
+                  <img class="flecha oeste" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorOeste')"/>
+                }
+                <!-- Flecha SurEste -->
+                @if (direccionMovimientoPermitido[1] && !bloqueoMovimiento && esTurnoPropio) {
+                  <img class="flecha este" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurEste')"/>
+                }
+                <!-- Flecha SurOeste -->
+                @if (direccionMovimientoPermitido[2] && !bloqueoMovimiento && esTurnoPropio) {
+                  <img class="flecha sur" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurOeste')"/>
+                }
+                <!-- Flecha NorEste -->
+              </div>
+            }
+            @for (fila of this.mapaGeneralService.renderIsometrico; track fila; let i = $index) {
+              <div class="row" [ngClass]="{'animacionAddRow': animacionAddRow, 'animacionDeleteRow': animacionDeleteRow}" [ngStyle]="{'z-index': i}">
+                @for (tile of this.mapaGeneralService.renderIsometrico[i]; track tile; let j = $index) {
+                  <div
+                    data-cords='[tile.coordenadaX,tile.coordenadaY]'
+                    class="tile"
+                    [ngStyle]="{'pointer-events': pointerEventCelda}"
+                    [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)"
+                    (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)"
+                    (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >
+                    @if (desarrollo) {
+                      <div [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" class="marcador"></div>
+                    }
+                    @if (tile.tileImage!=0) {
+                      <img class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
+                    }
+                    @if (tile.tileImageOverlay!=0) {
+                      <img class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
+                    }
+                    @if (tile.ubicacionEspecial!=null) {
+                      <img class="imagenMarcador" src="assets/Iconos/indicadores/{{renderImagenMarcador(tile.ubicacionEspecial)}}.png"/>
+                    }
                   </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
 
-                  <div *ngFor="let fila of this.mapaGeneralService.renderIsometrico;let i = index" class="row" [ngClass]="{'animacionAddRow': animacionAddRow, 'animacionDeleteRow': animacionDeleteRow}" [ngStyle]="{'z-index': i}">
-                         <div *ngFor="let tile of this.mapaGeneralService.renderIsometrico[i];let j = index"
-                             data-cords='[tile.coordenadaX,tile.coordenadaY]'
-                             class="tile"
-                             [ngStyle]="{'pointer-events': pointerEventCelda}"
-                             [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)"
-                             (click)="clickTile(tile.coordenadaX,tile.coodenadaY,$event)"
-                             (auxclick)="clickTileAux(tile.coordenadaX,tile.coodenadaY,$event)" >
-
-                                <div *ngIf="desarrollo" [ngClass]="renderTile(tile.coordenadaX,tile.coodenadaY)" class="marcador"></div>
-                                <img *ngIf="tile.tileImage!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImage}}.png"/>
-                                <img *ngIf="tile.tileImageOverlay!=0" class="imagenTile" src="assets/Mapa/Tiles/{{tile.tileImageOverlay}}.png"/>
-                                <img *ngIf="tile.ubicacionEspecial!=null" class="imagenMarcador" src="assets/Iconos/indicadores/{{renderImagenMarcador(tile.ubicacionEspecial)}}.png"/>
-
-                         </div>
-                     </div>
-
-                  </div>
-                </div>
-            </div>
-
-            <div class="fogwrapper">
-            </div>
-
-        </pinch-zoom>
-
-        <!--
-            <div class="fogwrapper">
-                <div id="foglayer_01" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div>
-                <div id="foglayer_02" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div>
-                <div id="foglayer_03" class="fog">
-                  <div class="image01"></div>
-                  <div class="image02"></div>
-                </div>
-            </div>
-        -->
+    <div class="fogwrapper">
     </div>
+
+  </pinch-zoom>
+
+  <!--
+  <div class="fogwrapper">
+    <div id="foglayer_01" class="fog">
+      <div class="image01"></div>
+      <div class="image02"></div>
+    </div>
+    <div id="foglayer_02" class="fog">
+      <div class="image01"></div>
+      <div class="image02"></div>
+    </div>
+    <div id="foglayer_03" class="fog">
+      <div class="image01"></div>
+      <div class="image02"></div>
+    </div>
+  </div>
+  -->
+</div>
 
 
 

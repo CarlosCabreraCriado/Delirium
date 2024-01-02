@@ -3,13 +3,19 @@
 <!--         BOTONES       -->
 <!--   ******************* -->
 
-<div id="botonClasico" *ngIf="tipoBoton==1" [ngClass]="color">
-	<div class="Texto2 textoBoton" >{{texto}}</div>
-	<div class="frameBoton"></div>
-</div>
+@if (tipoBoton==1) {
+  <div id="botonClasico" [ngClass]="color">
+    <div class="Texto2 textoBoton" >{{texto}}</div>
+    <div class="frameBoton"></div>
+  </div>
+}
 
-<div id="botonNuevo" *ngIf="tipoBoton==2" >
-	<img *ngIf="!vacio" src="../../../assets/ui/buttons/bt_03_2.png" class="interior" [ngClass]="color"/>
-	<div class="Texto2 textoBoton" >{{texto}}</div>
-</div>
+@if (tipoBoton==2) {
+  <div id="botonNuevo" >
+    @if (!vacio) {
+      <img src="../../../assets/ui/buttons/bt_03_2.png" class="interior" [ngClass]="color"/>
+    }
+    <div class="Texto2 textoBoton" >{{texto}}</div>
+  </div>
+}
 
