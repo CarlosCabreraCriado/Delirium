@@ -160,6 +160,10 @@ export class AppComponent implements OnInit{
                     this.appService.logout();
                     this.appService.mostrarDialogo("Informativo",{contenido:"Se ha producido un error en la sincronización del socket."});
                 break;
+                case "logout":
+                  console.error("SERVER FUERZA LOGOUT...");
+                  this.appService.logout();
+                  break;
                 case "conectado":
                     this.socketService.enviarSocket('validacion', this.cuenta);
                 break

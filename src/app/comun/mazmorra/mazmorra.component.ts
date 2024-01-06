@@ -165,6 +165,42 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
               this.retroceder();
             break;
 
+            case "ordenPartida":
+                console.warn("ORDEN ID: "+data.id);
+                console.warn("Peticion: "+data.peticion);
+                console.warn("Orden: "+data.comando);
+
+                if(this.mazmorraService.flagEjecutandoComando){
+                  console.error("Bloqueando ejecución de comando por bloqueo");
+                  return;
+                }
+                this.mazmorraService.iniciarOrdenPartida(data.id);
+                switch(data.comando){
+                  case "realizarMovimiento":
+                    this.mazmorraService.realizarMovimiento(data.contenido.valor,data.contenido.puntosMovimiento,data.contenido.indexHeroeAccion)
+                    this.mazmorraService.finalizarOrdenPartida();
+                    this.cdr.detectChanges();
+                    break;
+                  case "lanzarHechizo":
+                    console.log("Sincronizando Lanzar hechizo");
+                    console.log(data.contenido);
+                    this.mazmorraService.lanzarHechizo(data.contenido);
+                  break;
+
+                  case "fallarHechizo":
+                    console.log("Hechizo Fallado");
+                    console.log(data.contenido);
+                    this.mazmorraService.fallarHechizo(data.contenido);
+                  break;
+
+                  case "reanimarHeroe":
+                    console.log("Socket... Reanimando Heroe: ",data.contenido);
+                    this.mazmorraService.reanimarHeroe(data.contenido);
+                  break;
+                }
+
+              break;
+
             case "comandoPartida":
                 console.warn("Peticion: "+data.peticion);
                 console.warn("Comando: "+data.comando);
@@ -183,26 +219,9 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.desactivarComandoSocket();
                   break;
 
-                  case "realizarMovimiento":
-                    this.mazmorraService.realizarMovimiento(data.contenido.valor,data.contenido.puntosMovimiento)
-                    this.cdr.detectChanges();
-                    break;
-
                   case "lanzarGolpeOportunidad":
                     this.mazmorraService.lanzarGolpeOportunidad(data.contenido)
                     this.cdr.detectChanges();
-                    break;
-
-                  case "lanzarHechizo":
-                    console.log("Sincronizando Lanzar hechizo");
-                    console.log(data.contenido);
-                    this.mazmorraService.lanzarHechizo(data.contenido);
-                  break;
-
-                  case "fallarHechizo":
-                    console.log("Hechizo Fallado");
-                    console.log(data.contenido);
-                    this.mazmorraService.fallarHechizo(data.contenido);
                   break;
 
                   case "actualizarInteractuado":
@@ -253,10 +272,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.setRenderMazmorra(data.contenido);
                   break;
 
-                  case "reanimarHeroe":
-                    console.log("Socket... Reanimando Heroe: ",data.contenido);
-                    this.mazmorraService.reanimarHeroe(data.contenido);
-                  break;
+
                 }
             break;
           }

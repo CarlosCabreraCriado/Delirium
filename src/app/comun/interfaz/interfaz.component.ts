@@ -20,7 +20,6 @@ export class InterfazComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, public interfazService: InterfazService) { }
 
-
   ngOnInit() {
         //suscripcion Interfaz:
         this.interfazSuscripcion = this.interfazService.observarInterfaz$.subscribe((val) => {

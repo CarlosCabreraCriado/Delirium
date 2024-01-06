@@ -148,14 +148,14 @@ export class AppService {
         this.mostrarPantallacarga(true);
 
         setTimeout(()=>{
-                console.warn("CAMBIO ESTADO APP ",pantalla)
-                //this.estadoApp = pantalla;
-                //this._estadoApp.next(this.)
-                this._estadoApp.value.pantalla = pantalla;
-                this._estadoApp.next(this._estadoApp.value)
-                if(pantalla=="inmap"){
-                    this.observarAppService.next("reloadInMapService");
-                }
+            console.warn("CAMBIO ESTADO APP ",pantalla)
+            //this.estadoApp = pantalla;
+            //this._estadoApp.next(this.)
+            this._estadoApp.value.pantalla = pantalla;
+            this._estadoApp.next(this._estadoApp.value)
+            if(pantalla=="inmap"){
+                this.observarAppService.next("reloadInMapService");
+            }
         }, 1000);
 
         setTimeout(()=>{

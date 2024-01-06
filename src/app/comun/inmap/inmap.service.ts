@@ -114,9 +114,6 @@ export class InMapService {
 
         console.log("INICIANDO INMAP SERVICE")
 
-        console.log("Heroe Seleccionado")
-        //console.log(this.heroeSeleccionado)
-
         //CARGAR SESION:
         //this.sesion= await this.appService.getSesion();
         this.parametros = await this.appService.getParametros();
@@ -128,6 +125,8 @@ export class InMapService {
             //this.sesion.iniciada = true;
             this.socketService.enviarSocket("actualizarSesion",{peticion: "actualizarSesion", comando: "actualizarSesion", contenido: this.sesion});
         }
+
+        if(this.estadoApp.heroePropioSesionIndex == null){return;}
 
         //INICIA MENSAJE Y MOVIMIENTOS:
         if(this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex].turno){

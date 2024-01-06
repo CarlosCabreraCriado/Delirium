@@ -78,7 +78,7 @@ private confirmation: boolean = false;
                             //Cambiar flag de jugador:
                             this.estadoJugadores[data.contenido] = true;
                             for(var i = 0; i < this.estadoJugadores.length; i++){
-                                if(!this.estadoJugadores[i]){return;}
+                                //if(!this.estadoJugadores[i]){return;}
                             }
 
                             if(this.indexOpcionSeleccionada == null){
