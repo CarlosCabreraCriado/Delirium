@@ -97,7 +97,6 @@ export class FormAnimacionesComponent {
                     break;
 
                     case "reloadFormSubAnimacion":
-                    case "reloadForm":
                     console.log(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex])
                         this.formSubanimacion.setValue(this.desarrolladorService.animaciones.animaciones[this.desarrolladorService.animacionSeleccionadoIndex].subanimaciones[this.desarrolladorService.subanimacionSeleccionadoIndex]);
                     break;

@@ -103,8 +103,7 @@
     "run-script-os": "^1.1.6",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
-    "typescript": "^5.2.2",
-    "webpack": "^5.74.0"
+    "typescript": "^5.2.2"
   },
   "build": {
     "appId": "Delirium",
@@ -126,9 +125,6 @@
     "node_modules"
   ],
   "postinstall": "electron-builder install-app-deps",
-  "resolutions": {
-    "webpack": "^5.0.0"
-  },
   "compilerOptions": {
     "typeRoots": [
       "node_modules/@types",

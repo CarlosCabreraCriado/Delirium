@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, AfterViewInit, NgModule, ViewChildren, ViewChild, ElementRef, QueryList, Directive} from '@angular/core';
+import { Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, AfterViewInit, NgModule, ViewChildren, ViewChild, ElementRef, QueryList, Directive, NgZone} from '@angular/core';
 import { AppService } from '../../app.service';
 import { MazmorraService } from './mazmorra.service';
 import { Subscription } from "rxjs";
@@ -31,11 +31,13 @@ class AppAnimacionNumero {
 })
 
 export class MazmorraComponent implements OnInit,AfterViewInit{
-  constructor(private cdr: ChangeDetectorRef,public mazmorraService: MazmorraService, public appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
+  constructor(private cdr: ChangeDetectorRef, private zone: NgZone, public mazmorraService: MazmorraService, public appService: AppService, private loggerService:LoggerService, private pausaService:PausaService, private eventosService: EventosService, private socketService: SocketService, private interfazService:InterfazService, private heroesInfoService: HeroesInfoService){}
 
   @ViewChildren("animacionNumero") components: QueryList<AppAnimacionNumero>
   @ViewChild('canvasIsometrico',{static: false}) canvasIsometrico: ElementRef;
   @ViewChild('mapaMazmorra',{static: false}) private mapaMazmorra: MapaMazmorraComponent;
+  @ViewChild('temporizadorGeneral',{static: false}) private elementoTemporizadorGeneral: ElementRef;
+  @ViewChild('temporizadorBuff',{static: false}) private elementoTemporizadorBuff: ElementRef;
 
   //Declara Suscripción para imput de teclado:
   private tecla: string;
@@ -69,9 +71,14 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   public mostrarHistorial: boolean = false;
   public modoMazmorra: "mapa" | "combate" = "mapa";
 
-  //Variables Renderizado:
-  private autoGuardado:any;
-  private autoGuardado2:any;
+  //Variables Temporizador:
+  public habilitarTemporizador: boolean = true;
+  public temporizadorGeneral: any = false;
+  public tiempoMaxRonda: number = 300;
+  public tiempoMaxBuff: number = 0;
+  public numActivacionesBuff: number = 5;
+  public tiempoNextRonda: number = 0;
+  public tiempoNextBuff: number = 0;
 
   //Variable de renderizado:
   public renderMazmorra: RenderMazmorra;
@@ -120,16 +127,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
           switch(data.peticion){
 
             case "renderizarCanvas":
-              console.log("Peticion: "+data.peticion);
-              console.log("Contenido: ");
               console.log(data.contenido);
               this.renderizarCanvasIsometrico();
             break;
 
             case "estadoSala":
-              console.log("Peticion: "+data.peticion);
-              console.log("Emisor: "+data.emisor);
-              console.log("Contenido: ");
               console.log(data.contenido);
               this.sala = data.contenido;
               this.mazmorraService.sala= this.sala;
@@ -148,9 +150,6 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
             break;
 
             case "unirsePartida":
-              console.log("Peticion: "+data.peticion);
-              console.log("Emisor: "+data.emisor);
-              console.log("Contenido: ");
               console.log(data.contenido);
               this.sala = data.contenido;
               this.mazmorraService.sala= this.sala;
@@ -159,22 +158,36 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
             break;
 
             case "cerrarSala":
-              console.log("Peticion: "+data.peticion);
-              console.log("Contenido: ");
               console.log(data.contenido);
               this.retroceder();
             break;
 
-            case "ordenPartida":
-                console.warn("ORDEN ID: "+data.id);
-                console.warn("Peticion: "+data.peticion);
-                console.warn("Orden: "+data.comando);
 
-                if(this.mazmorraService.flagEjecutandoComando){
-                  console.error("Bloqueando ejecución de comando por bloqueo");
+            case "actualizarSolicitudes":
+              this.mazmorraService.actualizarSolicitudes(data.solicitudes);
+              break;
+
+            case "peticionSincronizacionOrden":
+              this.mazmorraService.sincronizarOrden(data.id,data.hash,data.indexSincronizacion);
+              break;
+
+            case "ordenPartida":
+                console.warn("ORDEN RECIBIDA: ",data.id,data.contenido);
+
+                //Bloqueo por ejecucion en curso:
+                if(this.mazmorraService.flagEjecutandoOrden){
+                  console.error("Bloqueando ejecución Orden (Orden en curso)");
                   return;
                 }
+
+                //Bloqueo por orden ya ejecutada:
+                if(this.mazmorraService.estadoControl.ultimaOrdenEjecutadaId >= data.id){
+                  console.error("Bloqueando ejecución Orden (Orden ya ejecutada)");
+                  return;
+                }
+
                 this.mazmorraService.iniciarOrdenPartida(data.id);
+
                 switch(data.comando){
                   case "realizarMovimiento":
                     this.mazmorraService.realizarMovimiento(data.contenido.valor,data.contenido.puntosMovimiento,data.contenido.indexHeroeAccion)
@@ -187,16 +200,30 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.lanzarHechizo(data.contenido);
                   break;
 
-                  case "fallarHechizo":
-                    console.log("Hechizo Fallado");
-                    console.log(data.contenido);
-                    this.mazmorraService.fallarHechizo(data.contenido);
+
+                  case "lanzarGolpeOportunidad":
+                    this.mazmorraService.lanzarGolpeOportunidad(data.contenido)
+                    this.cdr.detectChanges();
                   break;
 
                   case "reanimarHeroe":
                     console.log("Socket... Reanimando Heroe: ",data.contenido);
                     this.mazmorraService.reanimarHeroe(data.contenido);
+                    this.mazmorraService.finalizarOrdenPartida();
                   break;
+
+                  case "lanzarBuffos":
+                    console.log("Socket... Lanzando Buffos: ",data.contenido);
+                    await this.mazmorraService.lanzarBuffos();
+                    this.mazmorraService.finalizarOrdenPartida();
+                    break;
+
+                  case "pasarRonda":
+                    this.mazmorraService.resetearSolicitudes();
+                    await this.mazmorraService.pasarTurno();
+                    this.mazmorraService.finalizarOrdenPartida();
+                    break;
+
                 }
 
               break;
@@ -219,11 +246,6 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.desactivarComandoSocket();
                   break;
 
-                  case "lanzarGolpeOportunidad":
-                    this.mazmorraService.lanzarGolpeOportunidad(data.contenido)
-                    this.cdr.detectChanges();
-                  break;
-
                   case "actualizarInteractuado":
                       this.mazmorraService.actualizarInteractuado(data.contenido);
                       break;
@@ -237,6 +259,12 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     //this.mazmorraService.seleccionarEnemigos = false;
                     //this.mazmorraService.seleccionarHeroes = false;
                     this.mazmorraService.lanzarHechizo(data.contenido);
+                  break;
+
+                  case "fallarHechizo":
+                    console.log("Hechizo Fallado");
+                    console.log(data.contenido);
+                    this.mazmorraService.fallarHechizo(data.contenido.energia, data.contenido.heroeIndex);
                   break;
 
                   case "forzarRewind":
@@ -260,7 +288,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     console.log("Forzando Sincronizando: ");
                     console.log(data.contenido);
                     this.renderMazmorra = data.contenido;
-                    await this.appService.setSesion(data.contenido);
+                    this.appService.setSesion(data.contenido);
                     this.mazmorraService.iniciarMazmorra();
                     this.mazmorraService.mensajeAccion("Sincronizando...",2000);
                   break;
@@ -375,6 +403,18 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     break;
                 case "habilitarInterfaz":
                   this.interfazService.setBloquearInterfaz(false);
+                break;
+                case "activarTemporizador":
+                  this.activarTemporizador();
+                break;
+                case "desactivarTemporizador":
+                  this.desactivarTemporizador();
+                break;
+                case "resetTemporizadorGeneral":
+                  this.resetTemporizadorGeneral();
+                break;
+                case "resetTemporizadorBuff":
+                  this.resetTemporizadorBuff();
                 break;
             }
         });
@@ -773,8 +813,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   comandoPanelControl(comando:any){
     //Si se pulsa el centro accede a mazmorra:
     if(comando=="centro"){
-            if(this.mazmorraService.estadoControl.esTurnoPropio || this.mazmorraService.permitirMultiControl){
-              this.mazmorraService.pasarTurno()
+            if(this.mazmorraService.estadoControl.esTurnoHeroe || this.mazmorraService.permitirMultiControl){
+
+              this.mazmorraService.solicitarFinRonda(true);
+
             }
     }
 
@@ -959,6 +1001,92 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
       }
     }
 
+  activarTemporizador(){
+
+    if(!this.habilitarTemporizador){return;}
+    var timestamp = this.mazmorraService.getTimestamp();
+
+    var tiempoRestanteRonda = 0;
+
+    if(timestamp==0){
+      tiempoRestanteRonda = this.tiempoMaxRonda;
+    }else{
+      tiempoRestanteRonda = this.tiempoMaxRonda- (Math.floor(Date.now() / 1000) - timestamp);
+    }
+
+
+    if(tiempoRestanteRonda >= 0){
+      this.tiempoNextRonda = tiempoRestanteRonda;
+    }else{
+      this.tiempoNextRonda = 0;
+      this.mazmorraService.solicitarFinRonda(true)
+    }
+
+    //Calculo de tiempo Buff:
+    this.tiempoMaxBuff = Math.floor((this.tiempoMaxRonda - 5) / this.numActivacionesBuff);
+
+    if(this.tiempoNextRonda == this.tiempoMaxRonda){
+      this.tiempoNextBuff = this.tiempoMaxBuff;
+    }else{
+      this.tiempoNextBuff = Math.round(
+        (this.tiempoMaxBuff*((this.tiempoNextRonda/this.tiempoMaxBuff)-Math.floor(this.tiempoNextRonda/this.tiempoMaxBuff)))*100)/100
+    }
+
+
+    if(!this.temporizadorGeneral && this.tiempoNextRonda > 0){
+
+     this.zone.runOutsideAngular(() => {
+
+       //SET TEMPORIZADOR GENERAL:
+        this.temporizadorGeneral = setInterval(() => {
+          this.tiempoNextRonda--;
+          this.tiempoNextBuff--;
+
+          this.elementoTemporizadorGeneral.nativeElement.innerHTML = this.tiempoNextRonda;
+          this.elementoTemporizadorBuff.nativeElement.innerHTML = this.tiempoNextBuff;
+
+          if(this.tiempoNextRonda == 0){
+            this.tiempoNextRonda = this.tiempoMaxRonda;
+            this.mazmorraService.solicitarFinRonda(true);
+          }
+
+          if(this.tiempoNextBuff == 0){
+            this.tiempoNextBuff = this.tiempoMaxBuff;
+            this.mazmorraService.tickLanzarBuffos();
+          }
+
+        },1000)
+
+
+      }); //FIN ZONE
+
+    }else{
+          this.elementoTemporizadorGeneral.nativeElement.innerHTML = "-";
+          this.elementoTemporizadorBuff.nativeElement.innerHTML = "-";
+    }
+    return;
+  }
+
+  resetTemporizadorGeneral(){
+    this.tiempoNextRonda = this.tiempoMaxRonda;
+    return;
+  }
+
+  resetTemporizadorBuff(){
+    this.tiempoNextBuff = this.tiempoMaxBuff;
+    return;
+  }
+
+  desactivarTemporizador(){
+    this.tiempoNextRonda = this.tiempoMaxRonda;
+
+    this.elementoTemporizadorGeneral.nativeElement.innerHTML = "-";
+    this.elementoTemporizadorBuff.nativeElement.innerHTML = "-";
+
+    clearInterval(this.temporizadorGeneral);
+    this.temporizadorGeneral = false;
+    return;
+  }
 
 }
 

@@ -50,14 +50,12 @@ export class InMapComponent implements OnInit {
         this.appServiceSuscripcion = this.appService.observarAppService$.subscribe(
             (val) => {
                 switch(val){
+                    /*
                     case "actualizarHeroeSeleccionado":
                         //this.inmapService.importarHeroeSeleccionado();
                         //this.inmapService.iniciarInMap();
                         break;
-                    case "triggerChangeDetection":
-                        //console.error("TRIGGER CHANGE DETECTION")
-                        //this.cdr.detectChanges();
-                        break;
+                    */
 
                     case "reloadInMapService":
                         this.inmapService.iniciarInMap();
@@ -139,7 +137,7 @@ export class InMapComponent implements OnInit {
         this.eventosSuscripcion = this.eventosService.eventoInMapEmitter.subscribe((val) => {
             switch(val.comando){
                 case "finalizarTutorial":
-                    this.inmapService.finalizarTutorial(); 
+                    this.inmapService.finalizarTutorial();
                     break;
             }
         }); //FIN EVENTO SUSCRIPTION:

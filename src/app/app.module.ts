@@ -48,7 +48,7 @@ import { SocialComponent } from './comun/social/social.component';
 import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { BotonComponent } from './comun/boton/boton.component';
 import { CheckboxComponent } from './comun/checkbox/checkbox.component';
-import { FrameComponent } from './comun/frame/frame.component';
+//import { FrameComponent } from './comun/frame/frame.component';
 import { InMapComponent } from './comun/inmap/inmap.component';
 import { MapaGeneralComponent } from './comun/mapa-general/mapaGeneral.component';
 import { MapaMazmorraComponent } from './comun/mapa-mazmorra/mapa-mazmorra.component';
@@ -123,7 +123,7 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         ConfiguracionComponent,
         SocialComponent,
         CrearHeroeComponent,
-        FrameComponent,
+        //FrameComponent,
         CheckboxComponent,
         InMapComponent,
         MapaGeneralComponent,

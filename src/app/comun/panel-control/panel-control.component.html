@@ -74,6 +74,7 @@
       <img class="fondoIndicador" src="assets/ui/icons/fondo-energia.png"/>
       <div class="valorIndicador Texto2">{{energiaFutura}}</div>
     </div>
+
     <!-- Boton Central -->
     <div id="contenedorBotonCentral" >
       <img class="fondoDiamante" src="assets/Iconos/fondo-badge.png"/>
@@ -86,6 +87,7 @@
       <img class="diamante" [ngClass]="{'activo': turno || habilitar}" (click)="enviarComando('centro')" src="assets/Iconos/diamante.png"/>
       <!--<img  class="icono" src="assets/Iconos/Icono-Gema.png"/>-->
     </div>
+
     <!-- Boton Lateral Derecho -->
     <div class="contenedorBotonLateral derecho" (click)="enviarComando('derecha')">
       @if (turno) {
@@ -95,6 +97,7 @@
       }
       <img class="icono" [ngClass]="{'activo': turno}" src="assets/Iconos/06.png"/>
     </div>
+
     <!-- Boton Lateral Izquierdo -->
     <div class="contenedorBotonLateral izquierdo" (click)="enviarComando('izquierda')">
       @if (turno) {

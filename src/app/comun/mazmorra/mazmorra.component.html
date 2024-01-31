@@ -146,6 +146,16 @@
   -->
 
   <!--   ******************* -->
+  <!--       TEMPORIZADOR    -->
+  <!--   ******************* -->
+
+  <div #temporizadorGeneral id="temporizadorGeneral" class="Texto1">
+  </div>
+
+  <div #temporizadorBuff id="temporizadorBuff" class="Texto1">
+  </div>
+
+  <!--   ******************* -->
   <!--       BOTONES TEST    -->
   <!--   ******************* -->
   <!--
@@ -207,13 +217,16 @@
   <!--   ******************* -->
   @if (this.mazmorraService.mostrarMazmorra) {
     <panelControlComponent (comandoPanelControl)="comandoPanelControl($event)" id="panelControl"
-      [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}"
+      [ngClass]="{'modoMapa': modoMazmorra == 'mapa'}"
       [tipo]="'mazmorra'"
-      [vida]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].puntosVida"
-      [energia]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energia"
-      [energiaFutura]="mazmorraService.sesion.render.heroes[mazmorraService.estadoControl.heroePropioIndex].energiaFutura"
-      [turno]= "mazmorraService.estadoControl.esTurnoHeroe"
-      [habilitar]="mazmorraService.estadoControl.esTurnoHeroe || mazmorraService.permitirMultiControl" >
+      [vida]="this.mazmorraService.sesion.render.heroes[this.mazmorraService.estadoControl.heroePropioIndex].puntosVida"
+      [energia]="this.mazmorraService.sesion.render.heroes[this.mazmorraService.estadoControl.heroePropioIndex].energia"
+      [energiaFutura]="this.mazmorraService.sesion.render.heroes[this.mazmorraService.estadoControl.heroePropioIndex].energiaFutura"
+
+      [turno]= "!this.mazmorraService.sesion.solicitudes[this.mazmorraService.estadoControl.heroePropioIndex] && this.mazmorraService.estadoControl.esTurnoHeroe"
+
+      [habilitar]="!this.mazmorraService.sesion.solicitudes[this.mazmorraService.estadoControl.heroePropioIndex] && this.mazmorraService.estadoControl.esTurnoHeroe"
+      >
     </panelControlComponent>
   }
 
@@ -261,7 +274,13 @@
   <div id="contenedorEnemigos" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
     @if (this.mazmorraService.mostrarMazmorra) {
       @for (enemigo of this.mazmorraService.sesion.render.enemigos; track enemigo; let i = $index) {
-        <enemigoComponent [desplegable]="false" [indexEnemigo]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderEnemigo]="enemigo" [seleccionable]="this.mazmorraService.seleccionarEnemigos" (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
+        <enemigoComponent
+          [desplegable]="false"
+          [indexEnemigo]="i"
+          [estadoControl]="this.mazmorraService.estadoControl"
+          [renderEnemigo]="enemigo"
+          [seleccionable]="this.mazmorraService.seleccionarEnemigos"
+          (click)="mazmorraService.seleccionEnemigo(i)" class="panelEnemigo"></enemigoComponent>
       }
     }
   </div>

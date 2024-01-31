@@ -152,7 +152,7 @@ export class AppComponent implements OnInit{
             }
 
             this.appService.activarComandoSocket();
-            console.warn("RECIBIENDO EN APP COMP: ",data);
+            //console.warn("RECIBIENDO EN APP COMP: ",data);
             switch(data.peticion){
                 case "socketDesconectado":
                     console.log("Error en sincronización de socket: ");
@@ -169,10 +169,11 @@ export class AppComponent implements OnInit{
                 break
 
                 case "entrarMundoServer":
-                    this.appService.entrarMundo();
+                    this.appService.entrarMundo(data.contenido);
                     break
 
                 case "serverEnviaSesion":
+                    if(data.motivo){console.error("ERROR EN SESION: ",data.motivo)}
                     this.appService.iniciaSesion(data.contenido, data.forzarReload)
                 break
 

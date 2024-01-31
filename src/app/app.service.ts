@@ -439,7 +439,6 @@ export class AppService {
     }
 
     async reloadLogicService(){
-
         this.logicService.setParametros(await this.getParametros());
         this.logicService.setClases(await this.getClases());
         this.logicService.setEnemigos(await this.getEnemigos());
@@ -713,7 +712,7 @@ export class AppService {
     }
 
     logout(){
-        console.error("LOGOUT")
+        console.warn("---> LOGOUT <---")
         this.mostrarPantallacarga(true);
 
         setTimeout(()=>{
@@ -1018,7 +1017,7 @@ export class AppService {
         this.socketService.enviarSocket("entrarMundo",{heroe: this.perfil.heroes[indexHeroeSeleccionado]["personaje"]});
     }
 
-    entrarMundo(){
+    entrarMundo(socketId){
 
         //this.setHeroeSeleccionado(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex])
         var heroeSeleccionado = this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex]
@@ -1033,6 +1032,7 @@ export class AppService {
             //Inicializando Jugador:
             this._sesion.value.jugadores = [{
                     usuario: this.cuenta.usuario,
+                    socketId: socketId,
                     online: true,
                     lider: true,
                     personaje: heroeSeleccionado
@@ -1263,7 +1263,7 @@ export class AppService {
         //Carga el INMAP:
         var estadoApp = this.getEstadoApp();
 
-        if(sesion.estadoSesion == estadoApp){
+        if(sesion.estadoSesion == estadoApp.pantalla){
             if(forzarReload){
                 this.setPantallaApp(sesion.estadoSesion);
             }

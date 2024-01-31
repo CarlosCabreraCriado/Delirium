@@ -79,7 +79,7 @@ export class EnemigoComponent implements OnInit{
         //Determina si es objetivo:
         var esObjetivo = false;
         for(var i = 0; i < this.estadoControl.objetivosEnemigos.length; i++){
-          if(this.estadoControl.objetivosEnemigos[i] == this.indexEnemigo){
+          if(this.renderEnemigo.enemigo_id == this.estadoControl.objetivosEnemigos[i]){
             esObjetivo = true;
             break;
           }

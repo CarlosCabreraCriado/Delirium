@@ -12,7 +12,7 @@ import { PinchZoomComponent } from '../../comun/pinch-zoom/pinch-zoom.component'
 export class MapaMazmorraComponent implements OnInit{
 
     @Input() isometrico: any;
-    @Input() salasDescubiertas: any;
+    @Input() salasDescubiertas: any = [];
     @Input() escalaIsometrico: number;
     @Input() renderMazmorra: any = [];
     @Input() renderEnemigos: any = [];

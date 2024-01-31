@@ -472,11 +472,13 @@ export class InterfazService {
     }
 
     lanzarGolpeOportunidad(){
+       this.setObjetivoSeleccionado(false)
        this.observarInterfaz.next({comando: "lanzarGolpeOportunidad"});
        this.desactivarInterfaz();
     }
 
     cancelarGolpeOportunidad(){
+       this.setObjetivoSeleccionado(false)
        this.observarInterfaz.next({comando: "realizarMovimiento",valor: this.energiaMovimiento, puntosMovimiento: this.puntosMovimiento});
        this.desactivarInterfaz();
     }

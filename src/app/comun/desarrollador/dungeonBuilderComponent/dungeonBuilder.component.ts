@@ -137,7 +137,7 @@ export class DungeonBuilderComponent {
     public estadoParametros= "General";
     public estadoPanelIzquierdo: "reticula"|"isometrico"|"enemigos"|null = null;
     public estadoPanelDerecho: "isometrico"|"reticula"|null = null;
-    public herramientaReticula: "add" | "seleccionar" | "rotar" | "isometrico" = null; 
+    public herramientaReticula: "add" | "seleccionar" | "rotar" | "isometrico" = null;
 
     public mazmorra:any = {};
     public listaMazmorra:any= [];
@@ -173,7 +173,7 @@ export class DungeonBuilderComponent {
         this.desarrolladorService.log("-------------------------------","green");
 
         var enemigos = await this.appService.getEnemigos();
-        this.enemigos= enemigos["enemigos"]; 
+        this.enemigos= enemigos["enemigos"];
 
         //Inicialización formulario General:
         this.formGeneral = this.formBuilder.group({
@@ -344,10 +344,10 @@ export class DungeonBuilderComponent {
                 this.estadoPanelIzquierdo = "reticula";
                 this.estadoPanelDerecho = "reticula";
                 break;
-            
+
         }
     }
-        
+
 
     reloadForm(comandoReload: string){
               switch (comandoReload) {
@@ -357,22 +357,18 @@ export class DungeonBuilderComponent {
                 break;
 
                 case "reloadFormSala":
-                case "reloadForm":
                     this.formSala.patchValue(this.mazmorra["salas"][this.mazmorra.salas.indexOf(this.mazmorra.salas.find(i=> i.id==this.salaSeleccionadaId))]);
                 break;
 
                 case "reloadFormEnemigoMazmorra":
-                case "reloadForm":
                     this.formEnemigos.patchValue(this.mazmorra["salas"][this.enemigoSeleccionadoSalaIndex].enemigos[this.enemigoSeleccionadoIndex]);
                 break;
 
                 case "reloadFormEventosMazmorra":
-                case "reloadForm":
                     this.formEventosMazmorra.patchValue(this.mazmorra["eventos"][this.mazmorra.eventos.indexOf(this.mazmorra.eventos.find(i=> i.id_eventoMazmorra==this.eventoSeleccionadoId))]);
                 break;
 
                 case "reloadFormTile":
-                case "reloadForm":
 
                     //this.getTile(,j);
                     //this.formInMapGeneral.setValue();
@@ -1908,7 +1904,7 @@ export class DungeonBuilderComponent {
             this.mensajeErrorAsignacion("Error: No se ha encontrado el tipo enemigo ID = "+tipoEnemigoId);
             return;
         }
-        
+
         var pathEnemigo = tipoEnemigo.familia+"/"+tipoEnemigo.imagen_id+".png";
 
         //Asignando ID ENEMIGO;
@@ -1925,7 +1921,7 @@ export class DungeonBuilderComponent {
     }
 
     mensajeExitoAsignacion(mensaje?:string){
-        this.desarrolladorService.mensaje = mensaje; 
+        this.desarrolladorService.mensaje = mensaje;
         this.desarrolladorService.mostrarMensaje= true;
         this.desarrolladorService.mostrarSpinner= false;
         this.desarrolladorService.mostrarBotonAceptar= true;
@@ -1937,7 +1933,7 @@ export class DungeonBuilderComponent {
 
     mensajeErrorAsignacion(mensaje){
             this.mostrarPanelAsignarSala= true;
-            this.desarrolladorService.mensaje= mensaje; 
+            this.desarrolladorService.mensaje= mensaje;
             this.desarrolladorService.mostrarMensaje= true;
             this.desarrolladorService.mostrarSpinner= false;
             this.desarrolladorService.mostrarBotonAceptar= true;

@@ -3,7 +3,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { AppService } from '../../app.service';
 import { TriggerService } from "../../trigger.service"
-import * as cloneDeep from 'lodash/cloneDeep';
+//import * as cloneDeep from 'lodash/cloneDeep';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ export class MapaGeneralService {
     private regionInmap:number = 1;
     public region: any = {};
     public renderIsometrico: any = [];
-    private coordenadaX: number = 0; 
-    private coordenadaY: number = 0; 
+    private coordenadaX: number = 0;
+    private coordenadaY: number = 0;
     private regionCargada: string = null;
     public opcionOverlay: boolean = false;
     public radioRenderIsometrico: number = 6;
@@ -34,7 +34,7 @@ export class MapaGeneralService {
 
   // *************************************************
   //    INMAP:
-  // ************************************************* 
+  // *************************************************
 
   setDesarrollador(val:boolean){
       this.desarrollador = val;
@@ -44,11 +44,11 @@ export class MapaGeneralService {
   async cargarRegion(zona:string){
 
         console.warn("CARGAR REGION: ",zona);
-        if(zona== undefined || zona== null || zona==""){ console.error("Zona no valida"); return;} 
+        if(zona== undefined || zona== null || zona==""){ console.error("Zona no valida"); return;}
 
         if(zona=="Global"){
             this.eventoMapaGeneral.emit("cargarMapa");
-            this.estadoInMap= "global"      
+            this.estadoInMap= "global"
             this.appService.setEstadoInMap(this.estadoInMap);
             setTimeout(()=>{
                 this.eventoMapaGeneral.emit("cargaMapaCompleta");
@@ -60,7 +60,7 @@ export class MapaGeneralService {
         if(this.regionCargada == zona){
             console.warn("Region cargada previamente");
             this.eventoMapaGeneral.emit("cargarMapa");
-            this.estadoInMap= "region"      
+            this.estadoInMap= "region"
             this.appService.setEstadoInMap(this.estadoInMap);
             setTimeout(()=>{
                 this.eventoMapaGeneral.emit("cargaMapaCompleta");
@@ -75,11 +75,12 @@ export class MapaGeneralService {
         //Solicita la carga de la region a la appService:
         //this.region = Object.assign(new Object({}),await this.appService.peticionHttpRegion(zona));
 
-        this.region= cloneDeep(await this.appService.peticionHttpRegion(zona));
+        //this.region= cloneDeep(await this.appService.peticionHttpRegion(zona));
+        this.region= await this.appService.peticionHttpRegion(zona);
 
         this.regionCargada = zona;
         //this.inicializarIsometricoMapa(); //Fuerza la carga de isometrico generado en desarrolladoService;
-        
+
         var radioVision = this.radioRenderIsometrico;
         this.renderIsometrico = [];
 
@@ -133,13 +134,13 @@ export class MapaGeneralService {
                         for(var j=0; j < (coordenadaMinY*(-1)); j++){
                             sliceAnterior.push(this.crearTileFinMapa(0,0))
                         }
-                        slice = this.region.isometrico[i].slice(0,coordenadaMaxY) 
+                        slice = this.region.isometrico[i].slice(0,coordenadaMaxY)
                     }
                     if(coordenadaMaxY > this.region.isometrico[0].length){
                         for(var j=0; j < (coordenadaMaxY-this.region.isometrico[0].length); j++){
                             slicePosterior.push(this.crearTileFinMapa(0,0))
                         }
-                        slice = this.region.isometrico[i].slice(coordenadaMinY,this.region.isometrico[0].length) 
+                        slice = this.region.isometrico[i].slice(coordenadaMinY,this.region.isometrico[0].length)
                     }
 
                     slice= sliceAnterior.concat(slice).concat(slicePosterior);
@@ -149,7 +150,7 @@ export class MapaGeneralService {
                         slice.push(this.crearTileFinMapa(0,0))
                     }
                 }
-                
+
                 this.renderIsometrico.push(slice);
 
             }
@@ -183,7 +184,7 @@ export class MapaGeneralService {
         //SET TRIGGERS DE REGION:
         this.triggerService.setTriggerRegion(triggersRegion);
 
-        this.estadoInMap= "region"      
+        this.estadoInMap= "region"
         this.appService.setEstadoInMap(this.estadoInMap);
 
         this.eventoMapaGeneral.emit("cargaMapaCompleta");
@@ -212,7 +213,7 @@ export class MapaGeneralService {
               delete v.indicadorTerrenoDificil
           })
         */
-          
+
         for(var j=0; j < this.region.isometrico[i].length; j++){
 
             this.region.isometrico[i][j]["probabilidadEvento"] = 0;
@@ -226,16 +227,16 @@ export class MapaGeneralService {
             this.region.isometrico[i][j]["atravesable"] = true;
 
             //Defecto Mar:
-            if(this.region.isometrico[i][j].tileImage == 122){ 
+            if(this.region.isometrico[i][j].tileImage == 122){
                 this.region.isometrico[i][j].atravesable = false;
             }
 
             //Defecto Montaña:
-            if(this.region.isometrico[i][j].tileImage == 14){ 
+            if(this.region.isometrico[i][j].tileImage == 14){
                 this.region.isometrico[i][j].atravesable = false;
             }
 
-            if(this.region.isometrico[i][j].tileImage == 118){ 
+            if(this.region.isometrico[i][j].tileImage == 118){
                 this.region.isometrico[i][j].atravesable = false;
             }
 
@@ -246,8 +247,8 @@ export class MapaGeneralService {
                 this.region.isometrico[i][j].tileImageOverlay == 106 ||
                 this.region.isometrico[i][j].tileImageOverlay == 107 ||
                 this.region.isometrico[i][j].tileImageOverlay == 108 ||
-                this.region.isometrico[i][j].tileImageOverlay == 109 
-              ){ 
+                this.region.isometrico[i][j].tileImageOverlay == 109
+              ){
                 this.region.isometrico[i][j].atravesable = true;
                 this.region.isometrico[i][j]["categoriaEvento"] = "camino";
                 this.region.isometrico[i][j]["probabilidadEvento"] = 0.15;
@@ -259,8 +260,8 @@ export class MapaGeneralService {
                 this.region.isometrico[i][j].tileImage == 47  ||
                 this.region.isometrico[i][j].tileImage == 113 ||
                 this.region.isometrico[i][j].tileImage == 200 ||
-                this.region.isometrico[i][j].tileImage == 208 
-              ){ 
+                this.region.isometrico[i][j].tileImage == 208
+              ){
                 this.region.isometrico[i][j].tipoTerreno = "bosque";
                 this.region.isometrico[i][j]["categoriaEvento"] = "bosque";
                 this.region.isometrico[i][j]["probabilidadEvento"] = 0.33;
@@ -286,7 +287,7 @@ export class MapaGeneralService {
   }
 
   setTile(x:number,y:number,formGeneral:any,formTerreno:any,formEventos,formMisiones:any){
-      
+
         console.log("Setting Tile")
 
         //Fomrulario General:

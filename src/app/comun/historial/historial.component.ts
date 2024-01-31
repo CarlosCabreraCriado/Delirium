@@ -13,8 +13,10 @@ export class HistorialComponent {
     public historial: any;
 
     constructor(private appService: AppService) {
-        console.error("CAMBIO SESION")
-        this.appService.sesion$.subscribe(sesion => this.historial = sesion.render.historial);
+        this.appService.sesion$.subscribe((sesion) => {
+          if(!sesion){return;}
+          this.historial = sesion.render.historial;
+        });
     }
 
 }

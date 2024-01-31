@@ -7,7 +7,7 @@
 // localDev: Modo desarrollo con servidor local
 // production: Modo produccion
 
-const DEBUG = process.env.NODE_ENV 
+const DEBUG = process.env.NODE_ENV
 console.log("MODO EJECUCION: "+DEBUG);
 
 const MOVIL = false;
@@ -86,7 +86,7 @@ function createWindow () {
         preload: path.join(__dirname, 'preload.js'),
         contextIsolation: true,
         sandbox: false
-        }  
+        }
     })
   }else{
      mainWindow = new BrowserWindow({
@@ -104,9 +104,9 @@ function createWindow () {
   }
 
   //mainWindow.setMenu(null);
-  
+
   // and load the index.html of the app.
-  
+
   if(DEBUG!=="production"){
     mainWindow.loadURL("http://localhost:4200/index.html");
   }else{
@@ -134,14 +134,14 @@ function desarrollador() {
 
   // Create the browser window.
   desarrolladorWindow = new BrowserWindow({
-    width: 1080, 
+    width: 1080,
     height: 720,
     webPreferences: {
         webSecurity: true,
         preload: path.join(__dirname, 'preload.js'),
         nodeIntegration: false}
     })
-  
+
   if(DEBUG!=="production"){
     desarrolladorWindow.loadURL("http://localhost:4200/desarrollador");
   }else{
@@ -185,7 +185,7 @@ ipc.on('getCuenta', function (event) {
 });
 
 ipc.on('setCuenta', function (event, arg) {
-  cuenta = arg; 
+  cuenta = arg;
   console.log(cuenta);
   if(arg){
     cuentaID = String(arg._id);
@@ -203,7 +203,7 @@ ipc.on('getSesion', function (event) {
 });
 
 ipc.on('setSesion', function (event, arg) {
-  sesion = arg; 
+  sesion = arg;
   console.log(sesion);
   //actualizarModelos();
   console.log("Guardando Sesion... Done ");
@@ -216,7 +216,7 @@ ipc.on('getToken', function (event) {
 });
 
 ipc.on('setToken', function (event, arg) {
-  token = arg; 
+  token = arg;
   console.log("Token: ");
   console.log(token);
   event.returnValue = true;
@@ -228,10 +228,10 @@ ipc.on('getPerfil', function (event) {
 });
 
 ipc.on('setPerfil', function (event, arg) {
-  perfil = arg; 
+  perfil = arg;
   console.log("Cargando Perfil");
   console.log(perfil);
-   
+
   event.returnValue = true;
 });
 
@@ -241,21 +241,21 @@ ipc.on('getMazmorra', function (event) {
 });
 
 ipc.on('setMazmorra', function (event, arg) {
-  mazmorra = arg; 
+  mazmorra = arg;
   console.log("Cargando Mazmorra");
   console.log(mazmorra);
-   
+
   event.returnValue = true;
 });
 
 //SETTER GETTER (DATOS JUEGO)
 ipc.on('setDatosJuego', function (event, arg) {
-  datosJuego = arg; 
+  datosJuego = arg;
 
   console.log("Datos de Juego: ");
   console.log(datosJuego);
 
-    //Desglose de Datos de Juego: 
+    //Desglose de Datos de Juego:
   for(var i=0; i <datosJuego.length; i++){
     switch(datosJuego[i].nombreId){
 
@@ -291,7 +291,7 @@ ipc.on('setDatosJuego', function (event, arg) {
       break;
     }
   }
-   
+
   event.returnValue = true;
 });
 
@@ -305,7 +305,7 @@ ipc.on('getDatosJuego', function (event, activarDatosOficial) {
 });
 
           //Fin de definicion de modelos segun usuario
-        
+
 //*********************************************
 //        Gestion de Base de datos
 //*********************************************
