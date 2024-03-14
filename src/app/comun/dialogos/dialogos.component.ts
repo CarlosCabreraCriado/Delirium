@@ -78,7 +78,7 @@ private confirmation: boolean = false;
                             //Cambiar flag de jugador:
                             this.estadoJugadores[data.contenido] = true;
                             for(var i = 0; i < this.estadoJugadores.length; i++){
-                                //if(!this.estadoJugadores[i]){return;}
+                                if(!this.estadoJugadores[i]){return;} //Si hay algun jugador que no ha terminado el dialogo, no hace nada. (Comentar para eliminar mecanica de espera)
                             }
 
                             if(this.indexOpcionSeleccionada == null){

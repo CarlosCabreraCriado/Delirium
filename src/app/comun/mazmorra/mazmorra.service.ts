@@ -765,7 +765,7 @@ export class MazmorraService {
   regenerarEnergia(){
     for(var i = 0; i < this.sesion.render.heroes.length; i++){
         if(this.sesion.render.heroes[i].vida >0){
-          this.sesion.render.heroes[i].energia += (this.parametros.regenEnergiaTurno/this.sesion.render.heroes.length);
+          this.sesion.render.heroes[i].energia += (this.parametros.regenEnergiaTurno);
         }
       if(this.sesion.render.heroes[i].energia>100){this.sesion.render.heroes[i].energia=100}
     }
@@ -1054,7 +1054,11 @@ export class MazmorraService {
     this.sesion.render.historial.unshift(objetoHistorial);
 
     //Servicios de mensajes y loggs:
-    this.mensajeAccion("Turno de "+this.sesion.render[tipoTurno][indexTurno].nombre,2000);
+    if(tipoTurno == "heroes"){
+      this.mensajeAccion("Turno de los Heroes",2000);
+    }else{
+      this.mensajeAccion("Turno de "+this.sesion.render["enemigos"][indexTurno].nombre,2000);
+    }
     this.loggerService.log("-------------- Turno de "+this.sesion.render[tipoTurno][indexTurno].nombre+" ------------------");
     this.barraAccion.nombreTurno=this.sesion.render[tipoTurno][indexTurno].nombre;
     return;
@@ -1879,7 +1883,7 @@ export class MazmorraService {
       this.sesion.render.heroes[configuracionHechizo.indexCaster].energiaFutura = this.sesion.render.heroes[configuracionHechizo.indexCaster].energia + this.parametros.regenEnergiaTurno;
 
     //Actualiza el Cooldown:
-    var indexHechizoCooldown = this.sesion.jugadores[this.estadoControl.turnoIndex].personaje.hechizos.equipados.indexOf(hechizo.id)
+    var indexHechizoCooldown = this.sesion.jugadores[configuracionHechizo.indexCaster].personaje.hechizos.equipados.indexOf(hechizo.id);
     //console.warn("INDEX HECHIZO: ",indexHechizoCooldown);
     this.sesion.render.heroes[configuracionHechizo.indexCaster].cooldown[indexHechizoCooldown] = hechizo.cooldown;
 
@@ -3598,7 +3602,7 @@ export class MazmorraService {
       case "lanzarGolpeOportunidad":
 
         //Construcción de Objeto Acciones Golpes de oportunidad:
-        var objetoGolpeOportunidad = this.construirGolpeOportunidad();
+        var objetoGolpeOportunidad = this.construirGolpeOportunidad(comando["puntosMovimiento"],comando["energiaMovimiento"]);
         this.seleccionarEnemigos = false;
         this.estadoControl.estado = "seleccionAccion"
         this.estadoControl.tipoObjetivo = "EM"
@@ -3731,8 +3735,13 @@ export class MazmorraService {
     }
   }
 
-  construirGolpeOportunidad(): any{
-        var objetoGolpeOportunidad = [];
+  construirGolpeOportunidad(puntosMovimiento: number,energiaMovimiento: number): any{
+        var objetoGolpeOportunidad = {
+          ataques: [],
+          indexHeroeMovimiento: this.estadoControl.heroePropioIndex,
+          puntosMovimiento: puntosMovimiento,
+          energiaMovimiento: energiaMovimiento
+        };
         var arrayAccionesPosibles = [];
         var indexEnemigo = 0;
 
@@ -3741,7 +3750,7 @@ export class MazmorraService {
             indexEnemigo = this.sesion.render.enemigos.findIndex(j => j.enemigo_id == this.estadoControl.objetivosEnemigos[i]);
             arrayAccionesPosibles = this.sesion.render.enemigos[indexEnemigo].acciones.filter( j => j.tipo =="ataque")
 
-            objetoGolpeOportunidad.push({
+            objetoGolpeOportunidad.ataques.push({
                 indexEnemigo: indexEnemigo,
                 indexHeroeObjetivo: this.estadoControl.heroePropioIndex,
                 hechizoId: arrayAccionesPosibles[Math.floor(Math.random()*arrayAccionesPosibles.length)].hechizo_id
@@ -3756,22 +3765,23 @@ export class MazmorraService {
   async lanzarGolpeOportunidad(objetoGolpeOportunidad: any){
 
       console.warn("LANZANDO OPORTUNIDAD:", objetoGolpeOportunidad)
-        if(objetoGolpeOportunidad.length == 0){
+        if(objetoGolpeOportunidad.ataques.length == 0){
             //this.cancelarObjetivo();
+            this.realizarMovimiento(objetoGolpeOportunidad.energiaMovimiento, objetoGolpeOportunidad.puntosMovimiento, objetoGolpeOportunidad.indexHeroeMovimiento)
             this.forceRender();
             console.warn("Fin Golpe de Oportunidad");
             this.finalizarOrdenPartida()
             return;
         }
 
-        if(objetoGolpeOportunidad[0].indexEnemigo == undefined || objetoGolpeOportunidad[0].hechizoId == undefined){
+        if(objetoGolpeOportunidad.ataques[0].indexEnemigo == undefined || objetoGolpeOportunidad.ataques[0].hechizoId == undefined){
             console.error("Error ejecutando Golpe oportunidad (undefined): ",objetoGolpeOportunidad);
             this.finalizarOrdenPartida()
             return;
         }
 
-        var indexHechizo = this.hechizos.findIndex(i => i.id == objetoGolpeOportunidad[0].hechizoId);
-        console.warn("(Oportunidad) HECHIZO ID: ", objetoGolpeOportunidad[0].hechizoId)
+        var indexHechizo = this.hechizos.findIndex(i => i.id == objetoGolpeOportunidad.ataques[0].hechizoId);
+        console.warn("(Oportunidad) HECHIZO ID: ", objetoGolpeOportunidad.ataques[0].hechizoId)
         var configuracionHechizo: ConfiguracionHechizo = this.configurarHechizo(
           {
             esOportunidad: true
@@ -3779,11 +3789,11 @@ export class MazmorraService {
 
         configuracionHechizo.tipoCaster = "enemigos";
         configuracionHechizo.indexHechizo = indexHechizo;
-        configuracionHechizo.indexCaster = objetoGolpeOportunidad[0].indexEnemigo;
-        configuracionHechizo.objetivosHeroes = [objetoGolpeOportunidad[0].indexHeroeObjetivo];
+        configuracionHechizo.indexCaster = objetoGolpeOportunidad.ataques[0].indexEnemigo;
+        configuracionHechizo.objetivosHeroes = [objetoGolpeOportunidad.ataques[0].indexHeroeObjetivo];
         configuracionHechizo.objetivosEnemigos = [];
 
-        objetoGolpeOportunidad.shift();
+        objetoGolpeOportunidad.ataques.shift();
 
         this.lanzarHechizo(configuracionHechizo).then(() => {
           this.lanzarGolpeOportunidad(objetoGolpeOportunidad);
@@ -4110,7 +4120,7 @@ export class MazmorraService {
 
     lanzarEventoMazmorra(tipo,mensaje,eventoId,elementoId){
 
-        const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: mensaje,contenido: "Para realizar esta accion tienes que estar adyacente a la ubicación y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoPropio});
+        const dialogo = this.appService.mostrarDialogo("Confirmacion",{titulo: mensaje,contenido: "Para realizar esta accion tienes que estar adyacente a la ubicación y ser tu turno.", deshabilitado: !this.estadoControl.esTurnoHeroe});
 
         dialogo.afterClosed().subscribe(async (result) => {
           console.log(result);

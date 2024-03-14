@@ -376,7 +376,7 @@ export class InterfazService {
         this.hechizosEquipadosCooldown = hechizosEquipadosCooldown;
         this.pantallaInterfaz= "Hechizos";
         this.setMostrarInterfaz(true);
-        console.warn("REnder: ",this.renderHeroeHechizo)
+        console.warn("Render: ",this.renderHeroeHechizo)
         return;
     }
 
@@ -473,7 +473,7 @@ export class InterfazService {
 
     lanzarGolpeOportunidad(){
        this.setObjetivoSeleccionado(false)
-       this.observarInterfaz.next({comando: "lanzarGolpeOportunidad"});
+       this.observarInterfaz.next({comando: "lanzarGolpeOportunidad",energiaMovimiento: this.energiaMovimiento, puntosMovimiento: this.puntosMovimiento});
        this.desactivarInterfaz();
     }
 

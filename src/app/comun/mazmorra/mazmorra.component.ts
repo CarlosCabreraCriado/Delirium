@@ -444,6 +444,8 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
     this.appServiceSuscripcion.unsubscribe();
     this.teclaSuscripcion.unsubscribe();
     this.subscripcionMazmorra.unsubscribe();
+    clearInterval(this.temporizadorGeneral);
+
   }
 
 /*  ----------------------------------------------

@@ -8,12 +8,12 @@ import { Subscription } from 'rxjs';
 
 export class LogicService {
 
-  private sesion: any; 
+  private sesion: any;
   private parametros: any;
   private clases: any;
   private enemigos: any;
 
-  constructor() { 
+  constructor() {
   }
 
   setParametros(parametros:any){
@@ -118,7 +118,7 @@ export class LogicService {
 
         estadisticas.pa_base = estadisticas.pa
         estadisticas.ap_base = estadisticas.ap
-        estadisticas.ad_base = estadisticas.ad 
+        estadisticas.ad_base = estadisticas.ad
         estadisticas.critico_base = estadisticas.critico
 
         estadisticas.pa = this.redondeo(estadisticas.pa * multiplicadorDañoTipoArmadura);
@@ -370,7 +370,7 @@ export class LogicService {
         if(config?.tipo == "buff"){
 
             if(config.dano_t){
-                stringDaño = config.dano_t+ "por paso de turno "
+                stringDaño = String(this.redondeo(config.dano_t*config.duracion))
                 descripcion = descripcion.replaceAll("#Daño",stringDaño)
             }
 
