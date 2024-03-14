@@ -19,17 +19,17 @@ type TipoEstado = "reticula"|"isometrico"|"general"|"salas"|"enemigos"|"eventos"
 export class DungeonBuilderComponent {
 
     //Formularios
-    private formGeneral: UntypedFormGroup;
-    private formSala: UntypedFormGroup;
-    private formEnemigos: UntypedFormGroup;
-    private formEventosMazmorra: UntypedFormGroup;
-    private formDialogos: UntypedFormGroup;
-    private formAsignarSala: UntypedFormGroup;
-    private formAsignarEvento: UntypedFormGroup;
-    private formPropiedadesIsometrico: UntypedFormGroup;
-    private formAsignarTipo: UntypedFormGroup;
-    private formAsignarEnemigo: UntypedFormGroup;
-    private formAsignarEspecial: UntypedFormGroup;
+    public formGeneral: UntypedFormGroup;
+    public formSala: UntypedFormGroup;
+    public formEnemigos: UntypedFormGroup;
+    public formEventosMazmorra: UntypedFormGroup;
+    public formDialogos: UntypedFormGroup;
+    public formAsignarSala: UntypedFormGroup;
+    public formAsignarEvento: UntypedFormGroup;
+    public formPropiedadesIsometrico: UntypedFormGroup;
+    public formAsignarTipo: UntypedFormGroup;
+    public formAsignarEnemigo: UntypedFormGroup;
+    public formAsignarEspecial: UntypedFormGroup;
 
     //Campos General:
     private nombre_General = new UntypedFormControl("Primera mazmorra");
@@ -113,24 +113,24 @@ export class DungeonBuilderComponent {
     public mostrarPanelAsignarEnemigo = false;
 
     //Variables de Reticula:
-    private renderReticula= {}  as RenderReticula;
+    public renderReticula= {}  as RenderReticula;
     private numFilasIni= 27;
     private numColumnasIni= 37;
     private margenReticula= 6;
     private cuentaIndexPieza= 0;
-    private activarLimiteReticula: boolean = false;
-    private limiteReticulaXMin:number = 0;
-    private limiteReticulaXMax: number = 19;
+    public activarLimiteReticula: boolean = false;
+    public limiteReticulaXMin:number = 0;
+    public limiteReticulaXMax: number = 19;
 
-    private limiteReticulaYMin: number = 0;
-    private limiteReticulaYMax: number = 11;
+    public limiteReticulaYMin: number = 0;
+    public limiteReticulaYMax: number = 11;
 
     private visorNumFilaIni:number = 14;
     private visorNumColumnaIni: number= 24;
 
-    private visorFila;
-    private visorColumna;
-    private rotacion=0;
+    public visorFila;
+    public visorColumna;
+    public rotacion=0;
 
     //Variables Generales:
     public estadoMazmorra: TipoEstado = "general";
@@ -153,10 +153,10 @@ export class DungeonBuilderComponent {
     public enemigoSeleccionadoSalaIndex = 0;
 
     public tipoEnemigoSeleccionado:any;
-    private enemigos: any;
+    public enemigos: any;
 
     //Variables Parametros Enemigos:
-    private mostrarTipoEnemigo: boolean= false;
+    public mostrarTipoEnemigo: boolean= false;
 
 
     @ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
@@ -604,6 +604,12 @@ export class DungeonBuilderComponent {
         console.log("Fallo en la eliminación de la mazmorra");
       }
     return;
+  }
+
+  eliminarEnemigo(){
+  }
+
+  mostrarEstadisticasEnemigo(){
   }
 
   procesarGuardadoCeldas(){
@@ -1959,7 +1965,13 @@ export class DungeonBuilderComponent {
         this.appService.setMazmorra(this.mazmorra);
         this.desarrolladorService.testEvento(event);
     }
+
+    renderizarSector(i,j){
+    }
+
+
 }
+
 
 
 

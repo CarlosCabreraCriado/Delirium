@@ -51,7 +51,6 @@
     "@ionic/storage-angular": "^4.0.0",
     "@types/nedb": "^1.8.9",
     "@types/socket.io-client": "^1.4.32",
-    "ang-jsoneditor": "^1.9.1",
     "animate.css": "^4.1.1",
     "convert-excel-to-json": "^1.4.1",
     "cordova-plugin-screen-orientation": "^3.0.3",

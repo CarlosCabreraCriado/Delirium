@@ -58,12 +58,12 @@
         <form [formGroup]="formCondicionInicial">
           <ng-template matStepLabel>Condición Inicial</ng-template>
           <div class="campoCheckBox">
-            <mat-checkbox  formControlName="activado">Activado</mat-checkbox>
+            <mat-checkbox  formControlName="activadoCondicionInicial">Activado</mat-checkbox>
           </div>
           <div class="contenedorOperacion">
             <mat-form-field class="campo" appearance="fill">
               <mat-label>Variable</mat-label>
-              <input matInput formControlName="variable" [required]="activado">
+              <input matInput formControlName="variable" [required]="activadoCondicionInicial">
             </mat-form-field>
             <mat-form-field class="campo">
               <mat-label>Operador</mat-label>
@@ -79,19 +79,19 @@
 
             <mat-form-field class="campo" appearance="fill">
                 <mat-label>Valor Comparado</mat-label>
-                <input matInput formControlName="valorComparado" [required]="activado">
+                <input matInput formControlName="valorComparado" [required]="activadoCondicionInicial">
             </mat-form-field>
             </div>
 
             <div class="contenedorDual">
             <mat-form-field class="campo" appearance="fill">
                 <mat-label>Comando Check</mat-label>
-                <input matInput formControlName="comandoCheck" [required]="activado">
+                <input matInput formControlName="comandoCheck" [required]="activadoCondicionInicial">
             </mat-form-field>
 
             <mat-form-field  class="campo" appearance="fill">
                 <mat-label>Valor Check</mat-label>
-                <input matInput formControlName="valorCheck" [required]="activado">
+                <input matInput formControlName="valorCheck" [required]="activadoCondicionInicial">
             </mat-form-field>
             </div>
 
@@ -104,7 +104,7 @@
             <ng-template matStepLabel>Operador Contador PRE</ng-template>
 
             <div class="campoCheckBox">
-                <mat-checkbox  formControlName="activado">Activado</mat-checkbox>
+                <mat-checkbox  formControlName="activadoOperadorPre">Activado</mat-checkbox>
             </div>
 
             <div class="contenedorDual">
@@ -123,7 +123,7 @@
 
             <mat-form-field  class="campo" appearance="fill">
                 <mat-label>Valor Operacion PRE</mat-label>
-                <input matInput formControlName="valorOperacionPre" [required]="activado">
+                <input matInput formControlName="valorOperacionPre" [required]="activadoOperadorPre">
             </mat-form-field>
             </div>
 
@@ -136,13 +136,13 @@
             <ng-template matStepLabel>Contador</ng-template>
 
             <div class="campo campoCheckBox">
-                <mat-checkbox  formControlName="activado">Activado</mat-checkbox>
+                <mat-checkbox  formControlName="activadoContador">Activado</mat-checkbox>
             </div>
 
             <div class="contenedorOperacion">
             <mat-form-field class="campo" appearance="fill">
                 <mat-label>Variable</mat-label>
-                <input matInput formControlName="variable" [required]="activado">
+                <input matInput formControlName="variable" [required]="activadoContador">
             </mat-form-field>
 
             <mat-form-field class="campo">
@@ -159,7 +159,7 @@
 
             <mat-form-field  class="campo" appearance="fill">
                 <mat-label>Valor Comparado</mat-label>
-                <input matInput formControlName="valorComparado" [required]="activado">
+                <input matInput formControlName="valorComparado" [required]="activadoContador">
             </mat-form-field>
             </div>
 
@@ -181,7 +181,7 @@
                 </mat-form-field>
                 <mat-form-field  class="campo" appearance="fill">
                     <mat-label>Valor Operacion True</mat-label>
-                    <input matInput formControlName="valorOperacion" [required]="activado">
+                    <input matInput formControlName="valorOperacion" [required]="activadoContador">
                 </mat-form-field>
             </div>
             </div>
@@ -203,7 +203,7 @@
                 </mat-form-field>
                 <mat-form-field  class="campo" appearance="fill">
                     <mat-label>Valor Operacion False</mat-label>
-                    <input matInput formControlName="valorOperacion" [required]="activado">
+                    <input matInput formControlName="valorOperacion" [required]="activadoContador">
                 </mat-form-field>
             </div>
             </div>
@@ -233,7 +233,7 @@
       </mat-step>
     </mat-stepper>
 }
-    
+
     <botonComponent mat-button [mat-dialog-close] [texto]="'Guardar'" [tipoBoton]="2" [color]="'verde'" class="botonUnico botonGuardar" (click)="guardarTrigger()"></botonComponent>
 	<botonComponent mat-button [mat-dialog-close] [texto]="'Cancelar'" [tipoBoton]="2" [color]="'rojo'" class="botonUnico botonCancelar" (click)="cancelarTrigger()"></botonComponent>
 

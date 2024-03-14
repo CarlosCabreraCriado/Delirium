@@ -2,7 +2,6 @@
 import { Component , Inject, ViewChild,  ElementRef, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BotonComponent } from '../boton/boton.component';
-import { FrameComponent } from '../frame/frame.component';
 import { SocketService } from '../socket/socket.service';
 import { Subscription } from "rxjs";
 
@@ -25,8 +24,8 @@ private confirmation: boolean = false;
     public indexTextoMostrado: number = 0;
     public opciones: any = [];
     private indexOpcionSeleccionada: number = null;
-    private estadoJugadores: boolean[] = [];
-    private jugadorPropioSesionIndex: number = null;
+    public estadoJugadores: boolean[] = [];
+    public jugadorPropioSesionIndex: number = null;
     private contadorForzarCierre: number = 0;
 
     //Declara Suscripcion Evento Socket:

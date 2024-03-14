@@ -208,7 +208,7 @@
 @if (data.tipoDialogo == 'NarradorImg') {
   <div id="narradorImg">
     <!-- ContenedorCentral -->
-    <div class="contenedorCentral">
+    <div class="contenedorCentral FondoPapiro borde1">
       <div class="contenedorDecoracion">
         <img class="decoracionSuperior" src="../../../assets/ui/decor/dcr_01.png"/>
       </div>
@@ -227,7 +227,7 @@
         <botonComponent mat-button [tipoBoton]="2"[color]="'rojo'" [texto]="'Retroceder'" (click)="retroceder()" class="botonUnico retroceder"></botonComponent>
       }
       <botonComponent mat-button  [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico siguiente"></botonComponent>
-      <frameComponent [tipoFondo]="'papiro'"></frameComponent>
+      <!--<frameComponent [tipoFondo]="'papiro'"></frameComponent>-->
     </div> <!-- Fin Contenedor Central -->
   </div>
 }
@@ -239,7 +239,7 @@
 @if (data.tipoDialogo == 'Diapositiva') {
   <div id="diapositiva">
     <!-- ContenedorCentral -->
-    <div class="contenedorCentral">
+    <div class="contenedorCentral FondoPapiro borde1">
       <div class="contenedorDecoracion">
         <img class="decoracionSuperior" src="../../../assets/ui/decor/dcr_01.png"/>
       </div>
@@ -267,7 +267,7 @@
         <botonComponent mat-button [tipoBoton]="2"[color]="'rojo'" [texto]="'Retroceder'" (click)="retroceder()" class="botonUnico retroceder"></botonComponent>
       }
       <botonComponent mat-button [tipoBoton]="2" [texto]="'Siguiente'" (click)="nextDialogo()" class="botonUnico siguiente"></botonComponent>
-      <frameComponent [tipoFondo]="'papiro'"></frameComponent>
+      <!--<frameComponent [tipoFondo]="'papiro'"></frameComponent>-->
     </div> <!-- Fin Contenedor Central -->
   </div>
 }

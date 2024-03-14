@@ -17,8 +17,8 @@ export class FormAnimacionesComponent {
   	private desarrolladorSuscripcion: Subscription = null;
 
     //Form Group:
-  	private formAnimaciones: UntypedFormGroup;
-  	private formSubanimacion: UntypedFormGroup;
+  	public formAnimaciones: UntypedFormGroup;
+  	public formSubanimacion: UntypedFormGroup;
 
   	//Campos Datos Animaciones:
   	private id_Animaciones = new UntypedFormControl(0);
@@ -47,7 +47,7 @@ export class FormAnimacionesComponent {
     private scaleX_Subanimacion = new UntypedFormControl(1);
     private scaleY_Subanimacion = new UntypedFormControl(1);
 
-    private mute = true;
+    public mute = true;
 
 	constructor(public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {}
 

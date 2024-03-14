@@ -14,8 +14,8 @@ export class HeroesInfoComponent implements OnInit{
 
 	constructor(public appService: AppService, public heroesInfoService: HeroesInfoService/*, public electronService: ElectronService*/) { }
 
-	private panelSeleccionado= "personaje";
-	private mostrarHeroesInfo= false;
+	public panelSeleccionado= "personaje";
+	public mostrarHeroesInfo= false;
 
 	ngOnInit(){
 	}

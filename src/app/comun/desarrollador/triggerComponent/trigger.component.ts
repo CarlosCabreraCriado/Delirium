@@ -1,6 +1,6 @@
 
 import { Component , Inject, ViewChild,  ElementRef } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {UntypedFormBuilder, Validators, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';
 
@@ -28,18 +28,18 @@ export class TriggerComponent {
     private indexTriggerSeleccionado = 0;
 
     //Form Group:
-  	private formActivador: UntypedFormGroup;
-  	private formCondicionInicial: UntypedFormGroup;
-  	private formOperadorPre: UntypedFormGroup;
-  	private formContador: UntypedFormGroup;
-  	private formTriggerEvento: UntypedFormGroup;
+  	public formActivador: UntypedFormGroup;
+  	public formCondicionInicial: UntypedFormGroup;
+  	public formOperadorPre: UntypedFormGroup;
+  	public formContador: UntypedFormGroup;
+  	public formTriggerEvento: UntypedFormGroup;
 
     //Campos Activador:
     private activador = new UntypedFormControl('???');
     private identificador = new UntypedFormControl('???');
 
     //Campos Condicion Inicial:
-    private activadoCondicionInicial = new UntypedFormControl(false);
+    public activadoCondicionInicial = new UntypedFormControl(false);
     private variableCondicionInicial = new UntypedFormControl('variable')
     private operadorCondicionInicial = new UntypedFormControl('=')
     private valorComparadoCondicionInicial = new UntypedFormControl('')
@@ -47,12 +47,12 @@ export class TriggerComponent {
     private valorCheckCondicionInicial = new UntypedFormControl('')
 
     //Campos Operador PRE:
-    private activadoOperadorPre = new UntypedFormControl(false);
+    public activadoOperadorPre = new UntypedFormControl(false);
     private comandoOperadorPre = new UntypedFormControl('addVar')
     private valorOperacionPre = new UntypedFormControl('')
 
     //Campos Contador:
-    private activadoContador = new UntypedFormControl(false);
+    public activadoContador = new UntypedFormControl(false);
     private variableContador = new UntypedFormControl('variable')
     private operadorContador = new UntypedFormControl('=')
     private valorComparadoContador = new UntypedFormControl('')
@@ -236,37 +236,37 @@ export class TriggerComponent {
         console.log(this.triggers)
         this.triggers.push({
             activador: null,
-            identificador: "Nuevo Trigger", 
+            identificador: "Nuevo Trigger",
             condicionInicial: {
                 activado: false,
                 variable: null,
                 operador: null,
                 valorComparado: null,
                 comandoCheck: null,
-                valorCheck: null 
+                valorCheck: null
             },
             operadorPre: {
-                activado: false, 
-                comandoPre: null, 
+                activado: false,
+                comandoPre: null,
                 valorOperacionPre: null
             },
             contador: {
                 activado: false,
-                variable: null, 
-                operador: null, 
+                variable: null,
+                operador: null,
                 valorComparado: null,
                 condicionTrue: {
                     comando: null,
-                    valorOperacion: null 
+                    valorOperacion: null
                 },
                 condicionFalse: {
                     comando: null,
-                    valorOperacion: null 
+                    valorOperacion: null
                 }
             },
             triggerEvento: {
-                eventoTriggerTrue: null, 
-                eventoTriggerFalse: null 
+                eventoTriggerTrue: null,
+                eventoTriggerFalse: null
             }
         }) //Fin Push
 
@@ -284,7 +284,7 @@ export class TriggerComponent {
         console.log("Eliminando Trigger: " + this.indexTriggerSeleccionado)
         this.triggers.splice(this.indexTriggerSeleccionado,1);
         this.indexTriggerSeleccionado = -1;
-        this.triggerActivo = null 
+        this.triggerActivo = null
     }
 
 }

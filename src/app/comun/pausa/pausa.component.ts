@@ -12,8 +12,8 @@ export class PausaComponent implements OnInit {
 
   constructor(public appService:AppService, public pausaService:PausaService) { }
 
-  private mostrarPausaConfirmar:boolean=false;
-  private mostrarPausaGeneral:boolean=true;
+  public mostrarPausaConfirmar:boolean=false;
+  public mostrarPausaGeneral:boolean=true;
 
   ngOnInit() {
   }

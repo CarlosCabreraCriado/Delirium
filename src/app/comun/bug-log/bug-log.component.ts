@@ -15,7 +15,7 @@ export class BugLogComponent implements OnInit {
 
   public mostrarMensaje: boolean = false;
   private mensaje: string = "Mensaje";
-  private opacidad:any = 0;
+  public opacidad:any = 0;
 
   ngOnInit() {
 
@@ -23,7 +23,7 @@ export class BugLogComponent implements OnInit {
     this.appService.bugLog.subscribe(mensaje => {
       this.mensaje= "BUG LOG";
       this.opacidad= 1;
-      this.mostrarMensaje= true; 
+      this.mostrarMensaje= true;
       console.log("Mostrando "+this.mensaje);
     });
   }// Final OnInit

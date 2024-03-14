@@ -3,7 +3,6 @@ import { Component, OnInit , ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from '../../app.service';
 import { DesarrolladorService } from './desarrollador.service';
-import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { RenderReticula } from './renderReticula.class'
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { Subscription } from "rxjs";
@@ -23,14 +22,12 @@ export class DesarrolladorComponent implements OnInit{
     public cuenta: any;
     public token: any;
 
-    public editorVerOptions: JsonEditorOptions;
-    public editorModificarOptions: JsonEditorOptions;
     public data: any;
     public path= [];
 
     public renderReticula= {} as RenderReticula;
-    private coordenadaSeleccionadaX= 0;
-    private coordenadaSeleccionadaY= 0
+    public coordenadaSeleccionadaX= 0;
+    public coordenadaSeleccionadaY= 0
 
     //Declara Suscripcion Evento Desarrollador:
     private desarrolladorSuscripcion: Subscription = null;
@@ -42,54 +39,48 @@ export class DesarrolladorComponent implements OnInit{
     readonly tiposOrdenes = ["Condición","Variable","Misión","Trigger","Diálogo","Hechizo","Loot","Enemigo","Mazmorra","Multimedia","Tiempo"];
 
     //Form Group InMap:
-    private formInMapGeneral: UntypedFormGroup;
-    private formInMapTerreno: UntypedFormGroup;
-    private formInMapTrigger: UntypedFormGroup;
-    private formInMapMisiones: UntypedFormGroup;
+    public formInMapGeneral: UntypedFormGroup;
+    public formInMapTerreno: UntypedFormGroup;
+    public formInMapTrigger: UntypedFormGroup;
+    public formInMapMisiones: UntypedFormGroup;
 
     //Form Group Evento Random:
-    private formEventoRandom: UntypedFormGroup;
+    public formEventoRandom: UntypedFormGroup;
     public tipoEventoRandom: string ="camino";
 
     //Campos Campos InMap General:
     private inMapNombre = new UntypedFormControl('null');
     private inMapDescripcion = new UntypedFormControl('null');
-    private inMapIndicador = new UntypedFormControl('null');
+    public inMapIndicador = new UntypedFormControl('null');
 
     //Campos Campos InMap Terreno:
-    private inMapTipoTerreno = new UntypedFormControl('normal');
-    private inMapAtravesable = new UntypedFormControl(true);
-    private inMapInspeccionable = new UntypedFormControl('0');
-    private inMapMensajeInsapeccionable = new UntypedFormControl(null);
-    private inMapUbicacionEspecial = new UntypedFormControl('0');
+    public inMapTipoTerreno = new UntypedFormControl('normal');
+    public inMapAtravesable = new UntypedFormControl(true);
+    public inMapInspeccionable = new UntypedFormControl('0');
+    public inMapMensajeInsapeccionable = new UntypedFormControl(null);
+    public inMapUbicacionEspecial = new UntypedFormControl('0');
 
     //Campos Campos InMap Eventos:
-    private inMapProbabilidadRandom = new UntypedFormControl(0);
-    private inMapCategoriaRandom = new UntypedFormControl('???');
-    private inMapLootProb = new UntypedFormControl('0');
-    private inMapLootId = new UntypedFormControl('0');
+    public inMapProbabilidadRandom = new UntypedFormControl(0);
+    public inMapCategoriaRandom = new UntypedFormControl('???');
+    public inMapLootProb = new UntypedFormControl('0');
+    public inMapLootId = new UntypedFormControl('0');
 
     //Configuracion MapaGeneral:
-    private mostrarNieblaGuerra = false;
-    private mostrarInfranqueable = false;
-    private mostrarTriggers = false;
+    public mostrarNieblaGuerra = false;
+    public mostrarInfranqueable = false;
+    public mostrarTriggers = false;
     public escalaMapaIsometrico:number = 1;
 
     //Opciones Selectores:
     private opcionesInMapIndicador = ["Mision","Evento"]
 
-    @ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
     @ViewChild('contenedorMensajes',{static: false}) private contenedorMensajes: ElementRef;
     @ViewChild('canvasIsometrico',{static: false}) private canvasIsometrico: ElementRef;
     @ViewChild('canvasMapa',{static: false}) canvasMapa: ElementRef;
 
     constructor(public appService: AppService, public desarrolladorService: DesarrolladorService, private formBuilder: UntypedFormBuilder) {
 
-        this.editorVerOptions = new JsonEditorOptions()
-        this.editorModificarOptions = new JsonEditorOptions()
-        this.editorModificarOptions.mode = 'tree'; // set all allowed modes
-        this.editorVerOptions.mode = 'view'; // set all allowed modes
-        //this.options.mode = 'code'; //set only one mode
     }
 
     async ngOnInit(){
@@ -421,6 +412,8 @@ export class DesarrolladorComponent implements OnInit{
         this.desarrolladorService.testEvento(event);
     }
 
+    posicionarMapaIsometrico(){
+    }
 }
 
 

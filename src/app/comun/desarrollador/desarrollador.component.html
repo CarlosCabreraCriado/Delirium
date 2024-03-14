@@ -274,9 +274,11 @@
             <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('subir')" (click)="desarrolladorService.seleccionarAccionDato('subir');">SUBIR</div>
             <div class="botonAccion" [ngClass]="renderOpcionDatoSeleccionado('modificar')" (click)="desarrolladorService.seleccionarAccionDato('modificar');">MODIFICAR</div>
           </div>
+          <!--
           <div class="botonCambiarDatos" (click)="desarrolladorService.toggleDatosOficiales()">
             Datos oficiales: {{appService.activarDatosOficiales}}
           </div>
+          -->
           <div class="contenedorArchivos">
             <div class="tituloArchivo">ARCHIVOS: </div>
             <div class="archivo" [ngClass]="renderDatoSeleccionado('Heroes_Stats')" (click)="desarrolladorService.seleccionarArchivoDato('Heroes_Stats');">HEROES STATS</div>
@@ -292,7 +294,9 @@
           <!-- Estado Datos-VER -->
           @if (desarrolladorService.estadoDatos=='ver') {
             <div class="contenedorOpcion ver">
+              <!--
               <json-editor [options]="editorVerOptions" [data]="desarrolladorService.archivoDato"></json-editor>
+              -->
             </div>
           }
           <!-- Estado Datos-SUBIR -->
@@ -329,7 +333,9 @@
                           <div class="textoVerificacion Texto3"> ERROR</div>
                         </div>
                       }
+                      <!--
                       <div class="botonVerificar Texto3" (click)="desarrolladorService.verificarDatos()">VERIFICAR ARCHIVO</div>
+                      -->
                     </div>
                     <!--
                     <div class="contenedorVerificacion">
@@ -338,7 +344,9 @@
                     </div>
                     -->
                     @if (desarrolladorService.archivosExcel[desarrolladorService.indexArchivoSeleccionado].verificado==true) {
+                    <!--
                       <div class="botonCambiarEstadisticas" (click)="desarrolladorService.subirArchivo()">SUBIR ARCHIVO</div>
+                    -->
                     }
                   </div>
                 </div>
@@ -358,7 +366,9 @@
           <!-- Estado Datos-MODIFICAR -->
           @if (desarrolladorService.estadoDatos=='modificar') {
             <div class="contenedorOpcion modificar">
+              <!--
               <json-editor [options]="editorModificarOptions" [data]="desarrolladorService.archivoDato" (change)="desarrolladorService.modificarDatos($event)"></json-editor>
+              -->
             </div>
           }
         </div>

@@ -24,9 +24,9 @@ export class FormMisionesComponent {
 
     //Form Group:
   	public formMision: UntypedFormGroup;
-  	private formPropiedades: UntypedFormGroup;
-  	private formObjetivos: UntypedFormGroup;
-  	private formRecompensas: UntypedFormGroup;
+  	public formPropiedades: UntypedFormGroup;
+  	public formObjetivos: UntypedFormGroup;
+  	public formRecompensas: UntypedFormGroup;
 
   	//Campos Datos Enemigo:
   	public id_Mision = new UntypedFormControl(0);
@@ -97,7 +97,7 @@ export class FormMisionesComponent {
                     break;
                 }
             }) // Fin Suscripcion
-            
+
 		//Suscripcion de cambios formulario Mision:
 		this.formMision.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.misionSeleccionadaIndex+1){
@@ -132,13 +132,13 @@ export class FormMisionesComponent {
 			console.log(this.desarrolladorService.misiones.misiones[this.desarrolladorService.misionSeleccionadaIndex])
 		});
 
-        //Selecciona Opcion Por defecto: 
+        //Selecciona Opcion Por defecto:
         this.seleccionarOpcion(this.opcionSeleccionada);
 
-        //Selecciona Opcion Por defecto: 
+        //Selecciona Opcion Por defecto:
         this.desarrolladorService.seleccionarObjetivoMision(this.desarrolladorService.objetivoMisionSeleccionadoIndex);
 
-        //Cargar: 
+        //Cargar:
         this.reloadForm();
 
     } //FIN ONINIT

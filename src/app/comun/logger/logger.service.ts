@@ -10,10 +10,10 @@ import { Subject } from 'rxjs';
 export class LoggerService {
 
 	public logger=[];
-	private loggerColor=[];
+	public loggerColor=[];
 	private estadoLogger: string= "default";
 	public mostrarLogger: boolean= false;
-	private comando= "";
+	public comando= "";
 
 	private parametros: any;
 

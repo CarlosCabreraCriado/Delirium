@@ -64,7 +64,7 @@ export class DesarrolladorService implements OnInit{
 
     //Logger Consola
     public logger=[];
-    private loggerColor=[];
+    public loggerColor=[];
 
     //Variables Inmap:
     private regionInmap:number = 1;
@@ -72,7 +72,7 @@ export class DesarrolladorService implements OnInit{
     public coordenadaX: number = 0;
     public coordenadaY: number = 0;
     private regionSeleccionada: string = "";
-    private tileImgSeleccionado: number = 1;
+    public tileImgSeleccionado: number = 1;
     public opcionPropiedades: string = "trigger";
     public opcionesDesarrolloInMap: any = {
         opcionOverlay: false,
@@ -1325,6 +1325,8 @@ export class DesarrolladorService implements OnInit{
         }
     }
 
+    posicionarMapaIsometrico(){
+    }
 
 } //FIN EXPORT
 

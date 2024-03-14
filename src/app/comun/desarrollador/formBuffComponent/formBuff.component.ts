@@ -17,7 +17,7 @@ export class FormBuffComponent {
     private desarrolladorSuscripcion: Subscription = null;
 
     //Group Form:
-    private formBuff: UntypedFormGroup;
+    public formBuff: UntypedFormGroup;
 
     //Campos Buff:
     private id_Buff = new UntypedFormControl(0);
@@ -26,8 +26,8 @@ export class FormBuffComponent {
     private duracion_Buff = new UntypedFormControl(1)
     private animacion_Buff = new UntypedFormControl(1);
 
-    private tipo_Buff = new UntypedFormControl('Ventaja');
-    private tipo_dano_Buff = new UntypedFormControl('Físico');
+    public tipo_Buff = new UntypedFormControl('Ventaja');
+    public tipo_dano_Buff = new UntypedFormControl('Físico');
 
     private dano_T_Buff = new UntypedFormControl(0);
     private dano_esc_AD_T_Buff = new UntypedFormControl(0);

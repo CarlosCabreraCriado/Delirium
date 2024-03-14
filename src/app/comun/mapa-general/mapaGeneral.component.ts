@@ -48,8 +48,8 @@ export class MapaGeneralComponent implements OnInit {
     public traslacionIsometricoX: number = 0;
     public traslacionIsometricoY: number = 0;
     private tileSize: number = 48;
-    private bloqueoMovimiento: boolean = false;
-    private direccionMovimientoPermitido: boolean[] = [true,true,true,true];
+    public bloqueoMovimiento: boolean = false;
+    public direccionMovimientoPermitido: boolean[] = [true,true,true,true];
     private flagEvitarCentrado: boolean = true;
 
     @Input() tileImgSeleccionado: number;
@@ -81,7 +81,7 @@ export class MapaGeneralComponent implements OnInit {
 
     public sesion: any;
 
-    constructor(private mapaGeneralService: MapaGeneralService, private cdr: ChangeDetectorRef, public appService: AppService, public triggerService: TriggerService, private inmapService: InMapService) {
+    constructor(public mapaGeneralService: MapaGeneralService, private cdr: ChangeDetectorRef, public appService: AppService, public triggerService: TriggerService, private inmapService: InMapService) {
         this.appService.sesion$.subscribe(sesion => this.sesion = sesion);
     }
 

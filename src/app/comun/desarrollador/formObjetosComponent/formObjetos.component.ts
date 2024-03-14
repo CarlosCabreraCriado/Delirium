@@ -21,14 +21,14 @@ export class FormObjetosComponent {
     private hechizosDisponibles = [];
 
     //Form Group:
-  	private formEquipo: UntypedFormGroup;
-  	private formPropiedadesEquipo: UntypedFormGroup;
-  	private formEstadisticasEquipo: UntypedFormGroup;
-  	private formConsumible: UntypedFormGroup;
-  	private formPropiedadesConsumible: UntypedFormGroup;
+  	public formEquipo: UntypedFormGroup;
+  	public formPropiedadesEquipo: UntypedFormGroup;
+  	public formEstadisticasEquipo: UntypedFormGroup;
+  	public formConsumible: UntypedFormGroup;
+  	public formPropiedadesConsumible: UntypedFormGroup;
 
   	//Campos Datos Equipo:
-  	private id_Equipo = new UntypedFormControl(0);
+  	public id_Equipo = new UntypedFormControl(0);
   	private nombre_Equipo = new UntypedFormControl('???');
     private descripcion_Equipo = new UntypedFormControl('???');
     private tipo_Equipo = new UntypedFormControl('Ligera');
@@ -47,7 +47,7 @@ export class FormObjetosComponent {
     private critico = new UntypedFormControl(0);
 
   	//Campos Datos Equipo:
-  	private id_Consumible = new UntypedFormControl(0);
+  	public id_Consumible = new UntypedFormControl(0);
   	private nombre_Consumible = new UntypedFormControl('???');
     private descripcion_Consumible = new UntypedFormControl('???');
     private tipo_Consumible = new UntypedFormControl('Miscelaneo');
@@ -116,7 +116,7 @@ export class FormObjetosComponent {
                     break;
                 }
             }) // Fin Suscripcion
-            
+
 		//Suscripcion de cambios formulario Equipo:
 		this.formEquipo.valueChanges.subscribe((val) =>{
 			if(this.desarrolladorService.indexEquipoSeleccionado+1){
@@ -157,7 +157,7 @@ export class FormObjetosComponent {
 			//console.log(this.desarrolladorService.objetos.consumible[this.desarrolladorService.indexConsumibleSeleccionado])
 		});
 
-        //Cargar  : 
+        //Cargar  :
         this.reloadForm();
 
     } //FIN ONINIT
@@ -194,6 +194,9 @@ export class FormObjetosComponent {
 
       //Actualizar Formulario:
       this.reloadForm();
+    }
+
+    renderBotonAddSeleccionado(tipo){
     }
 
     addEquipo(){

@@ -11,11 +11,11 @@ import {AppService} from '../../app.service'
 
 export class AjustesComponent implements OnInit {
 
-  constructor(private appService: AppService) { }
+  constructor(public appService: AppService) { }
 
   public mostrarAjustes: boolean = false;
   private mensaje: string = "Mensaje";
-  private opacidad:any = 0;
+  public opacidad:any = 0;
 
   ngOnInit() {
 
@@ -23,7 +23,7 @@ export class AjustesComponent implements OnInit {
     this.appService.ajustes.subscribe(mensaje => {
       this.mensaje= "Abriendo Ajustes";
       this.opacidad= 1;
-      this.mostrarAjustes= true; 
+      this.mostrarAjustes= true;
       console.log("Mostrando "+this.mensaje);
     });
   }// Final OnInit

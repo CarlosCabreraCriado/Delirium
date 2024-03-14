@@ -24,6 +24,8 @@ export class MapaGeneralService {
     private desarrollador: boolean = false;
     private sesion: any;
 
+    public escalaIsometrico: number = 1;
+
     private triggerRegion: any; //DECOMISION?
 
     constructor(private triggerService: TriggerService, public appService: AppService, private http: HttpClient) {

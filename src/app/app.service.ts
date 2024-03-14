@@ -8,7 +8,9 @@ import { ConfiguracionComponent } from './comun/configuracion/configuracion.comp
 import { SocialComponent } from './comun/social/social.component';
 import { CrearHeroeComponent } from './comun/crear-heroe/crear-heroe.component';
 import { MatDialog} from '@angular/material/dialog';
+
 import { Storage } from '@ionic/storage-angular';
+
 import { environment } from '../environments/environment'
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { datosIniciales } from "./datosIniciales"

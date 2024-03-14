@@ -14,8 +14,8 @@ export class HeroesCrearComponent implements OnInit{
 
 	constructor(public appService: AppService, public heroesCrearService: HeroesCrearService/*, public electronService: ElectronService*/) { }
 
-	private panelSeleccionado= "inicial";
-	private mostrarHeroesCrear= false;
+	public panelSeleccionado= "inicial";
+	public mostrarHeroesCrear= false;
 
 	ngOnInit(){
 
