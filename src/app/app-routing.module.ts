@@ -18,7 +18,7 @@ const routes: Routes = [
 	{path: 'desarrollador', component: DesarrolladorComponent},
 	{path: 'inmap', redirectTo: "/inmap", pathMatch: "full"},
 	{path: 'inmap', component: InMapComponent}
-   
+
 	];
 
 @NgModule({
