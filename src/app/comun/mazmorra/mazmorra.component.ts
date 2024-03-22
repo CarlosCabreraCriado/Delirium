@@ -70,6 +70,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   private idCuenta: string;
   public mostrarHistorial: boolean = false;
   public modoMazmorra: "mapa" | "combate" = "mapa";
+  public panelDesplegado: boolean = false;
 
   //Variables Temporizador:
   public habilitarTemporizador: boolean = true;
@@ -224,6 +225,10 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.finalizarOrdenPartida();
                     break;
 
+                  case "cambiarSala":
+                    this.mazmorraService.cambiarSala(data.contenido.salaId); //La finalizacion de la orden está en el cambio de sala
+                  break;
+
                 }
 
               break;
@@ -240,11 +245,13 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.mazmorraService.desactivarComandoSocket();
                   break;
 
+                  /*
                   case "cambiarSala":
                     this.mazmorraService.activarComandoSocket();
                     this.mazmorraService.cambiarSala(data.valor);
                     this.mazmorraService.desactivarComandoSocket();
                   break;
+                  */
 
                   case "actualizarInteractuado":
                       this.mazmorraService.actualizarInteractuado(data.contenido);
@@ -378,7 +385,7 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
                     this.cdr.detectChanges()
                     break;
                 case "openSala":
-                    this.mazmorraService.cambiarSala(val.valor, {triggerPorEventoComun: true});
+                    this.mazmorraService.solicitarCambioSala(val.valor);
                     break;
                 case "abandonarMazmorra":
                     //this.mazmorraService.abandonarMazmorra();
@@ -472,7 +479,16 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
   }
 
   comandoPanelGeneral(pantalla:string){
+    if(pantalla == "desplegado"){
+      this.panelDesplegado = true;
+      return;
+    }
+    if(pantalla == "replegado"){
+      this.panelDesplegado = false;
+      return;
+    }
     this.cambiarPantalla(pantalla);
+    return;
   }
 
   cambiarPantalla(nombrePantalla:string):void{
@@ -1087,6 +1103,11 @@ export class MazmorraComponent implements OnInit,AfterViewInit{
 
     clearInterval(this.temporizadorGeneral);
     this.temporizadorGeneral = false;
+    return;
+  }
+
+  cerrarHistorial(){
+    this.mostrarHistorial = false;
     return;
   }
 

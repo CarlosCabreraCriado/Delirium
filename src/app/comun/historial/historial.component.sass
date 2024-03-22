@@ -5,9 +5,9 @@
 #panelLateralHistorial
   position: absolute
   z-index: 13
-  width: 12vw
+  width: 100vw
   height: 100vh
-  background: $colorFondo1
+  background:  #262222d4
   color: $colorTexto
   .titulo
     position: relative
@@ -19,29 +19,40 @@
     width: 100%
     height: 90%
     display: flex
-    flex-direction: column
+    flex-direction: row-reverse
     flex-wrap: nowrap
     align-items: center
     justify-content: flex-start
-    overflow-y: scroll
+    overflow-y: hidden
+    overflow-x: scroll
+    gap: 15px
     scrollbar-width: none
     &::-webkit-scrollbar
       display: none
 
     .turno
       position: relative
-      margin-bottom: 10px
-      width: 90%
+      width: auto
+      min-width: fit-content
+      height: auto
+      max-height: 100%
       background-color: $colorFondo2
       box-shadow: inset 0px 0px 15px 0px rgba(0,0,0,0.8)
       border-radius: 20px
       transition: all 1s
+      overflow-x: hidden
+      overflow-y: scroll
+      scrollbar-width: none
+      &::-webkit-scrollbar
+        display: none
+      &:first-child
+        margin-right: 15px
 
       .contenedorPersonajeTurno
         position: relative
-        height: 15vh
+        height: 18vh
         aspect-ratio: 1
-        margin: auto
+        margin: 10px
         .imagenPersonaje
           position: absolute
           width: 100%
@@ -91,5 +102,9 @@
       img
         position: relative
 
-
+  #iconoCerrar
+    position: absolute
+    top: 5%
+    right: 5%
+    width: 5%
 

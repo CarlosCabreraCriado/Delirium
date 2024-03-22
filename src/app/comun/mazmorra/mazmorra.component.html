@@ -20,11 +20,6 @@
 }
 
 
-<!--   ******************* -->
-<!--      PANEL GENERAL    -->
-<!--   ******************* -->
-
-<panelGeneralComponent id="PanelGeneral" (comandoPanelGeneral)="comandoPanelGeneral($event)"></panelGeneralComponent>
 
 <!--   ******************* -->
 <!--          PANELES      -->
@@ -65,6 +60,7 @@
 <!--      HISTORIAL        -->
 <!--   ******************* -->
 <historialComponent id="historial"
+        (subscripcionHistorial)="cerrarHistorial()"
         [ngClass]="{
             'mostrarHistorial': mostrarHistorial,
             'ocultarHistorial': !mostrarHistorial
@@ -90,7 +86,7 @@
 <!--    CONTENEDOR MAIN WINDOW    -->
 <!--   ************************** -->
 
-<div id="contenedorMainWindow">
+<div id="contenedorMainWindow" [ngClass]="{'replegado': !panelDesplegado}">
 
   <!--   ******************* -->
   <!--     LOOGER            -->
@@ -116,7 +112,14 @@
   <!--      Boton Historial    -->
   <!--   ******************* -->
   <div id="contenedorHistorial">
-    <img id="iconoHistorial" src="../../../assets/Iconos/Icono-Misiones.png" (click)="mostrarHistorial = !mostrarHistorial"/>
+    <img id="iconoHistorial" src="../../../assets/Iconos/indicadores/005.png" (click)="mostrarHistorial = !mostrarHistorial"/>
+  </div>
+
+  <!--   ******************* -->
+  <!--      Boton Botin    -->
+  <!--   ******************* -->
+  <div id="contenedorBotin">
+    <img id="iconoBotin" src="../../../assets/Iconos/indicadores/017.png"/>
   </div>
 
   <!--   ******************* -->
@@ -283,9 +286,13 @@
     }
   </div>
 
+</div> <!-- Fin contenedorMainWindow -->
 
 
+<!--   ******************* -->
+<!--      PANEL GENERAL    -->
+<!--   ******************* -->
 
-</div>
-
-
+<panelGeneralComponent id="PanelGeneral" [ngClass]="{'replegado': !panelDesplegado}"
+  (comandoPanelGeneral)="comandoPanelGeneral($event)">
+</panelGeneralComponent>

@@ -1166,7 +1166,7 @@ export class AppService {
     async peticionCargarMazmorra(nombreIdMazmorra: string){
 
         //INICIANDO MAZMORRA:
-        console.error("PETICION HTTP MAZMORRA: "+nombreIdMazmorra);
+        console.warn("PETICION HTTP MAZMORRA: "+nombreIdMazmorra);
 
         this.mostrarPantallacarga(true);
 
@@ -1274,7 +1274,7 @@ export class AppService {
         }
 
         if(sesion.estadoSesion == "mazmorra"){
-            console.error("REMOTO: ",this._sesion.value);
+            //console.error("REMOTO: ",this._sesion.value);
             this.observarAppService.next("appServerEnviaSesion");
         }
 

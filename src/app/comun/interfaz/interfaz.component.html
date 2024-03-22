@@ -123,9 +123,18 @@
     </div><!-- FIN PANEL OPCIONES HECHIZO DETALLE -->
 
     <div class="contenedorBotones">
-        <botonComponent mat-button [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || interfazService.indexHechizoSeleccionado == null || !interfazService.esTurno || interfazService.hechizosEquipadosCooldown[interfazService.indexHechizoSeleccionado] != 0}" [tipoBoton]="2" (click)="interfazService.seleccionarHechizo()" [texto]="'Seleccionar'" [color]="'verde'" class="boton"></botonComponent>
+        <botonComponent mat-button
+            [ngClass]="{'botonDeshabilitado': interfazService.energiaHechizo > interfazService.energiaDisponible || interfazService.indexHechizoSeleccionado == null || !interfazService.esTurno || interfazService.hechizosEquipadosCooldown[interfazService.indexHechizoSeleccionado] != 0}"
+            [tipoBoton]="2"
+            (click)="interfazService.seleccionarHechizo()"
+            [texto]="'Seleccionar'"
+            [color]="'verde'" class="boton">
+        </botonComponent>
+
             <atributoComponent class="boton" [tipo]="'energia'" [valor]="interfazService.energiaDisponible"></atributoComponent>
+
         <botonComponent mat-button [tipoBoton]="2" (click)="interfazService.cancelarHechizo()" [texto]="'Cancelar'" [color]="'rojo'" class="boton"></botonComponent>
+
     </div>
 
     <div class="frame"></div>

@@ -9,7 +9,7 @@
     Historial
   </div>
 
-  <div class="contenedorScroll">
+  <div #contenedorScroll id="contenedorScroll" class="contenedorScroll">
 
     @for (turno of historial; track turno; let i = $index) {
       <div class="turno Arial">
@@ -61,7 +61,10 @@
       </div>
     }
 
+
   </div>
+
+  <img id="iconoCerrar" src="../../../assets/ui/icons/Icon_05.png" (click)="cerrarHistorial()"/>
 
 </div>
 

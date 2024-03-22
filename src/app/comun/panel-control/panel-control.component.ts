@@ -45,15 +45,15 @@ export class PanelControlComponent {
         break;
 
         case "derecha":
-          if(this.turno || this.habilitar){
+  //        if(this.turno || this.habilitar){
             this.comandoPanelControl.next('elegirHechizo')
-          }
+   //       }
         break;
 
         case "izquierda":
-          if(this.turno || this.habilitar){
+          //if(this.turno || this.habilitar){
             this.comandoPanelControl.next('elegirMovimiento')
-          }
+          //}
         break;
 
       }

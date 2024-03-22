@@ -12,10 +12,11 @@ export class PanelGeneralComponent {
 
 	//Emision de eventos
 	@Output() comandoPanelGeneral: EventEmitter<any> = new EventEmitter();
+  public desplegado: boolean = false;
 
 	constructor() {}
-	
-    public pantalla = null; 
+
+    public pantalla = null;
 
 	cambiarPantalla(pantalla:string){
         if(this.pantalla==pantalla){
@@ -25,6 +26,15 @@ export class PanelGeneralComponent {
         }
 		this.comandoPanelGeneral.next(pantalla);
 	}
+
+  toggleDesplegado(){
+    this.desplegado = !this.desplegado;
+    if(this.desplegado){
+		  this.comandoPanelGeneral.next("desplegado");
+    }else{
+		  this.comandoPanelGeneral.next("replegado");
+    }
+  }
 
 }
 

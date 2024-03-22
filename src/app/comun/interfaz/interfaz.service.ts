@@ -367,6 +367,7 @@ export class InterfazService {
     }
 
     activarInterfazHechizos(hechizosEquipadosID:any, hechizosEquipadosImagenID, hechizosEquipadosEnergia, energiaDisponible, hechizoEquipados, hechizosEquipadosCooldown,renderHeroe:any):void{
+
         this.hechizoEquipados = hechizoEquipados;
         this.energiaDisponible = energiaDisponible;
         this.renderHeroeHechizo = renderHeroe;
@@ -377,6 +378,7 @@ export class InterfazService {
         this.pantallaInterfaz= "Hechizos";
         this.setMostrarInterfaz(true);
         console.warn("Render: ",this.renderHeroeHechizo)
+        //console.error(this.energiaHechizo,">",this.energiaDisponible,this.indexHechizoSeleccionado, "!= null",this.esTurno, this.hechizosEquipadosCooldown);
         return;
     }
 
@@ -510,8 +512,11 @@ export class InterfazService {
 
     seleccionarHechizo():void{
         //this.indexHechizoSeleccionado = numHechizo;
+
         this.idHechizoSeleccionado = this.hechizosEquipadosID[this.indexHechizoSeleccionado];
+
         this.observarInterfaz.next({comando: "seleccionarHechizo",valor: this.hechizosEquipadosID[this.indexHechizoSeleccionado]});
+
         return;
     }
 
@@ -542,9 +547,13 @@ export class InterfazService {
     modificarMovimiento(cantidad){
         this.puntosMovimiento += cantidad;
         this.energiaMovimiento = this.puntosMovimiento * this.costePorMovimiento;
-        if(this.puntosMovimiento <= 0){
-            this.puntosMovimiento = 0;
-            this.energiaMovimiento = 0;
+        if(this.puntosMovimiento >= 20){
+          this.puntosMovimiento = 20;
+          this.energiaMovimiento = this.costePorMovimiento*20;
+        }
+        if(this.puntosMovimiento <= 1){
+            this.puntosMovimiento = 1;
+            this.energiaMovimiento = this.costePorMovimiento;
         }
     }
 
@@ -572,6 +581,7 @@ export class InterfazService {
 
       if(reanimar){
         this.observarInterfaz.next({comando: "reanimar",valor: {heroeIndex: this.indexHeroeAbatido}});
+        //this.indexHeroeAbatido = null;
         this.desactivarInterfaz();
       }else{
         this.observarInterfaz.next({comando: "fallarReanimar",valor: {heroeIndex: this.indexHeroeAbatido}});
