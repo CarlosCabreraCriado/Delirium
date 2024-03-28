@@ -3,6 +3,210 @@
 @import "../../../breakpoints.scss"
 
 .contenedorVisualizadorAccion
+  position: absolute
+  width: 100%
+  height: 100%
+  pointer-events: none
 
+  .contenedorAtaqueEnemigo
+    display: grid
+    grid-template-columns: repeat(6, 1fr)
+    grid-template-rows: repeat(2, 1fr)
+    grid-column-gap: 15px
+    grid-row-gap: 15px
+    height: 60%
+    aspect-ratio: 3.5
+    margin: auto
+    background: rgba(255,0,25,0.4)
+    //background: radial-gradient(circle, rgba(147,0,18,1) 0%, rgba(233,148,148,0) 100%)
+    -webkit-box-shadow: 0px 0px 42px 0px rgba(200,0,25,1)
+    -moz-box-shadow: 0px 0px 42px 0px rgba(200,0,25,1)
+    box-shadow: 0px 0px 42px 0px rgba(200,0,25,1)
+
+    .enemigo
+      position: relative
+      grid-area: 1 / 1 / 3 / 3
+      display: flex
+      justify-content: center
+
+    .hechizo
+      position: relative
+      grid-area: 1 / 3 / 2 / 5
+      .wrapper
+        position: absolute
+        width: 100%
+        height: 100%
+        display: flex
+        align-items: center
+        justify-content: space-around
+
+        .flecha
+          position: relative
+          height: 60%
+        .contenedorHechizo
+          position: relative
+          height: 100%
+          aspect-ratio: 1
+          .imagenHechizo
+            position: absolute
+            height: 100%
+
+    .valor
+      position: relative
+      grid-area: 2 / 3 / 3 / 5
+      .atributo
+        .contenedorAtributo
+          width: 100%
+          height: 100%
+          top: 0%
+
+    .heroe
+      position: relative
+      grid-area: 1 / 5 / 3 / 7
+
+  .contenedorMovimientoEnemigo
+    display: grid
+    grid-template-columns: repeat(6, 1fr)
+    grid-template-rows: repeat(2, 1fr)
+    grid-column-gap: 15px
+    grid-row-gap: 15px
+    height: 60%
+    aspect-ratio: 3.5
+    margin: auto
+    background: rgba(255,0,25,0.4)
+    //background: radial-gradient(circle, rgba(147,0,18,1) 0%, rgba(233,148,148,0) 100%)
+    -webkit-box-shadow: 0px 0px 42px 0px rgba(200,0,25,1)
+    -moz-box-shadow: 0px 0px 42px 0px rgba(200,0,25,1)
+    box-shadow: 0px 0px 42px 0px rgba(200,0,25,1)
+
+    .texto
+      position: relative
+      grid-area: 1 / 1 / 2 / 7
+      display: flex
+      justify-content: center
+      align-items: center
+    .enemigo
+      position: relative
+      grid-area: 1 / 1 / 4 / 3
+      display: flex
+      justify-content: center
+
+    .flecha
+      position: relative
+      display: flex
+      align-items: center
+      grid-area: 2 / 3 / 2 / 5
+      .cuerpo
+        position: absolute
+        height: 100%
+        width: 70%
+        left: 5%
+      .cabeza
+        position: absolute
+        height: 100%
+        width: 20%
+        left: 75%
+
+    .valor
+      position: relative
+      grid-area: 1 / 3 / 1 / 5
+      .atributo
+        .contenedorAtributo
+          width: 100%
+          height: 100%
+          top: 0%
+
+    .heroe
+      position: relative
+      grid-area: 1 / 5 / 4 / 7
+
+
+  .contenedorMovimiento
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    grid-template-rows: repeat(3, 1fr)
+    grid-column-gap: 15px
+    grid-row-gap: 15px
+    height: 60%
+    aspect-ratio: 2.5
+    margin: auto
+    background: rgba(0,196,255,0.2)
+    //background: radial-gradient(circle, rgba(147,0,18,1) 0%, rgba(233,148,148,0) 100%)
+    -webkit-box-shadow: 0px 0px 42px 0px rgba(0,126,200,1)
+    -moz-box-shadow: 0px 0px 42px 0px rgba(0,126,200,1)
+    box-shadow: 0px 0px 42px 0px rgba(0,126,200,1)
+    .heroe
+      position: relative
+      grid-area: 1 / 1 / 4 / 3
+    .valor
+      position: relative
+      grid-area: 2 / 3 / 3 / 5
+      .atributo
+        .contenedorAtributo
+          width: 100%
+          height: 100%
+          top: 0%
+
+  .contenedorLanzarHechizo
+    display: grid
+    grid-template-columns: repeat(5, 1fr)
+    grid-template-rows: 1fr
+    grid-column-gap: 15px
+    grid-row-gap: 15px
+    height: 60%
+    aspect-ratio: 2.5
+    margin: auto
+    background: rgba(16,0,255,0.2)
+    //background: radial-gradient(circle, rgba(147,0,18,1) 0%, rgba(233,148,148,0) 100%)
+    -webkit-box-shadow: 0px 0px 42px 0px rgba(86,0,200,1)
+    -moz-box-shadow: 0px 0px 42px 0px rgba(86,0,200,1)
+    box-shadow: 0px 0px 42px 0px rgba(86,0,200,1)
+    .heroe
+      position: relative
+      grid-area: 1 / 1 / 1 / 3
+    .valor
+      position: relative
+      grid-area: 2 / 3 / 3 / 5
+      .atributo
+        .contenedorAtributo
+          width: 100%
+          height: 100%
+          top: 0%
+    .hechizo
+      position: relative
+      grid-area: 1 / 3 / 1 / 6
+      display: flex
+      align-items: center
+      .wrapper
+        position: absolute
+        width: 100%
+        height: 50%
+        display: flex
+        align-items: center
+        justify-content: space-around
+
+        .flecha
+          position: relative
+          height: 60%
+        .contenedorHechizo
+          position: relative
+          height: 100%
+          aspect-ratio: 1
+          .imagenHechizo
+            position: absolute
+            height: 100%
+
+  #mensajeAccion
+    position: absolute
+    bottom: 0
+    width: 100%
+    height: 15%
+    text-align: center
+    color: white
+    background: rgba(0,0,0,0.4)
+    //background: radial-gradient(circle, rgba(147,0,18,1) 0%, rgba(233,148,148,0) 100%)
+    -webkit-box-shadow: 0px 0px 42px 0px rgba(0,0,0,1)
+    -moz-box-shadow: 0px 0px 42px 0px rgba(0,0,0,1)
+    box-shadow: 0px 0px 42px 0px rgba(0,0,0,1)
 
 

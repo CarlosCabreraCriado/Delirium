@@ -24,6 +24,7 @@ export class HeroeComponent implements OnInit {
 	@Input() desplegadoDefecto: boolean = true;
   @Input() tipoDesplegable: string = "radial";
   @Input() modoMazmorra: string = "mapa";
+  @Input() animacionesHabilitadas: boolean = false;
 
   public estadoDesplegado: boolean= true;
   public identificador: string = "";

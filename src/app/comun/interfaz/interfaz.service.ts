@@ -291,12 +291,16 @@ export class InterfazService {
         switch(this.tipoAccion){
             case "movimiento":
                 this.valorAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].movimiento;
+                this.observarInterfaz.next({comando: "visualizarMovimientoEnemigo",valor: {indexEnemigo: indexEnemigoActivado, indexHeroe: this.indexHeroeAccion, valorAccion: this.valorAccion}});
             break;
             case "ataque":
                 this.indexHechizoAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_id;
                 this.hechizoEnemigoImagenId= this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].hechizo_imagen_id;
                 this.tieneAlcance = true;
                 this.valorAccion = this.renderEnemigos[indexEnemigoActivado].acciones[indexAccion].alcance;
+
+                this.observarInterfaz.next({comando: "visualizarAtaqueEnemigo",valor: {indexEnemigo: indexEnemigoActivado, indexHeroe: this.indexHeroeAccion, valorAccion: this.valorAccion, indexHechizo: this.indexHechizoAccion}});
+
             break;
         }
 

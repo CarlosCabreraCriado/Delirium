@@ -18,12 +18,18 @@
   width: 100%
   height: 100%
   z-index: 6
+  &.agro
+    .contenedorImagen
+      box-shadow: -11px 9px 20px 0px rgba(255,0,0,0.75)
+      -webkit-box-shadow: -11px 9px 20px 0px rgba(255,0,0,0.75)
+      -moz-box-shadow: -11px 9px 20px 0px rgba(255,0,0,0.75)
 
   .contenedorImagen
     position: relative
     height: 100%
     aspect-ratio: 1
     background-color: $colorFondo1
+    box-shadow: -11px 9px 20px 0px rgba(0,0,0,0.75)
     -webkit-box-shadow: -11px 9px 20px 0px rgba(0,0,0,0.75)
     -moz-box-shadow: -11px 9px 20px 0px rgba(0,0,0,0.75)
     .imagenEnemigo
@@ -128,7 +134,7 @@
   #wrapperDesplegableVertical
     position: relative
     height: 100%
-    width: -webkit-fill-available 
+    width: -webkit-fill-available
 
     .barra
       position: relative

@@ -56,19 +56,23 @@
                   <animacionFocusComponent></animacionFocusComponent>
                 </div>
                 @if (direccionMovimientoPermitido[0] && !bloqueoMovimiento && esTurnoPropio) {
-                  <img class="flecha norte" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorEste')"/>
+                  <img class="flecha norte" src="../../../assets/ui/scrolling/scr_01.png"/>
+                  <div class="hitboxFlecha norte" (click)="moverPersonaje('NorEste')"></div>
                 }
                 <!-- Flecha NorOeste -->
                 @if (direccionMovimientoPermitido[3] && !bloqueoMovimiento && esTurnoPropio) {
-                  <img class="flecha oeste" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('NorOeste')"/>
+                  <img class="flecha oeste" src="../../../assets/ui/scrolling/scr_01.png"/>
+                  <div class="hitboxFlecha oeste" (click)="moverPersonaje('NorOeste')"></div>
                 }
                 <!-- Flecha SurEste -->
                 @if (direccionMovimientoPermitido[1] && !bloqueoMovimiento && esTurnoPropio) {
-                  <img class="flecha este" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurEste')"/>
+                  <img class="flecha este" src="../../../assets/ui/scrolling/scr_01.png"/>
+                  <div class="hitboxFlecha este" (click)="moverPersonaje('SurEste')"></div>
                 }
                 <!-- Flecha SurOeste -->
                 @if (direccionMovimientoPermitido[2] && !bloqueoMovimiento && esTurnoPropio) {
-                  <img class="flecha sur" src="../../../assets/ui/scrolling/scr_01.png" (click)="moverPersonaje('SurOeste')"/>
+                  <img class="flecha sur" src="../../../assets/ui/scrolling/scr_01.png"/>
+                  <div class="hitboxFlecha sur" (click)="moverPersonaje('SurOeste')"></div>
                 }
                 <!-- Flecha NorEste -->
               </div>
@@ -123,7 +127,7 @@
       <div class="image01"></div>
       <div class="image02"></div>
     </div>
-  </div>
+  </div> (click)="moverPersonaje('SurOeste')"
   -->
 </div>
 

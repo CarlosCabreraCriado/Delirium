@@ -17,6 +17,7 @@ export class EnemigoComponent implements OnInit{
     @Input() desplegable: boolean = false;
     @Input() desplegadoDefecto: boolean = true;
     @Input() tipoDesplegable: string = "vertical";
+    @Input() animacionesHabilitadas: boolean = false;
 
   public estadoDesplegado: boolean= true;
 
@@ -129,6 +130,15 @@ export class EnemigoComponent implements OnInit{
                 }
             }
         }
+
+        //Verifica si tiene el aggro del Heroe:
+        var maxAgro = Math.max(...this.renderEnemigo.agro);
+        if(maxAgro > 0){
+          if(this.renderEnemigo.agro.indexOf(maxAgro) == this.estadoControl.heroePropioIndex){
+              clases = clases + " agro";
+          }
+        }
+
         return clases;
     }
 

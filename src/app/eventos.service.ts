@@ -23,6 +23,7 @@ export class EventosService {
 
     private sesion: any;
     private estadoApp: any;
+    private objetoInteractuado: string = null;
 
     @Output() eventoMazmorraEmitter: EventEmitter<any> = new EventEmitter();
     @Output() eventoInMapEmitter: EventEmitter<any> = new EventEmitter();
@@ -56,7 +57,7 @@ export class EventosService {
         }
     }
 
-    ejecutarEvento(idEvento:number,tipoEvento?:string,tipoEventoRandom?:string){
+    ejecutarEvento(idEvento:number,tipoEvento?:string,objetoInteractuado?: string, tipoEventoRandom?:string){
 
         //Cargar Datos de eventos a ejecutar:
         switch(tipoEvento){
@@ -80,7 +81,9 @@ export class EventosService {
         this.indexOrdenEjecutando = 0;
 
         if(!this.eventoEjecutando){console.error("No se encuentra evento con ID: "+idEvento);return;}
-
+        if(objetoInteractuado){
+          this.objetoInteractuado = objetoInteractuado;
+        }
         this.ejecutarOrden(0);
     }
 
@@ -259,7 +262,7 @@ export class EventosService {
                 }
                 break;
             case "openSala":
-                    this.eventoMazmorraEmitter.emit({comando: "openSala",valor: salaOpenId})
+                    this.eventoMazmorraEmitter.emit({comando: "openSala",valor: salaOpenId, objetoInteractuado: this.objetoInteractuado})
                 break;
             case "finalizar":
                     this.eventoMazmorraEmitter.emit({comando: "abandonarMazmorra"})
@@ -419,6 +422,7 @@ export class EventosService {
         //console.warn("Evento Finalizado");
         this.eventoMazmorraEmitter.emit({comando: "forceRender"})
         this.eventoEjecutando = null;
+        this.objetoInteractuado = null;
         this.indexOrdenEjecutando = 0;
         return;
     }

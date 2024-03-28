@@ -51,52 +51,15 @@
     top: 38%
     left: 9%
 
-#ContenedorPanelGeneral
-    position: absolute
-    top: 0
-    left: 0
-    width: 12%
-    height: 100%
-    background-color: $colorFondo1
-    @include media("<=tablet")
-        width: 15%
-    @include media("<=phone")
-        width: 12%
-
-    .framePanelGeneral
-        position: absolute
-        top: 0
-        left: 0
-        z-index: 100
-        width: 100%
-        height: 100%
-        background-image: url("../../../assets/Frames/Frame-Panel-General.png")
-        background-size: 100% 100%
-
-    .contenedorBotonGeneral
-        position: relative
-        display: flex
-        flex-direction: column
-        height: 18%
-        width: 100%
-        z-index: 101
-        margin-top: 1vh
-        margin-bottom: 1vh
-        align-items: center
-        justify-content: center
-        &.primerBotonGeneral
-            margin-top: 3vh
-
-        .iconoPanelGeneral
-            position: relative
-            height: 80%
-            margin-left: 5%
-        .textoPanelGeneral
-            position: relative
-            text-align: center
-            color: white
-            width: 100%
-            height: 20%
+#PanelGeneral
+  position: absolute
+  //z-index: 13
+  width: 12%
+  height: 100%
+  @include media("<=tablet")
+      width: 15%
+  @include media("<=phone")
+      width: 12%
 
 #contenedorMainWindow
     position: absolute

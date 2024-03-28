@@ -4,4 +4,101 @@
 <!--   ******************* -->
 
 <div class="contenedorVisualizadorAccion">
+
+
+        <!-- *********** Visualizador Ataque Enemigo *********** -->
+        @if(this.modoVisualizador == "ataqueEnemigo"){
+        <div class="contenedorAtaqueEnemigo">
+
+            <div class="enemigo">
+                <enemigoComponent [indexEnemigo]="0" [desplegadoDefecto]="false"  [renderEnemigo]="this.renderEnemigo" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
+            </div>
+
+            <div class="hechizo">
+                <div class="wrapper">
+                    <img class="flecha" src="./assets/ui/icons/Icon_07.png"/>
+                    <div class="contenedorHechizo borde1">
+                      <img class="imagenHechizo" src="./assets/Habilidades/Spell/{{indexHechizo}}.png"/>
+                    </div>
+                    <img class="flecha" src="./assets/ui/icons/Icon_07.png"/>
+                </div>
+            </div>
+
+            <div class="valor">
+                <atributoComponent class="atributo Texto1" [tipo]="'alcance'" [valor]="this.valorAccion"></atributoComponent>
+            </div>
+
+            <div class="heroe">
+                <heroeComponent [renderHeroe]="this.renderHeroe" [desplegadoDefecto]="false" class="panelHeroe" ></heroeComponent>
+            </div>
+
+        </div>
+        }
+
+        <!-- *********** Visualizador Movimiento Enemigo *********** -->
+        @if(this.modoVisualizador == "movimientoEnemigo"){
+        <div class="contenedorMovimientoEnemigo">
+
+            <div class="enemigo">
+                <enemigoComponent [indexEnemigo]="0" [desplegadoDefecto]="false"  [renderEnemigo]="this.renderEnemigo" [seleccionable]="false" class="panelEnemigo"></enemigoComponent>
+            </div>
+
+            <div class="valor">
+                <atributoComponent class="atributo Texto1" [tipo]="'movimiento'" [valor]="this.valorAccion"></atributoComponent>
+            </div>
+
+            <div class="flecha">
+                <img class="cuerpo" src="./assets/ui/icons/cuerpo-flecha.png"/>
+                <img class="cabeza" src="./assets/ui/icons/cabeza-flecha.png"/>
+            </div>
+
+            <div class="heroe">
+                <heroeComponent [renderHeroe]="this.renderHeroe" [desplegadoDefecto]="false" class="panelHeroe" ></heroeComponent>
+            </div>
+
+        </div>
+        }
+
+        <!-- *********** Visualizador Movimiento Heroe *********** -->
+        @if(this.modoVisualizador == "realizarMovimiento"){
+        <div class="contenedorMovimiento">
+
+            <div class="heroe">
+                <heroeComponent [renderHeroe]="this.renderHeroe" [desplegadoDefecto]="false" class="panelHeroe" ></heroeComponent>
+            </div>
+
+
+            <div class="valor">
+                <atributoComponent class="atributo Texto1" [tipo]="'movimiento'" [valor]="this.valorAccion"></atributoComponent>
+            </div>
+
+
+        </div>
+        }
+
+        <!-- *********** Visualizador Lanzar Hechizo *********** -->
+        @if(this.modoVisualizador == "lanzarHechizo"){
+        <div class="contenedorLanzarHechizo">
+
+            <div class="heroe">
+                <heroeComponent [renderHeroe]="this.renderHeroe" [desplegadoDefecto]="false" class="panelHeroe" ></heroeComponent>
+            </div>
+
+            <div class="hechizo">
+                <div class="wrapper">
+                    <img class="flecha" src="./assets/ui/icons/Icon_07.png"/>
+                    <div class="contenedorHechizo borde1">
+                      <img class="imagenHechizo" src="./assets/Habilidades/Spell/{{indexHechizo}}.png"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        }
+
+        <!-- *********** Visualizador Mensaje  *********** -->
+        @if(this.mostrarMensajeAccion){
+        <div id="mensajeAccion" class="Texto1">{{mensajeAccion}}</div>
+        }
+
 </div>

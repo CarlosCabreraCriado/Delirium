@@ -492,6 +492,7 @@ export class AppService {
 
     nuevoEstado.jugadorPropioSesionIndex = Number(this._sesion.value.jugadores.findIndex(i => i.usuario == this.cuenta.usuario))
 
+    console.error("Nuevo Estado:",nuevoEstado)
     nuevoEstado.heroePropioPerfilIndex = Number(this.perfil.heroes.findIndex(i => i.personaje == this._sesion.value.render.heroes[nuevoEstado.heroePropioSesionIndex].nombre));
 
     //this.setHeroeSeleccionado(this.perfil.heroes[this._estadoApp.value.heroePropioPerfilIndex]);
@@ -704,6 +705,22 @@ export class AppService {
         this.observarAppService.next("MultiControl");
       }
 
+      if(result === "Saltar Tutorial") {
+        console.warn("Saltando tutorial...");
+        this._sesion.value.render.variablesMundo["tutorial"] = null;
+        this._sesion.value.render.inmap["posicion_x"] = 63;
+        this._sesion.value.render.inmap["posicion_y"] = 49;
+        this.setSesion(this._sesion.value);
+
+        this.peticionGuardarPerfil();
+
+        this.socketService.enviarSocket("actualizarRender",{peticion: "actualizarRender", comando: "actualizarRender", contenido: this._sesion.value.render});
+        var hash = this.hashCode(JSON.stringify(this._sesion.value.render));
+        this.socketService.enviarSocket("checkSinc",{peticion: "checkSinc", comando: "checkSinc", contenido: hash});
+
+        this.reloadPage();
+      }
+
       if(result === "abandonarMazmorra") {
           this.peticionAbandonarMazmorra();
       }
@@ -713,9 +730,11 @@ export class AppService {
         return;
     }
 
+
     logout(){
         console.warn("---> LOGOUT <---")
         this.mostrarPantallacarga(true);
+        this.socketService.enviarSocket("logout",{});
 
         setTimeout(()=>{
                 this.setToken(null)
@@ -969,7 +988,7 @@ export class AppService {
     abandonarPartida(){
       //this.observarAppService.next("AbandonarPartida");
         console.warn("Abandonando Partida...")
-        this.socketService.enviarSocket("abandonarPartida",{});
+        this.socketService.enviarSocket("abandonarPartida",{indexJugador: this._estadoApp.value.jugadorPropioSesionIndex});
         return;
     }
 
@@ -1272,6 +1291,8 @@ export class AppService {
         }else{
             this.setPantallaApp(sesion.estadoSesion);
         }
+
+        this.setSesion(this._sesion.value);
 
         if(sesion.estadoSesion == "mazmorra"){
             //console.error("REMOTO: ",this._sesion.value);

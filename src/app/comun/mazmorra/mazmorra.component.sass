@@ -32,6 +32,29 @@
   &.desplegado
     transform: translateX(0)
 
+#panelConstruccionSala
+  position: absolute
+  z-index: 1
+  width: 40%
+  height: 10%
+  bottom: 5%
+  left: 30%
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  align-items: center
+  justify-content: space-around
+  background-color: $colorFondo2
+  border: 2px solid $colorBorde
+  border-radius: 200px
+  .mensaje
+    color: $colorTexto
+  .botonConfirmarConstruccion
+    position: relative
+    width: 30%
+    height: 80%
+
+
 #temporizadorGeneral
   position: absolute
   display: flex
@@ -316,6 +339,19 @@
     top: 3%
     right: 1%
     width: 5%
+
+#visualizadorAccion
+    position: absolute
+    z-index: 1
+    width: 50%
+    height: 40%
+    top: 28%
+    left: 24%
+    pointer-events: none
+    transition: opacity 0.5s
+    opacity: 0
+    &.mostrar
+      opacity: 1
 
 #contenedorHistorial
     position: absolute

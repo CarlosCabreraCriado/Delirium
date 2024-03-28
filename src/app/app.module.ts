@@ -64,6 +64,7 @@ import { PanelUbicacionComponent } from './comun/panel-ubicacion/panel-ubicacion
 import { PanelDiarioComponent } from './comun/panel-diario/panel-diario.component';
 import { PanelTiendaComponent } from './comun/panel-tienda/panel-tienda.component';
 import { HistorialComponent } from './comun/historial/historial.component';
+import { VisualizadorAccionComponent } from './comun/visualizador-accion/visualizadorAccion.component';
 import { ExperienciaComponent } from './comun/experiencia/experiencia.component';
 import { PanelControlComponent } from './comun/panel-control/panel-control.component';
 import { PinchZoomComponent } from './comun/pinch-zoom/pinch-zoom.component';
@@ -140,6 +141,7 @@ const config: SocketIoConfig = { url: environment.dominio, options: {autoConnect
         PanelDiarioComponent,
         PanelTiendaComponent,
         HistorialComponent,
+        VisualizadorAccionComponent,
         ExperienciaComponent,
         PanelControlComponent,
         PinchZoomComponent,

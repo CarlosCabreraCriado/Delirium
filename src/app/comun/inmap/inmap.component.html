@@ -107,7 +107,13 @@
   <div id="contenedorHeroes">
 
     @for (heroe of this.inmapService.sesion.render.heroes; track heroe; let i = $index) {
-      <heroeComponent [desplegable]="true" [lider]="sesion.jugadores[i].lider" [renderHeroe]="heroe" [seleccionable]="false" [pantalla]="'inMap'" class="panelHeroe"></heroeComponent>
+      <heroeComponent class="panelHeroe"
+        [desplegable]="true"
+        [lider]="sesion.jugadores[i].lider"
+        [renderHeroe]="heroe"
+        [seleccionable]="false"
+        [pantalla]="'inMap'">
+      </heroeComponent>
     }
 
   </div>

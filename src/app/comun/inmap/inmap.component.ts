@@ -63,7 +63,6 @@ export class InMapComponent implements OnInit {
 
                     case "triggerChangeDetection":
                         this.cdr.detectChanges();
-                        console.error("TRIGGER CHANGE DETECTION")
                         break;
                 }
             this.cdr.detectChanges();

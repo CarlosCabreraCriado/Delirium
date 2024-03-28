@@ -166,15 +166,43 @@
   -->
 
   <div id="botonToggleMazmorra" [ngClass]="{'modoMapa': this.modoMazmorra=='mapa', 'modoCombate': this.modoMazmorra== 'combate'}" (click)="this.toggleModoMazmorra()">
+    @if (construccionSala) {
+     <div class="construccionSala"></div>
+    }
     <div class="side-a"></div>
     <div class="side-b"></div>
   </div>
+
+
+  <!--   ******************* -->
+  <!--       BOTONES TEST    -->
+  <!--   ******************* -->
+
+  @if (construccionSala) {
+  <div id="panelConstruccionSala">
+    <div class="mensaje"> Construcción del tablero... </div>
+    <botonComponent mat-button class="botonConfirmarConstruccion"
+      [texto]="'HECHO'"
+      [tipoBoton]="2"
+      [color]="'verde'"
+      (click)="mazmorraService.completarConstruccionSala()">
+    </botonComponent>
+  </div>
+  }
 
   <!--
   <img id="test2" src="../../../assets/Iconos/07.png" (click)="this.mazmorraService.activarDialogo()"/>
   <img id="iconoCentrar" src="../../../assets/Iconos/07.png" (click)="this.centrarMazmorra()"/>
 
   -->
+
+
+  <!--   ******************* -->
+  <!--   VISULIZADOR ACCION  -->
+  <!--   ******************* -->
+  <visualizadorAccion #visualizadorAccion id="visualizadorAccion"
+      [ngClass]="{'mostrar': this.modoMazmorra=='combate'}"
+  ></visualizadorAccion>
 
   <!--   ******************* -->
   <!--     INTERFAZ PANEL         -->
@@ -245,17 +273,19 @@
     <waveComponent></waveComponent>
   </div>
 
+
   <!-- *************************************************
   Panel Acción
   ************************************************* -->
+  <!--
   @if (mazmorraService.cargaCompleta) {
     <div class="Panel Barra-Accion" [ngClass]="renderIndividual()">
-      <!-- Panel de mensajes -->
         <div id="Barra-Mensajes" class="Barra-Mensajes Texto1" [ngClass]="{'mostrar':this.mazmorraService.barraAccion.mostrar}">
           {{this.mazmorraService.barraAccion.mensajeAccion}}
         </div>
     </div>
   }
+  -->
 
   <!--   ******************* -->
   <!--      Paneles Heroes   -->
@@ -263,7 +293,16 @@
   <div id="contenedorHeroes" [ngClass]="{'modoMapa': this.modoMazmorra == 'mapa'}">
     @if (this.mazmorraService.mostrarMazmorra) {
       @for (heroe of this.mazmorraService.sesion.render.heroes; track heroe; let i = $index) {
-        <heroeComponent [desplegable]="false" [modoMazmorra]="modoMazmorra" [indexHeroe]="i" [estadoControl]="this.mazmorraService.estadoControl" [renderHeroe]="heroe" [seleccionable]="this.mazmorraService.seleccionarHeroes"  class="panelHeroe animate__animated animate__infinite" (click)="mazmorraService.seleccionarHeroe(i);"></heroeComponent>
+        <heroeComponent class="panelHeroe animate__animated animate__infinite"
+          [animacionesHabilitadas]="true"
+          [desplegable]="false"
+          [modoMazmorra]="modoMazmorra"
+          [indexHeroe]="i"
+          [estadoControl]="this.mazmorraService.estadoControl"
+          [renderHeroe]="heroe"
+          [seleccionable]="this.mazmorraService.seleccionarHeroes"
+          (click)="mazmorraService.seleccionarHeroe(i);">
+        </heroeComponent>
       }
     }
   </div>
@@ -277,6 +316,7 @@
       @for (enemigo of this.mazmorraService.sesion.render.enemigos; track enemigo; let i = $index) {
         <enemigoComponent
           [desplegable]="false"
+          [animacionesHabilitadas]="true"
           [indexEnemigo]="i"
           [estadoControl]="this.mazmorraService.estadoControl"
           [renderEnemigo]="enemigo"

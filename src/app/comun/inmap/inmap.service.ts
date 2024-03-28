@@ -128,6 +128,24 @@ export class InMapService {
 
         if(this.estadoApp.heroePropioSesionIndex == null){return;}
 
+        //ELIMINA CONTROL ENEMIGOS:
+        for(var i = 0; i < this.sesion.render.heroes.length; i++){
+          this.sesion.render.heroes[i].controlEnemigos = false;
+        }
+
+        //VERIFICA QUE ALGUIEN ESTE EN TURNO:
+        var flagTurnoValido = false;
+        for(var i = 0; i < this.sesion.render.heroes.length; i++){
+          if(this.sesion.render.heroes[i].turno){
+            flagTurnoValido = true;
+          }
+        }
+
+        //SI NO HAY TURNO VALIDO:
+        if(!flagTurnoValido){
+          this.sesion.render.heroes[0].turno = true;
+        }
+
         //INICIA MENSAJE Y MOVIMIENTOS:
         if(this.sesion.render.heroes[this.estadoApp.heroePropioSesionIndex].turno){
             this.movimientoRestante = this.parametros["movimientoInMap"];
